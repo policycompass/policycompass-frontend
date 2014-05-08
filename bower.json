@@ -1,0 +1,14 @@
+{
+  "name": "policycompassPortal",
+  "version": "0.0.1",
+  "authors": [
+    "Fabian Kirstein <fabian.kirstein@fokus.fraunhofer.de>"
+  ],
+  "description": "Policy Compass Portal",
+  "main": "portal",
+  "license": "MIT",
+  "dependencies": {
+	"angular": "",
+	"bootstrap": ""
+  }
+}
