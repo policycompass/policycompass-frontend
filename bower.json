@@ -9,6 +9,7 @@
   "license": "MIT",
   "dependencies": {
 	"angular": "",
+	"angular-route": "",
 	"bootstrap": ""
   }
 }
