@@ -1,5 +1,5 @@
 
-pcApp.controller('SimpleController', function($scope, SimpleFactory) {
+pcApp.controller('CommonController', function($scope, SimpleFactory) {
 	$scope.customers = [];
 
 	init();
@@ -7,7 +7,6 @@ pcApp.controller('SimpleController', function($scope, SimpleFactory) {
 	function init() {
 		$scope.customers = SimpleFactory.getCustomers();
 	}
-	
 	$scope.addCustomer = function() {
 		$scope.customers.push({
 			name: $scope.newCustomer.name, 

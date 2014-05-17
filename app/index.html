@@ -27,9 +27,9 @@
       			<ul class="nav navbar-nav">
         			<li class="active"><a href="#">Welcome</a></li>
         			<li class="dropdown">
-          				<a href="#" class="dropdown-toggle" data-toggle="dropdown">Data Manager <b class="caret"></b></a>
+          				<a href="#" class="dropdown-toggle" data-toggle="dropdown">Metrics Manager <b class="caret"></b></a>
           					<ul class="dropdown-menu">
-					            <li><a href="#">Action</a></li>
+					            <li><a href="#/metrics">Metrics</a></li>
 					            <li><a href="#">Another action</a></li>
 					            <li><a href="#">Something else here</a></li>
 					            <li class="divider"></li>
@@ -59,12 +59,15 @@
 	<!--  Vendor Libs -->
 	<script type="text/javascript" src="../assets/angular/angular.js"></script>
 	<script type="text/javascript" src="../assets/angular-route/angular-route.js"></script>
+	<script type="text/javascript" src="../assets/angular-resource/angular-resource.js"></script>
 	<script type="text/javascript" src="../assets/jquery/dist/jquery.js"></script>
 	<script type="text/javascript" src="../assets/bootstrap/dist/js/bootstrap.js"></script>
 
 	<!--  App Libs -->
 	<script type="text/javascript" src="app.js"></script>
-	<script type="text/javascript" src="controllers/controllers.js"></script>
+	<script type="text/javascript" src="controllers/common.js"></script>
+	<script type="text/javascript" src="controllers/metrics.js"></script>
+	<script type="text/javascript" src="services/metrics.js"></script>
 	<script type="text/javascript" src="factories/factories.js"></script>
 </body>
 </html>
