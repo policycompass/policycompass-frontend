@@ -1,0 +1,28 @@
+<h1>Create a New Metric</h1>
+<br />
+<p ng-repeat="(name, errs) in errors" class="alert alert-danger"><strong>{{ name }}</strong>: {{ errs.join(', ') }}</p>
+<form role="form" class="form-horizontal">
+  <div class="form-group">
+    <label for="title" class="col-sm-2 control-label">Title</label>
+    <div class="col-sm-5" ng-class="{'has-error': errors.title}">
+      <input type="text" class="form-control" id="title" placeholder="Title" ng-model="metric.title">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="description" class="col-sm-2 control-label">Description</label>
+    <div class="col-sm-5" ng-class="{'has-error': errors.description}">
+    	<textarea class="form-control" rows="3" id="descriptio" ng-model="metric.description"></textarea>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="issued" class="col-sm-2 control-label">Issued</label>
+    <div class="col-sm-5" ng-class="{'has-error': errors.issued}">
+      <input type="datetime" class="form-control" id="issued" placeholder="Issued" ng-model="metric.issued">
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-primary" ng-click="createMetric()">Create</button>
+    </div>
+  </div>
+</form>

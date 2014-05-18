@@ -1,13 +1,6 @@
 
 var pcApp = angular.module('pcApp', ['ngRoute', 'pcApp.service']);
 
-pcApp.config(['$httpProvider', function($httpProvider) {
-	$httpProvider.defaults.useXDomain = true;
-	delete $httpProvider.defaults.headers.common['X-Requested-With'];
-}
-]);
-
-
 pcApp.config(function($routeProvider) {
 	$routeProvider
 		.when('/', { 
@@ -21,6 +14,14 @@ pcApp.config(function($routeProvider) {
 		.when('/metrics', {
 			controller: 'MetricsController',
 			templateUrl: 'partials/metrics/list.html'
+		})
+		.when('/metrics/create', {
+			controller: 'MetricCreateController',
+			templateUrl: 'partials/metrics/create.html'
+		})
+		.when('/metrics/:metricId', {
+			controller: 'MetricDetailController',
+			templateUrl: 'partials/metrics/detail.html'
 		})
 		.otherwise({ redirectTo: '/' });
 });
