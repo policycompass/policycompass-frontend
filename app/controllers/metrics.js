@@ -1,6 +1,6 @@
-
-pcApp.controller('MetricsController', function($scope, SimpleFactory, Metric) {
-	
+pcApp.controller('MetricsController', ['$scope', 'SimpleFactory', 'Metric', '$log', function($scope, SimpleFactory, Metric, $log) {
+		
+	$log.info("hallo");
 	$scope.metrics = Metric.query(
 			null,
 			function(metricList) {
@@ -15,10 +15,10 @@ pcApp.controller('MetricsController', function($scope, SimpleFactory, Metric) {
 		$scope.metrics = Metric.query();
 	};
 	
-});
+}]);
 
 
-pcApp.controller('MetricDetailController', function($scope, $routeParams, Metric) {
+pcApp.controller('MetricDetailController', ['$scope', '$routeParams', 'Metric', function($scope, $routeParams, Metric) {
 	
 	$scope.metric = Metric.get({id: $routeParams.metricId},
 			function(metricList) {
@@ -29,9 +29,9 @@ pcApp.controller('MetricDetailController', function($scope, $routeParams, Metric
 	);
 	 	
 	
-});
+}]);
 
-pcApp.controller('MetricCreateController', function($scope, Metric, $location) {
+pcApp.controller('MetricCreateController', ['$scope', 'Metric', '$location', function($scope, Metric, $location) {
 	$scope.createMetric = function() {
 		Metric.save($scope.metric,function(){
 			$location.path('/metrics');
@@ -42,4 +42,4 @@ pcApp.controller('MetricCreateController', function($scope, Metric, $location) {
 		
 		);
 	};
-});
+}]);
