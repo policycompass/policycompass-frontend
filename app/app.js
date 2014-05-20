@@ -1,5 +1,5 @@
 
-var pcApp = angular.module('pcApp', ['ngRoute', 'pcApp.service']);
+var pcApp = angular.module('pcApp', ['ngRoute', 'pcApp.controllers.metric']);
 
 pcApp.config(function($routeProvider) {
 	$routeProvider

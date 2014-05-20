@@ -1,11 +1,30 @@
+/**
+ * Policy Compass Portal Development Server
+ * v0.1 
+ * 
+ * Author: Fabian Kirstein 2014
+ * 
+ * This is a small Node.js web server for development.
+ * It includes a Proxy functionality to proxy the external services. This
+ * is necessary due to the Same-Origin-Policy. 
+ * 
+ * Configuration: Put the domains of the services in the development.json
+ * Start: node server.js [port]  
+ * 
+ * Default port is 8000
+ * 
+ */
 var http = require("http"),
 	url = require("url"),
 	path = require("path"),
 	fs = require("fs"),
 	httpProxy = require('http-proxy'),
+	nconf = require('nconf'),
 	port = process.argv[2] || 8000;
 
-var apiServerUrl = 'http://xubuntu:8000';
+nconf.file('development.json');
+
+var dataManagerUrl = nconf.get('DATAMANAGER_URL');
 
 var proxy = httpProxy.createServer();
 
@@ -17,9 +36,12 @@ http.createServer(function(request, response) {
 	
 	console.log('[%s] "%s %s" "%s"', (new Date).toUTCString(), request.method, request.url, request.headers['user-agent']);
 	
-	if (/^\/api/.exec(request.url)) {
+	
+	//Proxy all requests for the metrics service to the Data Manager
+	// /api/v*/metrics
+	if (/^\/api\/v[0-9]+\/metrics/.exec(request.url)) {
 	    proxy.web(request, response, {
-	      target: apiServerUrl
+	      target: dataManagerUrl
 	    });
 	} else {
 		

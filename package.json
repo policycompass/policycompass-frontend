@@ -9,7 +9,8 @@
   "author": "Fabian Kirstein",
   "devDependencies": {
 	 "http-server": "",
-	 "http-proxy": ""
+	 "http-proxy": "",
+	 "nconf": ""
   },
   "scripts": {
 	 "start": "http-server -p 8000"
