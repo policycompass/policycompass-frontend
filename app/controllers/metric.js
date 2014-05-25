@@ -45,3 +45,7 @@ controller.controller('MetricCreateController', ['$scope', 'Metric', '$location'
 		);
 	};
 }]);
+
+controller.controller('HelloController', function() {
+	this.message = "Hello";
+});
