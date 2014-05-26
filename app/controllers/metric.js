@@ -1,7 +1,6 @@
 var controller = angular.module('pcApp.controllers.metric', ['ngResource', 'pcApp.services.metric']);
 
 controller.controller('MetricsController', ['$scope', 'SimpleFactory', 'Metric', '$log', function($scope, SimpleFactory, Metric, $log) {
-		
 	$log.info("hallo");
 	$scope.metrics = Metric.query(
 			null,
@@ -21,6 +20,7 @@ controller.controller('MetricsController', ['$scope', 'SimpleFactory', 'Metric',
 
 
 controller.controller('MetricDetailController', ['$scope', '$routeParams', 'Metric', function($scope, $routeParams, Metric) {
+	this.message = "Hello";
 	
 	$scope.metric = Metric.get({id: $routeParams.metricId},
 			function(metricList) {
@@ -45,7 +45,3 @@ controller.controller('MetricCreateController', ['$scope', 'Metric', '$location'
 		);
 	};
 }]);
-
-controller.controller('HelloController', function() {
-	this.message = "Hello";
-});

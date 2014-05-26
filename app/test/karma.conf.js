@@ -9,6 +9,7 @@ module.exports = function(config){
       'assets/angular-resource/angular-resource.js',
       'assets/angular-mocks/angular-mocks.js',
       'app/**/*.js',
+      'app/*.js',
       'app/test/unit/**/*.js'
     ],
     
@@ -18,7 +19,7 @@ module.exports = function(config){
     plugins : [
                'karma-chrome-launcher',
                'karma-jasmine'
-               ],
-    
+               ]
+   
   });
 };

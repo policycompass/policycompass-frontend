@@ -1,16 +1,25 @@
+'use strict';
+
 describe('Metrics Controller Spec', function() {
-	
-	var helloCtrl;
-	
-	beforeEach(module("pcApp.controllers.metric"));
-	beforeEach(inject(function($controller) {
-		helloCtrl = $controller("HelssloController");
-	}));
-	
-	describe("HelloController", function() {
-		if("should hava a message of hello", function() {
-			expect(helloCtrl.message).toBe("Hello");
-		});
-	});
-	
+
+    beforeEach(module('ngRoute'));
+	beforeEach(module('pcApp.controllers.metric'));
+
+    describe('MetricDetailController', function(){
+        var scope, metDetCtrl;
+
+        beforeEach(inject(function($rootScope, $routeParams, $controller){
+            $routeParams.metricId = 1;
+            scope = $rootScope.$new();
+            metDetCtrl = $controller('MetricDetailController',{
+                $scope: scope
+            });
+        }));
+
+        it('should have a message',function(){
+            expect(metDetCtrl.message).toBe("Hello");
+        });
+
+    } );
+
 });
