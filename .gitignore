@@ -2,3 +2,4 @@ node_modules/
 assets/
 development.json
 .idea
+npm-debug.log
