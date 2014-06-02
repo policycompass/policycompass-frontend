@@ -35,6 +35,7 @@ controller.controller('MetricDetailController', ['$scope', '$routeParams', 'Metr
 
 controller.controller('MetricCreateController', ['$scope', 'Metric', '$location', function($scope, Metric, $location) {
 	$scope.createMetric = function() {
+        $scope.metric.unit = 1
 		Metric.save($scope.metric,function(){
 			$location.path('/metrics');
 		},
