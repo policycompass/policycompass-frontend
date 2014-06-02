@@ -12,8 +12,12 @@ controller.controller('MetricsController', ['$scope', 'SimpleFactory', 'Metric',
 	);
 	
 	$scope.deleteMetric = function(metric) {
-		metric.$delete();
-		$scope.metrics = Metric.query();
+		metric.$delete(
+            {},
+            function(){
+                $scope.metrics = Metric.query();
+            }
+        );
 	};
 	
 }]);
