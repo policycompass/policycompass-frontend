@@ -23,6 +23,9 @@ pcApp.config(function($routeProvider) {
 			controller: 'MetricDetailController',
 			templateUrl: 'partials/metrics/detail.html'
 		})
+        .when('/imprint', {
+            templateUrl: 'partials/imprint.html'
+        })
 		.otherwise({ redirectTo: '/' });
 });
 
