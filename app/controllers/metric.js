@@ -38,15 +38,20 @@ controller.controller('MetricDetailController', ['$scope', '$routeParams', 'Metr
 }]);
 
 controller.controller('MetricCreateController', ['$scope', 'Metric', '$location', function($scope, Metric, $location) {
+    $scope.metric = {};
+    $scope.tab = {};
+    $scope.tab.active = "grid";
+
 	$scope.createMetric = function() {
+        $scope.stage = "second";
         $scope.metric.unit = 1
-		Metric.save($scope.metric,function(){
-			$location.path('/metrics');
-		},
-		function(err) {
-			$scope.errors = err.data;
-		}
-		
-		);
+//		Metric.save($scope.metric,function(){
+//			$location.path('/metrics');
+//		},
+//		function(err) {
+//			$scope.errors = err.data;
+//		}
+//
+//		);
 	};
 }]);

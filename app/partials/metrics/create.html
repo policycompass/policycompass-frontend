@@ -1,28 +1,91 @@
-<h1>Create a New Metric</h1>
-<br />
+<h1><span class="glyphicon glyphicon-pencil"></span> Create a New Metric</h1>
+
 <p ng-repeat="(name, errs) in errors" class="alert alert-danger"><strong>{{ name }}</strong>: {{ errs.join(', ') }}</p>
-<form role="form" class="form-horizontal">
-  <div class="form-group">
-    <label for="title" class="col-sm-2 control-label">Title</label>
-    <div class="col-sm-5" ng-class="{'has-error': errors.title}">
-      <input type="text" class="form-control" id="title" placeholder="Title" ng-model="metric.title">
+
+<div class="row">
+    <div class="col-md-4">
+        <form role="form" >
+
+            <div class="form-group" ng-class="{'has-error': errors.title}">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" id="title" placeholder="Metric Title" ng-model="metric.title" required>
+            </div>
+
+            <div class="form-group" ng-class="{'has-error': errors.acronym}">
+                <label for="acronym">Acronym</label>
+                <input type="text" class="form-control" id="acronym" placeholder="Acronym" ng-model="metric.acronym">
+            </div>
+
+            <div class="form-group" ng-class="{'has-error': errors.policyDomain}">
+                <label for="policyDomain">Policy Domain</label>
+                <select multiple class="form-control" id="policyDomain" ng-model="metric.policyDomain" required>
+                    <option>Health</option>
+                    <option>Education</option>
+                    <option>Justice</option>
+                    <option>Transportation</option>
+                    <option>Occupation</option>
+                </select>
+            </div>
+
+            <div class="form-group" ng-class="{'has-error': errors.keywords}">
+                <label for="keywords">Keywords</label>
+                <input type="text" class="form-control" id="keywords" placeholder="Keywords" ng-model="metric.keywords">
+            </div>
+
+            <div class="form-group" ng-class="{'has-error': errors.datasource}">
+                <label for="datasource">Datasource</label>
+                <input type="text" class="form-control" id="datasource" placeholder="Datasource" ng-model="metric.datasource" required>
+            </div>
+
+            <div class="form-group" ng-class="{'has-error': errors.datasourceUrl}">
+                <label for="datasourceUrl">Link to Data Source</label>
+                <input type="url" class="form-control" id="datasourceUrl" placeholder="http://www.datasource.example" ng-model="metric.datasourceUrl" required>
+            </div>
+
+            <div class="form-group" ng-class="{'has-error': errors.retrievalDate}">
+                <label for="retrievalDate">Date of Retrieval</label>
+                <input type="text" class="form-control" id="retrievalDate" placeholder="YYYY-MM-DD" ng-model="metric.retrievalDate" required>
+            </div>
+
+            <div class="form-group pc-button-spacer">
+                <button type="submit" class="btn btn-default" ng-click="createMetric()">Next <span class="glyphicon glyphicon-chevron-right"></span></button>
+            </div>
+
+        </form>
     </div>
-  </div>
-  <div class="form-group">
-    <label for="description" class="col-sm-2 control-label">Description</label>
-    <div class="col-sm-5" ng-class="{'has-error': errors.description}">
-    	<textarea class="form-control" rows="3" id="descriptio" ng-model="metric.description"></textarea>
+    <div class="col-md-8">
+        <div ng-switch="stage">
+
+            <div ng-switch-default>
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs">
+                    <li ng-class="{active: tab.active == 'grid'}"><a ng-click="tab.active = 'grid'">Data Grid</a></li>
+                    <li ng-class="{active: tab.active == 'file'}"><a ng-click="tab.active = 'file'">From File</a></li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div ng-switch="tab.active">
+                        <div ng-switch-when="grid" class="tab-pane active" id="home">Home</div>
+                        <div ng-switch-when="file" class="tab-pane active" id="profile">Profile</div>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-switch-when="second">
+                Hallo Welt
+            </div>
+
+        </div>
+
     </div>
-  </div>
-  <div class="form-group">
-    <label for="issued" class="col-sm-2 control-label">Issued</label>
-    <div class="col-sm-5" ng-class="{'has-error': errors.issued}">
-      <input type="datetime" class="form-control" id="issued" placeholder="Issued" ng-model="metric.issued">
-    </div>
-  </div>
-  <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-      <button type="submit" class="btn btn-primary" ng-click="createMetric()">Create</button>
-    </div>
-  </div>
-</form>
+
+</div>
+
+
+<div class="row well" ng-show="metric">
+<ul>
+    <li>Date: {{ metric.issued }}</li>
+</ul>
+
+</div>
