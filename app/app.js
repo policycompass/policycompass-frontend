@@ -1,5 +1,5 @@
 
-var pcApp = angular.module('pcApp', ['ngRoute', 'pcApp.controllers.metric']);
+var pcApp = angular.module('pcApp', ['ngRoute', 'ui.bootstrap', 'pcApp.controllers.metric']);
 
 pcApp.config(function($routeProvider) {
 	$routeProvider
@@ -29,4 +29,13 @@ pcApp.config(function($routeProvider) {
 		.otherwise({ redirectTo: '/' });
 });
 
-
+/**
+ * Very simple central error handling
+ */
+pcApp.factory('$exceptionHandler', ['$injector', '$log', function ($injector, $log) {
+    return function (exception, cause) {
+        var $rootScope = $injector.get("$rootScope");
+        $rootScope.error = exception.message;
+        $log.error(exception.message);
+    };
+}]);
