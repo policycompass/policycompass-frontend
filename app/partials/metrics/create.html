@@ -65,7 +65,7 @@
             </div>
 
             <div class="form-group pc-button-spacer">
-                <button type="submit" ng-disabled="metricForm.$invalid" class="btn btn-default" ng-click="createMetric()">Next <span class="glyphicon glyphicon-chevron-right"></span></button>
+                <button type="submit" ng-disabled="metricForm.$invalid" class="btn btn-default" ng-click="createMetric()">Save <span class="glyphicon glyphicon-chevron-right"></span></button>
             </div>
 
         </form>
@@ -74,19 +74,10 @@
         <div ng-switch="stage">
 
             <div ng-switch-default>
-                <!-- Nav tabs -->
-                <ul class="nav nav-tabs">
-                    <li ng-class="{active: tab.active == 'grid'}"><a ng-click="tab.active = 'grid'">Data Grid</a></li>
-                    <li ng-class="{active: tab.active == 'file'}"><a ng-click="tab.active = 'file'">From File</a></li>
-                </ul>
-
-                <!-- Tab panes -->
-                <div class="tab-content">
-                    <div ng-switch="tab.active">
-                        <div ng-switch-when="grid" class="tab-pane active" id="home">Home</div>
-                        <div ng-switch-when="file" class="tab-pane active" id="profile">Profile</div>
-                    </div>
-                </div>
+                <tabset>
+                    <tab heading="Data Grid">Static content</tab>
+                    <tab heading="From File">Static content</tab>
+                </tabset>
             </div>
 
             <div ng-switch-when="second">

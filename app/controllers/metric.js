@@ -39,11 +39,7 @@ controller.controller('MetricDetailController', ['$scope', '$routeParams', 'Metr
 
 controller.controller('MetricCreateController', ['$scope', 'Metric', '$location', '$log', function($scope, Metric, $location, $log) {
 
-    // Date Stuff
     $scope.metric = {};
-    $scope.tab = {};
-    $scope.tab.active = "grid";
-    $scope.flash = "hallo welt";
 
 	$scope.createMetric = function() {
         $scope.stage = "second";
