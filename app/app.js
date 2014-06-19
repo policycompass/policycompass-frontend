@@ -4,12 +4,8 @@ var pcApp = angular.module('pcApp', ['ngRoute', 'ui.bootstrap', 'pcApp.controlle
 pcApp.config(function($routeProvider) {
 	$routeProvider
 		.when('/', { 
-			controller: 'CommonController', 
-			templateUrl: 'partials/view1.html'
-			})
-		.when('/view2', {
-			controller: 'CommonController',
-			templateUrl: 'partials/view2.html'
+			controller: 'StaticController',
+			templateUrl: 'partials/main.html'
 			})
 		.when('/metrics', {
 			controller: 'MetricsController',

@@ -1,21 +1,16 @@
 
-pcApp.controller('CommonController', function($scope, SimpleFactory) {
-	$scope.customers = [];
+pcApp.controller('CommonController', ['$scope', '$location', function($scope, $location) {
+    $scope.isActive = function (viewLocation) {
+        return viewLocation === $location.path();
+    };
+}]);
 
-	init();
-	
-	function init() {
-		$scope.customers = SimpleFactory.getCustomers();
-	}
-	$scope.addCustomer = function() {
-		$scope.customers.push({
-			name: $scope.newCustomer.name, 
-			city: $scope.newCustomer.city
-			});
-	};
-});
+pcApp.controller('StaticController', ['$scope', function($scope) {
 
-pcApp.controller('DateController', function ($scope) {
+
+}]);
+
+pcApp.controller('DateController',  ['$scope', function ($scope) {
 
     $scope.maxDate = new Date();
     $scope.minDate = new Date('1900-01-01');
@@ -31,4 +26,4 @@ pcApp.controller('DateController', function ($scope) {
         $scope.opened = true;
     };
 
-});
+}]);

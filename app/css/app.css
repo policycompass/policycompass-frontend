@@ -1,5 +1,5 @@
 body { 
-	padding-top: 70px; 
+
 }
 
 .pc-button-spacer {
@@ -8,4 +8,69 @@ body {
 
 .nav-tabs > li > a {
     cursor: pointer;
+}
+
+/* Policy Compass Style  */
+
+
+/* Pc*/
+@media only screen and (min-device-width: 1126px){
+    a{
+        color:#000;
+    }
+    .navbar-nav{
+        float:none;
+        margin: 0 auto;
+        display: table;
+        table-layout: fixed;
+    }
+    .small-nav{
+        font-weight: 300;
+        text-transform: uppercase;
+        font-size: 0.8em;
+        padding-top: 10PX;
+    }
+    .logo-wrapper {
+        margin: 10px 0;
+    }
+
+    .sign-in-wrapper {
+        margin: 25px 0;
+    }
+    .navbar-ex1-collapse {
+        padding-left: 0 !important ;
+    }
+    .navbar {
+        height: 20px;
+    }
+    .breadcrumb {
+        background-color: #FFF !important;
+    }
+    .border-top{
+        background:url(../img/border-top.png) no-repeat center ;
+        height:15px;
+    }
+    .border-bottom{
+        background:url(../img/border-bottom.png) no-repeat center ;
+        height:15px;
+    }
+    .footer-wrapper{
+        margin-top:20px;
+        margin-bottom:20px;
+    }
+
+    #main-view {
+        padding-top: 30px;
+        padding-bottom: 30px;
+    }
+}
+/* ipad landscape*/
+@media only screen and (min-device-width: 768px) and (max-device-width: 1125px)and (orientation : landscape)and (-webkit-min-device-pixel-ratio: 1)  {
+
+}
+/* ipad portrait*/
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation : portrait) and (-webkit-min-device-pixel-ratio: 1){
+}
+/* iPhone*/
+@media only screen and (max-width: 400px){
 }

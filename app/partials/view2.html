@@ -1,9 +1,0 @@
-
-<h2>View 2</h2>
-City:
-<br />
-<input type="text" ng-model="city" />
-<br />
-<ul>
-	<li ng-repeat="cust in customers | filter:city | orderBy:'city'">{{ cust.name | uppercase }} - {{ cust.city }}</li>
-</ul>
