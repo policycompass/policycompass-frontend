@@ -1,6 +1,14 @@
 
 var pcApp = angular.module('pcApp', ['ngRoute', 'ui.bootstrap', 'pcApp.controllers.metric']);
 
+/**
+ * Setting the Token always to 1
+ * Just for development!
+ */
+pcApp.run(function($http) {
+    $http.defaults.headers.common.Authorization = 'Token 1'
+});
+
 pcApp.config(function($routeProvider) {
 	$routeProvider
 		.when('/', { 
