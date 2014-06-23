@@ -1,4 +1,4 @@
-var controller = angular.module('pcApp.controllers.metric', ['ngResource', 'pcApp.services.metric']);
+var controller = angular.module('pcApp.controllers.metric', ['ngResource', 'pcApp.services.metric', 'pcApp.directives.metric']);
 
 controller.controller('MetricsController', ['$scope', 'SimpleFactory', 'Metric', '$log', function($scope, SimpleFactory, Metric, $log) {
 	$log.info("hallo");
@@ -39,11 +39,16 @@ controller.controller('MetricDetailController', ['$scope', '$routeParams', 'Metr
 
 controller.controller('MetricCreateController', ['$scope', 'Metric', '$location', '$log', function($scope, Metric, $location, $log) {
 
+    $scope.datagrid = [
+        ["1","2","3"],
+        ["A","B","C"]
+    ];
+
     $scope.metric = {};
 
 	$scope.createMetric = function() {
         $scope.stage = "second";
-        $scope.metric.unit = 1
+        $scope.metric.unit = 1;
 		Metric.save($scope.metric,function(){
 			$location.path('/metrics');
 		},
