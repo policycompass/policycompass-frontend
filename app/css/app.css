@@ -2,6 +2,10 @@ body {
 
 }
 
+.pc-tile {
+    height: 180px;
+}
+
 .pc-button-spacer {
     margin-top: 50px;
 }

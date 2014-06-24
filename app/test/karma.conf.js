@@ -4,15 +4,15 @@ module.exports = function(config){
     basePath : '../../',
 
     files : [
-      'assets/angular/angular.js',
-      'assets/angular-route/angular-route.js',
-      'assets/angular-resource/angular-resource.js',
-      'assets/angular-mocks/angular-mocks.js',
-      'app/**/*.js',
+      'app/assets/angular/angular.js',
+      'app/assets/angular-route/angular-route.js',
+      'app/assets/angular-resource/angular-resource.js',
+      'app/assets/angular-mocks/angular-mocks.js',
       'app/*.js',
+      'app/!(assets)/*.js',
       'app/test/unit/**/*.js'
     ],
-    
+
     frameworks: ['jasmine'],
     browsers : ['Chrome'],
     

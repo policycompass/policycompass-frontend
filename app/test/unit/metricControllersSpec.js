@@ -17,7 +17,7 @@ describe('Metrics Controller Spec', function() {
         }));
 
         it('should have a message',function(){
-            expect(metDetCtrl.message).toBe("Hello");
+            expect(scope.metric).toHaveBeenCalled;
         });
 
     } );

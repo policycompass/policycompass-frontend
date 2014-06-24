@@ -1,12 +1,20 @@
+<h1><span class="glyphicon glyphicon-search"></span> Browse Metrics</h1>
+<br />
+<div class="container">
+<div class="row">
 
-<div ng-show="metrics" ng-repeat="metric in metrics" class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">{{ metric.title }} ({{ metric.issued | date:'longDate' }})</h3>
-  </div>
-  <div class="panel-body">
-    {{ metric.description }}
-    <br /><br />
-    <a href="#/metrics/{{ metric.id }}" type="button" class="btn btn-primary">Details</a>
-    <button type="button" class="btn btn-danger" ng-click="deleteMetric(metric)">Delete</button>
-  </div>
+    <div class="col-lg-3 pc-tile" ng-show="metrics" ng-repeat="metric in metrics" >
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">{{ metric.title | limitTo: 25}}</h3>
+          </div>
+          <div class="panel-body">
+            {{ metric.issued | date:'longDate' }}
+            <br /><br />
+            <a href="#/metrics/{{ metric.id }}" type="button" class="btn btn-primary">Details</a>
+          </div>
+        </div>
+    </div>
+
+</div>
 </div>

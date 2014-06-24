@@ -1,7 +1,31 @@
-<h1>{{ metric.title }}</h1>
-
+<h1><span class="glyphicon glyphicon-list-alt"></span> {{ metric.title }}</h1>
+<br />
 <div class="panel panel-default">
   <div class="panel-body">
-    {{ metric.description }}
+      <table class="table table-hover">
+          <tr ng-show="metric.issued">
+              <td><b>Issued:</b></td>
+              <td>{{ metric.issued | date:'longDate' }}</td>
+          </tr>
+          <tr ng-show="metric.description">
+              <td><b>Description:</b></td>
+              <td>{{ metric.description }}</td>
+          </tr>
+          <tr ng-show="metric.acronym">
+              <td><b>Acronym:</b></td>
+              <td>{{ metric.acronym }}</td>
+          </tr>
+          <tr ng-show="metric.keywords">
+              <td><b>Keywords:</b></td>
+              <td>{{ metric.keywords }}</td>
+          </tr>
+          <tr ng-show="metric.unit">
+              <td><b>Unit:</b></td>
+              <td>{{ metric.unit.description }}</td>
+          </tr>
+      </table>
+      <div>
+          <button type="button" class="btn btn-danger" ng-click="deleteMetric(metric)">Delete</button>
+      </div>
   </div>
 </div>

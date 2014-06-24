@@ -10,22 +10,14 @@ controller.controller('MetricsController', ['$scope', 'SimpleFactory', 'Metric',
 				alert(error.data.message);
 			}
 	);
-	
-	$scope.deleteMetric = function(metric) {
-		metric.$delete(
-            {},
-            function(){
-                $scope.metrics = Metric.query();
-            }
-        );
-	};
-	
+
 }]);
 
 
-controller.controller('MetricDetailController', ['$scope', '$routeParams', 'Metric', function($scope, $routeParams, Metric) {
+controller.controller('MetricDetailController', ['$scope', '$routeParams', '$location', 'Metric', function($scope, $routeParams, $location, Metric) {
 	this.message = "Hello";
-	
+
+    $scope.test = "hallo";
 	$scope.metric = Metric.get({id: $routeParams.metricId},
 			function(metricList) {
 			},
@@ -33,6 +25,15 @@ controller.controller('MetricDetailController', ['$scope', '$routeParams', 'Metr
 				alert(error.data.message);
 			}
 	);
+
+    $scope.deleteMetric = function(metric) {
+        metric.$delete(
+            {},
+            function(){
+                $location.path('/metrics');
+            }
+        );
+    };
 	 	
 	
 }]);
