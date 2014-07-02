@@ -1,5 +1,5 @@
 node_modules/
-assets/
+bower_components
 development.json
 .idea
 npm-debug.log

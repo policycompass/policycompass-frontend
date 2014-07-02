@@ -15,6 +15,6 @@
   },
   "scripts": {
 	 "start": "node server.js",
-	 "test": "karma start app/test/karma.conf.js --single-run"
+	 "test": "karma start test/karma.conf.js --single-run"
   }
 }

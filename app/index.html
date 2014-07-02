@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html ng-app="pcApp" ng-controller="CommonController">
+<html ng-app="pcApp" ng-controller="CommonController" >
 <head>
     <title>Policy Compass</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!--  Vendor Styles -->
-    <link href="assets/bootstrap/dist/css/bootstrap.css" rel="stylesheet" media="screen" />
-    <link href="assets/handsontable/dist/jquery.handsontable.css" rel="stylesheet" media="screen" />
+    <link href="../bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet" media="screen" />
+    <link href="../bower_components/handsontable/dist/jquery.handsontable.css" rel="stylesheet" media="screen" />
     <!--  App Styles -->
     <link href="css/app.css" rel="stylesheet" media="screen" />
 
@@ -106,22 +106,25 @@
 
 
 <!--  Vendor Libs -->
-<script type="text/javascript" src="assets/angular/angular.js"></script>
-<script type="text/javascript" src="assets/angular-route/angular-route.js"></script>
-<script type="text/javascript" src="assets/angular-resource/angular-resource.js"></script>
-<script type="text/javascript" src="assets/angular-animate/angular-animate.js"></script>
-<script type="text/javascript" src="assets/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-<script type="text/javascript" src="assets/jquery/dist/jquery.min.js"></script>
-<script type="text/javascript" src="assets/handsontable/dist/jquery.handsontable.full.js"></script>
+<script type="text/javascript" src="../bower_components/angular/angular.js"></script>
+<script type="text/javascript" src="../bower_components/angular-route/angular-route.js"></script>
+<script type="text/javascript" src="../bower_components/angular-resource/angular-resource.js"></script>
+<script type="text/javascript" src="../bower_components/angular-animate/angular-animate.js"></script>
+<script type="text/javascript" src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="../bower_components/handsontable/dist/jquery.handsontable.full.js"></script>
 
 <!--  App Libs -->
 <script type="text/javascript" src="config.js"></script>
 <script type="text/javascript" src="app.js"></script>
-<script type="text/javascript" src="controllers/common.js"></script>
-<script type="text/javascript" src="controllers/metric.js"></script>
-<script type="text/javascript" src="factories/factories.js"></script>
-<script type="text/javascript" src="services/metric.js"></script>
-<script type="text/javascript" src="directives/metric.js"></script>
+
+<script type="text/javascript" src="modules/common/common.js"></script>
+<script type="text/javascript" src="modules/common/controllers/common.js"></script>
+
+<script type="text/javascript" src="modules/metrics/metrics.js"></script>
+<script type="text/javascript" src="modules/metrics/controllers/generalControllers.js"></script>
+<script type="text/javascript" src="modules/metrics/services/metricService.js"></script>
+<script type="text/javascript" src="modules/metrics/directives/pcDatagrid.js"></script>
 
 </body>
 </html>

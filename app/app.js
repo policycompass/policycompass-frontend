@@ -1,5 +1,10 @@
 
-var pcApp = angular.module('pcApp', ['ngRoute', 'ui.bootstrap', 'pcApp.controllers.metric']);
+var pcApp = angular.module('pcApp', [
+    'ngRoute',
+    'ui.bootstrap',
+    'pcApp.metrics',
+    'pcApp.common'
+]);
 
 /**
  * Setting the Token always to 1
@@ -7,30 +12,6 @@ var pcApp = angular.module('pcApp', ['ngRoute', 'ui.bootstrap', 'pcApp.controlle
  */
 pcApp.run(function($http) {
     $http.defaults.headers.common.Authorization = 'Token 1'
-});
-
-pcApp.config(function($routeProvider) {
-	$routeProvider
-		.when('/', { 
-			controller: 'StaticController',
-			templateUrl: 'partials/main.html'
-			})
-		.when('/metrics', {
-			controller: 'MetricsController',
-			templateUrl: 'partials/metrics/list.html'
-		})
-		.when('/metrics/create', {
-			controller: 'MetricCreateController',
-			templateUrl: 'partials/metrics/create.html'
-		})
-		.when('/metrics/:metricId', {
-			controller: 'MetricDetailController',
-			templateUrl: 'partials/metrics/detail.html'
-		})
-        .when('/imprint', {
-            templateUrl: 'partials/imprint.html'
-        })
-		.otherwise({ redirectTo: '/' });
 });
 
 /**

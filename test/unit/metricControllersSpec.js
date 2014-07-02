@@ -3,7 +3,7 @@
 describe('Metrics Controller Spec', function() {
 
     beforeEach(module('ngRoute'));
-	beforeEach(module('pcApp.controllers.metric'));
+	beforeEach(module('pcApp.metrics'));
 
     describe('MetricDetailController', function(){
         var scope, metDetCtrl;
