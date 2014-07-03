@@ -1,6 +1,6 @@
-var module = angular.module('pcApp.metrics');
+var metrics = angular.module('pcApp.metrics');
 
-module.controller('MetricsController', ['$scope', 'Metric', '$log', function($scope, Metric, $log) {
+metrics.controller('MetricsController', ['$scope', 'Metric', '$log', function($scope, Metric, $log) {
 	$log.info("hallo");
 	$scope.metrics = Metric.query(
 			null,
@@ -14,7 +14,7 @@ module.controller('MetricsController', ['$scope', 'Metric', '$log', function($sc
 }]);
 
 
-module.controller('MetricDetailController', ['$scope', '$routeParams', '$location', 'Metric', function($scope, $routeParams, $location, Metric) {
+metrics.controller('MetricDetailController', ['$scope', '$routeParams', '$location', 'Metric', function($scope, $routeParams, $location, Metric) {
 	this.message = "Hello";
 
     $scope.test = "hallo";
@@ -38,7 +38,7 @@ module.controller('MetricDetailController', ['$scope', '$routeParams', '$locatio
 	
 }]);
 
-module.controller('MetricCreateController', ['$scope', 'Metric', '$location', '$log', function($scope, Metric, $location, $log) {
+metrics.controller('MetricCreateController', ['$scope', 'Metric', '$location', '$log', function($scope, Metric, $location, $log) {
 
     $scope.datagrid = [
         ["1","2","3"],

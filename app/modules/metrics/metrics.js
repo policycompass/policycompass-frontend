@@ -1,9 +1,9 @@
-var module = angular.module('pcApp.metrics', [
+var metrics = angular.module('pcApp.metrics', [
     'ngResource',
     'pcApp.config'
 ]);
 
-module.config(function($routeProvider) {
+metrics.config(function($routeProvider) {
     $routeProvider
         .when('/metrics', {
             controller: 'MetricsController',
