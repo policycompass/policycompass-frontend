@@ -18,6 +18,7 @@ bower install
 ```
 npm start
 ```
+* By default the App is running on http://localhost:8000/app/
 * Running Tests:
 ```
 npm test
