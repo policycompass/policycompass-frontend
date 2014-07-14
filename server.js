@@ -24,7 +24,7 @@ var http = require("http"),
 
 nconf.file('development.json');
 
-var dataManagerUrl = nconf.get('DATAMANAGER_URL');
+var pcServicesUrl = nconf.get('PC_SERVICES_URL');
 
 var proxy = httpProxy.createServer();
 
@@ -39,9 +39,9 @@ http.createServer(function(request, response) {
 	
 	//Proxy all requests for the metrics service to the Data Manager
 	// /api/v*/metrics
-	if (/^\/api\/v[0-9]+\/metrics/.exec(request.url)) {
+	if (/^\/api\/v[0-9]+\/metricsmanager/.exec(request.url)) {
 	    proxy.web(request, response, {
-	      target: dataManagerUrl
+	      target: pcServicesUrl
 	    });
 	} else {
 		

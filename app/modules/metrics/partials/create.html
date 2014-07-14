@@ -1,18 +1,17 @@
 <h1><span class="glyphicon glyphicon-pencil"></span> Create a New Metric</h1>
 
+<form name="metricForm" role="form" novalidate>
 <div class="row">
     <div class="col-md-4">
-
-        <form name="metricForm" role="form" novalidate>
 
             <div class="form-group" ng-class="{'has-error': metricForm.title.$dirty && metricForm.title.$invalid}">
                 <label for="title">Title</label>
                 <input type="text" class="form-control" id="title" name="title" placeholder="Metric Title" ng-model="metric.title" ng-minlength="3" required>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" ng-class="{'has-error': metricForm.acronym.$dirty && metricForm.acronym.$invalid}">
                 <label for="acronym">Acronym</label>
-                <input type="text" class="form-control" id="acronym" placeholder="Acronym" ng-model="metric.acronym">
+                <input type="text" class="form-control" id="acronym" placeholder="Acronym" ng-model="metric.acronym" required>
             </div>
 
             <div class="form-group" ng-class="{'has-error': metricForm.policyDomain.$dirty && metricForm.policyDomain.$invalid}">
@@ -26,19 +25,19 @@
                 </select>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" ng-class="{'has-error': metricForm.keywords.$dirty && metricForm.keywords.$invalid}">
                 <label for="keywords">Keywords</label>
-                <input type="text" class="form-control" id="keywords" placeholder="Keywords" ng-model="metric.keywords">
+                <input type="text" class="form-control" id="keywords" placeholder="Keywords" ng-model="metric.keywords" required>
             </div>
 
-            <div class="form-group" ng-class="{'has-error': metricForm.datasource.$dirty && metricForm.datasource.$invalid}">
-                <label for="datasource">Datasource</label>
-                <input type="text" class="form-control" id="datasource" name="datasource" placeholder="Datasource" ng-model="metric.datasource" required>
+            <div class="form-group">
+                <label for="publisher">Publisher</label>
+                <input type="text" class="form-control" id="publisher" name="publisher" placeholder="Publisher" ng-model="metric.publisher">
             </div>
 
-            <div class="form-group" ng-class="{'has-error': metricForm.datasourceUrl.$dirty && metricForm.datasourceUrl.$invalid}">
-                <label for="datasourceUrl">Link to Data Source</label>
-                <input type="url" class="form-control" id="datasourceUrl" name="datasourceUrl" placeholder="http://www.datasource.example" ng-model="metric.datasourceUrl" required>
+            <div class="form-group" ng-class="{'has-error': metricForm.resourceUrl.$dirty && metricForm.resourceUrl.$invalid}">
+                <label for="resourceUrl">Resource Url</label>
+                <input type="url" class="form-control" id="resourceUrl" name="resourceUrl" placeholder="http://www.datasource.example" ng-model="metric.resource_url">
             </div>
 
             <div class="form-group" ng-controller="DateController">
@@ -49,13 +48,13 @@
                            name="retrievalDate"
                            class="form-control"
                            datepicker-popup="{{ format }}"
-                           ng-model="metric.issued"
+                           ng-model="metric.resource_issued"
                            is-open="opened"
                            min-date="minDate"
                            max-date="maxDate"
                            datepicker-options="dateOptions"
                            show-button-bar="false"
-                           ng-required="true"
+                           ng-required="false"
                            ng-disabled="true"
                            close-text="Close" />
                     <span class="input-group-btn">
@@ -68,7 +67,6 @@
                 <button type="submit" ng-disabled="metricForm.$invalid" class="btn btn-default" ng-click="createMetric()">Save <span class="glyphicon glyphicon-chevron-right"></span></button>
             </div>
 
-        </form>
     </div>
     <div class="col-md-8">
         <div ng-switch="stage">
@@ -77,6 +75,40 @@
                 <tabset>
                     <tab heading="Data Grid">
                         <pc-datagrid data="datagrid"></pc-datagrid>
+                        <br />
+                        <div class="form-group" ng-class="{'has-error': metricForm.from.$dirty && metricForm.from.$invalid}">
+                            <label for="from">From</label>
+                            <select class="form-control" ng-model="columns.from" id="from" required>
+                                <option value="0">A</option>
+                                <option value="1">B</option>
+                                <option value="2">C</option>
+                                <option value="3">D</option>
+                                <option value="4">E</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" ng-class="{'has-error': metricForm.to.$dirty && metricForm.to.$invalid}">
+                            <label for="to">To</label>
+                            <select class="form-control" ng-model="columns.to" id="to" required>
+                                <option value="0">A</option>
+                                <option value="1">B</option>
+                                <option value="2">C</option>
+                                <option value="3">D</option>
+                                <option value="4">E</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" ng-class="{'has-error': metricForm.tablevalue.$dirty && metricForm.tablevalue.$invalid}">
+                            <label for="tablevalue">Value</label>
+                            <select class="form-control" ng-model="columns.value" id="tablevalue" required>
+                                <option value="0">A</option>
+                                <option value="1">B</option>
+                                <option value="2">C</option>
+                                <option value="3">D</option>
+                                <option value="4">E</option>
+                            </select>
+                        </div>
+
                     </tab>
                     <tab heading="From File">Static content</tab>
                 </tabset>
@@ -91,3 +123,5 @@
     </div>
 
 </div>
+
+</form>

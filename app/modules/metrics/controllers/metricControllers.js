@@ -35,22 +35,46 @@ angular.module('pcApp.metrics.controllers.metric', [
             }
         );
     };
-	 	
-	
+
 }])
 
 .controller('MetricCreateController', ['$scope', 'Metric', '$location', '$log', function($scope, Metric, $location, $log) {
 
     $scope.datagrid = [
-        ["1","2","3"],
-        ["A","B","C"]
+        []
     ];
 
     $scope.metric = {};
+    $scope.columns = {};
+
 
 	$scope.createMetric = function() {
-        $scope.stage = "second";
+        $log.info( $scope.datagrid[0]);
+        //$scope.stage = "second";
+
         $scope.metric.unit = 1;
+        $scope.metric.language = 1;
+        $scope.metric.user_id = 1;
+
+        $scope.metric.description = "Description";
+
+        var data = [];
+        $scope.datagrid.forEach(function(e){
+            if(e[0] != null){
+                data.push({
+                    from: e[$scope.columns.from],
+                    to: e[$scope.columns.to],
+                    value: e[$scope.columns.value]
+                });
+            }
+        });
+
+        $scope.metric.data = {
+            table: data,
+            extra_columns: [
+            ]
+        };
+
 		Metric.save($scope.metric,function(){
 			$location.path('/metrics');
 		},

@@ -1,4 +1,4 @@
-# Policy Compass Portal
+# Policy Compass Frontend
 
 ## Installation
 
@@ -13,7 +13,7 @@ npm install
 ```
 bower install
 ```
-* Copy the development.sample.json to development.json and configure the development.jso with your service domains
+* Copy the development.sample.json to development.json and configure the development.jsom with your service domains
 * Start App
 ```
 npm start

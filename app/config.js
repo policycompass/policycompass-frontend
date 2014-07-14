@@ -3,8 +3,9 @@
  * This module sets all configuration
  * 
  */
-var pcConfig = angular.module('pcApp.config',[]);
+angular.module('pcApp.config',[])
 
-pcConfig.constant('API_CONF', {
-	'URL': '/api/v1'
+.constant('API_CONF', {
+	'URL': '/api/v1',
+    'METRICS_MANAGER_URL': '/api/v1/metricsmanager'
 });

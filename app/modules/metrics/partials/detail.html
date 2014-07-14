@@ -21,7 +21,23 @@
           </tr>
           <tr ng-show="metric.unit">
               <td><b>Unit:</b></td>
-              <td>{{ metric.unit.description }}</td>
+              <td>{{ metric.unit }}</td>
+          </tr>
+          <tr ng-show="metric.spatial">
+              <td><b>Geo Location:</b></td>
+              <td>{{ metric.spatial}}</td>
+          </tr>
+          <tr ng-show="metric.publisher">
+              <td><b>Publisher:</b></td>
+              <td>{{ metric.publisher }}</td>
+          </tr>
+          <tr ng-show="metric.resource_url">
+              <td><b>Details URL:</b></td>
+              <td><a href="{{ metric.resource_url }}" target="_blank">{{ metric.resource_url }}</a></td>
+          </tr>
+          <tr ng-show="metric.license">
+              <td><b>License:</b></td>
+              <td>{{ metric.license }}</td>
           </tr>
       </table>
       <div>
