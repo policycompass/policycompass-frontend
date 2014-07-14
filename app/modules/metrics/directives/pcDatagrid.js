@@ -1,6 +1,8 @@
-var metrics = angular.module('pcApp.metrics');
+angular.module('pcApp.metrics.directives.pcDatagrid', [
 
-metrics.directive('pcDatagrid', function () {
+])
+
+.directive('pcDatagrid', function () {
     return {
         restrict: 'E',
         scope: {

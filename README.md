@@ -16,10 +16,10 @@ bower install
 * Copy the development.sample.json to development.json and configure the development.jso with your service domains
 * Start App
 ```
-node start
+npm start
 ```
 * Running Tests:
 ```
-node test
+npm test
 ```
 

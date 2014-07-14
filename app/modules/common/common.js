@@ -1,8 +1,8 @@
-var common = angular.module('pcApp.common',[
+ angular.module('pcApp.common',[
+     'pcApp.common.controllers'
+])
 
-]);
-
-common.config(function($routeProvider) {
+.config(function($routeProvider) {
     $routeProvider
         .when('/', {
             controller: 'StaticController',

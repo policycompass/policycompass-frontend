@@ -1,6 +1,5 @@
 var metrics = angular.module('pcApp.metrics', [
-    'ngResource',
-    'pcApp.config'
+    'pcApp.metrics.controllers.metric'
 ]);
 
 metrics.config(function($routeProvider) {

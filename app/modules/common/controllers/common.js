@@ -1,17 +1,19 @@
-var common = angular.module('pcApp.common');
+angular.module('pcApp.common.controllers', [
 
-common.controller('CommonController', ['$scope', '$location', function($scope, $location) {
+])
+
+.controller('CommonController', ['$scope', '$location', function($scope, $location) {
     $scope.isActive = function (viewLocation) {
         return viewLocation === $location.path();
     };
-}]);
+}])
 
-common.controller('StaticController', ['$scope', function($scope) {
+.controller('StaticController', ['$scope', function($scope) {
 
 
-}]);
+}])
 
-common.controller('DateController',  ['$scope', function ($scope) {
+.controller('DateController',  ['$scope', function ($scope) {
 
     $scope.maxDate = new Date();
     $scope.minDate = new Date('1900-01-01');

@@ -1,6 +1,9 @@
-var metrics = angular.module('pcApp.metrics');
+angular.module('pcApp.metrics.services.metric',[
+    'ngResource',
+    'pcApp.config'
+])
 
-metrics.factory('Metric',  ['$resource', 'API_CONF', function($resource, API_CONF) {
+.factory('Metric',  ['$resource', 'API_CONF', function($resource, API_CONF) {
 	var url = API_CONF.URL + "/metrics/:id";
 	var Metric = $resource(url,
 		{

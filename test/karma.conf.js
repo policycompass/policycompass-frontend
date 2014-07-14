@@ -12,10 +12,7 @@ module.exports = function(config){
     'bower_components/jquery/dist/jquery.min.js',
     'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
     'bower_components/handsontable/dist/jquery.handsontable.full.js',
-    'app/modules/metrics/metrics.js',
-    'app/modules/metrics/**/*.js',
-    'app/modules/common/common.js',
-    'app/modules/common/**/*.js',
+    'app/**/*.js',
     'app/*.js',
     'test/unit/**/*.js'
     ],
