@@ -1,4 +1,4 @@
-body { 
+body {
 
 }
 
@@ -12,6 +12,10 @@ body {
 
 .nav-tabs > li > a {
     cursor: pointer;
+}
+
+.pc-optional-label {
+    font-weight: normal;
 }
 
 /* Policy Compass Style  */

@@ -2,20 +2,20 @@
 
 <form name="metricForm" role="form" novalidate>
 <div class="row">
-    <div class="col-md-4">
-
+    <div class="col-lg-4">
+            <h4>Main Details</h4>
             <div class="form-group" ng-class="{'has-error': metricForm.title.$dirty && metricForm.title.$invalid}">
-                <label for="title">Title</label>
+                <label for="title">Title *</label>
                 <input type="text" class="form-control" id="title" name="title" placeholder="Metric Title" ng-model="metric.title" ng-minlength="3" required>
             </div>
 
             <div class="form-group" ng-class="{'has-error': metricForm.acronym.$dirty && metricForm.acronym.$invalid}">
-                <label for="acronym">Acronym</label>
+                <label for="acronym">Acronym *</label>
                 <input type="text" class="form-control" id="acronym" placeholder="Acronym" ng-model="metric.acronym" required>
             </div>
 
             <div class="form-group" ng-class="{'has-error': metricForm.policyDomain.$dirty && metricForm.policyDomain.$invalid}">
-                <label for="policyDomain">Policy Domain</label>
+                <label for="policyDomain">Policy Domain *</label>
                 <select multiple class="form-control" id="policyDomain" name="policyDomain" ng-model="metric.policyDomain" required>
                     <option>Health</option>
                     <option>Education</option>
@@ -26,7 +26,7 @@
             </div>
 
             <div class="form-group" ng-class="{'has-error': metricForm.keywords.$dirty && metricForm.keywords.$invalid}">
-                <label for="keywords">Keywords</label>
+                <label for="keywords">Keywords *</label>
                 <input type="text" class="form-control" id="keywords" placeholder="Keywords" ng-model="metric.keywords" required>
             </div>
 
@@ -36,7 +36,7 @@
             </div>
 
             <div class="form-group" ng-class="{'has-error': metricForm.resourceUrl.$dirty && metricForm.resourceUrl.$invalid}">
-                <label for="resourceUrl">Resource Url</label>
+                <label for="resourceUrl">Resource Url </label>
                 <input type="url" class="form-control" id="resourceUrl" name="resourceUrl" placeholder="http://www.datasource.example" ng-model="metric.resource_url">
             </div>
 
@@ -63,65 +63,154 @@
                 </p>
             </div>
 
-            <div class="form-group pc-button-spacer">
-                <button type="submit" ng-disabled="metricForm.$invalid" class="btn btn-default" ng-click="createMetric()">Save <span class="glyphicon glyphicon-chevron-right"></span></button>
-            </div>
-
     </div>
-    <div class="col-md-8">
-        <div ng-switch="stage">
+    <div class="col-lg-8">
+        <div ng-switch="step">
 
-            <div ng-switch-default>
+            <div  ng-switch-when="one">
                 <tabset>
                     <tab heading="Data Grid">
-                        <pc-datagrid data="datagrid"></pc-datagrid>
-                        <br />
-                        <div class="form-group" ng-class="{'has-error': metricForm.from.$dirty && metricForm.from.$invalid}">
-                            <label for="from">From</label>
-                            <select class="form-control" ng-model="columns.from" id="from" required>
-                                <option value="0">A</option>
-                                <option value="1">B</option>
-                                <option value="2">C</option>
-                                <option value="3">D</option>
-                                <option value="4">E</option>
-                            </select>
+                        <div class="row">
+                            <div class="col-lg-12 pc-datagrid-heading">
+                                Metric Content *
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="pc-datagrid" data="datagrid"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 pc-datagrid-heading">
+                                Metric Columns
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-2 pc-datagrid-mainlabel">
+                                Time
+                            </div>
+                            <div class="col-lg-5">
+                                <div class="form-group" ng-class="{'has-error': metricForm.startcolumn.$dirty && metricForm.startcolumn.$invalid}">
+                                    <label for="startcolumn" class="control-label">Start Column *</label>
+                                    <select class="form-control pc-datagrid-columnselect" ng-model="columns.from" id="startcolumn" required>
+                                        <option value="{{ $index }}" ng-repeat="s in columnselection" ng-selected="$index == columns.from">{{ s }} </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-5">
+                                <div class="form-group" ng-class="{'has-error': metricForm.endcolumn.$dirty && metricForm.endcolumn.$invalid}">
+                                    <label for="endcolumn" class="">End Column *</label>
+                                    <select class="form-control pc-datagrid-columnselect" ng-model="columns.to" id="endcolumn" required>
+                                        <option value="{{ $index }}" ng-repeat="s in columnselection" ng-selected="$index == columns.to">{{ s }} </option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="form-group" ng-class="{'has-error': metricForm.to.$dirty && metricForm.to.$invalid}">
-                            <label for="to">To</label>
-                            <select class="form-control" ng-model="columns.to" id="to" required>
-                                <option value="0">A</option>
-                                <option value="1">B</option>
-                                <option value="2">C</option>
-                                <option value="3">D</option>
-                                <option value="4">E</option>
-                            </select>
-                        </div>
 
-                        <div class="form-group" ng-class="{'has-error': metricForm.tablevalue.$dirty && metricForm.tablevalue.$invalid}">
-                            <label for="tablevalue">Value</label>
-                            <select class="form-control" ng-model="columns.value" id="tablevalue" required>
-                                <option value="0">A</option>
-                                <option value="1">B</option>
-                                <option value="2">C</option>
-                                <option value="3">D</option>
-                                <option value="4">E</option>
-                            </select>
+                        <div class="row">
+                        <div class="col-lg-2 pc-datagrid-mainlabel">
+                            Value
                         </div>
+                        <div class="col-lg-5">
+                            <div class="form-group" ng-class="{'has-error': metricForm.valuecolumn.$dirty && metricForm.valuecolumn.$invalid}">
+                                <label for="valuecolumn" class="control-label">Column *</label>
+                                <select class="form-control pc-datagrid-columnselect" ng-model="columns.value" id="valuecolumn" required>
+                                    <option value="{{ $index }}" ng-repeat="s in columnselection" ng-selected="$index == columns.value">{{ s }} </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="form-group" ng-class="{'has-error': metricForm.dataunit.$dirty && metricForm.dataunit.$invalid}">
+                                <label for="dataunit" class="">Unit *</label>
+                                <select class="form-control" ng-model="metric.unit" id="dataunit" required>
+                                    <option value="8">Dollar</option>
+                                    <option value="9">Euro</option>
+                                    <option value="10">Million Euro</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-2 pc-datagrid-mainlabel">
+                            Extra Data
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="form-group" ng-class="{'has-error': metricForm.extracolumn.$dirty && metricForm.extracolumn.$invalid}">
+                                <label for="extracolumn" class="control-label">Column</label>
+                                <select class="form-control pc-datagrid-columnselect" ng-model="columns.extra" id="extracolumn">
+                                    <option value="{{ $index }}" ng-repeat="s in columnselection"  ng-selected="$index == columns.extra">{{ s }} </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="form-group" ng-class="{'has-error': metricForm.categorycolumn.$dirty && metricForm.categorycolumn.$invalid}">
+                                <label for="categorycolumn" class="">Category</label>
+                                <select class="form-control" ng-model="columns.category" id="categorycolumn">
+                                    <option value="Country">Country</option>
+                                    <option value="City">City</option>
+                                    <option value="Age Class">Age Class</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
 
                     </tab>
-                    <tab heading="From File">Static content</tab>
+                    <tab heading="From File">Drop File here...</tab>
                 </tabset>
             </div>
 
             <div ng-switch-when="second">
-                Hallo Welt
+                <h4>Additional Information</h4>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group" ng-class="{'has-error': metricForm.metricdescription.$dirty && metricForm.metricdescription.$invalid}">
+                            <label for="metricdescription" class="">Description *</label>
+                            <textarea class="form-control" rows="10" id="metricdescription" name="metricdescription" ng-model="metric.description" required></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group" ng-class="{'has-error': metricForm.spatial.$dirty && metricForm.spatial.$invalid}">
+                            <label for="spatial">Spatial</label>
+                            <input type="text" class="form-control" id="spatial" name="spatial" placeholder="Spain, England" ng-model="metric.spatial">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group" ng-class="{'has-error': metricForm.language.$dirty && metricForm.language.$invalid}">
+                            <label for="language" class="">Language *</label>
+                            <select class="form-control" ng-model="metric.language" id="language" name="language" required>
+                                <option value="1">English</option>
+                                <option value="2">German</option>
+                                <option value="3">Spanish</option>
+                            </select>
+                        </div>
+                        <div class="form-group" ng-class="{'has-error': metricForm.license.$dirty && metricForm.license.$invalid}">
+                            <label for="license">License</label>
+                            <input type="text" class="form-control" id="license" name="license" placeholder="MIT" ng-model="metric.license">
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
         </div>
 
     </div>
 
+</div>
+
+<div class="row">
+    <div class="col-lg-12 pc-metric-formcontrols">
+        <div class="form-group pull-right">
+            <button type="submit" ng-show="step=='second'" class="btn btn-default" ng-click="prevStep()"><span class="glyphicon glyphicon-chevron-left"></span> Previous Step</button>
+            <button type="submit" ng-show="step=='one'" ng-disabled="metricForm.$invalid" class="btn btn-default" ng-click="nextStep()">Next Step <span class="glyphicon glyphicon-chevron-right"></span></button>
+            <button type="submit" ng-show="step=='second'" ng-disabled="metricForm.$invalid" class="btn btn-default" ng-click="createMetric()"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>
+        </div>
+    </div>
 </div>
 
 </form>

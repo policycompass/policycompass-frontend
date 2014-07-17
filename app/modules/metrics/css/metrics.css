@@ -1,0 +1,23 @@
+.pc-datagrid {
+    height: 260px;
+    overflow: auto;
+}
+
+.pc-datagrid-heading {
+    font-weight: bold;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.pc-datagrid-mainlabel {
+    font-weight: bold;
+    margin-top: 25px;
+}
+
+.pc-metric-formcontrols {
+    padding-top: 20px;
+}
+
+.pc-datagrid-columnselect {
+
+}
