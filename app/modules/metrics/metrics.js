@@ -1,6 +1,7 @@
 var metrics = angular.module('pcApp.metrics', [
     'pcApp.metrics.controllers.metric',
-    'pcApp.metrics.directives.pcDatagrid'
+    'pcApp.metrics.directives.pcDatagrid',
+    'pcApp.references.directives.forms'
 ]);
 
 metrics.config(function($routeProvider) {

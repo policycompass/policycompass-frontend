@@ -43,7 +43,12 @@ http.createServer(function(request, response) {
 	    proxy.web(request, response, {
 	      target: pcServicesUrl
 	    });
-	} else {
+	} else if (/^\/api\/v[0-9]+\/references/.exec(request.url)) {
+        proxy.web(request, response, {
+            target: pcServicesUrl
+        });
+    }
+    else {
 		
 		fs.exists(filename, function(exists) {
 			if(!exists) {

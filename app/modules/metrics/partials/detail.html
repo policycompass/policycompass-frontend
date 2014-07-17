@@ -3,6 +3,7 @@
 <div class="panel panel-default">
   <div class="panel-body">
       <div class="pc-datagrid" data="datagrid" read-only="true" ng-if="gridvisible"></div>
+      <br />
       <table class="table table-hover">
           <tr ng-show="metric.issued">
               <td><b>Issued:</b></td>
@@ -22,10 +23,10 @@
           </tr>
           <tr ng-show="metric.unit">
               <td><b>Unit:</b></td>
-              <td>{{ metric.unit }}</td>
+              <td>{{ metric.unit.title }}</td>
           </tr>
           <tr ng-show="metric.spatial">
-              <td><b>Geo Location:</b></td>
+              <td><b>Spatial:</b></td>
               <td>{{ metric.spatial}}</td>
           </tr>
           <tr ng-show="metric.publisher">
@@ -39,6 +40,10 @@
           <tr ng-show="metric.license">
               <td><b>License:</b></td>
               <td>{{ metric.license }}</td>
+          </tr>
+          <tr ng-show="metric.language">
+              <td><b>Language:</b></td>
+              <td>{{ metric.language.title }}</td>
           </tr>
       </table>
       <div>

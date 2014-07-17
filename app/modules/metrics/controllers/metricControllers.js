@@ -1,5 +1,6 @@
 angular.module('pcApp.metrics.controllers.metric', [
-    'pcApp.metrics.services.metric'
+    'pcApp.metrics.services.metric',
+    'pcApp.references.services.reference'
 ])
 
 .controller('MetricsController', ['$scope', 'Metric', '$log', function($scope, Metric, $log) {
@@ -15,7 +16,13 @@ angular.module('pcApp.metrics.controllers.metric', [
 
 }])
 
-.controller('MetricDetailController', ['$scope', '$routeParams', '$location', 'Metric', '$log', function($scope, $routeParams, $location, Metric, $log) {
+.controller('MetricDetailController', [
+        '$scope',
+        '$routeParams',
+        '$location',
+        'Metric',
+        '$log',
+        function($scope, $routeParams, $location, Metric, $log) {
 
     $scope.datagrid = [[]];
     $scope.gridvisible = false;
@@ -34,7 +41,6 @@ angular.module('pcApp.metrics.controllers.metric', [
             var row = [e.from, e.to, e.value];
             result.push(row);
         });
-        $log.info(result);
         $scope.datagrid = result;
         $scope.gridvisible = true;
     });
@@ -51,7 +57,13 @@ angular.module('pcApp.metrics.controllers.metric', [
 
 }])
 
-.controller('MetricCreateController', ['$scope', 'Metric', '$location', '$log', function($scope, Metric, $location, $log) {
+.controller('MetricCreateController', [
+        '$scope',
+        'Metric',
+        '$location',
+        '$log',
+        function($scope, Metric, $location, $log) {
+
 
     $scope.step = 'one';
     $scope.columnselection = ['A','B','C','D','E','F','G'];
@@ -82,7 +94,6 @@ angular.module('pcApp.metrics.controllers.metric', [
 
 
 	$scope.createMetric = function() {
-        $log.info( $scope.datagrid[0]);
         $scope.metric.user_id = 1;
 
         var data = [];
