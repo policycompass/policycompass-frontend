@@ -1,0 +1,20 @@
+<h1><span class="glyphicon glyphicon-search"></span> Browse Visualizations</h1>
+<br />
+<div class="container">
+<div class="row">
+
+    <div class="col-lg-3 pc-tile" ng-show="visualizations" ng-repeat="visualization in visualizations" >
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">{{ visualization.title | limitTo: 25}}</h3>
+          </div>
+          <div class="panel-body">
+            {{ visualization.created_at | date:'longDate' }}
+            <br /><br />
+            <a href="#/visualizations/{{ visualization.id }}" type="button" class="btn btn-primary">Details</a>
+          </div>
+        </div>
+    </div>
+
+</div>
+</div>

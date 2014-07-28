@@ -1,0 +1,103 @@
+<div class="modal-header">
+	<h1>{{item.name}}</h1>
+	{{item.startDate}}
+</div>
+
+<div class="modal-header">
+	<h3>Fill in this form and click over the submit button to create a new event.</h3>
+</div>
+<!--
+<div ng-controller="VisualizationsCreateController as vc" class="modal-body">
+-->	
+<div class="modal-body">
+	<div id="basic-modal-content-pc">
+		<form action="#" name="neweventForm" ng-submit="submitFormAddEvent()" novalidate>
+
+			<div class="form-group" ng-class="{ 'has-error' : neweventForm.title.$invalid && !neweventForm.title.$pristine }">
+            	<label class="mandatory">Title:</label>
+            	<input type="text" maxlength="80" size="60" name="titleHE" id="titleHE" class="form-control" ng-model="historicalevent.title" required>
+            	<p ng-show="neweventForm.title.$invalid && !neweventForm.title.$pristine" class="help-block">A title is required.</p>
+        	</div>
+<!--
+			<div class="form-group" ng-class="{ 'has-error' : neweventForm.startDate.$invalid && !neweventForm.startDate.$pristine }">
+            	<label class="mandatory">Start date:</label>
+            	<div>
+					<p><input type="date" ng-model="date" value={{date}} name="startDate" id="startDate" ng-model="historicalevent.startDate" required>
+		    	</div>
+            	<p ng-show="neweventForm.startDate.$invalid && !neweventForm.startDate.$pristine" class="help-block">Start date is required.</p>
+        	</div>
+-->
+<!--
+			<div class="form-group">
+				<label>End date:</label>
+				<div>
+					<input type="date" value="" name="endDate" id="endDate">
+				</div>
+			</div>
+-->
+			<div class="form-group" ng-controller="DateController">
+                <label for="retrievalDate">Start date:</label>
+                <p class="input-group">
+                    <input type="text"
+                           id="startDate"
+                           name="startDate"
+                           class="form-control"
+                           datepicker-popup="{{ format }}"
+                           ng-model="historicalevent.startDate"
+                           is-open="opened"
+                           min-date="minDate"
+                           max-date="maxDate"
+                           datepicker-options="dateOptions"
+                           show-button-bar="false"
+                           ng-required="true"
+                           ng-disabled="true"
+                           close-text="Close" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </p>
+            </div>
+            
+            
+			<div class="form-group" ng-controller="DateController">
+                <label for="retrievalDate">End date</label>
+                <p class="input-group">
+                    <input type="text"
+                           id="endDate"
+                           name="endDate"
+                           class="form-control"
+                           datepicker-popup="{{ format }}"
+                           ng-model="historicalevent.endDate"
+                           is-open="opened"
+                           min-date="minDate"
+                           max-date="maxDate"
+                           datepicker-options="dateOptions"
+                           show-button-bar="false"
+                           ng-required="false"
+                           ng-disabled="true"
+                           close-text="Close" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </p>
+            </div>            
+            
+			<div class="form-group">
+				<label>Description:</label>
+				<div>				
+					<textarea rows="2" cols="50" ng-model="test" ng-trim="false" maxlength="150" name="textareamodal" id="textareamodal"></textarea>
+    				<span>{{150 - test.length}} left</span>
+    			</div>
+    		</div>
+			
+		</form>		
+	</div>   
+
+	<div class="modal-footer">
+		
+    	<a ng-disabled="neweventForm.$invalid" href="" ng-click="addAnotherHistoricalEvent('dynamicContainer'); rePlotGraph(); ok();" class="button btn btn-success" id="addmetric">Add event</a>
+
+    	
+    	<button class="btn btn-warning" ng-click="cancel()">Close</button>
+	</div>
+</div>

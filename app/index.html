@@ -69,6 +69,12 @@
             <ul class="nav navbar-nav">
                 <li ng-class="{active: isActive('/metrics')}"><a href="#/metrics">Browse</a></li>
                 <li ng-class="{active: isActive('/metrics/create')}"><a href="#/metrics/create">Create Metric</a></li>
+
+				<!-- visu -->
+                <li ng-class="{active: isActive('/visualization')}"><a href="#/visualizations">Visualization</a></li>
+                <li ng-class="{active: isActive('/visualization/create')}"><a href="#/visualizations/create">Create Visualization</a></li>
+
+
             </ul>
         </div><!-- /.navbar-collapse -->
     </nav><!-- /.nav -->
@@ -129,6 +135,26 @@
 <script type="text/javascript" src="modules/metrics/controllers/metricControllers.js"></script>
 <script type="text/javascript" src="modules/metrics/services/metricService.js"></script>
 <script type="text/javascript" src="modules/metrics/directives/pcDatagrid.js"></script>
+
+
+
+
+<script type="text/javascript" src="modules/visualization/visualization.js"></script>
+<script type="text/javascript" src="modules/visualization/controllers/visualizationControllers.js"></script>
+<script type="text/javascript" src="modules/visualization/services/visualizationService.js"></script>
+<script type="text/javascript" src="modules/visualization/js/d3.v3.min.js"></script>
+<script type="text/javascript" src="modules/visualization/js/common.js"></script>
+<script type="text/javascript" src="modules/visualization/js/topojson.v1.min.js"></script>
+<script type="text/javascript" src="modules/visualization/js/queue.v1.min.js"></script>
+<script type="text/javascript" src="modules/visualization/js/objectBars.js"></script>
+<script type="text/javascript" src="modules/visualization/js/objectBarsMultiple.js"></script>
+<script type="text/javascript" src="modules/visualization/js/objectLine.js"></script>       
+<script type="text/javascript" src="modules/visualization/js/objectPie.js"></script>
+<script type="text/javascript" src="modules/visualization/js/objectMap.js"></script>
+<script type="text/javascript" src="modules/visualization/js/objMapW.js"></script>
+<script type="text/javascript" src="modules/visualization/js/jquery.js"></script>
+ <link href="modules/visualization/css/visualization.css" rel="stylesheet" media="screen" />
+
 
 </body>
 </html>

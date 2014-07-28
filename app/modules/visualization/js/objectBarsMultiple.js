@@ -1,0 +1,302 @@
+"use strict";
+var policycompass = policycompass || {'version':0.1, 'controller':{}, 'viz': {} ,'extras': {}};
+
+policycompass.viz.barsMultiple = function(options) {
+
+    // Object
+
+    var self = {};
+
+    // Get options data
+
+    for (var key in options){
+        self[key] = options[key];
+	}
+
+    self.parentSelect = "#"+self.idName;
+    
+    self.drawBarsMultiple = function (bars, eventsData) {
+		/*
+		var showLegend = document.getElementById("showLegend").checked;	
+		var showLabels = document.getElementById("showLabels").checked;
+		var showGrid = document.getElementById("showGrid").checked;
+		*/
+		var showLegend = self.showLegend;	
+		var showLabels = self.showLabels;
+		var showGrid = self.showGrid;
+						
+		//console.log(bars);
+		var colorScale = d3.scale.category10();
+		var valuesY = [];
+		
+		bars.forEach(function(d,i) {
+			//console.log(i);
+			//console.log(d.ValueY);
+			valuesY.push((d.ValueY));
+		});
+		//console.log("valuesY="+valuesY);
+		//console.log(valuesY);
+		var maxV = d3.max(d3.values(valuesY));
+		var minVy = d3.min(d3.values(valuesY));
+		//console.log("maxV="+maxV);
+		//console.log("minVy="+minVy);
+		//console.log("maxV="+maxV);
+		
+		self.x0 = d3.scale.ordinal()
+    		.rangeRoundBands([0, self.width], .1);
+
+		self.x1 = d3.scale.ordinal();
+
+		self.y = d3.scale.linear()
+    		.range([self.height, 0]);	
+/*
+		var yInversa = d3.scale.linear()
+    		.range([0, self.height]);	
+*/
+    		  		
+    	var color = d3.scale.category10();
+    	
+		var xAxis = d3.svg.axis()
+    		.scale(self.x0)
+    		.orient("bottom");
+
+		var yAxis = d3.svg.axis()
+    		.scale(self.y)
+    		.orient("left")
+    		.tickFormat(d3.format(".2s"));    	
+
+			//var months = d3.set(bars.map(function(line) {return line.ValueX;})).values();
+			var xAxisData = d3.set(bars.map(function(line) {return line.ValueX;})).values();
+
+			function make_x_axis() {
+		    	return d3.svg.axis()
+		        	.scale(self.x0)
+		         	.orient("bottom")
+		         	.ticks(10)
+			}
+		
+			function make_y_axis() {
+		    	return d3.svg.axis()
+			        .scale(self.y)
+			        .orient("left")
+			        .ticks(10)
+			}
+
+			//console.log(months);				
+			//console.log("xAxisData");
+			//console.log(xAxisData);
+  			self.x0.domain(bars.map(function(d) {d.Key;}));
+  			
+  			//x1.domain(months).rangeRoundBands([0, x0.rangeBand()]);
+  			self.x1.domain(xAxisData).rangeRoundBands([0, self.x0.rangeBand()]);
+  		
+  			//y.domain([0, d3.max(bars, function(d) {return d.ValueY;})]);
+  			self.y.domain([0, maxV]);
+
+			if (showLabels)
+			{
+		  		self.svg.append("g")
+      				.attr("class", "x axis")
+      				.attr("transform", "translate(0,"+self.height+")")
+      				.call(xAxis)
+      				.append("text")
+      				//.attr("x", self.width)
+					//.attr("dx", self.width- (self.margin.left*2))
+            		//.attr("dy", self.width- (self.margin.left*2))
+      				//.attr("transform", "rotate(-90)")
+      				//.style("text-anchor", "end")
+      				//.text(self.labelX)
+      				;
+
+  				self.svg.append("g")
+      				.attr("class", "y axis")
+      				.call(yAxis)
+    				.append("text")
+      				.attr("transform", "rotate(-90)")
+      				.attr("y", 6)
+      				.attr("dy", ".71em")
+      				.style("text-anchor", "end")
+      				.text(self.labelY);
+				
+			}
+
+
+			if (showGrid)
+			{
+				
+				//console.log("T showGrid 1");
+				self.svg.append("g")         
+    	    		.attr("class", "grid")
+        			.attr("transform", "translate(0," + self.height + ")")
+        			.call(make_x_axis()
+            			.tickSize(-self.height, 0, 0)
+            			.tickFormat("")
+        			);
+				
+    			self.svg.append("g")         
+		        	.attr("class", "grid")
+    		    	.call(make_y_axis()
+        	    	.tickSize(-self.width, 0, 0)
+            		.tickFormat("")
+	        		);
+	        
+	
+			}
+
+
+			//console.log("T rect 1");
+  			self.svg.selectAll("rect")
+	      		.data(bars)
+    			.enter().append("rect")
+      			.attr("width", self.x1.rangeBand())
+	      		.attr("x", function(d) {return self.x0(d.Key)+self.x1(d.ValueX);})
+    	  		.attr("y", function(d) {return self.y(+d.ValueY);})
+      			//.attr("height", function(d) {return self.height - y(+d.ValueY);})
+      			.attr("height", function(d) {return self.height - self.y(+d.ValueY);})
+	      		.style("fill", function(d) {return color(d.ValueX);})
+    	  		.on("mouseout", function(d,i) {
+    	  			//console.log("mouseout");
+      				tooltip.style("opacity",0.0);      				
+      			})
+      			.on("mouseover", function(d,i) {
+	      			//console.log(d);
+    	  			tooltip.style("opacity",1.0).html("key="+d.Key+"<br/>Value x="+d.ValueX+"<br/>Value y="+d.ValueY);
+      			})
+				.on("click", function(d,i) {
+					var posMouse = d3.mouse(this);
+					var posX = posMouse[0];
+					var posY = posMouse[1];	
+					$('input[name="startDatePosX"]').val(posX);
+      			})      			
+      			;
+			
+			//console.log("T rect 2");
+
+			if (showLegend)
+			{
+		  		var legend = self.svg.selectAll(".legend")
+		      		//.data(months.slice().reverse())
+		      		.data(xAxisData.slice().reverse())
+		    		.enter().append("g")
+		      		.attr("class", "legend")
+		      		.attr("transform", function(d, i) {return "translate(0," + i * 20 + ")";});
+		
+		  		legend.append("rect")
+		      		.attr("x", self.width - 18)
+		      		.attr("width", 18)
+		      		.attr("height", 18)
+		      		.style("fill", color);
+		
+		  		legend.append("text")
+		      		.attr("x", self.width - 24)
+		      		.attr("y", 9)
+		      		.attr("dy", ".35em")
+		      		.style("text-anchor", "end")
+		      		.text(function(d) {return d;});				
+			}
+
+
+			var dataForCircles = [];
+			for (var i in eventsData) {
+      			//dataForCircles[eventsData[i].posX]=eventsData[i].posY;
+      			//console.log(i);
+      			//console.log(eventsData[i].posX)
+      			//console.log(eventsData[i].posY)
+      			 var arrayTemporal = [];
+      			 arrayTemporal['posX']=eventsData[i].posX;
+      			 arrayTemporal['posY']=eventsData[i].posY;
+      			 arrayTemporal['desc']=eventsData[i].desc;
+      			 dataForCircles[i]=arrayTemporal;
+   			} 
+   			
+
+		
+		var myDiscoLinesX = self.svg.selectAll("lineXDisco").data(dataForCircles);
+
+			myDiscoLinesX.enter().append("line")
+							.attr("class","lineXDisco")
+							.style("stroke", function(d,i) {return colorScale("99");})
+							.attr("opacity", 0.5)
+                          .attr("x1", function(d,i){return (d.posX);})
+                          .attr("y1", self.height)
+                         .attr("x2", function(d,i){return (d.posX);})
+                         .attr("y2", function(d,i){return (d.posY);})
+                         
+		var myDiscoLinesY = self.svg.selectAll("lineYDisco").data(dataForCircles);
+
+			myDiscoLinesY.enter().append("line")
+							.attr("class","lineYDisco")
+							.style("stroke", function(d,i) {return colorScale("99");})
+							.attr("opacity", 0.5)
+                          .attr("x1", function(d,i){return 0;})
+                          .attr("y1", function(d,i){return (d.posY);})
+                         .attr("x2", function(d,i){return (d.posX);})
+                         .attr("y2", function(d,i){return (d.posY);})
+
+		var myCircles = self.svg.selectAll("circulos").data(dataForCircles);
+			
+			myCircles.enter().append("circle")
+                    .attr("cx", function(d,i){return (d.posX);})
+                    .attr("cy", function(d,i){return (d.posY);})
+                    .attr("r", self.radius)
+                    .attr("class","circulos")
+                    .attr("opacity", 1.0)
+                    .on("mouseover", function (d,i) {
+
+						var circle = d3.select(this);
+						 circle.transition()
+							.attr("r", self.radius * 2);
+
+      			
+      					console.log(d3.select(this));
+      					d3.select(this).classed("circuloOn", true);
+		    			tooltip.style("opacity",1.0).html("Desc="+d.desc);      
+		    			
+      			
+      		})
+            //.on("mouseover", function(d,i){console.log(d3.select(this));d3.select(this).classed("circuloOn", true);})
+            .on("mouseout", function(d,i){
+
+				var circle = d3.select(this);
+				 circle.transition()
+					.attr("r", self.radius);
+
+            	
+            	d3.select(this).classed("circuloOn",false);
+            	mouseout();
+            	})
+            .on("click", function(d,i){
+            	//console.log(d);
+            	});
+	}
+    
+
+    self.init = function () {
+
+		self.svg = d3.select(self.parentSelect).append("svg")
+    		.attr("width", self.width + self.margin.left + self.margin.right)
+    		.attr("height", self.height + self.margin.top + self.margin.bottom)
+    		.on("mousemove", mousemove)
+  			.append("g")
+    		.attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
+	}
+
+    self.render = function(dataIn, eventsData){
+		
+		if (Object.keys(dataIn).length === 0)
+		{
+			
+		}
+		else
+		{
+			console.log(dataIn);
+			self.drawBarsMultiple(dataIn, eventsData);
+		}		
+		
+	}
+
+    self.init();
+
+    return self;
+
+}

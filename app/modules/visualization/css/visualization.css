@@ -1,0 +1,59 @@
+.grid .tick {
+    stroke: lightblue;
+    opacity: 0.2;
+}
+.grid path {
+      stroke-width: 0;
+}
+
+#configureGraph {
+	background-color: #FFFFFF;
+	width: 100%;
+	float: left;
+	border-style: solid; border-width: 4px;
+	border-color: #F15A23;
+	padding: 7px;
+}
+ 
+.row_config_metric {
+border-style: dashed;
+border-width: 1px;
+border-color: #F15A23;
+padding: 3px;
+margin: 3px;
+width: 100%;
+min-height: 40px;
+}
+
+#showFilter {
+padding: 3px;
+margin: 3px;
+}
+
+.on_check {
+display: block;
+float: left;
+padding-left: 5px;
+padding-right: 5px;
+/* background-color: #F15A23; */
+color: #000000;
+}
+
+.line {
+  fill: none;
+  stroke-width: 1.5px;
+}
+
+.tooltip{
+    position: absolute;
+    width: 200px;
+    min-height: 50px;
+    padding: 8px;
+    font: 15px Helvetica Neue;
+    background: #FFF;
+    border: solid 1px #aaa;
+    border-radius: 8px;
+    pointer-events: none;
+    z-order:1000;
+    text-align:center;
+}

@@ -1,3 +1,34 @@
-var visu = angular.module('pcApp.visualization', [
+//var visu = angular.module('pcApp.visualization', ['pcApp.metrics']);
 
+var visu = angular.module('pcApp.visualization', [
+    'pcApp.visualization.controllers.visualization'
 ]);
+
+
+/*
+var visu = angular.module('pcApp.visualization', [
+    'ngResource',
+    'pcApp.config'
+    'pcApp.metrics'    
+]);
+*/
+visu.config(function($routeProvider) {
+    $routeProvider
+        .when('/visualizations/', {
+            controller: 'VisualizationsController',
+            templateUrl: 'modules/visualization/partials/list.html'
+        })
+        .when('/visualizations/create/', {
+            controller: 'VisualizationsCreateController',
+            templateUrl: 'modules/visualization/partials/create.html'
+        })        
+        .when('/visualizations/addEvent/', {
+            controller: 'VisualizationsCreateController',
+            templateUrl: 'modules/visualization/partials/addEvent.html'
+        })   
+        .when('/visualizations/:visualizationId', {
+            controller: 'VisualizationsDetailController',
+            templateUrl: 'modules/visualization/partials/detail.html'
+        })
+        .otherwise({ redirectTo: '/' });
+});
