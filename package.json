@@ -1,20 +1,21 @@
 {
-  "name": "policycompassPortal",
-  "version": "0.0.1",
-  "description": "Policy Compass Portal",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Fabian Kirstein",
-  "devDependencies": {
-	 "http-server": "",
-	 "http-proxy": "",
-	 "nconf": "",
-	 "karma": "~0.10"
-  },
-  "scripts": {
-	 "start": "node server.js",
-	 "test": "karma start test/karma.conf.js --single-run"
-  }
+    "name": "policycompassPortal",
+    "version": "0.0.1",
+    "description": "Policy Compass Portal",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Fabian Kirstein",
+    "devDependencies": {
+        "http-server": "",
+        "http-proxy": "",
+        "nconf": "",
+        "karma": "~0.10",
+        "bower": ">=1.3.8"
+    },
+    "scripts": {
+        "start": "node server.js",
+        "test": "karma start test/karma.conf.js --single-run"
+    }
 }
