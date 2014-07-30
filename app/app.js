@@ -3,6 +3,7 @@ var pcApp = angular.module('pcApp', [
     'ngRoute',
     'ui.bootstrap',
     'pcApp.metrics',
+    'pcApp.events',
     'pcApp.common'
 ])
 
