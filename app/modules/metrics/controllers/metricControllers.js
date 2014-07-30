@@ -37,8 +37,14 @@ angular.module('pcApp.metrics.controllers.metric', [
 
     $scope.metric.$promise.then(function(metric){
         var result = [];
+
         $scope.metric.data.table.forEach(function (e) {
+            var row_extras = [];
+            $scope.metric.data.extra_columns.forEach(function(extra){
+                row_extras.push(e[extra]);
+            });
             var row = [e.from, e.to, e.value];
+            row = row.concat(row_extras);
             result.push(row);
         });
         $scope.datagrid = result;
