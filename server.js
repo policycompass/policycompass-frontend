@@ -43,6 +43,10 @@ http.createServer(function(request, response) {
 	    proxy.web(request, response, {
 	      target: pcServicesUrl
 	    });
+	} else if (/^\/api\/v[0-9]+\/visualizationsmanager/.exec(request.url)) {
+	    proxy.web(request, response, {
+	      target: pcServicesUrl
+	    });	
 	} else if (/^\/api\/v[0-9]+\/references/.exec(request.url)) {
         proxy.web(request, response, {
             target: pcServicesUrl

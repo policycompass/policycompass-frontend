@@ -788,7 +788,7 @@ return 0;}
 						mouseout();
 					})
                     .on("click", function(d,i){
-                    	//console.log(d);
+                    	//console.log(d);                   	
 					});						
 			});
 		}                   
@@ -850,7 +850,8 @@ return 0;}
 					posXinvers = posXinvers.replace(/-/g,"/");
 				}				
       			//$('input[name="startDate"]').val(posXinvers);      			
-      			$('input[name="startDatePosX"]').val(posXinvers);      			
+      			$('input[name="startDatePosX"]').val(posXinvers);      		
+      			//showModal();	
 				//dateToSet = posXinvers;
 				//console.log("dateToSet="+dateToSet);
       			//$('#basic-modal-content').modal();

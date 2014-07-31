@@ -93,6 +93,8 @@ policycompass.viz.pie = function(options)
 
 		if (showLegend)
 		{
+
+			
 			var legend = self.svg.selectAll(".legend_pie_"+self.idName)
 			//.data(months.slice().reverse())
 				.data(pie(pies))
@@ -122,7 +124,9 @@ policycompass.viz.pie = function(options)
 					var textToReturn = pieslabels[i];
 					//textToReturn = textToReturn+": "+pies[i];
 					return textToReturn;
-				});				
+				});
+				
+								
 			}
 	}
     

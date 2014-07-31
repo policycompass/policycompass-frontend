@@ -68,20 +68,32 @@
                 <label for="title">Title *</label>
                 <input type="text" class="form-control" id="title" name="title" placeholder="Title" ng-model="visualization.title" ng-minlength="3" required>
             </div>
-
+<!--
             <div class="form-group">
                 <label for="description">Description</label>
                 <input type="text" class="form-control" id="description" placeholder="Description" ng-model="visualization.description">
             </div>
+-->
 
+            <div class="form-group" ng-class="{'has-error': visualizationForm.description.$dirty && visualizationForm.description.$invalid}">
+                <label for="metricdescription" class="">Description *</label>
+                <textarea class="form-control" rows="10" id="description" name="description" ng-model="visualization.description" required></textarea>
+            </div>
+                    
             <div class="form-group">
                 <label for="keywords">Keywords</label>
                 <input type="text" class="form-control" id="keywords" placeholder="Keywords" ng-model="visualization.keywords">
             </div>
 
+            <div class="form-group" ng-class="{'has-error': visualizationForm.language.$dirty && visualizationForm.language.$invalid}">
+                <label for="language" class="">Language *</label>
+                <select class="form-control language-options" model="visualization.language" ng-model="visualization.language" id="language" name="language" required>
+
+                </select>
+            </div>                       
 
             <div class="form-group pc-button-spacer">
-                <button type="submit" ng-disabled="visualizationForm.$invalid" class="btn btn-default" ng-click="createVisualization()">Save <span class="glyphicon glyphicon-chevron-right"></span></button>
+                <button type="submit" ng-disabled="visualizationForm.$invalid" class="btn btn-default" ng-click="createVisualization()"><span class="glyphicon glyphicon-floppy-disk"></span> Save <span class="glyphicon glyphicon-chevron-right"></span></button>
             </div>
 
         </form>        
@@ -193,9 +205,11 @@
 
         <div >
         	
-        	<input type="hidden" id="startDatePosX" name="startDatePosX" value="">        	
-	        <a href="" ng-click="isSelectedSon('graph_line') ? showModal() : void(0)"><div id="container_graph" class="container_graph"></div></a>
-		
+        	<input type="hidden" id="startDatePosX" name="startDatePosX" value="">
+        	        	
+	        <a href="" ng-click="isSelectedSon('graph_line') ? showModal() : void(0)">
+        	<div id="container_graph" class="container_graph"></div>
+	        </a>
 		</div>
 		
 

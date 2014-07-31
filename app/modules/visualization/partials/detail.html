@@ -3,6 +3,20 @@
 <div class="panel panel-default">
   <div class="panel-body">
       <table class="table table-hover">
+          <tr ng-show="visualization.title">
+              <td><b>Title:</b></td>
+              <td>{{ visualization.title }}</td>
+          </tr>
+          <tr ng-show="visualization.description">
+              <td><b>Description:</b></td>
+              <td>{{ visualization.description }}</td>
+          </tr>                    
+          <tr ng-show="visualization.keywords">
+              <td><b>Keywords:</b></td>
+              <td>{{ visualization.keywords }}</td>
+          </tr>
+
+          
           <tr ng-show="visualization.created_at">
               <td><b>Created:</b></td>
               <td>{{ visualization.created_at | date:'longDate' }}</td>
@@ -11,14 +25,14 @@
               <td><b>Updated:</b></td>
               <td>{{ visualization.updated_at | date:'longDate' }}</td>
           </tr>
-          <tr ng-show="visualization.description">
-              <td><b>Description:</b></td>
-              <td>{{ visualization.description }}</td>
+
+          
+          <tr ng-show="visualization.language_id">
+              <td><b>Language:</b></td>
+              <td>{{ visualization.language_id.title }}</td>
           </tr>
-          <tr ng-show="visualization.keywords">
-              <td><b>Keywords:</b></td>
-              <td>{{ visualization.keywords }}</td>
-          </tr>
+                    
+
       </table>
       <div>
           <button type="button" class="btn btn-danger" ng-click="deleteVisualization(visualization)">Delete</button>

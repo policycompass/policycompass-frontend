@@ -3,6 +3,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
     'pcApp.references.services.reference'
 ])
 
+
 .controller('VisualizationsDetailController', ['$scope', '$routeParams', '$location', 'Visualization', function($scope, $routeParams, $location, Visualization) {
 	this.message = "Hello VisualizationsDetailController";
 	//alert("Hello VisualizationsDetailController");
@@ -34,7 +35,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	$scope.visualizations = Visualization.query(
 			null,
 			function(visualizationList) {
-				$log.info(visualizationList);
+			//function(metricList) {				
+				//$log.info(visualizationList);
 			},
 			function(error) {
 				alert(error.data.message);
@@ -42,9 +44,6 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	);
 
 }])
-
-
-
 
 //controler to view the detail of a visualization
 .controller('VisualizationDetailController', ['$scope', '$routeParams', '$location', 'Visualization', function($scope, $routeParams, $location, Visualization) {
@@ -78,20 +77,69 @@ function($scope, $modal, Metric, Visualization, $location, $log) {
 
 	$scope.visualization = {};
 
+
+
+	$scope.createVisualization = function() {
+        $scope.visualization.user_id = 1;
+        				     
+        $scope.visualization.views_count = 32;
+        $scope.visualization.visualization_type_id = 0;
+        $scope.visualization.status_flag_id = 0;
+
+    
+        var data = [];
+        var extra = [];
+        /*
+        if($scope.columns.category) {
+            extra.push($scope.columns.category);
+        }
+        */
+		/*
+        $scope.datagrid.forEach(function(e){
+            if(e[0] != null){
+                var row = {
+                    from: e[$scope.columns.from],
+                    to: e[$scope.columns.to],
+                    value: e[$scope.columns.value]
+                };
+                if($scope.columns.category) {
+                    row[$scope.columns.category] = e[$scope.columns.extra];
+                }
+                data.push(row);
+            }
+        });
+		*/
+        $scope.visualization.data = {
+            table: data,
+            extra_columns: extra
+        };
+		
+		console.log($scope.visualization);
+		
+		Visualization.save($scope.visualization,function(value, responseHeaders){
+			$location.path('/visualizations/' + value.id);
+		},
+		function(err) {
+            throw { message: err.data};
+		}
+
+		);
+		
+	};
+	
+/*
 	$scope.createVisualization = function() 
 	{
 		console.log("-------------");
 		console.log("createVisualization");		
 		console.log("-------------");
+  
+       // $scope.visualization.title = "test title";
+       // $scope.visualization.description = "test desv";
+       // $scope.visualization.keywords = "test key";
+       // $scope.visualization.issued = "2014-05-02T22:00:00Z";
+       // $scope.visualization.publisher = "1";
 
-
-/*        
-        $scope.visualization.title = "test title";
-        $scope.visualization.description = "test desv";
-        $scope.visualization.keywords = "test key";
-        $scope.visualization.issued = "2014-05-02T22:00:00Z";
-        $scope.visualization.publisher = "1";
-*/
 		console.log($scope.visualization);
 
 		
@@ -112,6 +160,7 @@ function($scope, $modal, Metric, Visualization, $location, $log) {
 
 		
 	};
+	*/
 	
 	$scope.saveGraphAs = function()
 	{
@@ -352,7 +401,7 @@ function($scope, $modal, Metric, Visualization, $location, $log) {
 	
 
 	$scope.rePlotGraph = function() {
-		console.log("rePlotGraph");
+		console.log("----rePlotGraph---");
 		var arrayJsonFiles = [];
 		var datosTemporales = new Object();
 		//to preparate the graph we must
@@ -373,17 +422,25 @@ function($scope, $modal, Metric, Visualization, $location, $log) {
 		{
 			if (!isNaN(i))
 			{
-				//console.log(elems[i].id);
-				//console.log(elems[i].value);			
+				console.log(elems[i].id);
+				console.log(elems[i].value);			
 				var jsonFile = elems[i].value;
 				var jsonFileName = jsonFile;
 				jsonFile = "json/"+jsonFile;
 				//console.log("jsonFile");	
 				//console.log(jsonFile);	
 				//jsonFile = "http://localhost/d3js/testMMP/json/"+jsonFile;	
+				var str = elems[i].id;
+				var resIdMetric = str.replace("idMetricSelected_", "");
+				jsonFile ="/api/v1/metricsmanager/metrics/"+resIdMetric;
+				
+				//jsonFile = "json/to_test_1.json";
+				
+				console.log("jsonFile="+jsonFile);
 				//jsonFile = "DataSource.json";			
 				if (jsonFile)
 				{
+					console.log("jsonFile OK");
 					var str = elems[i].id;
 					var puntero = str.replace("idMetricSelected_", "");
 					//console.log(puntero);				
@@ -408,6 +465,9 @@ function($scope, $modal, Metric, Visualization, $location, $log) {
 						cntMetrics = cntMetrics+1;
 					}				
 					//console.log(valueGroup);
+				}
+				else {
+					console.log("jsonFile KO");
 				}
 			}
 		}
@@ -483,6 +543,135 @@ function($scope, $modal, Metric, Visualization, $location, $log) {
 	
 	$scope.plotGraph = function() {
 	
+		//console.log("#############");
+		//console.log(arguments);
+		//console.log("#############");
+		var numbers1 = [];
+		var cntNumbers =0;
+		for (var i=1; i<arguments.length; i++)
+		{
+			//console.log(".i="+i);
+			if (!isNaN(i)) 
+			{
+				selectorLabel = document.getElementById("selectorLabelColumn_"+i).value;
+				selectorLabel = selectorLabel.toLowerCase();
+			 
+			 	selectorDataColumn = document.getElementById("selectorDataColumn_"+i).value;
+				selectorDataColumn = selectorDataColumn.toLowerCase();
+				
+				//console.log("selectorLabel="+selectorLabel)
+				//console.log("selectorDataColumn="+selectorDataColumn)					
+				//console.log(arguments[i]['data']['table']);
+				
+				
+
+				
+				if (($scope.typeToPlot==='graph_line') || ($scope.typeToPlot==='graph_pie') || ($scope.typeToPlot==='graph_graphbars'))
+				{
+					//var arrayValues = [];
+					//var arrayLabels = [];
+					//var arrayValuesXY = [];
+					
+					var arrayValues = [];
+					var arrayLabels  = [];
+					var arrayValuesXY  = [];
+
+					var numbers1T = {"Key":arguments[i].title};
+					var cntPosArray=0;
+					for (var j=0; j<arguments[i]['data']['table'].length; j++)
+					{
+						//console.log("..i="+i+"----j="+j);
+						var object_size = 0;
+						the_object = arguments[i]['data']['table'][j];
+						var indexRow = "";
+						for (key in the_object)	{
+							//console.log("key=>"+key);
+							if ((key!='from') && (key!='to') && (key!='value') && (key!='row'))
+							{
+								indexRow = arguments[i]['data']['table'][j][key];
+							}
+    						if (the_object.hasOwnProperty(key)) {
+      							object_size++;
+    						}
+  						}
+  						//console.log("indexRow---->"+indexRow);
+						//console.log("object_size---->"+object_size);
+						
+						/*
+						arrayValues.push(arguments[i]['data']['table'][j][selectorDataColumn]);
+						arrayLabels.push(arguments[i]['data']['table'][j][selectorLabel]);
+						arrayValuesXY.push(arguments[i]['data']['table'][j][selectorLabel]+"|"+arguments[i]['data']['table'][j][selectorDataColumn]);
+						*/
+						
+						if(typeof arrayValues[indexRow] == 'undefined') {
+						    // does not exist
+						    arrayValues[indexRow]= new Array();
+						    arrayLabels[indexRow]= new Array();
+						    arrayValuesXY[indexRow]= new Array();
+						}
+						else {
+    						// does exist
+						}
+
+						
+						arrayValues[indexRow].push(arguments[i]['data']['table'][j][selectorDataColumn]);						
+						arrayLabels[indexRow].push(arguments[i]['data']['table'][j][selectorLabel]);
+						arrayValuesXY[indexRow].push(arguments[i]['data']['table'][j][selectorLabel]+"|"+arguments[i]['data']['table'][j][selectorDataColumn]);
+						cntPosArray = cntPosArray +1;
+						
+					}
+					//console.log("_!_!_!_!_!_!_!_");
+					//console.log("arrayValues.length=>"+arrayValues.length);
+					//console.log(arrayValues);
+					the_object = arrayValues;
+					
+					
+					var numbers1 = [];
+					for (key in the_object)	{
+						console.log("***key="+key);
+						
+						if ($scope.typeToPlot==='graph_graphbars')
+						{
+							for (var j=0; j<arrayValues[key].length; j++)
+							//for (var j=0; j<4; j++)
+							{
+								console.log("jjj="+j);
+								var ObjectData = {
+								'Category': "1", 
+								'From':arrayValues[key][j], 
+								'Key':key, 
+								"To":arrayLabels[key][j], 
+								"Value":arrayValues[key][j],
+								"ValueX":arrayLabels[key][j],
+								"ValueY":arrayValues[key][j], 
+								"XY":arrayValuesXY[key][j]
+								};
+								numbers1.push(ObjectData);
+							}
+							
+														
+						}
+						else
+						{			
+							var ObjectTemporal = new Object();			
+							ObjectTemporal['Key']=key;
+							ObjectTemporal['Values']=arrayValues[key];
+							ObjectTemporal['Labels']=arrayLabels[key];
+							ObjectTemporal['ValueX']=arrayLabels[key];
+							ObjectTemporal['ValueY']=arrayValues[key];
+							ObjectTemporal['XY']=arrayValuesXY[key];
+							ObjectTemporal['Type']='metric';
+							numbers1[cntNumbers]=ObjectTemporal;
+							cntNumbers = cntNumbers+1;
+						}
+						
+					}
+					
+
+				}
+        	}
+       }
+		
 		document.getElementById("container_graph").innerHTML = "";
 		//var numbers1 = [];
         		 
@@ -502,7 +691,7 @@ function($scope, $modal, Metric, Visualization, $location, $log) {
 		}
 		else if ($scope.typeToPlot==='graph_line')
 		{
-			
+			/*
 			var arrayValues = [];
 			arrayValues.push(130);
 			arrayValues.push(200);
@@ -562,6 +751,7 @@ function($scope, $modal, Metric, Visualization, $location, $log) {
 			ObjectTemporal['XY']=arrayValuesXY;
 			ObjectTemporal['Type']='metric';
 			numbers1[1]=ObjectTemporal;
+			*/
 			document.getElementById("container_graph").innerHTML = "";
                 	
 			if (numbers1)
@@ -595,6 +785,7 @@ function($scope, $modal, Metric, Visualization, $location, $log) {
 		}				
 		else if ($scope.typeToPlot==='graph_pie')
 		{
+			/*
 			var arrayValues = [];
 			arrayValues.push(130);
 			arrayValues.push(200);
@@ -624,7 +815,7 @@ function($scope, $modal, Metric, Visualization, $location, $log) {
 							
 			numbers1[0]=ObjectTemporal;
 		
-				
+			*/
 			var dataset = numbers1;
 
 
@@ -664,12 +855,14 @@ function($scope, $modal, Metric, Visualization, $location, $log) {
 		else if ($scope.typeToPlot==='graph_graphbars')
 		{
 			document.getElementById("container_graph").innerHTML = "";
-			
+			/*
 			var numbers1 = [];
-			var ObjectData = {'Category': "1", 'From':"01/01/2010", 'Key':"aaa", "To":"02/02/2010","Value":"10","ValueX":"01/01/2010","ValueY":"10", "XY":"01/01/2010|10"};
+			var ObjectData = {'Category': "1", 'From':"01/01/2010", 'Key':"aaa", "To":"02/02/2010", "Value":"10","ValueX":"01/01/2010","ValueY":"10", "XY":"01/01/2010|10"};
 			numbers1.push(ObjectData);
 			
-        				
+			var ObjectData = {'Category': "1", 'From':"01/01/2011", 'Key':"bb", "To":"02/02/2011", "Value":"40","ValueX":"01/01/2011","ValueY":"40", "XY":"01/01/2011|40"};
+        	numbers1.push(ObjectData);
+        	*/		
 			var datasetToSend = numbers1;
 			
 			//console.log(datasetToSend);
