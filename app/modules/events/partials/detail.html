@@ -1,0 +1,73 @@
+<h1><span class="glyphicon glyphicon-list-alt"></span> {{ event.title }}</h1>
+<br />
+<div class="panel panel-default">
+  <div class="panel-body">
+      <div class="pc-datagrid" data="datagrid" read-only="true" ng-if="gridvisible"></div>
+      <br />
+      <table class="table table-hover">
+          <tr ng-show="event.description">
+              <td><b>Description:</b></td>
+              <td>{{ event.description }}</td>
+          </tr>
+          <tr ng-show="event.keywords">
+              <td><b>Keywords:</b></td>
+              <td>{{ event.keywords }}</td>
+          </tr>
+          <tr ng-show="event.startEventDate">
+              <td><b>Event start:</b></td>
+              <td>{{ event.startEventDate | date:'longDate' }}</td>
+          </tr>
+          <tr ng-show="event.endEventDate">
+              <td><b>Event end:</b></td>
+              <td>{{ event.endEventDate | date:'longDate' }}</td>
+          </tr>
+          <tr ng-show="event.detailsURL">
+              <td><b>Details URL:</b></td>
+              <td><a href="{{ event.detailsURL }}" target="_blank">{{ event.detailsURL }}</a></td>
+          </tr>
+          <tr ng-show="event.geoLocation">
+              <td><b>Geolocation:</b></td>
+              <td>{{ event.geoLocation }}</td>
+          </tr>
+          <tr ng-show="event.relatedVisualisation">
+              <td><b>Related visualisation:</b></td>
+              <td>{{ event.relatedVisualisation}}</td>
+          </tr>
+          <tr ng-show="event.languageID">
+              <td><b>Language:</b></td>
+              <td>{{ event.languageID }}</td>
+          </tr>
+          <tr ng-show="event.userID">
+              <td><b>User:</b></td>
+              <td>{{ event.userID }}</td>
+          </tr>
+          <tr ng-show="event.scale">
+              <td><b>Scale:</b></td>
+              <td>{{ event.scale }}</td>
+          </tr>
+          <tr ng-show="event.externalResourceID">
+              <td><b>External Resource:</b></td>
+              <td>{{ event.externalResourceID }}</td>
+          </tr>
+          <tr ng-show="event.dateAddedToPC">
+              <td><b>Added:</b></td>
+              <td>{{ event.dateAddedToPC | date:'longDate' }}</td>
+          </tr>
+          <tr ng-show="event.dateIssuedByExternalResource">
+              <td><b>Issued:</b></td>
+              <td>{{ event.dateIssuedByExternalResource | date:'longDate' }}</td>
+          </tr>
+          <tr ng-show="event.dateModified">
+              <td><b>Modified:</b></td>
+              <td>{{ event.dateModified | date:'longDate' }}</td>
+          </tr>
+          <tr ng-show="event.viewsCount">
+              <td><b>Views:</b></td>
+              <td>{{ event.viewsCount }}</td>
+          </tr>
+      </table>
+      <div>
+          <button type="button" class="btn btn-danger" ng-click="deleteEvent(event)">Delete</button>
+      </div>
+  </div>
+</div>

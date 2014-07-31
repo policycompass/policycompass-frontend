@@ -67,9 +67,11 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
-                <li ng-class="{active: isActive('/metrics')}"><a href="#/metrics">Browse</a></li>
+                <li ng-class="{active: isActive('/metrics')}"><a href="#/metrics">Browse Metrics</a></li>
                 <li ng-class="{active: isActive('/metrics/create')}"><a href="#/metrics/create">Create Metric</a></li>
 
+                <li ng-class="{active: isActive('/events')}"><a href="#/events">Browse Events</a></li>
+                <li ng-class="{active: isActive('/events/create')}"><a href="#/events/create">Create Event</a></li>
 				<!-- visu -->
                 <li ng-class="{active: isActive('/visualization')}"><a href="#/visualizations">Visualization</a></li>
                 <li ng-class="{active: isActive('/visualization/create')}"><a href="#/visualizations/create">Create Visualization</a></li>
@@ -136,6 +138,10 @@
 <script type="text/javascript" src="modules/metrics/services/metricService.js"></script>
 <script type="text/javascript" src="modules/metrics/directives/pcDatagrid.js"></script>
 
+<script type="text/javascript" src="modules/events/events.js"></script>
+<script type="text/javascript" src="modules/events/controllers/eventControllers.js"></script>
+<script type="text/javascript" src="modules/events/services/eventService.js"></script>
+
 
 
 
@@ -153,6 +159,10 @@
 <script type="text/javascript" src="modules/visualization/js/objectMap.js"></script>
 <script type="text/javascript" src="modules/visualization/js/objMapW.js"></script>
 
+
+
+<!--Multiple inclusions of jquery caused errors with handsontable, so I commented it out (Alan)
+<script type="text/javascript" src="modules/visualization/js/jquery.js"></script>-->
 
  <link href="modules/visualization/css/visualization.css" rel="stylesheet" media="screen" />
 

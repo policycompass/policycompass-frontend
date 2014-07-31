@@ -9,5 +9,7 @@ angular.module('pcApp.config',[])
 	'URL': '/api/v1',
     'METRICS_MANAGER_URL': '/api/v1/metricsmanager',
     'REFERENCE_POOL_URL': '/api/v1/references',
-    'VISUALIZATIONS_MANAGER_URL': '/api/v1/visualizationsmanager'
+    'VISUALIZATIONS_MANAGER_URL': '/api/v1/visualizationsmanager',
+    'EVENTS_MANAGER_URL': '/api/v1/eventsmanager',
+    'REFERENCE_POOL_URL': '/api/v1/references'
 });

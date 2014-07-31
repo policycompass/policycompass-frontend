@@ -4,6 +4,7 @@ var pcApp = angular.module('pcApp', [
     'ui.bootstrap',
     'pcApp.metrics',
     'pcApp.visualization',
+    'pcApp.events',
     'pcApp.common'
 ])
 
