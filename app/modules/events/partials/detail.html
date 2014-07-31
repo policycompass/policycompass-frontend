@@ -41,6 +41,10 @@
               <td><b>User:</b></td>
               <td>{{ event.userID }}</td>
           </tr>
+          <tr ng-show="event.scale">
+              <td><b>Scale:</b></td>
+              <td>{{ event.scale }}</td>
+          </tr>
           <tr ng-show="event.externalResourceID">
               <td><b>External Resource:</b></td>
               <td>{{ event.externalResourceID }}</td>
