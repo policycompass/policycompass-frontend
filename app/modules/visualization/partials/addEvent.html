@@ -14,7 +14,7 @@
 		<form action="#" name="neweventForm" ng-submit="submitFormAddEvent()" novalidate>
 
 			<div class="form-group" ng-class="{ 'has-error' : neweventForm.title.$invalid && !neweventForm.title.$pristine }">
-            	<label class="mandatory">Title:</label>
+            	<label for="titleHE" class="mandatory">Title:</label>
             	<input type="text" maxlength="80" size="60" name="titleHE" id="titleHE" class="form-control" ng-model="historicalevent.title" required>
             	<p ng-show="neweventForm.title.$invalid && !neweventForm.title.$pristine" class="help-block">A title is required.</p>
         	</div>
@@ -35,8 +35,20 @@
 				</div>
 			</div>
 -->
+
+
+			<div class="form-group" ng-show="events">
+				<label for="historicalEvents">Historical events:</label>
+					<div>
+			            <select id="historicalEventsList" name="historicalEventsList[]" class="selectorDynamic">
+							<option value="">Select Historical Event</option>
+							<option id="{{event.id}}" ng-repeat="event in events track by $index">{{event.title}}: From {{ event.startEventDate | date:'longDate' }} to {{ event.endEventDate | date:'longDate' }}
+						</select>
+      				</div>
+			</div>
+
 			<div class="form-group" ng-controller="DateController">
-                <label for="retrievalDate">Start date:</label>
+                <label for="startDate">Start date:</label>
                 <p class="input-group">
                     <input type="text"
                            id="startDate"
@@ -60,7 +72,7 @@
             
             
 			<div class="form-group" ng-controller="DateController">
-                <label for="retrievalDate">End date</label>
+                <label for="endDate">End date</label>
                 <p class="input-group">
                     <input type="text"
                            id="endDate"
@@ -83,7 +95,7 @@
             </div>            
             
 			<div class="form-group">
-				<label>Description:</label>
+				<label for="Description">Description:</label>
 				<div>				
 					<textarea rows="2" cols="50" ng-model="test" ng-trim="false" maxlength="150" name="textareamodal" id="textareamodal"></textarea>
     				<span>{{150 - test.length}} left</span>
