@@ -14,6 +14,10 @@ metrics.config(function($routeProvider) {
             controller: 'MetricCreateController',
             templateUrl: 'modules/metrics/partials/create.html'
         })
+        .when('/metrics/:metricId/edit', {
+            controller: 'MetricEditController',
+            templateUrl: 'modules/metrics/partials/create.html'
+        })
         .when('/metrics/:metricId', {
             controller: 'MetricDetailController',
             templateUrl: 'modules/metrics/partials/detail.html'
