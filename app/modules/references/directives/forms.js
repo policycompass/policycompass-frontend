@@ -30,7 +30,7 @@ angular.module('pcApp.references.directives.forms', [
             $scope.domains = PolicyDomain.query(
                 null,
                 function() {
-                    $log.info($scope.domains);
+                    //$log.info($scope.domains);
                 }
             );
         },

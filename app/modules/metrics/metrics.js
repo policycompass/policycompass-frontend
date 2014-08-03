@@ -1,6 +1,7 @@
 var metrics = angular.module('pcApp.metrics', [
     'pcApp.metrics.controllers.metric',
     'pcApp.metrics.directives.pcDatagrid',
+    'pcApp.metrics.directives.ngDropzone',
     'pcApp.references.directives.forms'
 ]);
 

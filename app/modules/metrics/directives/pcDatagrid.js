@@ -6,10 +6,12 @@ angular.module('pcApp.metrics.directives.pcDatagrid', [
     return {
         restrict: 'C',
         scope: {
+            instance: '=',
             gridData: '=data',
             readOnly: '=readOnly'
+
         },
-        link: function (scope, element, attrs) {
+        link: function (scope, element, attrs, ctrls) {
             angular.element(document).ready(function () {
                 var config = {
                     data: scope.gridData,
@@ -26,9 +28,12 @@ angular.module('pcApp.metrics.directives.pcDatagrid', [
                     config['readOnly'] = true;
                 }
 
-                $(element).handsontable(config);
-            });
 
+                var elm = $(element);
+                elm.handsontable(config);
+                scope.instance = elm.handsontable('getInstance');
+
+            });
         }
     };
 }]);

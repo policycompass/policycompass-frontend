@@ -21,3 +21,9 @@
 .pc-datagrid-columnselect {
 
 }
+
+.pc-from-file {
+    min-height: 300px;
+    min-width: 200px;
+    background: red;
+}

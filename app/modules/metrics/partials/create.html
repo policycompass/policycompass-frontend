@@ -65,7 +65,7 @@
 
             <div  ng-switch-when="one">
                 <tabset>
-                    <tab heading="Data Grid">
+                    <tab heading="Data Grid" active="tabsel.grid">
                         <div class="row">
                             <div class="col-lg-12 pc-datagrid-heading">
                                 Metric Content *
@@ -73,7 +73,7 @@
                         </div>
                         <div class="row">
                             <div class="col-lg-12">
-                                <div class="pc-datagrid" data="datagrid" ng-if="gridvisible"></div>
+                                <div class="pc-datagrid" instance="grid.instance" data="grid.data" ng-if="gridvisible"></div>
                             </div>
                         </div>
                         <div class="row">
@@ -151,7 +151,11 @@
 
 
                     </tab>
-                    <tab heading="From File">Drop File here...</tab>
+                    <tab heading="From File" active="tabsel.file">
+                        <div class="ng-dropzone dropzone" dropzone-config="dropzone.config" dropzone="dropzone.dropzone" event-handlers="dropzone.handlers">
+
+                        </div>
+                    </tab>
                 </tabset>
             </div>
 
@@ -205,3 +209,4 @@
 </div>
 
 </form>
+<button ng-click="test()">hallo</button>
