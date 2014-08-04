@@ -78,6 +78,7 @@ angular.module('pcApp.metrics.controllers.metric', [
         function($scope, $routeParams, $location, Metric, $log) {
 
     $scope.datagrid = [[]];
+    $scope.handson = {};
     $scope.gridvisible = false;
 
 	$scope.metric = Metric.get({id: $routeParams.metricId},
@@ -219,7 +220,7 @@ angular.module('pcApp.metrics.controllers.metric', [
                 extra.push($scope.columns.category);
             }
 
-            $scope.datagrid.forEach(function(e){
+            $scope.grid.data.forEach(function(e){
                 if(e[0] != null){
                     var row = {
                         from: e[$scope.columns.from],
