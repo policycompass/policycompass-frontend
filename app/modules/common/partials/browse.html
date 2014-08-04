@@ -1,0 +1,122 @@
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 browse-statement-phrase ">
+            <p>
+                Policy Compass will simplify the way to utilize, interact, mash-up, visualise and interpret the increasing amount of international open econonmic data and wealth indicators from reliable international data sources
+            </p>
+        </div>
+    </div><!-- /.row  -->
+    <div class="row" style="text-align: center">
+        <div class="col-lg-offset-2 col-lg-8 col-md-offset-1 col-md-10 col-sm-offset-1 col-sm-10">
+            <div class="input-group">
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">All <span class="caret"></span></button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">All</a></li>
+                        <li><a href="#">Metrics</a></li>
+                        <li><a href="#">Fuzzy cognitive Maps</a></li>
+                        <li><a href="#">Visualisation</a></li>
+                        <li><a href="#">Event</a></li>
+                    </ul>
+                </div><!-- /btn-group -->
+                <input type="text" class="browse-input form-control">
+                  <span class="input-group-btn">
+                    <button class="btn btn-warning" type="button">Go!</button>
+                  </span>
+            </div><!-- /input-group -->
+        </div><!-- /.col-lg-6 -->
+    </div><!-- /.row  -->
+    <div class="row">
+        <div  class="bs-example bs-navmenu-offcanvas-example">
+            <div id="myNavmenuCanvas">
+                <nav id="myNavmenu" class="navmenu navmenu-default navmenu-fixed-left offcanvas" role="navigation">
+                    <span class="navmenu-brand">Filter </span>
+                    <ul class="nav navmenu-nav">
+                        <li><a href="#">Name</a></li>
+                        <li><a href="#">Date</a></li>
+                    </ul>
+                </nav>
+                <div class="col-lg-12 filterbar">
+                    <a class="search-icon-btn" data-placement="left" data-canvas="#myNavmenuCanvas" data-target="#myNavmenu"  type="button" data-toggle="offcanvas"><span class="filter-menu-icon glyphicon glyphicon-th-list"></span><span class="filter-menu-link">Filter</span></a>
+                    <span class="dropdown pull-right">
+                        <btn class="btn btn-show btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                            10
+                            <span class="caret"></span>
+                        </btn>
+                        <ul class="dropdown-menu dropdown-show" role="menu" aria-labelledby="dropdownMenu1">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">20</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">30</a></li>
+                        </ul>
+                    </span>
+                    <span class="pull-right text-show">Show</span>
+                </div>
+                <div class="col-lg-12 result-wrapper">
+                    <div class="row">
+                        <div class="result-block col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                            <div class="metricIcon-effect">
+                                <div class="metricIcon col-lg-12"></div><!-- /.col-lg-12  -->
+                            </div>
+                            <div class="col-lg-12">
+                                <a href="#">
+                                    <h5>Fuzzy Cognitive Map</h5>
+                                    <p class="text-justify">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidun</p>
+                                </a>
+                            </div><!-- /.col-lg-12  -->
+                            <div class="col-lg-12">
+                                <div class="rating">
+                                    <rating ng-model="rate" max="max" readonly="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null"></rating>
+                                    <span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" ng-show="overStar && !isReadonly">{{percent}}%</span>
+                                </div>
+                            </div><!-- /.col-lg-12  -->
+                        </div><!-- /result-block .col-lg-3  -->
+                        <div class="result-block col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                            <div class="mapIcon col-lg-12"></div><!-- /.col-lg-12  -->
+                            <div class="col-lg-12">
+                                <a href="#">
+                                    <h5>Visualisation</h5>
+                                    <p class="text-justify">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidun</p>
+                                </a>
+                            </div><!-- /.col-lg-12  -->
+                            <div class="col-lg-12">
+                                <div class="rating">
+                                    <rating ng-model="rate" max="max" readonly="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null"></rating>
+                                    <span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" ng-show="overStar && !isReadonly">{{percent}}%</span>
+                                </div>
+                            </div><!-- /.col-lg-12  -->
+                        </div><!-- /result-block .col-lg-3  -->
+                        <div class="result-block col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                            <div class="metricIcon col-lg-12"></div><!-- /.col-lg-12  -->
+                            <div class="col-lg-12">
+                                <a href="#">
+                                    <h5>Historical Events</h5>
+                                    <p class="text-justify">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidun</p>
+                                </a>
+                            </div><!-- /.col-lg-12  -->
+                            <div class="col-lg-12">
+                                <div class="rating">
+                                    <rating ng-model="rate" max="max" readonly="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null"></rating>
+                                    <span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" ng-show="overStar && !isReadonly">{{percent}}%</span>
+                                </div>
+                            </div><!-- /.col-lg-12  -->
+                        </div><!-- /result-block .col-lg-3  -->
+                        <div class="result-block col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                            <div class="mapIcon col-lg-12"></div><!-- /.col-lg-12  -->
+                            <div class="col-lg-12">
+                                <a href="#">
+                                    <h5>Metric</h5>
+                                    <p class="text-justify">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidun</p>
+                                </a>
+                            </div><!-- /.col-lg-12  -->
+                            <div class="col-lg-12">
+                                <div class="rating">
+                                    <rating ng-model="rate" max="max" readonly="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null"></rating>
+                                    <span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" ng-show="overStar && !isReadonly">{{percent}}%</span>
+                                </div>
+                            </div><!-- /.col-lg-12  -->
+                        </div><!-- /result-block .col-lg-3  -->
+                    </div><!-- /.row  -->
+                </div><!-- /.col-lg-12 result-wrapper -->
+            </div><!-- myNavmenuCanvas -->
+        </div><!-- /.bs-example  -->
+    </div><!-- /.row  -->
+</div><!-- /.container -->

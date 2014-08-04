@@ -7,117 +7,111 @@
     <!--  Vendor Styles -->
     <link href="../bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet" media="screen" />
     <link href="../bower_components/handsontable/dist/jquery.handsontable.css" rel="stylesheet" media="screen" />
-
     <link href="../bower_components/dropzone/downloads/css/dropzone.css" rel="stylesheet" media="screen" />
+
+
     <!--  App Styles -->
-    <link href="css/app.css" rel="stylesheet" media="screen" />
+    <link href="css/main.css" rel="stylesheet" media="screen" />
+    <link href="css/browsePageStyle.css" rel="stylesheet" media="screen" />
+    <link href="css/landingPageStyle.css" rel="stylesheet" media="screen" />
+    <link href="css/loading-animation.css" rel="stylesheet" media="screen" />
+    <link href="css/offcanvas-filter.css" rel="stylesheet" media="screen" />
+    <link href="css/navLargeStyle.css" rel="stylesheet" media="screen" />
+
     <link href="modules/metrics/css/metrics.css" rel="stylesheet" media="screen" />
 
     <link rel="icon" type="image/ico" href="img/favicon.ico" />
 </head>
 <body>
 
-<nav class="container small-nav">
-    <div class="col-lg-12">
-        <div class="pull-right">
-            <a id="muted" href="#">Publishing Notes</a>
-            <span class="muted">|</span>
-            <a id="muted" href="#">Privacy</a>
-            <a id="muted" href="#">Privacy</a>
-            <span class="muted">|</span>
-            <a id="muted" href="#">Contact</a>
-            <span class="muted">|</span>
-            <a id="muted" href="#/imprint">Imprint</a>
-            <span class="muted">|</span>
-            <a class="muted" href="#">Language</a>
-        </div>
-    </div>
-</nav><!-- /.nav -->
-<!-- Logo -->
-<div class="container">
-    <div class="logo-wrapper col-lg-12">
-        <a href="/app/"><img src="img/PolicyCompass-logo.png" alt="Policy Compass's Logo"></a>
-        <div class="pull-right sign-in-wrapper">
-            <a id="muted" href="#">Create</a>
-            <span class="muted">|</span>
-            <a href="#">Browse</a>
-            <span class="muted">|</span>
-            <a href="#">About</a>
-            <span class="muted">|</span>
-            <a href="#">I want to</a>
-            <span class="muted">&emsp;</span>
-            <a href="#">Register</a>
-            <span class="muted">or</span>
-            <button type="button" class="btn btn-default btn-sm">
-                <span class="glyphicon glyphicon-user"></span> Anmelden
-            </button>
-        </div>
-    </div><!-- /.logo-wrapper -->
-</div><!-- /.container -->
-
-<!-- Menu -->
-<div class="container">
-    <nav class="navbar navbar-default" role="navigation">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#/metrics">Metrics Manager</a>
-        </div>
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
-            <ul class="nav navbar-nav">
-                <li ng-class="{active: isActive('/metrics')}"><a href="#/metrics">Browse</a></li>
-                <li ng-class="{active: isActive('/metrics/create')}"><a href="#/metrics/create">Create Metric</a></li>
-            </ul>
-        </div><!-- /.navbar-collapse -->
-    </nav><!-- /.nav -->
-</div><!-- /.container -->
-
-<div class="container">
-    <div class="row" ng-show="false">
+<header class="navbar-fixed-top">
+    <nav class="container nav-small">
         <div class="col-lg-12">
-            <ol class="breadcrumb">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Library</a></li>
-                <li class="active">Data</li>
-            </ol>
-        </div>
-    </div><!-- /.row  -->
-    <div class="row">
-        <div class="col-lg-12 border-top"></div>
-    </div><!-- /.row  -->
-    <div class="row">
-            <div class="col-lg-12" id="main-view">
-                <p ng-show="error" class="alert alert-danger">{{ error }}</p>
-                <!-- Placeholder for views -->
-                <div ng-view=""></div>
+            <div class="pull-right">
+                <a  href="#">Publishing Notes</a>
+                <span class="muted">|</span>
+                <a  href="#">Privacy</a>
+                <span class="muted">|</span>
+                <a href="#">Contact</a>
+                <span class="muted">|</span>
+                <a  href="#">impressum and CO</a>
+                <span class="muted">|</span>
+                <a class="muted" href="#">Language</a>
+                <span class="muted">|</span>
+                <a class="muted" href="#/developers">Developers</a>
             </div>
-    </div><!-- /.row  -->
-    <div class="row">
-        <div class="col-lg-12 border-top"></div>
-    </div><!-- /.row  -->
-    <div class="row footer-wrapper">
-        <div class="col-lg-12">
-            <span class="muted pull-right">&copy;2014 Policy Compass</span>
-        </div><!-- /.col-lg-12 -->
-    </div><!-- /.row .footer-wrapper -->
-</div><!-- /.container -->
+        </div>
+    </nav><!-- /.nav -->
+    <!-- Logo -->
+    <div class="container">
+        <div class="logo-wrapper col-lg-12">
+            <a href="components.html"><img src="img/PolicyCompass-logo.png" alt="Policy Compass's Logo"></a>
+            <div class="pull-right nav-medium  nav-medium-effect sign-in-wrapper">
+                <a href="#" data-hover="Create">Create</a>
+                <span class="muted">|</span>
+                <a href="#/browse"  data-hover="Browse">Browse</a>
+                <span class="muted">|</span>
+                <a href="#" data-hover="About">About</a>
+                <span class="muted">|</span>
+                <a href="#" data-hover="I want to">I want to</a>
+                <span class="muted">&emsp;</span>
+                <a href="#" data-hover="Register">Register</a>
+                <span class="muted nav-text">OR</span>
+                <button type="button" class="btn btn-primary btn-sm">
+                    <span class="glyphicon glyphicon-user"></span> Anmelden
+                </button>
+            </div>
+        </div><!-- /.logo-wrapper -->
+    </div><!-- /.container -->
+    <!-- LandingPageContent -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 border-top"></div>
+        </div><!-- /.row  -->
+    </div>
+</header>
 
+
+
+<div ng-view=""></div>
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 border-bottom"></div>
+        </div><!-- /.row  -->
+        <div class="row footer-wrapper">
+            <div class="col-lg-12">
+                <a class="muted" href="#">Publishing Notes</a>
+                <span class="muted">|</span>
+                <a class="muted" href="#">Privacy</a>
+                <span class="muted">|</span>
+                <a class="muted" href="#">Contact</a>
+                <span class="muted">|</span>
+                <a class="muted" href="#">Impressum and CO</a>
+                <span class="muted pull-right">&copy;2013 Copyright by Fraunhofer-Gesellschaft</span>
+            </div><!-- /.col-lg-12 -->
+        </div><!-- /.row .footer-wrapper -->
+    </div>
+</footer>
 
 <!--  Vendor Libs -->
+<script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
 <script type="text/javascript" src="../bower_components/angular/angular.js"></script>
 <script type="text/javascript" src="../bower_components/angular-route/angular-route.js"></script>
 <script type="text/javascript" src="../bower_components/angular-resource/angular-resource.js"></script>
 <script type="text/javascript" src="../bower_components/angular-animate/angular-animate.js"></script>
 <script type="text/javascript" src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-<script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
+
 <script type="text/javascript" src="../bower_components/handsontable/dist/jquery.handsontable.full.js"></script>
 <script type="text/javascript" src="../bower_components/dropzone/downloads/dropzone.js"></script>
+<script type="text/javascript" src="../bower_components/modernizr/modernizr.js"></script>
+<script type="text/javascript" src="../bower_components/jasny-bootstrap/dist/js/jasny-bootstrap.min.js"></script>
+
+<!-- Custom Libs -->
+<script type="text/javascript" src="js/modernizr.custom.js"></script>
 
 <!--  App Libs -->
 <script type="text/javascript" src="config.js"></script>
@@ -125,6 +119,7 @@
 
 <script type="text/javascript" src="modules/common/common.js"></script>
 <script type="text/javascript" src="modules/common/controllers/common.js"></script>
+<script type="text/javascript" src="modules/common/directives/common.js"></script>
 
 <script type="text/javascript" src="modules/references/services/referenceService.js"></script>
 <script type="text/javascript" src="modules/references/directives/forms.js"></script>

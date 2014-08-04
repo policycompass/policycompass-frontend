@@ -1,3 +1,15 @@
+<div class="container containerWithSecondBar">
+
+
+<div class="row navbar-fixed-top secondBar">
+    <div class="glyphicon-effect-wrap glyphicon-effect">
+        <a  href="#"><span class="glyphicon glyphicon-style glyphicon-ok"></span><span class="glyphicon-effect-link">Example-link 1</span></a>
+        <a  href="#"><span class="glyphicon glyphicon-style glyphicon-ok"></span><span class="glyphicon-effect-link">Example-link 2</span></a>
+        <a  href="#"><span class="glyphicon glyphicon-style glyphicon-ok"></span><span class="glyphicon-effect-link">Example-link 3</span></a>
+        <a  href="#"><span class="glyphicon glyphicon-style glyphicon-ok"></span><span class="glyphicon-effect-link">Example-link 4</span></a>
+    </div>
+</div>
+
 <h1 ng-if="mode == 'create'"><span class="glyphicon glyphicon-pencil"></span> Create a New Metric</h1>
 <h1 ng-if="mode == 'edit'"><span class="glyphicon glyphicon-pencil"></span> Edit Metric</h1>
 
@@ -36,7 +48,7 @@
                 <input type="url" class="form-control" id="resourceUrl" name="resourceUrl" placeholder="http://www.datasource.example" ng-model="metric.resource_url">
             </div>
 
-            <div class="form-group" ng-controller="DateController">
+            <div class="form-group date-picker" ng-controller="DateController">
                 <label for="retrievalDate">Date of Retrieval</label>
                 <p class="input-group">
                     <input type="text"
@@ -54,7 +66,7 @@
                            ng-disabled="true"
                            close-text="Close" />
                     <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                        <a type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></a>
                     </span>
                 </p>
             </div>
@@ -210,3 +222,5 @@
 
 </form>
 <button ng-click="test()">hallo</button>
+
+</div>

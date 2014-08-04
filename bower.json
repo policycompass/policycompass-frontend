@@ -16,6 +16,8 @@
 	"bootstrap": "",
     "angular-bootstrap" : "",
     "handsontable": "",
-    "dropzone": ""
+    "dropzone": "",
+    "modernizr": "",
+    "jasny-bootstrap": ""
   }
 }
