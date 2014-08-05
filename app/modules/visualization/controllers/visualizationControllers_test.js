@@ -26,8 +26,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
             }
         );
     };
-
-
+	 	
+	
 }])
 
 //controler to list visualizations
@@ -67,8 +67,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
             }
         );
     };
-
-
+	 	
+	
 }])
 
 
@@ -76,10 +76,10 @@ angular.module('pcApp.visualization.controllers.visualization', [
 .controller('VisualizationsCreateController', ['$scope', '$modal', 'Event', 'Metric', 'Visualization', '$location', '$log', 'API_CONF',
 function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF) {
 
-	$( "#tabs" ).tabs();
-	
 	$scope.visualization = {};
 
+	//$scope.myOptions = $scope.events;
+	
 	this.historicalevent_he_id = '';
 	this.historicalevent_he_title = '';
 	this.historicalevent_he_startdate = '';
@@ -93,14 +93,71 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 		$scope.historicalevent_endDate = idselected['endEventDate'];
 		$scope.historicalevent_description = idselected['description'];
 	};
+	
 
 	$scope.createVisualization = function() {
         $scope.visualization.user_id = 1;        				     
         $scope.visualization.views_count = 0;
         $scope.visualization.visualization_type_id = 1;
         $scope.visualization.status_flag_id = 0;
+		
+		//read metrics selected and they configuration
+		var elements = document.getElementsByName("idMetricSelected[]");
+		var elemsLabel = document.getElementsByName("mySelectorLabelColumn[]");
+		var elemsColumn = document.getElementsByName("mySelectorDataColumn[]");
+		var elemsGroup = document.getElementsByName("mySelectorGroupingData[]");
 
-    
+		var dataConfig = []
+		for (i in elements) 
+		{
+			if (!isNaN(i))
+			{			
+				var row = {
+                    metric_id: elements[i].value,
+                    label: elemsLabel[i].value,
+                    column: elemsColumn[i].value,
+                    group: elemsGroup[i].value
+                };	
+                
+                dataConfig.push(row);
+			}			
+		}
+		console.log("dataConfig");
+    	console.log(dataConfig);
+    	
+    	
+    	//read graph configuration
+    	var showYAxes = document.getElementById("showYAxes").checked;
+    	var showLegend = document.getElementById("showLegend").checked;
+		var showLines = document.getElementById("showLines").checked;
+		var showPoints = document.getElementById("showPoints").checked;
+		var showLabels = document.getElementById("showLabels").checked;
+		var showGrid = document.getElementById("showGrid").checked;
+		
+		//read historical events selected
+		var idsHistoricalEventsSelected = document.getElementsByName("idHE[]");
+		var desriptionistoricalEventsSelected = document.getElementsByName("descHE[]");
+
+		var dataConfigHE = []
+		for (i in idsHistoricalEventsSelected) 
+		{
+			if (!isNaN(i))
+			{			
+				var row = {
+                    historical_event_id: idsHistoricalEventsSelected[i].value,
+                    description: desriptionistoricalEventsSelected[i].value,
+                };	
+               
+                dataConfigHE.push(row);
+			}			
+		}
+		console.log("dataConfigHE");
+    	console.log(dataConfigHE);
+    	
+    	//$scope.visualization.data = {
+        //    MetricsInVisualizations: dataConfig
+        //};
+        
         var data = [];
         var extra = [];
         /*
@@ -123,13 +180,14 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
             }
         });
 		*/
+		
         $scope.visualization.data = {
             table: data,
             extra_columns: extra
         };
-
+		
 		console.log($scope.visualization);
-
+		
 		Visualization.save($scope.visualization,function(value, responseHeaders){
 			$location.path('/visualizations/' + value.id);
 		},
@@ -138,9 +196,9 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 		}
 
 		);
-
+		
 	};
-
+	
 /*
 	$scope.createVisualization = function() 
 	{
@@ -175,7 +233,7 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 		
 	};
 	*/
-
+	
 	$scope.saveGraphAs = function()
 	{
 		alert("SAVE AS. Sorry, it's under construction!!!");
@@ -196,7 +254,7 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 				alert(error.data.message);
 			}
 	);
-
+	
 	$scope.events = Event.query(
             null,
             function (eventList) {
@@ -208,43 +266,43 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 
 	this.tabParent = 0;
 	this.tabSon = 0;
-
+		
 	$scope.selectTabParent = function(setTab) {
 		this.tabParent = setTab;
 		this.tabSon = 0;
 	};
-
+		
 	$scope.isSelectedParent = function(checkTab) {
 		return this.tabParent === checkTab;
 	};
-
+		
 	$scope.selectTabSon = function(setTab) {
 		$scope.typeToPlot=setTab;
 		this.tabSon = setTab;
 		//rePlotGraph();
 	};
-
+		
 	$scope.isSelectedSon = function(checkTab) {
 		return this.tabSon === checkTab;			
 	};
 
 
 	$scope.eventsToPlot = [];
-
-
+	
+	
 	//funtion to delete an historical event of the array
 	$scope.deleteContainerHistoricalEvent = function(divNameIn, index) {
 		divName=divNameIn+''+index;
 		var answer = confirm("Are you sure to delete this row?")
-
+			
 		if (answer)
 		{
 			$scope.eventsToPlot.splice((index-1), 1);
-			$scope.rePlotGraph();
+			rePlotGraph();
 		}
 	}
-
-
+		
+	
 	//funtion to add historical event to the array
 	$scope.addAnotherHistoricalEvent = function(divName) {
 			//console.log("1111111111");
@@ -302,7 +360,7 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 	$scope.deleteContainerFilterMetric = function(divNameIn, index) {
 		divName=divNameIn+''+index;
 		var answer = confirm("Are you sure to delete this row?")
-
+			
 		if (answer)
 		{
 			var hidden = document.getElementById("idMetricSelected_"+index).value;
@@ -314,55 +372,13 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 			//some code
 		}			
 	};
-
-
+	
 	$('#metrics-list').hide();
 	$scope.addMetrictoList= function() {	
 	 	$('#addmetricsspan').toggleClass('active');
         $('#metrics-list').toggle('slow');	
 	}
-
-	$scope.addFilterMetric = function(idMetric) {
-		var containerLink = document.getElementById("metric-list-item-item-"+idMetric);		
-    	$(containerLink).addClass('active');
-    	var str =  $(containerLink).attr("name");
-    	$('#' + str + '').addClass('active');	
-    	
-    	var containerId = document.getElementById("MetricSelectediId_"+idMetric).value;	
-    	var containerIndex = document.getElementById("MetricSelectediIndex_"+idMetric).value;
-    	console.log("**********************containerIndex="+containerIndex);
-		containerId.value = idMetric; 
-		
-		$('#MetricSelectediId_'+idMetric).val(idMetric);
-		
-
-		var myText = "from";
-		$('#MetricSelectorLabelColumn_'+containerIndex+' option[value="' + myText + '"]').prop('selected', true);
-		
-		var myText = "value";
-		$('#MetricSelectorDataColumn_'+containerIndex+' option[value="' + myText + '"]').prop('selected', true);
-
-		var myText = "grouping column";
-		$('#MetricselectorGroupingData_'+containerIndex+' option[value="' + myText + '"]').prop('selected', true);
-
-
-		selectedText = " ";
-		var myObject = {
-					'id':idMetric,
-					'name':selectedText,
-					'column':'from',
-					'value':'value',
-					'group':'grouping column'
-					};
-		
-					//console.log("a1");
-					
-		$scope.ListMetricsFilter.push(myObject);	
-		
-		$scope.rePlotGraph();	
-    	
-	};
-		
+	
 	$scope.displaycontentMetric = function(idMetric) {
 		var containerLink = document.getElementById("edit-metric-button-"+idMetric);
 		 $(containerLink).parent().next().toggle(200);
@@ -376,10 +392,34 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
     	$(".metric-list-item[name='"+ str +"']").removeClass('active');
     	var containerId = document.getElementById("MetricSelectediId_"+idMetric);	
 		containerId.value = ""; 
-		
-		$scope.rePlotGraph();
 	};
 
+	
+	$scope.addFilterMetric = function(idMetric) {
+		var containerLink = document.getElementById("metric-list-item-item-"+idMetric);		
+    	$(containerLink).addClass('active');
+    	var str =  $(containerLink).attr("name");
+    	$('#' + str + '').addClass('active');	
+    	
+    	var containerId = document.getElementById("MetricSelectediId_"+idMetric);	
+		containerId.value = idMetric; 
+
+		selectedText = "aaaa";
+		var myObject = {
+					'id':idMetric,
+					'name':selectedText,
+					'column':'from',
+					'value':'value',
+					'group':'grouping column'
+					};
+		
+					//console.log("a1");
+					
+		$scope.ListMetricsFilter.push(myObject);		
+    	
+	};
+	
+	
 	$scope.addContainerFilterMetric = function(divName) {
 			console.log("addContainerFilterMetric");
 			//console.log("divName="+divName);
@@ -401,7 +441,7 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 							//console.log(elems[i].id);
 							var IdCombo= elems[i].id;
 			        		var sel = document.getElementById(IdCombo);
-
+					
 							//console.log(sel.selectedIndex);		
 							if (sel.selectedIndex=="-1")
 							{
@@ -413,7 +453,7 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 							{
 			    				selectedProperty = sel.options[sel.selectedIndex].value;	
 			    				selectedProperty = selectedProperty.toLowerCase();
-
+			    					
 			    				//alert(selectedProperty);
 			    				if (selectedProperty==='')
 								{
@@ -440,7 +480,7 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 					}
 				}		
 			}
-
+				
 			//mySelectorDataColumn
 			if (continueAdding==0)
 			{
@@ -450,7 +490,7 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 			else
 			{
 				var IdCombo= 'metricsList';
-
+				
 				var t = document.getElementById(IdCombo);
 				//console.log(t);
 				var selectedText = t.options[t.selectedIndex].text;
@@ -465,9 +505,9 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 					{
 						ctrlExistMetric = 1;
 					}
-
+					
 				});
-
+				
 				if (ctrlExistMetric==1)
 				{
 					alert("The metric '"+selectedText+"' is selected")
@@ -481,11 +521,11 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 					'value':'value',
 					'group':'grouping column'
 					};
-
+		
 					//console.log("a1");
-
+					
 					$scope.ListMetricsFilter.push(myObject);
-
+					
 					//console.log("a2");
 					//console.log($scope.ListMetricsFilter);
 					/*
@@ -498,23 +538,23 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 					}
 					*/
 					//console.log("a4");
-
+					
 					//var element = document.getElementById(IdCombo);
 					//element.value = "";
 					//$("#"+IdCombo+" option:selected").remove();
 					//rePlotGraph();
 					//$scope.rePlotGraph();
 				}
-
+			
 			}
 /**********************/			
-
+			
 		};
+		
+		
 
-
-
-
-
+	
+	
 
 	$scope.rePlotGraph = function() {
 		console.log("----rePlotGraph---");
@@ -525,15 +565,13 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 		//we get all the x axis
 		//we get all the y axis
 		//we get all the grouping
-
-
+		
 		//var elems = document.getElementsByName("idMetricSelected[]");
 		var elems = document.getElementsByName("MetricSelectedId[]");
-		var elemsIndex = document.getElementsByName("MetricSelectediIndex[]");
 		
 		//console.log("elems.length="+elems.length);
 		//console.log("$scope.metricsFilter.length: "+$scope.metricsFilter.length);
-
+		
     	var cntMetrics = 0;
     	var arrayJsonFiles = [];
     	var arrayKeys = [];
@@ -546,52 +584,48 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 			if (!isNaN(i))
 			{
 				console.log("elems[i].id="+elems[i].id);
-				console.log("elems[i].value="+elems[i].value);
+				console.log("elems[i].value="+elems[i].value);		
 				if (elems[i].value>0)
-				{
-					//var jsonFile = elems[i].value;
-					var jsonFile = elems[i].id;
+				{	
+					var jsonFile = elems[i].value;
 					var jsonFileName = jsonFile;
 					jsonFile = "json/"+jsonFile;
 					//console.log("jsonFile");	
 					//console.log(jsonFile);	
 					//jsonFile = "http://localhost/d3js/testMMP/json/"+jsonFile;	
-					var str = elems[i].id;
+					var resIdMetric  =elems[i].value;
+					//var str = elems[i].id;
 					//var resIdMetric = str.replace("idMetricSelected_", "");
-					var resIdMetric = elems[i].value;
 					//jsonFile ="/api/v1/metricsmanager/metrics/"+resIdMetric;
 					jsonFile = API_CONF.METRICS_MANAGER_URL + "/metrics/"+resIdMetric;
-
+					
 					//jsonFile = "json/to_test_1.json";
-
+					
 					console.log("jsonFile="+jsonFile);
 					//jsonFile = "DataSource.json";			
 					if (jsonFile)
 					{
 						//console.log("jsonFile OK");
-						var str = elems[i].id;
+						//var str = elems[i].id;
 						//var puntero = str.replace("idMetricSelected_", "");
-						var puntero = elemsIndex[i].value;
-						
-						console.log("puntero="+puntero);				
+						//console.log(puntero);				
 						//var res = "selectorLabelColumn_"+puntero;
+						var res = "MetricSelectediIndex_"+resIdMetric;
+						var puntero = document.getElementById(res).value;
+						alert(puntero);
 						var res = "MetricSelectorLabelColumn_"+puntero;
-						
 						//console.log(res);
 						var valueXAxis = document.getElementById(res).value;				
 						//console.log(valueXAxis);				
-						
-						//res = "selectorDataColumn_"+puntero;
+						//res = "selectorDataColumn_"+puntero;				
 						res = "MetricSelectorDataColumn_"+puntero;
-										
 						var valueYAxis = document.getElementById(res).value;				
 						//console.log(valueYAxis);
-						
+					
 						//res = "selectorGroupingData_"+puntero;
 						res = "MetricselectorGroupingData_"+puntero;
-						
 						var valueGroup = document.getElementById(res).value;
-
+					
 						if (valueGroup)
 						{
 							arrayKeys.push(jsonFileName);
@@ -609,7 +643,7 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 				}
 			}
 		}
-
+	
 		var elemsHE_startDate = document.getElementsByName("startDateHE[]");
 		var elemsHE_endDate = document.getElementsByName("endDateHE[]");
 		var elemsHE_desc = document.getElementsByName("descHE[]");
@@ -651,12 +685,12 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 		*/
 		//console.log($scope.eventsToPlot.length);
 		//console.log($scope.eventsToPlot);
-
+		
 		//console.log(arrayJsonFiles);
 		var q = queue();
   		arrayJsonFiles.forEach(function(d,i) 
   		{
-  			console.log("-- arrayJsonFiles.forEach -- i="+i+".d="+d);
+  			//console.log("i="+i+".d="+d);
   			q = q.defer(d3.json, d);
   		
 	    	//add your csv call to the queue
@@ -665,7 +699,7 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
     		////})
     		//;
   		});
-
+	
   		//q.await(setDataToPlot);
   		q.await($scope.plotGraph);
   		
@@ -678,9 +712,9 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 
 
 
-
+	
 	$scope.plotGraph = function() {
-
+	
 		console.log("#############");
 		console.log(arguments);
 		console.log("#############");
@@ -691,10 +725,11 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 		{
 			control=0;
 		}
-		else {
+		else 
+		{
 			control=1;
 		}
-
+		
 		if (control==1)
 		{			
 			for (var i=1; i<arguments.length; i++)
@@ -706,29 +741,29 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 					selectorLabel = document.getElementById("MetricSelectorLabelColumn_"+i).value;
 					
 					//selectorLabel = selectorLabel.toLowerCase();
-
+				 
 				 	//selectorDataColumn = document.getElementById("selectorDataColumn_"+i).value;
 				 	selectorDataColumn = document.getElementById("MetricSelectorDataColumn_"+i).value;
 				 	
 					//selectorDataColumn = selectorDataColumn.toLowerCase();
-
+					
 					//console.log("selectorLabel="+selectorLabel)
 					//console.log("selectorDataColumn="+selectorDataColumn)					
 					//console.log(arguments[i]['data']['table']);
-
-
-
-
-					if (($scope.typeToPlot==='graph_line') || ($scope.typeToPlot==='graph_pie') || ($scope.typeToPlot==='graph_bars'))
+					
+					
+	
+					
+					if (($scope.typeToPlot==='graph_line') || ($scope.typeToPlot==='graph_pie') || ($scope.typeToPlot==='graph_graphbars'))
 					{
 						//var arrayValues = [];
 						//var arrayLabels = [];
 						//var arrayValuesXY = [];
-
+						
 						var arrayValues = [];
 						var arrayLabels  = [];
 						var arrayValuesXY  = [];
-
+	
 						var numbers1T = {"Key":arguments[i].title};
 						var cntPosArray=0;
 						for (var j=0; j<arguments[i]['data']['table'].length; j++)
@@ -749,13 +784,13 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 	  						}
 	  						//console.log("indexRow---->"+indexRow);
 							//console.log("object_size---->"+object_size);
-
+							
 							/*
 							arrayValues.push(arguments[i]['data']['table'][j][selectorDataColumn]);
 							arrayLabels.push(arguments[i]['data']['table'][j][selectorLabel]);
 							arrayValuesXY.push(arguments[i]['data']['table'][j][selectorLabel]+"|"+arguments[i]['data']['table'][j][selectorDataColumn]);
 							*/
-
+							
 							if(typeof arrayValues[indexRow] == 'undefined') {
 							    // does not exist
 							    arrayValues[indexRow]= new Array();
@@ -765,25 +800,25 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 							else {
 	    						// does exist
 							}
-
-
+	
+							
 							arrayValues[indexRow].push(arguments[i]['data']['table'][j][selectorDataColumn]);						
 							arrayLabels[indexRow].push(arguments[i]['data']['table'][j][selectorLabel]);
 							arrayValuesXY[indexRow].push(arguments[i]['data']['table'][j][selectorLabel]+"|"+arguments[i]['data']['table'][j][selectorDataColumn]);
 							cntPosArray = cntPosArray +1;
-
+							
 						}
 						//console.log("_!_!_!_!_!_!_!_");
 						//console.log("arrayValues.length=>"+arrayValues.length);
 						//console.log(arrayValues);
 						the_object = arrayValues;
-
-
+						
+						
 						var numbers1 = [];
 						for (key in the_object)	{
 							console.log("***key="+key);
-
-							if ($scope.typeToPlot==='graph_bars')
+							
+							if ($scope.typeToPlot==='graph_graphbars')
 							{
 								for (var j=0; j<arrayValues[key].length; j++)
 								//for (var j=0; j<4; j++)
@@ -801,8 +836,8 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 									};
 									numbers1.push(ObjectData);
 								}
-
-
+								
+															
 							}
 							else
 							{			
@@ -817,10 +852,10 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 								numbers1[cntNumbers]=ObjectTemporal;
 								cntNumbers = cntNumbers+1;
 							}
-
+							
 						}
-
-
+						
+	
 					}
 	        	}
 	       }
@@ -977,7 +1012,7 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 			height = 400,
 			//radius = Math.min(width, height) / 2;
 			radius = 200;
-
+					
 			dataset.forEach(function(d,i) {						
 				document.getElementById("container_graph").innerHTML = document.getElementById("container_graph").innerHTML + "<div class='pie' id='pie_"+i+"'></div>"
 				//datasetToSend = d.values;
@@ -999,14 +1034,14 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 					//'arrayYAxis': arrayYAxis,
 					//'arrayGrouping': arrayGrouping
 				});
-
+	                	
 	        	pieObj.render(datasetToSend);
 
 
 			});
-
+					
 		} 
-		else if ($scope.typeToPlot==='graph_bars')
+		else if ($scope.typeToPlot==='graph_graphbars')
 		{
 			document.getElementById("container_graph").innerHTML = "";
 			/*
@@ -1018,7 +1053,7 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
         	numbers1.push(ObjectData);
         	*/		
 			var datasetToSend = numbers1;
-
+			
 			//console.log(datasetToSend);
         			
 			var margin = {top: 20, right: 20, bottom: 30, left: 40},
@@ -1044,7 +1079,7 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 				//'arrayYAxis': arrayYAxis,
 				//'arrayGrouping': arrayGrouping
             });
-
+	                
 			barObj.render(datasetToSend, $scope.eventsToPlot);
 		}
 
@@ -1064,7 +1099,7 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
         console.log("show modal");
         
         var s= document.getElementById("startDatePosX");
-        console.log("s.value="+s.value);
+        console.log(s.value);
         
 	    dateRec = s.value;
     	console.log("dateRec="+dateRec+"--now="+Date.now());
@@ -1080,11 +1115,10 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
     	}
     	else
     	{
-    		//$scope.startDate = $filter("date")(Date.now(), 'yyyy-MM-dd');	
-    		$scope.startDate = "";
+    		$scope.startDate = $filter("date")(Date.now(), 'yyyy-MM-dd');	
     	}
 
-        //$scope.startDate = '01-01-2011';
+        $scope.startDate = '01-01-2011';
         //$scope.startDate = s.value;
 
         $scope.opts = {
@@ -1100,7 +1134,7 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
           };
 
 
-
+		
         $scope.opts.resolve.item = function() {
             return angular.copy({name:$scope.name, startDate:$scope.startDate}); // pass name to Dialog
         }
@@ -1119,8 +1153,8 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
           });
       };      
               
-
-
+	
+	
 }])
 
 
@@ -1141,3 +1175,5 @@ function($scope, $modalInstance, $modal, item) {
       };
 //};
 }])
+
+

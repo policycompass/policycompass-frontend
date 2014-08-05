@@ -844,10 +844,14 @@ return 0;}
 				}
 				else
 				{
-					posXinvers = self.xScale.invert(posX-self.margin.left);
-					var format = d3.time.format("%m-%d-%Y");
-					posXinvers= format(posXinvers);
-					posXinvers = posXinvers.replace(/-/g,"/");
+					if (self.xScale)
+					{
+						posXinvers = self.xScale.invert(posX-self.margin.left);
+						//posXinvers = self.xScaleInversa(posX-self.margin.left);
+						var format = d3.time.format("%m-%d-%Y");
+						posXinvers= format(posXinvers);
+						posXinvers = posXinvers.replace(/-/g,"/");
+					}
 				}				
       			//$('input[name="startDate"]').val(posXinvers);      			
       			$('input[name="startDatePosX"]').val(posXinvers);      		
