@@ -71,7 +71,7 @@
     text-align: center;
 }
 .metricIcon{
-    background:url(../img/iconMetric.png);
+    background:url(../../../img/iconMetric.png);
     background-size: 120px 120px;
     background-repeat: no-repeat;
     background-position: center;
@@ -81,7 +81,7 @@
 
 }
 .mapIcon{
-    background:url(../img/iconMap.png);
+    background:url(../../../img/iconMap.png);
     background-size: 120px 120px;
     background-repeat: no-repeat;
     background-position: center;

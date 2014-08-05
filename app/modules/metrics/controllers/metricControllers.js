@@ -119,7 +119,6 @@ angular.module('pcApp.metrics.controllers.metric', [
     $scope.mode = "create";
     $scope.gridvisible = true;
 
-
     $scope.metric = {};
     $scope.columns = {
         from: 0,
@@ -128,7 +127,7 @@ angular.module('pcApp.metrics.controllers.metric', [
     };
 
     $scope.test = function () {
-        alert($scope.grid.data);
+        throw { message:  "hallo"};
     };
 
 	$scope.createMetric = function() {

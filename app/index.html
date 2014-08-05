@@ -12,11 +12,11 @@
 
     <!--  App Styles -->
     <link href="css/main.css" rel="stylesheet" media="screen" />
-    <link href="css/browsePageStyle.css" rel="stylesheet" media="screen" />
-    <link href="css/landingPageStyle.css" rel="stylesheet" media="screen" />
+    <link href="modules/common/css/browsePageStyle.css" rel="stylesheet" media="screen" />
+    <link href="modules/common/css/landingPageStyle.css" rel="stylesheet" media="screen" />
     <link href="css/loading-animation.css" rel="stylesheet" media="screen" />
-    <link href="css/offcanvas-filter.css" rel="stylesheet" media="screen" />
-    <link href="css/navLargeStyle.css" rel="stylesheet" media="screen" />
+    <link href="modules/common/css/offcanvas-filter.css" rel="stylesheet" media="screen" />
+    <link href="modules/common/css/navLargeStyle.css" rel="stylesheet" media="screen" />
 
     <link href="modules/metrics/css/metrics.css" rel="stylesheet" media="screen" />
 
@@ -45,15 +45,15 @@
     <!-- Logo -->
     <div class="container">
         <div class="logo-wrapper col-lg-12">
-            <a href="components.html"><img src="img/PolicyCompass-logo.png" alt="Policy Compass's Logo"></a>
+            <a href="#"><img src="img/PolicyCompass-logo.png" alt="Policy Compass's Logo"></a>
             <div class="pull-right nav-medium  nav-medium-effect sign-in-wrapper">
-                <a href="#" data-hover="Create">Create</a>
+                <a href="#/create" data-hover="Create">Create</a>
                 <span class="muted">|</span>
                 <a href="#/browse"  data-hover="Browse">Browse</a>
                 <span class="muted">|</span>
-                <a href="#" data-hover="About">About</a>
+                <a href="#/about" data-hover="About">About</a>
                 <span class="muted">|</span>
-                <a href="#" data-hover="I want to">I want to</a>
+                <a href="#/i-want-to" data-hover="I want to">I want to</a>
                 <span class="muted">&emsp;</span>
                 <a href="#" data-hover="Register">Register</a>
                 <span class="muted nav-text">OR</span>
@@ -69,6 +69,7 @@
             <div class="col-lg-12 border-top"></div>
         </div><!-- /.row  -->
     </div>
+
 </header>
 
 
@@ -94,7 +95,9 @@
                 <span class="muted pull-right">&copy;2013 Copyright by Fraunhofer-Gesellschaft</span>
             </div><!-- /.col-lg-12 -->
         </div><!-- /.row .footer-wrapper -->
+        <p ng-show="error" class="alert alert-danger">{{ error }}</p>
     </div>
+
 </footer>
 
 <!--  Vendor Libs -->
@@ -110,16 +113,17 @@
 <script type="text/javascript" src="../bower_components/modernizr/modernizr.js"></script>
 <script type="text/javascript" src="../bower_components/jasny-bootstrap/dist/js/jasny-bootstrap.min.js"></script>
 
-<!-- Custom Libs -->
-<script type="text/javascript" src="js/modernizr.custom.js"></script>
 
 <!--  App Libs -->
 <script type="text/javascript" src="config.js"></script>
 <script type="text/javascript" src="app.js"></script>
 
+<script type="text/javascript" src="modules/developer/developer.js"></script>
+
 <script type="text/javascript" src="modules/common/common.js"></script>
 <script type="text/javascript" src="modules/common/controllers/common.js"></script>
 <script type="text/javascript" src="modules/common/directives/common.js"></script>
+<script type="text/javascript" src="modules/common/directives/submenus.js"></script>
 
 <script type="text/javascript" src="modules/references/services/referenceService.js"></script>
 <script type="text/javascript" src="modules/references/directives/forms.js"></script>

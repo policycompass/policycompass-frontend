@@ -3,7 +3,8 @@ var pcApp = angular.module('pcApp', [
     'ngRoute',
     'ui.bootstrap',
     'pcApp.metrics',
-    'pcApp.common'
+    'pcApp.common',
+    'pcApp.developer'
 ])
 
 /**
@@ -13,6 +14,7 @@ var pcApp = angular.module('pcApp', [
 .run(function($http) {
     $http.defaults.headers.common.Authorization = 'Token 1'
 })
+
 
 /**
  * Very simple central error handling

@@ -12,7 +12,7 @@
 <div class="row">
     <div class="col-lg-6 col-md-6">
         <h3>Header</h3>
-        <img src="img/header.png" class="img-responsive"/>
+        <img src="modules/developer/header.png" class="img-responsive"/>
     </div>
     <div class="col-lg-6 col-md-6 tabScrollable">
         <tabset justified="true">
@@ -37,7 +37,7 @@
         <!-- Logo -->
         <div class="container">
             <div class="logo-wrapper col-lg-12">
-                <a href="components.html"><img src="img/PolicyCompass-logo.png" alt="Policy Compass's Logo"></a>
+                <a href="components.html"><img src="../../img/PolicyCompass-logo.png" alt="Policy Compass's Logo"></a>
                 <div class="pull-right nav-medium  nav-medium-effect sign-in-wrapper">
                     <a href="#" data-hover="Create">Create</a>
                     <span class="muted">|</span>
@@ -80,7 +80,7 @@
             The content should include the following classes: „containerWithSecondBar“ and „Container“.
             When the second navbar is not needed only insert the class „container“.
         </p>
-        <img src="img/secondNavbar.png" class="img-responsive"/>
+        <img src="modules/developer/secondNavbar.png" class="img-responsive"/>
     </div>
     <div class="col-lg-6 col-md-6 tabScrollable">
         <tabset justified="true">
@@ -107,7 +107,7 @@
 <div class="row" style="margin-top: 20px">
     <div class="col-lg-6 col-md-6">
         <h3>Footer</h3>
-        <img src="img/footer.png" class="img-responsive"/>
+        <img src="modules/developer/footer.png" class="img-responsive"/>
     </div>
     <div class="col-lg-6 col-md-6 tabScrollable">
         <tabset justified="true">
@@ -961,12 +961,7 @@
             <tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active" disabled="tab.disabled">
                 {{tab.content}}
             </tab>
-            <tab select="alertMe()">
-                <tab-heading>
-                    <i class="glyphicon glyphicon-flash"></i> Alert!
-                </tab-heading>
-                I've got an HTML heading, and a select callback. Pretty cool!
-            </tab>
+
         </tabset>
         <hr />
         <tabset vertical="true" type="pills">
