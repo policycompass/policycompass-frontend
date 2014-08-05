@@ -15,6 +15,7 @@
 	"angular-mocks": "",
 	"bootstrap": "",
     "angular-bootstrap" : "",
-    "handsontable": ""
+    "handsontable": "",
+    "jqueryui": ""
   }
 }
