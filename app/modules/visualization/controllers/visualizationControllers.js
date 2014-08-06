@@ -387,13 +387,13 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 		
 		//$('#MetricSelectediId_'+idMetric).val(idMetric);
 		
-		console.log("idMetric="+idMetric);
+		//console.log("idMetric="+idMetric);
 		
-		console.log("$scope.MetricSelectediId_[idMetric]="+$scope.MetricSelectediId_[idMetric]);
+		//console.log("$scope.MetricSelectediId_[idMetric]="+$scope.MetricSelectediId_[idMetric]);
 		
 		$scope.MetricSelectediId_[idMetric]=idMetric;
 		
-		console.log("$scope.MetricSelectediId_[idMetric]="+$scope.MetricSelectediId_[idMetric]);
+		//console.log("$scope.MetricSelectediId_[idMetric]="+$scope.MetricSelectediId_[idMetric]);
 
 		var myText = "from";
 		//$('#MetricSelectorLabelColumn_'+containerIndex+' option[value="' + myText + '"]').prop('selected', true);
@@ -641,7 +641,7 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 
 					//jsonFile = "json/to_test_1.json";
 
-					console.log("jsonFile="+jsonFile);
+					//console.log("jsonFile="+jsonFile);
 					//jsonFile = "DataSource.json";			
 					if (jsonFile)
 					{
@@ -650,7 +650,7 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 						//var puntero = str.replace("idMetricSelected_", "");
 						var puntero = elemsIndex[i];
 						
-						console.log("puntero="+puntero);				
+						//console.log("puntero="+puntero);				
 						//var res = "selectorLabelColumn_"+puntero;
 						var res = "MetricSelectorLabelColumn_"+puntero;
 						
@@ -733,7 +733,7 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 		var q = queue();
   		arrayJsonFiles.forEach(function(d,i) 
   		{
-  			console.log("-- arrayJsonFiles.forEach -- i="+i+".d="+d);
+  			//console.log("-- arrayJsonFiles.forEach -- i="+i+".d="+d);
   			q = q.defer(d3.json, d);
   		
 	    	//add your csv call to the queue
@@ -758,10 +758,11 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 
 	$scope.plotGraph = function() {
 
-		console.log("#############");
-		console.log(arguments);
-		console.log("#############");
+		//console.log("#############");
+		//console.log(arguments);
+		//console.log("#############");
 		var numbers1 = [];
+		
 		var cntNumbers =0;
 		var control=0;
 		if ($scope.metricsFilter.length==0)
@@ -776,25 +777,22 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 		{			
 			for (var i=1; i<arguments.length; i++)
 			{
-				console.log(".i="+i);
+				//console.log(".i="+i);
+				//console.log(arguments)
 				if (!isNaN(i)) 
 				{
 					//selectorLabel = document.getElementById("selectorLabelColumn_"+i).value;
-					selectorLabel = document.getElementById("MetricSelectorLabelColumn_"+i).value;
-					
+					selectorLabel = document.getElementById("MetricSelectorLabelColumn_"+arguments[i].id).value;
+					//selectorLabel = $scope.MetricSelectorLabelColumn_[2];
+					//console.log("selectorLabel "+i+"= "+selectorLabel)
 					//selectorLabel = selectorLabel.toLowerCase();
-
 				 	//selectorDataColumn = document.getElementById("selectorDataColumn_"+i).value;
-				 	selectorDataColumn = document.getElementById("MetricSelectorDataColumn_"+i).value;
-				 	
+				 	selectorDataColumn = document.getElementById("MetricSelectorDataColumn_"+arguments[i].id).value;
+				 	//selectorDataColumn = $scope.MetricSelectorDataColumn_[2];
 					//selectorDataColumn = selectorDataColumn.toLowerCase();
-
 					//console.log("selectorLabel="+selectorLabel)
 					//console.log("selectorDataColumn="+selectorDataColumn)					
 					//console.log(arguments[i]['data']['table']);
-
-
-
 
 					if (($scope.typeToPlot==='graph_line') || ($scope.typeToPlot==='graph_pie') || ($scope.typeToPlot==='graph_bars'))
 					{
@@ -824,6 +822,11 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 	      							object_size++;
 	    						}
 	  						}
+	  						
+	  						if (indexRow=="")
+	  						{
+	  							indexRow = arguments[i].title;
+	  						}
 	  						//console.log("indexRow---->"+indexRow);
 							//console.log("object_size---->"+object_size);
 
@@ -843,7 +846,6 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 	    						// does exist
 							}
 
-
 							arrayValues[indexRow].push(arguments[i]['data']['table'][j][selectorDataColumn]);						
 							arrayLabels[indexRow].push(arguments[i]['data']['table'][j][selectorLabel]);
 							arrayValuesXY[indexRow].push(arguments[i]['data']['table'][j][selectorLabel]+"|"+arguments[i]['data']['table'][j][selectorDataColumn]);
@@ -856,9 +858,9 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 						the_object = arrayValues;
 
 
-						var numbers1 = [];
+						
 						for (key in the_object)	{
-							console.log("***key="+key);
+							//console.log("***key="+key);
 
 							if ($scope.typeToPlot==='graph_bars')
 							{
@@ -891,6 +893,7 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 								ObjectTemporal['ValueY']=arrayValues[key];
 								ObjectTemporal['XY']=arrayValuesXY[key];
 								ObjectTemporal['Type']='metric';
+								//console.log("ObjectTemporal="+ObjectTemporal);
 								numbers1[cntNumbers]=ObjectTemporal;
 								cntNumbers = cntNumbers+1;
 							}

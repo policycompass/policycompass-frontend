@@ -154,6 +154,8 @@ policycompass.viz.line = function(options)
 		//console.log("--------------");
 		
 		//console.log("valuesY="+valuesY);
+		//console.log("lines="+lines);
+		//console.log("lines[0].Values="+lines[0].Values);
 		if (!lines[0].Values)
 		{
 			lines[0].Values=1;
@@ -556,9 +558,9 @@ return 0;}
 				else
 				{
 					var posFinalXAxeY = self.width;
-					console.log(posFinalXAxeY)
+					//console.log(posFinalXAxeY)
 					posFinalXAxeY = posFinalXAxeY + 20*(i-1)
-					console.log(posFinalXAxeY)
+					//console.log(posFinalXAxeY)
 					transform = "translate("+posFinalXAxeY+",0)";
 					var yAxisLeft = d3.svg.axis().scale(self.yArray[i]).ticks(10).orient("right");
 				}
@@ -577,10 +579,8 @@ return 0;}
     		
     		if (evaluate===1)
     		{
-    			console.log("linesArray");
-    			console.log(linesArray);
-    			
-    			
+    			//console.log("linesArray");
+    			//console.log(linesArray);
     			data = linesArray.map(function(d,i) {
     			
     			//console.log("**********");
@@ -868,30 +868,26 @@ return 0;}
 	/* function to Plot data into the graph*/
 	self.render = function(dataToPlot, eventsData) {
 		
-		console.log("dataToPlot");
-		console.log(dataToPlot);
-		
-		console.log("eventsData");
-		console.log(eventsData);
+		//console.log("dataToPlot");
+		//console.log(dataToPlot);		
+		//console.log("eventsData");
+		//console.log(eventsData);
 
 
 		//console.log(eventsData);
 		if (Object.keys(dataToPlot).length === 0)
 		{
-			console.log("No data");
-			
+			//console.log("No data");			
 			self.svg.append("text")
               .text("No data to plot. Add metrics")
               .attr("class", "nodatatoplot")
               .attr("x", self.margin.left)
               .attr("y", self.margin.top)
-
 		}
 		else
 		{
 			var dataToPlotUpdate = dataToPlot;
-			self.drawLines(dataToPlotUpdate, eventsData);
-			
+			self.drawLines(dataToPlotUpdate, eventsData);			
 		}
 	}
 
