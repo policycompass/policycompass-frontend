@@ -151,6 +151,13 @@ policycompass.viz.pie = function(options)
 		
 		if (Object.keys(piesArray).length === 0)
 		{
+			console.log("No data");
+			
+			self.svg.append("text")
+              .text("No data to plot. Add metrics")
+              .attr("class", "nodatatoplot")
+              .attr("x", self.margin.left)
+              .attr("y", self.margin.top)
 			
 		}
 		else

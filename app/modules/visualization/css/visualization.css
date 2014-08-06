@@ -6,6 +6,10 @@
       stroke-width: 0;
 }
 
+.nodatatoplot {
+	font-size: 20px;
+}
+
 .axis path, .axis line {
 fill: none;
 stroke: #000;

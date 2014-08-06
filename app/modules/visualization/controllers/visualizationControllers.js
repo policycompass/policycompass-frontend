@@ -282,6 +282,12 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 	
 			$scope.eventsToPlot.push(datosInT);			
 			
+			$scope.historicalevent_id = '';
+			$scope.historicalevent_title = '';
+			$scope.historicalevent_startDate = '';
+			$scope.historicalevent_endDate = '';
+			$scope.historicalevent_description = '';
+			
 			
 			//console.log("list events");
 			//console.log($scope.eventsToPlot);
