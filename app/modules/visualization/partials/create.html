@@ -66,32 +66,32 @@
 						<div id="showFilter" ng-show="isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')" class="showFilter on_check">
 							<div id="div_showLegend" ng-show="isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')" class="on_check">
 								<label class="checkbox-inline">
-									<input type="checkbox" ng-click="rePlotGraph();" name="showLegend" checked id="showLegend" class="checkbox filterCheckBox"> Show Legend
+									<input ng-model="showLegend" type="checkbox" ng-click="rePlotGraph();" name="showLegend" ng-init="showLegend=true" id="showLegend" class="checkbox filterCheckBox"> Show Legend
 								</label>
 							</div>
 							<div id="div_showLines" ng-show="isSelectedSon('graph_line')" class="on_check">
 								<label class="checkbox-inline">
-									<input type="checkbox" ng-click="rePlotGraph();" name="showLines" checked id="showLines" class="checkbox filterCheckBox"> Show Lines
+									<input ng-model="showLines" type="checkbox" ng-click="rePlotGraph();" name="showLines" ng-init="showLines=true" id="showLines" class="checkbox filterCheckBox"> Show Lines
 								</label>
 							</div>
 							<div id="div_showPoints" ng-show="isSelectedSon('graph_line')" class="on_check">
 								<label class="checkbox-inline">
-									<input type="checkbox" ng-click="rePlotGraph();" name="showPoints" checked id="showPoints" class="checkbox filterCheckBox"> Show Points
+									<input ng-model="showPoints" type="checkbox" ng-click="rePlotGraph();" name="showPoints" ng-init="showPoints=true" id="showPoints" class="checkbox filterCheckBox"> Show Points
 								</label>
 							</div>
 							<div id="div_showLabels" ng-show="isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')" class="on_check">
 								<label class="checkbox-inline">
-									<input type="checkbox" ng-click="rePlotGraph();" name="showLabels" checked id="showLabels" class="checkbox filterCheckBox"> Show Labels
+									<input ng-model="showLabels" type="checkbox" ng-click="rePlotGraph();" name="showLabels" ng-init="showLabels=true" id="showLabels" class="checkbox filterCheckBox"> Show Labels
 								</label>		
 							</div>
 							<div id="div_showGrid" ng-show="isSelectedSon('graph_line') || isSelectedSon('graph_bars')" class="on_check">
 								<label class="checkbox-inline">
-									<input type="checkbox" ng-click="rePlotGraph();" name="showGrid" checked id="showGrid" class="checkbox filterCheckBox"> Show Grid
+									<input ng-model="showGrid" type="checkbox" ng-click="rePlotGraph();" name="showGrid" ng-init="showGrid=true" id="showGrid" class="checkbox filterCheckBox"> Show Grid
 								</label>
 							</div>
 							<div id="div_showYaxes" ng-show="isSelectedSon('graph_line')" class="on_check">
 								<label class="checkbox-inline">
-									<input type="checkbox" ng-click="rePlotGraph();" name="showYAxes" checked id="showYAxes" class="checkbox filterCheckBox"> Show only one Y axe
+									<input ng-model="showYAxes" type="checkbox" ng-click="rePlotGraph();" name="showYAxes" ng-init="showYAxes=true" id="showYAxes" class="checkbox filterCheckBox"> Show only one Y axe
 								</label>
 							</div>
 						</div>
@@ -110,8 +110,8 @@
 
 					<div class="designer-metrics" id="designer-metrics-num-{{metric.id}}" ng-repeat="metric in metrics track by $index">
 						<h4>{{metric.title}}</h4>
-						<input type="hidden" id="MetricSelectediId_{{metric.id}}" name="MetricSelectedId[]" value="">
-						<input type="hidden" id="MetricSelectediIndex_{{metric.id}}" name="MetricSelectediIndex[]" value="{{$index+1}}">
+						<input type="hidden" ng-model="MetricSelectediId_[metric.id]" id="MetricSelectediId_{{metric.id}}" name="MetricSelectedId[]" value="">
+						<input type="hidden" ng-model="MetricSelectediIndex_[metric.id]" ng-init="MetricSelectediIndex_[metric.id]=$index+1" id="MetricSelectediIndex_{{metric.id}}" name="MetricSelectediIndex[]" value="{{$index+1}}">
 						<div class="metric-buttons">
 			    			<div class="metric-button metric-forms-button" ng-click="displaycontentMetric(metric.id);" id="edit-metric-button-{{metric.id}}"></div>
 					    	<div class="metric-button metric-delete-button" ng-click="deleteMetricFromList(metric.id);" id="delete-metric-button-{{metric.id}}"></div>
@@ -119,9 +119,9 @@
 						<div class="metric-forms">
 							<div class="metric-form-item">
 								<label for="">From</label>
-								<select ng-change="rePlotGraph();" ng-model="metric.column" id="MetricSelectorLabelColumn_{{$index+1}}" name="MetricSelectorLabelColumn[]" class="form-select">
+								<select ng-change="rePlotGraph();" ng-model="MetricSelectorLabelColumn_[$index+1]" id="MetricSelectorLabelColumn_{{$index+1}}" name="MetricSelectorLabelColumn[]" class="form-select">
 									<option value="label column">Label Column</option>
-									<option selected value="from">From</option>
+									<option value="from">From</option>
 									<option value="to">To</option>
 									<option value="category">Category</option>
 									<option value="value">Value</option>												
@@ -129,18 +129,18 @@
 							</div>
 							<div class="metric-form-item">
 								<label for="">Value</label>
-								<select ng-change="rePlotGraph();" ng-model="metric.value" id="MetricSelectorDataColumn_{{$index+1}}" name="MetricSelectorDataColumn[]" class="form-select">
+								<select ng-change="rePlotGraph();" ng-model="MetricSelectorDataColumn_[$index+1]" id="MetricSelectorDataColumn_{{$index+1}}" name="MetricSelectorDataColumn[]" class="form-select">
 									<option value="row column">Row Column</option>
 									<option value="from">From</option>
 									<option value="to">To</option>
 									<option value="category">Category</option>
-									<option selected value="value">Value</option>	    				
+									<option value="value">Value</option>	    				
 							    </select>	
 							</div>
 							<div class="metric-form-item">
 								<label for="">Grouping</label>
-								<select ng-change="rePlotGraph();" ng-model="metric.group" id="MetricselectorGroupingData_{{$index+1}}" name="MetricselectorGroupingData[]" class="form-select">
-									<option selected value="grouping column">Grouping Column</option>
+								<select ng-change="rePlotGraph();" ng-model="MetricselectorGroupingData_[$index+1]" id="MetricselectorGroupingData_{{$index+1}}" name="MetricselectorGroupingData[]" class="form-select">
+									<option value="grouping column">Grouping Column</option>
 								</select>
 							</div>
 				   		</div>
@@ -156,17 +156,18 @@
 					<div ng-if="eventsToPlot.length > 0 " id="listHistoricalEventsToPlot">						
 						<div class="designer-metrics ng-scope active" id="designer-metrics-he-num-{{$index+1}}" ng-repeat="event in eventsToPlot track by $index">
 							<h4>{{event.title}}</h4>
-							<input type="hidden" id="titleHE{{$index+1}}" name="titleHE[]" value="{{event.title}}">
-							<input type="hidden" id="startDateHE{{$index+1}}" name="startDateHE[]" value="{{event.startDate}}">
-							<input type="hidden" id="endDateHE{{$index+1}}" name="endDateHE[]" value="{{event.endDate}}">					    	
-							<input type="hidden" id="descHE{{$index+1}}" name="descHE[]" value="{{event.desc}}">
+							<input type="hidden" ng-model="idHE[$index+1]" id="idHE{{$index+1}}" name="idHE[]" value="{{event.id}}">
+							<input type="hidden" ng-model="titleHE[$index+1]" id="titleHE{{$index+1}}" name="titleHE[]" value="{{event.title}}">
+							<input type="hidden" ng-model="startDateHE[$index+1]" id="startDateHE{{$index+1}}" name="startDateHE[]" value="{{event.startDate}}">
+							<input type="hidden" ng-model="endDateHE[$index+1]" id="endDateHE{{$index+1}}" name="endDateHE[]" value="{{event.endDate}}">					    	
+							<input type="hidden" ng-model="descHE[$index+1]" id="descHE{{$index+1}}" name="descHE[]" value="{{event.desc}}">
 							<div class="contentHE">
 								<div ng-if="event.startDate"><label for="">From:</label> {{event.startDate}} </div>
 								<div ng-if="event.endDate"><label for="">To:</label> {{event.endDate}} </div>
 								<div ng-if="event.desc"><label for="">Description:</label> {{event.desc}} </div>
 							</div>
 							<div class="metric-buttons active">		    	
-			    				<div class="metric-button metric-delete-button" ng-click="deleteContainerHistoricalEvent('row_config_',$index+1)" id="delete-metric-button-{{metric.id}}">x</div>
+			    				<div class="metric-button metric-delete-button" ng-click="deleteContainerHistoricalEvent('row_config_',$index+1)" id="delete-metric-button-{{metric.id}}"></div>
 			  				</div>
 						</div>
 					</div>
