@@ -86,6 +86,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, $log, API_CONF) {
 
 	console.log("controller VisualizationsEditController");
+	$scope.mode = "edit";
 	
 	//funtion to reset form
 	$scope.revertVisualization = function() {
@@ -99,9 +100,6 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 		}	
 	
 	};
-	
-		
-	$scope.mode = "edit";
         
     $scope.visualization = Visualization.get({id: $routeParams.visualizationId},
         function(visualization) {
@@ -268,6 +266,18 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 	$scope.MetricSelectorLabelColumn_[1]='to';
 	$scope.MetricSelectorDataColumn_[1] ='value';
 	$scope.MetricselectorGroupingData_[1] = 'grouping column';
+
+	selectedText = " ";
+	var myObject = {
+		'id':1,
+		'name':'test',
+		'column':'to',
+		'value':'value',
+		'group':'grouping column'
+	};
+		
+	//console.log("a1");					
+	$scope.ListMetricsFilter.push(myObject);	
 		
 
 	$scope.name = 'Add an event';
@@ -434,6 +444,8 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 	'$log', 
 	'API_CONF',
 function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, $log, API_CONF) {
+	console.log('VisualizationsCreateController');
+	$scope.mode = "create";
 
 	//$( "#tabs" ).tabs();
 	//funtion to reset form
@@ -970,9 +982,6 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 		//var elemsIndex = document.getElementsByName("MetricSelectediIndex[]");
 		var elemsIndex = $scope.MetricSelectediIndex_;
 		
-		
-	
-		
 		//console.log("elems.length="+elems.length);
 		//console.log("$scope.metricsFilter.length: "+$scope.metricsFilter.length);
 
@@ -1293,67 +1302,7 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 		}
 		else if ($scope.typeToPlot==='graph_line')
 		{
-			/*
-			var arrayValues = [];
-			arrayValues.push(130);
-			arrayValues.push(200);
-			arrayValues.push(180);
-			
-			var arrayLabels = [];
-			arrayLabels.push("06/11/2010");
-			arrayLabels.push("08/12/2012");
-			arrayLabels.push("12/31/2013");
-			
-			
-			var arrayValuesXY = [];
-			arrayValuesXY.push("06/11/2010|130");
-			arrayValuesXY.push("08/12/2012|200");
-			arrayValuesXY.push("12/31/2013|180");
-			
-			var numbers1T = {"Key":"test1"};
 
-			var numbers1 = [];
-			var ObjectTemporal = new Object();
-			ObjectTemporal['Key']="test1";
-			ObjectTemporal['Values']=arrayValues;
-			ObjectTemporal['Labels']=arrayLabels;
-			ObjectTemporal['ValueX']=arrayLabels;
-			ObjectTemporal['ValueY']=arrayValues;
-			ObjectTemporal['XY']=arrayValuesXY;
-			ObjectTemporal['Type']='metric';
-							
-			numbers1[0]=ObjectTemporal;
-
-
-			var arrayValues = [];
-			arrayValues.push(400);
-			arrayValues.push(1400);
-			arrayValues.push(750);
-			
-			var arrayLabels = [];
-			arrayLabels.push("05/10/2010");
-			arrayLabels.push("07/11/2012");
-			arrayLabels.push("11/30/2014");
-			
-			
-			var arrayValuesXY = [];
-			arrayValuesXY.push("05/10/2010|400");
-			arrayValuesXY.push("07/11/2012|1400");
-			arrayValuesXY.push("11/30/2014|750");
-			
-			var numbers1T = {"Key":"test2"};
-
-
-			var ObjectTemporal = new Object();
-			ObjectTemporal['Key']="test2";
-			ObjectTemporal['Values']=arrayValues;
-			ObjectTemporal['Labels']=arrayLabels;
-			ObjectTemporal['ValueX']=arrayLabels;
-			ObjectTemporal['ValueY']=arrayValues;
-			ObjectTemporal['XY']=arrayValuesXY;
-			ObjectTemporal['Type']='metric';
-			numbers1[1]=ObjectTemporal;
-			*/
 			document.getElementById("container_graph").innerHTML = "";
                 	
 			if (numbers1)
@@ -1381,43 +1330,17 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 						//'arrayYAxis': arrayYAxis,
 						//'arrayGrouping': arrayGrouping
 					});
-                		
-				barLine.render(numbers1, $scope.eventsToPlot);
+                
+                if (numbers1.length>0)
+                {
+                	barLine.render(numbers1, $scope.eventsToPlot);
+                }
+				
 			}
 		}				
 		else if ($scope.typeToPlot==='graph_pie')
 		{
-			/*
-			var arrayValues = [];
-			arrayValues.push(130);
-			arrayValues.push(200);
-			arrayValues.push(180);
-			
-			var arrayLabels = [];
-			arrayLabels.push("06/11/2010");
-			arrayLabels.push("08/12/2012");
-			arrayLabels.push("12/12/2013");
-			
-			var arrayValuesXY = [];
-			arrayValuesXY.push("06/11/2010|130");
-			arrayValuesXY.push("08/12/2012|200");
-			arrayValuesXY.push("12/12/2013|180");
-			
-			var numbers1T = {"Key":"test1"};
 
-			var numbers1 = [];
-			var ObjectTemporal = new Object();
-			ObjectTemporal['Key']="test1";
-			ObjectTemporal['Values']=arrayValues;
-			ObjectTemporal['Labels']=arrayLabels;
-			ObjectTemporal['ValueX']=arrayLabels;
-			ObjectTemporal['ValueY']=arrayValues;
-			ObjectTemporal['XY']=arrayValuesXY;
-			ObjectTemporal['Type']='metric';
-							
-			numbers1[0]=ObjectTemporal;
-		
-			*/
 			var dataset = numbers1;
 
 
@@ -1457,14 +1380,7 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 		else if ($scope.typeToPlot==='graph_bars')
 		{
 			document.getElementById("container_graph").innerHTML = "";
-			/*
-			var numbers1 = [];
-			var ObjectData = {'Category': "1", 'From':"01/01/2010", 'Key':"aaa", "To":"02/02/2010", "Value":"10","ValueX":"01/01/2010","ValueY":"10", "XY":"01/01/2010|10"};
-			numbers1.push(ObjectData);
-			
-			var ObjectData = {'Category': "1", 'From':"01/01/2011", 'Key':"bb", "To":"02/02/2011", "Value":"40","ValueX":"01/01/2011","ValueY":"40", "XY":"01/01/2011|40"};
-        	numbers1.push(ObjectData);
-        	*/		
+	
 			var datasetToSend = numbers1;
 
 			//console.log(datasetToSend);
@@ -1492,8 +1408,13 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 				//'arrayYAxis': arrayYAxis,
 				//'arrayGrouping': arrayGrouping
             });
-
-			barObj.render(datasetToSend, $scope.eventsToPlot);
+			//console.log("----------------->>>>>datasetToSend");
+			//console.log(datasetToSend.length);
+			
+			if (datasetToSend.length>0)
+			{
+				barObj.render(datasetToSend, $scope.eventsToPlot);
+			}
 		}
 
 
