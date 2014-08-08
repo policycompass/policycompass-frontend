@@ -9,6 +9,53 @@ angular.module('pcApp.metrics.controllers.metric', [
             $scope.step = 'one';
             $scope.columnselection = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
 
+            $scope.extracolumns = [];
+            $scope.addExtraColumn = function () {
+
+                var c = {
+                    i: $scope.extracolumns.length + 1,
+                    column: {},
+                    value: {}
+                };
+                $scope.extracolumns.push(c);
+
+            };
+            $scope.removeExtraColumn = function (e) {
+                var index = $scope.extracolumns.indexOf(e);
+                $scope.extracolumns.splice(index, 1);
+
+            };
+
+            $scope.convertRawInput = function () {
+                var data = [];
+                var extra = [];
+
+                $scope.extracolumns.forEach(function (extraColumn) {
+                    extra.push(extraColumn.value);
+                });
+
+                $scope.grid.data.forEach(function(e){
+                    if(e[0] != null && e[0] != ""){
+                        var row = {
+                            from: e[$scope.columns.from],
+                            to: e[$scope.columns.to],
+                            value: e[$scope.columns.value]
+                        };
+
+                        $scope.extracolumns.forEach(function (extraColumn) {
+                            row[extraColumn.value] = e[extraColumn.column];
+                        });
+
+                        data.push(row);
+                    }
+                });
+
+                return {
+                    table: data,
+                    extra_columns: extra
+                };
+            };
+
             $scope.tabsel = {
                 grid: true,
                 file: false
@@ -112,7 +159,8 @@ angular.module('pcApp.metrics.controllers.metric', [
         '$location',
         '$log',
         'helper',
-        function($scope, Metric, $location, $log, helper) {
+        '$filter',
+        function($scope, Metric, $location, $log, helper, $filter) {
 
     helper.baseCreateEditController($scope);
 
@@ -126,37 +174,10 @@ angular.module('pcApp.metrics.controllers.metric', [
         value: 2
     };
 
-    $scope.test = function () {
-        throw { message:  "hallo"};
-    };
-
 	$scope.createMetric = function() {
+        $scope.metric.resource_issued = $filter('date')($scope.metric.resource_issued, 'yyyy-MM-dd');
         $scope.metric.user_id = 1;
-
-        var data = [];
-        var extra = [];
-        if($scope.columns.category) {
-            extra.push($scope.columns.category);
-        }
-
-        $scope.grid.data.forEach(function(e){
-            if(e[0] != null){
-                var row = {
-                    from: e[$scope.columns.from],
-                    to: e[$scope.columns.to],
-                    value: e[$scope.columns.value]
-                };
-                if($scope.columns.category) {
-                    row[$scope.columns.category] = e[$scope.columns.extra];
-                }
-                data.push(row);
-            }
-        });
-
-        $scope.metric.data = {
-            table: data,
-            extra_columns: extra
-        };
+        $scope.metric.data = $scope.convertRawInput();
 
 		Metric.save($scope.metric,function(value, responseHeaders){
 			$location.path('/metrics/' + value.id);
@@ -177,7 +198,8 @@ angular.module('pcApp.metrics.controllers.metric', [
         '$location',
         '$log',
         'helper',
-    function($scope, $routeParams, Metric, $location, $log, helper) {
+        '$filter',
+    function($scope, $routeParams, Metric, $location, $log, helper, $filter) {
 
         helper.baseCreateEditController($scope);
         $scope.mode = "edit";
@@ -198,45 +220,27 @@ angular.module('pcApp.metrics.controllers.metric', [
             $scope.gridvisible = true;
             $scope.metric.policyDomain = ["1","2"];
             $scope.metric.external_resource = 1;
-            $scope.columns.category =  $scope.metric.data.extra_columns[0];
-        });
 
+            for(var i=0; i < $scope.metric.data.extra_columns.length; i++) {
+                $scope.extracolumns.push({
+                    i: i + 1,
+                    column: i + 3,
+                    value: $scope.metric.data.extra_columns[i]
+                });
+            }
+
+        });
 
         $scope.columns = {
             from: 0,
             to: 1,
-            value: 2,
-            extra: 3
+            value: 2
         };
 
-
         $scope.createMetric = function() {
+            $scope.metric.resource_issued = $filter('date')($scope.metric.resource_issued, 'yyyy-MM-dd');
             $scope.metric.user_id = 1;
-
-            var data = [];
-            var extra = [];
-            if($scope.columns.category) {
-                extra.push($scope.columns.category);
-            }
-
-            $scope.grid.data.forEach(function(e){
-                if(e[0] != null){
-                    var row = {
-                        from: e[$scope.columns.from],
-                        to: e[$scope.columns.to],
-                        value: e[$scope.columns.value]
-                    };
-                    if($scope.columns.category) {
-                        row[$scope.columns.category] = e[$scope.columns.extra];
-                    }
-                    data.push(row);
-                }
-            });
-
-            $scope.metric.data = {
-                table: data,
-                extra_columns: extra
-            };
+            $scope.metric.data = $scope.convertRawInput();
 
             Metric.update($scope.metric,function(value, responseHeaders){
                     $location.path('/metrics/' + value.id);

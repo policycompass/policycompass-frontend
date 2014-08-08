@@ -129,22 +129,22 @@
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div class="row" ng-repeat="e in extracolumns">
                         <div class="col-lg-2 pc-datagrid-mainlabel">
-                            Extra Data
+                            Extra Data  <a href="" ng-click="removeExtraColumn(e)"><span class="glyphicon glyphicon-remove"></span></a>
                         </div>
                         <div class="col-lg-5">
-                            <div class="form-group" ng-class="{'has-error': metricForm.extracolumn.$dirty && metricForm.extracolumn.$invalid}">
-                                <label for="extracolumn" class="control-label">Column</label>
-                                <select class="form-control pc-datagrid-columnselect" ng-model="columns.extra" id="extracolumn">
-                                    <option value="{{ $index }}" ng-repeat="s in columnselection"  ng-selected="$index == columns.extra">{{ s }} </option>
+                            <div class="form-group">
+                                <label for="extracolumn_{{ e.i }}" class="control-label">Column</label>
+                                <select class="form-control pc-datagrid-columnselect" ng-model="e.column" id="extracolumn_{{ e.i }}">
+                                    <option value="{{ $index }}" ng-repeat="s in columnselection"  ng-selected="$index == e.column">{{ s }}</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-lg-5">
-                            <div class="form-group" ng-class="{'has-error': metricForm.categorycolumn.$dirty && metricForm.categorycolumn.$invalid}">
-                                <label for="categorycolumn" class="">Category</label>
-                                <select class="form-control" ng-model="columns.category" id="categorycolumn">
+                            <div class="form-group">
+                                <label for="categorycolumn_{{ e.i }}" class="">Category</label>
+                                <select class="form-control" ng-model="e.value" id="categorycolumn_{{ e.i }}">
                                     <option value="Country">Country</option>
                                     <option value="City">City</option>
                                     <option value="Age Class">Age Class</option>
@@ -152,6 +152,12 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <button ng-click="addExtraColumn()" class="btn btn-primary pull-right">Add Extra Field</button>
+                        </div>
+                    </div>
+
 
 
                     </tab>
