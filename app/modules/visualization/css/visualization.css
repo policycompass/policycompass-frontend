@@ -1,3 +1,10 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700);
+@font-face {
+  font-family: 'iconos';
+  src: url("../fonts/icomoon.eot");
+  src: url("../fonts/icomoon.eot?#iefix") format("embedded-opentype"), url("../fonts/icomoon.woff") format("woff"), url("../fonts/icomoon.ttf") format("truetype"), url("../fonts/icomoon.svg#iconosRegular") format("svg");
+}
+
 .grid .tick {
     stroke: lightblue;
     opacity: 0.2;
@@ -70,4 +77,124 @@ shape-rendering: crispEdges;
 .contentHE {
 	font-weight: normal;
 	padding: 0 40px;
+}
+
+
+
+
+
+
+
+
+
+.createvisualization .designer-metrics:before,
+.createvisualization .button:before,
+.createvisualization li:before,
+.createvisualization .metric-button:before,
+.createvisualization .field-content li:before,
+.createvisualization .a:before {
+  padding: 0 0.3em;
+  font-family: iconos;
+}
+
+
+/* line 1, ../sass/components/_metrics.scss */
+.createvisualization .designer-metrics {
+  background: #f2f2f2;
+  overflow: hidden;
+  padding: 10px 20px;
+  position: relative;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  display: none;
+  margin-bottom: 20px;
+}
+/* line 11, ../sass/components/_metrics.scss */
+.createvisualization .designer-metrics.active {
+  display: block;
+}
+/* line 14, ../sass/components/_metrics.scss */
+.createvisualization .designer-metrics label {
+  display: block;
+}
+/* line 17, ../sass/components/_metrics.scss */
+.createvisualization .designer-metrics h3, 
+.createvisualization .designer-metrics h4 {
+  margin: 0 0 1em;
+}
+/* line 20, ../sass/components/_metrics.scss */
+.createvisualization .designer-metrics h4 {
+  font-weight: normal;
+  padding: 0 40px;
+}
+/* line 25, ../sass/components/_metrics.scss */
+.createvisualization .designer-metrics:before {
+  content: "\e614";
+  position: absolute;
+  font-size: 35px;
+  left: 0;
+  color: #b3b3b3;
+}
+
+/* line 66, ../sass/components/_metrics.scss */
+.createvisualization .metrics-list {
+  list-style-type: none;
+  list-style-image: none;
+  margin: 0;
+  padding: 0;
+  color: #999999;
+  margin-bottom: 1em;
+}
+/* line 71, ../sass/components/_metrics.scss */
+.createvisualization .metrics-list li {
+  margin: 2px;
+  padding: 2px;
+  padding-left: 1.2em;
+  position: relative;
+}
+/* line 75, ../sass/components/_metrics.scss */
+.createvisualization .metrics-list li:before {
+  content: "\e014";
+  position: absolute;
+  left: -0.5em;
+  top: 2px;
+}
+/* line 83, ../sass/components/_metrics.scss */
+.createvisualization .metrics-list li.active {
+  color: #1a1a1a;
+}
+
+
+/* line 42, ../sass/components/_metrics.scss */
+.createvisualization .metric-button {
+  position: absolute;
+  top: 10px;
+  right: 35px;
+}
+/* line 49, ../sass/components/_metrics.scss */
+.createvisualization .metric-button:before {
+  content: "\e600";
+}
+
+
+/* line 58, ../sass/components/_metrics.scss */
+.createvisualization .metric-delete-button {
+  right: 10px;
+}
+/* line 60, ../sass/components/_metrics.scss */
+.createvisualization .metric-delete-button:before {
+  content: "\e14b";
+  color: #ad5353;
+}
+
+
+
+/* line 83, ../sass/components/_metrics.scss */
+.createvisualization .metrics-list li.active {
+  color: #1a1a1a;
+}
+/* line 85, ../sass/components/_metrics.scss */
+.createvisualization .metrics-list li.active:before {
+  content: "\e001";
+  color: #53ad56;
 }

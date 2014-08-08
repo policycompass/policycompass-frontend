@@ -605,7 +605,12 @@ policycompass.viz.barsMultiple = function(options) {
 		
 		if (Object.keys(dataIn).length === 0)
 		{
-			
+			//console.log("No data");			
+			self.svg.append("text")
+              .text("No data to plot. Add metrics")
+              .attr("class", "nodatatoplot")
+              .attr("x", self.margin.left)
+              .attr("y", self.margin.top)			
 		}
 		else
 		{

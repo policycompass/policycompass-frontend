@@ -76,7 +76,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 .controller('VisualizationsCreateController', ['$scope', '$modal', 'Event', 'Metric', 'Visualization', '$location', '$log', 'API_CONF',
 function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF) {
 
-	$( "#tabs" ).tabs();
+	//$( "#tabs" ).tabs();
 	
 	
 	$scope.MetricSelectediId_ = [];
@@ -112,8 +112,9 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
         $scope.visualization.visualization_type_id = 1;
         $scope.visualization.status_flag_id = 0;
 
-    
+    	
         var dataConfig = [];
+        dataConfig['graphSelected'] = $scope.typeToPlot;
         dataConfig['showLegend'] = $scope.showLegend;
         dataConfig['showLines'] = $scope.showLines;
         dataConfig['showPoints'] = $scope.showPoints;
@@ -141,8 +142,9 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 		for (i in $scope.MetricSelectediIndex_)
 		{
 			//console.log("i="+i+"---$scope.MetricSelectediIndex_["+i+"]="+$scope.MetricSelectediIndex_[i])
-			if (!isNaN($scope.MetricSelectediIndex_[i]))
+			if (!isNaN($scope.MetricSelectediId_[i]))
 			{
+				console.log("$scope.MetricSelectediId_["+i+"]="+$scope.MetricSelectediId_[i]);
 				var myindex = $scope.MetricSelectediIndex_[i];
 				//console.log("myindex="+myindex);
 				
@@ -196,12 +198,16 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
         var extra = [];
 		$scope.visualization.data = {
             table: data,
-            extra_columns: extra
+            extra_columns: extra,
+            dataConfig: dataConfig,
+            dataMetrics: dataMetrics,
+            dataHE: dataHE
         };
 
-		//console.log("------------------");
-		//console.log($scope.visualization);
-
+		console.log("------------------");
+		console.log($scope.visualization);
+		console.log("------------------");
+		
 		Visualization.save($scope.visualization,function(value, responseHeaders){
 			$location.path('/visualizations/' + value.id);
 		},
@@ -368,9 +374,9 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 	};
 
 
-	$('#metrics-list').hide();
+	//$('#metrics-list').hide();
 	$scope.addMetrictoList= function() {	
-	 	$('#addmetricsspan').toggleClass('active');
+	 	$('#addmetricsbutton').toggleClass('active');
         $('#metrics-list').toggle('slow');	
 	}
 
@@ -432,18 +438,24 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 	};
 	
 	$scope.deleteMetricFromList = function(idMetric) {
-		var containerLink = document.getElementById("delete-metric-button-"+idMetric);		
-		$(containerLink).parent().parent().removeClass('active');
-		var str =  $(containerLink).parent().parent().attr("id");
-    	$(".metric-list-item[name='"+ str +"']").removeClass('active');
-    	
-    	//var containerId = document.getElementById("MetricSelectediId_"+idMetric);	
-		//containerId.value = ""; 
-		
-		$scope.MetricSelectediId_[idMetric]= "";
-		
-		
-		$scope.rePlotGraph();
+	
+		var answer = confirm("Are you sure to delete this row?")
+
+		if (answer)
+		{
+			var containerLink = document.getElementById("delete-metric-button-"+idMetric);		
+			$(containerLink).parent().parent().removeClass('active');
+			var str =  $(containerLink).parent().parent().attr("id");
+	    	$(".metric-list-item[name='"+ str +"']").removeClass('active');
+	    	
+	    	//var containerId = document.getElementById("MetricSelectediId_"+idMetric);	
+			//containerId.value = ""; 
+			
+			$scope.MetricSelectediId_[idMetric]= "";
+			
+			
+			$scope.rePlotGraph();
+		}		
 	};
 	
 /*
