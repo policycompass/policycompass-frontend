@@ -614,7 +614,7 @@ policycompass.viz.barsMultiple = function(options) {
 		}
 		else
 		{
-			console.log(dataIn);
+			//console.log(dataIn);
 			self.drawBarsMultiple(dataIn, eventsData);
 		}		
 		

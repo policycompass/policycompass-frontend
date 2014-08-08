@@ -8,7 +8,10 @@ angular.module('pcApp.visualization.services.visualization',[
 	var Visualization = $resource(url,
 		{
 			id: "@id"
-		}
+		},
+        {
+            'update': { method:'PUT' }
+        }
 	);
 	return Visualization;
 }]);
