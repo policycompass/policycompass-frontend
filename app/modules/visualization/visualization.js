@@ -22,6 +22,10 @@ visu.config(function($routeProvider) {
             controller: 'VisualizationsCreateController',
             templateUrl: 'modules/visualization/partials/create.html'
         })        
+		.when('/visualizations/:visualizationId/edit', {
+            controller: 'VisualizationsEditController',
+            templateUrl: 'modules/visualization/partials/create.html'
+        })        
         .when('/visualizations/addEvent/', {
             controller: 'VisualizationsCreateController',
             templateUrl: 'modules/visualization/partials/addEvent.html'

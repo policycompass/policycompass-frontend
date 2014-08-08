@@ -72,12 +72,408 @@ angular.module('pcApp.visualization.controllers.visualization', [
 }])
 
 
+.controller('VisualizationsEditController', [
+	'$scope', 
+	'$route',
+	'$routeParams',
+	'$modal', 
+	'Event', 
+	'Metric', 
+	'Visualization', 
+	'$location', 
+	'$log', 
+	'API_CONF',
+function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, $log, API_CONF) {
+
+	console.log("controller VisualizationsEditController");
+	
+	//funtion to reset form
+	$scope.revertVisualization = function() {
+	
+		var answer = confirm("Are you sure?")
+
+		if (answer)
+		{
+			$location.path('/visualizations/'+$routeParams.visualizationId+'/edit/');
+			//$route.reload();
+		}	
+	
+	};
+	
+		
+	$scope.mode = "edit";
+        
+    $scope.visualization = Visualization.get({id: $routeParams.visualizationId},
+        function(visualization) {
+        },
+        function(error) {
+            alert(error.data.message);
+        }
+    );
+    
+	$scope.visualization.$promise.then(function(metric){
+            $scope.visualization.language = $scope.visualization.language_id;
+
+    });
+    
+	$scope.tabParent = 2;
+	$scope.tabSon = 'graph_line';
+
+	$scope.selectTabParent = function(setTab) {
+		$scope.tabParent = setTab;
+		$scope.tabSon = 0;
+	};
+
+	$scope.isSelectedParent = function(checkTab) {
+		return $scope.tabParent === checkTab;
+	};
+
+	$scope.selectTabSon = function(setTab) {
+		$scope.typeToPlot=setTab;
+		$scope.tabSon = setTab;
+		//rePlotGraph();
+	};
+
+	$scope.isSelectedSon = function(checkTab) {
+		return $scope.tabSon === checkTab;			
+	};
+	
+	$scope.addMetrictoList= function() {	
+	 	$('#addmetricsbutton').toggleClass('active');
+        $('#metrics-list').toggle('slow');	
+	}
+	
+	$scope.addFilterMetric = function(idMetric) {
+		var containerLink = document.getElementById("metric-list-item-item-"+idMetric);		
+    	$(containerLink).addClass('active');
+    	var str =  $(containerLink).attr("name");
+    	$('#' + str + '').addClass('active');	
+    	
+    	var containerId = document.getElementById("MetricSelectediId_"+idMetric).value;	
+    	var containerIndex = document.getElementById("MetricSelectediIndex_"+idMetric).value;
+		
+		$scope.MetricSelectediId_[idMetric]=idMetric;
+
+		var myText = "from";
+		$scope.MetricSelectorLabelColumn_[containerIndex]=myText;
+		
+		var myText = "value";
+		$scope.MetricSelectorDataColumn_[containerIndex]=myText;
+		
+		var myText = "grouping column";
+		$scope.MetricselectorGroupingData_[containerIndex]=myText;
+
+		
+		selectedText = " ";
+		var myObject = {
+					'id':idMetric,
+					'name':selectedText,
+					'column':'from',
+					'value':'value',
+					'group':'grouping column'
+					};
+		
+					//console.log("a1");
+					
+		$scope.ListMetricsFilter.push(myObject);	
+		
+		$scope.rePlotGraph();	
+    	
+	};
+
+	$scope.displaycontentMetric = function(idMetric) {
+		var containerLink = document.getElementById("edit-metric-button-"+idMetric);
+		 $(containerLink).parent().next().toggle(200);
+	 
+	};
+	
+	$scope.deleteMetricFromList = function(idMetric) {
+	
+		var answer = confirm("Are you sure to delete this row?")
+
+		if (answer)
+		{
+			var containerLink = document.getElementById("delete-metric-button-"+idMetric);		
+			$(containerLink).parent().parent().removeClass('active');
+			var str =  $(containerLink).parent().parent().attr("id");
+	    	$(".metric-list-item[name='"+ str +"']").removeClass('active');		
+			$scope.MetricSelectediId_[idMetric]= "";
+			$scope.rePlotGraph();
+		}		
+	};
+
+	$scope.metrics = Metric.query(
+			null,
+			function(metricList) {
+			},
+			function(error) {
+				alert(error.data.message);
+			}
+	);
+
+	$scope.events = Event.query(
+            null,
+            function (eventList) {
+            },
+            function (error) {
+                alert(error.data.message);
+            }
+    );
+
+	//funtion to delete an historical event of the array
+	$scope.deleteContainerHistoricalEvent = function(divNameIn, index) {
+		divName=divNameIn+''+index;
+		var answer = confirm("Are you sure to delete this row?")
+
+		if (answer)
+		{
+			$scope.eventsToPlot.splice((index-1), 1);
+			$scope.rePlotGraph();
+		}
+	}
+
+
+	$scope.ListMetricsFilter = [];
+	$scope.metricsFilter = $scope.ListMetricsFilter;
+	
+	
+	
+	$scope.eventsToPlot = [];
+	
+	var datosInT =  {
+				id : 1,
+				title : 'test',
+				startDate : '2014-06-30T22:00:00Z',
+				endDate : '2014-07-02T22:00:00Z',
+				desc : 'hooola'
+			}
+	
+	$scope.eventsToPlot.push(datosInT);		
+	
+	
+	$scope.MetricSelectediId_ = [];
+	$scope.MetricSelectediIndex_ = [];
+	$scope.MetricSelectorLabelColumn_ = [];
+	$scope.MetricSelectorDataColumn_ = [];
+	$scope.MetricselectorGroupingData_ = [];
+	$scope.idHE = [];
+	$scope.titleHE = [];
+	$scope.startDateHE = [];
+	$scope.endDateHE = [];
+	$scope.descHE = [];	
+	
+
+	$scope.MetricSelectediId_[1]=1;
+	$scope.MetricSelectediIndex_[1]=1;
+	$scope.MetricSelectorLabelColumn_[1]='to';
+	$scope.MetricSelectorDataColumn_[1] ='value';
+	$scope.MetricselectorGroupingData_[1] = 'grouping column';
+		
+
+	$scope.name = 'Add an event';
+      
+    $scope.showModal = function() {
+        
+		console.log("show modal");
+        
+        var s= document.getElementById("startDatePosX");
+        console.log("s.value="+s.value);
+        
+	    dateRec = s.value;
+    	console.log("dateRec="+dateRec+"--now="+Date.now());
+    	if (dateRec)
+    	{
+    		//dateRec = '2014-01-01';
+    		//console.log("dateRec="+dateRec);
+    		dateRec = dateRec.replace(/-/g,"/");
+    		var res = dateRec.split("/");
+    		var newDate = res[2]+"-"+res[0]+"-"+res[1];
+    		console.log("newDate="+newDate);
+    		$scope.startDate = (newDate);
+    	}
+    	else
+    	{
+    		//$scope.startDate = $filter("date")(Date.now(), 'yyyy-MM-dd');	
+    		$scope.startDate = "";
+    	}
+
+        //$scope.startDate = '01-01-2011';
+        //$scope.startDate = s.value;
+
+        $scope.opts = {
+        backdrop: true,
+        backdropClick: false,
+        dialogFade: true,
+        keyboard: true,        
+        //templateUrl : 'http://localhost:8080/app/index.html#/visualization/addEvent',
+        templateUrl : 'modules/visualization/partials/addEvent.html',
+        controller : 'ModalInstanceCtrl',
+        resolve: {}, // empty storage
+        scope: $scope
+          };
+
+
+
+        $scope.opts.resolve.item = function() {
+            return angular.copy({name:$scope.name, startDate:$scope.startDate}); // pass name to Dialog
+        }
+        
+          var modalInstance = $modal.open($scope.opts);
+
+          
+          modalInstance.result.then(function(){
+            //on ok button press
+            //console.log('on ok button press');
+            //console.log($scope.eventsToPlot);
+            //console.log(modalInstance);
+          },function(){
+            //on cancel button press
+            //console.log("Modal Closed");
+          });
+      };  
+      
+
+	$scope.changeselectHE = function(idselected) {
+		console.log(idselected);
+		$scope.historicalevent_id = idselected['id'];
+		$scope.historicalevent_title = idselected['title'];
+		$scope.historicalevent_startDate = idselected['startEventDate'];
+		$scope.historicalevent_endDate = idselected['endEventDate'];
+		$scope.historicalevent_description = idselected['description'];
+	};
+	
+	
+	//funtion to add historical event to the array - uses in the modal window
+	$scope.addAnotherHistoricalEvent = function(divName) {
+			//console.log("1111111111");
+			
+			//var idRec = $('input[name="idHE"]').val();
+			//console.log("idRec=>"+idRec);
+			var idRec = $scope.historicalevent_id;
+			//console.log("idRec=>"+idRec);
+			
+			//var titleRec = $('input[name="titleHE"]').val();
+			var titleRec = $scope.historicalevent_title;	
+			//console.log("titleRec=>"+titleRec);
+			
+			//var dateStartRec = $('input[name="startDate"]').val();
+			var dateStartRec = $scope.historicalevent_startDate;
+			//console.log("dateStartRec=>"+dateStartRec);
+			
+			//var dateEndRec = $('input[name="endDate"]').val();
+			var dateEndRec = $scope.historicalevent_endDate;
+			//console.log("dateEndRec=>"+dateEndRec);
+			
+			//var descEndRec = $('input[name="descriptionHEToAdd"]').val();
+			
+			//var res = dateStartRec.split("-");
+			var posI=0;
+			if ($scope.idHE.length==0)
+			{
+				posI=1;
+			}			
+			else
+			{
+				posI=$scope.idHE.length;
+			}
+			//console.log("$scope.idHE.length="+$scope.idHE.length);
+			$scope.idHE[posI] =idRec;
+			$scope.titleHE[posI] =titleRec;
+			$scope.startDateHE[posI] =dateStartRec;
+			$scope.endDateHE[posI] =dateEndRec;
+			
+			$scope.descHE[posI] = $('#descriptionHEToAdd').val();
+			
+			
+			var datosInT =  {
+				id : idRec,
+				title : titleRec,
+				startDate : dateStartRec,
+				endDate : dateEndRec,
+				//posX : $('input[name="posx"]').val(),
+			    //posY : $('input[name="posy"]').val(),
+				desc : $('#descriptionHEToAdd').val()
+			}
+	
+			$scope.eventsToPlot.push(datosInT);			
+			
+			$scope.historicalevent_id = '';
+			$scope.historicalevent_title = '';
+			$scope.historicalevent_startDate = '';
+			$scope.historicalevent_endDate = '';
+			$scope.historicalevent_description = '';
+			
+			
+						
+			//console.log("list events");
+			//console.log($scope.eventsToPlot);
+			//rePlotGraph();
+			
+			//
+			//document.getElementById("basic-modal-content").innerHTML = "";
+			//document.getElementById("basic-modal-content").innerHTML = "The event has been plot in the graph.<br/> Close the window.";
+			
+		
+	};	      
+			
+			
+}])
+
+
+
 //controler to create a new visualization
-.controller('VisualizationsCreateController', ['$scope', '$modal', 'Event', 'Metric', 'Visualization', '$location', '$log', 'API_CONF',
-function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF) {
+.controller('VisualizationsCreateController', [
+	'$scope', 
+	'$route',
+	'$routeParams',
+	'$modal', 
+	'Event', 
+	'Metric', 
+	'Visualization', 
+	'$location', 
+	'$log', 
+	'API_CONF',
+function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, $log, API_CONF) {
 
 	//$( "#tabs" ).tabs();
+	//funtion to reset form
+	$scope.revertVisualization = function() {
 	
+		var answer = confirm("Are you sure?")
+
+		if (answer)
+		{
+			//$location.path('/visualizations/create/');
+			$route.reload();
+		}	
+	
+	};
+		
+	$scope.tabParent = 0;
+	$scope.tabSon = 0;
+
+	$scope.selectTabParent = function(setTab) {
+		$scope.tabParent = setTab;
+		$scope.tabSon = 0;
+	};
+
+	$scope.isSelectedParent = function(checkTab) {
+		return $scope.tabParent === checkTab;
+	};
+
+	$scope.selectTabSon = function(setTab) {
+		$scope.typeToPlot=setTab;
+		$scope.tabSon = setTab;
+		//rePlotGraph();
+	};
+
+	$scope.isSelectedSon = function(checkTab) {
+		return $scope.tabSon === checkTab;			
+	};
+
+
+	$scope.eventsToPlot = [];		
+		
 	
 	$scope.MetricSelectediId_ = [];
 	$scope.MetricSelectediIndex_ = [];
@@ -105,7 +501,9 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 		$scope.historicalevent_endDate = idselected['endEventDate'];
 		$scope.historicalevent_description = idselected['description'];
 	};
+	
 
+	
 	$scope.createVisualization = function() {
         $scope.visualization.user_id = 1;        				     
         $scope.visualization.views_count = 0;
@@ -240,30 +638,7 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
             }
     );
 
-	this.tabParent = 0;
-	this.tabSon = 0;
 
-	$scope.selectTabParent = function(setTab) {
-		this.tabParent = setTab;
-		this.tabSon = 0;
-	};
-
-	$scope.isSelectedParent = function(checkTab) {
-		return this.tabParent === checkTab;
-	};
-
-	$scope.selectTabSon = function(setTab) {
-		$scope.typeToPlot=setTab;
-		this.tabSon = setTab;
-		//rePlotGraph();
-	};
-
-	$scope.isSelectedSon = function(checkTab) {
-		return this.tabSon === checkTab;			
-	};
-
-
-	$scope.eventsToPlot = [];
 
 
 	//funtion to delete an historical event of the array
@@ -279,7 +654,7 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 	}
 
 
-	//funtion to add historical event to the array
+	//funtion to add historical event to the array - uses in the modal window
 	$scope.addAnotherHistoricalEvent = function(divName) {
 			//console.log("1111111111");
 			
@@ -388,29 +763,16 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
     	
     	var containerId = document.getElementById("MetricSelectediId_"+idMetric).value;	
     	var containerIndex = document.getElementById("MetricSelectediIndex_"+idMetric).value;
-    	//console.log("**********************containerIndex="+containerIndex);
-		//containerId.value = idMetric; 
-		
-		//$('#MetricSelectediId_'+idMetric).val(idMetric);
-		
-		//console.log("idMetric="+idMetric);
-		
-		//console.log("$scope.MetricSelectediId_[idMetric]="+$scope.MetricSelectediId_[idMetric]);
 		
 		$scope.MetricSelectediId_[idMetric]=idMetric;
-		
-		//console.log("$scope.MetricSelectediId_[idMetric]="+$scope.MetricSelectediId_[idMetric]);
 
 		var myText = "from";
-		//$('#MetricSelectorLabelColumn_'+containerIndex+' option[value="' + myText + '"]').prop('selected', true);
 		$scope.MetricSelectorLabelColumn_[containerIndex]=myText;
 		
 		var myText = "value";
-		//$('#MetricSelectorDataColumn_'+containerIndex+' option[value="' + myText + '"]').prop('selected', true);
 		$scope.MetricSelectorDataColumn_[containerIndex]=myText;
 		
 		var myText = "grouping column";
-		//$('#MetricselectorGroupingData_'+containerIndex+' option[value="' + myText + '"]').prop('selected', true);
 		$scope.MetricselectorGroupingData_[containerIndex]=myText;
 
 		
@@ -446,14 +808,8 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
 			var containerLink = document.getElementById("delete-metric-button-"+idMetric);		
 			$(containerLink).parent().parent().removeClass('active');
 			var str =  $(containerLink).parent().parent().attr("id");
-	    	$(".metric-list-item[name='"+ str +"']").removeClass('active');
-	    	
-	    	//var containerId = document.getElementById("MetricSelectediId_"+idMetric);	
-			//containerId.value = ""; 
-			
+	    	$(".metric-list-item[name='"+ str +"']").removeClass('active');		
 			$scope.MetricSelectediId_[idMetric]= "";
-			
-			
 			$scope.rePlotGraph();
 		}		
 	};
@@ -1149,11 +1505,10 @@ function($scope, $modal, Event, Metric, Visualization, $location, $log, API_CONF
     
 
 	$scope.name = 'Add an event';
-
       
-      $scope.showModal = function() {
+    $scope.showModal = function() {
         
-        console.log("show modal");
+		console.log("show modal");
         
         var s= document.getElementById("startDatePosX");
         console.log("s.value="+s.value);

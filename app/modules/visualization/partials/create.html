@@ -114,25 +114,32 @@
 
 						</div>
 			
-						<ul class="metrics-list" id="metrics-list" style="display: none;">			
-							<li class="metric-list-item " id="metric-list-item-item-{{metric.id}}" name="designer-metrics-num-{{metric.id}}" ng-repeat="metric in metrics track by $index" ><a href="" ng-click="addFilterMetric(metric.id);" title="{{metric.title}}">{{metric.title}}</a></li>
+			
+			
+			
+			
+			
+						<ul class="metrics-list" id="metrics-list" style="display: none;">								
+							<li ng-class="{'metrics-list active':MetricSelectediId_[metric.id]>0,'metrics-list':MetricSelectediId_[metric.id]}" id="metric-list-item-item-{{metric.id}}" name="designer-metrics-num-{{metric.id}}" ng-repeat="metric in metrics track by $index" ><a href="" ng-click="addFilterMetric(metric.id);" title="{{metric.title}}">{{metric.title}}</a></li>
 						</ul>
 	
-						<div class="designer-metrics" id="designer-metrics-num-{{metric.id}}" ng-repeat="metric in metrics track by $index" >
+	
+	
+	
+						
+						<div ng-hide="!MetricSelectediId_[metric.id]" ng-class="{'designer-metrics active':MetricSelectediId_[metric.id],'designer-metrics':MetricSelectediId_[metric.id]}" class="designer-metrics" id="designer-metrics-num-{{metric.id}}" ng-repeat="metric in metrics track by $index" >
+							
 							<h4>{{metric.title}}</h4>
+							
 							<input type="hidden" ng-model="MetricSelectediId_[metric.id]" id="MetricSelectediId_{{metric.id}}" name="MetricSelectedId[]" value="">
 							<input type="hidden" ng-model="MetricSelectediIndex_[metric.id]" ng-init="MetricSelectediIndex_[metric.id]=$index+1" id="MetricSelectediIndex_{{metric.id}}" name="MetricSelectediIndex[]" value="{{$index+1}}">
+							
+
 							<div class="metric-buttons">
-								<!--
-				    			<div class="metric-button metric-forms-button" ng-click="displaycontentMetric(metric.id);" id="edit-metric-button-{{metric.id}}">edit</div>
-				    			<br/>
-						    	<div class="metric-button metric-delete-button" ng-click="deleteMetricFromList(metric.id);" id="delete-metric-button-{{metric.id}}">delete</div>
-						    	-->
 								<a type="button" class="btn btn-primary" ng-click="displaycontentMetric(metric.id);" id="edit-metric-button-{{metric.id}}">Edit</a>			    	
 						    	<button type="button" class="btn btn-danger" ng-click="deleteMetricFromList(metric.id);" id="delete-metric-button-{{metric.id}}">Delete</button>
-          
-						    	
 						  	</div>
+
 							<div class="metric-forms" style="display: none;">
 								<div class="metric-form-item">
 									<label for="">From</label>
@@ -161,8 +168,8 @@
 									</select>
 								</div>
 					   		</div>
-						</div>			                    
-                    
+
+						</div>
                     </tab>
                     
                     <tab ng-show="isSelectedSon('graph_line')" heading="Historical Events">
