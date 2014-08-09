@@ -16,6 +16,10 @@
 	"bootstrap": "",
     "angular-bootstrap" : "",
     "handsontable": "",
-    "jqueryui": ""
+    "jqueryui": "",
+    "dropzone": "",
+    "modernizr": "",
+    "jasny-bootstrap": ""
+
   }
 }

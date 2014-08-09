@@ -5,7 +5,8 @@ var pcApp = angular.module('pcApp', [
     'pcApp.metrics',
     'pcApp.visualization',
     'pcApp.events',
-    'pcApp.common'
+    'pcApp.common',
+    'pcApp.developer'
 ])
 
 /**
@@ -15,6 +16,7 @@ var pcApp = angular.module('pcApp', [
 .run(function($http) {
     $http.defaults.headers.common.Authorization = 'Token 1'
 })
+
 
 /**
  * Very simple central error handling

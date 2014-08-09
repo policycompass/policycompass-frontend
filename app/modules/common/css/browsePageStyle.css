@@ -1,0 +1,141 @@
+/*filter menu*/
+.search-icon-btn{
+    cursor: pointer !important;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 20px;
+    color: #58595b;
+}
+/*home-statement-phrase*/
+.browse-statement-phrase{
+    margin-top:20px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-weight: 200;
+    font-size: 1.2em;
+    color: #58595b;
+    padding-left: 80px;
+    padding-right: 80px;
+}
+@-moz-document url-prefix() {
+    .form-control{
+        height: 40px;
+        border-radius: 0px !important;
+        box-shadow:0px !important;
+    }
+    .dropdown-menu{
+        box-shadow:none !important;
+    }
+}
+#myNavmenuCanvas a{
+    text-decoration: none;
+    color: #58595b;
+}
+#myNavmenuCanvas a:hover,#myNavmenuCanvas a:focus{
+    color: #f7941e;
+    -webkit-transition: color 300ms ease-out;
+    -moz-transition: color 300ms ease-out;
+    transition: color 300ms ease-out;
+}
+#myNavmenu{
+    height: 600px;
+    margin-top: -20px;
+    padding-left: 18px;
+}
+#myNavmenu>.navmenu-brand{
+    background-color: #428BCA !important;
+    color: #FFF !important;
+    padding-top: 20px!important;
+    padding-bottom: 10px !important;
+}
+.filterbar{
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+.filter-menu-icon{
+    padding-left: 6px;
+}
+.filter-menu-link{
+    font-size: 20px;
+    font-weight: 400;
+    padding-left: 10px;
+}
+.bs-navmenu-offcanvas-example{
+    margin-top:10px;
+}
+.result-wrapper{
+    margin-top: 15px;
+}
+.result-block{
+    text-align: center;
+}
+.metricIcon{
+    background:url(../../../img/iconMetric.png);
+    background-size: 120px 120px;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 120px;
+}
+.metricIcon-effect > a:hover ,.metricIcon-effect > a:focus{
+
+}
+.mapIcon{
+    background:url(../../../img/iconMap.png);
+    background-size: 120px 120px;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 120px;
+}
+.mapIcon-effect > a:hover ,.mapIcon-effect > a:focus{
+
+}
+.text-justify{
+    text-align: justify;
+}
+
+.btn-show{
+    padding-bottom: 5px;
+    padding-top: 5px;
+    margin-left: 10px;
+    margin-right: 22px;
+}
+.text-show{
+    font-size: 16px;
+    font-weight: 400;
+    margin-top: 2px;
+}
+.dropdown-show {
+    margin-top:10px !important;
+    min-width: 66px !important;
+    margin-right: 22px;
+}
+.dropdown-show >li > a {
+    text-align: center;
+}
+
+/* Pc*/
+@media only screen and (min-width: 1024px){
+    .browse-statement-phrase{
+        margin-top:20px;
+    }
+}
+/* ipad landscape*/
+@media only screen and (min-width: 768px)and(max-width: 1024px) /* and(orientation : landscape) and (-webkit-min-device-pixel-ratio: 1) */ {
+    .browse-statement-phrase {
+        margin-top: 50px;
+    }
+}
+
+/* ipad portrait*/
+@media only screen and (max-width: 768px) /*and (orientation : portrait) and (-webkit-min-device-pixel-ratio: 1)*/ {
+    .browse-statement-phrase {
+        margin-top: 120px;
+    }
+}
+/* iPhone*/
+@media only screen and (max-width: 400px){
+    .browse-statement-phrase {
+        margin-top: 170px;
+    }
+}

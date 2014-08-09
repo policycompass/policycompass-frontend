@@ -5,9 +5,66 @@ angular.module('pcApp.metrics.controllers.metric', [
 
 .factory('helper', [function() {
     return {
-        initCreateController: function($scope) {
+        baseCreateEditController: function($scope) {
             $scope.step = 'one';
-            $scope.columnselection = ['A','B','C','D','E','F','G'];
+            $scope.columnselection = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+
+            $scope.extracolumns = [];
+            $scope.addExtraColumn = function () {
+
+                var c = {
+                    i: $scope.extracolumns.length + 1,
+                    column: {},
+                    value: {}
+                };
+                $scope.extracolumns.push(c);
+
+            };
+            $scope.removeExtraColumn = function (e) {
+                var index = $scope.extracolumns.indexOf(e);
+                $scope.extracolumns.splice(index, 1);
+
+            };
+
+            $scope.convertRawInput = function () {
+                var data = [];
+                var extra = [];
+
+                $scope.extracolumns.forEach(function (extraColumn) {
+                    extra.push(extraColumn.value);
+                });
+
+                $scope.grid.data.forEach(function(e){
+                    if(e[0] != null && e[0] != ""){
+                        var row = {
+                            from: e[$scope.columns.from],
+                            to: e[$scope.columns.to],
+                            value: e[$scope.columns.value]
+                        };
+
+                        $scope.extracolumns.forEach(function (extraColumn) {
+                            row[extraColumn.value] = e[extraColumn.column];
+                        });
+
+                        data.push(row);
+                    }
+                });
+
+                return {
+                    table: data,
+                    extra_columns: extra
+                };
+            };
+
+            $scope.tabsel = {
+                grid: true,
+                file: false
+            };
+
+            $scope.grid = {
+                data: [[]],
+                instance: {}
+            };
 
             $scope.nextStep = function() {
                 validation();
@@ -20,6 +77,27 @@ angular.module('pcApp.metrics.controllers.metric', [
 
             var validation = function() {
 
+            };
+
+            $scope.dropzone = {
+                config: {
+                    clickable: true,
+                    url: '/api/v1/metricsmanager/converter',
+                    acceptedFiles: '.csv,.xls,.xlsx'
+                },
+                dropzone: {},
+                handlers: {
+                    success: function(file, response) {
+                        $scope.tabsel = {
+                            grid: true,
+                            file: false
+                        };
+                        this.removeAllFiles();
+                        $scope.$apply();
+                        $scope.grid.data = response['result'];
+                        $scope.grid.instance.loadData($scope.grid.data);
+                    }
+                }
             };
         }
     };
@@ -47,6 +125,7 @@ angular.module('pcApp.metrics.controllers.metric', [
         function($scope, $routeParams, $location, Metric, $log) {
 
     $scope.datagrid = [[]];
+    $scope.handson = {};
     $scope.gridvisible = false;
 
 	$scope.metric = Metric.get({id: $routeParams.metricId},
@@ -80,17 +159,13 @@ angular.module('pcApp.metrics.controllers.metric', [
         '$location',
         '$log',
         'helper',
-        function($scope, Metric, $location, $log, helper) {
+        '$filter',
+        function($scope, Metric, $location, $log, helper, $filter) {
 
-    helper.initCreateController($scope);
+    helper.baseCreateEditController($scope);
 
     $scope.mode = "create";
     $scope.gridvisible = true;
-
-
-    $scope.datagrid = [
-        []
-    ];
 
     $scope.metric = {};
     $scope.columns = {
@@ -100,32 +175,9 @@ angular.module('pcApp.metrics.controllers.metric', [
     };
 
 	$scope.createMetric = function() {
+        $scope.metric.resource_issued = $filter('date')($scope.metric.resource_issued, 'yyyy-MM-dd');
         $scope.metric.user_id = 1;
-
-        var data = [];
-        var extra = [];
-        if($scope.columns.category) {
-            extra.push($scope.columns.category);
-        }
-
-        $scope.datagrid.forEach(function(e){
-            if(e[0] != null){
-                var row = {
-                    from: e[$scope.columns.from],
-                    to: e[$scope.columns.to],
-                    value: e[$scope.columns.value]
-                };
-                if($scope.columns.category) {
-                    row[$scope.columns.category] = e[$scope.columns.extra];
-                }
-                data.push(row);
-            }
-        });
-
-        $scope.metric.data = {
-            table: data,
-            extra_columns: extra
-        };
+        $scope.metric.data = $scope.convertRawInput();
 
 		Metric.save($scope.metric,function(value, responseHeaders){
 			$location.path('/metrics/' + value.id);
@@ -136,6 +188,7 @@ angular.module('pcApp.metrics.controllers.metric', [
 
 		);
 	};
+
 }])
 
 .controller('MetricEditController', [
@@ -145,15 +198,12 @@ angular.module('pcApp.metrics.controllers.metric', [
         '$location',
         '$log',
         'helper',
-    function($scope, $routeParams, Metric, $location, $log, helper) {
+        '$filter',
+    function($scope, $routeParams, Metric, $location, $log, helper, $filter) {
 
-        helper.initCreateController($scope);
+        helper.baseCreateEditController($scope);
         $scope.mode = "edit";
         $scope.gridvisible = false;
-
-        $scope.datagrid = [
-            []
-        ];
 
         $scope.metric = Metric.get({id: $routeParams.metricId},
             function(metric) {
@@ -166,49 +216,31 @@ angular.module('pcApp.metrics.controllers.metric', [
         $scope.metric.$promise.then(function(metric){
             $scope.metric.unit = $scope.metric.unit.id;
             $scope.metric.language = $scope.metric.language.id;
-            $scope.datagrid = metric.getDataAsGrid();
+            $scope.grid.data = metric.getDataAsGrid();
             $scope.gridvisible = true;
             $scope.metric.policyDomain = ["1","2"];
             $scope.metric.external_resource = 1;
-            $scope.columns.category =  $scope.metric.data.extra_columns[0];
-        });
 
+            for(var i=0; i < $scope.metric.data.extra_columns.length; i++) {
+                $scope.extracolumns.push({
+                    i: i + 1,
+                    column: i + 3,
+                    value: $scope.metric.data.extra_columns[i]
+                });
+            }
+
+        });
 
         $scope.columns = {
             from: 0,
             to: 1,
-            value: 2,
-            extra: 3
+            value: 2
         };
 
-
         $scope.createMetric = function() {
+            $scope.metric.resource_issued = $filter('date')($scope.metric.resource_issued, 'yyyy-MM-dd');
             $scope.metric.user_id = 1;
-
-            var data = [];
-            var extra = [];
-            if($scope.columns.category) {
-                extra.push($scope.columns.category);
-            }
-
-            $scope.datagrid.forEach(function(e){
-                if(e[0] != null){
-                    var row = {
-                        from: e[$scope.columns.from],
-                        to: e[$scope.columns.to],
-                        value: e[$scope.columns.value]
-                    };
-                    if($scope.columns.category) {
-                        row[$scope.columns.category] = e[$scope.columns.extra];
-                    }
-                    data.push(row);
-                }
-            });
-
-            $scope.metric.data = {
-                table: data,
-                extra_columns: extra
-            };
+            $scope.metric.data = $scope.convertRawInput();
 
             Metric.update($scope.metric,function(value, responseHeaders){
                     $location.path('/metrics/' + value.id);

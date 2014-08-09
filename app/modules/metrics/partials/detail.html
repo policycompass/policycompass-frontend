@@ -1,8 +1,12 @@
+<div class="container containerWithSecondBar">
+
+    <browse-submenu></browse-submenu>
+
 <h1><span class="glyphicon glyphicon-list-alt"></span> {{ metric.title }}</h1>
 <br />
 <div class="panel panel-default">
   <div class="panel-body">
-      <div class="pc-datagrid" data="datagrid" read-only="true" ng-if="gridvisible"></div>
+      <div class="pc-datagrid" data="datagrid" read-only="true" instance="handson" ng-if="gridvisible"></div>
       <br />
       <table class="table table-hover">
           <tr ng-show="metric.issued">
@@ -52,4 +56,5 @@
       </div>
   </div>
 </div>
-
+</div>
+</div>

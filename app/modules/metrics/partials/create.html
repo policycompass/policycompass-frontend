@@ -1,3 +1,7 @@
+<div class="container containerWithSecondBar">
+
+<create-submenu></create-submenu>
+
 <h1 ng-if="mode == 'create'"><span class="glyphicon glyphicon-pencil"></span> Create a New Metric</h1>
 <h1 ng-if="mode == 'edit'"><span class="glyphicon glyphicon-pencil"></span> Edit Metric</h1>
 
@@ -36,7 +40,7 @@
                 <input type="url" class="form-control" id="resourceUrl" name="resourceUrl" placeholder="http://www.datasource.example" ng-model="metric.resource_url">
             </div>
 
-            <div class="form-group" ng-controller="DateController">
+            <div class="form-group date-picker" ng-controller="DateController">
                 <label for="retrievalDate">Date of Retrieval</label>
                 <p class="input-group">
                     <input type="text"
@@ -54,7 +58,7 @@
                            ng-disabled="true"
                            close-text="Close" />
                     <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                        <a type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></a>
                     </span>
                 </p>
             </div>
@@ -65,7 +69,7 @@
 
             <div  ng-switch-when="one">
                 <tabset>
-                    <tab heading="Data Grid">
+                    <tab heading="Data Grid" active="tabsel.grid">
                         <div class="row">
                             <div class="col-lg-12 pc-datagrid-heading">
                                 Metric Content *
@@ -73,7 +77,7 @@
                         </div>
                         <div class="row">
                             <div class="col-lg-12">
-                                <div class="pc-datagrid" data="datagrid" ng-if="gridvisible"></div>
+                                <div class="pc-datagrid" instance="grid.instance" data="grid.data" ng-if="gridvisible"></div>
                             </div>
                         </div>
                         <div class="row">
@@ -125,22 +129,22 @@
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div class="row" ng-repeat="e in extracolumns">
                         <div class="col-lg-2 pc-datagrid-mainlabel">
-                            Extra Data
+                            Extra Data  <a href="" ng-click="removeExtraColumn(e)"><span class="glyphicon glyphicon-remove"></span></a>
                         </div>
                         <div class="col-lg-5">
-                            <div class="form-group" ng-class="{'has-error': metricForm.extracolumn.$dirty && metricForm.extracolumn.$invalid}">
-                                <label for="extracolumn" class="control-label">Column</label>
-                                <select class="form-control pc-datagrid-columnselect" ng-model="columns.extra" id="extracolumn">
-                                    <option value="{{ $index }}" ng-repeat="s in columnselection"  ng-selected="$index == columns.extra">{{ s }} </option>
+                            <div class="form-group">
+                                <label for="extracolumn_{{ e.i }}" class="control-label">Column</label>
+                                <select class="form-control pc-datagrid-columnselect" ng-model="e.column" id="extracolumn_{{ e.i }}">
+                                    <option value="{{ $index }}" ng-repeat="s in columnselection"  ng-selected="$index == e.column">{{ s }}</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-lg-5">
-                            <div class="form-group" ng-class="{'has-error': metricForm.categorycolumn.$dirty && metricForm.categorycolumn.$invalid}">
-                                <label for="categorycolumn" class="">Category</label>
-                                <select class="form-control" ng-model="columns.category" id="categorycolumn">
+                            <div class="form-group">
+                                <label for="categorycolumn_{{ e.i }}" class="">Category</label>
+                                <select class="form-control" ng-model="e.value" id="categorycolumn_{{ e.i }}">
                                     <option value="Country">Country</option>
                                     <option value="City">City</option>
                                     <option value="Age Class">Age Class</option>
@@ -148,10 +152,20 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <button ng-click="addExtraColumn()" class="btn btn-primary pull-right">Add Extra Field</button>
+                        </div>
+                    </div>
+
 
 
                     </tab>
-                    <tab heading="From File">Drop File here...</tab>
+                    <tab heading="From File" active="tabsel.file">
+                        <div class="ng-dropzone dropzone" dropzone-config="dropzone.config" dropzone="dropzone.dropzone" event-handlers="dropzone.handlers">
+
+                        </div>
+                    </tab>
                 </tabset>
             </div>
 
@@ -205,3 +219,4 @@
 </div>
 
 </form>
+</div>
