@@ -6,6 +6,7 @@ var pcApp = angular.module('pcApp', [
     'pcApp.visualization',
     'pcApp.events',
     'pcApp.common',
+    'pcApp.fcm',
     'pcApp.developer'
 ])
 

@@ -3,7 +3,7 @@ angular.module('pcApp.metrics.controllers.metric', [
     'pcApp.references.services.reference'
 ])
 
-.factory('helper', [function() {
+.factory('MetricsControllerHelper', [function() {
     return {
         baseCreateEditController: function($scope) {
             $scope.step = 'one';
@@ -158,7 +158,7 @@ angular.module('pcApp.metrics.controllers.metric', [
         'Metric',
         '$location',
         '$log',
-        'helper',
+        'MetricsControllerHelper',
         '$filter',
         function($scope, Metric, $location, $log, helper, $filter) {
 
@@ -197,7 +197,7 @@ angular.module('pcApp.metrics.controllers.metric', [
         'Metric',
         '$location',
         '$log',
-        'helper',
+        'MetricsControllerHelper',
         '$filter',
     function($scope, $routeParams, Metric, $location, $log, helper, $filter) {
 

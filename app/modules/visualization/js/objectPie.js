@@ -18,18 +18,18 @@ policycompass.viz.pie = function(options)
         
     self.drawArcs = function (piesArray) 
     {
-    	console.log("drawArcs");
+    	//console.log("drawArcs");
 		var showLegend = self.showLegend;
 		var showLabels = self.showLabels;
 	
 		var pies = piesArray.Values;
 		var pieslabels = piesArray.Labels;
 		
-		console.log(pies);		
+		//console.log(pies);		
   		var pie = d3.layout.pie()
   			.sort(null)
   			.value(function(d) {
-  				console.log(d);  				
+  				//console.log(d);  				
   				return d;
   			});
   		/*		
@@ -147,7 +147,7 @@ policycompass.viz.pie = function(options)
 
     self.render = function(piesArray){
 		
-		console.log(piesArray);
+		//console.log(piesArray);
 		
 		if (Object.keys(piesArray).length === 0)
 		{

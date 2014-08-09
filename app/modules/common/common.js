@@ -1,6 +1,7 @@
  angular.module('pcApp.common',[
      'pcApp.common.controllers',
-     'pcApp.common.directives.submenus'
+     'pcApp.common.directives.submenus',
+     'pcApp.common.directives.common'
 ])
 
 .config(function($routeProvider) {

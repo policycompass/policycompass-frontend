@@ -1,5 +1,4 @@
 //var visu = angular.module('pcApp.visualization', ['pcApp.metrics']);
-
 var visu = angular.module('pcApp.visualization', [
     'pcApp.visualization.controllers.visualization'
 ]);

@@ -17,8 +17,8 @@
     <link href="css/loading-animation.css" rel="stylesheet" media="screen" />
     <link href="modules/common/css/offcanvas-filter.css" rel="stylesheet" media="screen" />
     <link href="modules/common/css/navLargeStyle.css" rel="stylesheet" media="screen" />
-
     <link href="modules/metrics/css/metrics.css" rel="stylesheet" media="screen" />
+    <link href="modules/fcm/css/fcm.css" rel="stylesheet" media="screen" />
 
     <link rel="icon" type="image/ico" href="img/favicon.ico" />
 </head>
@@ -35,7 +35,7 @@
                 <span class="muted">|</span>
                 <a href="#">Contact</a>
                 <span class="muted">|</span>
-                <a  href="#">impressum and CO</a>
+                <a  href="#/imprint">Imprint</a>
                 <span class="muted">|</span>
                 <a class="muted" href="#">Language</a>
                 <span class="muted">|</span>
@@ -93,7 +93,7 @@
                 <a class="muted" href="#">Contact</a>
                 <span class="muted">|</span>
                 <a class="muted" href="#">Impressum and CO</a>
-                <span class="muted pull-right">&copy;2013 Copyright by Fraunhofer-Gesellschaft</span>
+                <span class="muted pull-right">&copy;2014 Copyright by Fraunhofer-Gesellschaft</span>
             </div><!-- /.col-lg-12 -->
         </div><!-- /.row .footer-wrapper -->
         <p ng-show="error" class="alert alert-danger">{{ error }}</p>
@@ -154,6 +154,11 @@
 <script type="text/javascript" src="modules/visualization/js/objectPie.js"></script>
 <script type="text/javascript" src="modules/visualization/js/objectMap.js"></script>
 <script type="text/javascript" src="modules/visualization/js/objMapW.js"></script>
+
+<script type="text/javascript" src="modules/fcm/fcm.js"></script>
+<script type="text/javascript" src="modules/fcm/controllers/fcmControllers.js"></script>
+<script type="text/javascript" src="modules/fcm/services/fcmService.js"></script>
+
 
 <!--Multiple inclusions of jquery caused errors with handsontable, so I commented it out (Alan)
 <script type="text/javascript" src="modules/visualization/js/jquery.js"></script>
