@@ -20,7 +20,7 @@ var http = require("http"),
 	fs = require("fs"),
 	httpProxy = require('http-proxy'),
 	nconf = require('nconf'),
-	port = process.argv[2] || 8000;
+	port = process.argv[2] || 8080;
 
 nconf.file('development.json');
 
