@@ -10,7 +10,9 @@ angular.module('pcApp.metrics.services.metric',[
 			id: "@id"
 		},
         {
-            'update': { method:'PUT' }
+            'update': { method:'PUT' },
+            'query': { method: 'GET', isArray:false}
+
         }
 	);
 
@@ -28,6 +30,16 @@ angular.module('pcApp.metrics.services.metric',[
         return result;
     };
 	return Metric;
+}]).
+
+factory('ExtraCategory',  ['$resource', 'API_CONF', function($resource, API_CONF) {
+    var url = API_CONF.METRICS_MANAGER_URL + "/extra_categories/:id";
+    var ExtraCategory = $resource(url,
+        {
+            id: "@id"
+        }
+    );
+    return ExtraCategory;
 }]);
 
 

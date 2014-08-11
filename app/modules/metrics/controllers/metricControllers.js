@@ -103,10 +103,10 @@ angular.module('pcApp.metrics.controllers.metric', [
     };
 }])
 
-.controller('MetricsController', ['$scope', 'Metric', '$log', function($scope, Metric, $log) {
-	$log.info("hallo");
+.controller('MetricsController', ['$scope', 'Metric', '$log', '$routeParams', function($scope, Metric, $log, $routeParams) {
+
 	$scope.metrics = Metric.query(
-			null,
+            {page: $routeParams.page},
 			function(metricList) {
 			},
 			function(error) {
@@ -218,7 +218,13 @@ angular.module('pcApp.metrics.controllers.metric', [
             $scope.metric.language = $scope.metric.language.id;
             $scope.grid.data = metric.getDataAsGrid();
             $scope.gridvisible = true;
-            $scope.metric.policyDomain = ["1","2"];
+
+            var domains = [];
+            $scope.metric.policy_domains.forEach(function (e) {
+                domains.push(String(e.id));
+            });
+            $scope.metric.policy_domains = domains;
+            $log.info($scope.metric.policy_domains);
             $scope.metric.external_resource = 1;
 
             for(var i=0; i < $scope.metric.data.extra_columns.length; i++) {
