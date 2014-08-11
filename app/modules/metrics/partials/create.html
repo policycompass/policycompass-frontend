@@ -21,7 +21,7 @@
 
             <div class="form-group" ng-class="{'has-error': metricForm.policyDomain.$dirty && metricForm.policyDomain.$invalid}">
                 <label for="policyDomain">Policy Domain *</label>
-                <select multiple class="form-control policydomain-options" id="policyDomain" name="policyDomain" ng-model="metric.policyDomain" required>
+                <select multiple class="form-control policydomain-options" id="policyDomain" name="policyDomain" ng-model="metric.policy_domains" required>
                 </select>
             </div>
 
@@ -144,11 +144,9 @@
                         <div class="col-lg-5">
                             <div class="form-group">
                                 <label for="categorycolumn_{{ e.i }}" class="">Category</label>
-                                <select class="form-control" ng-model="e.value" id="categorycolumn_{{ e.i }}">
-                                    <option value="Country">Country</option>
-                                    <option value="City">City</option>
-                                    <option value="Age Class">Age Class</option>
-                                </select>
+                                <select class="form-control extra-category-options" ng-model="e.value" model="e.value" id="categorycolumn_{{ e.i }}" required></select>
+
+
                             </div>
                         </div>
                     </div>

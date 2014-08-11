@@ -11,8 +11,9 @@ var pcApp = angular.module('pcApp', [
  * Setting the Token always to 1
  * Just for development!
  */
-.run(function($http) {
+.run(function($http, $rootScope, $location) {
     $http.defaults.headers.common.Authorization = 'Token 1'
+    $rootScope.location = $location;
 })
 
 

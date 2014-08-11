@@ -49,6 +49,10 @@
               <td><b>Language:</b></td>
               <td>{{ metric.language.title }}</td>
           </tr>
+          <tr ng-show="metric.policy_domains">
+              <td><b>Policy Domains:</b></td>
+              <td><span ng-repeat="p in metric.policy_domains">{{ p.title }} </span></td>
+          </tr>
       </table>
       <div>
           <button type="button" class="btn btn-danger" ng-click="deleteMetric(metric)">Delete</button>

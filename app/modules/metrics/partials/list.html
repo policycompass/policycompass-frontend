@@ -2,12 +2,12 @@
 
     <browse-submenu></browse-submenu>
 
-<h1><span class="glyphicon glyphicon-search"></span> Browse Metrics</h1>
+<h1><span class="glyphicon glyphicon-search"></span> Browse Metrics ({{ metrics.count }})</h1>
 <br />
 <div class="container">
 <div class="row">
 
-    <div class="col-lg-3 pc-tile" ng-show="metrics" ng-repeat="metric in metrics" >
+    <div class="col-lg-3 pc-tile" ng-show="metrics" ng-repeat="metric in metrics.results" >
         <div class="panel panel-default">
           <div class="panel-heading">
             <h3 class="panel-title">{{ metric.title | limitTo: 25}}</h3>
@@ -21,5 +21,16 @@
     </div>
 
 </div>
+<div class="row">
+    <a ng-disabled="!metrics.previous"  class="btn btn-warning" href="#/metrics{{ metrics.previous }}">
+        <span class="glyphicon glyphicon-chevron-left"></span> Previous
+    </a>
+    <a ng-disabled="!metrics.next" class="btn btn-warning pull-right" href="#/metrics{{ metrics.next }}">
+        Next <span class="glyphicon glyphicon-chevron-right"></span>
+    </a>
 </div>
+
+</div>
+
+
 </div>
