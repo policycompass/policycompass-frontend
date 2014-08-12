@@ -19,7 +19,8 @@
     "jqueryui": "",
     "dropzone": "",
     "modernizr": "",
-    "jasny-bootstrap": ""
+    "jasny-bootstrap": "",
+    "cytoscape": ""
 
   }
 }
