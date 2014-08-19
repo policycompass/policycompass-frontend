@@ -1,5 +1,7 @@
 angular.module('pcApp.fcm', [
-    'pcApp.fcm.controllers.fcm'
+    'pcApp.fcm.controllers.fcm',
+    'pcApp.fcm.directives.cytoscapes',
+    'pcApp.fcm.controllers.cytoscapes'
 ]).
 
 config(function($routeProvider) {

@@ -35,6 +35,7 @@
           <button ng-click="reset()">Reset nodes</button>
             ||||
            Node
+          <select ng-model="form.obj.objTypes" ng-options="name for name in objTypes"></select>
           <input ng-model="form.obj.name"/><button ng-click="addObj()">Add node</button>
 
           &nbsp&nbsp&nbsp&nbsp&nbsp
