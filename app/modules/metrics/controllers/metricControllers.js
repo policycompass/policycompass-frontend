@@ -110,7 +110,7 @@ angular.module('pcApp.metrics.controllers.metric', [
 			function(metricList) {
 			},
 			function(error) {
-				alert(error.data.message);
+                throw { message: JSON.stringify(err.data)};
 			}
 	);
 
@@ -131,8 +131,8 @@ angular.module('pcApp.metrics.controllers.metric', [
 	$scope.metric = Metric.get({id: $routeParams.metricId},
 			function(metric) {
 			},
-			function(error) {
-				alert(error.data.message);
+			function(err) {
+                throw { message: JSON.stringify(err.data)};
 			}
 	);
 
@@ -160,7 +160,8 @@ angular.module('pcApp.metrics.controllers.metric', [
         '$log',
         'MetricsControllerHelper',
         '$filter',
-        function($scope, Metric, $location, $log, helper, $filter) {
+        'dialogs',
+        function($scope, Metric, $location, $log, helper, $filter, dialogs) {
 
     helper.baseCreateEditController($scope);
 
@@ -174,6 +175,10 @@ angular.module('pcApp.metrics.controllers.metric', [
         value: 2
     };
 
+    $scope.test = function () {
+        throw { message: "hallo"};
+    };
+            
 	$scope.createMetric = function() {
         $scope.metric.resource_issued = $filter('date')($scope.metric.resource_issued, 'yyyy-MM-dd');
         $scope.metric.user_id = 1;
@@ -183,7 +188,7 @@ angular.module('pcApp.metrics.controllers.metric', [
 			$location.path('/metrics/' + value.id);
 		},
 		function(err) {
-            throw { message: err.data};
+            throw { message: JSON.stringify(err.data)};
 		}
 
 		);
@@ -208,8 +213,8 @@ angular.module('pcApp.metrics.controllers.metric', [
         $scope.metric = Metric.get({id: $routeParams.metricId},
             function(metric) {
             },
-            function(error) {
-                alert(error.data.message);
+            function(err) {
+                throw { message: JSON.stringify(err.data)};
             }
         );
 
@@ -252,7 +257,7 @@ angular.module('pcApp.metrics.controllers.metric', [
                     $location.path('/metrics/' + value.id);
                 },
                 function(err) {
-                    throw { message: err.data};
+                    throw { message: JSON.stringify(err.data)};
                 }
 
             );

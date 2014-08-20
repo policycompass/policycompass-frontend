@@ -7,26 +7,32 @@ var pcApp = angular.module('pcApp', [
     'pcApp.events',
     'pcApp.common',
     'pcApp.fcm',
-    'pcApp.developer'
+    'pcApp.developer',
+    'dialogs.main',
+    'dialogs.default-translations'
 ])
 
 /**
  * Setting the Token always to 1
  * Just for development!
  */
-.run(function($http, $rootScope, $location) {
-    $http.defaults.headers.common.Authorization = 'Token 1'
+.run(function($http, $rootScope, $location, $translate) {
+    $http.defaults.headers.common.Authorization = 'Token 1';
     $rootScope.location = $location;
+
 })
 
 
 /**
  * Very simple central error handling
  */
-.factory('$exceptionHandler', ['$injector', '$log', function ($injector, $log) {
+.factory('$exceptionHandler', ['$injector', '$log',  function ($injector, $log) {
     return function (exception, cause) {
-        var $rootScope = $injector.get("$rootScope");
-        $rootScope.error = exception.message;
-        $log.error(exception.message);
+        //var $rootScope = $injector.get("$rootScope");
+        var dialogs =  $injector.get("dialogs");
+
+        //$rootScope.error = exception.message;
+        dialogs.notify("Error", String(exception.message));
+        //$log.error(exception.message);
     };
 }]);
