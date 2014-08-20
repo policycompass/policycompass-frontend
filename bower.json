@@ -8,16 +8,20 @@
   "main": "portal",
   "license": "MIT",
   "dependencies": {
-	"angular": "",
-	"angular-route": "",
-	"angular-resource": "",
+    "angular": "",
+    "angular-route": "",
+    "angular-resource": "",
     "angular-animate": "",
-	"angular-mocks": "",
-	"bootstrap": "",
-    "angular-bootstrap" : "",
+    "angular-mocks": "",
+    "bootstrap": "",
+    "angular-bootstrap": "",
     "handsontable": "",
     "dropzone": "",
     "modernizr": "",
-    "jasny-bootstrap": ""
+    "jasny-bootstrap": "",
+    "angular-dialog-service": ""
+  },
+  "resolutions": {
+    "angular": "1.2.x"
   }
 }

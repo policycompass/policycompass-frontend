@@ -211,10 +211,12 @@
         <div class="form-group pull-right">
             <button type="submit" ng-show="step=='second'" class="btn btn-default" ng-click="prevStep()"><span class="glyphicon glyphicon-chevron-left"></span> Previous Step</button>
             <button type="submit" ng-show="step=='one'" ng-disabled="metricForm.$invalid" class="btn btn-default" ng-click="nextStep()">Next Step <span class="glyphicon glyphicon-chevron-right"></span></button>
-            <button type="submit" ng-show="step=='second'" ng-disabled="metricForm.$invalid" class="btn btn-default" ng-click="createMetric()"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>
+            <button type="submit"  ng-show="step=='second'" ng-disabled="metricForm.$invalid" class="btn btn-default" ng-click="createMetric()"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>
         </div>
     </div>
 </div>
 
 </form>
 </div>
+
+<button ng-click="test()">hallo</button>
