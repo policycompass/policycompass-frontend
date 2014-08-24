@@ -54,4 +54,24 @@ angular.module('pcApp.references.directives.forms', [
         },
         template: '<option value="{{ l.id }}" ng-repeat="l in languages" ng-selected="l.id == model">{{ l.title }}</option>'
     };
+}])
+
+.directive('externalResourceOptions', ['$log', 'ExternalResource', function ($log, ExternalResource) {
+    return {
+        restrict: 'C',
+        scope: {
+            model: '=model'
+        },
+        controller: function($scope){
+            $scope.externalResources = ExternalResource.query(
+                null,
+                function() {
+                    $log.info( $scope.model )
+                    //$log.info($scope.units);
+                }
+            );
+        },
+        template: '<option value="0"  ng-selected="model == 0">None</option>' +
+            '<option value="{{ e.id }}" ng-repeat="e in externalResources" ng-selected="e.id == model">{{ e.title }}</option>'
+    };
 }]);

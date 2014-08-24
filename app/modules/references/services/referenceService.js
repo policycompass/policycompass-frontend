@@ -31,6 +31,16 @@ angular.module('pcApp.references.services.reference',[
         }
     );
     return Language;
+}])
+
+.factory('ExternalResource',  ['$resource', 'API_CONF', function($resource, API_CONF) {
+    var url = API_CONF.REFERENCE_POOL_URL + "/externalresources/:id";
+    var ExternalResource = $resource(url,
+        {
+            id: "@id"
+        }
+    );
+    return ExternalResource;
 }]);
 
 
