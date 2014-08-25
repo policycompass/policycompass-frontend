@@ -183,12 +183,22 @@
                             <label for="spatial">Spatial</label>
                             <input type="text" class="form-control" id="spatial" name="spatial" placeholder="Spain, England" ng-model="metric.spatial">
                         </div>
+                        <div class="form-group" ng-class="{'has-error': metricForm.external-resource.$dirty && metricForm.external-resource.$invalid}">
+                            <label for="external-resource" class="">External Resource
+                            </label>
+                            <select class="form-control external-resource-options"
+                                    model="metric.external_resource"
+                                    ng-model="metric.external_resource"
+                                    id="external-resource"
+                                    name="external-resource">
+                            </select>
+
+                        </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group" ng-class="{'has-error': metricForm.language.$dirty && metricForm.language.$invalid}">
                             <label for="language" class="">Language *</label>
                             <select class="form-control language-options" model="metric.language" ng-model="metric.language" id="language" name="language" required>
-
                             </select>
                         </div>
                         <div class="form-group" ng-class="{'has-error': metricForm.license.$dirty && metricForm.license.$invalid}">
@@ -218,5 +228,3 @@
 
 </form>
 </div>
-
-<button ng-click="test()">hallo</button>

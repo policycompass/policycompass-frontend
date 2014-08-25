@@ -1,13 +1,21 @@
 angular.module('pcApp.metrics.controllers.metric', [
     'pcApp.metrics.services.metric',
-    'pcApp.references.services.reference'
+    'pcApp.references.services.reference',
+    'dialogs.main'
 ])
 
-.factory('MetricsControllerHelper', [function() {
+
+.factory('MetricsControllerHelper', ['dialogs', '$log', function(dialogs, $log) {
     return {
         baseCreateEditController: function($scope) {
             $scope.step = 'one';
             $scope.columnselection = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+
+            $scope.test = function () {
+                dialogs.notify("Error", "hallo");
+            };
+
+            $scope.extresource = false;
 
             $scope.extracolumns = [];
             $scope.addExtraColumn = function () {
@@ -49,7 +57,6 @@ angular.module('pcApp.metrics.controllers.metric', [
                         data.push(row);
                     }
                 });
-
                 return {
                     table: data,
                     extra_columns: extra
@@ -67,8 +74,12 @@ angular.module('pcApp.metrics.controllers.metric', [
             };
 
             $scope.nextStep = function() {
-                validation();
-                $scope.step = 'second';
+                var val = validation();
+                if (val == true) {
+                    $scope.step = 'second';
+                } else {
+                    dialogs.notify("Error",  val);
+                }
             };
 
             $scope.prevStep = function() {
@@ -76,7 +87,7 @@ angular.module('pcApp.metrics.controllers.metric', [
             };
 
             var validation = function() {
-
+                return true;
             };
 
             $scope.dropzone = {
@@ -175,10 +186,7 @@ angular.module('pcApp.metrics.controllers.metric', [
         value: 2
     };
 
-    $scope.test = function () {
-        throw { message: "hallo"};
-    };
-            
+
 	$scope.createMetric = function() {
         $scope.metric.resource_issued = $filter('date')($scope.metric.resource_issued, 'yyyy-MM-dd');
         $scope.metric.user_id = 1;
@@ -221,6 +229,12 @@ angular.module('pcApp.metrics.controllers.metric', [
         $scope.metric.$promise.then(function(metric){
             $scope.metric.unit = $scope.metric.unit.id;
             $scope.metric.language = $scope.metric.language.id;
+            if($scope.metric.external_resource != null) {
+                $scope.metric.external_resource = $scope.metric.external_resource.id;
+            } else {
+                $scope.metric.external_resource = 0;
+            }
+
             $scope.grid.data = metric.getDataAsGrid();
             $scope.gridvisible = true;
 
@@ -230,7 +244,6 @@ angular.module('pcApp.metrics.controllers.metric', [
             });
             $scope.metric.policy_domains = domains;
             $log.info($scope.metric.policy_domains);
-            $scope.metric.external_resource = 1;
 
             for(var i=0; i < $scope.metric.data.extra_columns.length; i++) {
                 $scope.extracolumns.push({
