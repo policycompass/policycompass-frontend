@@ -8,7 +8,10 @@ angular.module('pcApp.events.services.event',[
 	var Event = $resource(url,
 		{
 			id: "@id"
-		}
+		},
+        {
+            'update': { method:'PUT' }
+        }
 	);
 	return Event;
 }]);

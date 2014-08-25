@@ -42,12 +42,46 @@ angular.module('pcApp.events.controllers.event', [
 
         }])
 
+    .controller('EventEditController', [
+        '$scope',
+        '$routeParams',
+        'Event',
+        '$location',
+        '$log',
+        function ($scope, $routeParams, Event, $location, $log) {
+
+            $scope.mode = "edit";
+
+            $scope.event = Event.get({id: $routeParams.eventId},
+                function(event) {
+                },
+                function(err) {
+                    throw { message: JSON.stringify(err.data)};
+                }
+            );
+
+            $scope.createEvent = function () {
+                $scope.event.userID = 1;
+                $scope.event.viewsCount = 1;
+
+                Event.update($scope.event, function (value, responseHeaders) {
+                        $location.path('/events/' + value.id);
+                    },
+                    function (err) {
+                        throw { message: err.data};
+                    }
+                );
+            };
+        }])
+
     .controller('EventCreateController', [
         '$scope',
         'Event',
         '$location',
         '$log',
         function ($scope, Event, $location, $log) {
+
+            $scope.mode = "create";
 
             $scope.createEvent = function () {
                 $scope.event.userID = 1;
