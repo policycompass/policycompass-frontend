@@ -33,6 +33,6 @@ var pcApp = angular.module('pcApp', [
 
         //$rootScope.error = exception.message;
         dialogs.notify("Error", String(exception.message));
-        //$log.error(exception.message);
+        $log.error(exception.message);
     };
 }]);
