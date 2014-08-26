@@ -21,8 +21,8 @@ angular.module('pcApp.metrics.controllers.metric', [
 
                 var c = {
                     i: $scope.extracolumns.length + 1,
-                    column: {},
-                    value: {}
+                    column: null,
+                    value: null
                 };
                 $scope.extracolumns.push(c);
 
@@ -73,11 +73,12 @@ angular.module('pcApp.metrics.controllers.metric', [
             };
 
             $scope.nextStep = function() {
-                var val = validation();
-                if (val == true) {
+                try {
+                    validation();
                     $scope.step = 'second';
-                } else {
-                    dialogs.notify("Error",  val);
+                }
+                catch(err) {
+                    dialogs.notify("Error",  err);
                 }
             };
 
@@ -86,7 +87,20 @@ angular.module('pcApp.metrics.controllers.metric', [
             };
 
             var validation = function() {
-                return true;
+                var columns = [
+                    $scope.columns.from,
+                    $scope.columns.to,
+                    $scope.columns.value
+                ];
+                $scope.extracolumns.forEach(function (extraColumn) {
+                    columns.push(extraColumn.column);
+                });
+                columns = _.map(columns, Number);
+                var unique_columns = _.unique(columns);
+
+                if(columns.length != unique_columns.length){
+                    throw "You cannot choose the same column more than once!";
+                }
             };
 
             $scope.dropzone = {

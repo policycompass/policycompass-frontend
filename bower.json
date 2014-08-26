@@ -19,7 +19,8 @@
     "dropzone": "",
     "modernizr": "",
     "jasny-bootstrap": "",
-    "angular-dialog-service": ""
+    "angular-dialog-service": "",
+    "underscore": ""
   },
   "resolutions": {
     "angular": "1.2.x"

@@ -136,7 +136,7 @@
                         <div class="col-lg-5">
                             <div class="form-group">
                                 <label for="extracolumn_{{ e.i }}" class="control-label">Column</label>
-                                <select class="form-control pc-datagrid-columnselect" ng-model="e.column" id="extracolumn_{{ e.i }}">
+                                <select class="form-control pc-datagrid-columnselect" ng-model="e.column" id="extracolumn_{{ e.i }}" required>
                                     <option value="{{ $index }}" ng-repeat="s in columnselection"  ng-selected="$index == e.column">{{ s }}</option>
                                 </select>
                             </div>
@@ -145,8 +145,6 @@
                             <div class="form-group">
                                 <label for="categorycolumn_{{ e.i }}" class="">Category</label>
                                 <select class="form-control extra-category-options" ng-model="e.value" model="e.value" id="categorycolumn_{{ e.i }}" required></select>
-
-
                             </div>
                         </div>
                     </div>
