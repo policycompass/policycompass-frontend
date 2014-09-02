@@ -148,9 +148,14 @@ angular.module('pcApp.metrics.controllers.metric', [
         '$log',
         function($scope, $routeParams, $location, Metric, $log) {
 
-    $scope.datagrid = [[]];
     $scope.handson = {};
     $scope.gridvisible = false;
+    $scope.gridloaded = false;
+
+    $scope.grid = {
+        data: [[]],
+        instance: {}
+    };
 
 	$scope.metric = Metric.get({id: $routeParams.metricId},
 			function(metric) {
@@ -161,10 +166,13 @@ angular.module('pcApp.metrics.controllers.metric', [
 	);
 
     $scope.metric.$promise.then(function(metric){
-        $scope.datagrid = metric.getDataAsGrid();
-        $scope.gridvisible = true;
+        $scope.grid.data = metric.getDataAsGrid();
+        $scope.gridloaded = true;
     });
 
+    $scope.showData = function () {
+        $scope.gridvisible = !$scope.gridvisible;
+    };
 
     $scope.deleteMetric = function(metric) {
         metric.$delete(
