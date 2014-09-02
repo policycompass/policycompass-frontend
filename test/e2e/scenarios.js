@@ -3,29 +3,37 @@
 describe('my app', function() {
     browser.get('index.html#/metrics/create');
 
-    it('should have a title', function() {
-        expect(browser.getTitle()).toEqual('Policy Compass');
+    beforeEach(function () {
+
     });
 
-//    it('should automatically redirect to /view1 when location hash/fragment is empty', function() {
-//        expect(browser.getLocationAbsUrl()).toMatch("/view1");
-//    });
-//    describe('view1', function() {
-//        beforeEach(function() {
-//            browser.get('index.html#/view1');
-//        });
-//        it('should render view1 when user navigates to /view1', function() {
-//            expect(element.all(by.css('[ng-view] p')).first().getText()).
-//                toMatch(/partial for view 1/);
-//        });
-//    });
-//    describe('view2', function() {
-//        beforeEach(function() {
-//            browser.get('index.html#/view2');
-//        });
-//        it('should render view2 when user navigates to /view2', function() {
-//            expect(element.all(by.css('[ng-view] p')).first().getText()).
-//                toMatch(/partial for view 2/);
-//        });
-//    });
+    it('should have a title', function() {
+
+        expect(browser.getTitle()).toEqual('Policy Compass');
+
+        element(by.xpath('//*[@id="datagrid"]/div[1]/div[1]/div[1]/table/tbody/tr[1]/td[1]')).click();
+        element(by.tagName('body')).sendKeys('2003-01-01');
+        element(by.xpath('//*[@id="datagrid"]/div[1]/div[1]/div[1]/table/tbody/tr[1]/td[2]')).click();
+        element(by.tagName('body')).sendKeys('2003-12-31');
+        element(by.xpath('//*[@id="datagrid"]/div[1]/div[1]/div[1]/table/tbody/tr[1]/td[3]')).click();
+        element(by.tagName('body')).sendKeys('23900.0');
+
+        element(by.id('title')).sendKeys('TestTest');
+        element(by.id('acronym')).sendKeys('TTT');
+        element(by.cssContainingText('option', 'Economy')).click();
+        element(by.cssContainingText('option', 'Health')).click();
+        element(by.cssContainingText('option', 'decade')).click();
+        element(by.id('keywords')).sendKeys('Test, World');
+        element(by.id('nextStepButton')).click();
+        element(by.id('metricdescription')).sendKeys('Description');
+        element(by.cssContainingText('option', 'German')).click();
+        element(by.id('saveButton')).click().then(function () {
+            browser.waitForAngular();
+            expect(browser.getCurrentUrl()).toContain('#/metrics/');
+            element(by.xpath('/html/body/div[1]/div/h1')).getText().then(function (text) {
+                expect(text).toContain('TestTest');
+            });
+        });
+
+    });
 });
