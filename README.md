@@ -9,6 +9,10 @@
 ```
 npm install
 ```
+* Install phantomjs for headless brwoser tests
+```
+npm install phantomjs
+```
 * Install front-end packages
 ```
 ./node_modules/.bin/bower install
