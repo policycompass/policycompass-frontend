@@ -112,20 +112,19 @@
 							</div>
 						</div>
 	
-						<div class="buttonline clearfix-min">
+						<div class="buttonline clearfix-min">							
+							<button ng-show="metrics.count>0" type="submit" class="btn btn-primary button-metrics" id="addmetricsbutton" ng-click="addMetrictoList()">Add metric</button>
 							
-							<button type="submit" class="btn btn-default button-metrics" id="addmetricsbutton" ng-click="addMetrictoList()">Add metric</button>
-
 						</div>
 			
 						<ul class="metrics-list" id="metrics-list" style="display: none;">								
-							<li ng-class="{'metrics-list active':MetricSelectediId_[metric.id]>0,'metrics-list':MetricSelectediId_[metric.id]}" id="metric-list-item-item-{{metric.id}}" name="designer-metrics-num-{{metric.id}}" ng-repeat="metric in metrics track by $index" ><a href="" ng-click="addFilterMetric(metric.id);" title="{{metric.title}}">{{metric.title}}</a></li>
+							<li ng-class="{'metrics-list active':MetricSelectediId_[metric.id]>0,'metrics-list':MetricSelectediId_[metric.id]}" id="metric-list-item-item-{{metric.id}}" name="designer-metrics-num-{{metric.id}}" ng-repeat="metric in metrics.results track by $index" ><a href="" ng-click="addFilterMetric(metric.id);" title="{{metric.title}}">{{metric.title}} - {{ metric.issued | date:'longDate' }}</a></li>
 						</ul>
 	
 						
-						<div ng-hide="!MetricSelectediId_[metric.id]" ng-class="{'designer-metrics active':MetricSelectediId_[metric.id],'designer-metrics':MetricSelectediId_[metric.id]}" class="designer-metrics" id="designer-metrics-num-{{metric.id}}" ng-repeat="metric in metrics track by $index" >
+						<div ng-hide="!MetricSelectediId_[metric.id]" ng-class="{'designer-metrics active':MetricSelectediId_[metric.id],'designer-metrics':MetricSelectediId_[metric.id]}" class="designer-metrics" id="designer-metrics-num-{{metric.id}}" ng-repeat="metric in metrics.results track by $index" >
 							
-							<h4>{{metric.title}}</h4>
+							<h4>{{metric.title}} - {{ metric.issued | date:'longDate' }}</h4>
 							
 							<input type="hidden" ng-model="MetricSelectediId_[metric.id]" id="MetricSelectediId_{{metric.id}}" name="MetricSelectedId[]" value="">
 							<input type="hidden" ng-model="MetricSelectediIndex_[metric.id]" ng-init="MetricSelectediIndex_[metric.id]=$index+1" id="MetricSelectediIndex_{{metric.id}}" name="MetricSelectediIndex[]" value="{{$index+1}}">

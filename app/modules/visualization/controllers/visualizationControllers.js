@@ -114,12 +114,23 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			};
 
 			//funtion used to recover the metrics list
+			/*
 			$scope.metrics = Metric.query(
-				null,
+				null,				
 				function(metricList) {
+					console.log("--metricList---dins");
 				},
 				function(error) {
 					alert(error.data.message);
+				}
+			);
+			*/
+			$scope.metrics = Metric.query(
+            	{page: $routeParams.page},
+				function(metricList) {
+				},
+				function(error) {
+                	throw { message: JSON.stringify(err.data)};
 				}
 			);
 			
