@@ -11,7 +11,7 @@
  * Configuration: Put the domains of the services in the development.json
  * Start: node server.js [port]
  *
- * Default port is 8000
+ * Default port is 9000
  *
  */
 var http = require("http"),
@@ -20,7 +20,7 @@ var http = require("http"),
 	fs = require("fs"),
 	httpProxy = require('http-proxy'),
 	nconf = require('nconf'),
-	port = process.argv[2] || 8000;
+	port = process.argv[2] || 9000;
 
 nconf.file('development.json');
 
