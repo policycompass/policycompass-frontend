@@ -3,10 +3,6 @@
 describe('my app', function() {
     browser.get('index.html#/metrics/create');
 
-    beforeEach(function () {
-
-    });
-
     it('should have a title', function() {
 
         expect(browser.getTitle()).toEqual('Policy Compass');

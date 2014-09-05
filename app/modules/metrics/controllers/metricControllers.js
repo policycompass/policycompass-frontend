@@ -14,8 +14,6 @@ angular.module('pcApp.metrics.controllers.metric', [
                 dialogs.notify("Error", "hallo");
             };
 
-            $scope.extresource = false;
-
             $scope.extracolumns = [];
             $scope.addExtraColumn = function () {
 
@@ -74,7 +72,7 @@ angular.module('pcApp.metrics.controllers.metric', [
 
             $scope.nextStep = function() {
                 try {
-                    validation();
+                    $scope.validation();
                     $scope.step = 'second';
                 }
                 catch(err) {
@@ -86,7 +84,7 @@ angular.module('pcApp.metrics.controllers.metric', [
                 $scope.step = 'one';
             };
 
-            var validation = function() {
+            $scope.validation = function() {
                 var columns = [
                     $scope.columns.from,
                     $scope.columns.to,
@@ -149,7 +147,6 @@ angular.module('pcApp.metrics.controllers.metric', [
         '$log',
         function($scope, $routeParams, $location, Metric, dialogs, $log) {
 
-    $scope.handson = {};
     $scope.gridvisible = false;
     $scope.gridloaded = false;
 
@@ -168,8 +165,8 @@ angular.module('pcApp.metrics.controllers.metric', [
 
     $scope.metric.$promise.then(function(metric){
         $scope.grid.data = metric.getDataAsGrid();
-
         $scope.extralegend = [];
+
         var i = 0;
         $scope.metric.data.extra_columns.forEach(function (extraColumn) {
            $scope.extralegend.push(
@@ -226,7 +223,6 @@ angular.module('pcApp.metrics.controllers.metric', [
         value: 2
     };
 
-
 	$scope.createMetric = function() {
         $scope.metric.resource_issued = $filter('date')($scope.metric.resource_issued, 'yyyy-MM-dd');
         $scope.metric.user_id = 1;
@@ -238,7 +234,6 @@ angular.module('pcApp.metrics.controllers.metric', [
 		function(err) {
             throw { message: JSON.stringify(err.data)};
 		}
-
 		);
 	};
 
