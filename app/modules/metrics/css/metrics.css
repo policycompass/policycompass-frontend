@@ -27,6 +27,3 @@
     min-width: 200px;
     background: red;
 }
-.borderless th, .borderless td {
-    border-top: none !important;
-}

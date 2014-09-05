@@ -31,7 +31,7 @@ describe('my app', function() {
             browser.waitForAngular();
             expect(browser.getCurrentUrl()).toContain('#/metrics/');
             element(by.xpath('/html/body/div[1]/div/h1')).getText().then(function (text) {
-                expect(text).toContain('TestTest');
+                expect(text).toContain('TTT');
             });
         });
 
