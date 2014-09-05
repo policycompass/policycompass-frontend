@@ -140,7 +140,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
             	function (eventList) {
             	},
             	function (error) {
-                	alert(error.data.message);
+                	//alert(error.data.message);
+                	throw { message: JSON.stringify(error.data.message)};
             	}
     		);
 
@@ -645,12 +646,13 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	//this.message = "Hello VisualizationsDetailController";
 	//alert("Hello VisualizationsDetailController");
 	//alert($routeParams.visualizationId);
-    $scope.test = "hallo---";
+    //$scope.test = "hallo---";
 	$scope.visualization = Visualization.get({id: $routeParams.visualizationId},
 			function(visualizationList) {
 			},
 			function(error) {
-				alert(error.data.message);
+				//alert(error.data.message);
+				throw { message: JSON.stringify(error.data.message)};
 			}
 	);
 
@@ -681,7 +683,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				//$log.info(visualizationList);
 			},
 			function(error) {
-				alert(error.data.message);
+				//alert(error.data.message);
+				throw { message: JSON.stringify(error.data.message)};
 			}
 	);
 
@@ -702,7 +705,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			function(visualizationList) {
 			},
 			function(error) {
-				alert(error.data.message);
+				//alert(error.data.message);
+				throw { message: JSON.stringify(error.data.message)};
 			}
 	);
 
@@ -747,7 +751,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
         function(visualization) {
         },
         function(error) {
-            alert(error.data.message);
+            //alert(error.data.message);
+            throw { message: JSON.stringify(error.data.message)};
         }
     );
     
@@ -831,7 +836,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	'$log', 
 	'API_CONF',
 function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF) {
+	
 	console.log('VisualizationsCreateController');
+	
 	$scope.mode = "create";
 	$scope.resetlocation = "/visualizations/create/";
 	
@@ -884,9 +891,10 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 		for (i in $scope.MetricSelectediIndex_)
 		{
 			//console.log("i="+i+"---$scope.MetricSelectediIndex_["+i+"]="+$scope.MetricSelectediIndex_[i])
+			console.log("i="+i);
 			if (!isNaN($scope.MetricSelectediId_[i]))
 			{
-				console.log("$scope.MetricSelectediId_["+i+"]="+$scope.MetricSelectediId_[i]);
+				//console.log("$scope.MetricSelectediId_["+i+"]="+$scope.MetricSelectediId_[i]);
 				var myindex = $scope.MetricSelectediIndex_[i];
 				//console.log("myindex="+myindex);				
 				var selectorLabel = $scope.MetricSelectorLabelColumn_[myindex];
@@ -936,7 +944,12 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
             dataMetrics: dataMetrics,
             dataHE: dataHE
         };
-
+		
+		
+		$scope.visualization.historical_events_in_visualization = dataHE;		
+		//console.log($scope.visualization.historical_events_in_visualization);
+		$scope.visualization.metrics_in_visualization = dataMetrics;
+		
 		//console.log("------------------");
 		//console.log($scope.visualization);
 		//console.log("------------------");
