@@ -145,8 +145,9 @@ angular.module('pcApp.metrics.controllers.metric', [
         '$routeParams',
         '$location',
         'Metric',
+        'dialogs',
         '$log',
-        function($scope, $routeParams, $location, Metric, $log) {
+        function($scope, $routeParams, $location, Metric, dialogs, $log) {
 
     $scope.handson = {};
     $scope.gridvisible = false;
@@ -167,6 +168,19 @@ angular.module('pcApp.metrics.controllers.metric', [
 
     $scope.metric.$promise.then(function(metric){
         $scope.grid.data = metric.getDataAsGrid();
+
+        $scope.extralegend = [];
+        var i = 0;
+        $scope.metric.data.extra_columns.forEach(function (extraColumn) {
+           $scope.extralegend.push(
+               {
+                   column: String.fromCharCode(68 + i),
+                   value: extraColumn
+               }
+           );
+           i++;
+        });
+
         $scope.gridloaded = true;
     });
 
@@ -175,12 +189,17 @@ angular.module('pcApp.metrics.controllers.metric', [
     };
 
     $scope.deleteMetric = function(metric) {
-        metric.$delete(
-            {},
-            function(){
-                $location.path('/metrics');
-            }
-        );
+        var dlg = dialogs.confirm(
+            "Are you sure?",
+            "Do you want to delete the Metric " + metric.acronym + " permanently?");
+        dlg.result.then(function () {
+            metric.$delete(
+                {},
+                function(){
+                    $location.path('/metrics');
+                }
+            );
+        });
     };
 
 }])
