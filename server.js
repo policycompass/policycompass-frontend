@@ -20,6 +20,7 @@ var http = require("http"),
 	fs = require("fs"),
 	httpProxy = require('http-proxy'),
 	nconf = require('nconf'),
+	mime = require('mime'),
 	port = process.argv[2] || 9000;
 
 nconf.file('development.json');
@@ -76,7 +77,7 @@ http.createServer(function(request, response) {
 					return;
 				}
 
-				response.writeHead(200);
+				response.writeHead(200, {"Content-Type": mime.lookup(filename)});
 				response.write(file, "binary");
 				response.end();
 			});
