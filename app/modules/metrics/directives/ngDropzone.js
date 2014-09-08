@@ -1,4 +1,6 @@
 /**
+ * Directive for using Dropzone.js in an AngularJS project.
+ *
  * Based on angular-dropzone https://github.com/sandbochs/angular-dropzone/blob/master/lib/angular-dropzone.js
  * But implemented again, because source are not maintained
  */

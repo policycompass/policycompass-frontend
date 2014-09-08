@@ -1,3 +1,7 @@
+/**
+ * Controllers for common purposes
+ */
+
 angular.module('pcApp.common.controllers', [
 
 ])
@@ -13,6 +17,10 @@ angular.module('pcApp.common.controllers', [
 
 }])
 
+/**
+ * Controller for setting the UI Bootstrap date selection.
+ * ToDo: Should be a directive.
+ */
 .controller('DateController',  ['$scope', function ($scope) {
 
     $scope.maxDate = new Date();

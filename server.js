@@ -20,7 +20,7 @@ var http = require("http"),
 	fs = require("fs"),
 	httpProxy = require('http-proxy'),
 	nconf = require('nconf'),
-	port = process.argv[2] || 8000;
+	port = process.argv[2] || 9000;
 
 nconf.file('development.json');
 
@@ -35,8 +35,7 @@ http.createServer(function(request, response) {
 	, filename = path.join(process.cwd(), uri);
 	
 	console.log('[%s] "%s %s" "%s"', (new Date).toUTCString(), request.method, request.url, request.headers['user-agent']);
-	
-	
+
 	//Proxy all requests for the metrics service to the Data Manager
 	// /api/v*/metrics
 	if (/^\/api\/v[0-9]+\/metricsmanager/.exec(request.url)) {

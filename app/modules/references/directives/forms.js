@@ -1,7 +1,14 @@
+/**
+ * Collection of directives to make the data of the Reference Pool available as HTML select boxes.
+ */
+
 angular.module('pcApp.references.directives.forms', [
     'pcApp.references.services.reference'
 ])
 
+/**
+ * Returns HTML option tags for the selection of the unit
+ */
 .directive('unitOptions', ['$log', 'Unit', function ($log, Unit) {
     return {
         restrict: 'C',
@@ -20,6 +27,9 @@ angular.module('pcApp.references.directives.forms', [
     };
 }])
 
+/**
+ * Returns HTML option tags for the selection of the policy domain
+ */
 .directive('policydomainOptions', ['$log', 'PolicyDomain', function ($log, PolicyDomain) {
     return {
         restrict: 'C',
@@ -38,6 +48,9 @@ angular.module('pcApp.references.directives.forms', [
     };
 }])
 
+/**
+ * Returns HTML option tags for the selection of the language
+ */
 .directive('languageOptions', ['$log', 'Language', function ($log, Language) {
     return {
         restrict: 'C',
@@ -56,6 +69,9 @@ angular.module('pcApp.references.directives.forms', [
     };
 }])
 
+/**
+ * Returns HTML option tags for the selection of external resource
+ */
 .directive('externalResourceOptions', ['$log', 'ExternalResource', function ($log, ExternalResource) {
     return {
         restrict: 'C',
@@ -66,11 +82,11 @@ angular.module('pcApp.references.directives.forms', [
             $scope.externalResources = ExternalResource.query(
                 null,
                 function() {
-                    $log.info( $scope.model )
                     //$log.info($scope.units);
                 }
             );
         },
+        // External Resource can be None, so there is an extra option for that case
         template: '<option value="0"  ng-selected="model == 0">None</option>' +
             '<option value="{{ e.id }}" ng-repeat="e in externalResources" ng-selected="e.id == model">{{ e.title }}</option>'
     };

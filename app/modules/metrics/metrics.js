@@ -1,3 +1,7 @@
+/**
+ * Entry point of the Metrics Manager module
+ */
+
 var metrics = angular.module('pcApp.metrics', [
     'pcApp.metrics.controllers.metric',
     'pcApp.metrics.directives.pcDatagrid',
@@ -6,6 +10,9 @@ var metrics = angular.module('pcApp.metrics', [
     'pcApp.references.directives.forms'
 ]);
 
+/**
+ * The routes are configured and connected with the respective controller here
+ */
 metrics.config(function($routeProvider) {
     $routeProvider
         .when('/metrics', {

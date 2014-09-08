@@ -1,7 +1,11 @@
 'use strict';
+/**
+ * Unittests for the metric controllers
+ */
 
 describe('Metrics Controller Spec', function() {
 
+    // Static test data
     var respond = {
         "self": "/api/v1/metricsmanager/metrics/1",
         "spatial": "Germany, Spain",
@@ -125,6 +129,7 @@ describe('Metrics Controller Spec', function() {
         beforeEach(inject(function($rootScope, $routeParams, $controller, $httpBackend, $location){
             location = $location;
             httpBackend = $httpBackend;
+            // Mock the API response
             httpBackend.when('GET', '/api/v1/metricsmanager/metrics/1').respond(respond);
             $routeParams.metricId = 1;
             scope = $rootScope.$new();
@@ -173,6 +178,7 @@ describe('Metrics Controller Spec', function() {
 
         beforeEach(inject(function($rootScope, $controller, $httpBackend){
             httpBackend = $httpBackend;
+            // Mock the API response
             httpBackend.when('GET', '/api/v1/metricsmanager/metrics').respond(respond_list);
             scope = $rootScope.$new();
             metCtrl = $controller('MetricsController',{
@@ -194,6 +200,7 @@ describe('Metrics Controller Spec', function() {
         beforeEach(inject(function($rootScope, $controller, $httpBackend, $location){
             location = $location;
             httpBackend = $httpBackend;
+            // Mock the API response
             httpBackend.when('POST', '/api/v1/metricsmanager/metrics').respond({id: 1});
             scope = $rootScope.$new();
             metCtrl = $controller('MetricCreateController',{
@@ -284,6 +291,7 @@ describe('Metrics Controller Spec', function() {
         beforeEach(inject(function($rootScope, $controller, $httpBackend, $location){
             location = $location;
             httpBackend = $httpBackend;
+            // Mock the API responses
             httpBackend.when('PUT', '/api/v1/metricsmanager/metrics').respond({id: 1});
             httpBackend.when('GET', '/api/v1/metricsmanager/metrics/1').respond(respond);
             scope = $rootScope.$new();
