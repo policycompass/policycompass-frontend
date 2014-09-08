@@ -25,7 +25,8 @@ var loadscript = function(script) {
 if (policyCompassConfig.ENABLE_ADHOCRACY) {
     loadscript("http://localhost:6551/static/js/AdhocracySDK.js");
     pcAppDependencies.push.apply(pcAppDependencies, [
-        'pcApp.adhocracyEmbedder'
+        'pcApp.adhocracyEmbedder',
+        'pcApp.auth'
     ]);
 }
 
