@@ -2,7 +2,7 @@
  * Initializes all need modules
  *
  */
-var pcApp = angular.module('pcApp', [
+var pcAppDependencies = [
     'ngRoute',
     'ui.bootstrap',
     'pcApp.metrics',
@@ -16,7 +16,20 @@ var pcApp = angular.module('pcApp', [
     'dialogs.default-translations',
     'angularSpectrumColorpicker'
     //'nvd3ChartDirectives'
-])
+];
+
+var loadscript = function(script) {
+    $("head").append('<script type="text/javascript" src="' + script + '"></script>');
+};
+
+if (policyCompassConfig.ENABLE_ADHOCRACY) {
+    loadscript("http://localhost:6551/static/js/AdhocracySDK.js");
+    pcAppDependencies.push.apply(pcAppDependencies, [
+        'pcApp.adhocracyEmbedder'
+    ]);
+}
+
+var pcApp = angular.module('pcApp', pcAppDependencies)
 
 /**
  * Setting the Token always to 1
