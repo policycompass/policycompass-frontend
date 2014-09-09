@@ -12,7 +12,7 @@
         })
         .when('/browse', {
             controller: 'StaticController',
-            templateUrl: 'modules/common/partials/browse.html'
+            templateUrl: 'modules/search/partials/browse.html'
         })
         .when('/create', {
             controller: 'StaticController',
