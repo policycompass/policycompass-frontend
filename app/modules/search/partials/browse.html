@@ -19,9 +19,9 @@
                         <li><a href="#">Event</a></li>
                     </ul>
                 </div><!-- /btn-group -->
-                <input type="text" class="browse-input form-control">
+					<input type="search" class="browse-input form-control" required="" placeholder="Search for metrics, visualizations,FCM models, events" ng-model="searchQuery" />
                   <span class="input-group-btn">
-                    <button class="btn btn-warning" type="button">Go!</button>
+                    <button class="btn btn-warning" type="button" ng-click="search(searchQuery)">Go!</button>
                   </span>
             </div><!-- /input-group -->
         </div><!-- /.col-lg-6 -->
@@ -49,6 +49,9 @@
                         </ul>
                     </span>
                     <span class="pull-right text-show">Show</span>
+                </div>
+                <div ngshow="searchResults">
+					{{searchResults}}
                 </div>
                 <div class="col-lg-12 result-wrapper">
                     <div class="row">
