@@ -1,6 +1,6 @@
 (function() {
 
-    var searchmodule = angular.module('pcApp.search');
+    var searchmodule = angular.module('pcApp.search.controllers',[]);
 
     var searchMainController = function($scope,  $location) {
 

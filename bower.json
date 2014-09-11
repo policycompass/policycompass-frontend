@@ -1,29 +1,30 @@
 {
-  "name": "policycompassPortal",
-  "version": "0.0.1",
-  "authors": [
-    "Fabian Kirstein <fabian.kirstein@fokus.fraunhofer.de>"
-  ],
-  "description": "Policy Compass Portal",
-  "main": "portal",
-  "license": "MIT",
-  "dependencies": {
-    "angular": "",
-    "angular-route": "",
-    "angular-resource": "",
-    "angular-animate": "",
-    "angular-mocks": "",
-    "bootstrap": "",
-    "angular-bootstrap": "",
-    "handsontable": "",
-    "jqueryui": "",
-    "dropzone": "",
-    "modernizr": "",
-    "jasny-bootstrap": "",
-    "cytoscape": "",
-    "angular-dialog-service": ""
-  },
-  "resolutions": {
-    "angular": "1.2.x"
-  }
+    "name": "policycompassPortal",
+    "version": "0.0.1",
+    "authors": [
+        "Fabian Kirstein <fabian.kirstein@fokus.fraunhofer.de>"
+    ],
+    "description": "Policy Compass Portal",
+    "main": "portal",
+    "license": "MIT",
+    "dependencies": {
+        "angular": "",
+        "angular-route": "",
+        "angular-resource": "",
+        "angular-animate": "",
+        "angular-mocks": "",
+        "bootstrap": "",
+        "angular-bootstrap": "",
+        "handsontable": "",
+        "jqueryui": "",
+        "dropzone": "",
+        "modernizr": "",
+        "jasny-bootstrap": "",
+        "cytoscape": "",
+        "angular-dialog-service": "",
+        "underscore": ""
+    },
+    "resolutions": {
+        "angular": "1.2.x"
+    }
 }
