@@ -261,7 +261,7 @@ angular.module('pcApp.metrics.controllers.metric', [
         'Metric',
         '$location',
         '$log',
-        'MetricsControllerHelpser',
+        'MetricsControllerHelper',
         '$filter',
         'dialogs',
         function($scope, Metric, $location, $log, helper, $filter, dialogs) {
