@@ -113,6 +113,7 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                         .selector('edge')
                         .css({
                             'width': '1',
+			    'content': 'data(label)',
                             'target-arrow-shape': 'triangle'
 //                            'source-arrow-shape': 'triangle'
                         })

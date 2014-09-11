@@ -9,7 +9,7 @@ var pcApp = angular.module('pcApp', [
     'pcApp.fcm',
     'pcApp.developer',
     'dialogs.main',
-    'dialogs.default-translations'
+    'dialogs.default-translations',
 ])
 
 /**
