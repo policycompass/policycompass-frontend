@@ -460,7 +460,7 @@ policycompass.viz.barsMultiple = function(options) {
       			})
       			.on("mouseover", function(d,i) {
 	      			//console.log(d);
-    	  			tooltip.style("opacity",1.0).html("key="+d.Key+"<br/>Value x="+d.ValueX+"<br/>Value y="+d.ValueY);
+    	  			tooltip.style("opacity",1.0).html(d.Key+"<br/>Date="+d.ValueX+"<br/>Value="+d.ValueY);
       			})
 				.on("click", function(d,i) {
 	      			//console.log("****");      			

@@ -1,0 +1,20 @@
+<div>
+	<div id="container_graph" class="container_graph"></div>
+</div>
+<tabset>	
+	<tab heading="Metrics">
+		<div>
+			<div ng-repeat="metric in metricsFilter">
+				<h4><a href="/app/#/metrics/{{metric.id}}">{{metric.name}}</a></h4>
+			</div>
+		</div>
+	</tab>
+	<tab ng-if="eventsToPlot.length > 0 " heading="Historical Events">
+		<div ng-if="eventsToPlot.length > 0 " id="listHistoricalEventsToPlot">
+			<div ng-repeat="event in eventsToPlot track by $index">
+				<h4><a href="/app/#/events/{{event.id}}">{{event.title}}</a></h4> ({{event.startDate | date:'longDate'}} - {{event.endDate | date:'longDate'}})
+				<div>{{event.desc}}</div>
+			</div>
+		</div>
+	</tab>
+</tabset>

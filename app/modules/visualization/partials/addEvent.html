@@ -35,7 +35,7 @@
 
 
 			<div class="form-group" ng-controller="DateController">
-                <label for="startDate">Start date:</label> {{historicalevent_startDate}}
+                <label for="startDate">Start date:</label> {{historicalevent_startDate | date:'longDate'}}
                 <p class="input-group">
                     <input type="hidden"
                            id="startDate"
@@ -62,7 +62,7 @@
             
             
 			<div class="form-group" ng-controller="DateController">
-                <label for="endDate">End date:</label> {{historicalevent_endDate}}
+                <label for="endDate">End date:</label> {{historicalevent_endDate | date:'longDate'}}
                 <p class="input-group">
                     <input type="hidden"
                            id="endDate"
