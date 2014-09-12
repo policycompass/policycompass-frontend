@@ -1,3 +1,7 @@
+/**
+ * Directive, which wraps the Handsontable library.
+ */
+
 angular.module('pcApp.metrics.directives.pcDatagrid', [
 
 ])
@@ -12,6 +16,7 @@ angular.module('pcApp.metrics.directives.pcDatagrid', [
 
         },
         link: function (scope, element, attrs, ctrls) {
+            // Configure the grid
             angular.element(document).ready(function () {
                 var config = {
                     data: scope.gridData,
@@ -31,6 +36,7 @@ angular.module('pcApp.metrics.directives.pcDatagrid', [
 
                 var elm = $(element);
                 elm.handsontable(config);
+                // Return an instance of the grid
                 scope.instance = elm.handsontable('getInstance');
 
             });

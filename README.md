@@ -23,3 +23,11 @@ npm start
 ```
 npm test
 ```
+* Running E2E-Tests:
+```
+npm run-script protractor
+```
+* If you have Problems with running the E2E-Tests, try updating the webdriver and make sure you have Chrome installed
+```
+node_modules/.bin/webdriver-manager update
+```

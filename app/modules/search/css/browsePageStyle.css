@@ -70,26 +70,32 @@
 .result-block{
     text-align: center;
 }
-.metricIcon{
-    background:url(../../../img/iconMetric.png);
-    background-size: 120px 120px;
+.searchItemIcon{
+    background:url(../../../img/searchItemSprite.png);
     background-repeat: no-repeat;
-    background-position: center;
     height: 120px;
 }
-.metricIcon-effect > a:hover ,.metricIcon-effect > a:focus{
+.searchItemIcon-effect > a:hover ,.searchItemIcon > a:focus{
 
 }
+
 .mapIcon{
-    background:url(../../../img/iconMap.png);
-    background-size: 120px 120px;
-    background-repeat: no-repeat;
-    background-position: center;
-    height: 120px;
+   background-position:center 0px;
 }
-.mapIcon-effect > a:hover ,.mapIcon-effect > a:focus{
 
+.metricIcon{
+   background-position:center -120px;
 }
+
+.visualizationIcon{
+   background-position:center -240px;
+}
+
+.eventIcon{
+   background-position:center -360px;
+}
+
+
 .text-justify{
     text-align: justify;
 }
