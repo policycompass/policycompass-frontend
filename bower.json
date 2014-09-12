@@ -21,7 +21,9 @@
     "modernizr": "",
     "jasny-bootstrap": "",
     "cytoscape": "",
-    "angular-dialog-service": ""
+    "angular-dialog-service": "",
+    "queue-async": "",
+    "d3": ""
   },
   "resolutions": {
     "angular": "1.2.x"
