@@ -3,3 +3,9 @@ bower_components
 development.json
 .idea
 npm-debug.log
+
+# Vim backup files
+*~
+# Vim swap files
+*.sw[op]
+

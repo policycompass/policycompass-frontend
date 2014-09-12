@@ -5,10 +5,27 @@ angular.module('pcApp.visualization.controllers.visualization', [
 ])
 
 
+
 .factory('VisualizationsControllerHelper', [function() {
     return {
     	
     	baseVisualizationsCreateController: function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF) {
+
+
+		tooltip =  d3.select("body").append("div")
+    		.attr("id","tooltip")
+    		.html("")
+    		.attr("class", "tooltip")
+    		.style("opacity", 0);
+
+		mousemove = function() 
+		{
+			//	console.log(d3.event.pageX);
+			tooltip
+				.style("left", (d3.event.pageX +20) + "px")
+				.style("top", (d3.event.pageY - 12) + "px");
+		};     
+
     	
     		//funtion to reset the form, used into the Revert button
 			$scope.revertVisualization = function()	{	
@@ -25,7 +42,6 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				}	
 	
 			};  
-
 
 			//function to select the Map or graph button   
 			$scope.selectTabParent = function(setTab) {
@@ -64,9 +80,11 @@ angular.module('pcApp.visualization.controllers.visualization', [
     			var str =  $(containerLink).attr("name");
     			$('#' + str + '').addClass('active');	
     	
-    			var containerId = document.getElementById("MetricSelectediId_"+idMetric).value;	
-    			var containerIndex = document.getElementById("MetricSelectediIndex_"+idMetric).value;
-		
+    			//var containerId = document.getElementById("MetricSelectediId_"+idMetric).value;	
+    			//var containerIndex = document.getElementById("MetricSelectediIndex_"+idMetric).value;
+				var containerId = idMetric;
+				var containerIndex = idMetric;
+				
 				$scope.MetricSelectediId_[idMetric]=idMetric;
 
 				var myText = "from";
@@ -114,12 +132,23 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			};
 
 			//funtion used to recover the metrics list
+			/*
 			$scope.metrics = Metric.query(
-				null,
+				null,				
 				function(metricList) {
+					console.log("--metricList---dins");
 				},
 				function(error) {
 					alert(error.data.message);
+				}
+			);
+			*/
+			$scope.metrics = Metric.query(
+            	{page: $routeParams.page},
+				function(metricList) {
+				},
+				function(error) {
+                	throw { message: JSON.stringify(err.data)};
 				}
 			);
 			
@@ -129,7 +158,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
             	function (eventList) {
             	},
             	function (error) {
-                	alert(error.data.message);
+                	//alert(error.data.message);
+                	throw { message: JSON.stringify(error.data.message)};
             	}
     		);
 
@@ -138,7 +168,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				var answer = confirm("Are you sure to delete this row?")
 
 				if (answer)
-				{
+				{				
+					$scope.idHE.splice((index), 1);
 					$scope.eventsToPlot.splice((index-1), 1);
 					$scope.rePlotGraph();
 				}
@@ -267,7 +298,6 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
 			
 		$scope.rePlotGraph = function() {
-			//console.log("----rePlotGraph---");
 			var arrayJsonFiles = [];
 			var datosTemporales = new Object();
 			var elems = $scope.MetricSelectediId_;
@@ -279,7 +309,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
     		var arrayXAxis = [];
     		var arrayYAxis = [];
     		var arrayGrouping = [];
-    
+
 			for (i in elems) 
 			{
 				if (!isNaN(i))
@@ -291,11 +321,12 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						jsonFile = "json/"+jsonFile;
 						var resIdMetric = elems[i];
 						jsonFile = API_CONF.METRICS_MANAGER_URL + "/metrics/"+resIdMetric;
-
+						//console.log("jsonFile="+jsonFile);
 						if (jsonFile)
 						{
 							var str = elems[i];
 							var puntero = elemsIndex[i];
+							
 							var res = $scope.MetricSelectorLabelColumn_[puntero];
 							var valueXAxis = res;
 							
@@ -327,6 +358,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			var elemsHE_endDate = document.getElementsByName("endDateHE[]");
 			var elemsHE_desc = document.getElementsByName("descHE[]");
 			var elemsHE_title = document.getElementsByName("titleHE[]");
+			//console.log("arrayJsonFiles="+arrayJsonFiles)
+			//var q = queue();
 
 			var q = queue();
   			arrayJsonFiles.forEach(function(d,i) 
@@ -334,7 +367,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
   				//console.log("-- arrayJsonFiles.forEach -- i="+i+".d="+d);
   				q = q.defer(d3.json, d);  		
 	  		});
-
+			
   			q.await($scope.plotGraph);
   		  			
 		};
@@ -357,19 +390,16 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			else {
 				control=1;
 			}
-	
+			
 			if (control==1)
 			{			
 				for (var i=1; i<arguments.length; i++)
 				{
-					//console.log(".i="+i);
-					//console.log(arguments)
 					if (!isNaN(i)) 
 					{
 						//selectorLabel = document.getElementById("selectorLabelColumn_"+i).value;
 						//selectorLabel = document.getElementById("MetricSelectorLabelColumn_"+arguments[i].id).value;
 						selectorLabel = $scope.MetricSelectorLabelColumn_[arguments[i].id]
-						
 						
 						//selectorLabel = $scope.MetricSelectorLabelColumn_[2];
 						//console.log("selectorLabel "+i+"= "+selectorLabel)
@@ -484,6 +514,41 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	        		 
 			//console.log("######plotGraph########");
 			//console.log("typeToPlot="+$scope.typeToPlot);
+			
+				var element = document.getElementById('showYAxes');
+	 			//if (typeof (element) != undefined && typeof (element) != null && typeof (element) != 'undefined') {
+	 			if (element != null) {
+	     			$scope.showYAxes = document.getElementById("showYAxes").checked;
+	 			}
+
+				var element = document.getElementById('showLegend');
+	 			if (element != null) {
+	     			$scope.showLegend = document.getElementById("showLegend").checked;
+	 			}
+				
+				var element = document.getElementById('showLines');
+	 			if (element != null) {
+	     			$scope.showLines = document.getElementById("showLines").checked;
+	 			}
+
+				var element = document.getElementById('showPoints');
+	 			if (element != null) {
+	     			$scope.showPoints = document.getElementById("showPoints").checked;
+	 			}				
+				
+				var element = document.getElementById('showLabels');
+	 			if (element != null) {
+	     			$scope.showLabels = document.getElementById("showLabels").checked;
+	 			}	
+	 							
+				var element = document.getElementById('showGrid');
+	 			if (element != null) {
+	     			$scope.showGrid = document.getElementById("showGrid").checked;
+	 			}	
+	 							
+				
+			
+			
 			if ($scope.typeToPlot==='map_1')
 			{
 				document.getElementById("container_graph").innerHTML = "";
@@ -515,12 +580,18 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	                		'labelX': "label X",
 	                		'labelY': "label Y",
 	                		'radius': 4,
-							'showYAxesTogether': document.getElementById("showYAxes").checked,
-	                		'showLegend': document.getElementById("showLegend").checked,
-							'showLines': document.getElementById("showLines").checked,
-							'showPoints': document.getElementById("showPoints").checked,
-							'showLabels': document.getElementById("showLabels").checked,
-							'showGrid': document.getElementById("showGrid").checked
+							//'showYAxesTogether': document.getElementById("showYAxes").checked,
+							//'showLegend': document.getElementById("showLegend").checked,
+							//'showLines': document.getElementById("showLines").checked,
+							//'showPoints': document.getElementById("showPoints").checked,
+							//'showLabels': document.getElementById("showLabels").checked,
+							//'showGrid': document.getElementById("showGrid").checked
+							'showYAxesTogether': $scope.showYAxes,	                		
+	                		'showLegend': $scope.showLegend,							
+							'showLines': $scope.showLines,							
+							'showPoints': $scope.showPoints,							
+							'showLabels': $scope.showLabels,							
+							'showGrid': $scope.showGrid
 							//'arrayKeys': arrayKeys,
 							//'arrayXAxis': arrayXAxis,
 							//'arrayYAxis': arrayYAxis,
@@ -556,11 +627,16 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						'height':height,
 						'margin': 20,
 						'radius':radius,
-						'showLegend': document.getElementById("showLegend").checked,
-						'showLines': document.getElementById("showLines").checked,
-						'showPoints': document.getElementById("showPoints").checked,
-						'showLabels': document.getElementById("showLabels").checked,
-						'showGrid': document.getElementById("showGrid").checked
+						//'showLegend': document.getElementById("showLegend").checked,
+						//'showLines': document.getElementById("showLines").checked,
+						//'showPoints': document.getElementById("showPoints").checked,
+						//'showLabels': document.getElementById("showLabels").checked,
+						//'showGrid': document.getElementById("showGrid").checked
+						'showLegend': $scope.showLegend,
+						'showLines': $scope.showLines,
+						'showPoints': $scope.showPoints,
+						'showLabels': $scope.showLabels,
+						'showGrid': $scope.showGrid
 						//'arrayKeys': arrayKeys,
 						//'arrayXAxis': arrayXAxis,
 						//'arrayYAxis': arrayYAxis,
@@ -594,11 +670,16 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	            	'labelX': "label X",
 	            	'labelY': "label Y",
 	            	'radius': 4,
-	            	'showLegend': document.getElementById("showLegend").checked,
-					'showLines': document.getElementById("showLines").checked,
-					'showPoints': document.getElementById("showPoints").checked,
-					'showLabels': document.getElementById("showLabels").checked,
-					'showGrid': document.getElementById("showGrid").checked
+	            	//'showLegend': document.getElementById("showLegend").checked,
+					//'showLines': document.getElementById("showLines").checked,
+					//'showPoints': document.getElementById("showPoints").checked,
+					//'showLabels': document.getElementById("showLabels").checked,
+					//'showGrid': document.getElementById("showGrid").checked
+	            	'showLegend': $scope.showLegend,
+					'showLines': $scope.showLines,
+					'showPoints': $scope.showPoints,
+					'showLabels': $scope.showLabels,
+					'showGrid': $scope.showGrid
 					//'arrayKeys': arrayKeys,
 					//'arrayXAxis': arrayXAxis,
 					//'arrayYAxis': arrayYAxis,
@@ -634,12 +715,13 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	//this.message = "Hello VisualizationsDetailController";
 	//alert("Hello VisualizationsDetailController");
 	//alert($routeParams.visualizationId);
-    $scope.test = "hallo---";
+    //$scope.test = "hallo---";
 	$scope.visualization = Visualization.get({id: $routeParams.visualizationId},
 			function(visualizationList) {
 			},
 			function(error) {
-				alert(error.data.message);
+				//alert(error.data.message);
+				throw { message: JSON.stringify(error.data.message)};
 			}
 	);
 
@@ -660,19 +742,19 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	'$scope', 
 	'Visualization', 
 	'$log', 
-	function($scope, Visualization, $log) {
+	'$routeParams',
+	function($scope, Visualization, $log, $routeParams) {
 	
-	//$log.info("Test VisualizationsController..");
-	$scope.visualizations = Visualization.query(
-			null,
+		//console.log("VisualizationsController");	
+		$scope.visualizations = Visualization.query(
+			 {page: $routeParams.page},
 			function(visualizationList) {
-			//function(metricList) {				
-				//$log.info(visualizationList);
 			},
 			function(error) {
-				alert(error.data.message);
+				//alert(error.data.message);
+				throw { message: JSON.stringify(error.data.message)};
 			}
-	);
+		);
 
 }])
 
@@ -691,7 +773,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			function(visualizationList) {
 			},
 			function(error) {
-				alert(error.data.message);
+				//alert(error.data.message);
+				throw { message: JSON.stringify(error.data.message)};
 			}
 	);
 
@@ -723,6 +806,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF) {
 
 	//console.log("controller VisualizationsEditController");
+		
 	$scope.mode = "edit";
 	
 	//funtion to reset form
@@ -730,134 +814,168 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	$scope.resetlocation = '/visualizations/'+$routeParams.visualizationId+'/edit/';
 	
 	helper.baseVisualizationsCreateController($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF);
-	
-
+			
 	$scope.visualization = Visualization.get({id: $routeParams.visualizationId},
         function(visualization) {
         },
         function(error) {
-            alert(error.data.message);
+            //alert(error.data.message);
+            throw { message: JSON.stringify(error.data.message)};
         }
     );
     
+    
 	$scope.visualization.$promise.then(function(metric){
-            $scope.visualization.language = $scope.visualization.language_id;
-
-    });
-        
-	$scope.tabParent = 2;
-	$scope.tabSon = 'graph_line';
-	$scope.typeToPlot= 'graph_line';
-
-
-	$scope.ListMetricsFilter = [];
-	$scope.metricsFilter = $scope.ListMetricsFilter;
-	
-	
-	
-	$scope.eventsToPlot = [];
-	
-	var datosInT =  {
-				id : 1,
-				title : 'test',
-				startDate : '2014-06-30T22:00:00Z',
-				endDate : '2014-07-02T22:00:00Z',
-				desc : 'hooola'
-			}
-	
-	$scope.eventsToPlot.push(datosInT);		
-	
-	
-	$scope.MetricSelectediId_ = [];
-	$scope.MetricSelectediIndex_ = [];
-	$scope.MetricSelectorLabelColumn_ = [];
-	$scope.MetricSelectorDataColumn_ = [];
-	$scope.MetricselectorGroupingData_ = [];
-	$scope.idHE = [];
-	$scope.titleHE = [];
-	$scope.startDateHE = [];
-	$scope.endDateHE = [];
-	$scope.descHE = [];	
-	
-
-	$scope.MetricSelectediId_[1]=1;
-	$scope.MetricSelectediIndex_[1]=1;
-	$scope.MetricSelectorLabelColumn_[1]='to';
-	$scope.MetricSelectorDataColumn_[1] ='value';
-	$scope.MetricselectorGroupingData_[1] = 'grouping column';
-
-	selectedText = " ";
-	var myObject = {
-		'id':1,
-		'name':'test',
-		'column':'to',
-		'value':'value',
-		'group':'grouping column'
-	};
-		
-	//console.log("a1");					
-	$scope.ListMetricsFilter.push(myObject);	
-		
-
-	//$scope.plotGraph();
-	$scope.rePlotGraph();
+			//console.log("DINS")
+            $scope.visualization.language = $scope.visualization.language.id;
 			
-}])
+    		var configurationFilter = $scope.visualization.filter_configuration;
+    		var arrayConfigFilter = configurationFilter.split(",");
+    		
+    		for (x=0;x<arrayConfigFilter.length;x++)
+    		{
+    			
 
+    			
+    			
+    			var dataFilter = arrayConfigFilter[x].split("=");
+    			if (dataFilter[0]=='graphSelected')
+    			{
+    				//$scope.tabParent = 2;
+					//$scope.tabSon = 'graph_line';
+					//$scope.typeToPlot= 'graph_line';
+    				$scope.tabParent = 2;
+					$scope.tabSon = dataFilter[1];
+					$scope.typeToPlot= dataFilter[1];
+					
+    			}
+    			else
+    			{
+    				eval("$scope."+dataFilter[0]+"="+dataFilter[1]);
+    			}
+    		}
+    		
+    		//console.log("$scope.visualization.historical_events_in_visualization")
+    		//console.log($scope.visualization.historical_events_in_visualization)
+    		$scope.idHE = [];
+			$scope.titleHE = [];
+			$scope.startDateHE = [];
+			$scope.endDateHE = [];
+			$scope.descHE = [];	
+			
+   			$scope.eventsToPlot = [];
+			
+			for (i in $scope.visualization.historical_events_in_visualization)
+			{
+				//console.log($scope.visualization.historical_events_in_visualization[i])
+				$scope.idHE[(parseInt(i)+1)]=$scope.visualization.historical_events_in_visualization[i].id;
+				$scope.titleHE[(parseInt(i)+1)]=$scope.visualization.historical_events_in_visualization[i].title;
+				$scope.startDateHE[(parseInt(i)+1)] = $scope.visualization.historical_events_in_visualization[i].startEventDate;
+				$scope.endDateHE[(parseInt(i)+1)] = $scope.visualization.historical_events_in_visualization[i].endEventDate;
+				$scope.descHE[(parseInt(i)+1)] = $scope.visualization.historical_events_in_visualization[i].descriptionHE
+			
+				var datosInT =  {
+					id : $scope.visualization.historical_events_in_visualization[i].id,
+					title : $scope.visualization.historical_events_in_visualization[i].title,
+					startDate : $scope.visualization.historical_events_in_visualization[i].startEventDate,
+					endDate : $scope.visualization.historical_events_in_visualization[i].endEventDate,
+					desc :  $scope.visualization.historical_events_in_visualization[i].descriptionHE
+				}
+				
+				$scope.eventsToPlot.push(datosInT);				
+			}
+						
+			//console.log("$scope.visualization.metrics_in_visualization")
+    		//console.log($scope.visualization.metrics_in_visualization)
 
-
-//controler to create a new visualization
-.controller('VisualizationsCreateController', [
-	'$scope', 
-	'$route',
-	'$routeParams',
-	'$modal', 
-	'Event', 
-	'Metric', 
-	'Visualization', 
-	'$location', 
-	'VisualizationsControllerHelper',
-	'$log', 
-	'API_CONF',
-function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF) {
-	console.log('VisualizationsCreateController');
-	$scope.mode = "create";
-	$scope.resetlocation = "/visualizations/create/";
+			$scope.ListMetricsFilter = [];
+			$scope.metricsFilter = $scope.ListMetricsFilter;
 	
-	helper.baseVisualizationsCreateController($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF);
+			$scope.MetricSelectediId_ = [];
+			$scope.MetricSelectediIndex_ = [];
+			$scope.MetricSelectorLabelColumn_ = [];
+			$scope.MetricSelectorDataColumn_ = [];
+			$scope.MetricselectorGroupingData_ = [];
 	
-	$scope.tabParent = 0;
-	$scope.tabSon = 0;
+			
+    	
+			for (i in $scope.visualization.metrics_in_visualization)
+			{
+				//console.log("metrics_in_visualization i="+i);
+				
+				var id = $scope.visualization.metrics_in_visualization[i].id;
+				//console.log("------------->id="+id);
+				
+				
+				$scope.MetricSelectediId_[id]=id;
+				//$scope.MetricSelectediIndex_[id]=(parseInt(i)+1);
+				
+				$scope.MetricSelectediIndex_[id]=id;
+				//console.log('visualization_query');
+				//console.log($scope.visualization.metrics_in_visualization[i].visualization_query);
+				
+
+				var configurationMetricsFilters = $scope.visualization.metrics_in_visualization[i].visualization_query;
+    			//console.log(configurationMetricsFilters)
+    			var arrayConfigMetricsFilters = configurationMetricsFilters.split(",");
+    		
+	    		for (x=0;x<arrayConfigMetricsFilters.length;x++)
+	    		{
+	    			//console.log("x="+x);
+	    			var dataFilter = arrayConfigMetricsFilters[x].split(":");
+	    			//console.log("dataFilter[0]="+dataFilter[0])
+	    			//console.log("dataFilter[1]="+dataFilter[1])
+	    			if (dataFilter[0]=='Label')
+	    			{
+	    				$scope.MetricSelectorLabelColumn_[id] = dataFilter[1];
+	    			}
+	    			else if (dataFilter[0]=='Column')
+	    			{
+	    				$scope.MetricSelectorDataColumn_[id] = dataFilter[1];
+	    			}
+	    			else if (dataFilter[0]=='Grouping')
+	    			{
+	    				$scope.MetricselectorGroupingData_[id] = dataFilter[1];
+	    			}
+	    		}
+				
+				
+				//$scope.MetricSelectorLabelColumn_[id]='from';
+				//$scope.MetricSelectorDataColumn_[id] ='value';
+				//$scope.MetricselectorGroupingData_[id] = 'grouping column';
+
+				selectedText = " ";
+				var myObject = {
+					'id': $scope.MetricSelectediId_[id],
+					'name': $scope.visualization.metrics_in_visualization[i].title,
+					'column': $scope.MetricSelectorLabelColumn_[id],
+					'value': $scope.MetricSelectorDataColumn_[id],
+					'group': $scope.MetricselectorGroupingData_[id]				
+				};
+				//console.log(myObject);	
+				$scope.ListMetricsFilter.push(myObject);
+				//console.log($scope.ListMetricsFilter);
+			}
+				
+			$scope.rePlotGraph();
+    
+    });
+    
+	
 
 
-	$scope.eventsToPlot = [];		
-		
-	
-	$scope.MetricSelectediId_ = [];
-	$scope.MetricSelectediIndex_ = [];
-	$scope.MetricSelectorLabelColumn_ = [];
-	$scope.MetricSelectorDataColumn_ = [];
-	$scope.MetricselectorGroupingData_ = [];
-	$scope.idHE = [];
-	$scope.titleHE = [];
-	$scope.startDateHE = [];
-	$scope.endDateHE = [];
-	$scope.descHE = [];
-	
-	$scope.visualization = {};
-
-	this.historicalevent_he_id = '';
-	this.historicalevent_he_title = '';
-	this.historicalevent_he_startdate = '';
-	this.historicalevent_he_enddate = '';
-	this.historicalevent_he_description = '';
-	
 	$scope.createVisualization = function() {
         $scope.visualization.user_id = 1;        				     
         $scope.visualization.views_count = 0;
         $scope.visualization.visualization_type_id = 1;
         $scope.visualization.status_flag_id = 0;
-
+		
+		//$scope.showLegend = document.getElementById("showLegend").checked;
+    	//$scope.showLines = document.getElementById("showLines").checked;    	
+    	//$scope.showPoints = document.getElementById("showPoints").checked;
+    	//$scope.showLabels = document.getElementById("showLabels").checked;  	
+    	//$scope.showGrid = document.getElementById("showGrid").checked;    	
+    	//$scope.showYAxes = document.getElementById("showYAxes").checked;
     	
         var dataConfig = [];
         dataConfig['graphSelected'] = $scope.typeToPlot;
@@ -866,16 +984,18 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
         dataConfig['showPoints'] = $scope.showPoints;
         dataConfig['showLabels'] = $scope.showLabels;
         dataConfig['showGrid'] = $scope.showGrid;
-        dataConfig['showYAxesTogether'] = $scope.showYAxesTogether;
+        dataConfig['showYAxes'] = $scope.showYAxes;
+               
         
         var dataMetrics = [];
         
 		for (i in $scope.MetricSelectediIndex_)
 		{
 			//console.log("i="+i+"---$scope.MetricSelectediIndex_["+i+"]="+$scope.MetricSelectediIndex_[i])
+			//console.log("MetricSelectediIndex_ i="+i);
 			if (!isNaN($scope.MetricSelectediId_[i]))
 			{
-				console.log("$scope.MetricSelectediId_["+i+"]="+$scope.MetricSelectediId_[i]);
+				//console.log("$scope.MetricSelectediId_["+i+"]="+$scope.MetricSelectediId_[i]);
 				var myindex = $scope.MetricSelectediIndex_[i];
 				//console.log("myindex="+myindex);				
 				var selectorLabel = $scope.MetricSelectorLabelColumn_[myindex];
@@ -909,15 +1029,16 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 				dataHE.push(rowHE);
 			}
         }
-               
-        $scope.visualization.configdata = {
-            dataConfig: dataConfig,
-            dataMetrics: dataMetrics,
-            dataHE: dataHE
-        };
-
-        var data = [];
-        var extra = [];
+          
+        //$scope.visualization.configdata = {
+        //    dataConfig: dataConfig,
+        //    dataMetrics: dataMetrics,
+        //    dataHE: dataHE
+        //};
+		
+        //var data = [];
+        //var extra = [];
+        /*
 		$scope.visualization.data = {
             table: data,
             extra_columns: extra,
@@ -925,7 +1046,327 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
             dataMetrics: dataMetrics,
             dataHE: dataHE
         };
+		*/
+		var string_filter_configuration = "";
+		for (key in dataConfig) {
+			if (!string_filter_configuration=="")
+			{
+				string_filter_configuration = string_filter_configuration + ",";
+			}
+			string_filter_configuration = string_filter_configuration + key +"="+dataConfig[key];
+		}
+		
+		//console.log("string_filter_configuration="+string_filter_configuration);
+		
+		
+		$scope.visualization.filter_configuration = string_filter_configuration;
+		if (dataHE.length>0)
+		{			
+			$scope.visualization.historical_events_in_visualization = dataHE;
+		}	
+		else
+		{
+			var rowHE = {
+                    historical_event: "",
+                    description: ""
+            };
+			dataHE.push(rowHE);
+		
+			$scope.visualization.historical_events_in_visualization = dataHE;
+		}
+		
+		//console.log($scope.visualization.historical_events_in_visualization);
+		$scope.visualization.metrics_in_visualization = dataMetrics;
+		
+		
+		//console.log("------------------");
+		//console.log($scope.visualization);
+		//console.log("------------------");
+		
+		Visualization.update($scope.visualization,function(value, responseHeaders){
+			$location.path('/visualizations/' + value.id);
+		},
+		function(err) {
+            throw { message: err.data};
+		}
 
+		);
+
+	};
+
+	
+	
+	
+	
+	/*
+	$scope.eventsToPlot = [];
+	
+	var datosInT =  {
+				id : 1,
+				title : 'test',
+				startDate : '2014-06-30T22:00:00Z',
+				endDate : '2014-07-02T22:00:00Z',
+				desc : 'hooola'
+			}
+	
+	$scope.eventsToPlot.push(datosInT);		
+	*/
+/*	
+	$scope.ListMetricsFilter = [];
+	$scope.metricsFilter = $scope.ListMetricsFilter;
+	
+	$scope.MetricSelectediId_ = [];
+	$scope.MetricSelectediIndex_ = [];
+	$scope.MetricSelectorLabelColumn_ = [];
+	$scope.MetricSelectorDataColumn_ = [];
+	$scope.MetricselectorGroupingData_ = [];
+	*/
+	/*
+	$scope.idHE = [];
+	$scope.titleHE = [];
+	$scope.startDateHE = [];
+	$scope.endDateHE = [];
+	$scope.descHE = [];
+	*/	
+/*
+	$scope.MetricSelectediId_[1]=1;
+	$scope.MetricSelectediIndex_[1]=1;
+	$scope.MetricSelectorLabelColumn_[1]='to';
+	$scope.MetricSelectorDataColumn_[1] ='value';
+	$scope.MetricselectorGroupingData_[1] = 'grouping column';
+
+	selectedText = " ";
+	var myObject = {
+		'id':1,
+		'name':'test',
+		'column':'to',
+		'value':'value',
+		'group':'grouping column'
+	};
+	
+	//console.log("a1");					
+	$scope.ListMetricsFilter.push(myObject);	
+	*/
+
+	
+	//$scope.rePlotGraph();
+			
+}])
+
+
+//controler to view a graph
+.controller('VisualizationsGraphController', [
+	'$scope', 
+	'$route',
+	'$routeParams',
+	'$modal', 
+	'Event', 
+	'Metric', 
+	'Visualization', 
+	'$location', 
+	'VisualizationsControllerHelper',
+	'$log', 
+	'API_CONF',
+function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF) {
+	
+	console.log('VisualizationsGraphController');
+	//this.message = "Hello VisualizationsDetailController";
+	//alert("Hello VisualizationsDetailController");
+	//alert($routeParams.visualizationId);
+    //$scope.test = "hallo---";
+/*    
+    $scope.onLoadGraph = function(idVal) {
+    	console.log('onLoadGraph() idVal='+idVal);
+    	//$routeParams.visualizationId = idVal;    	
+	}
+*/
+    
+    
+}])
+
+//controler to create a new visualization
+.controller('VisualizationsCreateController', [
+	'$scope', 
+	'$route',
+	'$routeParams',
+	'$modal', 
+	'Event', 
+	'Metric', 
+	'Visualization', 
+	'$location', 
+	'VisualizationsControllerHelper',
+	'$log', 
+	'API_CONF',
+function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF) {
+	
+	//console.log('VisualizationsCreateController');
+	
+	$scope.mode = "create";
+	$scope.resetlocation = "/visualizations/create/";
+	
+	helper.baseVisualizationsCreateController($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF);
+	
+	$scope.tabParent = 0;
+	$scope.tabSon = 0;
+
+
+	$scope.eventsToPlot = [];		
+		
+	
+	$scope.MetricSelectediId_ = [];
+	$scope.MetricSelectediIndex_ = [];
+	$scope.MetricSelectorLabelColumn_ = [];
+	$scope.MetricSelectorDataColumn_ = [];
+	$scope.MetricselectorGroupingData_ = [];
+	$scope.idHE = [];
+	$scope.titleHE = [];
+	$scope.startDateHE = [];
+	$scope.endDateHE = [];
+	$scope.descHE = [];
+	
+	//filters
+	$scope.showLegend = true;
+	$scope.showLines = true;
+	$scope.showPoints = true;
+	$scope.showLabels = true;
+	$scope.showGrid = true;
+	$scope.showYAxes = true;
+	
+	
+	$scope.visualization = {};
+
+	this.historicalevent_he_id = '';
+	this.historicalevent_he_title = '';
+	this.historicalevent_he_startdate = '';
+	this.historicalevent_he_enddate = '';
+	this.historicalevent_he_description = '';
+
+    var metricsURL = $routeParams.metrics;
+    //console.log("metricsURL="+metricsURL);
+    if (metricsURL)
+    {
+    	var arrayMetricsURL = metricsURL.split(",");    		
+    	for (x=0;x<arrayMetricsURL.length;x++)
+    	{
+    		console.log("arrayMetricsURL[x]="+arrayMetricsURL[x])
+    		$scope.metric = Metric.get({id: arrayMetricsURL[x]},
+            function(metric) {
+            	console.log("pppppppppppppppp");
+            	$scope.addFilterMetric(metric.id);
+            	
+            },
+            function(err) {
+                throw { message: JSON.stringify(err.data)};
+            }
+        );
+    	
+    		
+    	}
+    }
+
+	$scope.createVisualization = function() {
+        $scope.visualization.user_id = 1;        				     
+        $scope.visualization.views_count = 0;
+        $scope.visualization.visualization_type_id = 1;
+        $scope.visualization.status_flag_id = 0;
+		
+		//$scope.showLegend = document.getElementById("showLegend").checked;
+    	//$scope.showLines = document.getElementById("showLines").checked;    	
+    	//$scope.showPoints = document.getElementById("showPoints").checked;
+    	//$scope.showLabels = document.getElementById("showLabels").checked;  	
+    	//$scope.showGrid = document.getElementById("showGrid").checked;    	
+    	//$scope.showYAxes = document.getElementById("showYAxes").checked;
+    	
+    	
+        var dataConfig = [];
+        dataConfig['graphSelected'] = $scope.typeToPlot;
+        dataConfig['showLegend'] = $scope.showLegend;
+        dataConfig['showLines'] = $scope.showLines;
+        dataConfig['showPoints'] = $scope.showPoints;
+        dataConfig['showLabels'] = $scope.showLabels;
+        dataConfig['showGrid'] = $scope.showGrid;
+        dataConfig['showYAxes'] = $scope.showYAxes;
+               
+        
+        var dataMetrics = [];
+        
+		for (i in $scope.MetricSelectediIndex_)
+		{
+			//console.log("i="+i+"---$scope.MetricSelectediIndex_["+i+"]="+$scope.MetricSelectediIndex_[i])
+			//console.log("i="+i);
+			if (!isNaN($scope.MetricSelectediId_[i]))
+			{
+				//console.log("$scope.MetricSelectediId_["+i+"]="+$scope.MetricSelectediId_[i]);
+				var myindex = $scope.MetricSelectediIndex_[i];
+				//console.log("myindex="+myindex);				
+				var selectorLabel = $scope.MetricSelectorLabelColumn_[myindex];
+				//console.log("selectorLabel="+selectorLabel);
+				var selectorDataColumn = $scope.MetricSelectorDataColumn_[myindex];
+				//console.log("selectorDataColumn="+selectorDataColumn);
+				var selectorGroupingData = $scope.MetricselectorGroupingData_[myindex];
+				//console.log("selectorGroupingData="+selectorGroupingData);										
+				var visualization_query_data = 'Label:'+selectorLabel+',Column:'+selectorDataColumn+',Grouping:'+selectorGroupingData;
+				//console.log("visualization_query_data="+visualization_query_data);
+				
+				var rowMetric = {
+                    metric: $scope.MetricSelectediId_[i],
+                    visualization_query: visualization_query_data
+                	};
+             	
+             	dataMetrics.push(rowMetric);   				
+			}
+		}
+        
+        var dataHE = [];
+        
+        for (i in $scope.idHE)
+        {
+			if (!isNaN($scope.idHE[i]))
+			{
+				var rowHE = {
+                    historical_event: $scope.idHE[i],
+                    description: $scope.descHE[i]
+                };
+				dataHE.push(rowHE);
+			}
+        }
+          
+        //$scope.visualization.configdata = {
+        //    dataConfig: dataConfig,
+        //    dataMetrics: dataMetrics,
+        //    dataHE: dataHE
+        //};
+		
+        var data = [];
+        var extra = [];
+        /*
+		$scope.visualization.data = {
+            table: data,
+            extra_columns: extra,
+            dataConfig: dataConfig,
+            dataMetrics: dataMetrics,
+            dataHE: dataHE
+        };
+		*/
+		var string_filter_configuration = "";
+		for (key in dataConfig) {
+			if (!string_filter_configuration=="")
+			{
+				string_filter_configuration = string_filter_configuration + ",";
+			}
+			string_filter_configuration = string_filter_configuration + key +"="+dataConfig[key];
+		}
+		
+		//console.log("string_filter_configuration="+string_filter_configuration);
+		
+		
+		$scope.visualization.filter_configuration = string_filter_configuration;
+		
+		$scope.visualization.historical_events_in_visualization = dataHE;		
+		//console.log($scope.visualization.historical_events_in_visualization);
+		$scope.visualization.metrics_in_visualization = dataMetrics;
+		
+		
 		//console.log("------------------");
 		//console.log($scope.visualization);
 		//console.log("------------------");
@@ -940,6 +1381,7 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 		);
 
 	};
+
 
 	$scope.ListMetricsFilter = [];
 	$scope.metricsFilter = $scope.ListMetricsFilter;

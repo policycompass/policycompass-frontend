@@ -10,7 +10,8 @@ angular.module('pcApp.visualization.services.visualization',[
 			id: "@id"
 		},
         {
-            'update': { method:'PUT' }
+            'update': { method:'PUT' },
+            'query': { method: 'GET', isArray:false}
         }
 	);
 	return Visualization;

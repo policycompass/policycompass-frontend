@@ -28,10 +28,16 @@ visu.config(function($routeProvider) {
         .when('/visualizations/addEvent/', {
             controller: 'VisualizationsCreateController',
             templateUrl: 'modules/visualization/partials/addEvent.html'
-        })   
+        })
+		.when('/visualizations/graph/:visualizationId', {
+            //controller: 'VisualizationsGraphController',
+            controller: 'VisualizationsEditController',            
+            templateUrl: 'modules/visualization/partials/graph.html'
+        })
         .when('/visualizations/:visualizationId', {
             controller: 'VisualizationsDetailController',
             templateUrl: 'modules/visualization/partials/detail.html'
         })
+		        
         .otherwise({ redirectTo: '/' });
 });

@@ -1,5 +1,6 @@
  angular.module('pcApp.common',[
      'pcApp.common.controllers',
+     'pcApp.search',
      'pcApp.common.directives.submenus',
      'pcApp.common.directives.common'
 ])
@@ -11,8 +12,8 @@
             templateUrl: 'modules/common/partials/main.html'
         })
         .when('/browse', {
-            controller: 'StaticController',
-            templateUrl: 'modules/common/partials/browse.html'
+            controller: 'searchMainController',
+            templateUrl: 'modules/search/partials/browse.html'
         })
         .when('/create', {
             controller: 'StaticController',

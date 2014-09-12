@@ -70,7 +70,8 @@ policycompass.viz.line = function(options)
 		var lineFunction = d3.svg.line()
 			.x(function(d) {return d.x;})
 			.y(function(d) {return d.y;})
-			.interpolate("linear");
+			.interpolate("linear")
+			;
 
 		//The SVG Container
 		var svgContainer = self.svg;
@@ -80,7 +81,8 @@ policycompass.viz.line = function(options)
 			.attr("d", lineFunction(lineData))
 			.attr("stroke", "blue")
 			.attr("stroke-width", 2)
-			.attr("fill", "none");
+			.attr("fill", "none")
+			;
 			
 		/*
 			self.svg.selectAll("posmouse").data(dataForCircles);
@@ -302,7 +304,7 @@ return 0;}
     		//.scale(self.yArray)
     		.orient("left");
 
-		var line = d3.svg.line()		
+		var lineFunction = d3.svg.line()		
     		.x(function(d,i) {
     			//console.log(i);
     			//console.log("........");
@@ -318,11 +320,13 @@ return 0;}
     			//console.log("-----")	
     			//console.log(cntLineasPintadas);	
     			//console.log("-->"+d.posY+"----"+self.y(d.posY))
-    			//return self.y(d.posY);
-    			 
+    			//return self.y(d.posY);    			 
     			return self.yArray[self.cntLineasPintadas](d.posY);
     			//return 2;
-    			});
+    			})
+    		.interpolate("linear");
+    		
+    			;
 
 
 		/** Start to plot mouse pointer */
@@ -653,33 +657,40 @@ return 0;}
   			
 			if (showLines)
 			{
+				//console.log(data);
+
+				
+  
+  
+
 	  			self.svg.append("path")
 		      		.datum(data)
 		      		.attr("class", "line line--hover class_"+key)      		
 	    	  		.style("stroke-width", 2)
 		      		.style("stroke", function(d,i) {return colorScale(key);})
-		      		.attr("d", line)
+		      		.attr("d", lineFunction)
 	    	  		//.on("mouseover", mouseover)
 	      			.on("mouseover", function (d,i) {
-	      				d3.select(this).style("stroke-width", 4);	      			
-						/*	      				  			
-						posMouse = d3.mouse(this);
-						posX = posMouse[0];
-						posY = posMouse[1];						    		
-			    		posX = getDate(self.xInversa(posX));			    		
-			    		posY = self.yInversa(posY);
-			    		tooltip.style("opacity",1.0).html("****<br/>key="+d[0].key+"<br/>pos x="+posX+"<br/>pos y="+posY);		    		
-						*/			    		
+	      				d3.select(this).style("stroke-width", 4);
+	      				//console.log(d[i])	      			
+								  			
+						//posMouse = d3.mouse(this);
+						//posX = posMouse[0];
+						//posY = posMouse[1];						    		
+			    		//posX = getDate(self.xInversa(posX));			    		
+			    		//posY = self.yInversa(posY);
+			    		//tooltip.style("opacity",1.0).html("****<br/>key="+d[0].key+"<br/>pos x="+posX+"<br/>pos y="+posY);		    		
+									    		
 	      			})
 	      			.on("mouseout", function() {
 	      				d3.select(this).style("stroke-width", 2);
 	      				mouseout();
 	      			})      			      		
 	      			.on("click", function(d,i) {	
-	      				/*     			
-						posMouse = d3.mouse(this);
-						posX = posMouse[0];
-						posY = posMouse[1];		
+	      				     			
+						///posMouse = d3.mouse(this);
+						///posX = posMouse[0];
+						///posY = posMouse[1];		
 						//console.log("posX="+posX);
 						//console.log("self.xInversa(posX)="+self.xInversa(posX));
 						//console.log("self.x(posX)="+self.x(posX));
@@ -690,15 +701,19 @@ return 0;}
 			    		//posX = posX;
 			    		//posX = self.x(posX);
 			    		//posX = self.xInversa(posX);
-			    		posX = self.xScaleXInversa(self.xInversa(posX));	
-			    		posY = self.yInversa(posY);
+			    		///posX = self.xScaleXInversa(self.xInversa(posX));	
+			    		///posY = self.yInversa(posY);
 			    		//console.log("posX="+posX);
 						//console.log("posY="+posY);			    	      			
 	      				$('input[name="posx"]').val(posX);
 						$('input[name="posy"]').val(posY);		
 	      				$('#basic-modal-content').modal();
-	      				*/
-	      			});		
+	      				
+	      			})
+					
+	      			;		
+
+
 			}
         
 	    	if (showLegend) 
@@ -750,7 +765,7 @@ return 0;}
                     	//console.log("i="+i);
                     	
                     	return self.yArray[cntLine](resY);})
-                    .attr("r", self.radius)
+                    .attr("r", 0)
                     .attr("class","pointIn")
                     .style("stroke-width", self.radius)
                     .style("stroke", function(d,i) {return colorScale(keyCircle);})
@@ -789,9 +804,25 @@ return 0;}
 					})
                     .on("click", function(d,i){
                     	//console.log(d);                   	
-					});						
+					})
+					.transition()
+						.attr("r", self.radius)
+						.duration(2000)
+						
+					;						
 			});
-		}                   
+		}    
+		
+		
+		
+		
+		self.svg
+  			.attr("transform", "translate(0, "+self.height+") scale(1, 0)")
+  			.transition().duration(500)
+  			.attr("transform", "translate("+self.margin.left+", "+self.margin.top+") scale(1, 1)")
+  			;
+             
+	
 	}
 
 	/* function to plot the pointer mouse */

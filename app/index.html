@@ -12,7 +12,7 @@
 
     <!--  App Styles -->
     <link href="css/main.css" rel="stylesheet" media="screen" />
-    <link href="modules/common/css/browsePageStyle.css" rel="stylesheet" media="screen" />
+    <link href="modules/search/css/browsePageStyle.css" rel="stylesheet" media="screen" />
     <link href="modules/common/css/landingPageStyle.css" rel="stylesheet" media="screen" />
     <link href="css/loading-animation.css" rel="stylesheet" media="screen" />
     <link href="modules/common/css/offcanvas-filter.css" rel="stylesheet" media="screen" />
@@ -118,6 +118,9 @@
 <script type="text/javascript" src="../bower_components/angular-dialog-service/dialogs.min.js"></script>
 <script type="text/javascript" src="../bower_components/angular-dialog-service/dialogs-default-translations.min.js"></script>
 <script type="text/javascript" src="../bower_components/angular-translate/angular-translate.min.js"></script>
+<script type="text/javascript" src="../bower_components/queue-async/queue.js"></script>
+<script type="text/javascript" src="../bower_components/d3/d3.js"></script>
+<script type="text/javascript" src="../bower_components/underscore/underscore.js"></script>
 
 <!--  App Libs -->
 <script type="text/javascript" src="config.js"></script>
@@ -145,14 +148,12 @@
 <script type="text/javascript" src="modules/events/controllers/eventControllers.js"></script>
 <script type="text/javascript" src="modules/events/services/eventService.js"></script>
 
+<script type="text/javascript" src="modules/search/search.js"></script>
+<script type="text/javascript" src="modules/search/controllers/searchControllers.js"></script>
 
 <script type="text/javascript" src="modules/visualization/visualization.js"></script>
 <script type="text/javascript" src="modules/visualization/controllers/visualizationControllers.js"></script>
 <script type="text/javascript" src="modules/visualization/services/visualizationService.js"></script>
-<script type="text/javascript" src="modules/visualization/js/d3.v3.min.js"></script>
-<script type="text/javascript" src="modules/visualization/js/common.js"></script>
-<script type="text/javascript" src="modules/visualization/js/topojson.v1.min.js"></script>
-<script type="text/javascript" src="modules/visualization/js/queue.v1.min.js"></script>
 <script type="text/javascript" src="modules/visualization/js/objectBars.js"></script>
 <script type="text/javascript" src="modules/visualization/js/objectBarsMultiple.js"></script>
 <script type="text/javascript" src="modules/visualization/js/objectLine.js"></script>       
@@ -163,7 +164,6 @@
 <script type="text/javascript" src="modules/fcm/fcm.js"></script>
 <script type="text/javascript" src="modules/fcm/controllers/fcmControllers.js"></script>
 <script type="text/javascript" src="modules/fcm/services/fcmService.js"></script>
-<script type="text/javascript" src="modules/fcm/controllers/index.js"></script>
 
 <script type="text/javascript" src="modules/fcm/controllers/cytoscape.js"></script>
 <script type="text/javascript" src="modules/fcm/directives/cytoscape.js"></script>

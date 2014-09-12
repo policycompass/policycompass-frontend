@@ -13,13 +13,21 @@ npm install
 ```
 ./node_modules/.bin/bower install
 ```
-* Copy the development.sample.json to development.json and configure the development.jsom with your service domains
+* Copy the development.sample.json to development.json and configure the development.json with your service domains
 * Start App
 ```
 npm start
 ```
-* By default the App is running on http://localhost:8000/app/
+* By default the App is running on http://localhost:9000/app/
 * Running Tests:
 ```
 npm test
+```
+* Running E2E-Tests:
+```
+npm run-script protractor
+```
+* If you have Problems with running the E2E-Tests, try updating the webdriver and make sure you have Chrome installed
+```
+node_modules/.bin/webdriver-manager update
 ```
