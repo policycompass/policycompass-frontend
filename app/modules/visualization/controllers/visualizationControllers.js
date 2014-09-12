@@ -615,36 +615,52 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				height = 400,
 				//radius = Math.min(width, height) / 2;
 				radius = 200;
-	
-				dataset.forEach(function(d,i) {						
+				var cntPies = 0;
+				dataset.forEach(function(d,i) {
+					//console.log("1er foreach i="+i);
 					document.getElementById("container_graph").innerHTML = document.getElementById("container_graph").innerHTML + "<div class='pie' id='pie_"+i+"'></div>"
+				
+				});
+				
+				dataset.forEach(function(d,i) {
+					//console.log("2n foreach i="+i);
+					
 					//datasetToSend = d.values;
-					var datasetToSend = d;
-					var pieObj = policycompass.viz.pie(
+					//if (cntPies>0)
+					if (1==1)
 					{
-						'idName':"pie_"+i,
-						'width': width,
-						'height':height,
-						'margin': 20,
-						'radius':radius,
-						//'showLegend': document.getElementById("showLegend").checked,
-						//'showLines': document.getElementById("showLines").checked,
-						//'showPoints': document.getElementById("showPoints").checked,
-						//'showLabels': document.getElementById("showLabels").checked,
-						//'showGrid': document.getElementById("showGrid").checked
-						'showLegend': $scope.showLegend,
-						'showLines': $scope.showLines,
-						'showPoints': $scope.showPoints,
-						'showLabels': $scope.showLabels,
-						'showGrid': $scope.showGrid
-						//'arrayKeys': arrayKeys,
-						//'arrayXAxis': arrayXAxis,
-						//'arrayYAxis': arrayYAxis,
-						//'arrayGrouping': arrayGrouping
-					});
-	
-		        	pieObj.render(datasetToSend);
-	
+						
+						
+						var datasetToSend = d;
+						var pieObj = policycompass.viz.pie(
+						{
+							'idName':"pie_"+i,
+							'idPie': cntPies,
+							'width': width,
+							'height':height,
+							'margin': 20,
+							'radius':radius,
+							'innerRadious': 50,
+							//'showLegend': document.getElementById("showLegend").checked,
+							//'showLines': document.getElementById("showLines").checked,
+							//'showPoints': document.getElementById("showPoints").checked,
+							//'showLabels': document.getElementById("showLabels").checked,
+							//'showGrid': document.getElementById("showGrid").checked
+							'showLegend': $scope.showLegend,
+							'showLines': $scope.showLines,
+							'showPoints': $scope.showPoints,
+							'showLabels': $scope.showLabels,
+							'showGrid': $scope.showGrid
+							//'arrayKeys': arrayKeys,
+							//'arrayXAxis': arrayXAxis,
+							//'arrayYAxis': arrayYAxis,
+							//'arrayGrouping': arrayGrouping
+						});
+		
+			        	pieObj.render(datasetToSend);
+					}
+					
+					cntPies = cntPies +1;
 	
 				});
 	
