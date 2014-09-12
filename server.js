@@ -20,12 +20,8 @@ var http = require("http"),
 	fs = require("fs"),
 	httpProxy = require('http-proxy'),
 	nconf = require('nconf'),
-<<<<<<< HEAD
-	port = process.argv[2] || 8010;
-=======
     mime = require('mime'),
 	port = process.argv[2] || 9000;
->>>>>>> 2c0d4f4a4d6189d5849087e6533d5036a5c7808f
 
 nconf.file('development.json');
 
