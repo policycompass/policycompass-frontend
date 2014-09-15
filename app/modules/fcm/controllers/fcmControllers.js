@@ -42,6 +42,19 @@ angular.module('pcApp.fcm.controllers.fcm', [
 
     }])
 
+.controller('MetricsController', ['$scope', 'Metric', '$log', '$routeParams', function($scope, Metric, $log, $routeParams) {
+
+	$scope.metrics = Metric.query(
+            {page: $routeParams.page},
+			function(metricList) {
+			},
+			function(error) {
+                throw { message: JSON.stringify(err.data)};
+			}
+	);
+
+}])
+
 .controller('FcmEditController', [
     '$scope',
     '$routeParams',
@@ -54,3 +67,5 @@ angular.module('pcApp.fcm.controllers.fcm', [
         helper.baseCreateEditController($scope);
 
     }]);
+
+

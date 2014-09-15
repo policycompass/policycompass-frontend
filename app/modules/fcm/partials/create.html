@@ -7,23 +7,24 @@
             <div class="row">
                 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 center-block">
                     <div  class="fcm-editor-effect well-primary">
-                        <a href="#">
+                        <a type="button" class="btn btn-primary" ng-click="addObj()">
                             <span class="glyphicon glyphicon-unchecked fcm-editor-icon"></span>
                             <p>Concepts</p>
-                        </a>
-                        <a href="#">
+                        </a><br><br>
+                        <a type="button" class="btn btn-primary" ng-click="addEdge()">
                             <span class="glyphicon glyphicon-random fcm-editor-icon"></span>
                             <p>Association</p>
-                        </a>
+                        </a><br><br>
                     </div>
                 </div><!-- /.col-lg-3 well-primary  -->
                 <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
-                    <div class="fcm-editor-window">
-                    </div>
+                    
+			<cytoscape cy-data="mapData" cy-edges="edgeData" cy-click="doClick(value)"></cytoscape>
+                    
                 </div><!-- /.col-lg-9  -->
             </div><!-- /.row  -->
         </div><!-- /.col-lg-12  -->
-        <div class="col-lg-12">
+        <div class="col-lg-12"><br /><br />
             <a type="button" class="btn btn-primary pull-right">Save</a>
         </div><!-- /.col-lg-12  -->
         <div class="col-lg-12">
@@ -36,8 +37,7 @@
                 <tab heading="Comments">Comments</tab>
             </tabset>
 
-
-
         </div><!-- /.col-lg-12  -->
+
     </div><!-- /.row  -->
 </div><!-- /.container -->
