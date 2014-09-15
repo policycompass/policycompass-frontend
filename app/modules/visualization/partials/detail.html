@@ -4,27 +4,127 @@
 
 <h1><span class="glyphicon glyphicon-list-alt"></span> {{ visualization.title }}</h1>
 <br />
+<div>
+	<button type="button" class="btn btn-danger" ng-click="deleteVisualization(visualization)">Delete</button>
+	<a type="button" class="btn btn-primary" href="#/visualizations/{{ visualization.id }}/edit">Edit</a>
+</div>
+<br />
+
+<div class="visualisation-dat right-column">
+	<div ng-controller="VisualizationsEditController" ng-include='"modules/visualization/partials/graph.html"' ></div>
+</div>
+
+
+
+
 <div class="panel panel-default">
   <div class="panel-body">
+  	
+  	
+  	<div class="fields visualisations-fields">
+	
+	<div ng-show="visualization.description" class="field field-description">
+		<div class="field-label">Description</div>
+			<div class="field-item">
+				<div class="field-content field-content-editable">
+					{{ visualization.description }}
+				</div>
+			</div>
+	</div>
+
+	<div ng-show="visualization.created_at" class="field field-date">
+		<div class="field-label">Date Added</div>
+			<div class="field-item">
+				<div class="field-content field-content-editable">
+					{{ visualization.created_at | date:'longDate' }}
+				</div>
+			</div>
+	</div>
+
+	<div class="field field-views">
+		<div class="field-label">Views</div>
+			<div class="field-item">
+				<div class="field-content field-content-editable">
+					{{ visualization.views_count }}
+				</div>
+			</div>
+	</div>
+
+	<div ng-show="visualization.user_id" class="field field-author">
+		<div class="field-label">Author</div>
+			<div class="field-item">
+				<div class="field-content field-content-editable">
+					{{ visualization.user_id }}
+				</div>
+			</div>
+	</div>
+        		
+	<div ng-show="visualization.keywords" class="field field-keywords">
+		<div class="field-label">Keywords</div>
+		<div class="field-item">
+			<div class="field-content  field-content-editable">
+               <ul>
+                 <li ng-repeat="kw in visualization.keywords.split(' ')" > {{kw}}</li>
+               </ul>
+               
+            </div>
+    	</div>
+	</div>
+	
+	<div ng-show="visualization.metrics_in_visualization" class="field field-metrics">
+		<div class="field-label">Linked to Metrics</div>
+			<div class="field-item">
+				<div class="field-content field-content-editable">
+					<ul>
+						<li ng-repeat="metric in visualization.metrics_in_visualization">
+							<a href="/app/#/metrics/{{metric.id}}">{{metric.title}}</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+	</div>
+	
+	<div ng-show="visualization.historical_events_in_visualization" class="field field-metrics">
+		<div class="field-label">Linked to Historical Events</div>
+			<div class="field-item">
+				<div class="field-content field-content-editable">
+					<ul>
+						<li ng-repeat="he in visualization.historical_events_in_visualization">
+							<a href="/app/#/events/{{metric.id}}">{{he.title}}</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+	</div>
+					
+</div>
+  	
+<!--
       <table class="table table-hover">
-          <tr ng-show="visualization.title">
-              <td><b>Title:</b></td>
-              <td>{{ visualization.title }}</td>
-          </tr>
           <tr ng-show="visualization.description">
               <td><b>Description:</b></td>
               <td>{{ visualization.description }}</td>
-          </tr>                    
-          <tr ng-show="visualization.keywords">
-              <td><b>Keywords:</b></td>
-              <td>{{ visualization.keywords }}</td>
           </tr>
 
-          
           <tr ng-show="visualization.created_at">
               <td><b>Created:</b></td>
               <td>{{ visualization.created_at | date:'longDate' }}</td>
           </tr>
+                              
+
+                ---------- {{visualization.keywords}}---------                        
+          <tr ng-show="visualization.keywords">
+              <td><b>Keywords:</b></td>
+              {{visualization.keywords}}
+        		<ul>
+            		<li ng-repeat="kw in visualization.keywords.split(' ')" > {{kw}}</li>
+        		</ul>              	
+              	
+              	</td>
+          </tr>
+
+          
+
           <tr ng-show="visualization.updated_at">
               <td><b>Updated:</b></td>
               <td>{{ visualization.updated_at | date:'longDate' }}</td>
@@ -38,15 +138,12 @@
                     
 
       </table>
-
-		<div ng-controller="VisualizationsEditController" ng-include='"modules/visualization/partials/graph.html"' ></div>
+-->
+		
       <br/>		
 		
       
-      <div>
-          <button type="button" class="btn btn-danger" ng-click="deleteVisualization(visualization)">Delete</button>
-          <a type="button" class="btn btn-primary" href="#/visualizations/{{ visualization.id }}/edit">Edit</a>
-      </div>
+
   </div>
 </div>
 </div>

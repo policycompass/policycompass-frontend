@@ -12,6 +12,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
     	baseVisualizationsCreateController: function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF) {
 
 
+
 		tooltip =  d3.select("body").append("div")
     		.attr("id","tooltip")
     		.html("")
@@ -86,6 +87,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				var containerIndex = idMetric;
 				
 				$scope.MetricSelectediId_[idMetric]=idMetric;
+				$scope.MetricSelectediIndex_[idMetric]=idMetric;
 
 				var myText = "from";
 				$scope.MetricSelectorLabelColumn_[containerIndex]=myText;
@@ -107,7 +109,10 @@ angular.module('pcApp.visualization.controllers.visualization', [
 		
 				//console.log("a1");
 					
-				$scope.ListMetricsFilter.push(myObject);			
+				$scope.ListMetricsFilter.push(myObject);	
+				
+				$scope.correctmetrics = 1;
+						
 				$scope.rePlotGraph();
 			};
 
@@ -122,12 +127,37 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				var answer = confirm("Are you sure to delete this row?")
 				if (answer)
 				{
+					
 					var containerLink = document.getElementById("delete-metric-button-"+idMetric);		
 					$(containerLink).parent().parent().removeClass('active');
 					var str =  $(containerLink).parent().parent().attr("id");
 	    			$(".metric-list-item[name='"+ str +"']").removeClass('active');		
 					$scope.MetricSelectediId_[idMetric]= "";
+					
+					
+					var cntMetricsInArray=0;
+					
+					for (x=0;x<$scope.MetricSelectediId_.length; x++) {
+						//console.log("x="+x);
+						
+						
+						if (!isNaN($scope.MetricSelectediId_[x]) && ($scope.MetricSelectediId_[x]!=""))
+						{
+							cntMetricsInArray = cntMetricsInArray+1;
+							console.log("$scope.MetricSelectediId_[x]="+$scope.MetricSelectediId_[x]);
+						}
+						
+						
+					}
+					//console.log("cntMetricsInArray="+cntMetricsInArray);
+					
+					if (cntMetricsInArray==0)
+					{
+						$scope.correctmetrics = "";
+					}
+					
 					$scope.rePlotGraph();
+					
 				}		
 			};
 
@@ -298,11 +328,12 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
 			
 		$scope.rePlotGraph = function() {
+			//console.log("--rePlotGraph--");
 			var arrayJsonFiles = [];
 			var datosTemporales = new Object();
 			var elems = $scope.MetricSelectediId_;
 			var elemsIndex = $scope.MetricSelectediIndex_;
-		
+					
     		var cntMetrics = 0;
     		var arrayJsonFiles = [];
     		var arrayKeys = [];
@@ -335,7 +366,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	
 							res = $scope.MetricselectorGroupingData_[puntero];
 							var valueGroup = res;
-
+							
 							if (valueGroup)
 							{
 								arrayKeys.push(jsonFileName);
@@ -353,11 +384,33 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					}
 				}
 			}
+			
+			var elemsHE_startDate = "";
+			var elemsHE_endDate = "";
+			var elemsHE_desc = "";
+			var elemsHE_title = "";
+			
+			var element = document.getElementsByName('startDateHE[]');
+	 		if (element != null) {
+	 			elemsHE_startDate = document.getElementsByName("startDateHE[]");
+	 		}		
 
-			var elemsHE_startDate = document.getElementsByName("startDateHE[]");
-			var elemsHE_endDate = document.getElementsByName("endDateHE[]");
-			var elemsHE_desc = document.getElementsByName("descHE[]");
-			var elemsHE_title = document.getElementsByName("titleHE[]");
+			var element = document.getElementsByName('endDateHE[]');
+	 		if (element != null) {
+	 			elemsHE_endDate = document.getElementsByName("endDateHE[]");	
+	 		}			
+			
+			var element = document.getElementsByName('descHE[]');
+	 		if (element != null) {
+	 			elemsHE_desc = document.getElementsByName("descHE[]");	
+	 		}			
+
+			var element = document.getElementsByName('titleHE[]');
+	 		if (element != null) {
+	 			elemsHE_title = document.getElementsByName("titleHE[]");	
+	 		}
+			
+			
 			//console.log("arrayJsonFiles="+arrayJsonFiles)
 			//var q = queue();
 
@@ -569,8 +622,10 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				if (numbers1)
 				{
 					var margin = {top: 20, right: 80, bottom: 50, left: 50},
-					width = 700,
-					height = 200;
+					//width = 700,
+					width = 980,
+					//height = 200;
+					height = 326;
 					var barLine = policycompass.viz.line(
 						{
 	                		'idName':"container_graph",
@@ -580,6 +635,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	                		'labelX': "label X",
 	                		'labelY': "label Y",
 	                		'radius': 4,
+	                		'distanceXaxes': 45,
 							//'showYAxesTogether': document.getElementById("showYAxes").checked,
 							//'showLegend': document.getElementById("showLegend").checked,
 							//'showLines': document.getElementById("showLines").checked,
@@ -611,7 +667,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				var dataset = numbers1;
 	
 	
-				var width = 600,
+				//var width = 600,
+				var width = 980,
 				height = 400,
 				//radius = Math.min(width, height) / 2;
 				radius = 200;
@@ -673,9 +730,10 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	
 				//console.log(datasetToSend);
 	        			
-				var margin = {top: 20, right: 20, bottom: 30, left: 40},
-	    		width = 400 - margin.left - margin.right,
-	    		height = 300 - margin.top - margin.bottom;
+				var margin = {top: 20, right: 20, bottom: 30, left: 40};
+				var width = 980 - margin.left - margin.right;
+	    		//var width = 400 - margin.left - margin.right;
+	    		var height = 300 - margin.top - margin.bottom;
 	
 				var barObj = policycompass.viz.barsMultiple(
 				{
@@ -683,8 +741,10 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	            	'width': width,
 	            	'height':height,
 	            	'margin': margin,
-	            	'labelX': "label X",
-	            	'labelY': "label Y",
+	            	//'labelX': "label X",
+	            	//'labelY': "label Y",
+	            	'labelX': "",
+	            	'labelY': "",
 	            	'radius': 4,
 	            	//'showLegend': document.getElementById("showLegend").checked,
 					//'showLines': document.getElementById("showLines").checked,
@@ -824,7 +884,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	//console.log("controller VisualizationsEditController");
 		
 	$scope.mode = "edit";
-	
+	   
+    
 	//funtion to reset form
 	
 	$scope.resetlocation = '/visualizations/'+$routeParams.visualizationId+'/edit/';
@@ -850,10 +911,6 @@ angular.module('pcApp.visualization.controllers.visualization', [
     		
     		for (x=0;x<arrayConfigFilter.length;x++)
     		{
-    			
-
-    			
-    			
     			var dataFilter = arrayConfigFilter[x].split("=");
     			if (dataFilter[0]=='graphSelected')
     			{
@@ -862,7 +919,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					//$scope.typeToPlot= 'graph_line';
     				$scope.tabParent = 2;
 					$scope.tabSon = dataFilter[1];
-					$scope.typeToPlot= dataFilter[1];
+					$scope.typeToPlot = dataFilter[1];
 					
     			}
     			else
@@ -970,9 +1027,11 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				};
 				//console.log(myObject);	
 				$scope.ListMetricsFilter.push(myObject);
+				$scope.correctmetrics = "1";
 				//console.log($scope.ListMetricsFilter);
 			}
 				
+			//console.log(".....");
 			$scope.rePlotGraph();
     
     });
@@ -1219,11 +1278,20 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 	
 	$scope.mode = "create";
 	$scope.resetlocation = "/visualizations/create/";
-	
+
+
+	angular.element(document).ready(function () {
+        //console.log('Hello World 1');
+    });
+    
 	helper.baseVisualizationsCreateController($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF);
 	
-	$scope.tabParent = 0;
-	$scope.tabSon = 0;
+	//$scope.tabParent = 0;
+	//$scope.tabSon = 0;
+	
+	$scope.tabParent = 2;
+	$scope.tabSon = 'graph_line';
+	$scope.typeToPlot= 'graph_line';
 
 
 	$scope.eventsToPlot = [];		
@@ -1257,6 +1325,7 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 	this.historicalevent_he_enddate = '';
 	this.historicalevent_he_description = '';
 
+
     var metricsURL = $routeParams.metrics;
     //console.log("metricsURL="+metricsURL);
     if (metricsURL)
@@ -1264,22 +1333,22 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
     	var arrayMetricsURL = metricsURL.split(",");    		
     	for (x=0;x<arrayMetricsURL.length;x++)
     	{
-    		console.log("arrayMetricsURL[x]="+arrayMetricsURL[x])
+    		//console.log("arrayMetricsURL[x]="+arrayMetricsURL[x])
     		$scope.metric = Metric.get({id: arrayMetricsURL[x]},
             function(metric) {
-            	console.log("pppppppppppppppp");
-            	$scope.addFilterMetric(metric.id);
-            	
+            	//console.log("pppppppppppppppp");
+            	$scope.addFilterMetric(metric.id);            	
+            	//$scope.rePlotGraph();
             },
             function(err) {
                 throw { message: JSON.stringify(err.data)};
             }
-        );
-    	
-    		
-    	}
+        	);
+    	}    	
     }
 
+
+	
 	$scope.createVisualization = function() {
         $scope.visualization.user_id = 1;        				     
         $scope.visualization.views_count = 0;
@@ -1402,6 +1471,7 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 	$scope.ListMetricsFilter = [];
 	$scope.metricsFilter = $scope.ListMetricsFilter;
 
+	//$scope.rePlotGraph();
 
 }])
 

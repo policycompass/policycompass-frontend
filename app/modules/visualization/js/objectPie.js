@@ -84,7 +84,17 @@ policycompass.viz.pie = function(options)
 				}
 			})			
 			.on("mouseover", function(d, i) {
-				tooltip.style("opacity",1.0).html(pieslabels[i]+"<br/>"+pies[i]);})
+				
+				var resSplit = pieslabels[i].split("-");
+				var monthNames = [ "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+		    				
+				var startDateToPlot = monthNames[parseInt(resSplit[1])]+" "+parseInt(resSplit[2])+", "+resSplit[0];
+				
+				
+				//tooltip.style("opacity",1.0).html(pieslabels[i]+"<br />"+pies[i]);
+				tooltip.style("opacity",1.0).html(startDateToPlot+"<br />"+pies[i]);
+				})
+				
         	.on("mouseout", function(d, i) {
         		self.clicToOpen = true;
         		tooltip.style("opacity",0.0);

@@ -12,6 +12,7 @@ policycompass.viz.line = function(options)
     // Get options data
 
     for (var key in options){
+        
         self[key] = options[key];
 	}
 
@@ -42,7 +43,9 @@ policycompass.viz.line = function(options)
 	    posY = yInversa(posY);
 	    //console.log("posX="+posX);
 	    //console.log("posY="+posY);
+		
 
+		    				
 	    tooltip.style("opacity",1.0).html("key=<br/>pos x="+posX+"<br/>pos y="+posY);
 		    
 	}
@@ -98,7 +101,22 @@ policycompass.viz.line = function(options)
 	}
     
 	self.drawLines = function (lines, eventsData) {
+		//console.log("cnt="+lines.length);
+        //console.log("self.showYAxesTogether="+self.showYAxesTogether);
+        //console.log("self.margin.right="+self.margin.right);
+        if (!self.showYAxesTogether)
+        {
+        	//self.margin.right = self.margin.right * lines.length;
+        	self.width = self.width - (self.margin.right * (lines.length-1));
+			self.svg.attr("width", self.width + self.margin.left + self.margin.right);
+			        	
+        }
 
+			
+			
+		/*
+    	
+        */
 		//console.log("lines");
 		//console.log(lines);
 		/*
@@ -260,7 +278,6 @@ return 0;}
         var maxYToPlot = 0;
         self.yArray = [];
         self.yArrayInversa = [];
-        
         
         lines.forEach(function(d,i) 
         {
@@ -475,12 +492,28 @@ return 0;}
 				d3.select(this).style("stroke-width", 2);
 				//d3.select(this).classed("pointOn", true);
 				var textTooltip="";
-				textTooltip = d.title+": "+d.startDate;
+				
+				var resSplit = d.startDate.split("-");
+				var monthNames = [ "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+		    				
+				var startDateToPlot = monthNames[parseInt(resSplit[1])]+" "+parseInt(resSplit[2])+", "+resSplit[0];
+				
+				
+				//textTooltip = d.title+": "+d.startDate;
+				textTooltip = d.title+"<br /> From: "+startDateToPlot;
 				if (d.endDate!="")
 				{
-					textTooltip = textTooltip+" - "+d.endDate;	
+					var resSplit = d.endDate.split("-");
+					var endDateToPlot = monthNames[parseInt(resSplit[1])]+" "+parseInt(resSplit[2])+", "+resSplit[0];
+					//textTooltip = textTooltip+" - "+d.endDate;
+					textTooltip = textTooltip+" <br /> To: "+endDateToPlot;
+					
 				}
-				textTooltip = textTooltip+"<br/>"+d.desc;
+				if (d.desc!="")
+				{
+					textTooltip = textTooltip+"<br/> Desc.: "+d.desc;	
+				}
+				
 				tooltip.style("opacity",1.0).html(textTooltip);    
 			})
 			.on("mouseout", function(d,i) {
@@ -563,7 +596,8 @@ return 0;}
 				{
 					var posFinalXAxeY = self.width;
 					//console.log(posFinalXAxeY)
-					posFinalXAxeY = posFinalXAxeY + 20*(i-1)
+					posFinalXAxeY = posFinalXAxeY + self.distanceXaxes*(i-1)
+					//posFinalXAxeY = posFinalXAxeY + self.margin.right*(i-1)
 					//console.log(posFinalXAxeY)
 					transform = "translate("+posFinalXAxeY+",0)";
 					var yAxisLeft = d3.svg.axis().scale(self.yArray[i]).ticks(10).orient("right");
@@ -790,8 +824,16 @@ return 0;}
 		    			
 		    				//console.log("posX="+posX);
 		    				//console.log("posY="+posY);		    	
-		    				//tooltip.style("opacity",1.0).html("key="+keyCircle+"<br/>pos x="+resX+"<br/>pos y="+resY);    
-		    				tooltip.style("opacity",1.0).html(resX+" - "+resY);
+		    				//tooltip.style("opacity",1.0).html("key="+keyCircle+"<br/>pos x="+resX+"<br/>pos y="+resY); 
+		    				var resSplit = resX.split("-");
+		    				var monthNames = [ "", "January", "February", "March", "April", "May", "June",
+    						"July", "August", "September", "October", "November", "December" ];
+		    				
+		    				var endDateToPlot = monthNames[parseInt(resSplit[1])]+" "+parseInt(resSplit[2])+", "+resSplit[0];
+		    				   
+		    				//tooltip.style("opacity",1.0).html(resX+" <br /> "+resY+"<br />"+endDateToPlot);
+		    				tooltip.style("opacity",1.0).html(endDateToPlot+" <br /> "+resY);
+		    				
 			    			//renderLine((self.x(i)), (self.y(d))); 
       				})
                     //.on("mouseover", function(d,i){console.log(d3.select(this));d3.select(this).classed("circuloOn", true);})
@@ -852,6 +894,9 @@ return 0;}
 
 	/*** funtion to init. graph ***/	   
     self.init = function () {
+
+
+        
        	
 		self.svg = d3.select(self.parentSelect).append("svg")
 			.attr("width", self.width + self.margin.left + self.margin.right)
