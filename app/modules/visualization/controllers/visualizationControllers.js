@@ -793,14 +793,20 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	//alert($routeParams.visualizationId);
     //$scope.test = "hallo---";
 	$scope.visualization = Visualization.get({id: $routeParams.visualizationId},
-			function(visualizationList) {
+			function(visualizationList) {				
 			},
 			function(error) {
 				//alert(error.data.message);
 				throw { message: JSON.stringify(error.data.message)};
 			}
 	);
+	
+	//$scope.visualization.views_count = $scope.visualization.views_count +1;
+	
+	
+	
 
+	
     $scope.deleteVisualization = function(visualization) {
         visualization.$delete(
             {},
@@ -884,7 +890,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	//console.log("controller VisualizationsEditController");
 		
 	$scope.mode = "edit";
-	   
+
+
     
 	//funtion to reset form
 	
@@ -902,7 +909,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
     );
     
     
-	$scope.visualization.$promise.then(function(metric){
+	$scope.visualization.$promise.then(function(metric) {
 			//console.log("DINS")
             $scope.visualization.language = $scope.visualization.language.id;
 			
@@ -969,24 +976,18 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			$scope.MetricSelectorLabelColumn_ = [];
 			$scope.MetricSelectorDataColumn_ = [];
 			$scope.MetricselectorGroupingData_ = [];
-	
-			
     	
 			for (i in $scope.visualization.metrics_in_visualization)
 			{
 				//console.log("metrics_in_visualization i="+i);
 				
 				var id = $scope.visualization.metrics_in_visualization[i].id;
-				//console.log("------------->id="+id);
-				
-				
+				//console.log("------------->id="+id);							
 				$scope.MetricSelectediId_[id]=id;
-				//$scope.MetricSelectediIndex_[id]=(parseInt(i)+1);
-				
+				//$scope.MetricSelectediIndex_[id]=(parseInt(i)+1);				
 				$scope.MetricSelectediIndex_[id]=id;
 				//console.log('visualization_query');
-				//console.log($scope.visualization.metrics_in_visualization[i].visualization_query);
-				
+				//console.log($scope.visualization.metrics_in_visualization[i].visualization_query);			
 
 				var configurationMetricsFilters = $scope.visualization.metrics_in_visualization[i].visualization_query;
     			//console.log(configurationMetricsFilters)
@@ -1280,9 +1281,9 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 	$scope.resetlocation = "/visualizations/create/";
 
 
-	angular.element(document).ready(function () {
+//	angular.element(document).ready(function () {
         //console.log('Hello World 1');
-    });
+  //  });
     
 	helper.baseVisualizationsCreateController($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF);
 	

@@ -693,13 +693,10 @@ return 0;}
 			{
 				//console.log(data);
 
-				
-  
-  
-
 	  			self.svg.append("path")
 		      		.datum(data)
-		      		.attr("class", "line line--hover class_"+key)      		
+		      		.attr("class", "line line--hover class_"+key.replace(/\s+/g, '')) 
+		      		.attr("id", 'tag'+key.replace(/\s+/g, '')) // assign ID     		
 	    	  		.style("stroke-width", 2)
 		      		.style("stroke", function(d,i) {return colorScale(key);})
 		      		.attr("d", lineFunction)
@@ -743,11 +740,8 @@ return 0;}
 						$('input[name="posy"]').val(posY);		
 	      				$('#basic-modal-content').modal();
 	      				
-	      			})
-					
+	      			})			
 	      			;		
-
-
 			}
         
 	    	if (showLegend) 
@@ -758,10 +752,39 @@ return 0;}
 					//.attr("y", function(d,i){return (self.margin.top) + (20 * cnti) ;})
 					.attr("y", function(d,i){return (self.height) + (self.margin.top+(self.margin.bottom/2))+2 ;})
 					.attr("text-anchor","center")
-					.attr("class", "superior legend value")				
+					.attr("class", "link superior legend value")				
 					.attr("font-size", 11)
 					.style("stroke", function(d,i) {return colorScale(key);})
-					.text(function(d,i){return key;})	 
+					.text(function(d,i) {return "Click to hide "+key;})
+					.on("click", function() {
+						//console.log(d.Key)
+						//console.log("-----key="+d.Key.replace(/\s+/g, ''))
+                		// Determine if current line is visible 
+                		var active   = d.active ? false : true,
+                		newOpacity = active ? 0 : 1; 
+                		// Hide or show the elements based on the ID
+                		//d3.select("#tag"+key.replace(/\s+/g, ''))
+                		d3.selectAll(".class_"+d.Key.replace(/\s+/g, ''))
+                    	.transition().duration(100) 
+                    	.style("opacity", newOpacity); 
+                		// Update whether or not the elements are active
+                		d.active = active;
+                		
+                		//var currentText= d3.select(this).text();
+                		//console.log(currentText);
+                		var str = d3.select(this).text();
+						var res = "";
+						
+                		if (active) {
+                			res = 'Click to display '+str;
+                			res = str.replace("hide", "display");
+                		}
+                		else {
+                			res = str.replace("display", "hide");
+                		}
+                		
+                		d3.select(this).text(res);
+                	})  
 			}
   		});
 
@@ -800,10 +823,10 @@ return 0;}
                     	
                     	return self.yArray[cntLine](resY);})
                     .attr("r", 0)
-                    .attr("class","pointIn")
+                    .attr("class", "pointIn class_"+keyCircle.replace(/\s+/g, '')) 
                     .style("stroke-width", self.radius)
                     .style("stroke", function(d,i) {return colorScale(keyCircle);})
-                    .attr("opacity", 1.0)
+                    //.attr("opacity", 1.0)
                     .on("mouseover", function (d,i) {
       					d3.select(this).classed("pointOn", true);     
       					
@@ -896,7 +919,7 @@ return 0;}
     self.init = function () {
 
 
-        
+       // console.log($scope.mode);
        	
 		self.svg = d3.select(self.parentSelect).append("svg")
 			.attr("width", self.width + self.margin.left + self.margin.right)
