@@ -144,7 +144,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						if (!isNaN($scope.MetricSelectediId_[x]) && ($scope.MetricSelectediId_[x]!=""))
 						{
 							cntMetricsInArray = cntMetricsInArray+1;
-							console.log("$scope.MetricSelectediId_[x]="+$scope.MetricSelectediId_[x]);
+							//console.log("$scope.MetricSelectediId_[x]="+$scope.MetricSelectediId_[x]);
 						}
 						
 						
@@ -429,10 +429,11 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	
 		$scope.plotGraph = function() {
 	
-			//console.log("#############");
+			//console.log("#############plotGraph########");
 			//console.log(arguments);
 			//console.log("#############");
 			var numbers1 = [];
+			var labelYAxe = [];
 			
 			var cntNumbers =0;
 			var control=0;
@@ -479,6 +480,10 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	
 							var numbers1T = {"Key":arguments[i].title};
 							var cntPosArray=0;
+
+							var labelTemporalYAxes = arguments[i]['unit']['title'];
+							//console.log("labelTemporalYAxes="+labelTemporalYAxes);
+							
 							for (var j=0; j<arguments[i]['data']['table'].length; j++)
 							{
 								//console.log("..i="+i+"----j="+j);
@@ -492,7 +497,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 										indexRow = arguments[i]['data']['table'][j][key];
 									}
 		    						if (the_object.hasOwnProperty(key)) {
-		      							object_size++;
+		      							object_size++;		      							
 		    						}
 		  						}
 		  						
@@ -510,7 +515,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 								else {
 		    						// does exist
 								}
-	
+								
 								arrayValues[indexRow].push(arguments[i]['data']['table'][j][selectorDataColumn]);						
 								arrayLabels[indexRow].push(arguments[i]['data']['table'][j][selectorLabel]);
 								arrayValuesXY[indexRow].push(arguments[i]['data']['table'][j][selectorLabel]+"|"+arguments[i]['data']['table'][j][selectorDataColumn]);
@@ -522,6 +527,10 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							
 							for (key in the_object)	{
 								//console.log("***key="+key);	
+								
+								labelYAxe.push(labelTemporalYAxes);
+								//console.log("labelYAxe="+labelYAxe);
+																	
 								if ($scope.typeToPlot==='graph_bars')
 								{
 									for (var j=0; j<arrayValues[key].length; j++)
@@ -633,7 +642,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	                		'height': height,
 	                		'margin': margin,
 	                		'labelX': "label X",
-	                		'labelY': "label Y",
+	                		'labelY': labelYAxe,
 	                		'radius': 4,
 	                		'distanceXaxes': 45,
 							//'showYAxesTogether': document.getElementById("showYAxes").checked,

@@ -19,6 +19,8 @@ policycompass.viz.line = function(options)
     self.parentSelect = "#"+self.idName;
     
 
+	
+    
 	function make_x_axis() {
 		//console.log("self.x="+self.x);        
     	return d3.svg.axis()
@@ -155,7 +157,7 @@ policycompass.viz.line = function(options)
    				   //result = "." + i + " = " + obj[i] + "\n"; 
    				   //console.log(result);
    				   //valuesY.push(parseInt(obj[i]));
-   				   valuesY.push((obj[i]));
+   				   valuesY.push(parseInt(obj[i]));
    			}    
    			obj = d.ValueX;
 			//obj = d;
@@ -296,6 +298,9 @@ return 0;}
        		self.yArrayInversa.push(d3.scale.linear().domain([self.height, 0]).range([minYToPlot, maxYToPlot]).clamp(true));
 		});
         
+        //console.log("self.minVy="+self.minVy);
+        //console.log("self.maxVy="+self.maxVy);
+        
         self.y = d3.scale.linear().domain([self.minVy, self.maxVy]).range([self.height, 0]).clamp(true);
         self.yInversa = d3.scale.linear().domain([self.height, 0]).range([self.minVy, self.maxVy]).clamp(true);
         
@@ -384,42 +389,25 @@ return 0;}
             		//.attr("dy", ".15em")
             		.attr("transform", function(d) {
                 	return "rotate(-25)" 
-				});
-	      		/*		    	
-	      		.append("text")
-	      			//.attr("transform", "rotate(-90)")
-	      			.attr("y", 0)
-	      			.attr("x",self.width + 20)
-	      			.attr("dy", ".71em")
-	      			.style("text-anchor", "end")
-	      			.text(self.labelX);
-				*/
+				})				
+				;
 			
 			if (self.showYAxesTogether)
 			{
 		  		self.svg.append("g")
 		      		.attr("class", "y axis")
 		      		.call(yAxis)
-		      		.attr("font-size", 11)
-		      		/*
+		      		.attr("font-size", 11)		      		
 		    		.append("text")
 		      			.attr("transform", "rotate(-90)")
 		      			.attr("y", 6)
-		      			.attr("dy", ".71em")
+		      			//.attr("dy", ".71em")
+		      			.attr("dy", "15px")
 		      			.style("text-anchor", "end")
-		      			.text(self.labelY);
-					*/				
+		      			.text(self.labelY[0]);
+									
 			}
-			//else
-			//{
-				//self.yArray.forEach(function(d,i) {
-					
-				//	console.log(i);
-				//});
-				
-				
-				
-			//}
+			
 		}
 
 		
@@ -602,14 +590,43 @@ return 0;}
 					transform = "translate("+posFinalXAxeY+",0)";
 					var yAxisLeft = d3.svg.axis().scale(self.yArray[i]).ticks(10).orient("right");
 				}
+				
+				console.log(self.labelY);
+				console.log("cnti="+cnti);
+				console.log("self.labelY[cnti-1]="+self.labelY[cnti-1]);
+				var paddingText = "";
+				if (cnti==1) 
+				{
+					paddingText="15px";
+				}
+				else
+				{
+					paddingText="-8px";
+				}
 				self.svg.append("svg:g")
 				      .attr("class", "y axis axisLeft")
 				      .attr("transform", transform)
 				      .style("stroke", function(d,i) {return colorScale(key);})
 				      //.style("stroke-width", 2)				      
 				      .attr("font-size", 11)
-				      .call(yAxisLeft);
+				      .call(yAxisLeft)
+				      .append("text")
+		      			.attr("transform", "rotate(-90)")		      			
+		      			//.attr("dy", ".71em")
+		      			.attr("dy", paddingText)
+		      			.style("text-anchor", "end")
+		      			.text(self.labelY[cnti-1])
+				      ;
+				      
+				      
 				      //.call(self.yArray[self.cntLineasPintadas]);
+				      
+				      
+				 /*****************************/
+				
+				
+				
+				      
 			}
     		
     		//var data = [];
@@ -693,7 +710,7 @@ return 0;}
 			{
 				//console.log(data);
 
-	  			self.svg.append("path")
+	  			var path = self.svg.append("path")
 		      		.datum(data)
 		      		.attr("class", "line line--hover class_"+key.replace(/\s+/g, '')) 
 		      		.attr("id", 'tag'+key.replace(/\s+/g, '')) // assign ID     		
@@ -740,8 +757,19 @@ return 0;}
 						$('input[name="posy"]').val(posY);		
 	      				$('#basic-modal-content').modal();
 	      				
-	      			})			
-	      			;		
+	      			})
+	      			;	
+
+					var totalLength = path.node().getTotalLength();    	      			
+								
+					path
+      					.attr("stroke-dasharray", totalLength + " " + totalLength)
+      					.attr("stroke-dashoffset", totalLength)
+      					.transition()
+        					.duration(2000)
+        					.ease("linear")
+        					.attr("stroke-dashoffset", 0);
+	      				
 			}
         
 	    	if (showLegend) 
@@ -855,7 +883,7 @@ return 0;}
 		    				var endDateToPlot = monthNames[parseInt(resSplit[1])]+" "+parseInt(resSplit[2])+", "+resSplit[0];
 		    				   
 		    				//tooltip.style("opacity",1.0).html(resX+" <br /> "+resY+"<br />"+endDateToPlot);
-		    				tooltip.style("opacity",1.0).html(endDateToPlot+" <br /> "+resY);
+		    				tooltip.style("opacity",1.0).html(endDateToPlot+" <br /> "+parseInt(resY));
 		    				
 			    			//renderLine((self.x(i)), (self.y(d))); 
       				})
@@ -890,6 +918,9 @@ return 0;}
 	
 	}
 
+
+
+    
 	/* function to plot the pointer mouse */
 	var handleMouseOverGraph = function(posMouse) 
 	{	
