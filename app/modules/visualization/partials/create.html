@@ -171,9 +171,9 @@
 								<input type="hidden" ng-model="endDateHE[$index+1]" id="endDateHE{{$index+1}}" name="endDateHE[]" value="{{event.endDate}}">					    	
 								<input type="hidden" ng-model="descHE[$index+1]" id="descHE{{$index+1}}" name="descHE[]" value="{{event.desc}}">
 								<div class="contentHE">
-									<div class="col-lg-2" ng-if="event.startDate"><label for="">From:</label> {{event.startDate | date:'longDate'}} </div>
-									<div class="col-lg-2" ng-if="event.endDate"><label for="">To:</label> {{event.endDate | date:'longDate'}} </div>
-									<div class="col-lg-8" ng-if="event.desc"><label for="">Description:</label> {{event.desc}} </div>
+									<div ng-if="event.startDate"><label for="">From:</label> {{event.startDate | date:'longDate'}} </div>
+									<div ng-if="event.endDate"><label for="">To:</label> {{event.endDate | date:'longDate'}} </div>
+									<div ng-if="event.desc"><label for="">Description:</label> {{event.desc}} </div>
 								</div>
 								<div class="historicalevent-buttons active">
 									<!--		    	

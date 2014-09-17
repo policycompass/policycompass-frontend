@@ -467,12 +467,17 @@ return 0;}
 				var dif = "1";
 				if (d.endDate!="")
 				{
-					dif = self.xScale(getDate(d.endDate)) - self.xScale(getDate(d.startDate));
+					dif = self.xScale(getDate(d.endDate)) - self.xScale(getDate(d.startDate));					
 				}
 				else
 				{
 					dif=1;
 				}
+				if (dif==0)
+				{
+					dif=1;
+				}
+				//console.log("dif="+dif);
 				return dif;
 			})
 			.attr("height", self.height)                        

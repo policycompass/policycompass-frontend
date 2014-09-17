@@ -75,7 +75,7 @@
 				<div class="field-content field-content-editable">
 					<ul>
 						<li ng-repeat="metric in visualization.metrics_in_visualization">
-							<a href="/app/#/metrics/{{metric.id}}">{{metric.title}}</a>
+							<a target="_blank" href="/app/#/metrics/{{metric.id}}">{{metric.title}}</a>
 						</li>
 					</ul>
 				</div>
@@ -88,7 +88,7 @@
 				<div class="field-content field-content-editable">
 					<ul>
 						<li ng-repeat="he in visualization.historical_events_in_visualization">
-							<a href="/app/#/events/{{metric.id}}">{{he.title}}</a>
+							<a target="_blank" href="/app/#/events/{{he.id}}">{{he.title}}</a>
 						</li>
 					</ul>
 				</div>
