@@ -144,7 +144,7 @@ policycompass.viz.line = function(options)
 		self.arrayMinVy = [];
 		lines.forEach(function(d,i) {
 			//console.log(d.Values);
-			
+			//console.log("d.Position="+d.Position)
 			self.arrayMaxVy.push(d3.max(d3.values(d.Values)));
 			var vMinValueD3 = d3.min(d3.values(d.Values));
 			//vMinValueD3 = 0;
@@ -157,7 +157,12 @@ policycompass.viz.line = function(options)
    				   //result = "." + i + " = " + obj[i] + "\n"; 
    				   //console.log(result);
    				   //valuesY.push(parseInt(obj[i]));
-   				   valuesY.push(parseInt(obj[i]));
+   				   //valuesY.push(parseInt(obj[i]));
+   				   
+   				   var twoPlacedFloat = parseFloat(obj[i]).toFixed(2)
+   				   
+   				   valuesY.push(twoPlacedFloat)
+   				   
    			}    
    			obj = d.ValueX;
 			//obj = d;
@@ -449,7 +454,11 @@ return 0;}
    		} 
 
 		var historicalEvents = self.svg.selectAll("rectagles").data(dataForCircles);
-
+		
+	//	console.log("d.startDate="+d.startDate);
+	//	console.log("getDate(d.startDate)="+getDate(d.startDate));
+	//	console.log("x="+self.xScale(getDate(d.startDate));
+		
 		historicalEvents.enter().append("rect")
 			.attr("class","lineXDisco")
 			//.style("stroke", function(d,i) {return colorScale("event");})
@@ -458,7 +467,9 @@ return 0;}
             .attr("x", function(d,i){
 				//console.log(d.startDate);
 				//console.log(self.xScale(d.startDate));
-				return self.xScale(getDate(d.startDate));
+				var posXToPlot = self.xScale(getDate(d.startDate));
+				//console.log("posXToPlot="+posXToPlot);
+				return posXToPlot;
 			})
 			.attr("y", 0)
 			.attr("width",function(d,i){
@@ -507,7 +518,12 @@ return 0;}
 					textTooltip = textTooltip+"<br/> Desc.: "+d.desc;	
 				}
 				
-				tooltip.style("opacity",1.0).html(textTooltip);    
+				var posXToPlot = self.xScale(getDate(d.startDate));
+				if (posXToPlot>0)
+				{
+					tooltip.style("opacity",1.0).html(textTooltip);	
+				}
+				    
 			})
 			.on("mouseout", function(d,i) {
 				//d3.select(this).classed("pointOn",false);
@@ -596,9 +612,9 @@ return 0;}
 					var yAxisLeft = d3.svg.axis().scale(self.yArray[i]).ticks(10).orient("right");
 				}
 				
-				console.log(self.labelY);
-				console.log("cnti="+cnti);
-				console.log("self.labelY[cnti-1]="+self.labelY[cnti-1]);
+				//console.log(self.labelY);
+				//console.log("cnti="+cnti);
+				//console.log("self.labelY[cnti-1]="+self.labelY[cnti-1]);
 				var paddingText = "";
 				if (cnti==1) 
 				{
@@ -664,13 +680,13 @@ return 0;}
     			
     			posXToPrint = self.xInversa(posXToPrint)
     			//console.log("posXToPrint="+posXToPrint);
-    			
+    			//console.log("---cnti="+cnti);
       			return {
          		//posX: posXToPrint,
          		posX: posXToPrint,
          		posY: d,
          		key: key,
-         		xOriginal:linesArrayX[i]         		
+         		xOriginal:linesArrayX[i]
       			};      
   				});
     			
@@ -718,12 +734,13 @@ return 0;}
 	  			var path = self.svg.append("path")
 		      		.datum(data)
 		      		.attr("class", "line line--hover class_"+key.replace(/\s+/g, '')) 
-		      		.attr("id", 'tag'+key.replace(/\s+/g, '')) // assign ID     		
+		      		.attr("id", 'tag_'+key.replace(/\s+/g, '')) // assign ID     		
 	    	  		.style("stroke-width", 2)
 		      		.style("stroke", function(d,i) {return colorScale(key);})
 		      		.attr("d", lineFunction)
 	    	  		//.on("mouseover", mouseover)
 	      			.on("mouseover", function (d,i) {
+	      				//console.log(d);
 	      				d3.select(this).style("stroke-width", 4);
 	      				//console.log(d[i])	      			
 								  			
@@ -788,9 +805,16 @@ return 0;}
 					.attr("class", "link superior legend value")				
 					.attr("font-size", 11)
 					.style("stroke", function(d,i) {return colorScale(key);})
-					.text(function(d,i) {return "Click to hide "+key;})
+					.on("mouseover", function () {
+						tooltip.style("opacity",1.0).html("Click over to hide/show this line");						
+      					})
+					.on("mouseout", function() {                    						
+						mouseout();
+						})      					
+					.text(function(d,i) {
+						var resTRext = key.split("_");
+						return "Click to hide "+resTRext[0];})
 					.on("click", function() {
-						//console.log(d.Key)
 						//console.log("-----key="+d.Key.replace(/\s+/g, ''))
                 		// Determine if current line is visible 
                 		var active   = d.active ? false : true,
@@ -888,12 +912,15 @@ return 0;}
 		    				var endDateToPlot = monthNames[parseInt(resSplit[1])]+" "+parseInt(resSplit[2])+", "+resSplit[0];
 		    				   
 		    				//tooltip.style("opacity",1.0).html(resX+" <br /> "+resY+"<br />"+endDateToPlot);
-		    				tooltip.style("opacity",1.0).html(endDateToPlot+" <br /> "+parseInt(resY));
+		    				
+		    				var twoPlacedFloat = parseFloat(resY).toFixed(2)
+		    				
+		    				tooltip.style("opacity",1.0).html(endDateToPlot+" <br /> "+twoPlacedFloat);
 		    				
 			    			//renderLine((self.x(i)), (self.y(d))); 
       				})
                     //.on("mouseover", function(d,i){console.log(d3.select(this));d3.select(this).classed("circuloOn", true);})
-                    .on("mouseout", function(d,i){
+                    .on("mouseout", function(d,i) {
                     	d3.select(this).classed("pointOn",false);
       					var circle = d3.select(this);
 						circle.transition()

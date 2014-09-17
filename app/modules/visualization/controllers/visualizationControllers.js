@@ -6,13 +6,16 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
 
 
-.factory('VisualizationsControllerHelper', [function() {
+.factory('VisualizationsControllerHelper', [ function() {
     return {
     	
     	baseVisualizationsCreateController: function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF) {
 
 
-
+		// Variable for storing the metrics filtered list
+        
+        
+       
 		tooltip =  d3.select("body").append("div")
     		.attr("id","tooltip")
     		.html("")
@@ -70,7 +73,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			//funtion used into the button "Add metric" (diply list of metrics availables
 			$scope.addMetrictoList= function() {	
 				$('#addmetricsbutton').toggleClass('active');
+				$('#filterMetrics').toggle('slow');
         		$('#metrics-list').toggle('slow');	
+        		
 			}
 
 			//funtion used when a metic is selected. Add a metric into the list	
@@ -161,30 +166,50 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				}		
 			};
 
-			//funtion used to recover the metrics list
-			/*
-			$scope.metrics = Metric.query(
-				null,				
-				function(metricList) {
-					console.log("--metricList---dins");
-				},
-				function(error) {
-					alert(error.data.message);
-				}
-			);
-			*/
-			$scope.metrics = Metric.query(
-            	{page: $routeParams.page},
+			
+				$scope.metrics = Metric.query(
+            	{
+            		page: $routeParams.page,            		
+            	},
 				function(metricList) {
 				},
 				function(error) {
                 	throw { message: JSON.stringify(err.data)};
 				}
-			);
+				);
+
+			$scope.filterMetric = "";
+			$scope.findMetricsByFilter = function() {
+			
+				var element = document.getElementById('filterMetric');
+	 			if (element != null) {
+	 				$scope.filterMetric = document.getElementById("filterMetric").value;
+	 			}
+	 			else {
+	 				$scope.filterMetric = "";
+	 			}
+								
+				$scope.metricsFilter = Metric.query(
+            	{
+            		page: $routeParams.page,
+            		search: $scope.filterMetric
+            	},
+				function(metricList) {
+				},
+				function(error) {
+                	throw { message: JSON.stringify(err.data)};
+				}
+				);
+			};
+			
+			//$scope.findMetricsByFilter();
+			
 			
 			//funtion used to recover the events list
 			$scope.events = Event.query(
-            	null,
+            	{
+            		
+            	},
             	function (eventList) {
             	},
             	function (error) {
@@ -551,7 +576,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 								else
 								{			
 									var ObjectTemporal = new Object();			
-									ObjectTemporal['Key']=key;
+									ObjectTemporal['Key']=key+"_"+cntNumbers;
 									ObjectTemporal['Values']=arrayValues[key];
 									ObjectTemporal['Labels']=arrayLabels[key];
 									ObjectTemporal['ValueX']=arrayLabels[key];
