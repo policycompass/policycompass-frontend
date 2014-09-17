@@ -91,12 +91,18 @@
 						<div class="buttonline clearfix-min">	
 							
 							<input type="hidden" ng-required="true" class="form-control" id="correctmetrics"  ng-model="correctmetrics">					
-							<button ng-show="metrics.count>0" type="submit" class="btn btn-primary button-metrics" id="addmetricsbutton" ng-click="addMetrictoList()">Add metric</button>
+							<button ng-show="metrics.count>0" type="submit" class="btn btn-primary button-metrics" id="addmetricsbutton" ng-click="addMetrictoList();findMetricsByFilter();">Add metric</button>
 						</div>
-						<br />						
+						<br />	
+						
+						<div class="filterMetrics" id="filterMetrics" style="display: none;">
+							<label for="">Search metric by title</label>
+							<input placeholder="--all metrics--" ng-change="findMetricsByFilter()" type="text" id="filterMetric" ng-model="filterMetric" name="filterMetric">
+						</div>
+											
 						<div>
 							<ul class="metrics-list" id="metrics-list" style="display: none;">								
-								<li ng-class="{'metrics-list active':MetricSelectediId_[metric.id]>0,'metrics-list':MetricSelectediId_[metric.id]}" id="metric-list-item-item-{{metric.id}}" name="designer-metrics-num-{{metric.id}}" ng-repeat="metric in metrics.results track by $index" ><a href="" ng-click="addFilterMetric(metric.id);" title="{{metric.title}}">{{metric.title}} - {{ metric.issued | date:'longDate' }}</a></li>
+								<li ng-class="{'metrics-list active':MetricSelectediId_[metric.id]>0,'metrics-list':MetricSelectediId_[metric.id]}" id="metric-list-item-item-{{metric.id}}" name="designer-metrics-num-{{metric.id}}" ng-repeat="metric in metricsFilter.results track by $index" ><a href="" ng-click="addFilterMetric(metric.id);" title="{{metric.title}}">{{metric.title}} - {{ metric.issued | date:'longDate' }}</a></li>
 							</ul>
 						</div>
 						
