@@ -853,6 +853,42 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
 }])
 
+.controller('ExampleCtrl', ['$scope',  
+	'$log', 
+	'$routeParams',
+	function($scope, $log, $routeParams) {
+		
+		console.log ('-->ExampleCtrl<---');
+
+		//var app = angular.module("nvd3TestApp", ['nvd3ChartDirectives']);
+		//$scope.exampleData = [];
+		function ExampleCtrl($scope){
+			console.log("dins funtion ExampleCtrl")
+			//$scope.exampleData = 1;
+
+              var Tmp = [
+                {
+                    "key": "Series 1",
+                    "values": [ [1, 2], [2, 3], [3, 5], [4, 7]]
+                },
+                {
+                    "key": "Series 2",
+                    "values": [ [1, 5], [2, 6], [3, 1], [4, 8]]
+                },
+                
+                ];
+
+			return Tmp;
+			
+        }
+        
+        $scope.exampleData = ExampleCtrl();
+        
+
+
+	
+}])
+	
 //controler to list visualizations
 .controller('VisualizationsController', [
 	'$scope', 
@@ -860,7 +896,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	'$log', 
 	'$routeParams',
 	function($scope, Visualization, $log, $routeParams) {
-	
+	                
 		//console.log("VisualizationsController");	
 		$scope.visualizations = Visualization.query(
 			 {page: $routeParams.page},

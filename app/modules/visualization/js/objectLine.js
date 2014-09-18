@@ -144,6 +144,7 @@ policycompass.viz.line = function(options)
 		self.arrayMinVy = [];
 		lines.forEach(function(d,i) {
 			//console.log(d.Values);
+			//console.log(d.ValueY);
 			//console.log("d.Position="+d.Position)
 			self.arrayMaxVy.push(d3.max(d3.values(d.Values)));
 			var vMinValueD3 = d3.min(d3.values(d.Values));
@@ -159,7 +160,8 @@ policycompass.viz.line = function(options)
    				   //valuesY.push(parseInt(obj[i]));
    				   //valuesY.push(parseInt(obj[i]));
    				   
-   				   var twoPlacedFloat = parseFloat(obj[i]).toFixed(2)
+   				   var twoPlacedFloat = parseFloat(obj[i]);
+   				   //var twoPlacedFloat = parseFloat(obj[i]).toFixed(2);
    				   
    				   valuesY.push(twoPlacedFloat)
    				   
@@ -192,9 +194,13 @@ policycompass.viz.line = function(options)
 		//console.log(".....");
 		//console.log(lines[0].Values.length);
 		//console.log(".....");
-		
+		//console.log(valuesY);
 		self.maxVy = d3.max(d3.values(valuesY));
 		self.minVy = d3.min(d3.values(valuesY));
+		
+		//console.log("self.maxVy="+self.maxVy);
+		//console.log("self.minVy="+self.minVy);
+		
 		//self.minVy = 0;
 		//console.log(valuesY);
 		self.minVx = d3.min(d3.values(valuesX));;
@@ -729,8 +735,10 @@ return 0;}
   			
 			if (showLines)
 			{
+				
+				//console.log("key="+key);
 				//console.log(data);
-
+				
 	  			var path = self.svg.append("path")
 		      		.datum(data)
 		      		.attr("class", "line line--hover class_"+key.replace(/\s+/g, '')) 
@@ -913,7 +921,8 @@ return 0;}
 		    				   
 		    				//tooltip.style("opacity",1.0).html(resX+" <br /> "+resY+"<br />"+endDateToPlot);
 		    				
-		    				var twoPlacedFloat = parseFloat(resY).toFixed(2)
+		    				var twoPlacedFloat = parseFloat(resY);
+		    				//var twoPlacedFloat = parseFloat(resY).toFixed(2);
 		    				
 		    				tooltip.style("opacity",1.0).html(endDateToPlot+" <br /> "+twoPlacedFloat);
 		    				
