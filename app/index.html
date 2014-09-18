@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html ng-app="pcApp" ng-controller="CommonController">
 <head>
@@ -188,3 +189,187 @@
 -->
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html ng-app="pcApp" ng-controller="CommonController">
+<head>
+    <title>Policy Compass</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--  Vendor Styles -->
+    <link href="../bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet" media="screen" />
+    <link href="../bower_components/handsontable/dist/jquery.handsontable.css" rel="stylesheet" media="screen" />
+    <link href="../bower_components/dropzone/downloads/css/dropzone.css" rel="stylesheet" media="screen" />
+    <link href="../bower_components/angular-dialog-service/dialogs.min.css" rel="stylesheet" media="screen" />
+
+    <!--  App Styles -->
+    <link href="css/main.css" rel="stylesheet" media="screen" />
+    <link href="modules/search/css/browsePageStyle.css" rel="stylesheet" media="screen" />
+    <link href="modules/common/css/landingPageStyle.css" rel="stylesheet" media="screen" />
+    <link href="css/loading-animation.css" rel="stylesheet" media="screen" />
+    <link href="modules/common/css/offcanvas-filter.css" rel="stylesheet" media="screen" />
+    <link href="modules/common/css/navLargeStyle.css" rel="stylesheet" media="screen" />
+    <link href="modules/metrics/css/metrics.css" rel="stylesheet" media="screen" />
+    <link href="modules/fcm/css/fcm.css" rel="stylesheet" media="screen" />
+
+    <link rel="icon" type="image/ico" href="img/favicon.ico" />
+</head>
+<body>
+
+<header class="navbar-fixed-top">
+    <nav class="container nav-small">
+
+        <div class="col-lg-12">
+            <div class="pull-right">
+                <a  href="#/imprint">Imprint</a>
+                <span class="muted">|</span>
+                <a class="muted" href="#">Language</a>
+                <span class="muted">|</span>
+                <a class="muted" href="#/developers">Developers</a>
+            </div>
+        </div>
+    </nav><!-- /.nav -->
+    <!-- Logo -->
+    <div class="container">
+        <div class="logo-wrapper col-lg-12">
+            <a href="#"><img src="img/PolicyCompass-logo.png" alt="Policy Compass's Logo"></a>
+            <div class="pull-right nav-medium  nav-medium-effect sign-in-wrapper">
+                <a href="#/create" data-hover="Create">Create</a>
+                <span class="muted">|</span>
+                <a href="#/browse"  data-hover="Browse">Browse</a>
+                <span class="muted">|</span>
+                <a href="#/i-want-to" data-hover="I want to">I want to</a>
+                <span class="muted">|</span>
+                <a href="#/how-it-works" data-hover="How It Works">How It Works </a>
+                <span class="muted">|</span>
+                <a href="#/request" data-hover="Request">Request</a>
+                <span class="muted">&emsp;</span>
+                <a href="#" data-hover="Sign Up">Sign Up</a>
+                <span class="muted nav-text">OR</span>
+                <button type="button" class="btn btn-primary btn-sm">
+                    <span class="glyphicon glyphicon-user"></span> Log In
+                </button>
+            </div>
+        </div><!-- /.logo-wrapper -->
+    </div><!-- /.container -->
+    <!-- LandingPageContent -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 border-top"></div>
+        </div><!-- /.row  -->
+    </div>
+
+</header>
+
+
+
+<div ng-view=""></div>
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 border-bottom"></div>
+        </div><!-- /.row  -->
+        <div class="row footer-wrapper">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <a class="muted" href="#">Publishing Notes</a>
+                <span class="muted">|</span>
+                <a class="muted" href="#">Privacy</a>
+                <span class="muted">|</span>
+                <a class="muted" href="#">Contact</a>
+                <span class="muted">|</span>
+                <a class="muted" href="#">Terms of Use</a>
+                <span class="muted">|</span>
+                <a class="muted" href="#">Policy Compass Website</a>
+            </div><!-- /.col-lg-6 -->
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="muted pull-right">&copy;Copyright @ 2014 Policy Compass Project. All rights reserved.</div>
+            </div><!-- /.col-lg-6 -->
+        </div><!-- /.row .footer-wrapper -->
+        <!--<p ng-show="error" class="alert alert-danger">{{ error }}</p>-->
+    </div>
+
+</footer>
+
+<!--  Vendor Libs -->
+<script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="../bower_components/angular/angular.js"></script>
+<script type="text/javascript" src="../bower_components/angular-route/angular-route.js"></script>
+<script type="text/javascript" src="../bower_components/angular-resource/angular-resource.js"></script>
+<script type="text/javascript" src="../bower_components/angular-animate/angular-animate.js"></script>
+<script type="text/javascript" src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script type="text/javascript" src="../bower_components/handsontable/dist/jquery.handsontable.full.js"></script>
+<script type="text/javascript" src="../bower_components/jqueryui/jquery-ui.js"></script>
+<script type="text/javascript" src="../bower_components/dropzone/downloads/dropzone.js"></script>
+<script type="text/javascript" src="../bower_components/modernizr/modernizr.js"></script>
+<script type="text/javascript" src="../bower_components/jasny-bootstrap/dist/js/jasny-bootstrap.min.js"></script>
+<script type="text/javascript" src="../bower_components/cytoscape/dist/cytoscape.js"></script>
+<script type="text/javascript" src="../bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+<script type="text/javascript" src="../bower_components/angular-dialog-service/dialogs.min.js"></script>
+<script type="text/javascript" src="../bower_components/angular-dialog-service/dialogs-default-translations.min.js"></script>
+<script type="text/javascript" src="../bower_components/angular-translate/angular-translate.min.js"></script>
+<script type="text/javascript" src="../bower_components/queue-async/queue.js"></script>
+<script type="text/javascript" src="../bower_components/d3/d3.js"></script>
+<script type="text/javascript" src="../bower_components/underscore/underscore.js"></script>
+
+<!--  App Libs -->
+<script type="text/javascript" src="config.js"></script>
+<script type="text/javascript" src="app.js"></script>
+
+<script type="text/javascript" src="modules/developer/developer.js"></script>
+
+<script type="text/javascript" src="modules/common/common.js"></script>
+<script type="text/javascript" src="modules/common/controllers/common.js"></script>
+<script type="text/javascript" src="modules/common/directives/common.js"></script>
+<script type="text/javascript" src="modules/common/directives/submenus.js"></script>
+
+<script type="text/javascript" src="modules/references/services/referenceService.js"></script>
+<script type="text/javascript" src="modules/references/directives/forms.js"></script>
+
+<script type="text/javascript" src="modules/metrics/metrics.js"></script>
+<script type="text/javascript" src="modules/metrics/controllers/metricControllers.js"></script>
+<script type="text/javascript" src="modules/metrics/services/metricService.js"></script>
+<script type="text/javascript" src="modules/metrics/directives/pcDatagrid.js"></script>
+<script type="text/javascript" src="modules/metrics/directives/ngDropzone.js"></script>
+<script type="text/javascript" src="modules/metrics/directives/forms.js"></script>
+
+
+<script type="text/javascript" src="modules/events/events.js"></script>
+<script type="text/javascript" src="modules/events/controllers/eventControllers.js"></script>
+<script type="text/javascript" src="modules/events/services/eventService.js"></script>
+
+<script type="text/javascript" src="modules/search/search.js"></script>
+<script type="text/javascript" src="modules/search/controllers/searchControllers.js"></script>
+
+<script type="text/javascript" src="modules/visualization/visualization.js"></script>
+<script type="text/javascript" src="modules/visualization/controllers/visualizationControllers.js"></script>
+<script type="text/javascript" src="modules/visualization/services/visualizationService.js"></script>
+<script type="text/javascript" src="modules/visualization/js/objectBars.js"></script>
+<script type="text/javascript" src="modules/visualization/js/objectBarsMultiple.js"></script>
+<script type="text/javascript" src="modules/visualization/js/objectLine.js"></script>       
+<script type="text/javascript" src="modules/visualization/js/objectPie.js"></script>
+<script type="text/javascript" src="modules/visualization/js/objectMap.js"></script>
+<script type="text/javascript" src="modules/visualization/js/objMapW.js"></script>
+
+<script type="text/javascript" src="modules/fcm/fcm.js"></script>
+<script type="text/javascript" src="modules/fcm/controllers/fcmControllers.js"></script>
+<script type="text/javascript" src="modules/fcm/services/fcmService.js"></script>
+
+<script type="text/javascript" src="modules/fcm/controllers/cytoscape.js"></script>
+<script type="text/javascript" src="modules/fcm/directives/cytoscape.js"></script>
+<script type="text/javascript" src="modules/fcm/services/cytoscape.js"></script>
+
+<!--Multiple inclusions of jquery caused errors with handsontable, so I commented it out (Alan)
+<script type="text/javascript" src="modules/visualization/js/jquery.js"></script>
+<script type="text/javascript" src="modules/visualization/js/jquery-ui.js"></script>-->
+
+
+ <link href="modules/visualization/css/visualization.css" rel="stylesheet" media="screen" /> 
+ <!--
+ <link href="modules/visualization/css/style.css" rel="stylesheet" media="screen" />
+-->
+</body>
+</html>
+>>>>>>> 6bbc30a0771acb74914f12573e4b8ad67630bdd2

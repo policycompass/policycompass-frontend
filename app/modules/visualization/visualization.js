@@ -16,7 +16,11 @@ visu.config(function($routeProvider) {
         .when('/visualizations/', {
             controller: 'VisualizationsController',
             templateUrl: 'modules/visualization/partials/list.html'
-        })
+        })        
+        //.when('/visualizations/test', {
+        //    controller: 'ExampleCtrl',
+        //    templateUrl: 'modules/visualization/partials/test.html'
+        //})		        
         .when('/visualizations/create/', {
             controller: 'VisualizationsCreateController',
             templateUrl: 'modules/visualization/partials/create.html'
@@ -38,6 +42,5 @@ visu.config(function($routeProvider) {
             controller: 'VisualizationsDetailController',
             templateUrl: 'modules/visualization/partials/detail.html'
         })
-		        
         .otherwise({ redirectTo: '/' });
 });
