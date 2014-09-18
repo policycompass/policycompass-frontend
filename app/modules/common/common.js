@@ -19,13 +19,17 @@
             controller: 'StaticController',
             templateUrl: 'modules/common/partials/create.html'
         })
-        .when('/about', {
+        .when('/how-it-works', {
             controller: 'StaticController',
-            templateUrl: 'modules/common/partials/about.html'
+            templateUrl: 'modules/common/partials/howItWorks.html'
         })
         .when('/i-want-to', {
             controller: 'StaticController',
             templateUrl: 'modules/common/partials/wantto.html'
+        })
+        .when('/request', {
+            controller: 'StaticController',
+            templateUrl: 'modules/common/partials/request.html'
         })
         .when('/imprint', {
             templateUrl: 'modules/common/partials/imprint.html'
