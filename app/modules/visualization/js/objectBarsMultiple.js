@@ -604,7 +604,7 @@ policycompass.viz.barsMultiple = function(options) {
     self.init = function () {
 		
 		self.extraWidth = 0;
-		if (showLegend) 
+		if (self.showLegend) 
 		{
 			self.extraWidth = 60;
 		}

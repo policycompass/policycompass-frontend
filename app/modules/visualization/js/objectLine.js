@@ -135,6 +135,8 @@ policycompass.viz.line = function(options)
 		var showGrid = self.showGrid;
 				
 		var colorScale = d3.scale.category20();
+		var colorScaleForHE = d3.scale.category20();
+		
 		var parseDate = d3.time.format("%Y-%m-%d").parse;
 
 		var valuesX = [];
@@ -449,6 +451,8 @@ return 0;}
       		//dataForCircles[eventsData[i].posX]=eventsData[i].posY;
       		//console.log(eventsData[i]);
       		 var arrayTemporal = [];
+      		 arrayTemporal['index']=i;
+      		 arrayTemporal['color']=eventsData[i].color;
       		 arrayTemporal['title']=eventsData[i].title;
       		 arrayTemporal['startDate']=eventsData[i].startDate;
       		 arrayTemporal['endDate']=eventsData[i].endDate;
@@ -468,9 +472,31 @@ return 0;}
 		historicalEvents.enter().append("rect")
 			.attr("class","lineXDisco")
 			//.style("stroke", function(d,i) {return colorScale("event");})
-			.style("stroke", "grey")
+			//.style("stroke", "grey")
+			.style("stroke", function(d,i) {
+				//console.log("d.index"+d.index);				
+					var colorToPlot = colorScaleForHE(d.index);
+					if (d.color)
+					{
+						colorToPlot = d.color;
+					}
+					return colorToPlot;
+				}
+				)												
+			//.style("stroke", "red")			
+			.style("fill", function(d,i) {
+				//console.log("d.index"+d.index);				
+					var colorToPlot = colorScaleForHE(d.index);
+					if (d.color)
+					{
+						colorToPlot = d.color;
+					}
+					return colorToPlot;
+				}
+				)									
 			.attr("opacity", 0.5)
             .attr("x", function(d,i){
+            	//console.log(i);
 				//console.log(d.startDate);
 				//console.log(self.xScale(d.startDate));
 				var posXToPlot = self.xScale(getDate(d.startDate));

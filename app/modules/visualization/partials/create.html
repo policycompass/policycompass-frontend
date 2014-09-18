@@ -2,8 +2,8 @@
 
 <create-submenu></create-submenu>
 
-<h1 ng-if="mode == 'create'"><span class="glyphicon glyphicon-pencil"></span> Create a New Visualization - Under construction</h1>
-<h1 ng-if="mode == 'edit'"><span class="glyphicon glyphicon-pencil"></span> Edit Visualization - Under construction</h1>
+<h1 ng-if="mode == 'create'"><span class="glyphicon glyphicon-pencil"></span> Create a New Visualization</h1>
+<h1 ng-if="mode == 'edit'"><span class="glyphicon glyphicon-pencil"></span> Edit Visualization</h1>
 
 <div class="row">
     <div class="col-lg-12 pc-visualization-formcontrols">
@@ -176,6 +176,8 @@
 								<input type="hidden" ng-model="startDateHE[$index+1]" id="startDateHE{{$index+1}}" name="startDateHE[]" value="{{event.startDate}}">
 								<input type="hidden" ng-model="endDateHE[$index+1]" id="endDateHE{{$index+1}}" name="endDateHE[]" value="{{event.endDate}}">					    	
 								<input type="hidden" ng-model="descHE[$index+1]" id="descHE{{$index+1}}" name="descHE[]" value="{{event.desc}}">
+								<input type="hidden" ng-model="colorHE[$index+1]" id="colorHE{{$index+1}}" name="colorHE[]" value="{{event.color}}">
+								
 								<div class="contentHE">
 									<div ng-if="event.startDate"><label for="">From:</label> {{event.startDate | date:'longDate'}} </div>
 									<div ng-if="event.endDate"><label for="">To:</label> {{event.endDate | date:'longDate'}} </div>

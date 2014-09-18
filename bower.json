@@ -24,7 +24,8 @@
     "angular-dialog-service": "",
     "underscore": "",
     "queue-async": "",
-    "d3": ""
+    "d3": "",
+    "angular-spectrum-colorpicker": ""
   },
   "resolutions": {
     "angular": "1.2.x"

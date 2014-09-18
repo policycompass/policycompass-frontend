@@ -2,18 +2,32 @@
 
 
 <div>
+
 	
-	    	
-<nvd3-line-chart
-        data="exampleData"
-        showXAxis="true"
-        showYAxis="true"
-        tooltips="true"
-        interactive="true"
+	
+
+<nvd3-line-with-focus-chart
+    	data="exampleData"
+        id="colorExample"
+        height="400"
+        height2="50"
+        margin="{left:80,top:50,bottom:30,right:50}"
+        yAxisTickFormat="yAxisTickFormatFunction()"
+        y2axistickformat="yAxisTickFormatFunction()"
+        xAxisTickFormat="xAxisTickFormatFunction()"
+        x2AxisTickFormat="xAxisTickFormatFunction()"
+        color="colorFunction()"
         showLegend="true"
-        noData="No Data"	
-        id="exampleId"
-        margin="{left:100,top:20,bottom:20,right:100}"
+        noData="No Data!!"
+        x="xFunction()"
+        y="yFunction()"
+        interactive="true"
+        tooltips="true"
+        tooltipcontent="toolTipContentFunction()"
         >
-    </nvd3-line-chart>
+        	<svg></svg>
+    </nvd3-line-with-focus-chart>
+    
+
+
 </div>

@@ -17,10 +17,10 @@ visu.config(function($routeProvider) {
             controller: 'VisualizationsController',
             templateUrl: 'modules/visualization/partials/list.html'
         })        
-        //.when('/visualizations/test', {
-        //    controller: 'ExampleCtrl',
-        //    templateUrl: 'modules/visualization/partials/test.html'
-        //})		        
+        .when('/visualizations/test', {
+            controller: 'viewVisualizationCtrl',
+            templateUrl: 'modules/visualization/partials/test.html'
+        })		        
         .when('/visualizations/create/', {
             controller: 'VisualizationsCreateController',
             templateUrl: 'modules/visualization/partials/create.html'
