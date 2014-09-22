@@ -15,7 +15,7 @@
     "angular-mocks": "",
     "bootstrap": "",
     "angular-bootstrap": "",
-    "handsontable": "",
+    "handsontable": "0.10.5",
     "jqueryui": "",
     "dropzone": "",
     "modernizr": "",
@@ -26,8 +26,5 @@
     "queue-async": "",
     "d3": "",
     "angular-spectrum-colorpicker": ""
-  },
-  "resolutions": {
-    "angular": "1.2.x"
   }
 }
