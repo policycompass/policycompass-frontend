@@ -5,8 +5,10 @@
 <h1><span class="glyphicon glyphicon-list-alt"></span> {{ visualization.title }}</h1>
 <br />
 <div>
-	<button type="button" class="btn btn-danger" ng-click="deleteVisualization(visualization)">Delete</button>
+	
 	<a type="button" class="btn btn-primary" href="#/visualizations/{{ visualization.id }}/edit">Edit</a>
+	<button type="button" class="btn btn-danger" ng-click="deleteVisualization(visualization)">Delete</button>
+	
 </div>
 <br />
 

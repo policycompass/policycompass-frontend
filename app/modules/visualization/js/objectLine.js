@@ -767,8 +767,10 @@ return 0;}
 				
 	  			var path = self.svg.append("path")
 		      		.datum(data)
-		      		.attr("class", "line line--hover class_"+key.replace(/\s+/g, '')) 
-		      		.attr("id", 'tag_'+key.replace(/\s+/g, '')) // assign ID     		
+		      		//.attr("class", "line line--hover class_"+key.replace(/\s+/g, '')) 
+		      		.attr("class", "line line--hover class_"+key.replace(/\W/g, ''))	      		
+		      		//.attr("id", 'tag_'+key.replace(/\s+/g, '')) // assign ID     	
+		      		.attr("id", 'tag_'+key.replace(/\W/g, '')) // assign ID
 	    	  		.style("stroke-width", 2)
 		      		.style("stroke", function(d,i) {return colorScale(key);})
 		      		.attr("d", lineFunction)
@@ -831,23 +833,27 @@ return 0;}
 	    	if (showLegend) 
 	    	{
   				self.svg.append("text")
-                    //.attr("x", function(d,i){return self.width + 3 ;})
-                    .attr("x", function(d,i){return self.margin.left + ((self.width/lines.length) * (cnti-1)) ;})
-					//.attr("y", function(d,i){return (self.margin.top) + (20 * cnti) ;})
-					.attr("y", function(d,i){return (self.height) + (self.margin.top+(self.margin.bottom/2))+2 ;})
+                    .attr("x", function(d,i){return self.width + 3 ;})
+                    //.attr("x", function(d,i){return self.margin.left + ((self.width/lines.length) * (cnti-1)) ;})
+					.attr("y", function(d,i){return (self.margin.top) + (20 * cnti-1) ;})
+					//.attr("y", function(d,i){return (self.height) + (self.margin.top+(self.margin.bottom/2))+2 ;})
 					.attr("text-anchor","center")
 					.attr("class", "link superior legend value")				
 					.attr("font-size", 11)
 					.style("stroke", function(d,i) {return colorScale(key);})
+					/*					
 					.on("mouseover", function () {
 						tooltip.style("opacity",1.0).html("Click over to hide/show this line");						
       					})
 					.on("mouseout", function() {                    						
 						mouseout();
-						})      					
+						})
+					*/      					
 					.text(function(d,i) {
 						var resTRext = key.split("_");
-						return "Click to hide "+resTRext[0];})
+						//return "Click to hide "+resTRext[0];})
+						return resTRext[0];})
+					/*
 					.on("click", function() {
 						//console.log("-----key="+d.Key.replace(/\s+/g, ''))
                 		// Determine if current line is visible 
@@ -855,7 +861,9 @@ return 0;}
                 		newOpacity = active ? 0 : 1; 
                 		// Hide or show the elements based on the ID
                 		//d3.select("#tag"+key.replace(/\s+/g, ''))
-                		d3.selectAll(".class_"+d.Key.replace(/\s+/g, ''))
+                		
+                		//d3.selectAll(".class_"+d.Key.replace(/\s+/g, ''))
+                		d3.selectAll(".class_"+d.Key.replace(/\W/g, ''))
                     	.transition().duration(100) 
                     	.style("opacity", newOpacity); 
                 		// Update whether or not the elements are active
@@ -876,6 +884,7 @@ return 0;}
                 		
                 		d3.select(this).text(res);
                 	})  
+                	*/
 			}
   		});
 
@@ -914,7 +923,8 @@ return 0;}
                     	
                     	return self.yArray[cntLine](resY);})
                     .attr("r", 0)
-                    .attr("class", "pointIn class_"+keyCircle.replace(/\s+/g, '')) 
+                    //.attr("class", "pointIn class_"+keyCircle.replace(/\s+/g, ''))
+                    .attr("class", "pointIn class_"+keyCircle.replace(/\W/g, ''))                     
                     .style("stroke-width", self.radius)
                     .style("stroke", function(d,i) {return colorScale(keyCircle);})
                     //.attr("opacity", 1.0)
