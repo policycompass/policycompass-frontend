@@ -142,6 +142,7 @@
             <span ng-show="gridvisible">Show Data</span>
         </button>
         <a type="button" class="btn btn-primary" href="#/metrics/{{ metric.id }}/edit">Edit</a>
+        <a type="button" class="btn btn-info" href="#/visualizations/create/?metrics={{metric.id}}">Create Visualization</a>
         <button type="button" class="btn btn-danger" ng-click="deleteMetric(metric)">Delete</button>
     </div>
 </div>

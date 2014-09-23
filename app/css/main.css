@@ -147,6 +147,9 @@ pre {
 .nav > li > a:hover, .nav > li > a:focus{
     background-color: #f5f5f5 !important;
  }
+.cursor-pointer{
+    cursor: pointer;
+}
 /*Dropdown menu*/
 .dropdown-menu{
     border-radius: 0px;
@@ -173,8 +176,6 @@ pre {
 .dropdown-menu li a{
     color: #fff;
 }
-
-
 .dropdown-menu {
     -webkit-transform-origin: top;
     transform-origin: top;
@@ -197,12 +198,10 @@ pre {
     transition: none !important;
     -webkit-transition: none !important;
 }
-
 .dropup .dropdown-menu {
     -webkit-transform-origin: bottom;
     transform-origin: bottom;
 }
-
 .navbar .nav > li > .dropdown-menu:after {
 
 }
@@ -288,7 +287,6 @@ pre {
     background-color: #f7941e !important;
     color: #fff !important;
 }
-
 .nav > li.disabled > a:hover, .nav > li.disabled > a:focus {
     background-color: #F5F5F5 !important;
 }

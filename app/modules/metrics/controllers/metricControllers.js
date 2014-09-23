@@ -79,6 +79,36 @@ angular.module('pcApp.metrics.controllers.metric', [
                 };
             };
 
+            $scope.rotateData = function () {
+                var data =  $scope.grid.data;
+                var newData = [[]];
+                _.each(data, function(element, index, list){
+                    var colum_index = index;
+                    _.each(element, function(element, index, list){
+                        if(element != null){
+                            if(colum_index == 0) {
+                                newData[index] = [element];
+                            } else {
+                                newData[index].push(element);
+                            }
+                        }
+                    });
+                });
+                $scope.grid.data = newData;
+                $scope.grid.instance.loadData(newData);
+            };
+
+            $scope.clearGrid = function () {
+                var dlg = dialogs.confirm(
+                    "Are you sure?",
+                    "Do you really want to clear the Metric Content?");
+                dlg.result.then(function () {
+                    // Delete the metric via the API
+                    $scope.grid.data = [[]];
+                    $scope.grid.instance.loadData($scope.grid.data);
+                });
+            };
+
             // Preselection of the tabview
             $scope.tabsel = {
                 grid: true,

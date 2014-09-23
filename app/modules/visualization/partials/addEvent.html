@@ -4,14 +4,18 @@
 </div>
 
 <div class="modal-header">
-	<h3>Fill in this form and click over the submit button to create a new event.</h3>
+	<h3>Fill in this form and click over the "Link event" button to link the metric visualization with an event.</h3>
 </div>
 <!--
 <div ng-controller="VisualizationsCreateController as vc" class="modal-body">
 -->	
 <div class="modal-body">
 	<div id="basic-modal-content-pc">
+		<!--
 		<form action="#" name="neweventForm" ng-submit="submitFormAddEvent()" novalidate>
+		-->
+		<form action="#" name="neweventForm" role="form"  ng-submit="submitFormAddEvent()" novalidate >
+
 
 			<div class="form-group" ng-show="events">
 				<label for="historicalEvents">Historical events:</label>
@@ -87,22 +91,49 @@
                 </p>
             </div>            
             
+            <div class="form-group">
+				<label for="Description">Color:</label>
+				<div>
+					<spectrum-colorpicker
+  						ng-model="historicalevent_color_palete"
+  							options="{
+  								showInput: true, 
+  								showAlpha: false,
+  								allowEmpty: false,
+  								preferredFormat: 'hex'
+  							}">
+					</spectrum-colorpicker>					
+
+					<input type="hidden"
+                           id="historicalevent_color"
+                           name="historicalevent_color"
+                           class="form-control"
+                           ng-required="false"
+                           value="{{historicalevent_color_palete}}"
+					 />					
+				
+    			</div>
+    		</div>
+            
 			<div class="form-group">
 				<label for="Description">Description:</label>
 				<div>				
 					<textarea rows="2" cols="50" ng-model="historicalevent_description" ng-trim="false" maxlength="150" name="descriptionHEToAdd" id="descriptionHEToAdd">{{historicalevent_description}}</textarea>
-    				<span>{{150 - test.length}} left</span>
+    				<span>{{150 - historicalevent_description.length}} left</span>
     			</div>
     		</div>
+
 			
 		</form>		
 	</div>   
 
-	<div class="modal-footer">
-		
-    	<a ng-disabled="neweventForm.$invalid" href="" ng-click="addAnotherHistoricalEvent('dynamicContainer'); rePlotGraph(); ok();" class="button btn btn-success" id="addmetric">Add event</a>
+			<div class="modal-footer">
+				<!--		
+				<a ng-disabled="neweventForm.$invalid" href="" ng-click="addAnotherHistoricalEvent('dynamicContainer'); rePlotGraph(); ok();" class="button btn btn-success" id="addmetric">Link event</a>
+				-->
+				<button ng-disabled="!historicalevent_id" href="" ng-click="addAnotherHistoricalEvent('dynamicContainer'); rePlotGraph(); ok();" class="btn btn-default" id="addmetric">Link event</button>				
+    			<button class="btn btn-warning" ng-click="cancel()">Close</button>
+    			<a href="#/events/create"  target="_blank" class="btn btn-primary" id="addmetric">Create a new event</a>
+			</div>
 
-    	
-    	<button class="btn btn-warning" ng-click="cancel()">Close</button>
-	</div>
 </div>

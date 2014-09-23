@@ -12,12 +12,15 @@ policycompass.viz.line = function(options)
     // Get options data
 
     for (var key in options){
+        
         self[key] = options[key];
 	}
 
     self.parentSelect = "#"+self.idName;
     
 
+	
+    
 	function make_x_axis() {
 		//console.log("self.x="+self.x);        
     	return d3.svg.axis()
@@ -42,7 +45,9 @@ policycompass.viz.line = function(options)
 	    posY = yInversa(posY);
 	    //console.log("posX="+posX);
 	    //console.log("posY="+posY);
+		
 
+		    				
 	    tooltip.style("opacity",1.0).html("key=<br/>pos x="+posX+"<br/>pos y="+posY);
 		    
 	}
@@ -98,7 +103,22 @@ policycompass.viz.line = function(options)
 	}
     
 	self.drawLines = function (lines, eventsData) {
+		//console.log("cnt="+lines.length);
+        //console.log("self.showYAxesTogether="+self.showYAxesTogether);
+        //console.log("self.margin.right="+self.margin.right);
+        if (!self.showYAxesTogether)
+        {
+        	//self.margin.right = self.margin.right * lines.length;
+        	self.width = self.width - (self.margin.right * (lines.length-1));
+			self.svg.attr("width", self.width + self.margin.left + self.margin.right);
+			        	
+        }
 
+			
+			
+		/*
+    	
+        */
 		//console.log("lines");
 		//console.log(lines);
 		/*
@@ -115,6 +135,8 @@ policycompass.viz.line = function(options)
 		var showGrid = self.showGrid;
 				
 		var colorScale = d3.scale.category20();
+		var colorScaleForHE = d3.scale.category20();
+		
 		var parseDate = d3.time.format("%Y-%m-%d").parse;
 
 		var valuesX = [];
@@ -124,7 +146,8 @@ policycompass.viz.line = function(options)
 		self.arrayMinVy = [];
 		lines.forEach(function(d,i) {
 			//console.log(d.Values);
-			
+			//console.log(d.ValueY);
+			//console.log("d.Position="+d.Position)
 			self.arrayMaxVy.push(d3.max(d3.values(d.Values)));
 			var vMinValueD3 = d3.min(d3.values(d.Values));
 			//vMinValueD3 = 0;
@@ -137,7 +160,13 @@ policycompass.viz.line = function(options)
    				   //result = "." + i + " = " + obj[i] + "\n"; 
    				   //console.log(result);
    				   //valuesY.push(parseInt(obj[i]));
-   				   valuesY.push((obj[i]));
+   				   //valuesY.push(parseInt(obj[i]));
+   				   
+   				   var twoPlacedFloat = parseFloat(obj[i]);
+   				   //var twoPlacedFloat = parseFloat(obj[i]).toFixed(2);
+   				   
+   				   valuesY.push(twoPlacedFloat)
+   				   
    			}    
    			obj = d.ValueX;
 			//obj = d;
@@ -167,9 +196,13 @@ policycompass.viz.line = function(options)
 		//console.log(".....");
 		//console.log(lines[0].Values.length);
 		//console.log(".....");
-		
+		//console.log(valuesY);
 		self.maxVy = d3.max(d3.values(valuesY));
 		self.minVy = d3.min(d3.values(valuesY));
+		
+		//console.log("self.maxVy="+self.maxVy);
+		//console.log("self.minVy="+self.minVy);
+		
 		//self.minVy = 0;
 		//console.log(valuesY);
 		self.minVx = d3.min(d3.values(valuesX));;
@@ -261,7 +294,6 @@ return 0;}
         self.yArray = [];
         self.yArrayInversa = [];
         
-        
         lines.forEach(function(d,i) 
         {
 	        if (self.showYAxesTogether)
@@ -278,6 +310,9 @@ return 0;}
         	self.yArray.push(d3.scale.linear().domain([minYToPlot, maxYToPlot]).range([self.height, 0]).clamp(true));
        		self.yArrayInversa.push(d3.scale.linear().domain([self.height, 0]).range([minYToPlot, maxYToPlot]).clamp(true));
 		});
+        
+        //console.log("self.minVy="+self.minVy);
+        //console.log("self.maxVy="+self.maxVy);
         
         self.y = d3.scale.linear().domain([self.minVy, self.maxVy]).range([self.height, 0]).clamp(true);
         self.yInversa = d3.scale.linear().domain([self.height, 0]).range([self.minVy, self.maxVy]).clamp(true);
@@ -367,42 +402,25 @@ return 0;}
             		//.attr("dy", ".15em")
             		.attr("transform", function(d) {
                 	return "rotate(-25)" 
-				});
-	      		/*		    	
-	      		.append("text")
-	      			//.attr("transform", "rotate(-90)")
-	      			.attr("y", 0)
-	      			.attr("x",self.width + 20)
-	      			.attr("dy", ".71em")
-	      			.style("text-anchor", "end")
-	      			.text(self.labelX);
-				*/
+				})				
+				;
 			
 			if (self.showYAxesTogether)
 			{
 		  		self.svg.append("g")
 		      		.attr("class", "y axis")
 		      		.call(yAxis)
-		      		.attr("font-size", 11)
-		      		/*
+		      		.attr("font-size", 11)		      		
 		    		.append("text")
 		      			.attr("transform", "rotate(-90)")
 		      			.attr("y", 6)
-		      			.attr("dy", ".71em")
+		      			//.attr("dy", ".71em")
+		      			.attr("dy", "15px")
 		      			.style("text-anchor", "end")
-		      			.text(self.labelY);
-					*/				
+		      			.text(self.labelY[0]);
+									
 			}
-			//else
-			//{
-				//self.yArray.forEach(function(d,i) {
-					
-				//	console.log(i);
-				//});
-				
-				
-				
-			//}
+			
 		}
 
 		
@@ -433,6 +451,8 @@ return 0;}
       		//dataForCircles[eventsData[i].posX]=eventsData[i].posY;
       		//console.log(eventsData[i]);
       		 var arrayTemporal = [];
+      		 arrayTemporal['index']=i;
+      		 arrayTemporal['color']=eventsData[i].color;
       		 arrayTemporal['title']=eventsData[i].title;
       		 arrayTemporal['startDate']=eventsData[i].startDate;
       		 arrayTemporal['endDate']=eventsData[i].endDate;
@@ -444,16 +464,44 @@ return 0;}
    		} 
 
 		var historicalEvents = self.svg.selectAll("rectagles").data(dataForCircles);
-
+		
+	//	console.log("d.startDate="+d.startDate);
+	//	console.log("getDate(d.startDate)="+getDate(d.startDate));
+	//	console.log("x="+self.xScale(getDate(d.startDate));
+		
 		historicalEvents.enter().append("rect")
 			.attr("class","lineXDisco")
 			//.style("stroke", function(d,i) {return colorScale("event");})
-			.style("stroke", "grey")
+			//.style("stroke", "grey")
+			.style("stroke", function(d,i) {
+				//console.log("d.index"+d.index);				
+					var colorToPlot = colorScaleForHE(d.index);
+					if (d.color)
+					{
+						colorToPlot = d.color;
+					}
+					return colorToPlot;
+				}
+				)												
+			//.style("stroke", "red")			
+			.style("fill", function(d,i) {
+				//console.log("d.index"+d.index);				
+					var colorToPlot = colorScaleForHE(d.index);
+					if (d.color)
+					{
+						colorToPlot = d.color;
+					}
+					return colorToPlot;
+				}
+				)									
 			.attr("opacity", 0.5)
             .attr("x", function(d,i){
+            	//console.log(i);
 				//console.log(d.startDate);
 				//console.log(self.xScale(d.startDate));
-				return self.xScale(getDate(d.startDate));
+				var posXToPlot = self.xScale(getDate(d.startDate));
+				//console.log("posXToPlot="+posXToPlot);
+				return posXToPlot;
 			})
 			.attr("y", 0)
 			.attr("width",function(d,i){
@@ -462,12 +510,17 @@ return 0;}
 				var dif = "1";
 				if (d.endDate!="")
 				{
-					dif = self.xScale(getDate(d.endDate)) - self.xScale(getDate(d.startDate));
+					dif = self.xScale(getDate(d.endDate)) - self.xScale(getDate(d.startDate));					
 				}
 				else
 				{
 					dif=1;
 				}
+				if (dif==0)
+				{
+					dif=1;
+				}
+				//console.log("dif="+dif);
 				return dif;
 			})
 			.attr("height", self.height)                        
@@ -475,13 +528,34 @@ return 0;}
 				d3.select(this).style("stroke-width", 2);
 				//d3.select(this).classed("pointOn", true);
 				var textTooltip="";
-				textTooltip = d.title+": "+d.startDate;
+				
+				var resSplit = d.startDate.split("-");
+				var monthNames = [ "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+		    				
+				var startDateToPlot = monthNames[parseInt(resSplit[1])]+" "+parseInt(resSplit[2])+", "+resSplit[0];
+				
+				
+				//textTooltip = d.title+": "+d.startDate;
+				textTooltip = d.title+"<br /> From: "+startDateToPlot;
 				if (d.endDate!="")
 				{
-					textTooltip = textTooltip+" - "+d.endDate;	
+					var resSplit = d.endDate.split("-");
+					var endDateToPlot = monthNames[parseInt(resSplit[1])]+" "+parseInt(resSplit[2])+", "+resSplit[0];
+					//textTooltip = textTooltip+" - "+d.endDate;
+					textTooltip = textTooltip+" <br /> To: "+endDateToPlot;
+					
 				}
-				textTooltip = textTooltip+"<br/>"+d.desc;
-				tooltip.style("opacity",1.0).html(textTooltip);    
+				if (d.desc!="")
+				{
+					textTooltip = textTooltip+"<br/> Desc.: "+d.desc;	
+				}
+				
+				var posXToPlot = self.xScale(getDate(d.startDate));
+				if (posXToPlot>0)
+				{
+					tooltip.style("opacity",1.0).html(textTooltip);	
+				}
+				    
 			})
 			.on("mouseout", function(d,i) {
 				//d3.select(this).classed("pointOn",false);
@@ -563,10 +637,24 @@ return 0;}
 				{
 					var posFinalXAxeY = self.width;
 					//console.log(posFinalXAxeY)
-					posFinalXAxeY = posFinalXAxeY + 20*(i-1)
+					posFinalXAxeY = posFinalXAxeY + self.distanceXaxes*(i-1)
+					//posFinalXAxeY = posFinalXAxeY + self.margin.right*(i-1)
 					//console.log(posFinalXAxeY)
 					transform = "translate("+posFinalXAxeY+",0)";
 					var yAxisLeft = d3.svg.axis().scale(self.yArray[i]).ticks(10).orient("right");
+				}
+				
+				//console.log(self.labelY);
+				//console.log("cnti="+cnti);
+				//console.log("self.labelY[cnti-1]="+self.labelY[cnti-1]);
+				var paddingText = "";
+				if (cnti==1) 
+				{
+					paddingText="15px";
+				}
+				else
+				{
+					paddingText="-8px";
 				}
 				self.svg.append("svg:g")
 				      .attr("class", "y axis axisLeft")
@@ -574,8 +662,24 @@ return 0;}
 				      .style("stroke", function(d,i) {return colorScale(key);})
 				      //.style("stroke-width", 2)				      
 				      .attr("font-size", 11)
-				      .call(yAxisLeft);
+				      .call(yAxisLeft)
+				      .append("text")
+		      			.attr("transform", "rotate(-90)")		      			
+		      			//.attr("dy", ".71em")
+		      			.attr("dy", paddingText)
+		      			.style("text-anchor", "end")
+		      			.text(self.labelY[cnti-1])
+				      ;
+				      
+				      
 				      //.call(self.yArray[self.cntLineasPintadas]);
+				      
+				      
+				 /*****************************/
+				
+				
+				
+				      
 			}
     		
     		//var data = [];
@@ -608,13 +712,13 @@ return 0;}
     			
     			posXToPrint = self.xInversa(posXToPrint)
     			//console.log("posXToPrint="+posXToPrint);
-    			
+    			//console.log("---cnti="+cnti);
       			return {
          		//posX: posXToPrint,
          		posX: posXToPrint,
          		posY: d,
          		key: key,
-         		xOriginal:linesArrayX[i]         		
+         		xOriginal:linesArrayX[i]
       			};      
   				});
     			
@@ -657,20 +761,22 @@ return 0;}
   			
 			if (showLines)
 			{
-				//console.log(data);
-
 				
-  
-  
-
-	  			self.svg.append("path")
+				//console.log("key="+key);
+				//console.log(data);
+				
+	  			var path = self.svg.append("path")
 		      		.datum(data)
-		      		.attr("class", "line line--hover class_"+key)      		
+		      		//.attr("class", "line line--hover class_"+key.replace(/\s+/g, '')) 
+		      		.attr("class", "line line--hover class_"+key.replace(/\W/g, ''))	      		
+		      		//.attr("id", 'tag_'+key.replace(/\s+/g, '')) // assign ID     	
+		      		.attr("id", 'tag_'+key.replace(/\W/g, '')) // assign ID
 	    	  		.style("stroke-width", 2)
 		      		.style("stroke", function(d,i) {return colorScale(key);})
 		      		.attr("d", lineFunction)
 	    	  		//.on("mouseover", mouseover)
 	      			.on("mouseover", function (d,i) {
+	      				//console.log(d);
 	      				d3.select(this).style("stroke-width", 4);
 	      				//console.log(d[i])	      			
 								  			
@@ -710,24 +816,75 @@ return 0;}
 	      				$('#basic-modal-content').modal();
 	      				
 	      			})
-					
-	      			;		
+	      			;	
 
-
+					var totalLength = path.node().getTotalLength();    	      			
+								
+					path
+      					.attr("stroke-dasharray", totalLength + " " + totalLength)
+      					.attr("stroke-dashoffset", totalLength)
+      					.transition()
+        					.duration(2000)
+        					.ease("linear")
+        					.attr("stroke-dashoffset", 0);
+	      				
 			}
         
 	    	if (showLegend) 
 	    	{
   				self.svg.append("text")
-                    //.attr("x", function(d,i){return self.width + 3 ;})
-                    .attr("x", function(d,i){return self.margin.left + ((self.width/lines.length) * (cnti-1)) ;})
-					//.attr("y", function(d,i){return (self.margin.top) + (20 * cnti) ;})
-					.attr("y", function(d,i){return (self.height) + (self.margin.top+(self.margin.bottom/2))+2 ;})
+                    .attr("x", function(d,i){return self.width + 3 ;})
+                    //.attr("x", function(d,i){return self.margin.left + ((self.width/lines.length) * (cnti-1)) ;})
+					.attr("y", function(d,i){return (self.margin.top) + (20 * cnti-1) ;})
+					//.attr("y", function(d,i){return (self.height) + (self.margin.top+(self.margin.bottom/2))+2 ;})
 					.attr("text-anchor","center")
-					.attr("class", "superior legend value")				
+					.attr("class", "link superior legend value")				
 					.attr("font-size", 11)
 					.style("stroke", function(d,i) {return colorScale(key);})
-					.text(function(d,i){return key;})	 
+					/*					
+					.on("mouseover", function () {
+						tooltip.style("opacity",1.0).html("Click over to hide/show this line");						
+      					})
+					.on("mouseout", function() {                    						
+						mouseout();
+						})
+					*/      					
+					.text(function(d,i) {
+						var resTRext = key.split("_");
+						//return "Click to hide "+resTRext[0];})
+						return resTRext[0];})
+					/*
+					.on("click", function() {
+						//console.log("-----key="+d.Key.replace(/\s+/g, ''))
+                		// Determine if current line is visible 
+                		var active   = d.active ? false : true,
+                		newOpacity = active ? 0 : 1; 
+                		// Hide or show the elements based on the ID
+                		//d3.select("#tag"+key.replace(/\s+/g, ''))
+                		
+                		//d3.selectAll(".class_"+d.Key.replace(/\s+/g, ''))
+                		d3.selectAll(".class_"+d.Key.replace(/\W/g, ''))
+                    	.transition().duration(100) 
+                    	.style("opacity", newOpacity); 
+                		// Update whether or not the elements are active
+                		d.active = active;
+                		
+                		//var currentText= d3.select(this).text();
+                		//console.log(currentText);
+                		var str = d3.select(this).text();
+						var res = "";
+						
+                		if (active) {
+                			res = 'Click to display '+str;
+                			res = str.replace("hide", "display");
+                		}
+                		else {
+                			res = str.replace("display", "hide");
+                		}
+                		
+                		d3.select(this).text(res);
+                	})  
+                	*/
 			}
   		});
 
@@ -766,10 +923,11 @@ return 0;}
                     	
                     	return self.yArray[cntLine](resY);})
                     .attr("r", 0)
-                    .attr("class","pointIn")
+                    //.attr("class", "pointIn class_"+keyCircle.replace(/\s+/g, ''))
+                    .attr("class", "pointIn class_"+keyCircle.replace(/\W/g, ''))                     
                     .style("stroke-width", self.radius)
                     .style("stroke", function(d,i) {return colorScale(keyCircle);})
-                    .attr("opacity", 1.0)
+                    //.attr("opacity", 1.0)
                     .on("mouseover", function (d,i) {
       					d3.select(this).classed("pointOn", true);     
       					
@@ -790,12 +948,24 @@ return 0;}
 		    			
 		    				//console.log("posX="+posX);
 		    				//console.log("posY="+posY);		    	
-		    				//tooltip.style("opacity",1.0).html("key="+keyCircle+"<br/>pos x="+resX+"<br/>pos y="+resY);    
-		    				tooltip.style("opacity",1.0).html(resX+" - "+resY);
+		    				//tooltip.style("opacity",1.0).html("key="+keyCircle+"<br/>pos x="+resX+"<br/>pos y="+resY); 
+		    				var resSplit = resX.split("-");
+		    				var monthNames = [ "", "January", "February", "March", "April", "May", "June",
+    						"July", "August", "September", "October", "November", "December" ];
+		    				
+		    				var endDateToPlot = monthNames[parseInt(resSplit[1])]+" "+parseInt(resSplit[2])+", "+resSplit[0];
+		    				   
+		    				//tooltip.style("opacity",1.0).html(resX+" <br /> "+resY+"<br />"+endDateToPlot);
+		    				
+		    				var twoPlacedFloat = parseFloat(resY);
+		    				//var twoPlacedFloat = parseFloat(resY).toFixed(2);
+		    				
+		    				tooltip.style("opacity",1.0).html(endDateToPlot+" <br /> "+twoPlacedFloat);
+		    				
 			    			//renderLine((self.x(i)), (self.y(d))); 
       				})
                     //.on("mouseover", function(d,i){console.log(d3.select(this));d3.select(this).classed("circuloOn", true);})
-                    .on("mouseout", function(d,i){
+                    .on("mouseout", function(d,i) {
                     	d3.select(this).classed("pointOn",false);
       					var circle = d3.select(this);
 						circle.transition()
@@ -825,6 +995,9 @@ return 0;}
 	
 	}
 
+
+
+    
 	/* function to plot the pointer mouse */
 	var handleMouseOverGraph = function(posMouse) 
 	{	
@@ -852,6 +1025,9 @@ return 0;}
 
 	/*** funtion to init. graph ***/	   
     self.init = function () {
+
+
+       // console.log($scope.mode);
        	
 		self.svg = d3.select(self.parentSelect).append("svg")
 			.attr("width", self.width + self.margin.left + self.margin.right)

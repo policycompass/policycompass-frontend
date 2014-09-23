@@ -19,7 +19,7 @@
     margin-top:30px;
     margin-bottom: 30px;
 }
-.home-statement-phrase > p:first-child {
+.home-statement-phrase > p{
     text-align: center;
     font-weight: 200;
     font-size: 2em;
@@ -30,9 +30,9 @@
     text-align: center;
     font-weight: 200;
     font-size: 1.3em;
-    color: #58595b;
-    padding-left: 30px;
-    padding-right: 30px;
+    color: #58595b !important;
+    padding-left: 30px !important;
+    padding-right: 30px !important;
 }
 .home-actions {
     padding: 2em 0;

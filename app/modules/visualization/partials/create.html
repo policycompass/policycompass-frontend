@@ -2,76 +2,55 @@
 
 <create-submenu></create-submenu>
 
-<h1 ng-if="mode == 'create'"><span class="glyphicon glyphicon-pencil"></span> Create a New Visualization - Under construction</h1>
-<h1 ng-if="mode == 'edit'"><span class="glyphicon glyphicon-pencil"></span> Edit Visualization - Under construction</h1>
+<h1 ng-if="mode == 'create'"><span class="glyphicon glyphicon-pencil"></span> Create a New Visualization</h1>
+<h1 ng-if="mode == 'edit'"><span class="glyphicon glyphicon-pencil"></span> Edit Visualization</h1>
+
+<div class="row">
+    <div class="col-lg-12 pc-visualization-formcontrols">
+        <div class="form-group pull-left">
+
+				<button type="submit"  ng-disabled="visualizationForm.$invalid" class="btn btn-default" ng-click="createVisualization()"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>				
+				<button type="submit" class="btn btn-default" ng-click="revertVisualization()">Revert</button>
+
+				<!--
+				<button type="submit" class="btn btn-default" ng-click="selectTabParent(1); selectTabSon('map_1');rePlotGraph();">Map</button>
+				<button type="submit" class="btn btn-default" ng-click="selectTabParent(2)">Graph</button>
+				-->	
+				<button ng-disabled="true" type="button" ng-class="{'btn btn-default':!isSelectedParent(1),'btn btn-info':isSelectedParent(1)}" ng-click="selectTabParent(1); selectTabSon('map_1');rePlotGraph();">Map</button>									
+				<button type="button" ng-class="{'btn btn-default':!isSelectedParent(2),'btn btn-info':isSelectedParent(2)}" ng-click="selectTabParent(2)">Graph</button>
+										
+				<!--
+				<button ng-hide="!isSelectedParent(2)" type="submit" ng-disabled="!isSelectedParent(2)" class="btn btn-default" ng-click="selectTabParent(2);selectTabSon('graph_line');rePlotGraph();">Line</button>
+				<button ng-hide="!isSelectedParent(2)" type="submit" ng-disabled="!isSelectedParent(2)" class="btn btn-default" ng-click="selectTabParent(2);selectTabSon('graph_pie');rePlotGraph();">Pie</button>
+				<button ng-hide="!isSelectedParent(2)" type="submit" ng-disabled="!isSelectedParent(2)" class="btn btn-default" ng-click="selectTabParent(2);selectTabSon('graph_bars');rePlotGraph();">Bars</button>
+				-->				
+				<button type="button" ng-hide="!isSelectedParent(2)" ng-disabled="!isSelectedParent(2)" ng-class="{'btn btn-default':!isSelectedSon('graph_line'),'btn btn-info':isSelectedSon('graph_line')}" ng-click="selectTabParent(2);selectTabSon('graph_line');rePlotGraph();">Line</button>
+				<button type="button" ng-hide="!isSelectedParent(2)" ng-disabled="!isSelectedParent(2)" ng-class="{'btn btn-default':!isSelectedSon('graph_pie'),'btn btn-info':isSelectedSon('graph_pie')}" ng-click="selectTabParent(2);selectTabSon('graph_pie');rePlotGraph();">Pie</button>
+				<button type="button" ng-hide="!isSelectedParent(2)" ng-disabled="!isSelectedParent(2)" ng-class="{'btn btn-default':!isSelectedSon('graph_bars'),'btn btn-info':isSelectedSon('graph_bars')}" ng-click="selectTabParent(2);selectTabSon('graph_bars');rePlotGraph();">Bars</button>
+	            		
+        </div>
+    </div>
+</div>
 
 <form name="visualizationForm" role="form" novalidate >
 <div class="row createvisualization">
+<!--
     <div class="col-lg-4">
             <h4>Main Details</h4>
-
-					
-	            			<div class="form-group" ng-class="{'has-error': metricForm.title.$dirty && metricForm.title.$invalid}">
-	                			<label for="title">Title *</label>
-	                			<input type="text" class="form-control" id="title" name="title" placeholder="Title" ng-model="visualization.title" ng-minlength="3" required>
-	            			</div>
-	            			
-	            			<div class="form-group">
-	            				<label for="title">Type *</label>
-
-	            					<div class="buttonline clearfix-min">
-	            						<!--
-										<button type="submit" class="btn btn-default" ng-click="selectTabParent(1); selectTabSon('map_1');rePlotGraph();">Map</button>
-										<button type="submit" class="btn btn-default" ng-click="selectTabParent(2)">Graph</button>
-										-->	
-										<button ng-disabled="true" type="button" ng-class="{'btn btn-default':!isSelectedParent(1),'btn btn-info':isSelectedParent(1)}" ng-click="selectTabParent(1); selectTabSon('map_1');rePlotGraph();">Map</button>									
-										<button type="button" ng-class="{'btn btn-default':!isSelectedParent(2),'btn btn-info':isSelectedParent(2)}" ng-click="selectTabParent(2)">Graph</button>
-										
-		
-										<div class="buttonline clearfix-min">
-											<br/>
-											<!--
-											<button ng-hide="!isSelectedParent(2)" type="submit" ng-disabled="!isSelectedParent(2)" class="btn btn-default" ng-click="selectTabParent(2);selectTabSon('graph_line');rePlotGraph();">Line</button>
-											<button ng-hide="!isSelectedParent(2)" type="submit" ng-disabled="!isSelectedParent(2)" class="btn btn-default" ng-click="selectTabParent(2);selectTabSon('graph_pie');rePlotGraph();">Pie</button>
-											<button ng-hide="!isSelectedParent(2)" type="submit" ng-disabled="!isSelectedParent(2)" class="btn btn-default" ng-click="selectTabParent(2);selectTabSon('graph_bars');rePlotGraph();">Bars</button>
-											-->
-											<button type="button" ng-hide="!isSelectedParent(2)" ng-disabled="!isSelectedParent(2)" ng-class="{'btn btn-default':!isSelectedSon('graph_line'),'btn btn-info':isSelectedSon('graph_line')}" ng-click="selectTabParent(2);selectTabSon('graph_line');rePlotGraph();">Line</button>
-											<button type="button" ng-hide="!isSelectedParent(2)" ng-disabled="!isSelectedParent(2)" ng-class="{'btn btn-default':!isSelectedSon('graph_pie'),'btn btn-info':isSelectedSon('graph_pie')}" ng-click="selectTabParent(2);selectTabSon('graph_pie');rePlotGraph();">Pie</button>
-											<button type="button" ng-hide="!isSelectedParent(2)" ng-disabled="!isSelectedParent(2)" ng-class="{'btn btn-default':!isSelectedSon('graph_bars'),'btn btn-info':isSelectedSon('graph_bars')}" ng-click="selectTabParent(2);selectTabSon('graph_bars');rePlotGraph();">Bars</button>
-
-										</div>
-									</div> 	            				
-	            				
-	            			</div>
-	            			
-
-	            			
-				            <div class="form-group" ng-class="{'has-error': visualizationForm.description.$dirty && visualizationForm.description.$invalid}">
-	            			    <label for="metricdescription" class="">Description *</label>
-	                			<textarea class="form-control" rows="10" id="description" name="description" ng-model="visualization.description" required></textarea>
-	            			</div>                    
-	            			<div class="form-group">
-	                			<label for="keywords">Keywords</label>
-	                			<input type="text" class="form-control" id="keywords" placeholder="Keywords" ng-model="visualization.keywords">
-	            			</div>
-	            			<div class="form-group" ng-class="{'has-error': visualizationForm.language.$dirty && visualizationForm.language.$invalid}">
-	                			<label for="language" class="">Language *</label>
-	                			<select class="form-control language-options" model="visualization.language" ng-model="visualization.language" id="language" name="language" required>
-				                </select>
-	            			</div>
-						
     </div>
-    <div class="col-lg-8">
+-->
+    <div class="col-lg-10">
         <div ng-switch="step">
 
-            <div>            	
-            	<div ng-show="(isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')) && (ListMetricsFilter.length>0)" class="graphContainerdiv">
-					<input type="hidden" id="startDatePosX" name="startDatePosX" value="">
-					<div ng-click="isSelectedSon('graph_line') ? showModal() : void(0)">
-						<div id="container_graph" class="container_graph"></div>
+            <div >
+            	<div ng-show="canPlotGarph">          	
+	            	<div ng-show="(isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')) && (ListMetricsFilter.length>0)" class="graphContainerdiv">
+						<input type="hidden" id="startDatePosX" name="startDatePosX" value="">
+						<div ng-click="isSelectedSon('graph_line') ? showModal() : void(0)">
+							<div id="container_graph" class="container_graph"></div>
+						</div>
 					</div>
 				</div>
-			
                 <tabset>                                        
 					<!-- ini tab metrics -->
                     <tab heading="Metrics">                    
@@ -110,20 +89,44 @@
 							</div>
 						</div>
 								
-						<div class="buttonline clearfix-min">						
-							<button ng-show="metrics.count>0" type="submit" class="btn btn-primary button-metrics" id="addmetricsbutton" ng-click="addMetrictoList()">Add metric</button>
+						<div class="buttonline clearfix-min">	
+							
+							<input type="hidden" ng-required="true" class="form-control" id="correctmetrics"  ng-model="correctmetrics">					
+							<button  type="submit" class="btn btn-primary button-metrics" id="addmetricsbutton" ng-click="addMetrictoList();findMetricsByFilter();">Add metric</button>
 						</div>
-						<br />						
+						<br />	
+						
+						<div class="filterMetrics" id="filterMetrics" style="display: none;">
+							<label for="">Search metric by title</label>
+							<input placeholder="--all metrics--" ng-change="findMetricsByFilter('1', filterMetric)" type="text" id="filterMetric" ng-model="filterMetric" name="filterMetric">
+						</div>
+											
 						<div>
-							<ul class="metrics-list" id="metrics-list" style="display: none;">								
-								<li ng-class="{'metrics-list active':MetricSelectediId_[metric.id]>0,'metrics-list':MetricSelectediId_[metric.id]}" id="metric-list-item-item-{{metric.id}}" name="designer-metrics-num-{{metric.id}}" ng-repeat="metric in metrics.results track by $index" ><a href="" ng-click="addFilterMetric(metric.id);" title="{{metric.title}}">{{metric.title}} - {{ metric.issued | date:'longDate' }}</a></li>
+							<div class="filterMetricsPaginationHeader" id="filterMetricsPaginationHeader" style="display: none;">
+							<label ng-show="metricsFilter.count>1" for="">{{metricsFilter.count}} metrics found</label> 
+							<label ng-show="metricsFilter.count==1" for="">{{metricsFilter.count}} metric found</label>
+							<label ng-show="metricsFilter.count==0" for="">no metrics found</label>  
+							</div>
+							<ul class="metrics-list" id="metrics-list" style="display: none;">													
+								<li ng-class="{'metrics-list active':MetricSelectediId_[metric.id]>0,'metrics-list':MetricSelectediId_[metric.id]}" id="metric-list-item-item-{{metric.id}}" name="designer-metrics-num-{{metric.id}}" ng-repeat="metric in metricsFilter.results track by $index" ><a href="" ng-click="addFilterMetric(metric.id, metric.title, metric.issued);" title="{{metric.title}}">{{metric.title}} - {{ metric.issued | date:'longDate' }}</a></li>
 							</ul>
+								
+								<div class="filterMetricsPagination" id="filterMetricsPagination" style="display: none;">									
+		    						<button ng-show="metricsFilter.count>1" ng-disabled="!metricsFilter.previous"  class="btn btn-warning" ng-click="findMetricsByFilter(metricsFilter.previous, filterMetric)">
+		        					 <span class="glyphicon glyphicon-chevron-left"></span>  Previous
+		    						</button>
+		    						<button ng-show="metricsFilter.count>1" ng-disabled="!metricsFilter.next" class="btn btn-warning pull-right" ng-click="findMetricsByFilter(metricsFilter.next, filterMetric)">
+		        					Next <span class="glyphicon glyphicon-chevron-right"></span>
+		    						</button>
+								</div>
 						</div>
 						
-						<div ng-hide="!MetricSelectediId_[metric.id]" ng-class="{'designer-metrics active':MetricSelectediId_[metric.id],'designer-metrics':MetricSelectediId_[metric.id]}" class="designer-metrics" id="designer-metrics-num-{{metric.id}}" ng-repeat="metric in metrics.results track by $index" >
-							
-							<h4>{{metric.title}} - {{ metric.issued | date:'longDate' }}</h4>
-							
+						
+						<!--
+						<div ng-hide="!MetricSelectediId_[metric.id]" ng-class="{'designer-metrics active':MetricSelectediId_[metric.id],'designer-metrics':MetricSelectediId_[metric.id]}" class="designer-metrics" id="designer-metrics-num-{{metric.id}}" ng-repeat="metric in metrics.results track by $index" >						
+						-->
+						<div ng-hide="!MetricSelectediId_[metric.id]" ng-class="{'designer-metrics active':MetricSelectediId_[metric.id],'designer-metrics':MetricSelectediId_[metric.id]}" class="designer-metrics" id="designer-metrics-num-{{metric.id}}" ng-repeat="metric in ListMetricsFilter track by $index" >						
+							<h4>{{metric.title}}</h4>							
 							<input type="hidden" ng-model="MetricSelectediId_[metric.id]" id="MetricSelectediId_{{metric.id}}" name="MetricSelectedId[]" value="">
 							<!--
 							<input type="hidden" ng-model="MetricSelectediIndex_[metric.id]" ng-init="MetricSelectediIndex_[metric.id]=$index+1" id="MetricSelectediIndex_{{metric.id}}" name="MetricSelectediIndex[]" value="{{$index+1}}">
@@ -133,7 +136,10 @@
 
 							<div class="metric-buttons">
 								<a type="button" class="btn btn-primary" ng-click="displaycontentMetric(metric.id);" id="edit-metric-button-{{metric.id}}">Edit</a>			    	
-						    	<button type="button" class="btn btn-danger" ng-click="deleteMetricFromList(metric.id);" id="delete-metric-button-{{metric.id}}">Delete</button>
+						    	<button type="button" class="btn btn-danger" ng-click="deleteMetricFromList(metric.id, metric.title);" id="delete-metric-button-{{metric.id}}">Delete</button>
+						    	<a type="button" class="btn btn-info" href="#/metrics/{{metric.id}}" target="_blank" id="view-metric-button-{{metric.id}}">View Metric in detaill</a>						    	
+						    	
+						    	
 						  	</div>
 
 							<div class="metric-forms" style="display: none;">
@@ -151,21 +157,59 @@
 								</div>
 								<div class="metric-form-item">
 									<label for="">Value</label>
+									<!--
 									<select ng-change="rePlotGraph();" ng-model="MetricSelectorDataColumn_[metric.id]" id="MetricSelectorDataColumn_{{metric.id}}" name="MetricSelectorDataColumn[]" class="form-select">
 										<option value="row column">Row Column</option>
-										<!--
-										<option value="from">From</option>
-										<option value="to">To</option>
-										-->
 										<option value="category">Category</option>
 										<option value="value">Value</option>	    				
-								    </select>	
+								    </select>
+								   	-->
+								   	
+								   	<!--
+								   		ng-options="option.title for option in optionsCombo_value_[metric.id] track by option.id"
+								   		<option value="{{option.id}}" ng-repeat="option in optionsCombo_value_[metric.id] track by option.id" >{{option.title}}</option>
+								   	-->
+								   	
+								    <select 								        
+										ng-model="MetricSelectorDataColumn_[metric.id]" id="MetricSelectorDataColumn_{{metric.id}}" 
+                						name="MetricSelectorDataColumn_[]" class="form-select"
+                						ng-change="rePlotGraph();"
+                						class="form-control"                 						
+                						ng-options="option.title for option in optionsCombo_value_[metric.id] track by option.id"
+                						>
+                						<option value=""  >Row Column</option>                						
+                						
+            						</select>
+								    
 								</div>
 								<div class="metric-form-item">
+
+
 									<label for="">Grouping</label>
-									<select ng-change="rePlotGraph();" ng-model="MetricselectorGroupingData_[metric.id]" id="MetricselectorGroupingData_{{metric.id}}" name="MetricselectorGroupingData[]" class="form-select">
+									<!--
+									<select ng-change="rePlotGraph();" ng-model="MetricSelectorGroupingData_[metric.id]" id="MetricSelectorGroupingData_{{metric.id}}" name="MetricselectorGroupingData[]" class="form-select">
 										<option value="grouping column">Grouping Column</option>
+										<option value="1">aaaaaaaa</option>
+										<option value="2">bb</option>
 									</select>
+									-->
+									<!--
+										
+										<option value="{{option.id}}" ng-repeat="option in optionsCombo_[metric.id] track by option.id" >{{option.title}}</option>
+									-->
+									
+									<select 
+										ng-model="MetricSelectorGroupingData_[metric.id]" id="MetricSelectorGroupingData_{{metric.id}}"  
+                						name="MetricSelectorGroupingData_[]" class="form-select"
+                						ng-change="rePlotGraph();"
+                						class="form-control" 
+                						ng-options="option.title for option in optionsCombo_[metric.id] track by option.id"                						
+                						>
+                						<option value="" >Grouping Column</option>
+                						
+            						</select>	
+            										
+									
 								</div>
 					   		</div>
 
@@ -187,6 +231,8 @@
 								<input type="hidden" ng-model="startDateHE[$index+1]" id="startDateHE{{$index+1}}" name="startDateHE[]" value="{{event.startDate}}">
 								<input type="hidden" ng-model="endDateHE[$index+1]" id="endDateHE{{$index+1}}" name="endDateHE[]" value="{{event.endDate}}">					    	
 								<input type="hidden" ng-model="descHE[$index+1]" id="descHE{{$index+1}}" name="descHE[]" value="{{event.desc}}">
+								<input type="hidden" ng-model="colorHE[$index+1]" id="colorHE{{$index+1}}" name="colorHE[]" value="{{event.color}}">
+								
 								<div class="contentHE">
 									<div ng-if="event.startDate"><label for="">From:</label> {{event.startDate | date:'longDate'}} </div>
 									<div ng-if="event.endDate"><label for="">To:</label> {{event.endDate | date:'longDate'}} </div>
@@ -196,7 +242,7 @@
 									<!--		    	
 				    				<div class="metric-button metric-delete-button" ng-click="deleteContainerHistoricalEvent('row_config_',$index+1)" id="delete-metric-button-{{metric.id}}"></div>
 				    				-->
-				    				<button type="button" class="btn btn-danger" ng-click="deleteContainerHistoricalEvent('row_config_',$index+1)" id="delete-he-button-{{event.id}}">Delete</button>
+				    				<button type="button" class="btn btn-danger" ng-click="deleteContainerHistoricalEvent('row_config_',$index+1, event.title)" id="delete-he-button-{{event.id}}">Delete</button>
 				    				
 				  				</div>
 							</div>
@@ -204,6 +250,33 @@
                     </tab>
 					<!-- end tab historical events -->
                     
+                    <tab heading="Metadata Editor">
+
+	
+	            			<div class="form-group" ng-class="{'has-error': metricForm.title.$dirty && metricForm.title.$invalid}">
+	                			<label for="title">Title *</label>
+	                			<input type="text" class="form-control" id="title" name="title" placeholder="Title" ng-model="visualization.title" ng-minlength="3" required>
+	            			</div>
+	            			
+	            			
+	            			
+
+	            			
+				            <div class="form-group" ng-class="{'has-error': visualizationForm.description.$dirty && visualizationForm.description.$invalid}">
+	            			    <label for="metricdescription" class="">Description *</label>
+	                			<textarea class="form-control" rows="10" id="description" name="description" ng-model="visualization.description" required></textarea>
+	            			</div>                    
+	            			<div class="form-group">
+	                			<label for="keywords">Keywords</label>
+	                			<input type="text" class="form-control" id="keywords" placeholder="Keywords" ng-model="visualization.keywords">
+	            			</div>
+	            			<div class="form-group" ng-class="{'has-error': visualizationForm.language.$dirty && visualizationForm.language.$invalid}">
+	                			<label for="language" class="">Language *</label>
+	                			<select class="form-control language-options" model="visualization.language" ng-model="visualization.language" id="language" name="language" required>
+				                </select>
+	            			</div>
+	            			                    	
+                    </tab>
                     
                 </tabset>
             </div>
@@ -216,16 +289,7 @@
 
 </div>
 
-<div class="row">
-    <div class="col-lg-12 pc-metric-formcontrols">
-        <div class="form-group pull-right">
 
-				<button type="submit"  ng-disabled="visualizationForm.$invalid" class="btn btn-default" ng-click="createVisualization()"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>				
-				<button type="submit" class="btn btn-default" ng-click="revertVisualization()">Revert</button>
-
-        </div>
-    </div>
-</div>
 
 </form>
 </div>

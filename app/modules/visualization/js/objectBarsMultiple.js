@@ -460,7 +460,16 @@ policycompass.viz.barsMultiple = function(options) {
       			})
       			.on("mouseover", function(d,i) {
 	      			//console.log(d);
-    	  			tooltip.style("opacity",1.0).html(d.Key+"<br/>Date="+d.ValueX+"<br/>Value="+d.ValueY);
+	      			
+					var resSplit = d.ValueX.split("-");
+					var monthNames = [ "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+		    				
+					var startDateToPlot = monthNames[parseInt(resSplit[1])]+" "+parseInt(resSplit[2])+", "+resSplit[0];
+
+	      			
+    	  			//tooltip.style("opacity",1.0).html(d.Key+"<br />Date="+d.ValueX+"<br />Value="+d.ValueY);
+    	  			tooltip.style("opacity",1.0).html(d.Key+"<br />"+startDateToPlot+"<br />"+d.ValueY);
+    	  			
       			})
 				.on("click", function(d,i) {
 	      			//console.log("****");      			
@@ -498,7 +507,7 @@ policycompass.viz.barsMultiple = function(options) {
 		      		//.data(months.slice().reverse())
 		      		.data(xAxisData.slice().reverse())
 		    		.enter().append("g")
-		      		.attr("class", "legend")
+		      		.attr("class", "legend")		      		
 		      		.attr("transform", function(d, i) {return "translate(0," + i * 20 + ")";});
 		
 		  		legend.append("rect")
@@ -508,7 +517,8 @@ policycompass.viz.barsMultiple = function(options) {
 		      		.style("fill", color);
 		
 		  		legend.append("text")
-		      		.attr("x", self.width - 24)
+		      		//.attr("x", self.width - 24)
+		      		.attr("x", self.width + self.margin.left + 40)
 		      		.attr("y", 9)
 		      		.attr("dy", ".35em")
 		      		.style("text-anchor", "end")
@@ -592,9 +602,14 @@ policycompass.viz.barsMultiple = function(options) {
     
 
     self.init = function () {
-
+		
+		self.extraWidth = 0;
+		if (self.showLegend) 
+		{
+			self.extraWidth = 60;
+		}
 		self.svg = d3.select(self.parentSelect).append("svg")
-    		.attr("width", self.width + self.margin.left + self.margin.right)
+    		.attr("width", self.width + self.margin.left + self.margin.right + self.extraWidth)
     		.attr("height", self.height + self.margin.top + self.margin.bottom)
     		.on("mousemove", mousemove)
   			.append("g")
