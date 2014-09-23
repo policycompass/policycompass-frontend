@@ -161,7 +161,7 @@ angular.module('pcApp.metrics.controllers.metric', [
  * Controller for the list of metrics
  */
 .controller('MetricsController', ['$scope', 'Metric', '$log', '$routeParams', function($scope, Metric, $log, $routeParams) {
-
+	
     // Retrieve the metrics from the Metrics Service
 	$scope.metrics = Metric.query(
             {page: $routeParams.page},

@@ -26,6 +26,7 @@ var http = require("http"),
 nconf.file('development.json');
 
 var pcServicesUrl = nconf.get('PC_SERVICES_URL');
+var fcmServicesUrl = nconf.get('FCM_SERVICES_URL');
 
 var proxy = httpProxy.createServer();
 
@@ -55,6 +56,10 @@ http.createServer(function(request, response) {
     } else if (/^\/api\/v[0-9]+\/references/.exec(request.url)) {
         proxy.web(request, response, {
             target: pcServicesUrl
+        });
+    } else if (/^\/api\/v[0-9]+\/fcmmanager/.exec(request.url)) {
+        proxy.web(request, response, {
+            target: fcmServicesUrl
         });
     }
     else {

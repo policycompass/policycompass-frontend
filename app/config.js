@@ -11,5 +11,5 @@ angular.module('pcApp.config',[])
     'VISUALIZATIONS_MANAGER_URL': '/api/v1/visualizationsmanager',
     'EVENTS_MANAGER_URL': '/api/v1/eventsmanager',
     'REFERENCE_POOL_URL': '/api/v1/references',
-    'FCM_URL': '/api/v1/fcm'
+    'FCM_URL': '/api/v1/fcmmanager'
 });

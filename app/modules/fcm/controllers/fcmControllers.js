@@ -10,11 +10,26 @@ angular.module('pcApp.fcm.controllers.fcm', [
     };
 }])
 
+
 .controller('FcmController', [
     '$scope',
     'Fcm',
     '$log',
-    function ($scope, Metric, $log) {
+    '$routeParams',
+    function ($scope, Fcm, $log, $routeParams) {
+	
+	Fcm.get({}, function(Fcm) {
+		$scope.title = Fcm.title;
+	})
+    // Retrieve the FCM Models from the FCM Manager Service
+//	$scope.metrics = Fcm.query(
+//           {page: $routeParams.page},
+//			function(metricList) {
+//			},
+//			function(error) {
+//                throw { message: JSON.stringify(err.data)};
+//			}
+//	);
 
 
     }])
@@ -41,19 +56,6 @@ angular.module('pcApp.fcm.controllers.fcm', [
         helper.baseCreateEditController($scope);
 
     }])
-
-.controller('MetricsController', ['$scope', 'Metric', '$log', '$routeParams', function($scope, Metric, $log, $routeParams) {
-
-	$scope.metrics = Metric.query(
-            {page: $routeParams.page},
-			function(metricList) {
-			},
-			function(error) {
-                throw { message: JSON.stringify(err.data)};
-			}
-	);
-
-}])
 
 .controller('FcmEditController', [
     '$scope',
