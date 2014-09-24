@@ -26,6 +26,7 @@ var http = require("http"),
 nconf.file('development.json');
 
 var pcServicesUrl = nconf.get('PC_SERVICES_URL');
+var elasticSearchUrl = nconf.get('ELASTIC_SEARCH_URL');
 var fcmServicesUrl = nconf.get('FCM_SERVICES_URL');
 
 var proxy = httpProxy.createServer();
@@ -37,7 +38,6 @@ http.createServer(function(request, response) {
 	, filename = path.join(process.cwd(), uri);
 
 	console.log('[%s] "%s %s" "%s"', (new Date).toUTCString(), request.method, request.url, request.headers['user-agent']);
-
 
 	//Proxy all requests for the metrics service to the Data Manager
 	// /api/v*/metrics
@@ -60,6 +60,10 @@ http.createServer(function(request, response) {
     } else if (/^\/api\/v[0-9]+\/fcmmanager/.exec(request.url)) {
         proxy.web(request, response, {
             target: fcmServicesUrl
+        });
+    } else if (/^\/policycompass_search/.exec(request.url)) {
+        proxy.web(request, response, {
+            target: elasticSearchUrl
         });
     }
     else {
