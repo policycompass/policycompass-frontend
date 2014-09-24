@@ -31,8 +31,8 @@
             controller: 'StaticController',
             templateUrl: 'modules/common/partials/request.html'
         })
-        .when('/imprint', {
-            templateUrl: 'modules/common/partials/imprint.html'
+        .when('/termsOfUse', {
+            templateUrl: 'modules/common/partials/termsOfUse.html'
         })
         .otherwise({ redirectTo: '/' });
 });
