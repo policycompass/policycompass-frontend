@@ -3,13 +3,13 @@ angular.module('pcApp.events.controllers.event', [
     'pcApp.references.services.reference'
 ])
 
-    .controller('EventsController', ['$scope', 'Event', '$log', function ($scope, Event, $log) {
+    .controller('EventsController', ['$scope', 'Event', '$log', '$routeParams', function ($scope, Event, $log, $routeParams) {
         $scope.events = Event.query(
-            null,
-            function (eventList) {
+            {page: $routeParams.page},
+            function(metricList) {
             },
-            function (error) {
-                alert(error.data.message);
+            function(error) {
+                throw { message: JSON.stringify(err.data)};
             }
         );
 

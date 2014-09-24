@@ -10,7 +10,8 @@ angular.module('pcApp.events.services.event',[
 			id: "@id"
 		},
         {
-            'update': { method:'PUT' }
+            'update': { method:'PUT' },
+            'query': { method: 'GET', isArray:false}
         }
 	);
 	return Event;

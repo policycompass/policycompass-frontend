@@ -6,7 +6,7 @@
 <div class="container">
 <div class="row">
 
-    <div class="col-lg-3 pc-tile" ng-show="events" ng-repeat="event in events" >
+    <div class="col-lg-3 pc-tile" ng-show="events" ng-repeat="event in events.results" >
         <div class="panel panel-default">
           <div class="panel-heading">
             <h3 class="panel-title">{{ event.title | limitTo: 25}}</h3>
@@ -20,5 +20,13 @@
     </div>
 
 </div>
+    <div class="row">
+        <a ng-disabled="!events.previous"  class="btn btn-warning" href="#/events{{ events.previous }}">
+            <span class="glyphicon glyphicon-chevron-left"></span> Previous
+        </a>
+        <a ng-disabled="!events.next" class="btn btn-warning pull-right" href="#/events{{ events.next }}">
+            Next <span class="glyphicon glyphicon-chevron-right"></span>
+        </a>
+    </div>
 </div>
 </div>
