@@ -25,6 +25,7 @@
     "underscore": "",
     "queue-async": "",
     "d3": "",
-    "angular-spectrum-colorpicker": ""
+    "angular-spectrum-colorpicker": "",
+    "elasticsearch": ""
   }
 }
