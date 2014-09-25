@@ -7,23 +7,48 @@
   var searchmodule = angular.module('pcApp.search.controllers', ['pcApp.search.services.search', 'pcApp.config']);
 
   var searchMainController = function($scope, $location, searchclient, esFactory, API_CONF) {
-    //TODO-Search takes input, index,type variables
+
+
+    //Define search function to be exposed in html
     $scope.search = function(searchQuery) {
+	//Build query
+	if (typeof searchQuery != 'undefined') {
+			var query = {
+				  match: {
+					_all: searchQuery
+				  }
+				};
+			}
+			else {
+			var query = {
+				  match_all: {
+				  }
+				}
+				};
+    //Perform search
       searchclient.search({
         index: API_CONF.ELASTIC_URL.replace("/", ""),
-        type: 'metric'
+        type: 'metric',
+      body: {
+        size: 50,
+        query: query
+      }
       }).then(function(resp) {
-        var hits = resp.hits.hits;
-        $scope.hits = hits
+		  //If search is successfull return results in searchResults objects
+        $scope.searchResults = resp.hits.hits;
       }, function(err) {
         console.trace(err.message);
       });
 
-      //Call to Search Service here
-
-      $scope.searchResults = "Search Results will be placed here";
     };
+    
+  $scope.init = function() {
+    $scope.search(undefined);
   };
+  // runs once per controller instantiation
+  $scope.init();
+  };
+
 
   searchmodule.controller("searchMainController", searchMainController);
 
