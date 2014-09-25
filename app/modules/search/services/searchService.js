@@ -3,18 +3,18 @@
  * Those factories provide adapters for the Elastic Search API.
  */
 
-angular.module('pcApp.search.services.search',[
-    'elasticsearch',
-    'pcApp.config'
+angular.module('pcApp.search.services.search', [
+  'elasticsearch'
 ])
 
 /**
  * Elastic Search Factory
  */
-.service('searchclient', function (esFactory,API_CONF) {
-        //TODO-PUT SERVER URL VARIABLE here
-	return esFactory({
-		host: 'localhost:9000',
-		log: 'trace'
-	});
+.service('searchclient', function(esFactory, $location) {
+  //Instantiate Elastic Search client service
+  var curHost = $location.host() + ":" + $location.port();
+  return esFactory({
+    host: curHost,
+    log: 'trace'
+  });
 });
