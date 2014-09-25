@@ -6,7 +6,7 @@ angular.module('pcApp.events.controllers.event', [
     .controller('EventsController', ['$scope', 'Event', '$log', '$routeParams', function ($scope, Event, $log, $routeParams) {
         $scope.events = Event.query(
             {page: $routeParams.page},
-            function(metricList) {
+            function(eventList) {
             },
             function(error) {
                 throw { message: JSON.stringify(err.data)};
