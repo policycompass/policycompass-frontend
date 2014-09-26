@@ -47,7 +47,14 @@
 	            	<div ng-show="(isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')) && (ListMetricsFilter.length>0)" class="graphContainerdiv">
 						<input type="hidden" id="startDatePosX" name="startDatePosX" value="">
 						<div ng-click="isSelectedSon('graph_line') ? showModal() : void(0)">
-							<div id="container_graph" class="container_graph"></div>
+							<div id="container_graph" class="container_graph">
+								
+								<div class="loading-container">
+									<div class="loading"></div>
+									<div id="loading-text">loading</div>
+								</div>
+								
+							</div>
 						</div>
 					</div>
 				</div>
@@ -89,10 +96,18 @@
 							</div>
 						</div>
 								
+								
+
+						
+    								
 						<div class="buttonline clearfix-min">	
 							
 							<input type="hidden" ng-required="true" class="form-control" id="correctmetrics"  ng-model="correctmetrics">					
 							<button  type="submit" class="btn btn-primary button-metrics" id="addmetricsbutton" ng-click="addMetrictoList();findMetricsByFilter();">Add metric</button>
+							
+							
+    					
+    					
 						</div>
 						<br />	
 						
@@ -101,8 +116,8 @@
 							<input placeholder="--all metrics--" ng-change="findMetricsByFilter('1', filterMetric)" type="text" id="filterMetric" ng-model="filterMetric" name="filterMetric">
 						</div>
 											
-						<div>
-							<div class="filterMetricsPaginationHeader" id="filterMetricsPaginationHeader" style="display: none;">
+						<div class="filterMetricsPaginationHeader" id="filterMetricsPaginationHeader" style="display: none;">
+							<div >
 							<label ng-show="metricsFilter.count>1" for="">{{metricsFilter.count}} metrics found</label> 
 							<label ng-show="metricsFilter.count==1" for="">{{metricsFilter.count}} metric found</label>
 							<label ng-show="metricsFilter.count==0" for="">no metrics found</label>  
@@ -119,14 +134,18 @@
 		        					Next <span class="glyphicon glyphicon-chevron-right"></span>
 		    						</button>
 								</div>
+								
+							<hr>
+							
 						</div>
+						
 						
 						
 						<!--
 						<div ng-hide="!MetricSelectediId_[metric.id]" ng-class="{'designer-metrics active':MetricSelectediId_[metric.id],'designer-metrics':MetricSelectediId_[metric.id]}" class="designer-metrics" id="designer-metrics-num-{{metric.id}}" ng-repeat="metric in metrics.results track by $index" >						
 						-->
-						<div ng-hide="!MetricSelectediId_[metric.id]" ng-class="{'designer-metrics active':MetricSelectediId_[metric.id],'designer-metrics':MetricSelectediId_[metric.id]}" class="designer-metrics" id="designer-metrics-num-{{metric.id}}" ng-repeat="metric in ListMetricsFilter track by $index" >						
-							<h4>{{metric.title}}</h4>							
+						<div ng-show="(MetricSelectediId_[metric.id] && metric.title)" ng-class="{'designer-metrics active':MetricSelectediId_[metric.id],'designer-metrics':MetricSelectediId_[metric.id]}" class="designer-metrics" id="designer-metrics-num-{{metric.id}}" ng-repeat="metric in ListMetricsFilter track by $index" >						
+							<h4>{{metric.title}} -- {{metric.issued | date:'longDate' }}</h4>							
 							<input type="hidden" ng-model="MetricSelectediId_[metric.id]" id="MetricSelectediId_{{metric.id}}" name="MetricSelectedId[]" value="">
 							<!--
 							<input type="hidden" ng-model="MetricSelectediIndex_[metric.id]" ng-init="MetricSelectediIndex_[metric.id]=$index+1" id="MetricSelectediIndex_{{metric.id}}" name="MetricSelectediIndex[]" value="{{$index+1}}">
@@ -231,7 +250,7 @@
 								<input type="hidden" ng-model="startDateHE[$index+1]" id="startDateHE{{$index+1}}" name="startDateHE[]" value="{{event.startDate}}">
 								<input type="hidden" ng-model="endDateHE[$index+1]" id="endDateHE{{$index+1}}" name="endDateHE[]" value="{{event.endDate}}">					    	
 								<input type="hidden" ng-model="descHE[$index+1]" id="descHE{{$index+1}}" name="descHE[]" value="{{event.desc}}">
-								<input type="hidden" ng-model="colorHE[$index+1]" id="colorHE{{$index+1}}" name="colorHE[]" value="{{event.color}}">
+								<input type="text" ng-model="colorHE[$index+1]" id="colorHE{{$index+1}}" name="colorHE[]" value="{{event.color}}">
 								
 								<div class="contentHE">
 									<div ng-if="event.startDate"><label for="">From:</label> {{event.startDate | date:'longDate'}} </div>

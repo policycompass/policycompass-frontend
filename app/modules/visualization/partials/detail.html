@@ -58,6 +58,16 @@
 				</div>
 			</div>
 	</div>
+	
+
+	<div ng-show="visualization.language.id" class="field field-language">
+		<div class="field-label">Language</div>
+			<div class="field-item">
+				<div class="field-content field-content-editable">
+					{{ visualization.language.title }}
+				</div>
+			</div>
+	</div>
         		
 	<div ng-show="visualization.keywords" class="field field-keywords">
 		<div class="field-label">Keywords</div>
@@ -71,14 +81,26 @@
     	</div>
 	</div>
 	
+	
 	<div ng-show="visualization.metrics_in_visualization" class="field field-metrics">
 		<div class="field-label">Linked to Metrics</div>
 			<div class="field-item">
 				<div class="field-content field-content-editable">
-					<ul>
-						<li ng-repeat="metric in visualization.metrics_in_visualization">
-							<a target="_blank" href="/app/#/metrics/{{metric.id}}">{{metric.title}}</a>
+					<ul>					
+						<li 
+						ng-repeat="metric in meticsRelated"
+							
+						>
+							<a target="_blank" ng-href="/app/#/metrics/{{metric.metric_id}}">{{metric.title}}</a>
 						</li>
+						<!--
+						<li 
+						ng-repeat="metric in visualization.metrics_in_visualization"
+						
+						>
+							<a target="_blank" ng-href="/app/#/metrics/{{metric.metric_id}}">{{metric.metric_id}}---{{metric.title}}-----</a>
+						</li>
+					-->
 					</ul>
 				</div>
 			</div>
@@ -89,14 +111,26 @@
 			<div class="field-item">
 				<div class="field-content field-content-editable">
 					<ul>
-						<li ng-repeat="he in visualization.historical_events_in_visualization">
-							<a target="_blank" href="/app/#/events/{{he.id}}">{{he.title}}</a>
+
+						<li 
+						ng-repeat="her in historicalEventsRelated"
+							
+						>
+							<a target="_blank" ng-href="/app/#/events/{{her.event_id}}">{{her.title}}</a>
 						</li>
+						<!--				
+						<li ng-repeat="he in visualization.historical_events_in_visualization">
+							<a target="_blank" href="/app/#/events/{{he.historical_event_id}}">{{he.historical_event_id}}--{{he.title}}</a>
+						</li>
+						-->
 					</ul>
 				</div>
 			</div>
 	</div>
-					
+	
+	
+
+						
 </div>
   	
 <!--

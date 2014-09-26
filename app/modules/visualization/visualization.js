@@ -31,6 +31,7 @@ visu.config(function($routeProvider) {
         })        
         .when('/visualizations/addEvent/', {
             controller: 'VisualizationsCreateController',
+            //controller: 'ModalInstanceCtrl',            
             templateUrl: 'modules/visualization/partials/addEvent.html'
         })
 		.when('/visualizations/graph/:visualizationId', {
