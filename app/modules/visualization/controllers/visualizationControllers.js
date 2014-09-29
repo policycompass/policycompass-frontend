@@ -2133,6 +2133,7 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 
 .controller('ModalInstanceCtrl', [
 	'$scope', 
+	'$filter',
 	'$route',
 	'$routeParams',	
 	'$modalInstance', 
@@ -2142,13 +2143,15 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 	'$location', 
 	'$log',
 	'API_CONF',
-	function($scope, $route, $routeParams, $modalInstance, $modal, item, Event, $location, $log, API_CONF) {
+	function($scope, $filter, $route, $routeParams, $modalInstance, $modal, item, Event, $location, $log, API_CONF) {
 
 	//console.log("ModalInstanceCtrl");
 	
 	
 	// in controller		
 	$scope.startDateToFilter=item.startDate;
+	//$scope.startDateToFilter="";
+	$scope.endDateToFilter="";
 	
 	//$scope.startDateToFilter='2014-05-28';
 	
@@ -2160,9 +2163,15 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 	
 	$scope.findEventsByFilter = function(pagIn, textIn, text_startDateToFilter, text_endDateToFilter) {
 		//console.log("findEventsByFilter");
-		//console.log(pagIn);
-		//console.log(textIn);
-				
+		//console.log("pagIn="+pagIn);
+		//console.log("textIn="+textIn);
+		//console.log("text_startDateToFilter="+text_startDateToFilter);
+		//console.log("..text_endDateToFilter="+text_endDateToFilter);
+		//console.log("$scope.endDateToFilter="+$scope.endDateToFilter);
+		
+		var endDateToSearch = "";
+		var startDateToSearch = "";
+		
 		if (pagIn)
 		{
 			//console.log("pagIn="+pagIn);
@@ -2198,13 +2207,31 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 		if (text_startDateToFilter)
 		{
 			$scope.startDateToFilter=text_startDateToFilter;
+			//var resStartDate = text_startDateToFilter.split("T");
+			//startDateToSearch = resStartDate[0];
+			startDateToSearch = text_startDateToFilter;
+			startDateToSearch = $filter('date')(text_startDateToFilter, "yyyy-MM-dd");
+						
+			
+			//startDateToSearch = $scope.startDateToFilter;
 		}
 		if (text_endDateToFilter)
 		{
 			$scope.text_endDateToFilter=text_endDateToFilter;
+			//var resEndDate = text_endDateToFilter.split("T");
+			//endDateToSearch = resEndDate[0];
+			endDateToSearch = text_endDateToFilter;
+			endDateToSearch = $filter('date')(text_endDateToFilter, "yyyy-MM-dd");
+			
 		}
 		
+		if (!endDateToSearch)
+		{
+			var d = new Date();
+			endDateToSearch = $filter('date')(d, "yyyy-MM-dd");
 		
+		}
+		//console.log("endDateToSearch="+endDateToSearch);
 		
 		if (pagToSearch<1)
 		{
@@ -2213,12 +2240,11 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 
 				$scope.events = Event.query(
             	{
-            		//page: $routeParams.page,
-            		page: pagToSearch,
-            		search: $scope.filterEvents
-            		//,
-            		//start: $scope.startDateToFilter,
-            		//end: $scope.endDateToFilter
+            		//page: $routeParams.page,            		
+            		title: $scope.filterEvents,
+            		start: startDateToSearch,
+            		end: endDateToSearch,
+            		page: pagToSearch
             	},
 				function(eventList) {
 				},
@@ -2228,6 +2254,8 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 				}
 				);
 				
+				//console.log("----");
+				//console.log($scope.events);
 
 				//console.log("......scope.filterEvents");
 				//console.log($scope.filterEvents);
@@ -2235,7 +2263,7 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 	};	
 			    
 			    
-	$scope.findEventsByFilter('ini', "", $scope.startDateToFilter, "");
+	$scope.findEventsByFilter('ini', "", $scope.startDateToFilter, $scope.endDateToFilter);
 			
 	$scope.item = item;
       
