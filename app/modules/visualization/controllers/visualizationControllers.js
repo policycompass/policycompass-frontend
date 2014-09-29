@@ -124,18 +124,26 @@ angular.module('pcApp.visualization.controllers.visualization', [
     		.attr("class", "tooltip")
     		.style("opacity", 0);
 
+			tooltipLegend =  d3.select("body").append("div")
+    		.attr("id","tooltipLegend")
+    		.html("")
+    		.attr("class", "tooltipLegend")
+    		.style("opacity", 0);
+    		
+    		var openedLabels = 0;
 			mousemove = function() 
 			{
 				//	console.log(d3.event.pageX);
 				tooltip
 					.style("left", (d3.event.pageX +20) + "px")
 					.style("top", (d3.event.pageY - 12) + "px");
+										
 			};     
 
 		
-		$scope.metricSelectedArray = [];
+			$scope.metricSelectedArray = [];
 		
-		$scope.loadDataCombos = function(idMetric, valueColumTemp, valueGroupTemp) {
+			$scope.loadDataCombos = function(idMetric, valueColumTemp, valueGroupTemp) {
     		//console.log("--loadDataCombos--idMetric="+idMetric+"---valueColumTemp="+valueColumTemp+"----valueGroupTemp="+valueGroupTemp+"-----");
 			id = idMetric;
 			$scope.metricSelectedArray[idMetric] = Metric.get({id: idMetric},
@@ -204,191 +212,119 @@ angular.module('pcApp.visualization.controllers.visualization', [
             		//alert(error.data.message);
             		throw { message: JSON.stringify(error.data.message)};
         			}
-    			);
-   	
-    };
-    	
-    		//funtion to reset the form, used into the Revert button
-			$scope.revertVisualization = function()	{	
-				var answer = confirm("Are you sure?")
-				if (answer)
+    			);   
+    	};
+
+
+		//funtion to reset the form, used into the Revert button
+		$scope.revertVisualization = function(idMetric, metrictitle) {
+        	// Open a confirmation dialog
+        	var dlg = dialogs.confirm(
+            	"Are you sure?",
+            	"Do you want to revert this visualization?");
+        	dlg.result.then(function () {
+
+				if ($scope.mode=='create')
 				{
-					if ($scope.mode=='create')
-					{
-						$route.reload();
-					}
-					else{
-						$location.path($scope.resetlocation);
-					}
-				}	
-	
-			};  
+					$route.reload();
+				}
+				else{
+					$location.path($scope.resetlocation);
+				}
+					            
+        	});
+    	};
+        	
 
-			//function to select the Map or graph button   
-			$scope.selectTabParent = function(setTab) {
-				$scope.tabParent = setTab;
-				$scope.tabSon = 0;
-			};
+		//function to select the Map or graph button   
+		$scope.selectTabParent = function(setTab) {
+			$scope.tabParent = setTab;
+			$scope.tabSon = 0;
+		};
 			
-			//funtion used to check if a button is checked (butotns Map or graph)
-			$scope.isSelectedParent = function(checkTab) {
-				return $scope.tabParent === checkTab;
-			};
+		//funtion used to check if a button is checked (butotns Map or graph)
+		$scope.isSelectedParent = function(checkTab) {
+			return $scope.tabParent === checkTab;
+		};
 			
-			//function to select the type of graph (line, pie, chart) button 
-			$scope.selectTabSon = function(setTab) {
-				$scope.typeToPlot=setTab;
-				$scope.tabSon = setTab;
-				//rePlotGraph();
-			};
+		//function to select the type of graph (line, pie, chart) button 
+		$scope.selectTabSon = function(setTab) {
+			$scope.typeToPlot=setTab;
+			$scope.tabSon = setTab;
+			//rePlotGraph();
+		};
 
-			//funtion to check if a type of graph is selected (line, pie, chart buttons)
-			$scope.isSelectedSon = function(checkTab) {
-				return $scope.tabSon === checkTab;			
-			};
+		//funtion to check if a type of graph is selected (line, pie, chart buttons)
+		$scope.isSelectedSon = function(checkTab) {
+			return $scope.tabSon === checkTab;			
+		};
 			
-			//funtion used into the button "Add metric" (diply list of metrics availables
-			$scope.addMetrictoList= function() {	
-				
-				$('#addmetricsbutton').toggleClass('active');
-				$('#filterMetrics').toggle('slow');
-        		$('#metrics-list').toggle('slow');	
-        		$('#filterMetricsPaginationHeader').toggle('slow');
-        		$('#filterMetricsPagination').toggle('slow');
-        		
-			}
+		//funtion used into the button "Add metric" (diply list of metrics availables
+		$scope.addMetrictoList= function() {				
+			$('#addmetricsbutton').toggleClass('active');
+			$('#filterMetrics').toggle('slow');
+        	$('#metrics-list').toggle('slow');	
+        	$('#filterMetricsPaginationHeader').toggle('slow');
+        	$('#filterMetricsPagination').toggle('slow');
+		};
 
-			//funtion used when a metic is selected. Add a metric into the list	
-			$scope.addFilterMetric = function(idMetric, title, issued) {
-				//console.log("---addFilterMetric--")
-				var containerLink = document.getElementById("metric-list-item-item-"+idMetric);		
-    			$(containerLink).addClass('active');
-    			var str =  $(containerLink).attr("name");
-    			$('#' + str + '').addClass('active');	
-    	
-    			//var containerId = document.getElementById("MetricSelectediId_"+idMetric).value;	
-    			//var containerIndex = document.getElementById("MetricSelectediIndex_"+idMetric).value;
-				var containerId = idMetric;
-				var containerIndex = idMetric;
+		//funtion used when a metic is selected. Add a metric into the list	
+		$scope.addFilterMetric = function(idMetric, title, issued) {
+			//console.log("---addFilterMetric--")
+			var containerLink = document.getElementById("metric-list-item-item-"+idMetric);		
+    		$(containerLink).addClass('active');
+    		var str =  $(containerLink).attr("name");
+    		$('#' + str + '').addClass('active');	
+    		//var containerId = document.getElementById("MetricSelectediId_"+idMetric).value;	
+    		//var containerIndex = document.getElementById("MetricSelectediIndex_"+idMetric).value;
+			var containerId = idMetric;
+			var containerIndex = idMetric;
 				
-				$scope.MetricSelectediId_[idMetric]=idMetric;
-				$scope.MetricSelectediIndex_[idMetric]=idMetric;
-				
-				
-				var myText = "from";
-				$scope.MetricSelectorLabelColumn_[containerIndex]=myText;
-				/*
-				var myText = "value";
-				$scope.MetricSelectorDataColumn_[containerIndex]=myText;
-			
-				var myText = "grouping column";
-				$scope.MetricSelectorGroupingData_[containerIndex]=myText;
-				*/
-				
-				$scope.loadDataCombos(idMetric, "", "");
-				/*
-				$scope.metricSelected = Metric.get({id: idMetric},
-        			function(getMetric) {
-        				console.log("------creating metric $scope.metricSelected--------");
-        				//console.log("$scope.metricSelected ");
-        				//console.log($scope.metricSelected);
-        				//console.log($scope.metricSelected.data);
-        				//console.log($scope.metricSelected.data['extra_columns']);
-        				arrayExtraColumnsMetric = $scope.metricSelected.data['extra_columns'];
-        				
-        				myText = "grouping column";
-        				$arrayComboValues_yaxe = [];
-						$arrayComboValues = [];
+			$scope.MetricSelectediId_[idMetric]=idMetric;
+			$scope.MetricSelectediIndex_[idMetric]=idMetric;
 							
-						//$arrayValores['id']= 'grouping column';
-						//$arrayValores['title']= 'Grouping Column';
+			var myText = "from";
+			$scope.MetricSelectorLabelColumn_[containerIndex]=myText;
+				
+			$scope.loadDataCombos(idMetric, "", "");
 						
-						//$arrayValores = {'id':'Value', 'title':'Value'};						
-						//$arrayComboValues_yaxe.push($arrayValores);
-						
-						//$arrayValores = {'id':'grouping column', 'title':'Grouping Column'};
-						//$arrayComboValues.push($arrayValores);
-
-						for (x=0;x<arrayExtraColumnsMetric.length; x++) {
-							//console.log("x="+arrayExtraColumnsMetric[x]);
-							
-							//$arrayValores = [];				
-							//$arrayValores['id']=arrayExtraColumnsMetric[x];
-							//$arrayValores['title']=arrayExtraColumnsMetric[x];
-							$arrayValores = {'id':arrayExtraColumnsMetric[x], 'title':arrayExtraColumnsMetric[x]};
-							
-							$arrayComboValues_yaxe.push($arrayValores);
-							$arrayComboValues.push($arrayValores);
-							
-						}
-    					
-    					$scope.optionsCombo_value_[containerIndex]=$arrayComboValues_yaxe;    					
-    					$scope.optionsCombo_[containerIndex]=$arrayComboValues;
-    					
-    					//console.log($scope.optionsCombo_value_[containerIndex][1].id);
-    					//console.log(".......>>>>>>"+$scope.optionsCombo_[containerIndex][1].id);
-    					
-    					//$scope.MetricSelectorDataColumn_[containerIndex] = $scope.optionsCombo_value_[containerIndex][1];
-   						//$scope.MetricSelectorDataColumn_[containerIndex] = $scope.optionsCombo_value_[containerIndex][0].id;
-   						
-   						//$scope.MetricSelectorDataColumn_[containerIndex].id = $scope.optionsCombo_value_[containerIndex][1].id;
-   						   			
-   						 //$('#MetricSelectorDataColumn_35').val('Sex');			​
-   						 
-   						
-   						
-   						//$scope.MetricSelectorGroupingData_[containerIndex] = $scope.optionsCombo_[containerIndex][0].id; 
-						
-				
-						//console.log("containerIndex="+containerIndex);
-        			},
-        			function(error) {
-            		//alert(error.data.message);
-            		throw { message: JSON.stringify(error.data.message)};
-        			}
-    			);
-				*/
-				
-				
-				selectedText = "---";
-				var myObject = {
-					'id':idMetric,
-					'name':selectedText,
-					'title':title,
-					'issued': issued,
-					'column':'from',
-					'value':'value',
-					'group':'grouping column'
-				};
+			selectedText = "---";
+			var myObject = {
+				'id':idMetric,
+				'name':selectedText,
+				'title':title,
+				'issued': issued,
+				'column':'from',
+				'value':'value',
+				'group':'grouping column'
+			};
 					
-				$scope.ListMetricsFilter.push(myObject);	
+			$scope.ListMetricsFilter.push(myObject);	
 				
-				$scope.correctmetrics = 1;
+			$scope.correctmetrics = 1;
 						
-				$scope.rePlotGraph();
-			};
+			$scope.rePlotGraph();
+		};
 
-			//function used to display contetn of a metric
-			$scope.displaycontentMetric = function(idMetric) {
-				var containerLink = document.getElementById("edit-metric-button-"+idMetric);
-		 		$(containerLink).parent().next().toggle(200);	 
-			};
+		//function used to display contetn of a metric
+		$scope.displaycontentMetric = function(idMetric) {
+			var containerLink = document.getElementById("edit-metric-button-"+idMetric);
+			$(containerLink).parent().next().toggle(200);	 
+		};
 
 
-    // Function for delete a metric from the list od metrics to plot
-    $scope.deleteMetricFromList = function(idMetric, metrictitle) {
-        // Open a confirmation dialog
-        var dlg = dialogs.confirm(
-            "Are you sure?",
-            "Do you want to delete "+metrictitle+" from the list of metrics to plot?");
-        dlg.result.then(function () {
-
-			var containerLink = document.getElementById("delete-metric-button-"+idMetric);		
+    	// Function for delete a metric from the list od metrics to plot
+    	$scope.deleteMetricFromList = function(idMetric, metrictitle) {
+        	// Open a confirmation dialog
+        	var dlg = dialogs.confirm(
+            	"Are you sure?",
+            	"Do you want to delete '"+metrictitle+"' from the list of metrics to plot?");
+        	dlg.result.then(function () {
+				var containerLink = document.getElementById("delete-metric-button-"+idMetric);		
 					$(containerLink).parent().parent().removeClass('active');
 					var str =  $(containerLink).parent().parent().attr("id");
 	    			$(".metric-list-item[name='"+ str +"']").removeClass('active');		
 					$scope.MetricSelectediId_[idMetric]= "";
-					
 					
 					var cntMetricsInArray=0;
 					
@@ -400,8 +336,6 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							cntMetricsInArray = cntMetricsInArray+1;
 							//console.log("$scope.MetricSelectediId_[x]="+$scope.MetricSelectediId_[x]);
 						}
-						
-						
 					}
 					//console.log("cntMetricsInArray="+cntMetricsInArray);
 					
@@ -412,82 +346,52 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					
 					$scope.rePlotGraph();
 					            
-        });
-    };	
+        	});
+    	};	
 
-		
 
+		$scope.filterMetric = "";
+		$scope.findMetricsByFilter = function(pagIn, textIn) {
+			//console.log("findMetricsByFilter");
+			//console.log(pagIn);
+			//console.log(textIn);
+			if (pagIn)
+			{
+				pagToSearch = pagIn.replace('?page=','');
+			}
+			else
+			{
+				pagToSearch = 1;
+			}
 			$scope.filterMetric = "";
-			$scope.findMetricsByFilter = function(pagIn, textIn) {
-				//console.log("findMetricsByFilter");
-				//console.log(pagIn);
-				//console.log(textIn);
-				
-				if (pagIn)
-				{
-					pagToSearch = pagIn.replace('?page=','');
-				}
-				else
-				{
-					pagToSearch = 1;
-				}
-				$scope.filterMetric = "";
-				if (textIn)
-				{
-					$scope.filterMetric= textIn;
-				}
+			if (textIn)
+			{
+				$scope.filterMetric= textIn;
+			}
 							
-			    //console.log("pagToSearch="+pagToSearch);
-			    //console.log("$scope.filterMetric="+$scope.filterMetric);
+			//console.log("pagToSearch="+pagToSearch);
+			//console.log("$scope.filterMetric="+$scope.filterMetric);
 			    
-				$scope.metricsFilter = Metric.query(
-            	{
-            		//page: $routeParams.page,
-            		page: pagToSearch,
-            		search: $scope.filterMetric
-            	},
-				function(metricList) {
-				},
-				function(error) {
-                	//throw { message: JSON.stringify(err.data)};
-                	throw { message: JSON.stringify(error.data)};
-				}
-				);
-				
-
-				//console.log("......scope.metricsFilter");
-				//console.log($scope.metricsFilter);
-						
-				
-			};
+			$scope.metricsFilter = Metric.query(
+            {
+            	//page: $routeParams.page,
+            	page: pagToSearch,
+            	search: $scope.filterMetric
+            },
+			function(metricList) {
+			},
+			function(error) {
+               	//throw { message: JSON.stringify(err.data)};
+               	throw { message: JSON.stringify(error.data)};
+			});
+							
+		};
 			
-		
-/*
-				$scope.events = Event.query(
-            	{
-            		//page: $routeParams.page,
-            		page: "",
-            		search: "",
-            		
-            	},
-				function(eventList) {
-				},
-				function(error) {
-                	throw { message: JSON.stringify(error.data.message)};
-				}
-				);
-				*/
-
-
-			
-//console.log("-----------$scope.event");
-//console.log($scope.events);
-
-			//funtion to delete an historical event of the array
-    		$scope.deleteContainerHistoricalEvent = function(divNameIn, index, historicaleventtitle) {
-        		// Open a confirmation dialog
-        		var dlg = dialogs.confirm(
-            	"Are you sure?",
+		//funtion to delete an historical event of the array
+   		$scope.deleteContainerHistoricalEvent = function(divNameIn, index, historicaleventtitle) {
+       		// Open a confirmation dialog
+       		var dlg = dialogs.confirm(
+	           	"Are you sure?",
             	"Do you want to delete the event '"+historicaleventtitle+"' from the list of events to plot in this visualization?");
         		dlg.result.then(function () {
 
@@ -496,95 +400,94 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					$scope.rePlotGraph();
 					            
         		});
-    		};	
-			
-			
-			$scope.name = 'Link an event';
+    	};	
+		
+		$scope.name = 'Link an event';
       
-    		$scope.showModal = function() {        
-				//console.log("show modal");        
-        		var s= document.getElementById("startDatePosX");
-        		//console.log("s.value="+s.value);        
-	    		dateRec = s.value;
-    			//console.log("dateRec="+dateRec+"--now="+Date.now());
-    			if (dateRec)
-    			{
-    				//dateRec = '2014-01-01';
-    				//console.log("dateRec="+dateRec);
-    				dateRec = dateRec.replace(/-/g,"/");
-    				var res = dateRec.split("/");
-    				var newDate = res[2]+"-"+res[0]+"-"+res[1];
-    				//console.log("newDate="+newDate);
-    				$scope.startDate = (newDate);
-    			}
-    			else
-    			{
-    				//$scope.startDate = $filter("date")(Date.now(), 'yyyy-MM-dd');	
-    				$scope.startDate = "";
-    			}
-
-        		//$scope.startDate = '01-01-2011';
-        		//$scope.startDate = s.value;
-        		//$scope.startDateToFilter = '2014-09-17';
-				//$scope.startDateToFilter = $scope.startDate ;
-				//$scope.startDateToFilter = "Mon Sep 15 2014 00:00:00 GMT+0200 (Romance Daylight Time)";
-				
-		        $scope.opts = {
-        			backdrop: true,
-        			backdropClick: false,
-        			dialogFade: true,
-        			keyboard: true,        
-        			templateUrl : 'modules/visualization/partials/addEvent.html',
-			        controller : 'ModalInstanceCtrl',
-        			resolve: {}, // empty storage
-        			scope: $scope
-          		};
-
-		        $scope.opts.resolve.item = function() {
-            		return angular.copy({name:$scope.name, startDate:$scope.startDate}); // pass name to Dialog
-        		}
-        
-          		var modalInstance = $modal.open($scope.opts);
-          
-          		modalInstance.result.then(function(){
-	            	//on ok button press
-    	        	//console.log('on ok button press');
-        	    	//console.log($scope.eventsToPlot);
-            		//console.log(modalInstance);
-          			},function(){
-            		//on cancel button press
-            		//console.log("Modal Closed");
-          			});
-      		};  
-      
-
-			//funtion used in the select field. Onchenge value
-			$scope.changeselectHE = function(idselected) 
+   		$scope.showModal = function() {        
+			//console.log("show modal");        
+	   		var s= document.getElementById("startDatePosX");
+	   		//console.log("s.value="+s.value);        
+	   		dateRec = s.value;
+			//console.log("dateRec="+dateRec+"--now="+Date.now());
+			if (dateRec)
 			{
-				//console.log("Factory. Id="+idselected);				
-				$scope.historicalevent_id = idselected['id'];
-				$scope.historicalevent_title = idselected['title'];
-				$scope.historicalevent_startDate = idselected['startEventDate'];
-				$scope.historicalevent_endDate = idselected['endEventDate'];
-				$scope.historicalevent_description = idselected['description'];				
-			};
-
-			$scope.collapseFilter = function()
-			{
-				$scope.isOpened = !$scope.isOpened;
+				//dateRec = '2014-01-01';
+				//console.log("dateRec="+dateRec);
+				dateRec = dateRec.replace(/-/g,"/");
+				var res = dateRec.split("/");
+				var newDate = res[2]+"-"+res[0]+"-"+res[1];
+				//console.log("newDate="+newDate);
+				$scope.startDate = (newDate);
 			}
+			else
+			{
+				//$scope.startDate = $filter("date")(Date.now(), 'yyyy-MM-dd');	
+				$scope.startDate = "";
+			}
+	
+			//$scope.startDate = '01-01-2011';
+			//$scope.startDate = s.value;
+			//$scope.startDateToFilter = '2014-09-17';
+			//$scope.startDateToFilter = $scope.startDate ;
+			//$scope.startDateToFilter = "Mon Sep 15 2014 00:00:00 GMT+0200 (Romance Daylight Time)";
+					
+	        $scope.opts = {
+				backdrop: true,
+				backdropClick: false,
+				dialogFade: true,
+				keyboard: true,        
+				templateUrl : 'modules/visualization/partials/addEvent.html',
+		        controller : 'ModalInstanceCtrl',
+				resolve: {}, // empty storage
+				scope: $scope
+	  		};
+	
+	        $scope.opts.resolve.item = function() {
+	    		return angular.copy({name:$scope.name, startDate:$scope.startDate}); // pass name to Dialog
+			}
+	        
+	  		var modalInstance = $modal.open($scope.opts);
+	  
+	  		modalInstance.result.then(function(){
+	        	//on ok button press
+	        	//console.log('on ok button press');
+		    	//console.log($scope.eventsToPlot);
+	    		//console.log(modalInstance);
+	  			},function(){
+	    		//on cancel button press
+	    		//console.log("Modal Closed");
+	  			});
+		};  
+      
+
+		//funtion used in the select field. Onchenge value
+		$scope.changeselectHE = function(idselected) 
+		{
+			//console.log("Factory. Id="+idselected);				
+			$scope.historicalevent_id = idselected['id'];
+			$scope.historicalevent_title = idselected['title'];
+			$scope.historicalevent_startDate = idselected['startEventDate'];
+			$scope.historicalevent_endDate = idselected['endEventDate'];
+			$scope.historicalevent_description = idselected['description'];				
+		};
+
+		$scope.collapseFilter = function()
+		{
+			$scope.isOpened = !$scope.isOpened;
+		}
 			
 
-			$scope.selectHE = function(idselected) 
-			{
-				$scope.isOpened = false;
-				//console.log("selectHE. Id="+idselected);
-				$scope.historicalevent_id = idselected['id'];
-				$scope.historicalevent_title = idselected['title'];
-				$scope.historicalevent_startDate = idselected['startEventDate'];
-				$scope.historicalevent_endDate = idselected['endEventDate'];
-				$scope.historicalevent_description = idselected['description'];				
-			};	
+		$scope.selectHE = function(idselected) 
+		{
+			$scope.isOpened = false;
+			//console.log("selectHE. Id="+idselected);
+			$scope.historicalevent_id = idselected['id'];
+			$scope.historicalevent_title = idselected['title'];
+			$scope.historicalevent_startDate = idselected['startEventDate'];
+			$scope.historicalevent_endDate = idselected['endEventDate'];
+			$scope.historicalevent_description = idselected['description'];				
+		};	
 	
 			//funtion to add historical event to the array - uses in the modal window
 			$scope.addAnotherHistoricalEvent = function(divName) {		
@@ -1291,9 +1194,10 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	'Visualization', 
 	'$location', 
 	'GetRelatedData',
+	'dialogs',
 	'$log', 
 	'API_CONF',
-	function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF) {
+	function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, dialogs, $log, API_CONF) {
 	
 	//this.message = "Hello VisualizationsDetailController";
 	//alert("Hello VisualizationsDetailController");

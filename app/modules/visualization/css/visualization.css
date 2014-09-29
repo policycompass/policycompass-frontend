@@ -28,7 +28,7 @@ shape-rendering: crispEdges;
   stroke-width: 1.5px;
 }
 
-.tooltip{
+.tooltip {
     position: absolute;
     width: 200px;
     min-height: 50px;
@@ -40,6 +40,22 @@ shape-rendering: crispEdges;
     pointer-events: none;
     z-order:1000;
     text-align:center;
+}
+
+.tooltipLegend {
+
+	
+    position: absolute;
+    width: 200px;
+    min-height: 50px;
+    padding: 8px;
+    font: 15px Helvetica Neue;
+    background: #FFF;
+    border: solid 1px #aaa;
+    border-radius: 8px;
+    pointer-events: none;
+    z-order:1000;
+    text-align:left;
 }
 
 .showFilter {

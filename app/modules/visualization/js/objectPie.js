@@ -27,6 +27,11 @@ policycompass.viz.pie = function(options)
     self.drawArcs = function (piesArray) 
     {
     	//console.log("drawArcs");
+    	console.log(piesArray);
+    	
+
+    	
+    	
 		var showLegend = self.showLegend;
 		var showLabels = self.showLabels;
 	
@@ -121,15 +126,28 @@ policycompass.viz.pie = function(options)
 		      	var textToReturn = pies[i];		      	 
 		      	return (textToReturn); 
 		      	});		
-		      
-
-      		      	
-
       	
 		}
 
+
+
+		    	
 		if (showLegend)
 		{
+
+			self.svg.append("text")
+		    	.attr("x", -self.radius/2)
+		    	.attr("y", self.radius)
+		    	.attr("dy", ".35em")
+					.attr("text-anchor","center")
+					.attr("class", "link superior legend value")				
+					.attr("font-size", 11)
+					.style("stroke", function(d,i) {return 'black';})												      					
+					.text(function(d,i) {
+						var resTRext = piesArray['Key'].split("_");
+						return resTRext[0];})
+		    	
+		    	
 			var legend = self.svg.selectAll(".legend_pie_"+self.idName)
 			//.data(months.slice().reverse())
 				.data(pie(pies))
