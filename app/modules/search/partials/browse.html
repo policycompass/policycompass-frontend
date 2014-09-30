@@ -27,7 +27,7 @@
           </ul>
         </div>
         <!-- /btn-group -->
-        <input type="search" class="browse-input form-control" required="" placeholder="Search for metrics, visualizations,FCM models, events" ng-model="searchQuery" />
+        <input type="search" ng-keyup="$event.keyCode == 13 && search(searchQuery)" class="browse-input form-control" required="" placeholder="Search for metrics, visualizations,FCM models, events" ng-model="searchQuery" />
         <span class="input-group-btn">
                     <button class="btn btn-warning" type="button" ng-click="search(searchQuery)">Go!</button>
                   </span>
@@ -51,28 +51,20 @@
         </nav>
         <div class="col-lg-12 filterbar">
           <a class="search-icon-btn" data-placement="left" data-canvas="#myNavmenuCanvas" data-target="#myNavmenu" type="button" data-toggle="offcanvas"><span class="filter-menu-icon glyphicon glyphicon-th-list"></span><span class="filter-menu-link">Filter</span></a>
-          <span class="dropdown pull-right">
-                        <btn class="btn btn-show btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
-                            10
-                            <span class="caret"></span>
-          </btn>
-          <ul class="dropdown-menu dropdown-show" role="menu" aria-labelledby="dropdownMenu1">
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">20</a>
-            </li>
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">30</a>
-            </li>
-          </ul>
-          </span>
-          <span class="pull-right text-show">Show</span>
+
+          <select class ="pull-right btn btn-show btn-primary btn-sm dropdown-toggle" ng-model="selectedItemPerPage"  ng-change ="itemsPerPageChanged()" ng-init="selectedItemPerPage = selectedItemPerPage || itemsPerPageChoices[0]"
+          ng-options="itemIPP as itemIPP.name for itemIPP in itemsPerPageChoices"></select>
+                    <span class="pull-right text-show">Show</span>
         </div>
         <div>
           <div class="row">
+
           </div>
           <div class="no-results" ng-hide="searchResults.length">
             <h2>No results found</h2>
           </div>
           <div class="num-results" ng-show="searchResults.length">
-            <h2>{{searchResults.length}} results found</h2>
+            <h2>{{searchResultsCount}} results found</h2>
           </div>
           <article class="search-result clearfix" ng-repeat="searchResult in searchResults" ng-cloak>
             <div class="search-result-content align-left">
@@ -87,14 +79,17 @@
 
             <div class="search-result-meta align-right">
               <div class="search-result-meta-date">
-                <p>Updated:
-                  <time>{{ searchResult['_source']['issued']}}</time>
+                <p>Issued:
+                  <time>{{ searchResult['_source']['issued']|date:'d-M-yy'}}</time>
                 </p>
               </div>
               <h4>Publisher: <a href="{{ searchResult['_source']['external_resource']['url'] }}"  target="_blank">{{ searchResult['_source']['publisher'] }}</a></h4>
             </div>
             <!-- .align-right -->
           </article>
+    <div style="text-align: center"> 
+    <pagination total-items="totalItems" ng-change="pageChanged()" items-per-page = "itemsperPage" ng-model="currentPage" max-size="paginationSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+    </div>
 
         </div>
         <div class="col-lg-12 result-wrapper">
