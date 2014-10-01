@@ -95,8 +95,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				
 				$scope.metric = Metric.get({id: metricId},
             	function(metric) {
-            		console.log("------>metric id="+metric.id);
-            		console.log("------>title="+metric.title);
+            		//console.log("------>metric id="+metric.id);
+            		//console.log("------>title="+metric.title);
             		
             		
             		var data =  {
@@ -799,6 +799,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
     										else if (dataFilter[0]=='Grouping')
     										{
     											//console.log("ggggggggggg");
+    											selectorGroupColumn = dataFilter[1];
     										} 
     										
     										
@@ -824,9 +825,33 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					 	//console.log("---selectorDataColumn="+selectorDataColumn);
 					 	//console.log("---ejeY-C="+ejeY);
 					 	
-						//selectorGroupColumn = $scope.MetricSelectorGroupingData_[arguments[i].id].id;
-						selectorGroupColumn = 'grouping column';
+					 	var checkGroup = "";
+					 	checkGroup = ejeY;
+					 	var useGroup = 0;
+					 	//console.log("selectorGroupColumn="+selectorGroupColumn);
+					 	if (selectorGroupColumn)
+					 	{
+					 		useGroup = 1;					 		
+					 	}
+					 	else
+					 	{
+						 	console.log($scope.MetricSelectorGroupingData_[arguments[i].id]);
+							selectorGroupColumn = $scope.MetricSelectorGroupingData_[arguments[i].id];
+							if (selectorGroupColumn)
+							{
+								selectorGroupColumn = $scope.MetricSelectorGroupingData_[arguments[i].id].id;
+								useGroup = 1;
+							}
+							else
+							{
+								selectorGroupColumn = 'grouping column';	
+							}
+						}
+						checkGroup = checkGroup+"-"+selectorGroupColumn;
+						
+						//selectorGroupColumn = 'grouping column';
 						//console.log("---selectorGroupColumn="+selectorGroupColumn);
+						//console.log("---checkGroup="+checkGroup);
 	
 						if (($scope.typeToPlot==='graph_line') || ($scope.typeToPlot==='graph_pie') || ($scope.typeToPlot==='graph_bars'))
 						{
@@ -841,9 +866,11 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							
 							var numbers1T = {"Key":arguments[i].title};
 							var cntPosArray=0;
-
+							//console.log(arguments[i]);
 							var labelTemporalYAxes = arguments[i]['unit']['title'];
 							//console.log("labelTemporalYAxes="+labelTemporalYAxes);
+							
+							console.log(arguments[i]['data']['table']);
 							
 							for (var j=0; j<arguments[i]['data']['table'].length; j++)
 							{
@@ -851,13 +878,42 @@ angular.module('pcApp.visualization.controllers.visualization', [
 								var object_size = 0;
 								the_object = arguments[i]['data']['table'][j];
 								var indexRow = "";
+								var indexGroup = "";
 								for (key in the_object)	{
 									//console.log("key=>"+key);
 									//if ((key!='from') && (key!='to') && (key!='value') && (key!='row'))
-									if ((key==ejeY))
+									
+									var temporalKey = key;
+									var temporalejeY = ejeY;
+									if (useGroup==1)
+									{
+										temporalKey = key;
+										temporalejeY = checkGroup;
+									}
+									
+									
+									if ((key==ejeY))									
+									//if ((temporalKey==temporalejeY))
 									{
 										indexRow = arguments[i]['data']['table'][j][key];
+										//console.log("indexRow="+indexRow);
 									}
+									
+									if ((key==selectorGroupColumn))
+									{
+										indexGroup = arguments[i]['data']['table'][j][key];
+										//console.log("indexGroup="+indexGroup);
+										if (indexRow=="")
+										{
+											indexRow = indexGroup;
+										}
+										else
+										{
+											indexRow = indexRow+"-"+indexGroup;	
+										}
+										
+									}
+									
 									
 		    						if (the_object.hasOwnProperty(key)) {
 		      							object_size++;		      							
@@ -888,9 +944,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
 								//console.log("fecha a revisar="+arguments[i]['data']['table'][j][selectorLabel]);
 								//console.log("pos in array="+posDateInArray);
 								
-								if (posDateInArray>0)
+								if (posDateInArray>=0)
 								{
-									//this date exist in array we mus mix
+									//this date exist in array we must mix
 									//console.log("arrayValues[indexRow][posDateInArray]="+arrayValues[indexRow][posDateInArray]);
 									sumaDeValores = parseFloat(arrayValues[indexRow][posDateInArray]) + parseFloat(arguments[i]['data']['table'][j][selectorDataColumn]);
 									//console.log("sumaDeValores="+sumaDeValores);
@@ -964,6 +1020,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			} // end if control==1
 			document.getElementById("container_graph").innerHTML = "";
 			//var numbers1 = [];
+	        		 
+			//console.log(numbers1);	        		 
 	        		 
 			//console.log("######plotGraph########");
 			//console.log("typeToPlot="+$scope.typeToPlot);
@@ -1057,7 +1115,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	                
 	                if (numbers1.length>0)
 	                {
-	                	barLine.render(numbers1, $scope.eventsToPlot);
+	                	barLine.render(numbers1, $scope.eventsToPlot, $scope.mode);
 	                }
 					
 				}
@@ -1200,15 +1258,19 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, dialogs, $log, API_CONF) {
 	
 	//this.message = "Hello VisualizationsDetailController";
-	//alert("Hello VisualizationsDetailController");
+	//console.log("Hello VisualizationsDetailController");
 	//alert($routeParams.visualizationId);
     //$scope.test = "hallo---";
     
     helper.baseGetRelatedDataController($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF);
 //mmp    			
     
+    
+    
 	$scope.visualization = Visualization.get({id: $routeParams.visualizationId},
 			function(visualizationList) {		
+				
+				
 				
 				for (i in $scope.visualization.metrics_in_visualization)
 				{
@@ -1407,8 +1469,19 @@ $scope.xAxisTickFormatFunction = function(){
 	function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF) {
 
 		//console.log("controller VisualizationsEditController");
-		
-	$scope.mode = "edit";
+
+	
+	var locationURL = $location.path();
+	
+	if (locationURL.indexOf("edit") > -1)
+	{
+		$scope.mode = "edit";
+	}
+	else
+	{
+		$scope.mode = "view";
+	}
+	
 
     
 	//funtion to reset form
@@ -1900,7 +1973,7 @@ $scope.xAxisTickFormatFunction = function(){
 	'API_CONF',
 function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF) {
 	
-	console.log('VisualizationsGraphController');
+	//console.log('VisualizationsGraphController');
 	//this.message = "Hello VisualizationsDetailController";
 	//alert("Hello VisualizationsDetailController");
 	//alert($routeParams.visualizationId);
