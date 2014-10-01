@@ -870,7 +870,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							var labelTemporalYAxes = arguments[i]['unit']['title'];
 							//console.log("labelTemporalYAxes="+labelTemporalYAxes);
 							
-							console.log(arguments[i]['data']['table']);
+							//console.log(arguments[i]['data']['table']);
 							
 							for (var j=0; j<arguments[i]['data']['table'].length; j++)
 							{
