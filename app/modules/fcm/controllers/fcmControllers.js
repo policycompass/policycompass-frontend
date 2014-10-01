@@ -17,21 +17,16 @@ angular.module('pcApp.fcm.controllers.fcm', [
     '$log',
     '$routeParams',
     function ($scope, Fcm, $log, $routeParams) {
-	
-	Fcm.get({}, function(Fcm) {
-		$scope.title = Fcm.title;
-	})
-    // Retrieve the FCM Models from the FCM Manager Service
-//	$scope.metrics = Fcm.query(
-//           {page: $routeParams.page},
-//			function(metricList) {
-//			},
-//			function(error) {
-//                throw { message: JSON.stringify(err.data)};
-//			}
-//	);
 
+    $scope.models = Fcm.query(
+        {},
+        function (fcmList) {
 
+        },
+        function (error) {
+            throw { message: JSON.stringify(err.data)};
+        }
+    );
     }])
 
 .controller('FcmDetailController', [

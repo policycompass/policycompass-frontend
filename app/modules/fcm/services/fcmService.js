@@ -25,17 +25,15 @@ angular.module('pcApp.fcm.services.fcm',[
 .factory('Fcm',  ['$resource', 'API_CONF', function($resource, API_CONF) {
     // Get the base URL from the configuration
 //	var url = API_CONF.METRICS_MANAGER_URL + "/metrics/:id";
-	var url = API_CONF.FCM_URL + "/1";
+	var url = API_CONF.FCM_URL + "/models/:id";
 	
 	return $resource(url, {},
         {
             // Add support for update
 //            'update': { method:'PUT' },
-            // Array is false due to additional pagination data
-            query: { method: 'GET', params: {}, isArray: false}
 
         }
-	)
+	);
 
 //	alert(Metric);
     // Function to convert the metric data from the API to a suitable format for the Handsontable
