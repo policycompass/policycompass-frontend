@@ -733,7 +733,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					 	//console.log(">"+$scope.MetricSelectorDataColumn_[arguments[i].id]);
 					 	
 					 	var ejeY ="";
-					 	
+					 	var selectorGroupColumn = "";
 					 	//console.log("mode="+$scope.mode);
 					 	
 					 	//var x=document.getElementById("MetricSelectorDataColumn_"+arguments[i].id);
