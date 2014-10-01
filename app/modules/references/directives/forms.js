@@ -69,6 +69,30 @@ angular.module('pcApp.references.directives.forms', [
     };
 }])
 
+
+
+/**
+ * Returns HTML option tags for the selection of the date format
+ */
+.directive('dateFormatOptions', ['$log', 'DateFormat', function ($log, DateFormat) {
+    return {
+        restrict: 'C',
+        scope: {
+            model: '=model'
+        },
+        controller: function($scope){
+            $scope.dateFormats = DateFormat.query(
+                null,
+                function() {
+                    //$log.info($scope.units);
+                }
+            );
+        },
+        template: '<option value="0"  ng-selected="model == 0">Custom Date Format</option>' +
+            '<option value="{{ d.id }}" ng-repeat="d in dateFormats" ng-selected="d.id == model">{{ d.symbol }}</option>'
+    };
+}])
+
 /**
  * Returns HTML option tags for the selection of external resource
  */
