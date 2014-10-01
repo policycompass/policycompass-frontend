@@ -14,7 +14,8 @@ var pcApp = angular.module('pcApp', [
     'pcApp.search',
     'dialogs.main',
     'dialogs.default-translations',
-    'angularSpectrumColorpicker'
+    'angularSpectrumColorpicker',
+    'skrollrDirectives'
     //'nvd3ChartDirectives'
 ])
 

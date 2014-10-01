@@ -26,6 +26,7 @@
     "queue-async": "",
     "d3": "",
     "angular-spectrum-colorpicker": "",
-    "elasticsearch": ""
+    "elasticsearch": "",
+    "skrollr": "~0.6.26"
   }
 }
