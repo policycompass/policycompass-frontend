@@ -376,7 +376,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
             {
             	//page: $routeParams.page,
             	page: pagToSearch,
-            	search: $scope.filterMetric
+            	search: $scope.filterMetric,
+            	sort: 'title'
             },
 			function(metricList) {
 			},
@@ -2357,7 +2358,8 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
             		title: $scope.filterEvents,
             		start: startDateToSearch,
             		end: endDateToSearch,
-            		page: pagToSearch
+            		page: pagToSearch,
+            		sort: 'title'
             	},
 				function(eventList) {
 				},
