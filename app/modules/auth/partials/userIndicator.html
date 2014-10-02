@@ -1,0 +1,8 @@
+<div class="user-indicator" data-ng-switch="state.loggedIn">
+    <div ng-switch-when="true">
+        Logged in as {{ state.userData.name }}
+    </div>
+    <div ng-switch-when="false">
+        Not logged in
+    </div>
+</div>
