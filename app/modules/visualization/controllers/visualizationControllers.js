@@ -731,8 +731,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					 	//selectorDataColumn = $scope.MetricSelectorDataColumn_[arguments[i].id];
 					 	
 					 	//console.log(">"+$scope.MetricSelectorDataColumn_[arguments[i].id]);
-					 	
-					 	var ejeY ="";
+					 	var ejeX = "";
+					 	var ejeY = "";
 					 	var selectorGroupColumn = "";
 					 	//console.log("mode="+$scope.mode);
 					 	
@@ -754,6 +754,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					 	//console.log($scope.optionToPlot[arguments[i].id]);
 					 	
 					 	//ejeY = $scope.MetricSelectorDataColumn_[arguments[i].id].id;
+					 	ejeX = $scope.optionToPlot[arguments[i].id].Label;
 					 	ejeY = $scope.optionToPlot[arguments[i].id].Column;
 					 	//console.log("---ejeY-A="+ejeY);
 					 	
@@ -790,6 +791,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
     										if (dataFilter[0]=='Label')
     										{
     											//console.log("llllllll");
+    											ejeX = dataFilter[1];
     										}
     										else if (dataFilter[0]=='Column')
     										{
@@ -835,7 +837,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					 	}
 					 	else
 					 	{
-						 	console.log($scope.MetricSelectorGroupingData_[arguments[i].id]);
+						 	//console.log($scope.MetricSelectorGroupingData_[arguments[i].id]);
 							selectorGroupColumn = $scope.MetricSelectorGroupingData_[arguments[i].id];
 							if (selectorGroupColumn)
 							{
@@ -870,6 +872,33 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							var labelTemporalYAxes = arguments[i]['unit']['title'];
 							//console.log("labelTemporalYAxes="+labelTemporalYAxes);
 							
+							//console.log("arguments[i]['data']['table']");
+							//console.log(arguments[i]['data']['table']);
+							
+							var arrayDataToReorder = arguments[i]['data']['table'];							
+							//console.log('array content before order');
+							//console.log(arrayDataToReorder);
+							
+							//console.log('ejeX='+ejeX);
+							arrayDataToReorder.sort(function(a, b) {
+								
+								if (ejeX=='to')
+								{
+									var dateA=new Date(a.to), dateB=new Date(b.to)
+								}
+								else
+								{
+									var dateA=new Date(a.from), dateB=new Date(b.from)	
+								}
+ 								
+ 								return dateA-dateB //sort by date ascending
+							});
+							
+							//console.log('array content after order');
+							//console.log(arrayDataToReorder);						
+							arguments[i]['data']['table'] =arrayDataToReorder;
+							
+							//console.log("arguments[i]['data']['table']");
 							//console.log(arguments[i]['data']['table']);
 							
 							for (var j=0; j<arguments[i]['data']['table'].length; j++)
@@ -1079,7 +1108,17 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	                	
 				if (numbers1)
 				{
-					var margin = {top: 20, right: 180, bottom: 50, left: 50},
+					var legendsColumn = 0;
+					if ($scope.showLegend)
+					{
+						legendsColumn = Math.ceil(numbers1.length/9);
+					}
+					else
+					{
+						legendsColumn = 0;
+					}
+					//
+					var margin = {top: 20, right: 20, bottom: 40+(legendsColumn)*20, left: 50},
 					//width = 700,
 					width = 980,
 					//width = 1050,
@@ -1106,7 +1145,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							'showLines': $scope.showLines,							
 							'showPoints': $scope.showPoints,							
 							'showLabels': $scope.showLabels,							
-							'showGrid': $scope.showGrid
+							'showGrid': $scope.showGrid,
+							'legendsColumn': legendsColumn
 							//'arrayKeys': arrayKeys,
 							//'arrayXAxis': arrayXAxis,
 							//'arrayYAxis': arrayYAxis,

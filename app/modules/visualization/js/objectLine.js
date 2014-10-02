@@ -152,8 +152,13 @@ policycompass.viz.line = function(options)
 		var showPoints = self.showPoints;
 		var showLabels = self.showLabels;
 		var showGrid = self.showGrid;
-				
+		//console.log("lines.length="+lines.length);
+		//var colorScale = d3.scale.category20c();
 		var colorScale = d3.scale.category20();
+//		var colorScale = d3.scale.linear()  
+//			.domain([0,1])
+//			.range(['#FFF', '#933'])
+		
 		var colorScaleForHE = d3.scale.category20();
 		
 		var parseDate = d3.time.format("%Y-%m-%d").parse;
@@ -572,7 +577,9 @@ return 0;}
 				var posXToPlot = self.xScale(getDate(d.startDate));
 				if (posXToPlot>0)
 				{
-					tooltip.style("opacity",1.0).html(textTooltip);	
+					
+					tooltip.style("opacity",1.0).html(textTooltip);
+					//d3.tooltip().placement("right")	
 				}
 				    
 			})
@@ -585,6 +592,8 @@ return 0;}
 			/******** end plot historical events ***********/
       		
         self.legendText = "";
+        var cntiMultiple = 0;
+        var incremetY = 0;
 		var cnti=0;
 		lines.forEach(function(d,i) {
     		self.cntLineasPintadas = i;
@@ -850,64 +859,124 @@ return 0;}
         	var resTRext = key.split("_");
         	
             self.legendText = self.legendText + '<div style="margin-top: 2px; width: 5px; background: '+colorScale(key)+'; height: 5px; float: left;"> </div>&nbsp;<font color="'+colorScale(key)+'">'+resTRext[0]+'</font><br/>';
-	    	if (showLegend==222) 
+	    	if (showLegend)
+	    	//if (1==1) 
 	    	{
+	    		var valueX =  ((self.width/(lines.length/self.legendsColumn)) * (cntiMultiple));
+	    		if (cnti%self.legendsColumn == 0)
+                {
+					cntiMultiple=cntiMultiple+1;
+				}
+
+				var valueY = (self.height) + self.margin.top + 30 + (incremetY)*20;
+				if (cnti%self.legendsColumn == 0)
+                {
+                    //console.log("---key="+key);
+                	incremetY = 0;                    		
+                }
+                else
+            	{
+                	incremetY = incremetY + 1;
+				}
+     	
+				self.svg.append("rect")
+		    	.attr("x", valueX-10)
+				.attr("y", valueY-5) 	
+		    	.attr("width", 5)
+		    	.attr("height", 5)
+		    	.style("fill", function(d,i) {return colorScale(key);});
+
+
   				self.svg.append("text")
-                    .attr("x", function(d,i){return self.width + 3 ;})
-                    //.attr("x", function(d,i){return self.margin.left + ((self.width/lines.length) * (cnti-1)) ;})
-					.attr("y", function(d,i){return (self.margin.top) + (20 * cnti-1) ;})
+                    //.attr("x", function(d,i){return self.width + 10 ;})
+                    .attr("x", function(d,i){
+                    	//console.log("cnti="+cnti+"--key="+key);
+                    	return valueX ;}
+                    	)
+					//.attr("y", function(d,i){return (0) + (20 * cnti-1) ;})
 					//.attr("y", function(d,i){return (self.height) + (self.margin.top+(self.margin.bottom/2))+2 ;})
+					.attr("y", function(d,i){
+						//console.log("--->cnti="+cnti+"--key="+key);
+						return  valueY;}
+						)
 					.attr("text-anchor","center")
+					.attr("text-decoration","none")					
 					.attr("class", "link superior legend value")				
 					.attr("font-size", 11)
 					.style("stroke", function(d,i) {return colorScale(key);})
-					/*					
-					.on("mouseover", function () {
-						tooltip.style("opacity",1.0).html("Click over to hide/show this line");						
+										
+					.on("mouseover", function (d,i) {
+						if (self.modeGraph=='view')
+						{
+							var str = d3.select(this).text();
+							
+							tooltip.style("opacity",1.0).html("Click over to hide/show "+str);
+						}
+												
       					})
 					.on("mouseout", function() {                    						
 						mouseout();
 						})
-					*/      					
+					      					
 					.text(function(d,i) {
 						var resTRext = key.split("_");
 						//return "Click to hide "+resTRext[0];})
 						return resTRext[0];})
-					/*
+					
 					.on("click", function() {
 						//console.log("-----key="+d.Key.replace(/\s+/g, ''))
                 		// Determine if current line is visible 
-                		var active   = d.active ? false : true,
-                		newOpacity = active ? 0 : 1; 
-                		// Hide or show the elements based on the ID
-                		//d3.select("#tag"+key.replace(/\s+/g, ''))
-                		
-                		//d3.selectAll(".class_"+d.Key.replace(/\s+/g, ''))
-                		d3.selectAll(".class_"+d.Key.replace(/\W/g, ''))
-                    	.transition().duration(100) 
-                    	.style("opacity", newOpacity); 
-                		// Update whether or not the elements are active
-                		d.active = active;
-                		
-                		//var currentText= d3.select(this).text();
-                		//console.log(currentText);
-                		var str = d3.select(this).text();
-						var res = "";
-						
-                		if (active) {
-                			res = 'Click to display '+str;
-                			res = str.replace("hide", "display");
+                		if (self.modeGraph=='view')
+						{                		
+	                		var active   = d.active ? false : true,
+	                		newOpacity = active ? 0 : 1; 
+	                		// Hide or show the elements based on the ID
+	                		//d3.select("#tag"+key.replace(/\s+/g, ''))
+	                		
+	                		//d3.selectAll(".class_"+d.Key.replace(/\s+/g, ''))
+	                		d3.selectAll(".class_"+d.Key.replace(/\W/g, ''))
+	                    	.transition().duration(100) 
+	                    	.style("opacity", newOpacity); 
+	                		// Update whether or not the elements are active
+	                		d.active = active;
+	                		
+	                		//var currentText= d3.select(this).text();
+	                		//console.log(currentText);
+	                		var str = d3.select(this).text();
+							var res = "";
+							
+	                		if (active) {
+	                			res = 'Click to display '+str;
+	                			res = str.replace("hide", "display");
+	                		}
+	                		else {
+	                			res = str.replace("display", "hide");
+	                			
+	                		}
+	                		
+	                		//console.log(d3.select(this).attr("text-anchor"));
+	                		//console.log(d3.select(this).attr("text-decoration"));
+	                		
+	                		if(d3.select(this).attr("text-decoration")=='none')
+	                		{
+	                			d3.select(this).attr("text-decoration","line-through");	
+	                		}
+	                		else
+	                		{
+	                			d3.select(this).attr("text-decoration","none");
+	                		}
+	                		
+	                		
+	                		//console.log(d3.select(this).attr("text-decoration"));
+	                		
+	                		d3.select(this).text(res);
+	                		
                 		}
-                		else {
-                			res = str.replace("display", "hide");
-                		}
-                		
-                		d3.select(this).text(res);
                 	})  
-                	*/
+                	
 			}
   		});
-
+			/*
 			self.showLegendOpened = 0;
 			if (showLegend) 
 	    	{
@@ -983,7 +1052,7 @@ return 0;}
 						})
 											
 			}
-
+			*/
 		if (showPoints)
 		{
 			lines.forEach(function(d,i) {
@@ -1174,6 +1243,7 @@ return 0;}
 	self.render = function(dataToPlot, eventsData, modeGraph) {
 		
 		//console.log("dataToPlot");
+		
 		//console.log(dataToPlot);		
 		//console.log("eventsData");
 		//console.log(eventsData);
@@ -1192,6 +1262,9 @@ return 0;}
 		}
 		else
 		{
+			//self.legendsColumn = Math.ceil(Object.keys(dataToPlot).length/9);
+			//self.legendsColumn = Math.ceil(3/9);
+			//console.log(self.legendsColumn);
 			var dataToPlotUpdate = dataToPlot;
 			self.drawLines(dataToPlotUpdate, eventsData);			
 		}
