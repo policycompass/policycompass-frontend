@@ -5,8 +5,6 @@
  * Author: Fabian Kirstein 2014
  *
  * This is a small Node.js web server for development.
- * It includes a Proxy functionality to proxy the external services. This
- * is necessary due to the Same-Origin-Policy.
  *
  * Configuration: Put the domains of the services in the development.json
  * Start: node server.js [port]
@@ -18,18 +16,9 @@ var http = require("http"),
 	url = require("url"),
 	path = require("path"),
 	fs = require("fs"),
-	httpProxy = require('http-proxy'),
-	nconf = require('nconf'),
     mime = require('mime'),
 	port = process.argv[2] || 9000;
 
-nconf.file('development.json');
-
-var pcServicesUrl = nconf.get('PC_SERVICES_URL');
-var elasticSearchUrl = nconf.get('ELASTIC_SEARCH_URL');
-var fcmServicesUrl = nconf.get('FCM_SERVICES_URL');
-
-var proxy = httpProxy.createServer();
 
 // Heavily inspired by this Gist: https://gist.github.com/rpflorence/701407
 http.createServer(function(request, response) {
@@ -39,37 +28,10 @@ http.createServer(function(request, response) {
 
 	console.log('[%s] "%s %s" "%s"', (new Date).toUTCString(), request.method, request.url, request.headers['user-agent']);
 
-	//Proxy all requests for the metrics service to the Data Manager
-	// /api/v*/metrics
-	if (/^\/api\/v[0-9]+\/metricsmanager/.exec(request.url)) {
-	    proxy.web(request, response, {
-	      target: pcServicesUrl
-	    });
-	} else if (/^\/api\/v[0-9]+\/visualizationsmanager/.exec(request.url)) {
-	    proxy.web(request, response, {
-	      target: pcServicesUrl
-	    });
-	} else if (/^\/api\/v[0-9]+\/eventsmanager/.exec(request.url)) {
-        proxy.web(request, response, {
-            target: pcServicesUrl
-        });
-    } else if (/^\/api\/v[0-9]+\/references/.exec(request.url)) {
-        proxy.web(request, response, {
-            target: pcServicesUrl
-        });
-    } else if (/^\/api\/v[0-9]+\/fcmmanager/.exec(request.url)) {
-        proxy.web(request, response, {
-            target: fcmServicesUrl
-        });
-    } else if (/^\/policycompass_search/.exec(request.url)) {
-        proxy.web(request, response, {
-            target: elasticSearchUrl
-        });
-    } else if (/^\/(app|)$/.exec(request.url)) {
+    if (/^\/(app|)$/.exec(request.url)) {
         response.writeHead(302, {"location": "/app/"});
         response.end();
-    }
-    else {
+    } else {
 
 		fs.exists(filename, function(exists) {
 			if(!exists) {
