@@ -27,10 +27,7 @@ policycompass.viz.pie = function(options)
     self.drawArcs = function (piesArray) 
     {
     	//console.log("drawArcs");
-    	console.log(piesArray);
-    	
-
-    	
+    	//console.log(piesArray);
     	
 		var showLegend = self.showLegend;
 		var showLabels = self.showLabels;
@@ -171,8 +168,10 @@ policycompass.viz.pie = function(options)
 		  		//.attr("class", "text_pie_"+self.idName) 
 		    	.attr("x", self.radius + 5 + 18+ 5)
 		    	.attr("y", 9)
+		    	.attr("font-size", 11)		
 		    	.attr("dy", ".35em")
 		    	//.style("text-anchor", "end")
+		    	.style("stroke", function(d,i) {return colorScale(i);})
 		    	.text(function(d,i) {
 					var textToReturn = pieslabels[i];
 					//textToReturn = textToReturn+": "+pies[i];

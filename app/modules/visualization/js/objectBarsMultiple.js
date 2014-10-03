@@ -328,7 +328,7 @@ policycompass.viz.barsMultiple = function(options) {
 		var showGrid = self.showGrid;
 						
 		//console.log(bars);
-		var colorScale = d3.scale.category10();
+		var colorScale = d3.scale.category20();
 		var valuesY = [];
 		//console.log("valuesY="+valuesY);
 		//console.log(valuesY);
@@ -354,7 +354,7 @@ policycompass.viz.barsMultiple = function(options) {
     		.range([0, self.height]);	
 
     		  		
-    	var color = d3.scale.category10();
+    	var color = d3.scale.category20();
     	
 		var xAxis = d3.svg.axis()
     		.scale(x0)
@@ -372,7 +372,7 @@ policycompass.viz.barsMultiple = function(options) {
 		    	return d3.svg.axis()
 		        	.scale(x0)
 		         	.orient("bottom")
-		         	.ticks(10)
+		         	.ticks(10)		         	
 			}
 		
 			function make_y_axis() {
@@ -416,7 +416,7 @@ policycompass.viz.barsMultiple = function(options) {
       				.attr("y", 6)
       				.attr("dy", ".71em")
       				.style("text-anchor", "end")
-      				.text(self.labelY);
+      				.text(self.labelY[0]);
 				
 			}
 
@@ -436,13 +436,12 @@ policycompass.viz.barsMultiple = function(options) {
     		    	.call(make_y_axis()
         	    	.tickSize(-self.width, 0, 0)
             		.tickFormat("")
-	        	)			
+            		            		
+	        	)	     
 			}
 
-
-
-                
-                
+           // console.log(self.labelY[0]);
+               
   			var myBars = self.svg.selectAll("rect")
 	      		.data(bars)
     			.enter().append("rect")
@@ -452,9 +451,9 @@ policycompass.viz.barsMultiple = function(options) {
     	  		.attr("y", function(d) {return self.height;})
       			//.attr("height", function(d) {return self.height - y(+d.ValueY);})
       			.attr("height", function(d) {return 0;})
-      			
-      			
-	      		.style("fill", function(d) {return color(d.ValueX);})
+	      		.style("fill", function(d) {
+	      			//console.log("d.ValueX="+d.ValueX);	      			
+	      			return color(d.ValueX);})
     	  		.on("mouseout", function(d,i) {
       				tooltip.style("opacity",0.0);
       			})
@@ -500,9 +499,10 @@ policycompass.viz.barsMultiple = function(options) {
 
             
                 
-
+/*
 			if (showLegend)
 			{
+				
 		  		var legend = self.svg.selectAll(".legend")
 		      		//.data(months.slice().reverse())
 		      		.data(xAxisData.slice().reverse())
@@ -524,7 +524,7 @@ policycompass.viz.barsMultiple = function(options) {
 		      		.style("text-anchor", "end")
 		      		.text(function(d) {return d;});				
 			}
-
+*/
 
 			var dataForCircles = [];
 			for (var i in eventsData) {
@@ -598,6 +598,73 @@ policycompass.viz.barsMultiple = function(options) {
             .on("click", function(d,i){
             	//console.log(d);
             	});
+            	
+	
+            	//console.log("xAxisData");
+            	//console.log(xAxisData);
+            	var cnti = 1;
+            	var cntiMultiple=0;
+            	var incremetY = 0;
+            	//console.log("xAxisData.length="+xAxisData.length);
+            	//console.log("self.legendsColumn="+self.legendsColumn);
+            	
+        xAxisData.forEach(function(d,i) 
+        {
+				//console.log("xAxisData["+i+"]="+xAxisData[i]);
+	    		var valueX =  ((self.width/(xAxisData.length/self.legendsColumn)) * (cntiMultiple));
+	    		if (cnti%self.legendsColumn == 0)
+                {
+					cntiMultiple=cntiMultiple+1;
+				}
+
+				var valueY = (self.height) + self.margin.top + 30 + (incremetY)*20;
+				if (cnti%self.legendsColumn == 0)
+                {
+                    //console.log("---key="+key);
+                	incremetY = 0;                    		
+                }
+                else
+            	{
+                	incremetY = incremetY + 1;
+				}	        
+				
+				
+				self.svg.append("rect")
+		    	.attr("x", valueX-10)
+				.attr("y", valueY-5) 	
+		    	.attr("width", 5)
+		    	.attr("height", 5)
+		    	.style("fill", color(xAxisData[i]));
+
+
+  				self.svg.append("text")
+                    //.attr("x", function(d,i){return self.width + 10 ;})
+                    .attr("x", function(d,i){
+                    	//console.log("cnti="+cnti+"--key="+key);
+                    	return valueX ;}
+                    	)
+					//.attr("y", function(d,i){return (0) + (20 * cnti-1) ;})
+					//.attr("y", function(d,i){return (self.height) + (self.margin.top+(self.margin.bottom/2))+2 ;})
+					.attr("y", function(d,i){
+						//console.log("--->cnti="+cnti+"--key="+key);
+						return  valueY;}
+						)
+					.attr("text-anchor","center")
+					.attr("text-decoration","none")					
+					.attr("class", "link superior legend value")				
+					.attr("font-size", 11)					
+					.style("stroke", color(xAxisData[i]))					
+					
+					      					
+					.text(xAxisData[i]);
+					
+					 
+                	
+                	cnti = cnti+1;
+				
+		});            	
+            	
+            	
 	}
     
 

@@ -871,7 +871,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							var cntPosArray=0;
 							//console.log(arguments[i]);
 							var labelTemporalYAxes = arguments[i]['unit']['title'];
-							//console.log("labelTemporalYAxes="+labelTemporalYAxes);
+							//console.log("--labelTemporalYAxes="+labelTemporalYAxes);
 							
 							//console.log("arguments[i]['data']['table']");
 							//console.log(arguments[i]['data']['table']);
@@ -1006,7 +1006,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 								//console.log("***key="+key);	
 								
 								labelYAxe.push(labelTemporalYAxes);
-								//console.log("labelYAxe="+labelYAxe);
+								//console.log("labelTemporalYAxes="+labelTemporalYAxes);
 																	
 								if ($scope.typeToPlot==='graph_bars')
 								{
@@ -1016,6 +1016,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 										'Category': "1", 
 										'From':arrayValues[key][j], 
 										'Key':key, 
+										'labelY': labelYAxe,
 										"To":arrayLabels[key][j], 
 										"Value":arrayValues[key][j],
 										"ValueX":arrayLabels[key][j],
@@ -1087,7 +1088,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	     			$scope.showGrid = document.getElementById("showGrid").checked;
 	 			}	
 	 							
-				
+
+							
 			
 			
 			if ($scope.typeToPlot==='map_1')
@@ -1106,18 +1108,19 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			{
 	
 				document.getElementById("container_graph").innerHTML = "";
-	                	
-				if (numbers1)
+				
+				var legendsColumn = 0;
+				if ($scope.showLegend)
 				{
-					var legendsColumn = 0;
-					if ($scope.showLegend)
-					{
-						legendsColumn = Math.ceil(numbers1.length/9);
-					}
-					else
-					{
-						legendsColumn = 0;
-					}
+					legendsColumn = Math.ceil(numbers1.length/9);
+				}
+				else
+				{
+					legendsColumn = 0;
+				}	
+				 	
+				if (numbers1)
+				{					
 					//
 					var margin = {top: 20, right: 20, bottom: 40+(legendsColumn)*20, left: 50},
 					//width = 700,
@@ -1227,14 +1230,25 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				document.getElementById("container_graph").innerHTML = "";
 		
 				var datasetToSend = numbers1;
-	
+				//console.log(numbers1);
+				var legendsColumn = 0;
+				if ($scope.showLegend)
+				{
+					legendsColumn = Math.ceil(numbers1.length/9);
+				}
+				else
+				{
+					legendsColumn = 0;
+				}	
+				//legendsColumn = 10;
 				//console.log(datasetToSend);
-	        			
-				var margin = {top: 20, right: 20, bottom: 30, left: 40};
+	        	
+				var margin = {top: 20, right: 0, bottom: 40+(legendsColumn)*20, left: 40};
 				var width = 980 - margin.left - margin.right;
 	    		//var width = 400 - margin.left - margin.right;
-	    		var height = 300 - margin.top - margin.bottom;
-	
+	    		//var height = 300 - margin.top - margin.bottom;
+				var height = 326;
+				
 				var barObj = policycompass.viz.barsMultiple(
 				{
 	                'idName':"container_graph",
@@ -1244,7 +1258,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	            	//'labelX': "label X",
 	            	//'labelY': "label Y",
 	            	'labelX': "",
-	            	'labelY': "",
+	            	'labelY': labelYAxe,
 	            	'radius': 4,
 	            	//'showLegend': document.getElementById("showLegend").checked,
 					//'showLines': document.getElementById("showLines").checked,
@@ -1255,7 +1269,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					'showLines': $scope.showLines,
 					'showPoints': $scope.showPoints,
 					'showLabels': $scope.showLabels,
-					'showGrid': $scope.showGrid
+					'showGrid': $scope.showGrid,
+					'legendsColumn': legendsColumn
 					//'arrayKeys': arrayKeys,
 					//'arrayXAxis': arrayXAxis,
 					//'arrayYAxis': arrayYAxis,
@@ -1792,7 +1807,7 @@ $scope.xAxisTickFormatFunction = function(){
 			 
     
 	$scope.createVisualization = function() {
-		console.log("createVisualization Edit controller")
+		//console.log("createVisualization Edit controller")
 		//alert("ssssssssssssssssss");
         $scope.visualization.user_id = 1;        				     
         $scope.visualization.views_count = 0;
@@ -1820,8 +1835,8 @@ $scope.xAxisTickFormatFunction = function(){
         
 		for (i in $scope.MetricSelectediIndex_)
 		{
-			console.log("i="+i+"---$scope.MetricSelectediIndex_["+i+"]="+$scope.MetricSelectediIndex_[i])
-			console.log("MetricSelectediIndex_ i="+i);
+			//console.log("i="+i+"---$scope.MetricSelectediIndex_["+i+"]="+$scope.MetricSelectediIndex_[i])
+			//console.log("MetricSelectediIndex_ i="+i);
 			if (!isNaN($scope.MetricSelectediId_[i]))
 			{
 				//console.log("$scope.MetricSelectediId_["+i+"]="+$scope.MetricSelectediId_[i]);
@@ -1833,18 +1848,18 @@ $scope.xAxisTickFormatFunction = function(){
 				//var selectorDataColumn = $scope.MetricSelectorDataColumn_[myindex];
 				//var selectorDataColumn = $scope.MetricSelectorDataColumn_[myindex].id;
 				
-				console.log("myindex="+myindex)
+				//console.log("myindex="+myindex)
 				var value = eval('MetricSelectorDataColumn_'+myindex+'.options[MetricSelectorDataColumn_'+myindex+'.selectedIndex].value');
 				selectorDataColumn = value;
 				
-				console.log("selectorDataColumn="+selectorDataColumn);
+				//console.log("selectorDataColumn="+selectorDataColumn);
 				//var selectorGroupingData = $scope.MetricSelectorGroupingData_[myindex].id;
 				
 				//var selectorGroupingData = $scope.MetricSelectorGroupingData_[myindex].id;
 				var value = eval('MetricSelectorGroupingData_'+myindex+'.options[MetricSelectorGroupingData_'+myindex+'.selectedIndex].value');
 				var selectorGroupingData = value;
 				
-				console.log("selectorGroupingData="+selectorGroupingData);
+				//console.log("selectorGroupingData="+selectorGroupingData);
 														
 				var visualization_query_data = 'Label:'+selectorLabel+',Column:'+selectorDataColumn+',Grouping:'+selectorGroupingData;
 				//console.log("visualization_query_data="+visualization_query_data);
