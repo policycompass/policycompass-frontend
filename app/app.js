@@ -18,12 +18,7 @@ var pcAppDependencies = [
     //'nvd3ChartDirectives'
 ];
 
-var loadscript = function(script) {
-    $("head").append('<script type="text/javascript" src="' + script + '"></script>');
-};
-
 if (policyCompassConfig.ENABLE_ADHOCRACY) {
-    loadscript(policyCompassConfig.ADHOCRACY_URL + "/static/js/AdhocracySDK.js");
     pcAppDependencies.push.apply(pcAppDependencies, [
         'pcApp.adhocracyEmbedder',
         'pcApp.auth',
