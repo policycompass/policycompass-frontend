@@ -163,9 +163,11 @@
 
 							<div class="metric-forms" style="display: none;">
 								<div class="metric-form-item">
-									<label for="">From</label>
+									<label for="">Date</label>
 									<select ng-change="rePlotGraph();" ng-model="MetricSelectorLabelColumn_[metric.id]" id="MetricSelectorLabelColumn_{{metric.id}}" name="MetricSelectorLabelColumn[]" class="form-select">
+										<!--
 										<option value="label column">Label Column</option>
+										-->
 										<option value="from">From</option>
 										<option value="to">To</option>
 										<!--
@@ -175,7 +177,7 @@
 									</select>
 								</div>
 								<div class="metric-form-item">
-									<label for="">Value</label>
+									<label for="">Data</label>
 									<!--
 									<select ng-change="rePlotGraph();" ng-model="MetricSelectorDataColumn_[metric.id]" id="MetricSelectorDataColumn_{{metric.id}}" name="MetricSelectorDataColumn[]" class="form-select">
 										<option value="row column">Row Column</option>
