@@ -1182,6 +1182,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				
 				});
 				
+				
 				dataset.forEach(function(d,i) {
 					//console.log("2n foreach i="+i);
 					
@@ -1192,6 +1193,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						
 						
 						var datasetToSend = d;
+						//console.log(labelYAxe);
 						var pieObj = policycompass.viz.pie(
 						{
 							'idName':"pie_"+i,
@@ -1201,6 +1203,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							'margin': 20,
 							'radius':radius,
 							'innerRadious': 50,
+							'labelY': labelYAxe,
 							//'showLegend': document.getElementById("showLegend").checked,
 							//'showLines': document.getElementById("showLines").checked,
 							//'showPoints': document.getElementById("showPoints").checked,

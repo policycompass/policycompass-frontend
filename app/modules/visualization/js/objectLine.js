@@ -286,7 +286,7 @@ return 0;}
        	//console.log("self.maxDate="+self.maxDate);
        	
 
-		//console.log()
+		//console.log("self.minDate="+self.minDate);
         //self.x = d3.scale.linear().domain([0,lines[0].Values.length-1]).range([0,self.width]).clamp(true);
         //self.xScale = d3.scale.linear().domain([self.minVx, self.maxVx]).range([0, self.width]).clamp(true);
         self.xScale = d3.time.scale().domain([self.minDate, self.maxDate]).range([0, self.width]).clamp(true);
@@ -431,17 +431,68 @@ return 0;}
 			
 			if (self.showYAxesTogether)
 			{
+				
+				//console.log("self.labelY.length="+self.labelY.length);
+//				for (index = 0; index < self.labelY.length; ++index) {
+				var keyIndex;
+
 		  		self.svg.append("g")
 		      		.attr("class", "y axis")
 		      		.call(yAxis)
-		      		.attr("font-size", 11)		      		
-		    		.append("text")
-		      			.attr("transform", "rotate(-90)")
-		      			.attr("y", 6)
-		      			//.attr("dy", ".71em")
-		      			.attr("dy", "15px")
-		      			.style("text-anchor", "end")
-		      			.text(self.labelY[0]);
+		      		.attr("font-size", 11);	
+			     
+			    var arrayYaxisProcessed = [];
+				var cnt_keyIndex = 0;
+				for (keyIndex in self.labelY) {
+					var posa = arrayYaxisProcessed.indexOf(self.labelY[keyIndex]);
+					
+					if (posa>=0) 
+					{
+				    	// Exists
+				    	//console.log("Exists");
+					} 
+					else {
+    					// Does not exist 
+    					arrayYaxisProcessed.push(self.labelY[keyIndex]);
+    				}
+    				
+				}
+
+				if (arrayYaxisProcessed.length==1)
+				{
+					self.svg.append("g")									      		      		
+				    		.append("text")
+				    			.attr("font-size", 11)
+				      			.attr("transform", "rotate(-90)")
+				      			.attr("y", 1)
+				      			//.attr("dy", ".71em")
+				      			.attr("dy", "15px")
+				      			//.attr("x", 50*(keyIndex))
+				      			.style("text-anchor", "end")
+				      			.text(self.labelY[0]);					
+				}
+				else
+				{
+					for (keyIndex in self.labelY) {
+					//for (keyIndex in arrayYaxisProcessed) {
+				  		self.svg.append("g")									      		      		
+				    		.append("text")
+				    			.attr("font-size", 11)
+				      			.attr("transform", "rotate(-90)")
+				      			.attr("y", 15*(keyIndex))
+				      			//.attr("dy", ".71em")
+				      			.attr("dy", "15px")
+				      			//.attr("x", 50*(keyIndex))
+				      			.style("stroke", function(d,i) {
+					      			return colorScale(lines[keyIndex].Key);
+					      		})
+				      			.style("text-anchor", "end")
+				      			.text(self.labelY[keyIndex]);
+	
+					}
+				}
+				
+
 									
 			}
 			
@@ -687,7 +738,10 @@ return 0;}
 				self.svg.append("svg:g")
 				      .attr("class", "y axis axisLeft")
 				      .attr("transform", transform)
-				      .style("stroke", function(d,i) {return colorScale(key);})
+				      .style("stroke", function(d,i) {
+				      	//console.log("----->key="+key);
+				      	return colorScale(key);
+				      	})
 				      //.style("stroke-width", 2)				      
 				      .attr("font-size", 11)
 				      .call(yAxisLeft)
@@ -903,14 +957,23 @@ return 0;}
 					.attr("text-decoration","none")					
 					.attr("class", "link superior legend value")				
 					.attr("font-size", 11)
-					.style("stroke", function(d,i) {return colorScale(key);})
-										
+					.style("stroke", function(d,i) {
+						//console.log("key="+key);
+						return colorScale(key);})										
 					.on("mouseover", function (d,i) {
 						if (self.modeGraph=='view')
 						{
 							var str = d3.select(this).text();
 							
-							tooltip.style("opacity",1.0).html("Click over to hide/show "+str);
+							if(d3.select(this).attr("text-decoration")=='none')
+							{
+								tooltip.style("opacity",1.0).html("Click over to hide "+str);	
+							}
+							else
+							{
+								tooltip.style("opacity",1.0).html("Click over to show "+str);
+							}
+							
 						}
 												
       					})
@@ -960,10 +1023,12 @@ return 0;}
 	                		if(d3.select(this).attr("text-decoration")=='none')
 	                		{
 	                			d3.select(this).attr("text-decoration","line-through");	
+	                			tooltip.style("opacity",1.0).html("Click over to show "+str);
 	                		}
 	                		else
 	                		{
 	                			d3.select(this).attr("text-decoration","none");
+	                			tooltip.style("opacity",1.0).html("Click over to hide "+str);
 	                		}
 	                		
 	                		
