@@ -25,6 +25,10 @@ angular.module('pcApp.metrics.controllers.metric', [
 
             // Variable for storing the extra columns selection
             $scope.extracolumns = [];
+            // Variable for storing the custom date format
+            $scope.customdate = {
+                selection: 0
+            };
 
             // Add an extra column
             $scope.addExtraColumn = function () {
@@ -73,10 +77,17 @@ angular.module('pcApp.metrics.controllers.metric', [
                         data.push(row);
                     }
                 });
-                return {
+
+                var return_object = {
                     table: data,
                     extra_columns: extra
                 };
+
+                // Build the custom date format
+                if($scope.customdate.selection != 0){
+                    return_object['date_format'] = parseInt($scope.customdate.selection);
+                }
+                return return_object;
             };
 
             $scope.rotateData = function () {
