@@ -11,23 +11,24 @@
     <div class="col-lg-offset-2 col-lg-8 col-md-offset-1 col-md-10 col-sm-offset-1 col-sm-10">
       <div class="input-group">
         <div class="input-group-btn dropdown">
-          <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">All <span class="caret"></span>
+          <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">{{searchItemTypeInfoDropDown}} <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="#">All</a>
+
+            <li><a href="#" dropdown-toggle ng-click="filterSearchType('metric')">Metrics</a>
             </li>
-            <li><a href="#">Metrics</a>
+            <li><a href="#" dropdown-toggle ng-click="filterSearchType('fuzzymap')">Fuzzy cognitive Maps</a>
             </li>
-            <li><a href="#">Fuzzy cognitive Maps</a>
+            <li><a href="#" dropdown-toggle ng-click="filterSearchType('visualization')">Visualisations</a>
             </li>
-            <li><a href="#">Visualisation</a>
+            <li><a href="#" dropdown-toggle ng-click="filterSearchType('event')">Events</a>
             </li>
-            <li><a href="#">Event</a>
-            </li>
+                        <li><a href="#" dropdown-toggle ng-click="filterSearchType('metric,visualization,event')">All</a>
+            </li >
           </ul>
         </div>
         <!-- /btn-group -->
-        <input type="search" ng-keyup="$event.keyCode == 13 && search(searchQuery)" class="browse-input form-control" required="" placeholder="Search for metrics, visualizations,FCM models, events" ng-model="searchQuery" />
+        <input type="search" ng-keyup="$event.keyCode == 13 && search(searchQuery)" class="browse-input form-control" required="" placeholder="{{searchItemTypeInfo}}" ng-model="searchQuery" />
         <span class="input-group-btn">
                     <button class="btn btn-warning" type="button" ng-click="search(searchQuery)">Go!</button>
                   </span>
@@ -64,7 +65,7 @@
             <h2>No results found</h2>
           </div>
           <div class="num-results" ng-show="searchResults.length">
-            <h2>{{searchResultsCount}} results found</h2>
+            <h2>{{searchResultsCount}} results found</h2>{{searchItemType}}
           </div>
           <article class="search-result clearfix" ng-repeat="searchResult in searchResults" ng-cloak>
             <div class="search-result-content align-left">
