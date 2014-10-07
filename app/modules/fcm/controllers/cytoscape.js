@@ -39,17 +39,46 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
     };
 })
 
-.controller('CytoscapeCtrl', function($scope, $rootScope, $translate, dialogs, ConceptsDetail, AssociationsDetail){
-    // container objects
-    $scope.mapData = [];
-    $scope.edgeData = [];
+.service("FCMModelsDetail", function() {
+    var Models = [ 
+	{FCMModelId: -1}, 
+	{tile: ''}, 
+	{description: ''}, 
+	{keywords: ''}
+	];
+
+    return {
+        setModels: function(ModelObj) {
+            Models = ModelObj;
+        },
+        getModels: function() {
+            return Models;
+        },
+    };
+})
+
+.controller('CytoscapeCtrl', function($scope, $rootScope, $translate, dialogs, FCMModelsDetail, ConceptsDetail, AssociationsDetail){
+  // container objects
+  $scope.Models = [];
+  $scope.mapData = [];
+  $scope.edgeData = [];
   $scope.Concepts = [];
   $scope.Associations = [{Id: -1}, {source : -1}, {destination: -1}, {weight: 0}];
 
+  FCMModelsDetail.setModels($scope.Models);
   ConceptsDetail.setConcepts($scope.Concepts);
   AssociationsDetail.setAssociations($scope.Associations);
 
   
+    $scope.saveModel = function(){
+	dlg = dialogs.create('/dialogs/savemodel.html','ModelController',{},{key: false,back: 'static'});
+	dlg.result.then(function(user){
+		$scope.Models.push(user);
+        },function(){
+          $scope.name = 'You decided not to enter in your name, that makes me sad.';
+        });
+    };
+
     // add object from the form then broadcast event which triggers the directive redrawing of the chart
     // you can pass values and add them without redrawing the entire chart, but this is the simplest way
     $scope.addObj = function(){
@@ -114,7 +143,6 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
     }
 })
 
-//.controller('MetricsController', ['$scope', 'Metric', '$log', '$routeParams', function($scope, Metric, $log, $routeParams) {
 .controller('ConceptController',function($scope, $modalInstance, Metric, $log, $routeParams, data, ConceptsDetail){
   $scope.user = [ 
   {Id: -1}, 
@@ -170,9 +198,32 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
   
 }) // end AssociationController
 
+.controller('ModelController',function($scope, $modalInstance, data, FCMModelsDetail){
+  $scope.user = [ 
+  {FCMModelId: -1}, 
+  {title: ''}, 
+  {description: ''}, 
+  {keywords: ''}
+  ];
+  
+  $scope.Models = [];	
+  $scope.Models = FCMModelsDetail.getModels();
+
+  $scope.cancel = function(){
+    $modalInstance.dismiss('canceled');  
+  }; // end cancel
+  
+  $scope.save = function(){
+    $modalInstance.close($scope.user);
+  }; // end save
+  
+}) // end ModelController
+
 .run(['$templateCache',function($templateCache){
   $templateCache.put('/dialogs/addconcept.html', '<div class="modal-header"><h4 class="modal-title">Add Concept</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="title">Title :</label><input type="text" class="form-control" name="title" id="title" ng-model="user.title" text="Vale here" required><br /><label class="control-label" for="description">Description :</label><input type="text" class="form-control" name="description" id="description" ng-model="user.description"><br /><label class="control-label" for="input">Input :</label><input type="text" class="form-control" name="input" id="input" ng-model="user.input"><br /><label class="control-label" for="activetor">Activetor :</label><select class="form-control" name="activetor" id="activetor" ng-model="user.activetor" value="Select..."></select><br /><label class="control-label" for="metrics">Metrics :</label><select class="form-control" name="metrics" id="metrics" ng-model="user.metrics" ng-options="metric.title for metric in metrics.results"></select><br /><label class="control-label" for="fixedoutput">Fixed output :</label><select class="form-control" name="fixedoutput" id="fixedoutput" ng-model="user.fixedoutput" value="Select..."></select></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Add</button></div>');
 
   $templateCache.put('/dialogs/addassociation.html', '<div class="modal-header"><h4 class="modal-title">Association</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="source">Source Concept :</label><select class="form-control" name="source" id="source" ng-model="user.source" ng-options="concept.title for concept in Concepts" required></select><br /><label class="control-label" for="destination">Destination Concept :</label><select class="form-control" name="destination" id="destination" ng-model="user.destination" ng-options="concept.title for concept in Concepts" required></select><br /><label class="control-label" for="weight">Weight :</label><input type="text" class="form-control" name="weight" id="weight" ng-model="user.weight" required></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Add</button></div>');
+
+  $templateCache.put('/dialogs/savemodel.html', '<div class="modal-header"><h4 class="modal-title">FCM Model</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="title">Policy Model Title :</label><input type="text" class="form-control" name="title" id="title" ng-model="user.title" text="Vale here" required><br /><label class="control-label" for="description">Description :</label><input type="text" class="form-control" name="description" id="description" ng-model="user.description" required><br /><label class="control-label" for="keywords">Keywords :</label><input type="text" class="form-control" name="keywords" id="keywords" ng-model="user.keywords" required></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button></div>');
 }]); // end run / module
 
