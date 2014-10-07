@@ -365,8 +365,12 @@ policycompass.viz.barsMultiple = function(options) {
     		.orient("left")
     		.tickFormat(d3.format(".2s"));    	
 
+			
 			//var months = d3.set(bars.map(function(line) {return line.ValueX;})).values();
-			var xAxisData = d3.set(bars.map(function(line) {return line.ValueX;})).values();
+			var xAxisData = d3.set(bars.map(function(line) {
+				//console.log(line.ValueX);	
+				return line.ValueX;}
+				)).values();
 
 			function make_x_axis() {
 		    	return d3.svg.axis()
@@ -387,7 +391,11 @@ policycompass.viz.barsMultiple = function(options) {
 			//console.log(months);				
 			//console.log("xAxisData");
 			//console.log(xAxisData);
-  			x0.domain(bars.map(function(d) {return d.Key;}));
+			
+  			x0.domain(bars.map(function(d) {
+  				//console.log("d.Key="+d.Key);
+  				return d.Key;}));
+  			
   			//x1.domain(months).rangeRoundBands([0, x0.rangeBand()]);
   			x1.domain(xAxisData).rangeRoundBands([0, x0.rangeBand()]);  		
   			//y.domain([0, d3.max(bars, function(d) {return d.ValueY;})]);
@@ -407,16 +415,46 @@ policycompass.viz.barsMultiple = function(options) {
       				//.style("text-anchor", "end")
       				//.text(self.labelX)
       				;
-
-  				self.svg.append("g")
+				
+				var keyIndex;
+				var arrayYaxisProcessed = [];
+				var cnt_keyIndex = 0;
+				
+				self.svg.append("g")
       				.attr("class", "y axis")
-      				.call(yAxis)
-    				.append("text")
-      				.attr("transform", "rotate(-90)")
-      				.attr("y", 6)
-      				.attr("dy", ".71em")
-      				.style("text-anchor", "end")
-      				.text(self.labelY[0]);
+      				.call(yAxis);
+      			//console.log(bars);
+				for (keyIndex in self.labelY) {
+					
+					if (arrayYaxisProcessed[self.labelY[keyIndex]]) 
+					{
+				    	// Exists
+				    	//console.log("Exists");
+					} 
+					else {
+    					// Does not exist 
+    					arrayYaxisProcessed[self.labelY[keyIndex]]=self.labelY[keyIndex];
+						
+						self.svg.append("g")
+	    					.append("text")
+			    			.attr("font-size", 11)
+			      			.attr("transform", "rotate(-90)")
+			      			.attr("y", 15*(cnt_keyIndex))
+			      			//.style("stroke", function(d,i) {
+				      		//		//console.log("----->key="+key);
+				      		//		return colorScale(bars[keyIndex].Key);
+				      		//})	      				
+	      					.attr("dy", "15px")
+	      					.style("text-anchor", "end")
+	      					//.text(self.labelY[0]);
+	      					.text(self.labelY[keyIndex]);    	
+	      					
+	      					cnt_keyIndex = cnt_keyIndex+1;				
+					}
+
+	  				
+					
+				}
 				
 			}
 

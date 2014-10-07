@@ -34,3 +34,10 @@
     min-width: 200px;
     background: red;
 }
+
+#date-format {
+    width: 200px;
+    display: inline;
+    background-color: #428bca;
+    color: white;
+}

@@ -17,6 +17,7 @@ module.exports = function(config){
     'bower_components/angular-dialog-service/dialogs.min.js',
     'bower_components/angular-dialog-service/dialogs-default-translations.min.js',
     'bower_components/angular-sanitize/angular-sanitize.min.js',
+    'app/config.js',
     'app/**/*.js',
     'app/*.js',
     'test/unit/**/*.js'
