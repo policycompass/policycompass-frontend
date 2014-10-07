@@ -1029,6 +1029,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 								else
 								{			
 									var ObjectTemporal = new Object();			
+									//console.log("arrayValues[key]="+arrayValues[key]);
 									ObjectTemporal['Key']=key+"_"+cntNumbers;
 									ObjectTemporal['Values']=arrayValues[key];
 									ObjectTemporal['Labels']=arrayLabels[key];
@@ -1106,7 +1107,96 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			}
 			else if ($scope.typeToPlot==='graph_line')
 			{
+
+/*
+	var columnsToSet = [];
+	//var arrayXc3 =['x', '2013-01-01', '2013-01-02', '2013-01-03', '2013-01-04', '2013-01-05', '2013-01-06']
+	var arrayXc3 = [];
+	arrayXc3.push('x');
+	var xAxesd3 = [];
+for (key in numbers1)	{
 	
+	if (!$scope.showYAxes)
+	{
+		
+	}
+	
+	//console.log(numbers1[key]);
+	var arrayLinec3 = [];
+	
+	var resSplit = numbers1[key].Key.split("_");
+	
+	arrayLinec3.push(resSplit[0]);
+	
+	for (keyValue in numbers1[key].ValueY)	{
+		//console.log("keyValue="+numbers1[key].ValueY[keyValue]);
+		arrayLinec3.push(numbers1[key].ValueY[keyValue]);
+		//console.log(numbers1[key].ValueX[keyValue]);
+		//console.log("pos="+arrayXc3.indexOf(numbers1[key].ValueX[keyValue]));
+		if (arrayXc3.indexOf(numbers1[key].ValueX[keyValue]) == -1)
+		{
+			arrayXc3.push(numbers1[key].ValueX[keyValue]);
+		}
+	}
+	
+	columnsToSet.push(arrayLinec3);
+	//arrayToSet.push(numbers1[key].Key);
+	//arrayToSet.push(10);
+	//$scope.chart.data.columns.push(arrayToSet);
+}
+
+
+	columnsToSet.push(arrayXc3);
+	
+console.log(columnsToSet);
+
+$scope.chart = c3.generate({
+    data: {
+        x: 'x',
+//        columns: [
+ //           ['x', '2013-01-01', '2013-01-02', '2013-01-03', '2013-01-04', '2013-01-05', '2013-01-06'],
+  //          ['data1', 30, 200, 100, 400, 150, 250],
+   //         ['data2', 130, 340, 200, 500, 250, 350]
+    //    ]
+        columns: columnsToSet
+    },
+    axes: {
+         'Hungary': 'y2'
+        },
+    subchart: {
+      show: true
+    },
+    zoom: {
+      enabled: true
+    },
+    axis: {
+        x: {
+            //type: 'timeseries',
+            type: 'timeseries',
+            tick: {
+                format: '%Y-%m-%d'
+            }
+        },
+        y: {
+          label: {
+            text: 'Some data',
+            position: 'outer-middle'
+          }
+        },
+		y2: {
+   			show: true,
+   			label: {
+     			text: 'avg. temperature',
+     			position: 'outer-middle'
+   			},
+ 		}
+        
+    }
+});
+
+
+console.log($scope.chart);
+*/	
 				document.getElementById("container_graph").innerHTML = "";
 				
 				var legendsColumn = 0;
@@ -1122,7 +1212,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				if (numbers1)
 				{					
 					//
-					var margin = {top: 20, right: 20, bottom: 40+(legendsColumn)*20, left: 50},
+					var margin = {top: 20, right: 20, bottom: 55+(legendsColumn)*20, left: 35},
 					//width = 700,
 					width = 980,
 					//width = 1050,
@@ -1322,9 +1412,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
     //$scope.test = "hallo---";
     
     helper.baseGetRelatedDataController($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF);
-//mmp    			
-    
-    
+    			
+
     
 	$scope.visualization = Visualization.get({id: $routeParams.visualizationId},
 			function(visualizationList) {		
@@ -1694,8 +1783,17 @@ $scope.xAxisTickFormatFunction = function(){
 	    			}
 	    			else if (dataFilter[0]=='Grouping')
 	    			{
-	    				$scope.MetricSelectorGroupingData_[id] = dataFilter[1];
-	    				valueGroupTemp = dataFilter[1];
+	    				console.log(dataFilter[1]);
+	    				if (dataFilter[1]!="undefined")
+	    				{
+	    					$scope.MetricSelectorGroupingData_[id] = dataFilter[1];
+	    					valueGroupTemp = dataFilter[1];	
+	    				}
+	    				else
+	    				{
+	    					$scope.MetricSelectorGroupingData_[id] = "";
+	    					valueGroupTemp = "";
+	    				}
 	    				
 	    			}
 	    			

@@ -361,7 +361,9 @@ return 0;}
 		var yAxis = d3.svg.axis()
     		.scale(self.y)
     		//.scale(self.yArray)
-    		.orient("left");
+    		.orient("left")
+    		.tickFormat(d3.format(".2s"))
+    		;
 
 		var lineFunction = d3.svg.line()		
     		.x(function(d,i) {
@@ -464,7 +466,7 @@ return 0;}
 				    		.append("text")
 				    			.attr("font-size", 11)
 				      			.attr("transform", "rotate(-90)")
-				      			.attr("y", 1)
+				      			.attr("y", 10)
 				      			//.attr("dy", ".71em")
 				      			.attr("dy", "15px")
 				      			//.attr("x", 50*(keyIndex))
@@ -710,7 +712,11 @@ return 0;}
 				if (cnti===1)
 				{
 					transform = "translate(0,0)";
-					var yAxisLeft = d3.svg.axis().scale(self.yArray[i]).ticks(10).orient("left");
+					var yAxisLeft = d3.svg.axis()
+					.scale(self.yArray[i])
+					.ticks(10)
+					.orient("left")
+					.tickFormat(d3.format(".2s"));
 				}
 				else
 				{
@@ -720,7 +726,11 @@ return 0;}
 					//posFinalXAxeY = posFinalXAxeY + self.margin.right*(i-1)
 					//console.log(posFinalXAxeY)
 					transform = "translate("+posFinalXAxeY+",0)";
-					var yAxisLeft = d3.svg.axis().scale(self.yArray[i]).ticks(10).orient("right");
+					var yAxisLeft = d3.svg.axis()
+					.scale(self.yArray[i])
+					.ticks(10)
+					.orient("right")
+					.tickFormat(d3.format(".2s"));
 				}
 				
 				//console.log(self.labelY);
@@ -922,7 +932,7 @@ return 0;}
 					cntiMultiple=cntiMultiple+1;
 				}
 
-				var valueY = (self.height) + self.margin.top + 30 + (incremetY)*20;
+				var valueY = (self.height) + self.margin.top + 50 + (incremetY)*20;
 				if (cnti%self.legendsColumn == 0)
                 {
                     //console.log("---key="+key);
