@@ -89,7 +89,7 @@ switch(searchItemType) {
 				};
     //Perform search through client and get a search Promise
       searchclient.search({
-        index: API_CONF.ELASTIC_URL.replace("/", ""),
+        index: API_CONF.ELASTIC_INDEX_NAME,
         type: $scope.searchItemType,
       body: {
         size: $scope.itemsperPage,

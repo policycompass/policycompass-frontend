@@ -14,7 +14,8 @@ var policyCompassConfig = {
     'EVENTS_MANAGER_URL': '/api/v1/eventsmanager',
     'REFERENCE_POOL_URL': '/api/v1/references',
     'FCM_URL': '/api/v1/fcmmanager',
-    'ELASTIC_URL' : '/policycompass_search',
+    'ELASTIC_URL' : 'localhost:9000',
+    'ELASTIC_INDEX_NAME' : 'policycompass_search',
     'ENABLE_ADHOCRACY': false,
     'ADHOCRACY_URL': 'http://localhost:6551'
 };

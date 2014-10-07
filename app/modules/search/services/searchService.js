@@ -4,15 +4,16 @@
  */
 
 angular.module('pcApp.search.services.search', [
-  'elasticsearch'
+  'elasticsearch',
+  'pcApp.config'
 ])
 
 /**
  * Elastic Search Factory
  */
-.service('searchclient', function(esFactory, $location) {
+.service('searchclient', function(esFactory, $location,API_CONF) {
   //Instantiate Elastic Search client service
-  var curHost = $location.host() + ":" + $location.port();
+  var curHost = API_CONF.ELASTIC_URL;
   return esFactory({
     host: curHost,
     log: 'trace'
