@@ -1113,12 +1113,38 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	//var arrayXc3 =['x', '2013-01-01', '2013-01-02', '2013-01-03', '2013-01-04', '2013-01-05', '2013-01-06']
 	var arrayXc3 = [];
 	arrayXc3.push('x');
-	var xAxesd3 = [];
-for (key in numbers1)	{
 	
+	var Axesd3 = [];
+	
+	Axesd3['x']= {
+		type: 'timeseries',
+        tick: {
+               format: '%Y-%m-%d'
+        	}
+       };
+      
+     
+        
+for (key in numbers1)	{
+	console.log(key);
 	if (!$scope.showYAxes)
 	{
+		console.log("ssssss");
+		var indiceY=""
+		if (key>0)
+		{
+			indiceY=parseInt(key)+1;
+		}
 		
+		Axesd3['y'+(indiceY)] = {
+          label: {
+          	show: true,
+            text: 'Some data'+key+"---"+indiceY,
+            position: 'outer-middle'
+          }
+        }
+        
+
 	}
 	
 	//console.log(numbers1[key]);
@@ -1145,6 +1171,9 @@ for (key in numbers1)	{
 	//$scope.chart.data.columns.push(arrayToSet);
 }
 
+console.log(Axesd3);
+var objAxesd3 = _.extend({}, Axesd3);
+console.log(objAxesd3);
 
 	columnsToSet.push(arrayXc3);
 	
@@ -1153,15 +1182,11 @@ console.log(columnsToSet);
 $scope.chart = c3.generate({
     data: {
         x: 'x',
-//        columns: [
- //           ['x', '2013-01-01', '2013-01-02', '2013-01-03', '2013-01-04', '2013-01-05', '2013-01-06'],
-  //          ['data1', 30, 200, 100, 400, 150, 250],
-   //         ['data2', 130, 340, 200, 500, 250, 350]
-    //    ]
         columns: columnsToSet
     },
     axes: {
-         'Hungary': 'y2'
+         'USA': 'y2',
+         'Spain': 'y3',
         },
     subchart: {
       show: true
@@ -1169,9 +1194,10 @@ $scope.chart = c3.generate({
     zoom: {
       enabled: true
     },
-    axis: {
+    axis:  
+    { 
+    	
         x: {
-            //type: 'timeseries',
             type: 'timeseries',
             tick: {
                 format: '%Y-%m-%d'
@@ -1179,24 +1205,31 @@ $scope.chart = c3.generate({
         },
         y: {
           label: {
-            text: 'Some data',
+            text: 'Some data 1',
             position: 'outer-middle'
           }
         },
 		y2: {
    			show: true,
    			label: {
-     			text: 'avg. temperature',
+     			text: 'avg. temperature 2',
      			position: 'outer-middle'
-   			},
+   			}
+   		},
+   		y3: {
+   			show: true,
+   			label: {
+     			text: 'avg. temperature 3',
+     			position: 'outer-middle'
+   			}
  		}
+ 		
         
     }
+    
 });
-
-
 console.log($scope.chart);
-*/	
+*/
 				document.getElementById("container_graph").innerHTML = "";
 				
 				var legendsColumn = 0;
@@ -1783,7 +1816,7 @@ $scope.xAxisTickFormatFunction = function(){
 	    			}
 	    			else if (dataFilter[0]=='Grouping')
 	    			{
-	    				console.log(dataFilter[1]);
+	    				//console.log(dataFilter[1]);
 	    				if (dataFilter[1]!="undefined")
 	    				{
 	    					$scope.MetricSelectorGroupingData_[id] = dataFilter[1];
