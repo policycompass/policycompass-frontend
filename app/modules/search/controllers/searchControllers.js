@@ -36,6 +36,37 @@
 		 goSearch();
     };
     
+    //Define function that fires when Item Type is filtered (Metrics,Visualization, Events of Fuzzy Maps)
+     $scope.filterSearchType = function(searchItemType) {
+		 $scope.searchItemType = searchItemType;
+switch(searchItemType) {
+    case 'metric,visualization,event':
+        $scope.searchItemTypeInfo = 'Search for metrics, visualizations,FCM models, events';
+        $scope.searchItemTypeInfoDropDown = 'All';
+        break;
+    case 'metric':
+        $scope.searchItemTypeInfo = 'Search for metrics';
+        $scope.searchItemTypeInfoDropDown = 'Metrics';
+        break;
+    case 'visualization':
+        $scope.searchItemTypeInfo = 'Search for visualizations';
+        $scope.searchItemTypeInfoDropDown = 'Visualizations';
+        break;
+    case 'event':
+        $scope.searchItemTypeInfo = 'Search for events';
+        $scope.searchItemTypeInfoDropDown = 'Events';
+        break;
+     case 'fuzzymap':
+        $scope.searchItemTypeInfo = 'Fuzzy map search Not Available yet';
+        $scope.searchItemTypeInfoDropDown = 'N/A';
+        break;
+    default:
+        $scope.searchItemTypeInfo = 'Search for metrics, visualizations,FCM models, events';
+} 
+         //Perform search based on new Item Type
+		 goSearch();
+    };
+    
     //Define Main search function
     $scope.search = function(searchQuery) {
 
@@ -58,8 +89,8 @@
 				};
     //Perform search through client and get a search Promise
       searchclient.search({
-        index: API_CONF.ELASTIC_URL.replace("/", ""),
-        type: 'metric',
+        index: API_CONF.ELASTIC_INDEX_NAME,
+        type: $scope.searchItemType,
       body: {
         size: $scope.itemsperPage,
         from: itemOffset,
@@ -84,6 +115,11 @@
     $scope.itemsperPage = 10
     //Default current page
     $scope.currentPage = 1;
+    
+    //Default search item type
+    $scope.searchItemType = 'metric,visualization,event';
+    $scope.searchItemTypeInfo = 'Search for metrics, visualizations,FCM models, events';
+    $scope.searchItemTypeInfoDropDown = 'All';
     
     //Default search query
     searchQuery ="";

@@ -4,19 +4,119 @@
 
 <h1><span class="glyphicon glyphicon-list-alt"></span> {{ visualization.title }}</h1>
 <br />
-<div>
-	
-	<a type="button" class="btn btn-primary" href="#/visualizations/{{ visualization.id }}/edit">Edit</a>
-	<button type="button" class="btn btn-danger" ng-click="deleteVisualization(visualization)">Delete</button>
-	
-</div>
-<br />
 
+<!--
+<div id="chart"></div>
+-->
 <div class="visualisation-dat right-column">
 	<div ng-controller="VisualizationsEditController" ng-include='"modules/visualization/partials/graph.html"' ></div>
 </div>
 
+<br />
 
+<div class="row">
+    <div class="col-lg-12">
+    <table class="table table-hover">
+        <tr ng-show="metric.title">
+            <td><b>Title:</b></td>
+            <td>{{ visualization.title }}</td>
+        </tr>
+        <tr ng-show="visualization.description">
+            <td><b>Description:</b></td>
+            <td>{{ visualization.description }}</td>
+        </tr>
+     </table>
+    </div>
+</div>
+
+
+
+<div class="row">
+
+        <div class="col-lg-12">
+            <legend class="legend-primary">Details</legend>
+        <table class="table table-hover">
+
+        <tr ng-show="visualization.user_id">
+            <td><b>Author:</b></td>
+            <td>{{ visualization.user_id }}</td>
+        </tr>
+        
+
+
+        <tr ng-show="visualization.language">
+            <td><b>Language:</b></td>
+            <td>{{ visualization.language.title }}</td>
+        </tr>
+
+        <tr ng-show="visualization.created_at">
+            <td><b>Date added:</b></td>
+            <td>{{ visualization.created_at | date:'longDate' }}</td>
+        </tr>
+        <tr ng-show="visualization.updated_at">
+            <td><b>Updated:</b></td>
+            <td>{{ visualization.updated_at | date:'longDate' }}</td>
+        </tr>
+
+        <tr ng-show="visualization.views_count">
+            <td><b>Views:</b></td>
+            <td>{{ visualization.views_count }}</td>
+        </tr>
+
+        <tr ng-show="visualization.keywords">
+            <td><b>Keywords:</b></td>          
+            <td>{{ visualization.keywords }}</td>  
+            <!--
+            <td>            	
+            	<div class="field-content  field-content-editable">
+               	<ul>
+                	<li ng-repeat="kw in visualization.keywords.split(' ')" > {{kw}}</li>
+               	</ul>               
+            	</div>
+            </td>
+            -->
+        </tr>
+
+        <tr ng-show="visualization.metrics_in_visualization">
+            <td><b>Linked to Metrics:</b></td>            
+            <td>            	
+            	<div class="field-content  field-content-editable">
+					<li	ng-repeat="metric in meticsRelated">
+						<a target="_blank" ng-href="/app/#/metrics/{{metric.id}}">{{metric.title}}</a>
+					</li>              
+            	</div>
+            </td>
+        </tr>        
+
+        <tr ng-show="visualization.historical_events_in_visualization">
+            <td><b>Linked to Historical Events:</b></td>            
+            <td>            	
+            	<div class="field-content  field-content-editable">
+					<li ng-repeat="her in historicalEventsRelated">
+						<a target="_blank" ng-href="/app/#/events/{{her.event_id}}">{{her.title}}</a>
+					</li>             
+            	</div>
+            </td>
+        </tr>  
+        
+        </table>
+    </div>
+
+    
+
+</div>
+
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <legend class="legend-primary">Options</legend>
+		<a type="button" class="btn btn-primary" href="#/visualizations/{{ visualization.id }}/edit">Edit</a>
+		<button type="button" class="btn btn-danger" ng-click="deleteVisualization(visualization)">Delete</button>
+    </div>
+</div>
+
+<!--
 <div class="panel panel-default">
   <div class="panel-body">
   	
@@ -93,14 +193,7 @@
 						>
 							<a target="_blank" ng-href="/app/#/metrics/{{metric.metric_id}}">{{metric.title}}</a>
 						</li>
-						<!--
-						<li 
-						ng-repeat="metric in visualization.metrics_in_visualization"
-						
-						>
-							<a target="_blank" ng-href="/app/#/metrics/{{metric.metric_id}}">{{metric.metric_id}}---{{metric.title}}-----</a>
-						</li>
-					-->
+
 					</ul>
 				</div>
 			</div>
@@ -118,11 +211,7 @@
 						>
 							<a target="_blank" ng-href="/app/#/events/{{her.event_id}}">{{her.title}}</a>
 						</li>
-						<!--				
-						<li ng-repeat="he in visualization.historical_events_in_visualization">
-							<a target="_blank" href="/app/#/events/{{he.historical_event_id}}">{{he.historical_event_id}}--{{he.title}}</a>
-						</li>
-						-->
+
 					</ul>
 				</div>
 			</div>
@@ -132,7 +221,9 @@
 
 						
 </div>
-  	
+-->
+ 
+ 	
 <!--
       <table class="table table-hover">
           <tr ng-show="visualization.description">

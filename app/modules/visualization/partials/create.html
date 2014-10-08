@@ -163,9 +163,11 @@
 
 							<div class="metric-forms" style="display: none;">
 								<div class="metric-form-item">
-									<label for="">From</label>
+									<label for="">Date</label>
 									<select ng-change="rePlotGraph();" ng-model="MetricSelectorLabelColumn_[metric.id]" id="MetricSelectorLabelColumn_{{metric.id}}" name="MetricSelectorLabelColumn[]" class="form-select">
+										<!--
 										<option value="label column">Label Column</option>
+										-->
 										<option value="from">From</option>
 										<option value="to">To</option>
 										<!--
@@ -175,7 +177,7 @@
 									</select>
 								</div>
 								<div class="metric-form-item">
-									<label for="">Value</label>
+									<label for="">Grouping</label>
 									<!--
 									<select ng-change="rePlotGraph();" ng-model="MetricSelectorDataColumn_[metric.id]" id="MetricSelectorDataColumn_{{metric.id}}" name="MetricSelectorDataColumn[]" class="form-select">
 										<option value="row column">Row Column</option>
@@ -196,12 +198,11 @@
                 						class="form-control"                 						
                 						ng-options="option.title for option in optionsCombo_value_[metric.id] track by option.id"
                 						>
-                						<option value=""  >Row Column</option>                						
+                						<option value=""  >No grouping</option>                						
                 						
-            						</select>
-								    
+            						</select>								    
 								</div>
-								<div class="metric-form-item">
+								<div ng-show="(1==2 && (MetricSelectorDataColumn_[metric.id] || MetricSelectorGroupingData_[metric.id]))" class="metric-form-item">
 
 
 									<label for="">Grouping</label>
@@ -224,7 +225,7 @@
                 						class="form-control" 
                 						ng-options="option.title for option in optionsCombo_[metric.id] track by option.id"                						
                 						>
-                						<option value="" >Grouping Column</option>
+                						<option value="" >No grouping</option>
                 						
             						</select>	
             										

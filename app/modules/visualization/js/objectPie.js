@@ -27,10 +27,10 @@ policycompass.viz.pie = function(options)
     self.drawArcs = function (piesArray) 
     {
     	//console.log("drawArcs");
-    	console.log(piesArray);
     	
-
-    	
+    	var resSplitidName = self.idName.split("_");
+    	//console.log("idName="+self.idName);
+    	//console.log(piesArray);
     	
 		var showLegend = self.showLegend;
 		var showLabels = self.showLabels;
@@ -145,7 +145,14 @@ policycompass.viz.pie = function(options)
 					.style("stroke", function(d,i) {return 'black';})												      					
 					.text(function(d,i) {
 						var resTRext = piesArray['Key'].split("_");
-						return resTRext[0];})
+						var labelY = "";
+						if (self.labelY[0])
+						{
+							var labelY = " ("+self.labelY[resSplitidName[1]]+")";
+						}
+						 
+						
+						return resTRext[0]+labelY;})
 		    	
 		    	
 			var legend = self.svg.selectAll(".legend_pie_"+self.idName)
@@ -171,8 +178,10 @@ policycompass.viz.pie = function(options)
 		  		//.attr("class", "text_pie_"+self.idName) 
 		    	.attr("x", self.radius + 5 + 18+ 5)
 		    	.attr("y", 9)
+		    	.attr("font-size", 11)		
 		    	.attr("dy", ".35em")
 		    	//.style("text-anchor", "end")
+		    	.style("stroke", function(d,i) {return colorScale(i);})
 		    	.text(function(d,i) {
 					var textToReturn = pieslabels[i];
 					//textToReturn = textToReturn+": "+pies[i];
@@ -204,7 +213,7 @@ policycompass.viz.pie = function(options)
 		
 		if (Object.keys(piesArray).length === 0)
 		{
-			console.log("No data");
+			//console.log("No data");
 			
 			self.svg.append("text")
               .text("No data to plot. Add metrics")

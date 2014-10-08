@@ -59,7 +59,22 @@ angular.module('pcApp.references.services.reference',[
         }
     );
     return ExternalResource;
+}])
+
+
+/**
+ * Factory for getting a Resource, which connects to the date format endpoint
+ */
+.factory('DateFormat',  ['$resource', 'API_CONF', function($resource, API_CONF) {
+    var url = API_CONF.REFERENCE_POOL_URL + "/dateformats/:id";
+    var DateFormat = $resource(url,
+        {
+            id: "@id"
+        }
+    );
+    return DateFormat;
 }]);
+
 
 
 

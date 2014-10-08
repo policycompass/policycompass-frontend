@@ -2,7 +2,7 @@
  * Initializes all need modules
  *
  */
-var pcApp = angular.module('pcApp', [
+var pcAppDependencies = [
     'ngRoute',
     'ui.bootstrap',
     'pcApp.metrics',
@@ -17,7 +17,17 @@ var pcApp = angular.module('pcApp', [
     'angularSpectrumColorpicker',
     'skrollrDirectives'
     //'nvd3ChartDirectives'
-])
+];
+
+if (policyCompassConfig.ENABLE_ADHOCRACY) {
+    pcAppDependencies.push.apply(pcAppDependencies, [
+        'pcApp.adhocracyEmbedder',
+        'pcApp.auth',
+        'pcApp.deliberation'
+    ]);
+}
+
+var pcApp = angular.module('pcApp', pcAppDependencies)
 
 /**
  * Setting the Token always to 1
