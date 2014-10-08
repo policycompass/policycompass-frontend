@@ -65,6 +65,9 @@ http.createServer(function(request, response) {
         proxy.web(request, response, {
             target: elasticSearchUrl
         });
+    } else if (/^\/(app|)$/.exec(request.url)) {
+        response.writeHead(302, {"location": "/app/"});
+        response.end();
     }
     else {
 

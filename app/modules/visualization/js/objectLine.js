@@ -54,8 +54,17 @@ policycompass.viz.line = function(options)
 
 	function mouseout() {
 		tooltip.style("opacity",0.0);
+		
 	}   
     
+
+	function mouseoutLegend() {
+		self.showLegendOpened=0;
+		tooltipLegend.style("opacity",0.0);
+		
+	}   
+
+
     
 	function renderLine(posX, posY) {
 		//console.log("renderLine 1");
@@ -109,7 +118,17 @@ policycompass.viz.line = function(options)
         if (!self.showYAxesTogether)
         {
         	//self.margin.right = self.margin.right * lines.length;
-        	self.width = self.width - (self.margin.right * (lines.length-1));
+        	//self.width = self.width - (self.margin.right * (lines.length-1));
+        	var widthTempoarl = self.width - (self.distanceXaxes * (lines.length-1));
+        	if (widthTempoarl<(self.width/3))
+        	{
+        		self.width = self.width/3;
+        	}
+        	else
+        	{
+        		self.width = widthTempoarl;
+        	}
+        	//self.width = self.width - (18 * (lines.length-1));
 			self.svg.attr("width", self.width + self.margin.left + self.margin.right);
 			        	
         }
@@ -133,9 +152,14 @@ policycompass.viz.line = function(options)
 		var showPoints = self.showPoints;
 		var showLabels = self.showLabels;
 		var showGrid = self.showGrid;
-				
-		var colorScale = d3.scale.category20b();
-		var colorScaleForHE = d3.scale.category20b();
+		//console.log("lines.length="+lines.length);
+		//var colorScale = d3.scale.category20c();
+		var colorScale = d3.scale.category20();
+//		var colorScale = d3.scale.linear()  
+//			.domain([0,1])
+//			.range(['#FFF', '#933'])
+		
+		var colorScaleForHE = d3.scale.category20();
 		
 		var parseDate = d3.time.format("%Y-%m-%d").parse;
 
@@ -262,7 +286,7 @@ return 0;}
        	//console.log("self.maxDate="+self.maxDate);
        	
 
-		//console.log()
+		//console.log("self.minDate="+self.minDate);
         //self.x = d3.scale.linear().domain([0,lines[0].Values.length-1]).range([0,self.width]).clamp(true);
         //self.xScale = d3.scale.linear().domain([self.minVx, self.maxVx]).range([0, self.width]).clamp(true);
         self.xScale = d3.time.scale().domain([self.minDate, self.maxDate]).range([0, self.width]).clamp(true);
@@ -337,7 +361,9 @@ return 0;}
 		var yAxis = d3.svg.axis()
     		.scale(self.y)
     		//.scale(self.yArray)
-    		.orient("left");
+    		.orient("left")
+    		.tickFormat(d3.format(".2s"))
+    		;
 
 		var lineFunction = d3.svg.line()		
     		.x(function(d,i) {
@@ -407,17 +433,68 @@ return 0;}
 			
 			if (self.showYAxesTogether)
 			{
+				
+				//console.log("self.labelY.length="+self.labelY.length);
+//				for (index = 0; index < self.labelY.length; ++index) {
+				var keyIndex;
+
 		  		self.svg.append("g")
 		      		.attr("class", "y axis")
 		      		.call(yAxis)
-		      		.attr("font-size", 11)		      		
-		    		.append("text")
-		      			.attr("transform", "rotate(-90)")
-		      			.attr("y", 6)
-		      			//.attr("dy", ".71em")
-		      			.attr("dy", "15px")
-		      			.style("text-anchor", "end")
-		      			.text(self.labelY[0]);
+		      		.attr("font-size", 11);	
+			     
+			    var arrayYaxisProcessed = [];
+				var cnt_keyIndex = 0;
+				for (keyIndex in self.labelY) {
+					var posa = arrayYaxisProcessed.indexOf(self.labelY[keyIndex]);
+					
+					if (posa>=0) 
+					{
+				    	// Exists
+				    	//console.log("Exists");
+					} 
+					else {
+    					// Does not exist 
+    					arrayYaxisProcessed.push(self.labelY[keyIndex]);
+    				}
+    				
+				}
+
+				if (arrayYaxisProcessed.length==1)
+				{
+					self.svg.append("g")									      		      		
+				    		.append("text")
+				    			.attr("font-size", 11)
+				      			.attr("transform", "rotate(-90)")
+				      			.attr("y", 10)
+				      			//.attr("dy", ".71em")
+				      			.attr("dy", "15px")
+				      			//.attr("x", 50*(keyIndex))
+				      			.style("text-anchor", "end")
+				      			.text(self.labelY[0]);					
+				}
+				else
+				{
+					for (keyIndex in self.labelY) {
+					//for (keyIndex in arrayYaxisProcessed) {
+				  		self.svg.append("g")									      		      		
+				    		.append("text")
+				    			.attr("font-size", 11)
+				      			.attr("transform", "rotate(-90)")
+				      			.attr("y", 15*(keyIndex))
+				      			//.attr("dy", ".71em")
+				      			.attr("dy", "15px")
+				      			//.attr("x", 50*(keyIndex))
+				      			.style("stroke", function(d,i) {
+					      			return colorScale(lines[keyIndex].Key);
+					      		})
+				      			.style("text-anchor", "end")
+				      			.text(self.labelY[keyIndex]);
+	
+					}
+				}
+				
+
 									
 			}
 			
@@ -553,7 +630,9 @@ return 0;}
 				var posXToPlot = self.xScale(getDate(d.startDate));
 				if (posXToPlot>0)
 				{
-					tooltip.style("opacity",1.0).html(textTooltip);	
+					
+					tooltip.style("opacity",1.0).html(textTooltip);
+					//d3.tooltip().placement("right")	
 				}
 				    
 			})
@@ -566,6 +645,8 @@ return 0;}
 			/******** end plot historical events ***********/
       		
         self.legendText = "";
+        var cntiMultiple = 0;
+        var incremetY = 0;
 		var cnti=0;
 		lines.forEach(function(d,i) {
     		self.cntLineasPintadas = i;
@@ -631,7 +712,11 @@ return 0;}
 				if (cnti===1)
 				{
 					transform = "translate(0,0)";
-					var yAxisLeft = d3.svg.axis().scale(self.yArray[i]).ticks(10).orient("left");
+					var yAxisLeft = d3.svg.axis()
+					.scale(self.yArray[i])
+					.ticks(10)
+					.orient("left")
+					.tickFormat(d3.format(".2s"));
 				}
 				else
 				{
@@ -641,7 +726,11 @@ return 0;}
 					//posFinalXAxeY = posFinalXAxeY + self.margin.right*(i-1)
 					//console.log(posFinalXAxeY)
 					transform = "translate("+posFinalXAxeY+",0)";
-					var yAxisLeft = d3.svg.axis().scale(self.yArray[i]).ticks(10).orient("right");
+					var yAxisLeft = d3.svg.axis()
+					.scale(self.yArray[i])
+					.ticks(10)
+					.orient("right")
+					.tickFormat(d3.format(".2s"));
 				}
 				
 				//console.log(self.labelY);
@@ -659,7 +748,10 @@ return 0;}
 				self.svg.append("svg:g")
 				      .attr("class", "y axis axisLeft")
 				      .attr("transform", transform)
-				      .style("stroke", function(d,i) {return colorScale(key);})
+				      .style("stroke", function(d,i) {
+				      	//console.log("----->key="+key);
+				      	return colorScale(key);
+				      	})
 				      //.style("stroke-width", 2)				      
 				      .attr("font-size", 11)
 				      .call(yAxisLeft)
@@ -831,127 +923,211 @@ return 0;}
         	var resTRext = key.split("_");
         	
             self.legendText = self.legendText + '<div style="margin-top: 2px; width: 5px; background: '+colorScale(key)+'; height: 5px; float: left;"> </div>&nbsp;<font color="'+colorScale(key)+'">'+resTRext[0]+'</font><br/>';
-	    	if (showLegend==222) 
+	    	if (showLegend)
+	    	//if (1==1) 
 	    	{
+	    		var valueX =  ((self.width/(lines.length/self.legendsColumn)) * (cntiMultiple));
+	    		if (cnti%self.legendsColumn == 0)
+                {
+					cntiMultiple=cntiMultiple+1;
+				}
+
+				var valueY = (self.height) + self.margin.top + 50 + (incremetY)*20;
+				if (cnti%self.legendsColumn == 0)
+                {
+                    //console.log("---key="+key);
+                	incremetY = 0;                    		
+                }
+                else
+            	{
+                	incremetY = incremetY + 1;
+				}
+     	
+				self.svg.append("rect")
+		    	.attr("x", valueX-10)
+				.attr("y", valueY-5) 	
+		    	.attr("width", 5)
+		    	.attr("height", 5)
+		    	.style("fill", function(d,i) {return colorScale(key);});
+
+
   				self.svg.append("text")
-                    .attr("x", function(d,i){return self.width + 3 ;})
-                    //.attr("x", function(d,i){return self.margin.left + ((self.width/lines.length) * (cnti-1)) ;})
-					.attr("y", function(d,i){return (self.margin.top) + (20 * cnti-1) ;})
+                    //.attr("x", function(d,i){return self.width + 10 ;})
+                    .attr("x", function(d,i){
+                    	//console.log("cnti="+cnti+"--key="+key);
+                    	return valueX ;}
+                    	)
+					//.attr("y", function(d,i){return (0) + (20 * cnti-1) ;})
 					//.attr("y", function(d,i){return (self.height) + (self.margin.top+(self.margin.bottom/2))+2 ;})
+					.attr("y", function(d,i){
+						//console.log("--->cnti="+cnti+"--key="+key);
+						return  valueY;}
+						)
 					.attr("text-anchor","center")
+					.attr("text-decoration","none")					
 					.attr("class", "link superior legend value")				
 					.attr("font-size", 11)
-					.style("stroke", function(d,i) {return colorScale(key);})
-					/*					
-					.on("mouseover", function () {
-						tooltip.style("opacity",1.0).html("Click over to hide/show this line");						
+					.style("stroke", function(d,i) {
+						//console.log("key="+key);
+						return colorScale(key);})										
+					.on("mouseover", function (d,i) {
+						if (self.modeGraph=='view')
+						{
+							var str = d3.select(this).text();
+							
+							if(d3.select(this).attr("text-decoration")=='none')
+							{
+								tooltip.style("opacity",1.0).html("Click over to hide "+str);	
+							}
+							else
+							{
+								tooltip.style("opacity",1.0).html("Click over to show "+str);
+							}
+							
+						}
+												
       					})
 					.on("mouseout", function() {                    						
 						mouseout();
 						})
-					*/      					
+					      					
 					.text(function(d,i) {
 						var resTRext = key.split("_");
 						//return "Click to hide "+resTRext[0];})
 						return resTRext[0];})
-					/*
+					
 					.on("click", function() {
 						//console.log("-----key="+d.Key.replace(/\s+/g, ''))
                 		// Determine if current line is visible 
-                		var active   = d.active ? false : true,
-                		newOpacity = active ? 0 : 1; 
-                		// Hide or show the elements based on the ID
-                		//d3.select("#tag"+key.replace(/\s+/g, ''))
-                		
-                		//d3.selectAll(".class_"+d.Key.replace(/\s+/g, ''))
-                		d3.selectAll(".class_"+d.Key.replace(/\W/g, ''))
-                    	.transition().duration(100) 
-                    	.style("opacity", newOpacity); 
-                		// Update whether or not the elements are active
-                		d.active = active;
-                		
-                		//var currentText= d3.select(this).text();
-                		//console.log(currentText);
-                		var str = d3.select(this).text();
-						var res = "";
-						
-                		if (active) {
-                			res = 'Click to display '+str;
-                			res = str.replace("hide", "display");
+                		if (self.modeGraph=='view')
+						{                		
+	                		var active   = d.active ? false : true,
+	                		newOpacity = active ? 0 : 1; 
+	                		// Hide or show the elements based on the ID
+	                		//d3.select("#tag"+key.replace(/\s+/g, ''))
+	                		
+	                		//d3.selectAll(".class_"+d.Key.replace(/\s+/g, ''))
+	                		d3.selectAll(".class_"+d.Key.replace(/\W/g, ''))
+	                    	.transition().duration(100) 
+	                    	.style("opacity", newOpacity); 
+	                		// Update whether or not the elements are active
+	                		d.active = active;
+	                		
+	                		//var currentText= d3.select(this).text();
+	                		//console.log(currentText);
+	                		var str = d3.select(this).text();
+							var res = "";
+							
+	                		if (active) {
+	                			res = 'Click to display '+str;
+	                			res = str.replace("hide", "display");
+	                		}
+	                		else {
+	                			res = str.replace("display", "hide");
+	                			
+	                		}
+	                		
+	                		//console.log(d3.select(this).attr("text-anchor"));
+	                		//console.log(d3.select(this).attr("text-decoration"));
+	                		
+	                		if(d3.select(this).attr("text-decoration")=='none')
+	                		{
+	                			d3.select(this).attr("text-decoration","line-through");	
+	                			tooltip.style("opacity",1.0).html("Click over to show "+str);
+	                		}
+	                		else
+	                		{
+	                			d3.select(this).attr("text-decoration","none");
+	                			tooltip.style("opacity",1.0).html("Click over to hide "+str);
+	                		}
+	                		
+	                		
+	                		//console.log(d3.select(this).attr("text-decoration"));
+	                		
+	                		d3.select(this).text(res);
+	                		
                 		}
-                		else {
-                			res = str.replace("display", "hide");
-                		}
-                		
-                		d3.select(this).text(res);
                 	})  
-                	*/
+                	
 			}
   		});
-
+			/*
 			self.showLegendOpened = 0;
 			if (showLegend) 
 	    	{
   				self.svg.append("text")
-                    .attr("x", function(d,i){return self.width + 3 ;})                    
-					.attr("y", function(d,i){return (self.margin.top) + (20) ;})
+                    .attr("x", function(d,i){return self.width + 10 ;})                    
+					.attr("y", function(d,i){return (0) + (0) ;})
 					.attr("text-anchor","center")
 					.attr("class", "link superior legend value")				
 					.attr("font-size", 11)
 					.style("stroke", function(d,i) {return 'black';})									
 					.on("click", function (openedLabels) {
 
-
 						
-						var str = d3.select(this).text();
-						var res = "";
-						
-						
-                		
-                		d3.select(this).text(res);						
-						
-						if (self.showLegendOpened!=1)
+						if (self.modeGraph=='view')
 						{
-							tooltipLegend
-								.style("left", (d3.event.pageX +20) + "px")
-								.style("top", (d3.event.pageY - 12) + "px");
+							var str = d3.select(this).text();
+							var res = "";
+							
+							
+	                		
+	                		d3.select(this).text(res);						
+							
+							if (self.showLegendOpened!=1)
+							{
+								tooltipLegend
+									.style("left", (d3.event.pageX +20) + "px")
+									.style("top", (d3.event.pageY - 12) + "px");
+									
+								var tooltipLegendText="";
+								tooltipLegendText = "<div>"+self.legendText+"</div>";			
+								tooltipLegend .style("opacity",1.0);//.html(tooltipLegendText);	
 								
-							var tooltipLegendText="";
-							tooltipLegendText = "<div>"+self.legendText+"</div>";			
-							tooltipLegend .style("opacity",1.0);//.html(tooltipLegendText);	
+								tooltipLegend .html(tooltipLegendText);
+								
+								self.showLegendOpened=1;
+							}
+							else
+							{
+								self.showLegendOpened=0;
+								tooltipLegend .style("opacity",0);
+							}
 							
-							tooltipLegend .html(tooltipLegendText);
-							
-							self.showLegendOpened=1;
+							if (self.showLegendOpened!=1) {
+	                			res = 'Click to display color legends';
+	                			res = str.replace("hide", "display");
+	                		}
+	                		else {
+	                			res = str.replace("display", "hide");
+	                		}
+	                		
+							d3.select(this).text(res);
 						}
-						else
-						{
-							self.showLegendOpened=0;
-							tooltipLegend .style("opacity",0);
-						}
-						
-						if (self.showLegendOpened!=1) {
-                			res = 'Click to display color legends';
-                			res = str.replace("hide", "display");
-                		}
-                		else {
-                			res = str.replace("display", "hide");
-                		}
-                		
-						d3.select(this).text(res);
 										
       				})      				
 					.on("mouseout", function() {                    						
 						//mouseout();
+						//mouseoutLegend();
 						})		
 		      					
-					.text(function(d,i) {
+					.html(function(d,i) {
 						var resTRext = key.split("_");
-						return "Click to display color legends";
+						var textToPlot;
+						if (self.modeGraph=='view')
+						{
+							var textToPlot= "Click to display color legends";
+						}
+						else
+						{
+							var textToPlot= ""
+						}
+						
+						return textToPlot;
 						})
 											
 			}
-
+			*/
 		if (showPoints)
 		{
 			lines.forEach(function(d,i) {
@@ -1024,7 +1200,9 @@ return 0;}
 		    				var twoPlacedFloat = parseFloat(resY);
 		    				//var twoPlacedFloat = parseFloat(resY).toFixed(2);
 		    				
-		    				tooltip.style("opacity",1.0).html(endDateToPlot+" <br /> "+twoPlacedFloat);
+		    				var resSplit = keyCircle.split("_");
+		    				
+		    				tooltip.style("opacity",1.0).html("<font color='"+colorScale(keyCircle)+"'>"+resSplit[0]+"<br/>"+endDateToPlot+" <br /> "+twoPlacedFloat+"</font>");
 		    				
 			    			//renderLine((self.x(i)), (self.y(d))); 
       				})
@@ -1137,14 +1315,16 @@ return 0;}
 
 
 	/* function to Plot data into the graph*/
-	self.render = function(dataToPlot, eventsData) {
+	self.render = function(dataToPlot, eventsData, modeGraph) {
 		
 		//console.log("dataToPlot");
+		
 		//console.log(dataToPlot);		
 		//console.log("eventsData");
 		//console.log(eventsData);
+		self.modeGraph = modeGraph;
 
-
+								
 		//console.log(eventsData);
 		if (Object.keys(dataToPlot).length === 0)
 		{
@@ -1157,6 +1337,9 @@ return 0;}
 		}
 		else
 		{
+			//self.legendsColumn = Math.ceil(Object.keys(dataToPlot).length/9);
+			//self.legendsColumn = Math.ceil(3/9);
+			//console.log(self.legendsColumn);
 			var dataToPlotUpdate = dataToPlot;
 			self.drawLines(dataToPlotUpdate, eventsData);			
 		}

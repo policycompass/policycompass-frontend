@@ -95,8 +95,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				
 				$scope.metric = Metric.get({id: metricId},
             	function(metric) {
-            		console.log("------>metric id="+metric.id);
-            		console.log("------>title="+metric.title);
+            		//console.log("------>metric id="+metric.id);
+            		//console.log("------>title="+metric.title);
             		
             		
             		var data =  {
@@ -376,7 +376,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
             {
             	//page: $routeParams.page,
             	page: pagToSearch,
-            	search: $scope.filterMetric
+            	search: $scope.filterMetric,
+            	sort: 'title'
             },
 			function(metricList) {
 			},
@@ -731,9 +732,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					 	//selectorDataColumn = $scope.MetricSelectorDataColumn_[arguments[i].id];
 					 	
 					 	//console.log(">"+$scope.MetricSelectorDataColumn_[arguments[i].id]);
-					 	
-					 	var ejeY ="";
-					 	
+					 	var ejeX = "";
+					 	var ejeY = "";
+					 	var selectorGroupColumn = "";
 					 	//console.log("mode="+$scope.mode);
 					 	
 					 	//var x=document.getElementById("MetricSelectorDataColumn_"+arguments[i].id);
@@ -754,6 +755,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					 	//console.log($scope.optionToPlot[arguments[i].id]);
 					 	
 					 	//ejeY = $scope.MetricSelectorDataColumn_[arguments[i].id].id;
+					 	ejeX = $scope.optionToPlot[arguments[i].id].Label;
 					 	ejeY = $scope.optionToPlot[arguments[i].id].Column;
 					 	//console.log("---ejeY-A="+ejeY);
 					 	
@@ -790,6 +792,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
     										if (dataFilter[0]=='Label')
     										{
     											//console.log("llllllll");
+    											ejeX = dataFilter[1];
     										}
     										else if (dataFilter[0]=='Column')
     										{
@@ -799,6 +802,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
     										else if (dataFilter[0]=='Grouping')
     										{
     											//console.log("ggggggggggg");
+    											selectorGroupColumn = dataFilter[1];
     										} 
     										
     										
@@ -824,9 +828,33 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					 	//console.log("---selectorDataColumn="+selectorDataColumn);
 					 	//console.log("---ejeY-C="+ejeY);
 					 	
-						//selectorGroupColumn = $scope.MetricSelectorGroupingData_[arguments[i].id].id;
-						selectorGroupColumn = 'grouping column';
+					 	var checkGroup = "";
+					 	checkGroup = ejeY;
+					 	var useGroup = 0;
+					 	//console.log("selectorGroupColumn="+selectorGroupColumn);
+					 	if (selectorGroupColumn)
+					 	{
+					 		useGroup = 1;					 		
+					 	}
+					 	else
+					 	{
+						 	//console.log($scope.MetricSelectorGroupingData_[arguments[i].id]);
+							selectorGroupColumn = $scope.MetricSelectorGroupingData_[arguments[i].id];
+							if (selectorGroupColumn)
+							{
+								selectorGroupColumn = $scope.MetricSelectorGroupingData_[arguments[i].id].id;
+								useGroup = 1;
+							}
+							else
+							{
+								selectorGroupColumn = 'grouping column';	
+							}
+						}
+						checkGroup = checkGroup+"-"+selectorGroupColumn;
+						
+						//selectorGroupColumn = 'grouping column';
 						//console.log("---selectorGroupColumn="+selectorGroupColumn);
+						//console.log("---checkGroup="+checkGroup);
 	
 						if (($scope.typeToPlot==='graph_line') || ($scope.typeToPlot==='graph_pie') || ($scope.typeToPlot==='graph_bars'))
 						{
@@ -841,9 +869,38 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							
 							var numbers1T = {"Key":arguments[i].title};
 							var cntPosArray=0;
-
+							//console.log(arguments[i]);
 							var labelTemporalYAxes = arguments[i]['unit']['title'];
-							//console.log("labelTemporalYAxes="+labelTemporalYAxes);
+							//console.log("--labelTemporalYAxes="+labelTemporalYAxes);
+							
+							//console.log("arguments[i]['data']['table']");
+							//console.log(arguments[i]['data']['table']);
+							
+							var arrayDataToReorder = arguments[i]['data']['table'];							
+							//console.log('array content before order');
+							//console.log(arrayDataToReorder);
+							
+							//console.log('ejeX='+ejeX);
+							arrayDataToReorder.sort(function(a, b) {
+								
+								if (ejeX=='to')
+								{
+									var dateA=new Date(a.to), dateB=new Date(b.to)
+								}
+								else
+								{
+									var dateA=new Date(a.from), dateB=new Date(b.from)	
+								}
+ 								
+ 								return dateA-dateB //sort by date ascending
+							});
+							
+							//console.log('array content after order');
+							//console.log(arrayDataToReorder);						
+							arguments[i]['data']['table'] =arrayDataToReorder;
+							
+							//console.log("arguments[i]['data']['table']");
+							//console.log(arguments[i]['data']['table']);
 							
 							for (var j=0; j<arguments[i]['data']['table'].length; j++)
 							{
@@ -851,13 +908,42 @@ angular.module('pcApp.visualization.controllers.visualization', [
 								var object_size = 0;
 								the_object = arguments[i]['data']['table'][j];
 								var indexRow = "";
+								var indexGroup = "";
 								for (key in the_object)	{
 									//console.log("key=>"+key);
 									//if ((key!='from') && (key!='to') && (key!='value') && (key!='row'))
-									if ((key==ejeY))
+									
+									var temporalKey = key;
+									var temporalejeY = ejeY;
+									if (useGroup==1)
+									{
+										temporalKey = key;
+										temporalejeY = checkGroup;
+									}
+									
+									
+									if ((key==ejeY))									
+									//if ((temporalKey==temporalejeY))
 									{
 										indexRow = arguments[i]['data']['table'][j][key];
+										//console.log("indexRow="+indexRow);
 									}
+									
+									if ((key==selectorGroupColumn))
+									{
+										indexGroup = arguments[i]['data']['table'][j][key];
+										//console.log("indexGroup="+indexGroup);
+										if (indexRow=="")
+										{
+											indexRow = indexGroup;
+										}
+										else
+										{
+											indexRow = indexRow+"-"+indexGroup;	
+										}
+										
+									}
+									
 									
 		    						if (the_object.hasOwnProperty(key)) {
 		      							object_size++;		      							
@@ -888,9 +974,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
 								//console.log("fecha a revisar="+arguments[i]['data']['table'][j][selectorLabel]);
 								//console.log("pos in array="+posDateInArray);
 								
-								if (posDateInArray>0)
+								if (posDateInArray>=0)
 								{
-									//this date exist in array we mus mix
+									//this date exist in array we must mix
 									//console.log("arrayValues[indexRow][posDateInArray]="+arrayValues[indexRow][posDateInArray]);
 									sumaDeValores = parseFloat(arrayValues[indexRow][posDateInArray]) + parseFloat(arguments[i]['data']['table'][j][selectorDataColumn]);
 									//console.log("sumaDeValores="+sumaDeValores);
@@ -920,7 +1006,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 								//console.log("***key="+key);	
 								
 								labelYAxe.push(labelTemporalYAxes);
-								//console.log("labelYAxe="+labelYAxe);
+								//console.log("labelTemporalYAxes="+labelTemporalYAxes);
 																	
 								if ($scope.typeToPlot==='graph_bars')
 								{
@@ -930,6 +1016,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 										'Category': "1", 
 										'From':arrayValues[key][j], 
 										'Key':key, 
+										'labelY': labelYAxe,
 										"To":arrayLabels[key][j], 
 										"Value":arrayValues[key][j],
 										"ValueX":arrayLabels[key][j],
@@ -942,6 +1029,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 								else
 								{			
 									var ObjectTemporal = new Object();			
+									//console.log("arrayValues[key]="+arrayValues[key]);
 									ObjectTemporal['Key']=key+"_"+cntNumbers;
 									ObjectTemporal['Values']=arrayValues[key];
 									ObjectTemporal['Labels']=arrayLabels[key];
@@ -964,6 +1052,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			} // end if control==1
 			document.getElementById("container_graph").innerHTML = "";
 			//var numbers1 = [];
+	        		 
+			//console.log(numbers1);	        		 
 	        		 
 			//console.log("######plotGraph########");
 			//console.log("typeToPlot="+$scope.typeToPlot);
@@ -999,7 +1089,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	     			$scope.showGrid = document.getElementById("showGrid").checked;
 	 			}	
 	 							
-				
+
+							
 			
 			
 			if ($scope.typeToPlot==='map_1')
@@ -1016,12 +1107,145 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			}
 			else if ($scope.typeToPlot==='graph_line')
 			{
+
+/*
+	var columnsToSet = [];
+	//var arrayXc3 =['x', '2013-01-01', '2013-01-02', '2013-01-03', '2013-01-04', '2013-01-05', '2013-01-06']
+	var arrayXc3 = [];
+	arrayXc3.push('x');
 	
+	var Axesd3 = [];
+	
+	Axesd3['x']= {
+		type: 'timeseries',
+        tick: {
+               format: '%Y-%m-%d'
+        	}
+       };
+      
+     
+        
+for (key in numbers1)	{
+	console.log(key);
+	if (!$scope.showYAxes)
+	{
+		console.log("ssssss");
+		var indiceY=""
+		if (key>0)
+		{
+			indiceY=parseInt(key)+1;
+		}
+		
+		Axesd3['y'+(indiceY)] = {
+          label: {
+          	show: true,
+            text: 'Some data'+key+"---"+indiceY,
+            position: 'outer-middle'
+          }
+        }
+        
+
+	}
+	
+	//console.log(numbers1[key]);
+	var arrayLinec3 = [];
+	
+	var resSplit = numbers1[key].Key.split("_");
+	
+	arrayLinec3.push(resSplit[0]);
+	
+	for (keyValue in numbers1[key].ValueY)	{
+		//console.log("keyValue="+numbers1[key].ValueY[keyValue]);
+		arrayLinec3.push(numbers1[key].ValueY[keyValue]);
+		//console.log(numbers1[key].ValueX[keyValue]);
+		//console.log("pos="+arrayXc3.indexOf(numbers1[key].ValueX[keyValue]));
+		if (arrayXc3.indexOf(numbers1[key].ValueX[keyValue]) == -1)
+		{
+			arrayXc3.push(numbers1[key].ValueX[keyValue]);
+		}
+	}
+	
+	columnsToSet.push(arrayLinec3);
+	//arrayToSet.push(numbers1[key].Key);
+	//arrayToSet.push(10);
+	//$scope.chart.data.columns.push(arrayToSet);
+}
+
+console.log(Axesd3);
+var objAxesd3 = _.extend({}, Axesd3);
+console.log(objAxesd3);
+
+	columnsToSet.push(arrayXc3);
+	
+console.log(columnsToSet);
+
+$scope.chart = c3.generate({
+    data: {
+        x: 'x',
+        columns: columnsToSet
+    },
+    axes: {
+         'USA': 'y2',
+         'Spain': 'y3',
+        },
+    subchart: {
+      show: true
+    },
+    zoom: {
+      enabled: true
+    },
+    axis:  
+    { 
+    	
+        x: {
+            type: 'timeseries',
+            tick: {
+                format: '%Y-%m-%d'
+            }
+        },
+        y: {
+          label: {
+            text: 'Some data 1',
+            position: 'outer-middle'
+          }
+        },
+		y2: {
+   			show: true,
+   			label: {
+     			text: 'avg. temperature 2',
+     			position: 'outer-middle'
+   			}
+   		},
+   		y3: {
+   			show: true,
+   			label: {
+     			text: 'avg. temperature 3',
+     			position: 'outer-middle'
+   			}
+ 		}
+ 		
+        
+    }
+    
+});
+console.log($scope.chart);
+*/
 				document.getElementById("container_graph").innerHTML = "";
-	                	
-				if (numbers1)
+				
+				var legendsColumn = 0;
+				if ($scope.showLegend)
 				{
-					var margin = {top: 20, right: 180, bottom: 50, left: 50},
+					legendsColumn = Math.ceil(numbers1.length/9);
+				}
+				else
+				{
+					legendsColumn = 0;
+				}	
+				 	
+				if (numbers1)
+				{					
+					//
+					var margin = {top: 20, right: 20, bottom: 55+(legendsColumn)*20, left: 35},
 					//width = 700,
 					width = 980,
 					//width = 1050,
@@ -1048,7 +1272,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							'showLines': $scope.showLines,							
 							'showPoints': $scope.showPoints,							
 							'showLabels': $scope.showLabels,							
-							'showGrid': $scope.showGrid
+							'showGrid': $scope.showGrid,
+							'legendsColumn': legendsColumn
 							//'arrayKeys': arrayKeys,
 							//'arrayXAxis': arrayXAxis,
 							//'arrayYAxis': arrayYAxis,
@@ -1057,7 +1282,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	                
 	                if (numbers1.length>0)
 	                {
-	                	barLine.render(numbers1, $scope.eventsToPlot);
+	                	barLine.render(numbers1, $scope.eventsToPlot, $scope.mode);
 	                }
 					
 				}
@@ -1080,6 +1305,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				
 				});
 				
+				
 				dataset.forEach(function(d,i) {
 					//console.log("2n foreach i="+i);
 					
@@ -1090,6 +1316,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						
 						
 						var datasetToSend = d;
+						//console.log(labelYAxe);
 						var pieObj = policycompass.viz.pie(
 						{
 							'idName':"pie_"+i,
@@ -1099,6 +1326,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							'margin': 20,
 							'radius':radius,
 							'innerRadious': 50,
+							'labelY': labelYAxe,
 							//'showLegend': document.getElementById("showLegend").checked,
 							//'showLines': document.getElementById("showLines").checked,
 							//'showPoints': document.getElementById("showPoints").checked,
@@ -1128,14 +1356,25 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				document.getElementById("container_graph").innerHTML = "";
 		
 				var datasetToSend = numbers1;
-	
+				//console.log(numbers1);
+				var legendsColumn = 0;
+				if ($scope.showLegend)
+				{
+					legendsColumn = Math.ceil(numbers1.length/9);
+				}
+				else
+				{
+					legendsColumn = 0;
+				}	
+				//legendsColumn = 10;
 				//console.log(datasetToSend);
-	        			
-				var margin = {top: 20, right: 20, bottom: 30, left: 40};
+	        	
+				var margin = {top: 20, right: 0, bottom: 40+(legendsColumn)*20, left: 40};
 				var width = 980 - margin.left - margin.right;
 	    		//var width = 400 - margin.left - margin.right;
-	    		var height = 300 - margin.top - margin.bottom;
-	
+	    		//var height = 300 - margin.top - margin.bottom;
+				var height = 326;
+				
 				var barObj = policycompass.viz.barsMultiple(
 				{
 	                'idName':"container_graph",
@@ -1145,7 +1384,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	            	//'labelX': "label X",
 	            	//'labelY': "label Y",
 	            	'labelX': "",
-	            	'labelY': "",
+	            	'labelY': labelYAxe,
 	            	'radius': 4,
 	            	//'showLegend': document.getElementById("showLegend").checked,
 					//'showLines': document.getElementById("showLines").checked,
@@ -1156,7 +1395,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					'showLines': $scope.showLines,
 					'showPoints': $scope.showPoints,
 					'showLabels': $scope.showLabels,
-					'showGrid': $scope.showGrid
+					'showGrid': $scope.showGrid,
+					'legendsColumn': legendsColumn
 					//'arrayKeys': arrayKeys,
 					//'arrayXAxis': arrayXAxis,
 					//'arrayYAxis': arrayYAxis,
@@ -1200,15 +1440,18 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, dialogs, $log, API_CONF) {
 	
 	//this.message = "Hello VisualizationsDetailController";
-	//alert("Hello VisualizationsDetailController");
+	//console.log("Hello VisualizationsDetailController");
 	//alert($routeParams.visualizationId);
     //$scope.test = "hallo---";
     
     helper.baseGetRelatedDataController($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF);
-//mmp    			
+    			
+
     
 	$scope.visualization = Visualization.get({id: $routeParams.visualizationId},
 			function(visualizationList) {		
+				
+				
 				
 				for (i in $scope.visualization.metrics_in_visualization)
 				{
@@ -1407,8 +1650,19 @@ $scope.xAxisTickFormatFunction = function(){
 	function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF) {
 
 		//console.log("controller VisualizationsEditController");
-		
-	$scope.mode = "edit";
+
+	
+	var locationURL = $location.path();
+	
+	if (locationURL.indexOf("edit") > -1)
+	{
+		$scope.mode = "edit";
+	}
+	else
+	{
+		$scope.mode = "view";
+	}
+	
 
     
 	//funtion to reset form
@@ -1562,8 +1816,17 @@ $scope.xAxisTickFormatFunction = function(){
 	    			}
 	    			else if (dataFilter[0]=='Grouping')
 	    			{
-	    				$scope.MetricSelectorGroupingData_[id] = dataFilter[1];
-	    				valueGroupTemp = dataFilter[1];
+	    				//console.log(dataFilter[1]);
+	    				if (dataFilter[1]!="undefined")
+	    				{
+	    					$scope.MetricSelectorGroupingData_[id] = dataFilter[1];
+	    					valueGroupTemp = dataFilter[1];	
+	    				}
+	    				else
+	    				{
+	    					$scope.MetricSelectorGroupingData_[id] = "";
+	    					valueGroupTemp = "";
+	    				}
 	    				
 	    			}
 	    			
@@ -1678,7 +1941,7 @@ $scope.xAxisTickFormatFunction = function(){
 			 
     
 	$scope.createVisualization = function() {
-		console.log("createVisualization Edit controller")
+		//console.log("createVisualization Edit controller")
 		//alert("ssssssssssssssssss");
         $scope.visualization.user_id = 1;        				     
         $scope.visualization.views_count = 0;
@@ -1706,8 +1969,8 @@ $scope.xAxisTickFormatFunction = function(){
         
 		for (i in $scope.MetricSelectediIndex_)
 		{
-			console.log("i="+i+"---$scope.MetricSelectediIndex_["+i+"]="+$scope.MetricSelectediIndex_[i])
-			console.log("MetricSelectediIndex_ i="+i);
+			//console.log("i="+i+"---$scope.MetricSelectediIndex_["+i+"]="+$scope.MetricSelectediIndex_[i])
+			//console.log("MetricSelectediIndex_ i="+i);
 			if (!isNaN($scope.MetricSelectediId_[i]))
 			{
 				//console.log("$scope.MetricSelectediId_["+i+"]="+$scope.MetricSelectediId_[i]);
@@ -1719,18 +1982,18 @@ $scope.xAxisTickFormatFunction = function(){
 				//var selectorDataColumn = $scope.MetricSelectorDataColumn_[myindex];
 				//var selectorDataColumn = $scope.MetricSelectorDataColumn_[myindex].id;
 				
-				console.log("myindex="+myindex)
+				//console.log("myindex="+myindex)
 				var value = eval('MetricSelectorDataColumn_'+myindex+'.options[MetricSelectorDataColumn_'+myindex+'.selectedIndex].value');
 				selectorDataColumn = value;
 				
-				console.log("selectorDataColumn="+selectorDataColumn);
+				//console.log("selectorDataColumn="+selectorDataColumn);
 				//var selectorGroupingData = $scope.MetricSelectorGroupingData_[myindex].id;
 				
 				//var selectorGroupingData = $scope.MetricSelectorGroupingData_[myindex].id;
 				var value = eval('MetricSelectorGroupingData_'+myindex+'.options[MetricSelectorGroupingData_'+myindex+'.selectedIndex].value');
 				var selectorGroupingData = value;
 				
-				console.log("selectorGroupingData="+selectorGroupingData);
+				//console.log("selectorGroupingData="+selectorGroupingData);
 														
 				var visualization_query_data = 'Label:'+selectorLabel+',Column:'+selectorDataColumn+',Grouping:'+selectorGroupingData;
 				//console.log("visualization_query_data="+visualization_query_data);
@@ -1900,7 +2163,7 @@ $scope.xAxisTickFormatFunction = function(){
 	'API_CONF',
 function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF) {
 	
-	console.log('VisualizationsGraphController');
+	//console.log('VisualizationsGraphController');
 	//this.message = "Hello VisualizationsDetailController";
 	//alert("Hello VisualizationsDetailController");
 	//alert($routeParams.visualizationId);
@@ -2244,7 +2507,8 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
             		title: $scope.filterEvents,
             		start: startDateToSearch,
             		end: endDateToSearch,
-            		page: pagToSearch
+            		page: pagToSearch,
+            		sort: 'title'
             	},
 				function(eventList) {
 				},

@@ -90,6 +90,12 @@
                                 <button ng-click="rotateData()" class="btn btn-primary"><span class="glyphicon glyphicon glyphicon-refresh"></span> Rotate Data</button>
                                 <button ng-click="addExtraColumn()" class="btn btn-primary"><span class="glyphicon glyphicon glyphicon-plus"></span> Add Extra Column</button>
                                 <button ng-click="clearGrid()" class="btn btn-primary"><span class="glyphicon glyphicon glyphicon-remove"></span> Clear Grid</button>
+                                <select class="form-control date-format-options"
+                                        ng-model="customdate.selection"
+                                        model="customdate.selection"
+                                        id="date-format"
+                                        name="date-format">
+                                </select>
                             </div>
                         </div>
                         <div class="row">

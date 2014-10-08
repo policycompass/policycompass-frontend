@@ -73,27 +73,64 @@
 .searchItemIcon{
     background:url(../../../img/searchItemSprite.png);
     background-repeat: no-repeat;
-    height: 120px;
+    height: 60px;
 }
 .searchItemIcon-effect > a:hover ,.searchItemIcon > a:focus{
-
 }
-
-.mapIcon{
+.fuzzymapIcon{
    background-position:center 0px;
 }
 
 .metricIcon{
-   background-position:center -120px;
+   background-position:center -60px;
 }
 
 .visualizationIcon{
-   background-position:center -240px;
+   background-position:center -120px;
 }
 
 .eventIcon{
-   background-position:center -360px;
+   background-position:center -180px;
 }
+
+.search-result {
+ margin-bottom:30px;
+}
+.search-result-container{
+ border:1px solid #AAA;
+ height:250px;
+}
+.search-result-date {
+margin-bottom:40px;
+}
+.search-result-enddate {
+margin-bottom:15px;
+}
+.search-meta-left{
+ padding-left:15px;
+}
+.searchItemType {
+text-align:center;
+}
+.search-result-title div {
+	font-size:22px;
+	color: #F7941E;
+	line-height:24px;
+	font-weight:bold;
+	margin:15px 15px 15px 15px;
+}
+.search-result-description {
+	font-size:16px;
+	line-height:18px;
+	margin:15px 15px 15px 15px;
+}
+.num-results {
+    font-size: 20px;
+    color: #AAA;
+    margin-top:15px;
+    margin-bottom:15px;
+}
+
 
 .text-justify{
     text-align: justify;
