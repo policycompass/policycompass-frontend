@@ -1003,13 +1003,16 @@ return 0;}
 						{                		
 	                		var active   = d.active ? false : true,
 	                		newOpacity = active ? 0 : 1; 
-	                		// Hide or show the elements based on the ID
+	                		//console.log("Hide or show the elements based on the class");
+	                		//console.log("d.Key.replace(/\W/g, '')="+d.Key.replace(/\W/g, ''));
 	                		//d3.select("#tag"+key.replace(/\s+/g, ''))
 	                		
 	                		//d3.selectAll(".class_"+d.Key.replace(/\s+/g, ''))
+	                		
 	                		d3.selectAll(".class_"+d.Key.replace(/\W/g, ''))
 	                    	.transition().duration(100) 
 	                    	.style("opacity", newOpacity); 
+	                    	
 	                		// Update whether or not the elements are active
 	                		d.active = active;
 	                		
@@ -1169,10 +1172,21 @@ return 0;}
                     .style("stroke", function(d,i) {return colorScale(keyCircle);})
                     //.attr("opacity", 1.0)
                     .on("mouseover", function (d,i) {
-      					d3.select(this).classed("pointOn", true);     
+                    	
+                    	var s = d3.select(this).attr("style");
+                    	var indexS = s.indexOf("opacity: 0");
+                    	//console.log("s="+s);
+                    	//console.log("indexS="+indexS);
+                    	if (indexS>-1)
+                    	{
+                    		//alert("it's hidden");
+                    	}
+                    	else
+                    	{
+      						d3.select(this).classed("pointOn", true);     
       					
-      					 var circle = d3.select(this);
-						 circle.transition()
+      					 	var circle = d3.select(this);
+						 	circle.transition()
 							.attr("r", self.radius * 2);	
 							var posMouse = d3.mouse(this);
 							//var posX = posMouse[0];
@@ -1205,6 +1219,7 @@ return 0;}
 		    				tooltip.style("opacity",1.0).html("<font color='"+colorScale(keyCircle)+"'>"+resSplit[0]+"<br/>"+endDateToPlot+" <br /> "+twoPlacedFloat+"</font>");
 		    				
 			    			//renderLine((self.x(i)), (self.y(d))); 
+			    		}
       				})
                     //.on("mouseover", function(d,i){console.log(d3.select(this));d3.select(this).classed("circuloOn", true);})
                     .on("mouseout", function(d,i) {
