@@ -2,16 +2,17 @@ angular.module('pcApp.deliberation.directives.showDiscussion', [
     'pcApp.adhocracyEmbedder.services.adhocracy',
 ])
 
-.directive('showDiscussion', ['Adhocracy', function (Adhocracy) {
+.directive('showDiscussion', ['API_CONF', 'Adhocracy', function (API_CONF, Adhocracy) {
     return {
         restrict: 'E',
         scope: {
-            path: '@'
+            key: '@'
         },
         link: function(scope, element, attrs) {
             Adhocracy.then(function (adh) {
-                element.append(adh.getIframe('comment-listing', {
-                    path: scope.path
+                element.append(adh.getIframe('create-or-show-comment-listing', {
+                    "pool-path": API_CONF.ADHOCRACY_BACKEND_URL + '/adhocracy/',
+                    key: scope.key
                 }))
             });
         }

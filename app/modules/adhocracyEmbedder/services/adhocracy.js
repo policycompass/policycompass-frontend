@@ -11,10 +11,10 @@ angular.module('pcApp.adhocracyEmbedder.services.adhocracy', [
 .factory('Adhocracy',  ["$q", "API_CONF", function($q, API_CONF) {
     var deferred = $q.defer();
     $.ajax({
-        url: policyCompassConfig.ADHOCRACY_URL + "/static/js/AdhocracySDK.js",
+        url: API_CONF.ADHOCRACY_FRONTEND_URL + "/static/js/AdhocracySDK.js",
         dataType: "script",
         success: function() {
-            adhocracy.init(API_CONF.ADHOCRACY_URL, function(result) {
+            adhocracy.init(API_CONF.ADHOCRACY_FRONTEND_URL, function(result) {
                 deferred.resolve(result)
             });
         }
