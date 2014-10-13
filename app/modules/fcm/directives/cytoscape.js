@@ -70,7 +70,7 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                     var typeColor = scope.typeColors[4];
                     // build the object, add or change properties as you need - just have a name and id
                     var elementObj = {
-                        group:dType,'data':{
+                        data:{
                             id:dId,
                             name:dName,
                             typeColor:typeColor,
@@ -100,22 +100,22 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                     style: cytoscape.stylesheet()
                         .selector('node')
                         .css({
-                            'shape': 'data(typeShape)',
+                            'shape': 'triangle',
                             'width': '120',
                             'height': '20',
                             'background-color': 'data(typeColor)',
                             'content': 'data(name)',
                             'text-valign': 'center',
                             'color': 'white',
-//                            'text-outline-width': 2,
+                            'text-outline-width': 2,
                             'text-outline-color': 'data(typeColor)'
                         })
                         .selector('edge')
                         .css({
                             'width': '1',
 			    'content': 'data(label)',
-                            'target-arrow-shape': 'triangle'
-//                            'source-arrow-shape': 'triangle'
+                            'target-arrow-shape': 'triangle',
+                            'source-arrow-shape': 'triangle'
                         })
                         .selector(':selected')
                         .css({
@@ -123,11 +123,11 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                             'line-color': 'black',
                             'target-arrow-color': 'black',
                             'source-arrow-color': 'black'
-//                        })
-//                        .selector('.faded')
-//                        .css({
-//                            'opacity': 0.65,
-//                            'text-opacity': 0.65
+                        })
+                        .selector('.faded')
+                        .css({
+                            'opacity': 0.65,
+                            'text-opacity': 0.65
                         }),
                         ready: function(){
                         window.cy = this;

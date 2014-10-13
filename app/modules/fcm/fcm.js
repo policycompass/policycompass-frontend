@@ -17,6 +17,7 @@ config(function($routeProvider) {
         })
         .when('/models/:fcmId/edit', {
             controller: 'FcmEditController',
+            controller: 'CytoscapeCtrl', 
             templateUrl: 'modules/fcm/partials/create.html'
         })
         .when('/models/:fcmId', {
