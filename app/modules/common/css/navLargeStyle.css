@@ -8,6 +8,9 @@
     font-weight: normal;
     font-style: normal;
 }
+.glyphicon-effect-wrap a::after{
+    background: #ffffff !important;
+}
 .glyphicon-effect-link{
 
     text-transform: uppercase;

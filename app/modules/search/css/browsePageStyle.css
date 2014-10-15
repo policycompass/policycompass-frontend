@@ -8,7 +8,7 @@
 }
 /*home-statement-phrase*/
 .browse-statement-phrase{
-    margin-top:20px;
+    margin-top:25px;
     margin-bottom: 10px;
     text-align: center;
     font-weight: 200;
@@ -16,6 +16,12 @@
     color: #58595b;
     padding-left: 80px;
     padding-right: 80px;
+}
+.browse-statement-phrase > p:first-child {
+    text-align: center;
+    font-weight: 200;
+    font-size: 1.6em;
+    color: #285e8e;
 }
 @-moz-document url-prefix() {
     .form-control{
@@ -158,9 +164,7 @@ text-align:center;
 
 /* Pc*/
 @media only screen and (min-width: 1024px){
-    .browse-statement-phrase{
-        margin-top:20px;
-    }
+
 }
 /* ipad landscape*/
 @media only screen and (min-width: 768px)and(max-width: 1024px) /* and(orientation : landscape) and (-webkit-min-device-pixel-ratio: 1) */ {

@@ -28,38 +28,37 @@
 <body>
 
 <header class="navbar-fixed-top">
-    <nav class="container nav-small">
-        <div class="col-lg-12">
-            <div class="pull-right">
-                <a class="muted" href="#/developers">Developers</a>
-                <span class="muted">|</span>
-                <span>Language</span>
-                <select class="btn-default btn-xs">
-                    <option>English</option>
-                    <option>German</option>
-                </select>
-            </div>
-        </div>
-    </nav><!-- /.nav -->
-    <!-- Logo -->
+    <!-- navbar -->
     <div class="container">
         <div class="logo-wrapper col-lg-12">
             <a href="#"><img src="img/PolicyCompass-logo.png" alt="Policy Compass's Logo"></a>
-            <div class="pull-right nav-medium  nav-medium-effect sign-in-wrapper">
+            <div class="columns-4 pull-right nav-medium  nav-medium-effect sign-in-wrapper">
                 <ul class="nav navbar-nav">
-                    <li><a href="#/create" data-hover="Create">Create</a></li>
-                    <li class="nav-divider"></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="Create">Create</a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <div class="columns-4-content">
+                                    <div class="row">
+                                         <div class="col-lg-12">
+                                             <create-submenu></create-submenu>
+                                         </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="divider-vertical"></li>
                     <li><a href="#/browse"  data-hover="Browse">Browse</a></li>
-                    <li><span class="muted">|</span></li>
+                    <li class="divider-vertical"></li>
                     <li><a href="#/i-want-to" data-hover="I want to">I want to</a></li>
-                    <li><span class="muted">|</span></li>
-                    <li><a href="#/how-it-works" data-hover="How It Works">How It Works </a></li>
-                    <li><span class="muted">|</span></li>
+                    <li class="divider-vertical"></li>
+                    <li><a href="/app/howitworks.html" data-hover="How It Works">How It Works </a></li>
+                    <li class="divider-vertical"></li>
                     <li><a href="#/request" data-hover="Request">Request</a></li>
-                    <li><span class="muted">&emsp;</span></li>
                     <li><a href="#" data-hover="Sign Up">Sign Up</a></li>
                     <p class="navbar-text">OR</p>
-                    <li><button type="button" class="btn btn-primary btn-sm">
+                    <li><button type="button" class="btn btn-primary btn-sm login-btn">
                         <span class="glyphicon glyphicon-user"></span> Log In
                     </button></li>
                 </ul>
