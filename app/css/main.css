@@ -1,6 +1,6 @@
 /* Policy Compass Style  */
 body{
-    padding-top: 80px;
+    padding-top: 90px;
 }
 header{
     background-color: #FFF !important;
@@ -272,6 +272,7 @@ pre {
     cursor: pointer;
 }
 .nav-tabs > li > a {
+    color:#58595b ;
     border-radius: 0px;
     -webkit-transition: background-color 300ms ease-out;
     -moz-transition: background-color 300ms ease-out;
@@ -280,7 +281,7 @@ pre {
 .nav-tabs > li > a:hover, .nav-tabs > li > a:focus {
     text-decoration: none;
     background-color: #f7941e !important;
-    color: #fff;
+    color: #f7941e;
     -webkit-transition: background-color 300ms ease-out;
     -moz-transition: background-color 300ms ease-out;
     transition: background-color 300ms ease-out;

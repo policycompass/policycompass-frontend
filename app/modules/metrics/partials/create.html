@@ -1,9 +1,9 @@
-<div class="container containerWithSecondBar">
+<div class="container">
+<legend>
+    <h3 ng-if="mode == 'create'"><span class="glyphicon glyphicon-pencil"></span> Create a New Metric</h3>
+    <h3 ng-if="mode == 'edit'"><span class="glyphicon glyphicon-pencil"></span> Edit Metric</h3>
+</legend>
 
-<create-submenu></create-submenu>
-
-<h1 ng-if="mode == 'create'"><span class="glyphicon glyphicon-pencil"></span> Create a New Metric</h1>
-<h1 ng-if="mode == 'edit'"><span class="glyphicon glyphicon-pencil"></span> Edit Metric</h1>
 
 <form name="metricForm" role="form" novalidate >
 <div class="row">
