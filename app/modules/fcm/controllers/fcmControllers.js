@@ -19,7 +19,7 @@ angular.module('pcApp.fcm.controllers.fcm', [
     function ($scope, Fcm, $log, $routeParams) {
 
     $scope.models = Fcm.query(
-        {},
+        {page: $routeParams.page},
         function (fcmList) {
 
         },
@@ -31,12 +31,53 @@ angular.module('pcApp.fcm.controllers.fcm', [
 
 .controller('FcmDetailController', [
     '$scope',
+    '$rootScope', 
     '$routeParams',
     '$location',
-    'Fcm',
+    'FcmModel',
+    'dialogs',
     '$log',
-    function ($scope, $routeParams, $location, Metric, $log) {
+    function ($scope, $rootScope, $routeParams, $location, FcmModel, dialogs, $log) {
+	$scope.mapData = [];
+	$scope.edgeData = [];
+	
+	$scope.models = FcmModel.get(
+	    {id: $routeParams.fcmId},
+	    function (fcmList) {
+		for (i=0; i<$scope.models.concepts.length; i++)
+		{
+		    var newNode = {id:$scope.models.concepts[i].conceptID.toString(), name:$scope.models.concepts[i].title};
+		    $scope.mapData.push(newNode);
+		}
+		for (i=0; i<$scope.models.connections.length; i++)
+		{
+		    var newEdge = {id:$scope.models.connections[i].connectionID.toString(), source: $scope.models.connections[i].conceptFrom.toString(), target: $scope.models.connections[i].conceptTo.toString()};
+		    $scope.edgeData.push(newEdge);
+		}
+		// broadcasting the event
+		$rootScope.$broadcast('appChanged');
+	    },
+	    function (error) {
+	        throw { message: JSON.stringify(err.data)};
+	    }
+	);
 
+    // Function for deleting the FCM Model
+    $scope.deleteModel = function(model) {
+        // Open a confirmation dialog
+        var dlg = dialogs.confirm(
+            "Are you sure?",
+            "Do you want to delete the FCM model '" + model.title + "' permanently?");
+        dlg.result.then(function () {
+            // Delete the metric via the API
+            FcmModel.delete(
+                {},
+                function(){
+                    $location.path('/' + model.fcmmodelID);
+                }
+            );
+        });
+    };
 
     }])
 

@@ -1,6 +1,10 @@
 <div class="container containerWithSecondBar">
     <!-- Menu -->
     <create-submenu></create-submenu>
+
+<h1 ng-if="mode == 'create'"><span class="glyphicon glyphicon-pencil"></span> Create a New FCM Model</h1>
+<h1 ng-if="mode == 'edit'"><span class="glyphicon glyphicon-pencil"></span> Edit FCM Model</h1>
+
     <div class="row">
         <!-- <div class="col-lg-12"><a type="button" class="btn btn-primary pull-left">Save</a></div>  -->
         <div class="col-lg-12">
@@ -20,20 +24,71 @@
                 <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
                     
 			<cytoscape cy-data="mapData" cy-edges="edgeData" cy-click="doClick(value)"></cytoscape>
-                    
+
                 </div><!-- /.col-lg-9  -->
             </div><!-- /.row  -->
         </div><!-- /.col-lg-12  -->
         <div class="col-lg-12"><br /><br />
-            <a type="button" class="btn btn-primary pull-right" ng-click="saveModel()">Save</a>
+            <a ng-if="mode == 'create'" type="button" class="btn btn-primary pull-right" ng-click="saveModel()">Save</a>
+            <a ng-if="mode == 'edit'" type="button" class="btn btn-primary pull-right" ng-click="updateModel()">Save</a>
         </div><!-- /.col-lg-12  -->
         <div class="col-lg-12">
             <hr>
             <tabset justified="true">
-                <tab heading="Open Model">Open Model</tab>
-                <tab heading="Show Concepts">Show Concepts</tab>
+                <tab heading="Model Detail">
+		    <table class="table table-hover">
+			<tr>
+			    <td><b>Title:</b></td>
+			    <td>{{ modeldetail.model.title }}</td>
+			</tr>
+			<tr>
+			    <td><b>Description:</b></td>
+			    <td>{{ modeldetail.model.description }}</td>
+			</tr>
+			<tr>
+			    <td><b>Keywords:</b></td>
+			    <td>{{ modeldetail.model.keywords }}</td>
+			</tr>
+			<tr>
+			    <td><b>Issued:</b></td>
+			    <td>{{ modeldetail.model.dateAddedtoPC | date:'longDate' }}</td>
+			</tr>
+			<tr ng-show="modeldetail.model.dateModified">
+			    <td><b>Last Modified:</b></td>
+			    <td>{{ modeldetail.model.dateModified | date:'longDate' }}</td>
+			</tr>
+		     </table>
+		</tab>
+
+                <tab heading="Show Concepts">
+		    <table class="table table-hover">
+			<tr>
+			    <td align="center"><b>Title</b></td>
+			    <td align="center"><b>Description</b></td>
+			    <td align="center"><b>Input</b></td>
+			    <td align="center"><b>Activetor</b></td>
+			    <td align="center"><b>Metrics</b></td>
+			    <td align="center"><b>Fixed Output</b></td>
+			    <td align="center"><b>Issued</b></td>
+			    <td align="center"><b>Last Modified</b></td>
+			</tr>
+			<tr ng-show="modeldetail.concepts" ng-repeat="concept in modeldetail.concepts">
+			    <td>{{ concept.title }}</td>
+			    <td>{{ concept.description }}</td>
+			    <td align="center">{{ concept.input }}</td>
+			    <td>{{ concept.activator }}</td>
+			    <td>metrics</td>
+			    <td align="center">{{ concept.fixedOutput }}</td>
+			    <td align="center">{{ concept.dateAddedtoPC | date:'longDate' }}</td>
+			    <td align="center">{{ concept.dateModified | date:'longDate' }}</td>
+			</tr>
+		     </table>
+		</tab>
+
                 <tab heading="Simulation">Simulation</tab>
+
                 <tab heading="Graph">Graph</tab>
+
                 <tab heading="Comments">Comments</tab>
             </tabset>
 

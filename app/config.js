@@ -17,7 +17,8 @@ var policyCompassConfig = {
     'ELASTIC_URL' : 'localhost:9000',
     'ELASTIC_INDEX_NAME' : 'policycompass_search',
     'ENABLE_ADHOCRACY': false,
-    'ADHOCRACY_URL': 'http://localhost:6551'
+    'ADHOCRACY_BACKEND_URL': 'http://localhost:6541',
+    'ADHOCRACY_FRONTEND_URL': 'http://localhost:6551'
 };
 
 angular.module('pcApp.config', [])
