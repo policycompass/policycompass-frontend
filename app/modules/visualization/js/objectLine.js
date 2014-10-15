@@ -860,7 +860,7 @@ return 0;}
 	  			var path = self.svg.append("path")
 		      		.datum(data)
 		      		//.attr("class", "line line--hover class_"+key.replace(/\s+/g, '')) 
-		      		.attr("class", "line line--hover class_"+key.replace(/\W/g, ''))	      		
+		      		.attr("class", "line line--hover active_item class_"+key.replace(/\W/g, ''))	      		
 		      		//.attr("id", 'tag_'+key.replace(/\s+/g, '')) // assign ID     	
 		      		.attr("id", 'tag_'+key.replace(/\W/g, '')) // assign ID
 	    	  		.style("stroke-width", 2)
@@ -970,7 +970,12 @@ return 0;}
 					.style("stroke", function(d,i) {
 						//console.log("key="+key);
 						return colorScale(key);})										
-					.on("mouseover", function (d,i) {
+					//.on("mouseover", function (d,i) {
+				    .on("mouseover", function() {
+				    	
+				    	
+						
+						
 						if (self.modeGraph=='view')
 						{
 							var str = d3.select(this).text();
@@ -978,6 +983,23 @@ return 0;}
 							if(d3.select(this).attr("text-decoration")=='none')
 							{
 								tooltip.style("opacity",1.0).html("Click over to hide "+str);	
+								
+								d3.selectAll(".active_item")
+	                    			.style("opacity", 0.3);
+	                    		
+	                    		var strokeWidth = d3.select("#tag_"+d.Key.replace(/\W/g, '')).style("stroke-width");
+	                    		strokeWidth = strokeWidth.replace("px","");
+	                    		strokeWidth = parseInt(strokeWidth)+2;
+	                    		
+								d3.selectAll("#tag_"+d.Key.replace(/\W/g, ''))
+	                    			.style("stroke-width", strokeWidth)
+	                    			.style("opacity", 1);
+	                    			
+	                    		d3.selectAll(".point_"+d.Key.replace(/\W/g, ''))
+	                    			.classed('pointOn', true)
+	                    			//.attr("r", self.radius * 2)
+	                    			.style("opacity", 1);
+	                    	
 							}
 							else
 							{
@@ -987,7 +1009,23 @@ return 0;}
 						}
 												
       					})
-					.on("mouseout", function() {                    						
+					.on("mouseout", function() {
+						   
+						d3.selectAll(".active_item")
+	                    	.style("opacity", 1);
+	                    	
+						d3.selectAll("#tag_"+d.Key.replace(/\W/g, ''))
+	                    	.style("stroke-width", 2); 
+	                    
+	                    d3.selectAll(".point_"+d.Key.replace(/\W/g, ''))
+	                    	.classed('pointOn', false)
+	                    	//.attr("r", self.radius)
+	                    	;
+						
+						                    	
+	                    	
+
+		
 						mouseout();
 						})
 					      					
@@ -1003,13 +1041,16 @@ return 0;}
 						{                		
 	                		var active   = d.active ? false : true,
 	                		newOpacity = active ? 0 : 1; 
-	                		// Hide or show the elements based on the ID
+	                		//console.log("Hide or show the elements based on the class");
+	                		//console.log("d.Key.replace(/\W/g, '')="+d.Key.replace(/\W/g, ''));
 	                		//d3.select("#tag"+key.replace(/\s+/g, ''))
 	                		
 	                		//d3.selectAll(".class_"+d.Key.replace(/\s+/g, ''))
+	                		
 	                		d3.selectAll(".class_"+d.Key.replace(/\W/g, ''))
 	                    	.transition().duration(100) 
 	                    	.style("opacity", newOpacity); 
+	                    	
 	                		// Update whether or not the elements are active
 	                		d.active = active;
 	                		
@@ -1021,10 +1062,23 @@ return 0;}
 	                		if (active) {
 	                			res = 'Click to display '+str;
 	                			res = str.replace("hide", "display");
+	                			//console.log("active");
+	                			
+	                			d3.selectAll(".class_"+d.Key.replace(/\W/g, '')) 
+	                    			.classed('active_item', false);
+	                    			
+	                    			
+	                			
 	                		}
 	                		else {
 	                			res = str.replace("display", "hide");
-	                			
+	                			//console.log("!!active");
+
+								d3.selectAll(".class_"+d.Key.replace(/\W/g, '')) 
+	                    			.classed('active_item', true)
+	                    			.style("stroke-width", 4)
+	                    			;
+	                    			
 	                		}
 	                		
 	                		//console.log(d3.select(this).attr("text-anchor"));
@@ -1164,15 +1218,26 @@ return 0;}
                     	return self.yArray[cntLine](resY);})
                     .attr("r", 0)
                     //.attr("class", "pointIn class_"+keyCircle.replace(/\s+/g, ''))
-                    .attr("class", "pointIn class_"+keyCircle.replace(/\W/g, ''))                     
+                    .attr("class", "pointIn active_item point_"+keyCircle.replace(/\W/g, '')+" class_"+keyCircle.replace(/\W/g, ''))                     
                     .style("stroke-width", self.radius)
                     .style("stroke", function(d,i) {return colorScale(keyCircle);})
                     //.attr("opacity", 1.0)
                     .on("mouseover", function (d,i) {
-      					d3.select(this).classed("pointOn", true);     
+                    	
+                    	var s = d3.select(this).attr("style");
+                    	var indexS = s.indexOf("opacity: 0");
+                    	//console.log("s="+s);
+                    	//console.log("indexS="+indexS);
+                    	if (indexS>-1)
+                    	{
+                    		//alert("it's hidden");
+                    	}
+                    	else
+                    	{
+      						d3.select(this).classed("pointOn", true);     
       					
-      					 var circle = d3.select(this);
-						 circle.transition()
+      					 	var circle = d3.select(this);
+						 	circle.transition()
 							.attr("r", self.radius * 2);	
 							var posMouse = d3.mouse(this);
 							//var posX = posMouse[0];
@@ -1205,6 +1270,7 @@ return 0;}
 		    				tooltip.style("opacity",1.0).html("<font color='"+colorScale(keyCircle)+"'>"+resSplit[0]+"<br/>"+endDateToPlot+" <br /> "+twoPlacedFloat+"</font>");
 		    				
 			    			//renderLine((self.x(i)), (self.y(d))); 
+			    		}
       				})
                     //.on("mouseover", function(d,i){console.log(d3.select(this));d3.select(this).classed("circuloOn", true);})
                     .on("mouseout", function(d,i) {

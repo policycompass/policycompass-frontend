@@ -41,10 +41,14 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
 
 .service("FCMModelsDetail", function() {
     var Models = [ 
-	{FCMModelId: -1}, 
-	{tile: ''}, 
+	{fcmmodelID: -1}, 
+	{title: ''}, 
 	{description: ''}, 
-	{keywords: ''}
+	{keywords: ''},
+	{userID: -1}, 
+	{dateAddedtoPC: ''},
+	{dateModified: ''},
+	{viewsCount: -1}
 	];
 
     return {
@@ -57,9 +61,18 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
     };
 })
 
-.controller('CytoscapeCtrl', function($scope, $rootScope, $translate, dialogs, FCMModelsDetail, ConceptsDetail, AssociationsDetail){
+.controller('CytoscapeCtrl', function($scope, $rootScope,  $routeParams, $location, $translate, Fcm, FcmModel, dialogs, FCMModelsDetail, ConceptsDetail, AssociationsDetail){
   // container objects
-  $scope.Models = [];
+  $scope.Models = [ 
+	{fcmmodelID: -1}, 
+	{title: ''}, 
+	{description: ''}, 
+	{keywords: ''},
+	{userID: -1}, 
+	{dateAddedtoPC: ''},
+	{dateModified: ''},
+	{viewsCount: -1}
+	];
   $scope.mapData = [];
   $scope.edgeData = [];
   $scope.Concepts = [];
@@ -69,14 +82,64 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
   ConceptsDetail.setConcepts($scope.Concepts);
   AssociationsDetail.setAssociations($scope.Associations);
 
-  
+if ($routeParams.fcmId)
+{
+    // Mode is editing
+    $scope.mode = "edit";
+
+  $scope.modeldetail = FcmModel.get(
+    {id: $routeParams.fcmId},
+    function (fcmList) {
+	for (i=0; i<$scope.modeldetail.concepts.length; i++)
+	{
+	    var newNode = {id:$scope.modeldetail.concepts[i].conceptID.toString(), name:$scope.modeldetail.concepts[i].title};
+	    $scope.mapData.push(newNode);
+	    $scope.Concepts.push($scope.modeldetail.concepts[i]);
+	}
+	for (i=0; i<$scope.modeldetail.connections.length; i++)
+	{
+	    var newEdge = {id:$scope.modeldetail.connections[i].connectionID.toString(), source: $scope.modeldetail.connections[i].conceptFrom.toString(), target:$scope.modeldetail.connections[i].conceptTo.toString()};
+	    $scope.edgeData.push(newEdge);
+	    $scope.Associations.push($scope.modeldetail.connections[i]);
+	}
+	// broadcasting the event
+	$rootScope.$broadcast('appChanged');
+    },
+    function (error) {
+	throw { message: JSON.stringify(err.data)};
+    }
+  );
+}
+else
+{
+    // Mode is creation
+    $scope.mode = "create";
+}
+
     $scope.saveModel = function(){
 	dlg = dialogs.create('/dialogs/savemodel.html','ModelController',{},{key: false,back: 'static'});
 	dlg.result.then(function(user){
 		$scope.Models.push(user);
+//		Date date = new Date();
+                $scope.Models.userID = 1;
+                $scope.Models.viewsCount = 1;
+                $scope.Models.dateAddedtoPC = '1/1/2014';
+
+                Fcm.save($scope.Models, function () {
+                        $location.path('/');
+                    },
+                    function (err) {
+                        throw { message: err.data};
+                    }
+                );
+		// Mode is editing
+		$scope.mode = "edit";
         },function(){
           $scope.name = 'You decided not to enter in your name, that makes me sad.';
         });
+    };
+
+    $scope.updateModel = function(){
     };
 
     // add object from the form then broadcast event which triggers the directive redrawing of the chart
@@ -94,7 +157,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
 		var newNode = {id:'n'+($scope.mapData.length), name:newObj};
 		// adding the new Node to the nodes array
 		$scope.mapData.push(newNode);
-		$scope.Concepts.push(user);
+		$scope.Concepts.push(user);		
 		// broadcasting the event
 		$rootScope.$broadcast('appChanged');
 		// resetting the form
@@ -140,7 +203,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
         $scope.mapData = [];
         $scope.edgeData = [];
         $rootScope.$broadcast('appChanged');
-    }
+    };
 })
 
 .controller('ConceptController',function($scope, $modalInstance, Metric, $log, $routeParams, data, ConceptsDetail){
