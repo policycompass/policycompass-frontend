@@ -417,7 +417,7 @@ footer{
     .navbar-nav .divider-vertical {
         height: 50px;
         /*margin: 0 9px;*/
-        border-right: 1px solid #777;
+        border-right: 1px solid #CCCCCC;
         border-left: 1px solid #f2f2f2;
     }
     .navbar-text {
