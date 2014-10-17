@@ -16,8 +16,16 @@
 				<button type="submit" class="btn btn-default" ng-click="selectTabParent(1); selectTabSon('map_1');rePlotGraph();">Map</button>
 				<button type="submit" class="btn btn-default" ng-click="selectTabParent(2)">Graph</button>
 				-->	
-				<button ng-disabled="true" type="button" ng-class="{'btn btn-default':!isSelectedParent(1),'btn btn-info':isSelectedParent(1)}" ng-click="selectTabParent(1); selectTabSon('map_1');rePlotGraph();">Map</button>									
-				<button type="button" ng-class="{'btn btn-default':!isSelectedParent(2),'btn btn-info':isSelectedParent(2)}" ng-click="selectTabParent(2)">Graph</button>
+				<button ng-disabled="true" type="button" ng-class="{'btn btn-default':!isSelectedParent(1),'btn btn-info':isSelectedParent(1)}" ng-click="selectTabParent(1); selectTabSon('mercator');rePlotGraph();">Map</button>		
+				
+				<button type="button" ng-hide="!isSelectedParent(1)" ng-disabled="!isSelectedParent(1)" ng-class="{'btn btn-default':!isSelectedSon('mercator'),'btn btn-info':isSelectedSon('mercator')}" ng-click="selectTabParent(1);selectTabSon('mercator');rePlotGraph();">Mercator</button>
+				<button type="button" ng-hide="!isSelectedParent(1)" ng-disabled="!isSelectedParent(1)" ng-class="{'btn btn-default':!isSelectedSon('conicConformal'),'btn btn-info':isSelectedSon('conicConformal')}" ng-click="selectTabParent(1);selectTabSon('conicConformal');rePlotGraph();">ConicConformal</button>
+				<button type="button" ng-hide="!isSelectedParent(1)" ng-disabled="!isSelectedParent(1)" ng-class="{'btn btn-default':!isSelectedSon('equirectangular'),'btn btn-info':isSelectedSon('equirectangular')}" ng-click="selectTabParent(1);selectTabSon('equirectangular');rePlotGraph();">Equirectangular</button>
+				<button type="button" ng-hide="!isSelectedParent(1)" ng-disabled="!isSelectedParent(1)" ng-class="{'btn btn-default':!isSelectedSon('orthographic'),'btn btn-info':isSelectedSon('orthographic')}" ng-click="selectTabParent(1);selectTabSon('orthographic');rePlotGraph();">Orthographic</button>
+				<button type="button" ng-hide="!isSelectedParent(1)" ng-disabled="!isSelectedParent(1)" ng-class="{'btn btn-default':!isSelectedSon('azimuthalEqualArea'),'btn btn-info':isSelectedSon('azimuthalEqualArea')}" ng-click="selectTabParent(1);selectTabSon('azimuthalEqualArea');rePlotGraph();">Azimuthal Equal Area</button>
+				
+											
+				<button type="button" ng-class="{'btn btn-default':!isSelectedParent(2),'btn btn-info':isSelectedParent(2)}" ng-click="selectTabParent(2);selectTabSon('graph_line');rePlotGraph();">Graph</button>
 										
 				<!--
 				<button ng-hide="!isSelectedParent(2)" type="submit" ng-disabled="!isSelectedParent(2)" class="btn btn-default" ng-click="selectTabParent(2);selectTabSon('graph_line');rePlotGraph();">Line</button>
@@ -44,16 +52,17 @@
 
             <div >
             	<div ng-show="canPlotGarph">          	
-	            	<div ng-show="(isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')) && (ListMetricsFilter.length>0)" class="graphContainerdiv">
+	            	<div ng-show="((1==1)  || isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')) && (ListMetricsFilter.length>0)" class="graphContainerdiv">
 						<input type="hidden" id="startDatePosX" name="startDatePosX" value="">
+<!--
+<div id="maplegend" class="maplegend"></div>
+-->
 						<div ng-click="isSelectedSon('graph_line') ? showModal() : void(0)">
 							<div id="container_graph" class="container_graph">
-								
 								<div class="loading-container">
 									<div class="loading"></div>
 									<div id="loading-text">loading</div>
-								</div>
-								
+								</div>								
 							</div>
 						</div>
 					</div>
@@ -62,8 +71,8 @@
 					<!-- ini tab metrics -->
                     <tab heading="Metrics">                    
 						<div id="showFilterContainer" class="showFilterContainer">
-							<div id="showFilter" ng-show="isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')" class="showFilter on_check">
-								<div id="div_showLegend" ng-show="isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')" class="on_check">
+							<div id="showFilter" ng-show="isSelectedParent(1) || isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')" class="showFilter on_check">
+								<div id="div_showLegend" ng-show="isSelectedParent(1) || isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')" class="on_check">
 									<label class="checkbox-inline">
 										<input ng-model="showLegend" type="checkbox" ng-click="rePlotGraph();" name="showLegend"  id="showLegend" class="checkbox filterCheckBox"> Show Legend
 									</label>
@@ -93,6 +102,18 @@
 										<input ng-model="showYAxes" type="checkbox" ng-click="rePlotGraph();" name="showYAxes"  id="showYAxes" class="checkbox filterCheckBox"> Show only one Y axe
 									</label>
 								</div>
+
+								<div id="div_showZoom" ng-show="!isSelectedSon('orthographic') && !isSelectedSon('azimuthalEqualArea')" class="on_check">
+									<label class="checkbox-inline">
+										<input ng-model="showZoom" type="checkbox" ng-click="rePlotGraph();" name="showZoom"  id="showZoom" class="checkbox filterCheckBox"> Enable Zoom
+									</label>
+								</div>								
+								<div id="div_showMovement" ng-show="isSelectedParent(1)" class="on_check">
+									<label class="checkbox-inline">
+										<input ng-model="showMovement" type="checkbox" ng-click="rePlotGraph();" name="showMovement"  id="showMovement" class="checkbox filterCheckBox"> Enable Movement
+									</label>
+								</div>
+								
 							</div>
 						</div>
 								
