@@ -1,9 +1,8 @@
-<div class="container containerWithSecondBar">
-
-<create-submenu></create-submenu>
-
-<h1 ng-if="mode == 'create'"><span class="glyphicon glyphicon-pencil"></span> Create a New Visualization</h1>
-<h1 ng-if="mode == 'edit'"><span class="glyphicon glyphicon-pencil"></span> Edit Visualization</h1>
+<div class="container">
+<legend>
+    <h3 ng-if="mode == 'create'"><span class="glyphicon glyphicon-pencil"></span> Create a New Visualization</h3>
+    <h3 ng-if="mode == 'edit'"><span class="glyphicon glyphicon-pencil"></span> Edit Visualization</h3>
+</legend>
 
 <div class="row">
     <div class="col-lg-12 pc-visualization-formcontrols">

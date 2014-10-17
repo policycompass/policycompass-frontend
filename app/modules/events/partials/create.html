@@ -1,8 +1,9 @@
-<div class="container containerWithSecondBar">
-<create-submenu></create-submenu>
+<div class="container">
+<legend>
+    <h3 ng-if="mode == 'create'"><span class="glyphicon glyphicon-pencil"></span> Create a New Event</h3>
+    <h3 ng-if="mode == 'edit'"><span class="glyphicon glyphicon-pencil"></span> Edit Event</h3>
+</legend>
 
-<h1 ng-if="mode == 'create'"><span class="glyphicon glyphicon-pencil"></span> Create a New Event</h1>
-<h1 ng-if="mode == 'edit'"><span class="glyphicon glyphicon-pencil"></span> Edit Event</h1>
 
 <form name="eventForm" role="form" novalidate>
     <div class="row">

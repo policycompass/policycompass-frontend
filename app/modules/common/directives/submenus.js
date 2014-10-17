@@ -5,7 +5,7 @@ angular.module('pcApp.common.directives.submenus', [
 .directive("createSubmenu", function () {
     return {
         restrict: "E",
-        template: '<div class="row navbar-fixed-top secondBar">' +
+        template: '<div class="row">' +
             '<div class="glyphicon-effect-wrap glyphicon-effect">' +
         '<a  href="#/metrics/create"><span class="glyphicon glyphicon-style glyphicon-ok"></span><span class="glyphicon-effect-link">Metric</span></a>' +
         '<a  href="#/visualizations/create"><span class="glyphicon glyphicon-style glyphicon-ok"></span><span class="glyphicon-effect-link">Visualisation</span></a>' +
@@ -15,7 +15,19 @@ angular.module('pcApp.common.directives.submenus', [
         '</div>'
     };
 })
-
+    .directive("createSubmenuTemp", function () {
+        return {
+            restrict: "E",
+            template: '<div class="row">' +
+                '<div class="glyphicon-effect-wrap glyphicon-effect">' +
+                '<a  href="/#/metrics/create"><span class="glyphicon glyphicon-style glyphicon-ok"></span><span class="glyphicon-effect-link">Metric</span></a>' +
+                '<a  href="/#/visualizations/create"><span class="glyphicon glyphicon-style glyphicon-ok"></span><span class="glyphicon-effect-link">Visualisation</span></a>' +
+                '<a  href="/#/events/create"><span class="glyphicon glyphicon-style glyphicon-ok"></span><span class="glyphicon-effect-link">Historical Event</span></a>' +
+                '<a  href="/#/models/create"><span class="glyphicon glyphicon-style glyphicon-ok"></span><span class="glyphicon-effect-link">FCM</span></a>' +
+                '</div>' +
+                '</div>'
+        };
+    })
 .directive("browseSubmenu", function () {
     return {
         restrict: "E",

@@ -16,7 +16,7 @@
     text-align: center;
 }
 .home-statement-phrase{
-    margin-top:30px;
+    margin-top:25px;
     margin-bottom: 30px;
 }
 .home-statement-phrase > p{
@@ -24,7 +24,6 @@
     font-weight: 200;
     font-size: 2em;
     color: #285e8e;
-
 }
 .home-statement-phrase > p:last-child {
     text-align: center;
@@ -113,7 +112,7 @@
 /* Pc*/
 @media only screen and (min-width: 1024px){
     .home-statement-phrase{
-        margin-top:30px;
+        margin-top:25px;
         margin-bottom: 30px;
     }
 }
