@@ -1,3 +1,4 @@
+
 angular.module('pcApp.visualization.controllers.visualization', [
     'pcApp.visualization.services.visualization',
     'pcApp.references.services.reference',
@@ -133,7 +134,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
     		var openedLabels = 0;
 			mousemove = function() 
 			{
-				//	console.log(d3.event.pageX);
+					//console.log(d3.event.pageX);
 				tooltip
 					.style("left", (d3.event.pageX +20) + "px")
 					.style("top", (d3.event.pageY - 12) + "px");
@@ -1089,19 +1090,41 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	     			$scope.showGrid = document.getElementById("showGrid").checked;
 	 			}	
 	 							
-
+				var element = document.getElementById('showZoom');
+	 			if (element != null) {
+	     			$scope.showZoom = document.getElementById("showZoom").checked;
+	 			}
+	 			
+	 			var element = document.getElementById('showMovement');
+	 			if (element != null) {
+	     			$scope.showMovement = document.getElementById("showMovement").checked;
+	 			}
 							
 			
 			
-			if ($scope.typeToPlot==='map_1')
+			if ( ($scope.typeToPlot==='map_1') 
+			|| ($scope.typeToPlot==='mercator') 
+			|| ($scope.typeToPlot==='conicConformal')
+			|| ($scope.typeToPlot==='equirectangular')
+			|| ($scope.typeToPlot==='orthographic')
+			|| ($scope.typeToPlot==='azimuthalEqualArea')
+			)
 			{
 				document.getElementById("container_graph").innerHTML = "";
-	
+				var margin = {top: 20, right: 20, bottom: 20, left: 20},
+				width = 800,
+				height = 400;
+					
 				var mapObj = policycompass.viz.mapW(
 				{
 					'idName':"container_graph",
-					'width': 800,
-					'height':400
+					'width': width,
+					'height': height,
+					'margin': margin,
+					'legend': $scope.showLegend,
+					'projection': $scope.typeToPlot,
+					'showZoom': $scope.showZoom,
+					'showMovement': $scope.showMovement
 				})
 	
 			}
@@ -1514,7 +1537,97 @@ console.log($scope.chart);
 	'$routeParams',
 	function($scope, $log, $routeParams) {
 		
-		console.log ('-->ExampleCtrl<---');
+		console.log ('-->ExampleCtrlhhhhhhhh<---');
+
+
+		var colors = d3.scale.category10();
+		
+
+		var chartParams = {
+			"data": {
+				"2011":
+					[
+						{'location':'ESP', "value":125},
+						{'location':'ITA', "value":50},
+						{'location':'FRA', "value":75}
+					]
+					,
+				"2012":
+					[
+						{'location':'ESP', "value":45},
+						{'location':'ITA', "value":30},
+						{'location':'FRA', "value":25}
+					]
+					,
+				"2013":
+					[
+						{'location':'ESP', "value":88},
+						{'location':'ITA', "value":55},
+						{'location':'FRA', "value":44}
+					]
+					,
+				"2014":
+					[
+						{'location':'ESP', "value":12},
+						{'location':'ITA', "value":43},
+						{'location':'FRA', "value":44}
+					]
+			}			
+		};
+		
+		console.log("chartParams");
+		console.log(chartParams['data']['2011']);
+
+
+		
+		
+		$scope.loadMapExample = function(){		
+			console.log("sss");
+/*
+var mapOptions = {
+        panControl    : true,
+        zoomControl   : true,
+        scaleControl  : true,
+        mapTypeControl: true,
+        //mapTypeId     : google.maps.MapTypeId.SATELLITE,
+        mapTypeId     : google.maps.MapTypeId.TERRAIN,
+    };
+
+
+$scope.map = {
+    center: {
+        latitude: 45,
+        longitude: -73
+    },
+    zoom: 8,
+    options: mapOptions,
+};
+*/
+/*
+			$scope.map = {
+			  type: 'world',
+			  data: [{
+			  	values: chartParams['data']['2011']
+			  }],			 
+			  colors: [colors(125), colors(50), colors(70)],
+			  //colors: ['red', 'green', 'blue'],
+			  options: {
+			    width: 1110,
+			    legendHeight: 60, // optionally set the padding for the legend
+			    legend: true,
+			  }
+			}			
+*/
+
+
+
+			console.log("---------");
+			console.log($scope.map);
+		};
+
+		$scope.loadMapExample();
+
+
 
 		//var app = angular.module("nvd3TestApp", ['nvd3ChartDirectives']);
 		//$scope.exampleData = [];
@@ -1703,7 +1816,19 @@ $scope.xAxisTickFormatFunction = function(){
     				//$scope.tabParent = 2;
 					//$scope.tabSon = 'graph_line';
 					//$scope.typeToPlot= 'graph_line';
-    				$scope.tabParent = 2;
+					//console.log("dataFilter[1]="+dataFilter[1]);
+					if ((dataFilter[1]=='graph_line') || (dataFilter[1]=='graph_pie') || (dataFilter[1]=='graph_bars'))
+					{
+						$scope.tabParent = 2;	
+					}
+    				else if (dataFilter[1])
+    				{
+    					$scope.tabParent = 1;
+    				}
+    				else
+    				{
+    					$scope.tabParent = 2;
+    				}
 					$scope.tabSon = dataFilter[1];
 					$scope.typeToPlot = dataFilter[1];
 					
@@ -1963,6 +2088,8 @@ $scope.xAxisTickFormatFunction = function(){
         dataConfig['showLabels'] = $scope.showLabels;
         dataConfig['showGrid'] = $scope.showGrid;
         dataConfig['showYAxes'] = $scope.showYAxes;
+        dataConfig['showZoom'] = $scope.showZoom;
+        dataConfig['showMovement'] = $scope.showMovement;
                
         
         var dataMetrics = [];
@@ -2240,6 +2367,8 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 	$scope.showLabels = true;
 	$scope.showGrid = true;
 	$scope.showYAxes = true;
+	$scope.showZoom = true;
+	$scope.showMovement = true;
 	
 	
 	$scope.visualization = {};
@@ -2289,6 +2418,8 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
         dataConfig['showLabels'] = $scope.showLabels;
         dataConfig['showGrid'] = $scope.showGrid;
         dataConfig['showYAxes'] = $scope.showYAxes;
+        dataConfig['showZoom'] = $scope.showZoom;
+        dataConfig['showMovement'] = $scope.showMovement;
                
         
         var dataMetrics = [];
