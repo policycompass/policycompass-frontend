@@ -31,27 +31,14 @@
 
 <header class="navbar-fixed-top">
     <!-- navbar -->
-    <div class="container">
+    <div class="container-fluid">
         <div class="logo-wrapper col-lg-12">
             <a href="#"><img src="img/PolicyCompass-logo.png" alt="Policy Compass's Logo"></a>
             <div class="columns-4 pull-right nav-medium  nav-medium-effect sign-in-wrapper">
                 <ul class="nav navbar-nav">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="Create">Create</a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <div class="columns-4-content">
-                                    <div class="row">
-                                         <div class="col-lg-12">
-                                             <create-submenu></create-submenu>
-                                         </div>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
+                    <li><a id="createLink" href="" ng-click="isCollapsed = !isCollapsed" data-hover="Create">Create</a></li>
                     <li class="divider-vertical"></li>
-                    <li><a href="#/browse"  data-hover="Browse">Browse</a></li>
+                    <li><a  href="#/browse"  data-hover="Browse">Browse</a></li>
                     <li class="divider-vertical"></li>
                     <li><a href="#/i-want-to" data-hover="I want to">I want to</a></li>
                     <li class="divider-vertical"></li>
@@ -64,20 +51,64 @@
                         <span class="glyphicon glyphicon-user"></span> Log In
                     </button></li>
                 </ul>
-
             </div>
         </div><!-- /.logo-wrapper -->
     </div><!-- /.container -->
     <!-- LandingPageContent -->
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 border-top"></div>
-        </div><!-- /.row  -->
-    </div>
-
 </header>
-
-
+<div class="create-submenu" collapse="isCollapsed" ng-cloak>
+        <div class="well well-lg well-primary create-submenu-well">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 close-create-submenu"><a href="" ng-click="isCollapsed = !isCollapsed" class="pull-right"><span class="glyphicon glyphicon-remove "></span></a></div>
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-lg-3 columns-create-submenu">
+                                <div class="row">
+                                    <div class="col-lg-4 columns-create-submenu-icon-1"></div>
+                                    <div class="col-lg-8 columns-create-submenu-text">
+                                        <a href="#/metrics/create">
+                                            <h3>CREATE METRICS</h3>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 columns-create-submenu">
+                                <div class="row">
+                                    <div class="col-lg-4 columns-create-submenu-icon-2"></div>
+                                    <div class="col-lg-8 columns-create-submenu-text">
+                                        <a href="#/events/create">
+                                            <h3>CREATE HISTORICAL EVENTS</h3>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 columns-create-submenu">
+                                <div class="row">
+                                    <div class="col-lg-4 columns-create-submenu-icon-3"></div>
+                                    <div class="col-lg-8 columns-create-submenu-text">
+                                        <a href="#/visualizations/create">
+                                            <h3>CREATE VISUALISATION</h3>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="row">
+                                    <div class="col-lg-4 columns-create-submenu-icon-4"></div>
+                                    <div class="col-lg-8 columns-create-submenu-text">
+                                        <a href="#/models/create">
+                                            <h3>CREATE FUZZY COGNITIVE MAP</h3>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
 
 <div ng-view=""></div>
 
@@ -85,9 +116,6 @@
 
 <footer>
     <div class="container">
-        <div class="row">
-            <div class="col-lg-12 border-bottom"></div>
-        </div><!-- /.row  -->
         <div class="row footer-wrapper">
             <div class="col-lg-6 col-md-6 col-sm-12">
                 <a class="muted" href="#">Publishing Notes</a>

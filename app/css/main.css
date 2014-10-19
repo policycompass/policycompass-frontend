@@ -4,9 +4,7 @@ body{
 }
 header{
     background-color: #FFF !important;
-    -webkit-box-shadow: 0px 3px 20px 6px rgba(255, 255, 255, 0.75);
-    -moz-box-shadow:    0px 3px 20px 6px rgba(255, 255, 255, 0.75);
-    box-shadow:         0px 3px 20px 6px rgba(255, 255, 255, 0.75);
+    border-bottom: 1px solid #CCCCCC;
 }
 .border-top{
     background:url(../img/border-top.png) no-repeat center ;
@@ -70,7 +68,6 @@ pre {
 }
 .well-primary{
     background-color: #428BCA !important;
-    border: 1px solid #FFF !important;
     color: #fff;
 }
 
@@ -244,7 +241,57 @@ pre {
     right: 0;
     top: 87px;
 }
+.create-submenu{
+    margin-top: -5px;
+}
+.create-submenu-well{
+    padding-top: 5px !important;
+}
+.close-create-submenu > a > span{
+    color: #a1c4e5;
+    font-size: 20px;
+}
+.close-create-submenu > a:hover >span{
+    color: #ffffff !important;
+}
+.columns-create-submenu{
+    border-right: 1px solid #a1c4e5;
+}
+.columns-create-submenu-icon-1{
+    background:url(../img/icon/iconMetricSmall.png) no-repeat center ;
+    height: 100px;
+}
+.columns-create-submenu-icon-2{
+    background:url(../img/icon/iconHistoricalEventsSmall.png) no-repeat center ;
+    height: 100px;
+}
+.columns-create-submenu-icon-3{
+    background:url(../img/icon/iconVisualisationSmall.png) no-repeat center ;
+    height: 100px;
+}
+.columns-create-submenu-icon-4{
+    background:url(../img/icon/iconMapSmall.png) no-repeat center ;
+    height: 100px;
+}
 
+.columns-create-submenu-text{
+    margin-top: 15px;
+}
+.columns-create-submenu-text > a > h3 {
+    margin-top: 10px !important;
+    color: #a1c4e5 !important;
+    font-weight: 300;
+    text-transform: uppercase;
+    text-decoration: none !important;
+    font-size: 19px;
+}
+.columns-create-submenu-text > a:hover,.columns-create-submenu-text > a:focus {
+    text-decoration: none !important;
+    cursor: pointer;
+}
+.columns-create-submenu-text > a:hover > h3,.columns-create-submenu-text > a:focus > h3 {
+    color: #ffffff !important;
+}
 /*input*/
 .browse-input{
     border-right: none;
@@ -350,11 +397,15 @@ pre {
 }
 /* footer*/
 footer{
+    border-top: 1px solid #CCCCCC;
     margin-top: 20px;
 }
 .footer-wrapper a{
     color: #58595b;
     font-weight: 400;
+}
+.footer-wrapper >.col-lg-6:first-child{
+    border-right: 1px solid #CCCCCC;
 }
 .footer-wrapper a:hover,.footer-wrapper a:focus,.footer-wrapper a:active{
     color:#fa8800;
