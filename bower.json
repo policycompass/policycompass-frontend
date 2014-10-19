@@ -27,6 +27,7 @@
     "d3": "",
     "angular-spectrum-colorpicker": "",
     "elasticsearch": "",
-    "skrollr": "~0.6.26"
+    "skrollr": "~0.6.26",
+    "topojson": ""
   }
 }
