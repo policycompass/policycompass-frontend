@@ -1,4 +1,5 @@
 <div class="container">
+
 <legend>
     <h3 ng-if="mode == 'create'"><span class="glyphicon glyphicon-pencil"></span> Create a New Metric</h3>
     <h3 ng-if="mode == 'edit'"><span class="glyphicon glyphicon-pencil"></span> Edit Metric</h3>
@@ -8,7 +9,7 @@
 <form name="metricForm" role="form" novalidate >
 <div class="row">
     <div class="col-lg-4">
-            <h4>Main Details</h4>
+            <legend>Main Details</legend>
             <div class="form-group" ng-class="{'has-error': metricForm.title.$dirty && metricForm.title.$invalid}">
                 <label for="title">Title *</label>
                 <input type="text" class="form-control" id="title" name="title" placeholder="Metric Title" ng-model="metric.title" ng-minlength="3" required>
@@ -66,44 +67,46 @@
     </div>
     <div class="col-lg-8">
         <div ng-switch="step">
-
             <div ng-switch-when="one">
                 <tabset>
                     <tab heading="Data Grid" active="tabsel.grid">
-                        <div class="row">
-                            <div class="col-lg-12 pc-datagrid-heading">
-                                Metric Content *
+                        <div class="nav-wrapper offcanvas-wrapper">
+                            <div id="myNavmenuCanvas">
+                                <nav id="myNavmenu" class="navmenu navmenu-default navmenu-fixed-left offcanvas" role="navigation">
+                                    <a class="navmenu-brand" href="#">Options</a>
+                                    <ul class="nav navmenu-nav">
+                                        <li><a href="" ng-click="rotateData()" class="btn"><span class="glyphicon glyphicon glyphicon-refresh"></span> Rotate Data</a></li>
+                                        <li><a href="" ng-click="addExtraColumn()" class="btn"><span class="glyphicon glyphicon glyphicon-plus"></span> Add Extra Column</a></li>
+                                        <li><a href="" ng-click="clearGrid()" class="btn"><span class="glyphicon glyphicon glyphicon-remove"></span> Clear Grid</a></li>
+                                        <li>
+                                            <select class="form-control date-format-options"
+                                                    ng-model="customdate.selection"
+                                                    model="customdate.selection"
+                                                    id="date-format"
+                                                    name="date-format">
+                                            </select>
+                                        </li>
+                                    </ul>
+                                </nav>
+                                <div class="navbar navbar-default navbar-fixed-top">
+                                    <button type="button" class="navbar-toggle" data-toggle="offcanvas" data-target="#myNavmenu" data-canvas="#myNavmenuCanvas" data-placement="left">
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                    </button>
+                                    <div id="metricContent">Metric Content *</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="pc-datagrid" instance="grid.instance" data="grid.data" ng-if="gridvisible" id="datagrid"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-12">
-                                <div class="pc-datagrid" instance="grid.instance" data="grid.data" ng-if="gridvisible" id="datagrid"></div>
+                                <legend>Metric Columns</legend>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-12 pc-datagrid-heading">
-                                Options
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <button ng-click="rotateData()" class="btn btn-primary"><span class="glyphicon glyphicon glyphicon-refresh"></span> Rotate Data</button>
-                                <button ng-click="addExtraColumn()" class="btn btn-primary"><span class="glyphicon glyphicon glyphicon-plus"></span> Add Extra Column</button>
-                                <button ng-click="clearGrid()" class="btn btn-primary"><span class="glyphicon glyphicon glyphicon-remove"></span> Clear Grid</button>
-                                <select class="form-control date-format-options"
-                                        ng-model="customdate.selection"
-                                        model="customdate.selection"
-                                        id="date-format"
-                                        name="date-format">
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-12 pc-datagrid-heading">
-                                Metric Columns
-                            </div>
-                        </div>
-                        <div class="row">
                             <div class="col-lg-2 pc-datagrid-mainlabel">
                                 Time
                             </div>
@@ -227,20 +230,13 @@
             </div>
 
         </div>
-
-    </div>
-
-</div>
-
-<div class="row">
-    <div class="col-lg-12 pc-metric-formcontrols">
-        <div class="form-group pull-right">
+        <div class="form-group pull-right pc-metric-formcontrols">
             <button type="submit" ng-show="step=='second'" class="btn btn-default" ng-click="prevStep()"><span class="glyphicon glyphicon-chevron-left"></span> Previous Step</button>
             <button type="submit" id="nextStepButton" ng-show="step=='one'" ng-disabled="metricForm.$invalid" class="btn btn-default" ng-click="nextStep()">Next Step <span class="glyphicon glyphicon-chevron-right"></span></button>
             <button type="submit" id="saveButton" ng-show="step=='second'" ng-disabled="metricForm.$invalid" class="btn btn-default" ng-click="createMetric()"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>
         </div>
     </div>
-</div>
 
+</div>
 </form>
 </div>
