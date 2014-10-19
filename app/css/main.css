@@ -448,6 +448,9 @@ footer{
 /* Pc*/
 @media only screen and (min-width: 1024px){
     /* nav-small*/
+    body{
+        padding-top: 90px;
+    }
     .nav-small > .col-lg-12 > .pull-right > a {
         color:#777;
         font-weight: 400;
@@ -636,7 +639,9 @@ footer{
     /*logo */
     .logo-wrapper {
         margin-top: 10px;
+        text-align: center;
     }
+
     /*
      */
     .sign-in-wrapper {
@@ -760,6 +765,9 @@ footer{
 }
 /* ipad portrait*/
 @media only screen and (max-width: 768px) /*and (orientation : portrait) and (-webkit-min-device-pixel-ratio: 1)*/{
+    body {
+        padding-top: 150px;
+    }
     /* nav-small*/
     .nav-small > .col-lg-12 > .pull-right > a {
         color:#777;
@@ -790,6 +798,7 @@ footer{
     /*logo */
     .logo-wrapper {
         margin-top: 10px;
+        text-align: center;
     }
     /*
      */
@@ -944,6 +953,7 @@ footer{
     /*logo */
     .logo-wrapper {
         margin-top: 10px;
+        text-align: center;
     }
     /*
      */
