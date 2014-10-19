@@ -126,27 +126,27 @@
 
         <div class="col-lg-12 result-wrapper">
           <div class="row">
-            <div class="result-block col-lg-3 col-md-3 col-sm-6 col-xs-6">
-              <div class=".searchItemIcon-effect">
-                <div class="searchItemIcon fuzzymapIcon col-lg-12"></div>
-                <!-- /.col-lg-12  -->
+              <div class="result-block col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                  <div class=".searchItemIcon-effect">
+                      <div class="searchItemIcon fuzzymapIcon col-lg-12"></div>
+                      <!-- /.col-lg-12  -->
+                  </div>
+                  <div class="col-lg-12">
+                      <a href="#/models" popover="dynamicPopover" popover-title="dynamicPopoverTitle" popover-trigger="mouseenter">
+                          <h5>Fuzzy Cognitive Map</h5>
+                          <p class="text-justify">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidun</p>
+                      </a>
+                  </div>
+                  <!-- /.col-lg-12  -->
+                  <div class="col-lg-12">
+                      <div class="rating">
+                          <rating ng-model="rate" max="max" readonly="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null"></rating>
+                          <span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" ng-show="overStar && !isReadonly">{{percent}}%</span>
+                      </div>
+                  </div>
+                  <!-- /.col-lg-12  -->
               </div>
-              <div class="col-lg-12">
-                <a href="#/models">
-                  <h5>Fuzzy Cognitive Map</h5>
-                  <p class="text-justify">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidun</p>
-                </a>
-              </div>
-              <!-- /.col-lg-12  -->
-              <div class="col-lg-12">
-                <div class="rating">
-                  <rating ng-model="rate" max="max" readonly="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null"></rating>
-                  <span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" ng-show="overStar && !isReadonly">{{percent}}%</span>
-                </div>
-              </div>
-              <!-- /.col-lg-12  -->
-            </div>
-            <!-- /result-block .col-lg-3  -->
+              <!-- /result-block .col-lg-3  -->
             <div class="result-block col-lg-3 col-md-3 col-sm-6 col-xs-6">
               <div class="searchItemIcon visualizationIcon col-lg-12"></div>
               <!-- /.col-lg-12  -->
