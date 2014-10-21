@@ -149,6 +149,8 @@ policycompass.viz.line = function(options)
 		*/
 		var showLegend = self.showLegend;
 		var showLines = self.showLines;
+		var showAreas = self.showAreas;
+		
 		var showPoints = self.showPoints;
 		var showLabels = self.showLabels;
 		var showGrid = self.showGrid;
@@ -851,12 +853,32 @@ return 0;}
   			}));
   			*/
   			
-			if (showLines)
+			if (showAreas)
 			{
 				
 				//console.log("key="+key);
 				//console.log(data);
 				
+				var area = d3.svg.area()
+    				.x(function(d) { 
+    				return self.xScale(getDate(d.xOriginal));
+    				})
+    				.y0(self.height)
+    				.y1(function(d) { 
+				    	return (self.yArray[self.cntLineasPintadas](d.posY)); 
+    				});
+
+				self.svg.append("path")
+      				.datum(data)
+      				.attr("class", "area area_item area_class_"+key.replace(/\W/g, ''))
+      				.attr("d", area)
+      				.style("fill", function(d,i) {return colorScale(key);})
+      				.style("stroke", function(d,i) {return colorScale(key);})
+      				.style("opacity",0.3)
+      				;
+      		}
+          	if (showLines)
+		  	{
 	  			var path = self.svg.append("path")
 		      		.datum(data)
 		      		//.attr("class", "line line--hover class_"+key.replace(/\s+/g, '')) 
@@ -1040,7 +1062,8 @@ return 0;}
                 		if (self.modeGraph=='view')
 						{                		
 	                		var active   = d.active ? false : true,
-	                		newOpacity = active ? 0 : 1; 
+	                		newOpacity = active ? 0 : 1;
+	                		var newOpacityArea  = active ? 0 : 0.3;
 	                		//console.log("Hide or show the elements based on the class");
 	                		//console.log("d.Key.replace(/\W/g, '')="+d.Key.replace(/\W/g, ''));
 	                		//d3.select("#tag"+key.replace(/\s+/g, ''))
@@ -1050,6 +1073,12 @@ return 0;}
 	                		d3.selectAll(".class_"+d.Key.replace(/\W/g, ''))
 	                    	.transition().duration(100) 
 	                    	.style("opacity", newOpacity); 
+	                    	
+	                    	
+	                    	d3.selectAll(".area_class_"+d.Key.replace(/\W/g, ''))
+	                    	.transition().duration(100) 
+	                    	.style("opacity", newOpacityArea);
+	                    	
 	                    	
 	                		// Update whether or not the elements are active
 	                		d.active = active;

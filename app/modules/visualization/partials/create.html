@@ -81,6 +81,11 @@
 										<input ng-model="showLines" type="checkbox" ng-click="rePlotGraph();" name="showLines"  id="showLines" class="checkbox filterCheckBox"> Show Lines
 									</label>
 								</div>
+								<div id="div_showLines" ng-show="isSelectedSon('graph_line')" class="on_check">
+									<label class="checkbox-inline">
+										<input ng-model="showAreas" type="checkbox" ng-click="rePlotGraph();" name="showAreas"  id="showAreas" class="checkbox filterCheckBox"> Show Areas
+									</label>
+								</div>
 								<div id="div_showPoints" ng-show="isSelectedSon('graph_line')" class="on_check">
 									<label class="checkbox-inline">
 										<input ng-model="showPoints" type="checkbox" ng-click="rePlotGraph();" name="showPoints"  id="showPoints" class="checkbox filterCheckBox"> Show Points
@@ -101,8 +106,7 @@
 										<input ng-model="showYAxes" type="checkbox" ng-click="rePlotGraph();" name="showYAxes"  id="showYAxes" class="checkbox filterCheckBox"> Show only one Y axe
 									</label>
 								</div>
-
-								<div id="div_showZoom" ng-show="!isSelectedSon('orthographic') && !isSelectedSon('azimuthalEqualArea')" class="on_check">
+								<div id="div_showZoom" ng-show="isSelectedParent(1) && !isSelectedSon('orthographic') && !isSelectedSon('azimuthalEqualArea')" class="on_check">
 									<label class="checkbox-inline">
 										<input ng-model="showZoom" type="checkbox" ng-click="rePlotGraph();" name="showZoom"  id="showZoom" class="checkbox filterCheckBox"> Enable Zoom
 									</label>

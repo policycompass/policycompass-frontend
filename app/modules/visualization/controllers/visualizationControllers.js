@@ -1074,6 +1074,11 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	 			if (element != null) {
 	     			$scope.showLines = document.getElementById("showLines").checked;
 	 			}
+	 			
+	 			var element = document.getElementById('showAreas');
+	 			if (element != null) {
+	     			$scope.showAreas = document.getElementById("showAreas").checked;
+	 			}
 
 				var element = document.getElementById('showPoints');
 	 			if (element != null) {
@@ -1292,7 +1297,8 @@ console.log($scope.chart);
 							//'showGrid': document.getElementById("showGrid").checked
 							'showYAxesTogether': $scope.showYAxes,	                		
 	                		'showLegend': $scope.showLegend,							
-							'showLines': $scope.showLines,							
+							'showLines': $scope.showLines,	
+							'showAreas': $scope.showAreas,													
 							'showPoints': $scope.showPoints,							
 							'showLabels': $scope.showLabels,							
 							'showGrid': $scope.showGrid,
@@ -1357,6 +1363,7 @@ console.log($scope.chart);
 							//'showGrid': document.getElementById("showGrid").checked
 							'showLegend': $scope.showLegend,
 							'showLines': $scope.showLines,
+							'showAreas': $scope.showAreas,							
 							'showPoints': $scope.showPoints,
 							'showLabels': $scope.showLabels,
 							'showGrid': $scope.showGrid
@@ -1416,6 +1423,7 @@ console.log($scope.chart);
 					//'showGrid': document.getElementById("showGrid").checked
 	            	'showLegend': $scope.showLegend,
 					'showLines': $scope.showLines,
+					'showAreas': $scope.showAreas,					
 					'showPoints': $scope.showPoints,
 					'showLabels': $scope.showLabels,
 					'showGrid': $scope.showGrid,
@@ -2084,6 +2092,7 @@ $scope.xAxisTickFormatFunction = function(){
         dataConfig['graphSelected'] = $scope.typeToPlot;
         dataConfig['showLegend'] = $scope.showLegend;
         dataConfig['showLines'] = $scope.showLines;
+        dataConfig['showAreas'] = $scope.showAreas;        
         dataConfig['showPoints'] = $scope.showPoints;
         dataConfig['showLabels'] = $scope.showLabels;
         dataConfig['showGrid'] = $scope.showGrid;
@@ -2363,6 +2372,7 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 	//filters
 	$scope.showLegend = true;
 	$scope.showLines = true;
+	$scope.showAreas = true;
 	$scope.showPoints = true;
 	$scope.showLabels = true;
 	$scope.showGrid = true;
@@ -2414,6 +2424,7 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
         dataConfig['graphSelected'] = $scope.typeToPlot;
         dataConfig['showLegend'] = $scope.showLegend;
         dataConfig['showLines'] = $scope.showLines;
+        dataConfig['showAreas'] = $scope.showAreas;        
         dataConfig['showPoints'] = $scope.showPoints;
         dataConfig['showLabels'] = $scope.showLabels;
         dataConfig['showGrid'] = $scope.showGrid;
