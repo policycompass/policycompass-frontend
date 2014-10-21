@@ -712,6 +712,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			}
 			
 			//console.log("control="+control);
+			var arrayKeyPie = [];
 			
 			if (control==1)
 			{			
@@ -1003,6 +1004,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
 							the_object = arrayValues;
 							
+							
 							for (key in the_object)	{
 								//console.log("***key="+key);	
 								
@@ -1027,6 +1029,48 @@ angular.module('pcApp.visualization.controllers.visualization', [
 										numbers1.push(ObjectData);
 									}
 								}
+								else if ($scope.typeToPlot==='graph_pie')
+								{
+									
+									for (var j=0; j<arrayValues[key].length; j++)
+									{
+										//console.log("j="+j+"---"+arrayLabels[key][j]+'----'+arrayValues[key][j]);
+										var ObjectTemporal = new Object();	
+										
+										if( arrayLabels[key][j] in arrayKeyPie ) {
+										}
+										else
+										{
+											arrayKeyPie[arrayLabels[key][j]] = [];
+										}
+										
+										arrayDatos = [];
+										arrayDatos['Value'] = arrayValues[key][j];
+										arrayDatos['Label'] = key;
+										arrayDatos['Unit'] = labelTemporalYAxes;
+										//arrayKeyPie[arrayLabels[key][j]].push(arrayValues[key][j]);
+										arrayKeyPie[arrayLabels[key][j]].push(arrayDatos);
+										
+										
+										
+									}
+									
+									console.log(arrayKeyPie);
+
+									var ObjectTemporal = new Object();			
+									//console.log("arrayValues[key]="+arrayValues[key]);
+									ObjectTemporal['Key']=key+"_"+cntNumbers;
+									ObjectTemporal['Values']=arrayValues[key];
+									ObjectTemporal['Labels']=arrayLabels[key];
+									ObjectTemporal['ValueX']=arrayLabels[key];
+									ObjectTemporal['ValueY']=arrayValues[key];
+									ObjectTemporal['XY']=arrayValuesXY[key];
+									ObjectTemporal['Type']='metric';
+									//console.log("ObjectTemporal="+ObjectTemporal);
+									numbers1[cntNumbers]=ObjectTemporal;
+									cntNumbers = cntNumbers+1;
+									
+								}						
 								else
 								{			
 									var ObjectTemporal = new Object();			
@@ -1044,13 +1088,49 @@ angular.module('pcApp.visualization.controllers.visualization', [
 								}
 	
 							}
-	
-	
 						}
 		        	}
 		       }
 	
 			} // end if control==1
+			
+			
+			//console.log("-------");
+			//console.log(arrayKeyPie);
+			
+			if ($scope.typeToPlot==='graph_pie')
+			{
+				var numbers2 = [];
+				for (posArray in arrayKeyPie)	{
+					//console.log(posArray);
+					//console.log("---"+posArray+"---");
+					var arrayLabelsDataPie = [];
+					
+					
+					var arrayValuesDataPie = [];
+					var arrayUnitsDataPie = [];
+					//console.log(arrayKeyPie[posArray]);
+					for (posInArray in arrayKeyPie[posArray])	{
+						//console.log(arrayKeyPie[posArray][posInArray]['Value']);
+						//console.log(arrayKeyPie[posArray][posInArray]['Label']);
+						arrayLabelsDataPie.push(arrayKeyPie[posArray][posInArray]['Label']);
+						arrayValuesDataPie.push(arrayKeyPie[posArray][posInArray]['Value']);
+						arrayUnitsDataPie.push(arrayKeyPie[posArray][posInArray]['Unit']);
+					}
+					
+			
+				
+					var ObjectData = {
+										'Key':posArray, 
+										'Labels': arrayLabelsDataPie,
+										'Values': arrayValuesDataPie,
+										'Units': arrayUnitsDataPie
+										};
+										numbers2.push(ObjectData);
+					
+				}
+			}
+										
 			document.getElementById("container_graph").innerHTML = "";
 			//var numbers1 = [];
 	        		 
@@ -1318,10 +1398,28 @@ console.log($scope.chart);
 			}				
 			else if ($scope.typeToPlot==='graph_pie')
 			{
-	
-				var dataset = numbers1;
-	
-	
+				
+				//var dataset = numbers1;
+				var dataset = numbers2;
+				//console.log(dataset)
+			
+				
+				//var textCombo = 'aaaa';
+				var textCombo = '<select id="dateselector" onchange="piechartdisplay();">';
+				textCombo = textCombo + '<option value="All">All</option>';
+				
+				
+				dataset.forEach(function(d,i) {
+					//console.log(i)
+					//textCombo = textCombo + d.Key;
+					textCombo = textCombo + '<option value="'+i+'">'+d.Key+'</option>';
+				});
+				
+				textCombo=textCombo +'</select>';
+				
+				document.getElementById("container_graph").innerHTML = textCombo;
+				
+				
 				//var width = 600,
 				var width = 980,
 				height = 400,

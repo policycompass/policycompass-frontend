@@ -1,4 +1,21 @@
 "use strict";
+function piechartdisplay()
+{
+	var selectedValue = $('#dateselector').val();
+	if (isNaN(selectedValue))
+	{
+		$('.pie').show();
+	}
+	else
+	{
+		$('.pie').hide();	
+		$('#pie_'+selectedValue).show();
+		
+	}
+	
+	
+}
+				
 var policycompass = policycompass || {'version':0.1, 'controller':{}, 'viz': {} ,'extras': {}};
 
 		      	// Computes the angle of an arc, converting from radians to degrees.
@@ -65,6 +82,8 @@ policycompass.viz.pie = function(options)
 			.innerRadius(self.innerRadious);
 			; 
        
+       
+       
 		//var g 
 		self.g = self.svg.selectAll(".arc_pie_"+self.idName)
 			.data(pie(pies))
@@ -93,11 +112,20 @@ policycompass.viz.pie = function(options)
 				var resSplit = pieslabels[i].split("-");
 				var monthNames = [ "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 		    				
-				var startDateToPlot = monthNames[parseInt(resSplit[1])]+" "+parseInt(resSplit[2])+", "+resSplit[0];
-				
-				
+				//var startDateToPlot = monthNames[parseInt(resSplit[1])]+" "+parseInt(resSplit[2])+", "+resSplit[0];
+				var startDateToPlot = pieslabels[i];
+
+				var sumatotal=0;
+		      	for (var ij=0; ij<pies.length; ij++){
+		      		sumatotal = parseInt(sumatotal) + parseInt(pies[ij]); 
+		      	}
+		      	
+		      	//console.log("sumatotal="+sumatotal);
+		      	var average = Math.round((pies[i]*100/sumatotal),2);
+		      	var textToReturn = pies[i] + " ("+average+"%)";
+		      					
 				//tooltip.style("opacity",1.0).html(pieslabels[i]+"<br />"+pies[i]);
-				tooltip.style("opacity",1.0).html(startDateToPlot+"<br />"+pies[i]);
+				tooltip.style("opacity",1.0).html(startDateToPlot+"<br />"+textToReturn);
 				})
 				
         	.on("mouseout", function(d, i) {
@@ -118,12 +146,21 @@ policycompass.viz.pie = function(options)
 			
 		  	self.g.append("svg:text")
 		  	  .attr("class", "text text_pie_"+self.idName) 
-		      .attr("transform", function(d) {return "translate(" + self.arc.centroid(d) + ") rotate("+angle(d)+") ";})	      
+		      .attr("transform", function(d) {
+		      	//console.log((d));
+		      	return "translate(" + self.arc.centroid(d) + ") rotate("+angle(d)+") ";})	      
 		      .attr("dy", ".35em")
 		      .style("text-anchor", "middle")
 		      .text(function(d,i) {
 		      	//var textToReturn = pieslabels[i]+": "+pies[i];
-		      	var textToReturn = pies[i];		      	 
+		      	var sumatotal=0;
+		      	for (var ij=0; ij<pies.length; ij++){
+		      		sumatotal = parseInt(sumatotal) + parseInt(pies[ij]); 
+		      	}
+		      	
+		      	//console.log("sumatotal="+sumatotal);
+		      	var average = Math.round((pies[i]*100/sumatotal),2);
+		      	var textToReturn = pies[i] + " ("+average+"%)";		      	 
 		      	return (textToReturn); 
 		      	});		
       	
@@ -146,13 +183,36 @@ policycompass.viz.pie = function(options)
 					.text(function(d,i) {
 						var resTRext = piesArray['Key'].split("_");
 						var labelY = "";
+						
+						console.log(piesArray['Key']);
+						console.log(piesArray['Labels']);
+						console.log(piesArray['Units']);
+						var arrayLabelsToPlot=[];
+						for (var ij=0; ij<piesArray['Units'].length; ij++){
+							//console.log(ij);
+							
+							var a = arrayLabelsToPlot.indexOf(piesArray['Units'][ij]);
+							
+							if (a==-1)
+							{
+								arrayLabelsToPlot.push(piesArray['Units'][ij]);
+								if (labelY!="")
+								{
+									labelY = labelY +",";
+								}
+								labelY = labelY +" "+piesArray['Units'][ij];	
+							}
+							
+						}
+						
+						/*
 						if (self.labelY[0])
 						{
 							var labelY = " ("+self.labelY[resSplitidName[1]]+")";
 						}
-						 
+						 */
 						
-						return resTRext[0]+labelY;})
+						return resTRext[0]+" ("+labelY+" )";})
 		    	
 		    	
 			var legend = self.svg.selectAll(".legend_pie_"+self.idName)
@@ -209,7 +269,7 @@ policycompass.viz.pie = function(options)
 
     self.render = function(piesArray){
 		
-		//console.log(piesArray);
+		console.log(piesArray);
 		
 		if (Object.keys(piesArray).length === 0)
 		{
