@@ -1,7 +1,7 @@
 <div class="container containerWithSecondBar">
 
     <!-- Menu -->
-    <browse-submenu></browse-submenu>
+    <browse-submenu></browse-submenu><br />
     <div class="row">
         <!-- <div class="col-lg-12"><a type="button" class="btn btn-primary pull-left">Save</a></div>  -->
         <div class="col-lg-12">
@@ -9,7 +9,10 @@
                 <div class="col-lg-12 col-md-10 col-sm-10 col-xs-10">
                     
 			<cytoscape cy-data="mapData" cy-edges="edgeData" cy-click="doClick(value)"></cytoscape>
-                    
+<!--
+                    <p ng-repeat="concept in mapData">{{ concept }}</p>
+                    <p ng-repeat="concept in edgeData">{{ concept }}</p>
+-->
                 </div><!-- /.col-lg-9  -->
             </div><!-- /.row  -->
         </div><!-- /.col-lg-12  -->
@@ -51,6 +54,7 @@
                 <tab heading="Show Concepts">
 		    <table class="table table-hover">
 			<tr>
+<!--			    <td align="center"><b>ID</b></td>     -->
 			    <td align="center"><b>Title</b></td>
 			    <td align="center"><b>Description</b></td>
 			    <td align="center"><b>Input</b></td>
@@ -61,6 +65,7 @@
 			    <td align="center"><b>Last Modified</b></td>
 			</tr>
 			<tr ng-show="models.concepts" ng-repeat="concept in models.concepts">
+<!--			    <td>{{ concept.conceptID }}</td>     -->
 			    <td>{{ concept.title }}</td>
 			    <td>{{ concept.description }}</td>
 			    <td align="center">{{ concept.input }}</td>
@@ -73,7 +78,28 @@
 		     </table>
 		</tab>
 
-                <tab heading="Simulation">Simulation</tab>
+                <tab heading="Simulation">
+<!--		    <table class="table table-hover">
+			<tr>
+			    <td align="center"><b>ID</b></td>
+			    <td align="center"><b>Title</b></td>
+			    <td align="center"><b>Concept From</b></td>
+			    <td align="center"><b>Concept To</b></td>
+			    <td align="center"><b>Weighted</b></td>
+			    <td align="center"><b>Issued</b></td>
+			    <td align="center"><b>Last Modified</b></td>
+			</tr>
+			<tr ng-show="models.concepts" ng-repeat="concept in models.connections">
+			    <td>{{ concept.connectionID }}</td>
+			    <td>{{ concept.title }}</td>
+			    <td>{{ concept.conceptFrom }}</td>
+			    <td align="center">{{ concept.conceptTo }}</td>
+			    <td>{{ concept.weighted }}</td>
+			    <td align="center">{{ concept.dateAddedtoPC | date:'longDate' }}</td>
+			    <td align="center">{{ concept.dateModified | date:'longDate' }}</td>
+			</tr>
+		     </table>     -->
+		</tab>
 
                 <tab heading="Graph">Graph</tab>
 

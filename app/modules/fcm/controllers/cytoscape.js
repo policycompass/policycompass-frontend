@@ -195,7 +195,6 @@ else
     {
         // sample just passes the object's ID then output it to the console and to an alert
         console.debug(value);
-        alert(value);
     };
 
     // reset the sample nodes

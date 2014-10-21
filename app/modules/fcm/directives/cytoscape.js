@@ -34,30 +34,6 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                 scope.elements.nodes = [];
                 scope.elements.edges = [];
 
-                // parse edges
-                // you can build a complete object in the controller and pass it without rebuilding it in the directive.
-                // doing it like that allows you to add options, design or what needed to the objects
-                // doing it like that is also good if your data object/s has a different structure
-                for (i=0; i<scope.cyEdges.length; i++)
-                {
-                    // get edge source
-                    var eSource = scope.cyEdges[i].source;
-                    // get edge target
-                    var eTarget = scope.cyEdges[i].target;
-                    // get edge id
-                    var eId = scope.cyEdges[i].id;
-                    // build the edge object
-                    var edgeObj = {
-                        data:{
-                        id:eId,
-                        source:eSource,
-                        target:eTarget
-                        }
-                    };
-                    // adding the edge object to the edges array
-                    scope.elements.edges.push(edgeObj);
-                }
-
                 // parse data and create the Nodes array
                 // object type - is the object's group
                 for (i=0; i<scope.cyData.length; i++)
@@ -81,6 +57,31 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                     scope.elements.nodes.push(elementObj);
                 }
 
+                // parse edges
+                // you can build a complete object in the controller and pass it without rebuilding it in the directive.
+                // doing it like that allows you to add options, design or what needed to the objects
+                // doing it like that is also good if your data object/s has a different structure
+                for (i=0; i<scope.cyEdges.length; i++)
+                {
+                    // get edge source
+                    var eSource = scope.cyEdges[i].source;
+                    // get edge target
+                    var eTarget = scope.cyEdges[i].target;
+                    // get edge id
+                    var eId = scope.cyEdges[i].id;
+
+                    // build the edge object
+                    var edgeObj = {
+                        data:{
+                        id:eId,
+                        source:eSource,
+                        target:eTarget
+                        }
+                    };
+                    // adding the edge object to the edges array
+                    scope.elements.edges.push(edgeObj);
+                }
+
                 // graph  initialization
                 // use object's properties as properties using: data(propertyName)
                 // check Cytoscapes site for much more data, options, designs etc
@@ -100,14 +101,14 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                     style: cytoscape.stylesheet()
                         .selector('node')
                         .css({
-                            'shape': 'triangle',
+                            'shape': 'rectangle',
                             'width': '120',
                             'height': '20',
                             'background-color': 'data(typeColor)',
                             'content': 'data(name)',
                             'text-valign': 'center',
                             'color': 'white',
-                            'text-outline-width': 2,
+//                            'text-outline-width': 2,
                             'text-outline-color': 'data(typeColor)'
                         })
                         .selector('edge')
@@ -115,7 +116,7 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                             'width': '1',
 			    'content': 'data(label)',
                             'target-arrow-shape': 'triangle',
-                            'source-arrow-shape': 'triangle'
+//                            'source-arrow-shape': 'triangle'
                         })
                         .selector(':selected')
                         .css({
