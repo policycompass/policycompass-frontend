@@ -13,7 +13,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 		{
 
 			//console.log("factory baseGetRelatedDataController");
-
+			
 			$scope.getMetricData = function(posI, metricId, column, value, group) {
 				//console.log("getMetricData metricId="+metricId);
 				
@@ -84,7 +84,23 @@ angular.module('pcApp.visualization.controllers.visualization', [
     	
     	baseVisualizationsCreateController: function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF) {
 
-			
+			$scope.angularpiechartdisplay  = function($scope) {
+				var selectedValue = "";
+				
+				//alert($('#dateselector option:selected').val());
+				selectedValue = $('#dateselector option:selected').val();
+
+				if (isNaN(selectedValue))
+				{
+					$('.pie').show();
+				}
+				else
+				{
+					$('.pie').hide();	
+					$('#pie_'+selectedValue).show();		
+				}
+				
+			};
 
 
 			$scope.meticsRelated = [];
@@ -1407,11 +1423,19 @@ console.log($scope.chart);
 				});
 				
 				var dataset = numbers2;
+				$scope.numbers2=numbers2;
+				//$scope.dateselector = $scope.numbers2[0].Key;
+				
+				$scope.form = {dateselector : $scope.numbers2[0].Key};
+				
+				//console.log($scope.form.dateselector);
 				//console.log(dataset)
 			
 				
 				//var textCombo = 'aaaa';
-				var textCombo = '<select id="dateselector" onchange="piechartdisplay();">';
+				var textCombo = '';
+				/*
+				textCombo = '<select id="dateselector" onchange="piechartdisplay();">';
 				//textCombo = textCombo + '<option value="All">All</option>';
 				
 				
@@ -1422,7 +1446,7 @@ console.log($scope.chart);
 				});
 				
 				textCombo=textCombo +'</select>';
-				
+				*/
 				document.getElementById("container_graph").innerHTML = textCombo;
 				
 				
