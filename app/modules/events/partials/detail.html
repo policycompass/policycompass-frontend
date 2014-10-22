@@ -1,18 +1,27 @@
-<div class="container containerWithSecondBar">
+<div class="container">
 
-    <browse-submenu></browse-submenu>
+
 
 <h1><span class="glyphicon glyphicon-list-alt"></span> {{ event.title }}</h1>
 <br />
-<div class="panel panel-default">
-  <div class="panel-body">
+<div class="row">
+  <div>
       <div class="pc-datagrid" data="datagrid" read-only="true" ng-if="gridvisible"></div>
-      <br />
+      <div class="col-lg-12">
       <table class="table table-hover">
+          <tr ng-show="event.title">
+              <td><b>Title:</b></td>
+              <td>{{ event.title }}</td>
+          </tr>
           <tr ng-show="event.description">
               <td><b>Description:</b></td>
               <td>{{ event.description }}</td>
           </tr>
+      </table>
+      </div>
+      <div class="col-lg-12">
+          <legend class="legend-primary">Details</legend>
+          <table class="table table-hover">
           <tr ng-show="event.keywords">
               <td><b>Keywords:</b></td>
               <td>{{ event.keywords }}</td>
@@ -32,10 +41,6 @@
           <tr ng-show="event.geoLocation">
               <td><b>Geolocation:</b></td>
               <td>{{ event.geoLocation }}</td>
-          </tr>
-          <tr ng-show="event.relatedVisualisation">
-              <td><b>Related visualisation:</b></td>
-              <td>{{ event.relatedVisualisation}}</td>
           </tr>
           <tr ng-show="event.languageID">
               <td><b>Language:</b></td>
@@ -70,7 +75,11 @@
               <td>{{ event.viewsCount }}</td>
           </tr>
       </table>
-      <div>
+      </div>
+      <div class="col-lg-12">
+          <legend class="legend-primary">Options</legend>
+          <a type="button" class="btn btn-primary" href="#/events/{{ event.id }}/edit">Edit</a>
+          <a type="button" class="btn btn-info" href="#/visualizations/create/?events={{event.id}}">Create Visualization</a>
           <button type="button" class="btn btn-danger" ng-click="deleteEvent(event)">Delete</button>
       </div>
   </div>
