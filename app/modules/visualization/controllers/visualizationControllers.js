@@ -1055,7 +1055,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 										
 									}
 									
-									console.log(arrayKeyPie);
+									//console.log(arrayKeyPie);
 
 									var ObjectTemporal = new Object();			
 									//console.log("arrayValues[key]="+arrayValues[key]);
@@ -1400,13 +1400,19 @@ console.log($scope.chart);
 			{
 				
 				//var dataset = numbers1;
+				///order array by data
+				numbers2.sort(function(a, b) {
+					var dateA=new Date(a.Key), dateB=new Date(b.Key)
+ 					return dateA-dateB //sort by date ascending
+				});
+				
 				var dataset = numbers2;
 				//console.log(dataset)
 			
 				
 				//var textCombo = 'aaaa';
 				var textCombo = '<select id="dateselector" onchange="piechartdisplay();">';
-				textCombo = textCombo + '<option value="All">All</option>';
+				//textCombo = textCombo + '<option value="All">All</option>';
 				
 				
 				dataset.forEach(function(d,i) {
@@ -1428,7 +1434,15 @@ console.log($scope.chart);
 				var cntPies = 0;
 				dataset.forEach(function(d,i) {
 					//console.log("1er foreach i="+i);
-					document.getElementById("container_graph").innerHTML = document.getElementById("container_graph").innerHTML + "<div class='pie' id='pie_"+i+"'></div>"
+					if (i==0)
+					{
+						$style='';
+					}
+					else
+					{
+						$style='style="display: none;"';
+					}
+					document.getElementById("container_graph").innerHTML = document.getElementById("container_graph").innerHTML + "<div class='pie' id='pie_"+i+"' "+$style+"></div>"
 				
 				});
 				

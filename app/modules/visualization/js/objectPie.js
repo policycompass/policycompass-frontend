@@ -90,6 +90,8 @@ policycompass.viz.pie = function(options)
 			.enter().append("svg:g")
 			.attr("id", function(d,i) { return "arc_pie_"+self.idName+"_"+i;})
 			.attr("class", "arc arc_pie_"+self.idName)
+			.attr("stroke", "rgb(255, 255, 255)")
+			.attr("stroke-width", "2px")
 			.on("click", function(d, i) { 
 				//console.log(this);
 				if (self.clicToOpen)
@@ -143,13 +145,63 @@ policycompass.viz.pie = function(options)
 		
 		if (showLabels)
 		{
+			var labelr = self.radius + 5;
 			
 		  	self.g.append("svg:text")
-		  	  .attr("class", "text text_pie_"+self.idName) 
-		      .attr("transform", function(d) {
+		  	  .attr("class", "text text_pie_"+self.idName)
+		  	  //.style("stroke", function(d,i) {return colorScale(i);})
+		  	 /* 
+.attr("transform", function(d) {
+        var c = arc.centroid(d),
+            x = c[0],
+            y = c[1],
+            // pythagorean theorem for hypotenuse
+            h = Math.sqrt(x*x + y*y);
+            
+            console.log("x="+x);
+            console.log("y="+y);
+			console.log("h="+h);
+
+        return "translate(" + (x/h * labelr) +  ',' +
+           (y/h * labelr) +  ")"; 
+    })		*/  	  
+		  	  
+		  	   
+		      .attr("transform", function(d,i) {
+		      	
+		      	var sumatotal=0;
+		      	for (var ij=0; ij<pies.length; ij++){
+		      		sumatotal = parseInt(sumatotal) + parseInt(pies[ij]); 
+		      	}
+		      	
+		      	var average = Math.round((pies[i]*100/sumatotal),2);
+
+		      	if (average<3)
+		      	{
+		      		 var c = arc.centroid(d),
+		             x = c[0],
+        			 y = c[1],
+            		// pythagorean theorem for hypotenuse
+            		h = Math.sqrt(x*x + y*y);
+            
+        			return "translate(" + (x/h * labelr) +  ',' + (y/h * labelr) +  ")";
+		      	}		
+		      	else
+		      	{
+		      		return "translate(" + self.arc.centroid(d) + ") rotate("+angle(d)+") ";	
+		      	}
 		      	//console.log((d));
-		      	return "translate(" + self.arc.centroid(d) + ") rotate("+angle(d)+") ";})	      
-		      .attr("dy", ".35em")
+		      	
+		      	
+		      	})	
+		         
+		      //.attr("dy", ".35em")
+		      .attr("font-size", 11)
+		      
+	   			.attr("stroke", "rgb(0, 0, 0)")
+				.attr("stroke-width", "0px")
+
+
 		      .style("text-anchor", "middle")
 		      .text(function(d,i) {
 		      	//var textToReturn = pieslabels[i]+": "+pies[i];
@@ -160,8 +212,18 @@ policycompass.viz.pie = function(options)
 		      	
 		      	//console.log("sumatotal="+sumatotal);
 		      	var average = Math.round((pies[i]*100/sumatotal),2);
-		      	var textToReturn = pies[i] + " ("+average+"%)";		      	 
-		      	return (textToReturn); 
+		      	var textToReturn = pies[i] + " ("+average+"%)";	
+		      	
+		      	if (average<3)
+		      	{
+		      		//console.log("average="+average);
+		      		return ("");
+		      	}	
+		      	else
+		      	{
+		      		return (textToReturn);	
+		      	}      	 
+		      	 
 		      	});		
       	
 		}
@@ -173,7 +235,7 @@ policycompass.viz.pie = function(options)
 		{
 
 			self.svg.append("text")
-		    	.attr("x", -self.radius/2)
+		    	.attr("x", -self.radius/2)		    	
 		    	.attr("y", self.radius)
 		    	.attr("dy", ".35em")
 					.attr("text-anchor","center")
@@ -184,9 +246,6 @@ policycompass.viz.pie = function(options)
 						var resTRext = piesArray['Key'].split("_");
 						var labelY = "";
 						
-						console.log(piesArray['Key']);
-						console.log(piesArray['Labels']);
-						console.log(piesArray['Units']);
 						var arrayLabelsToPlot=[];
 						for (var ij=0; ij<piesArray['Units'].length; ij++){
 							//console.log(ij);
@@ -226,7 +285,7 @@ policycompass.viz.pie = function(options)
 					posFinal = posFinal + i * 20		      			
 					return "translate(0, "+posFinal+")";		      			
 				});
-		
+				
 			legend.append("rect")
 		  		//.attr("class", "rect_pie_"+self.idName) 
 		    	.attr("x", self.radius + 5)	   		      		 	
@@ -269,7 +328,7 @@ policycompass.viz.pie = function(options)
 
     self.render = function(piesArray){
 		
-		console.log(piesArray);
+		//console.log(piesArray);
 		
 		if (Object.keys(piesArray).length === 0)
 		{
