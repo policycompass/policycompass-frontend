@@ -56,7 +56,16 @@
 <!--
 <div id="maplegend" class="maplegend"></div>
 -->
+
 						<div ng-click="isSelectedSon('graph_line') ? showModal() : void(0)">
+
+<div ng-show="isSelectedSon('graph_pie')">
+<select 	
+	ng-model="form.dateselector" 
+	id="dateselector"
+	ng-change="angularpiechartdisplay();"						
+	ng-options="option.Key as option.Key for option in numbers2"></select>
+</div>
 							<div id="container_graph" class="container_graph">
 								<div class="loading-container">
 									<div class="loading"></div>

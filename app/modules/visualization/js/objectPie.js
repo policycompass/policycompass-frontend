@@ -1,4 +1,5 @@
 "use strict";
+
 function piechartdisplay()
 {
 	var selectedValue = $('#dateselector').val();
