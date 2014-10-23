@@ -1417,17 +1417,21 @@ console.log($scope.chart);
 				
 				//var dataset = numbers1;
 				///order array by data
-				numbers2.sort(function(a, b) {
-					var dateA=new Date(a.Key), dateB=new Date(b.Key)
- 					return dateA-dateB //sort by date ascending
-				});
-				
+				if (numbers2)
+				{
+					numbers2.sort(function(a, b) {
+						var dateA=new Date(a.Key), dateB=new Date(b.Key)
+ 						return dateA-dateB //sort by date ascending
+					});
+				}
 				var dataset = numbers2;
 				$scope.numbers2=numbers2;
 				//$scope.dateselector = $scope.numbers2[0].Key;
-				
-				$scope.form = {dateselector : $scope.numbers2[0].Key};
-				
+				//console.log($scope.numbers2.length);
+				if ($scope.numbers2.length>0)
+				{
+					$scope.form = {dateselector : $scope.numbers2[0].Key};
+				}
 				//console.log($scope.form.dateselector);
 				//console.log(dataset)
 			
