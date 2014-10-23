@@ -125,7 +125,10 @@ policycompass.viz.pie = function(options)
 		      	
 		      	//console.log("sumatotal="+sumatotal);
 		      	var average = Math.round((pies[i]*100/sumatotal),2);
-		      	var textToReturn = pies[i] + " ("+average+"%)";
+		      	var number = pies[i];
+		      	number =  Math.round(number, 2);
+		      	
+		      	var textToReturn = number + " ("+average+"%)";
 		      					
 				//tooltip.style("opacity",1.0).html(pieslabels[i]+"<br />"+pies[i]);
 				tooltip.style("opacity",1.0).html(startDateToPlot+"<br />"+textToReturn);
@@ -213,7 +216,10 @@ policycompass.viz.pie = function(options)
 		      	
 		      	//console.log("sumatotal="+sumatotal);
 		      	var average = Math.round((pies[i]*100/sumatotal),2);
-		      	var textToReturn = pies[i] + " ("+average+"%)";	
+		      	var number = pies[i];
+		      	number =  Math.round(number, 2);
+		      	
+		      	var textToReturn = number + " ("+average+"%)";	
 		      	
 		      	if (average<3)
 		      	{
@@ -234,11 +240,14 @@ policycompass.viz.pie = function(options)
 		    	
 		if (showLegend)
 		{
-
-			self.svg.append("text")
-		    	.attr("x", -self.radius/2)		    	
-		    	.attr("y", self.radius)
-		    	.attr("dy", ".35em")
+			//console.log(piesArray['Units'].length)
+			if (piesArray['Units'].length>0)
+			{
+				self.svg.append("text")
+		    		//.attr("x", -self.radius/2)		    	
+		    		//.attr("x", self.radius)
+		    		.attr("y", self.radius)
+		    		.attr("dy", ".35em")
 					.attr("text-anchor","center")
 					.attr("class", "link superior legend value")				
 					.attr("font-size", 11)
@@ -272,9 +281,12 @@ policycompass.viz.pie = function(options)
 						}
 						 */
 						
-						return resTRext[0]+" ("+labelY+" )";})
+						//return resTRext[0]+" ("+labelY+" )";
+						return "("+labelY+" )";
+						})
 		    	
-		    	
+		   	}
+		   
 			var legend = self.svg.selectAll(".legend_pie_"+self.idName)
 			//.data(months.slice().reverse())
 				.data(pie(pies))

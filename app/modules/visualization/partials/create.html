@@ -10,11 +10,8 @@
 
 				<button type="submit"  ng-disabled="visualizationForm.$invalid" class="btn btn-default" ng-click="createVisualization()"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>				
 				<button type="submit" class="btn btn-default" ng-click="revertVisualization()">Revert</button>
-
+				
 				<!--
-				<button type="submit" class="btn btn-default" ng-click="selectTabParent(1); selectTabSon('map_1');rePlotGraph();">Map</button>
-				<button type="submit" class="btn btn-default" ng-click="selectTabParent(2)">Graph</button>
-				-->	
 				<button ng-disabled="true" type="button" ng-class="{'btn btn-default':!isSelectedParent(1),'btn btn-info':isSelectedParent(1)}" ng-click="selectTabParent(1); selectTabSon('mercator');rePlotGraph();">Map</button>		
 				
 				<button type="button" ng-hide="!isSelectedParent(1)" ng-disabled="!isSelectedParent(1)" ng-class="{'btn btn-default':!isSelectedSon('mercator'),'btn btn-info':isSelectedSon('mercator')}" ng-click="selectTabParent(1);selectTabSon('mercator');rePlotGraph();">Mercator</button>
@@ -22,7 +19,7 @@
 				<button type="button" ng-hide="!isSelectedParent(1)" ng-disabled="!isSelectedParent(1)" ng-class="{'btn btn-default':!isSelectedSon('equirectangular'),'btn btn-info':isSelectedSon('equirectangular')}" ng-click="selectTabParent(1);selectTabSon('equirectangular');rePlotGraph();">Equirectangular</button>
 				<button type="button" ng-hide="!isSelectedParent(1)" ng-disabled="!isSelectedParent(1)" ng-class="{'btn btn-default':!isSelectedSon('orthographic'),'btn btn-info':isSelectedSon('orthographic')}" ng-click="selectTabParent(1);selectTabSon('orthographic');rePlotGraph();">Orthographic</button>
 				<button type="button" ng-hide="!isSelectedParent(1)" ng-disabled="!isSelectedParent(1)" ng-class="{'btn btn-default':!isSelectedSon('azimuthalEqualArea'),'btn btn-info':isSelectedSon('azimuthalEqualArea')}" ng-click="selectTabParent(1);selectTabSon('azimuthalEqualArea');rePlotGraph();">Azimuthal Equal Area</button>
-				
+				-->
 											
 				<button type="button" ng-class="{'btn btn-default':!isSelectedParent(2),'btn btn-info':isSelectedParent(2)}" ng-click="selectTabParent(2);selectTabSon('graph_line');rePlotGraph();">Graph</button>
 										
@@ -60,11 +57,25 @@
 						<div ng-click="isSelectedSon('graph_line') ? showModal() : void(0)">
 
 <div ng-show="isSelectedSon('graph_pie')">
+<!--
 <select 	
 	ng-model="form.dateselector" 
 	id="dateselector"
 	ng-change="angularpiechartdisplay();"						
 	ng-options="option.Key as option.Key for option in numbers2"></select>
+-->
+<span>
+	<label class="checkbox-inline" for="selectedAll">
+		<input type="checkbox" ng-model="selectedAll" ng-change="checkAll();angularpiechartdisplaybycheckbox();" /> Check All
+	</label>
+</span>
+<br/>
+<span ng-repeat="option in numbers2">
+      <label class="checkbox-inline" for="{{option.Key}}">
+        <input id="dateselectorcheckbox" class="dateselectorcheckbox" ng-change="angularpiechartdisplaybycheckbox();" type="checkbox" ng-model="selection.Keys[option.Key]" name="dateselectorcheckbox"  />
+        {{option.Key}}
+      </label>
+</span>	
 </div>
 							<div id="container_graph" class="container_graph">
 								<div class="loading-container">

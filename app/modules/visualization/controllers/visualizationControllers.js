@@ -83,8 +83,229 @@ angular.module('pcApp.visualization.controllers.visualization', [
     return {
     	
     	baseVisualizationsCreateController: function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF) {
-
-			$scope.angularpiechartdisplay  = function($scope) {
+			
+			$scope.checkAll = function () {
+				
+				
+				if ($scope.mode=='view')
+				{
+	        		if ($scope.selectedAll) {            		
+	            		selectionChecked = false;
+	        		} else {
+	        			selectionChecked = true;            		
+	        		}					
+				}
+				else
+				{
+	        		if ($scope.selectedAll) {            		
+	            		selectionChecked = true;
+	        		} else {
+	        			selectionChecked = false;            		
+	        		}					
+				}
+        		$scope.selectedAll = selectionChecked;
+        		
+        		angular.forEach($scope.numbers2, function (item) {
+        			//console.log(item.Key);
+        			//console.log($scope.selection.Keys[item.Key]);
+            		$scope.selection.Keys[item.Key] = selectionChecked;
+            		
+            		//console.log($scope.selection.Keys[item.Key]);
+        		});
+			};
+    
+			$scope.plotPieChart = function () {
+				
+				//var width = 600,
+				var width = 980,
+				height = 400,
+				//radius = Math.min(width, height) / 2;
+				radius = 200;
+				var cntPies = 0;
+//				console.log($scope.dataset);
+				document.getElementById("container_graph").innerHTML = "";
+				$scope.dataset.forEach(function(d,i) {
+					//console.log("1er foreach i="+i);
+					if (i==0)
+					{
+						$style='';
+					}
+					else
+					{
+						$style='style="display: none;"';
+					}
+					document.getElementById("container_graph").innerHTML = document.getElementById("container_graph").innerHTML + "<div class='pie' id='pie_"+i+"' "+$style+"></div>"
+				
+				});
+				
+				
+				$scope.dataset.forEach(function(d,i) {
+					//console.log("2n foreach i="+i);
+					
+					//datasetToSend = d.values;
+					//if (cntPies>0)
+					if (1==1)
+					{
+						var datasetToSend = d;
+						//console.log(labelYAxe);
+						var pieObj = policycompass.viz.pie(
+						{
+							'idName':"pie_"+i,
+							'idPie': cntPies,
+							'width': width,
+							'height':height,
+							'margin': 20,
+							'radius':radius,
+							'innerRadious': 50,
+							//'labelY': labelYAxe,
+							//'showLegend': document.getElementById("showLegend").checked,
+							//'showLines': document.getElementById("showLines").checked,
+							//'showPoints': document.getElementById("showPoints").checked,
+							//'showLabels': document.getElementById("showLabels").checked,
+							//'showGrid': document.getElementById("showGrid").checked
+							'showLegend': $scope.showLegend,
+							'showLines': $scope.showLines,
+							'showAreas': $scope.showAreas,							
+							'showPoints': $scope.showPoints,
+							'showLabels': $scope.showLabels,
+							'showGrid': $scope.showGrid
+							//'arrayKeys': arrayKeys,
+							//'arrayXAxis': arrayXAxis,
+							//'arrayYAxis': arrayYAxis,
+							//'arrayGrouping': arrayGrouping
+						});
+		
+			        	pieObj.render(datasetToSend);
+					}
+					
+					cntPies = cntPies +1;
+	
+				});
+			}
+			
+			$scope.angularpiechartdisplaybycheckbox  = function() {
+				
+				//console.log($scope.selection);
+				//console.log("numbers2");
+				//console.log($scope.numbers2);
+				
+				var arrayTemp = [];
+				var arrayLabelsDataPie = [];
+				var arrayValuesDataPie = [];
+				var arrayUnitsDataPie = [];
+				var position = ""
+				//$scope.selection.forEach(function(d,i) {
+				for (var k in $scope.selection.Keys) {
+					//console.log($scope.selection.Keys[k]);
+					//$scope.selection[k]=true;
+					if ($scope.selection.Keys[k])
+					{
+						for (var l in $scope.numbers2) {	
+												
+							if (k==$scope.numbers2[l].Key)
+							{
+								if (position=="")
+								{
+									position = k;
+								}
+								else
+								{
+									position = position +" and "+ k;	
+								}
+								
+								//console.log("--->"+$scope.numbers2[l].Key);
+								//console.log($scope.numbers2[l]);
+									
+								for (var label in $scope.numbers2[l].Labels) {
+									//console.log($scope.numbers2[l].Labels[label]);
+									var labelName = $scope.numbers2[l].Labels[label];
+									var valueName = $scope.numbers2[l].Values[label];
+									var unitsName = $scope.numbers2[l].Units[label];
+									var a = arrayLabelsDataPie.indexOf(labelName);
+									
+									if (a>=0)
+									{
+										arrayValuesDataPie[a]=parseInt(arrayValuesDataPie[a])+parseInt(valueName);
+										
+										var b = arrayUnitsDataPie.indexOf(unitsName);
+										if (b>=0)
+										{
+											
+										}
+										else
+										{
+											arrayUnitsDataPie.push(unitsName);
+										}
+									}
+									else
+									{
+										arrayLabelsDataPie.push(labelName);
+										arrayValuesDataPie.push(valueName);
+										arrayUnitsDataPie.push(unitsName);
+									}
+								}
+								
+							}
+						}
+					}
+					//console.log("arrayLabelsDataPie");
+					//console.log(arrayLabelsDataPie);
+					//console.log("arrayValuesDataPie");
+					//console.log(arrayValuesDataPie);
+					//console.log("arrayUnitsDataPie");
+					//console.log(arrayUnitsDataPie);
+					
+				};
+				var ObjectData = {
+					'Key':position, 
+					'Labels': arrayLabelsDataPie,
+					'Values': arrayValuesDataPie,
+					'Units': arrayUnitsDataPie
+				};	
+				
+				$scope.dataset = [];
+				
+				$scope.dataset.push(ObjectData);
+				
+				$scope.plotPieChart();
+				
+				//console.log("dataset");
+				//console.log($scope.dataset);
+				
+				/*
+				//$scope.dataset = "";
+				var CntPosChecked = 0;
+				var checkedValues = $('.dateselectorcheckbox').map(function(CntPosChecked) {
+					//console.log($(this).parent());
+					if (this.checked)
+					{
+						//return $(this).parent().text().trim();
+						return CntPosChecked;	
+					}
+					CntPosChecked = CntPosChecked+1;
+    				
+				}).get();
+				
+				console.log(checkedValues);
+				$('.pie').hide();
+				for (index in checkedValues)
+				{
+					selectedValue=checkedValues[index];
+					console.log(selectedValue);
+					if (isNaN(selectedValue))
+					{
+						$('.pie').show();
+					}
+					else
+					{
+						$('#pie_'+selectedValue).show();
+					}
+				}
+				*/
+				
+			};
+			
+			$scope.angularpiechartdisplay  = function() {
 				var selectedValue = "";
 				
 				//alert($('#dateselector option:selected').val());
@@ -107,7 +328,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			
             					
 			$scope.getMetricData = function(posI, metricId, column, value, group) {
-				console.log("getMetricData metricId="+metricId);
+				//console.log("getMetricData metricId="+metricId);
 				
 				
 				$scope.metric = Metric.get({id: metricId},
@@ -1232,128 +1453,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			else if ($scope.typeToPlot==='graph_line')
 			{
 
-/*
-	var columnsToSet = [];
-	//var arrayXc3 =['x', '2013-01-01', '2013-01-02', '2013-01-03', '2013-01-04', '2013-01-05', '2013-01-06']
-	var arrayXc3 = [];
-	arrayXc3.push('x');
-	
-	var Axesd3 = [];
-	
-	Axesd3['x']= {
-		type: 'timeseries',
-        tick: {
-               format: '%Y-%m-%d'
-        	}
-       };
-      
-     
-        
-for (key in numbers1)	{
-	console.log(key);
-	if (!$scope.showYAxes)
-	{
-		console.log("ssssss");
-		var indiceY=""
-		if (key>0)
-		{
-			indiceY=parseInt(key)+1;
-		}
-		
-		Axesd3['y'+(indiceY)] = {
-          label: {
-          	show: true,
-            text: 'Some data'+key+"---"+indiceY,
-            position: 'outer-middle'
-          }
-        }
-        
 
-	}
-	
-	//console.log(numbers1[key]);
-	var arrayLinec3 = [];
-	
-	var resSplit = numbers1[key].Key.split("_");
-	
-	arrayLinec3.push(resSplit[0]);
-	
-	for (keyValue in numbers1[key].ValueY)	{
-		//console.log("keyValue="+numbers1[key].ValueY[keyValue]);
-		arrayLinec3.push(numbers1[key].ValueY[keyValue]);
-		//console.log(numbers1[key].ValueX[keyValue]);
-		//console.log("pos="+arrayXc3.indexOf(numbers1[key].ValueX[keyValue]));
-		if (arrayXc3.indexOf(numbers1[key].ValueX[keyValue]) == -1)
-		{
-			arrayXc3.push(numbers1[key].ValueX[keyValue]);
-		}
-	}
-	
-	columnsToSet.push(arrayLinec3);
-	//arrayToSet.push(numbers1[key].Key);
-	//arrayToSet.push(10);
-	//$scope.chart.data.columns.push(arrayToSet);
-}
-
-console.log(Axesd3);
-var objAxesd3 = _.extend({}, Axesd3);
-console.log(objAxesd3);
-
-	columnsToSet.push(arrayXc3);
-	
-console.log(columnsToSet);
-
-$scope.chart = c3.generate({
-    data: {
-        x: 'x',
-        columns: columnsToSet
-    },
-    axes: {
-         'USA': 'y2',
-         'Spain': 'y3',
-        },
-    subchart: {
-      show: true
-    },
-    zoom: {
-      enabled: true
-    },
-    axis:  
-    { 
-    	
-        x: {
-            type: 'timeseries',
-            tick: {
-                format: '%Y-%m-%d'
-            }
-        },
-        y: {
-          label: {
-            text: 'Some data 1',
-            position: 'outer-middle'
-          }
-        },
-		y2: {
-   			show: true,
-   			label: {
-     			text: 'avg. temperature 2',
-     			position: 'outer-middle'
-   			}
-   		},
-   		y3: {
-   			show: true,
-   			label: {
-     			text: 'avg. temperature 3',
-     			position: 'outer-middle'
-   			}
- 		}
- 		
-        
-    }
-    
-});
-console.log($scope.chart);
-*/
 				document.getElementById("container_graph").innerHTML = "";
 				
 				var legendsColumn = 0;
@@ -1424,101 +1524,46 @@ console.log($scope.chart);
  						return dateA-dateB //sort by date ascending
 					});
 				}
-				var dataset = numbers2;
+				//var dataset = numbers2;
+				$scope.dataset= numbers2;
 				$scope.numbers2=numbers2;
+				
+				$scope.selectedAll = false;
+				//console.log($scope.selectedAll);
 				//$scope.dateselector = $scope.numbers2[0].Key;
 				//console.log($scope.numbers2.length);
 				if ($scope.numbers2.length>0)
 				{
+					//console.log($scope.numbers2[0].Key);
 					$scope.form = {dateselector : $scope.numbers2[0].Key};
+					//$scope.selection = {Keys: {$scope.numbers2[0].Key: true}};
+					
+					var $arrayTmp = {};
+					
+					for (var l in $scope.numbers2) {						
+						//console.log(l);
+						if (l==0)
+						{
+							$arrayTmp[$scope.numbers2[l].Key]=true;							
+						}
+						else
+						{
+							$arrayTmp[$scope.numbers2[l].Key]=false;
+						}
+					}
+					
+					$scope.selection = {Keys: $arrayTmp};
+					//console.log($scope.selection);
+					//$scope.selection = {Keys: {"50d5ad": true}};
 				}
+				
+				
 				//console.log($scope.form.dateselector);
 				//console.log(dataset)
 			
-				
-				//var textCombo = 'aaaa';
-				var textCombo = '';
-				/*
-				textCombo = '<select id="dateselector" onchange="piechartdisplay();">';
-				//textCombo = textCombo + '<option value="All">All</option>';
+				$scope.plotPieChart();
 				
 				
-				dataset.forEach(function(d,i) {
-					//console.log(i)
-					//textCombo = textCombo + d.Key;
-					textCombo = textCombo + '<option value="'+i+'">'+d.Key+'</option>';
-				});
-				
-				textCombo=textCombo +'</select>';
-				*/
-				document.getElementById("container_graph").innerHTML = textCombo;
-				
-				
-				//var width = 600,
-				var width = 980,
-				height = 400,
-				//radius = Math.min(width, height) / 2;
-				radius = 200;
-				var cntPies = 0;
-				dataset.forEach(function(d,i) {
-					//console.log("1er foreach i="+i);
-					if (i==0)
-					{
-						$style='';
-					}
-					else
-					{
-						$style='style="display: none;"';
-					}
-					document.getElementById("container_graph").innerHTML = document.getElementById("container_graph").innerHTML + "<div class='pie' id='pie_"+i+"' "+$style+"></div>"
-				
-				});
-				
-				
-				dataset.forEach(function(d,i) {
-					//console.log("2n foreach i="+i);
-					
-					//datasetToSend = d.values;
-					//if (cntPies>0)
-					if (1==1)
-					{
-						
-						
-						var datasetToSend = d;
-						//console.log(labelYAxe);
-						var pieObj = policycompass.viz.pie(
-						{
-							'idName':"pie_"+i,
-							'idPie': cntPies,
-							'width': width,
-							'height':height,
-							'margin': 20,
-							'radius':radius,
-							'innerRadious': 50,
-							'labelY': labelYAxe,
-							//'showLegend': document.getElementById("showLegend").checked,
-							//'showLines': document.getElementById("showLines").checked,
-							//'showPoints': document.getElementById("showPoints").checked,
-							//'showLabels': document.getElementById("showLabels").checked,
-							//'showGrid': document.getElementById("showGrid").checked
-							'showLegend': $scope.showLegend,
-							'showLines': $scope.showLines,
-							'showAreas': $scope.showAreas,							
-							'showPoints': $scope.showPoints,
-							'showLabels': $scope.showLabels,
-							'showGrid': $scope.showGrid
-							//'arrayKeys': arrayKeys,
-							//'arrayXAxis': arrayXAxis,
-							//'arrayYAxis': arrayYAxis,
-							//'arrayGrouping': arrayGrouping
-						});
-		
-			        	pieObj.render(datasetToSend);
-					}
-					
-					cntPies = cntPies +1;
-	
-				});
 	
 			} 
 			else if ($scope.typeToPlot==='graph_bars')
@@ -1685,7 +1730,7 @@ console.log($scope.chart);
 	'$routeParams',
 	function($scope, $log, $routeParams) {
 		
-		console.log ('-->ExampleCtrlhhhhhhhh<---');
+		//console.log ('-->ExampleCtrlhhhhhhhh<---');
 
 
 		var colors = d3.scale.category10();
