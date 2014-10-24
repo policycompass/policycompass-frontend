@@ -40,7 +40,7 @@
      $scope.filterSearchType = function(searchItemType) {
 		 $scope.searchItemType = searchItemType;
 switch(searchItemType) {
-    case 'metric,visualization,event':
+    case 'metric,visualization,event,fuzzymap':
         $scope.searchItemTypeInfo = 'Search for metrics, visualizations,FCM models, events';
         $scope.searchItemTypeInfoDropDown = 'All';
         break;
@@ -57,8 +57,8 @@ switch(searchItemType) {
         $scope.searchItemTypeInfoDropDown = 'Events';
         break;
      case 'fuzzymap':
-        $scope.searchItemTypeInfo = 'Fuzzy map search Not Available yet';
-        $scope.searchItemTypeInfoDropDown = 'N/A';
+        $scope.searchItemTypeInfo = 'Search for fuzzy maps';
+        $scope.searchItemTypeInfoDropDown = 'Fuzzy Maps';
         break;
     default:
         $scope.searchItemTypeInfo = 'Search for metrics, visualizations,FCM models, events';
@@ -117,7 +117,7 @@ switch(searchItemType) {
     $scope.currentPage = 1;
     
     //Default search item type
-    $scope.searchItemType = 'metric,visualization,event';
+    $scope.searchItemType = 'metric,visualization,event,fuzzymap';
     $scope.searchItemTypeInfo = 'Search for metrics, visualizations,FCM models, events';
     $scope.searchItemTypeInfoDropDown = 'All';
     
