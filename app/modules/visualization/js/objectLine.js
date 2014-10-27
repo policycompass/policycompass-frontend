@@ -65,6 +65,12 @@ policycompass.viz.line = function(options)
 	}   
 
 
+	function toIntArray(arr) {
+    	for (var i = 0; i < arr.length; i++) { 
+        	arr[i] = +arr[i]; 
+    	} 
+    	return arr;
+	}
     
 	function renderLine(posX, posY) {
 		//console.log("renderLine 1");
@@ -113,6 +119,7 @@ policycompass.viz.line = function(options)
     
 	self.drawLines = function (lines, eventsData) {
 		//console.log("cnt="+lines.length);
+		//console.log(lines);
         //console.log("self.showYAxesTogether="+self.showYAxesTogether);
         //console.log("self.margin.right="+self.margin.right);
         if (!self.showYAxesTogether)
@@ -174,10 +181,23 @@ policycompass.viz.line = function(options)
 			//console.log(d.Values);
 			//console.log(d.ValueY);
 			//console.log("d.Position="+d.Position)
-			self.arrayMaxVy.push(d3.max(d3.values(d.Values)));
-			var vMinValueD3 = d3.min(d3.values(d.Values));
+			//console.log("---");
+			//console.log(d.Values);
+			var r_data = []
+			r_data = toIntArray(d.Values);
+			//data = toIntArray(data);
+			//console.log(r_data);
+			
+			//console.log(d3.max((d3.values(d.Values))));
+			//self.arrayMaxVy.push(d3.max(d3.values(d.Values)));
+			self.arrayMaxVy.push(d3.max(d3.values(r_data)));
+			
+			//var vMinValueD3 = d3.min(d3.values(d.Values));
+			var vMinValueD3 = d3.min(d3.values(r_data));
+			
 			//vMinValueD3 = 0;
 			self.arrayMinVy.push(vMinValueD3);
+			
 			
 			//obj = d.Values;
 			var obj = d.ValueY;
@@ -333,6 +353,9 @@ return 0;}
 	        	maxYToPlot = self.arrayMaxVy[i];
 			}
 	        
+	        //console.log("min Y ="+minYToPlot);
+	        //console.log("max Y ="+maxYToPlot);
+	        
         	self.yArray.push(d3.scale.linear().domain([minYToPlot, maxYToPlot]).range([self.height, 0]).clamp(true));
        		self.yArrayInversa.push(d3.scale.linear().domain([self.height, 0]).range([minYToPlot, maxYToPlot]).clamp(true));
 		});
@@ -343,7 +366,24 @@ return 0;}
         self.y = d3.scale.linear().domain([self.minVy, self.maxVy]).range([self.height, 0]).clamp(true);
         self.yInversa = d3.scale.linear().domain([self.height, 0]).range([self.minVy, self.maxVy]).clamp(true);
         
+        var formatdecimal = 0;
         
+        //console.log(Math.round(self.maxVy/100));
+        //console.log(self.maxVy.toString().length)
+        
+        
+        formatdecimal = parseInt(self.maxVy.toString().length);
+        
+        if (formatdecimal<2)
+        {
+        	formatdecimal =2;
+        }
+//        console.log(formatdecimal);
+        var orientText = "left"; 
+        if (formatdecimal>4)
+        {
+        	orientText = "right";
+        }
 		/* 
         self.xInversa = d3.scale.linear().domain([0,self.width]).range([0,lines[0].Values.length-1]).clamp(true);
        	self.yInversa = d3.scale.linear().domain([self.height, 0]).range([0,self.maxVy]).clamp(true);
@@ -363,8 +403,10 @@ return 0;}
 		var yAxis = d3.svg.axis()
     		.scale(self.y)
     		//.scale(self.yArray)
-    		.orient("left")
-    		.tickFormat(d3.format(".2s"))
+    		//.orient("left")
+    		//.orient("right")
+    		.orient(orientText)
+    		.tickFormat(d3.format("."+formatdecimal+"s"))
     		;
 
 		var lineFunction = d3.svg.line()		
@@ -710,29 +752,57 @@ return 0;}
 				// create left yAxis
 				//var yAxisLeft = d3.svg.axis().scale(y1).ticks(10).orient("left");
 				
+		        
+
 				var transform="";
 				if (cnti===1)
 				{
+					
+					formatdecimal = parseInt(self.maxVy.toString().length);
+        
+			        if (formatdecimal<2)
+	        		{
+	        			formatdecimal =2;
+	        		}
+					var orientText = "left"; 
+	        		if (formatdecimal>4)
+	        		{
+	        			orientText = "right";
+	        		}	
+        		
 					transform = "translate(0,0)";
 					var yAxisLeft = d3.svg.axis()
 					.scale(self.yArray[i])
 					.ticks(10)
-					.orient("left")
-					.tickFormat(d3.format(".2s"));
+					//.orient("left")
+					//.orient("right")
+					.orient(orientText)
+					.tickFormat(d3.format("."+formatdecimal+"s"));
 				}
 				else
 				{
+					//console.log("i="+i);
+					//console.log(self.arrayMaxVy[i]);
+					formatdecimal = parseInt(self.arrayMaxVy[i].toString().length);
+        
+		        	if (formatdecimal<2)
+        			{
+        				formatdecimal =2;
+        			}
+        		
 					var posFinalXAxeY = self.width;
 					//console.log(posFinalXAxeY)
+					//console.log("valuesY="+valuesY);
 					posFinalXAxeY = posFinalXAxeY + self.distanceXaxes*(i-1)
 					//posFinalXAxeY = posFinalXAxeY + self.margin.right*(i-1)
 					//console.log(posFinalXAxeY)
+					//console.log(self.yArray[i]);
 					transform = "translate("+posFinalXAxeY+",0)";
 					var yAxisLeft = d3.svg.axis()
 					.scale(self.yArray[i])
 					.ticks(10)
 					.orient("right")
-					.tickFormat(d3.format(".2s"));
+					.tickFormat(d3.format("."+formatdecimal+"s"));
 				}
 				
 				//console.log(self.labelY);
@@ -995,9 +1065,6 @@ return 0;}
 					//.on("mouseover", function (d,i) {
 				    .on("mouseover", function() {
 				    	
-				    	
-						
-						
 						if (self.modeGraph=='view')
 						{
 							var str = d3.select(this).text();
@@ -1217,9 +1284,18 @@ return 0;}
 			    var keyCircle = d.Key;
 			    var cntLine = i;
 				//var myCircles = self.svg.selectAll("circles").data(d.Values);
-				var myCircles = self.svg.selectAll("circles").data(d.ValueY);
+				//var myCircles = self.svg.selectAll("circles").data(d.ValueY);
 				//console.log("d.XY="+d.XY);
 				var myCircles = self.svg.selectAll("circles").data(d.XY);
+				
+				
+				var units = "";
+				
+				
+				if (typeof self.labelY[i] !== 'undefined') {
+					units = self.labelY[i];
+				}
+				
 				
 				myCircles.enter().append("circle")
                     .attr("cx", function(d,i){	                    	
@@ -1296,7 +1372,7 @@ return 0;}
 		    				
 		    				var resSplit = keyCircle.split("_");
 		    				
-		    				tooltip.style("opacity",1.0).html("<font color='"+colorScale(keyCircle)+"'>"+resSplit[0]+"<br/>"+endDateToPlot+" <br /> "+twoPlacedFloat+"</font>");
+		    				tooltip.style("opacity",1.0).html("<font color='"+colorScale(keyCircle)+"'>"+resSplit[0]+"<br/>"+endDateToPlot+" <br /> "+twoPlacedFloat+" "+units+"</font>");
 		    				
 			    			//renderLine((self.x(i)), (self.y(d))); 
 			    		}

@@ -741,11 +741,14 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
 				var colorRec = "grey";
 				var element = document.getElementById('historicalevent_color');
+				
 	 			if (element != null) {
 		 			colorRec = document.getElementById("historicalevent_color").value;
 		 		}				
-				
-				
+		 		if (!colorRec)
+		 		{
+		 			colorRec="#000000";
+		 		}
 				
 				//console.log(colorRec);
 			
@@ -1469,7 +1472,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				if (numbers1)
 				{					
 					//
-					var margin = {top: 20, right: 20, bottom: 55+(legendsColumn)*20, left: 35},
+					var margin = {top: 20, right: 20, bottom: 55+(legendsColumn)*20, left: 44},
 					//width = 700,
 					width = 980,
 					//width = 1050,
