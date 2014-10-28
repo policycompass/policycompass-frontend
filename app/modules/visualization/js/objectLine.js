@@ -506,11 +506,19 @@ return 0;}
 
 				if (arrayYaxisProcessed.length==1)
 				{
+					var offsetYaxes = 0;
+					if (orientText == "left")
+					{
+						offsetYaxes = 10;					}
+					else
+					{
+						offsetYaxes = -20;
+					}
 					self.svg.append("g")									      		      		
 				    		.append("text")
 				    			.attr("font-size", 11)
 				      			.attr("transform", "rotate(-90)")
-				      			.attr("y", 10)
+				      			.attr("y", offsetYaxes)
 				      			//.attr("dy", ".71em")
 				      			.attr("dy", "15px")
 				      			//.attr("x", 50*(keyIndex))
@@ -519,6 +527,8 @@ return 0;}
 				}
 				else
 				{
+					
+					
 					for (keyIndex in self.labelY) {
 					//for (keyIndex in arrayYaxisProcessed) {
 				  		self.svg.append("g")									      		      		
@@ -815,10 +825,24 @@ return 0;}
 				}
 				else
 				{
-					paddingText="-8px";
+					paddingText="0px";
+					//paddingText="-8px";
+					//paddingText="15px";
 				}
+				
+				var offsetYaxes = 0;		
+				//offsetYaxes = -20;
+				
+				if (orientText == "left")
+				{
+					offsetYaxes = 10;					}
+				else
+				{
+					offsetYaxes = -10;
+				}
+								
 				self.svg.append("svg:g")
-				      .attr("class", "y axis axisLeft")
+				      .attr("class", "y axis axisLeft")				      
 				      .attr("transform", transform)
 				      .style("stroke", function(d,i) {
 				      	//console.log("----->key="+key);
@@ -831,6 +855,7 @@ return 0;}
 		      			.attr("transform", "rotate(-90)")		      			
 		      			//.attr("dy", ".71em")
 		      			.attr("dy", paddingText)
+		      			.attr("y", offsetYaxes)
 		      			.style("text-anchor", "end")
 		      			.text(self.labelY[cnti-1])
 				      ;

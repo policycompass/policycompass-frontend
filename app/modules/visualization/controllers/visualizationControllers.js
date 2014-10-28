@@ -2579,6 +2579,7 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 
 
     var metricsURL = $routeParams.metrics;
+    
     //console.log("metricsURL="+metricsURL);
     if (metricsURL)
     {
@@ -2586,16 +2587,60 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
     	for (x=0;x<arrayMetricsURL.length;x++)
     	{
     		//console.log("arrayMetricsURL[x]="+arrayMetricsURL[x])
-    		$scope.metric = Metric.get({id: arrayMetricsURL[x]},
-            function(metric) {
-            	//console.log("pppppppppppppppp");
-            	$scope.addFilterMetric(metric.id, metric.title, metric.issued);            	
-            	//$scope.rePlotGraph();
-            },
-            function(err) {
-                throw { message: JSON.stringify(err.data)};
+    		if (arrayMetricsURL[x]>0)
+    		{
+	    		$scope.metric = Metric.get({id: arrayMetricsURL[x]},
+	            function(metric) {
+	            	//console.log("pppppppppppppppp");
+	            	if (metric.id>0)
+	            	{
+	            		$scope.addFilterMetric(metric.id, metric.title, metric.issued);	
+	            	}
+	            	//$scope.rePlotGraph();
+	            },
+	            function(err) {
+	                throw { message: JSON.stringify(err.data)};
+	            }
+	        	);
+        	}
+    	}    	
+    }
+
+    var eventsURL = $routeParams.events;
+
+    if (eventsURL)
+    {
+    	var arrayEventsURL = eventsURL.split(",");    		
+    	for (x=0;x<arrayEventsURL.length;x++)
+    	{    		
+    		if (arrayEventsURL[x]>0)
+    		{
+	    		$scope.event = Event.get({id: arrayEventsURL[x]},
+	    			
+	            function(event) {
+	
+					if (event.id>0)
+					{
+		            	var datosInT =  {
+							id : event.id,
+							title : event.title,
+							startDate : event.startEventDate,
+							endDate : event.endEventDate,
+							color: '#000000',
+							desc : event.description
+						}
+			
+						$scope.eventsToPlot.push(datosInT);	
+						
+					}
+	
+	            },
+	            function(err) {
+	                throw { message: JSON.stringify(err.data)};
+	            }
+	            );
             }
-        	);
+        	
     	}    	
     }
 
