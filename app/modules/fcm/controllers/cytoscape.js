@@ -1,15 +1,7 @@
 angular.module('pcApp.fcm.controllers.cytoscapes',[])
 
 .service("ConceptsDetail", function() {
-    var Concepts = [ 
-	{Id: -1}, 
-	{tile: ''}, 
-	{description: ''}, 
-	{input: ''}, 
-	{activetor: ''}, 
-	{metrics: ''}, 
-	{fixedoutput: ''}
-	];
+    var Concepts = [];
 
     return {
         setConcepts: function(ConceptObj) {
@@ -22,12 +14,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
 })
 
 .service("AssociationsDetail", function() {
-    var Associations = [ 
-	{Id: -1}, 
-	{source: -1}, 
-	{destination: -1}, 
-	{weight: 0}
-	];
+    var Associations = [];
 
     return {
         setAssociations: function(AssociationObj) {
@@ -40,16 +27,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
 })
 
 .service("FCMModelsDetail", function() {
-    var Models = [ 
-	{fcmmodelID: -1}, 
-	{title: ''}, 
-	{description: ''}, 
-	{keywords: ''},
-	{userID: -1}, 
-	{dateAddedtoPC: ''},
-	{dateModified: ''},
-	{viewsCount: -1}
-	];
+    var Models = [];
 
     return {
         setModels: function(ModelObj) {
@@ -63,20 +41,11 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
 
 .controller('CytoscapeCtrl', function($scope, $rootScope,  $routeParams, $location, $translate, Fcm, FcmModel, dialogs, FCMModelsDetail, ConceptsDetail, AssociationsDetail){
   // container objects
-  $scope.Models = [ 
-	{fcmmodelID: -1}, 
-	{title: ''}, 
-	{description: ''}, 
-	{keywords: ''},
-	{userID: -1}, 
-	{dateAddedtoPC: ''},
-	{dateModified: ''},
-	{viewsCount: -1}
-	];
+  $scope.Models = [];
   $scope.mapData = [];
   $scope.edgeData = [];
   $scope.Concepts = [];
-  $scope.Associations = [{Id: -1}, {source : -1}, {destination: -1}, {weight: 0}];
+  $scope.Associations = [];
 
   FCMModelsDetail.setModels($scope.Models);
   ConceptsDetail.setConcepts($scope.Concepts);
@@ -90,6 +59,11 @@ if ($routeParams.fcmId)
   $scope.modeldetail = FcmModel.get(
     {id: $routeParams.fcmId},
     function (fcmList) {
+	var model = {ModelID: $scope.modeldetail.model.fcmmodelID.toString(), 
+	title: $scope.modeldetail.model.title.toString(), 
+	description: $scope.modeldetail.model.description.toString(), 
+	keywords: $scope.modeldetail.model.keywords.toString()};
+	FCMModelsDetail.setModels(model);
 	for (i=0; i<$scope.modeldetail.concepts.length; i++)
 	{
 	    var newNode = {id:$scope.modeldetail.concepts[i].conceptID.toString(), name:$scope.modeldetail.concepts[i].title};
@@ -98,7 +72,7 @@ if ($routeParams.fcmId)
 	}
 	for (i=0; i<$scope.modeldetail.connections.length; i++)
 	{
-	    var newEdge = {id:$scope.modeldetail.connections[i].connectionID.toString(), source: $scope.modeldetail.connections[i].conceptFrom.toString(), target:$scope.modeldetail.connections[i].conceptTo.toString()};
+		    var newEdge = {id:$scope.modeldetail.connections[i].connectionID.toString(), source: $scope.modeldetail.connections[i].conceptFrom.toString(), target: $scope.modeldetail.connections[i].conceptTo.toString(), weighted: $scope.modeldetail.connections[i].weighted};
 	    $scope.edgeData.push(newEdge);
 	    $scope.Associations.push($scope.modeldetail.connections[i]);
 	}
@@ -120,13 +94,16 @@ else
 	dlg = dialogs.create('/dialogs/savemodel.html','ModelController',{},{key: false,back: 'static'});
 	dlg.result.then(function(user){
 		$scope.Models.push(user);
-//		Date date = new Date();
-                $scope.Models.userID = 1;
-                $scope.Models.viewsCount = 1;
-                $scope.Models.dateAddedtoPC = '1/1/2014';
 
-                Fcm.save($scope.Models, function () {
-                        $location.path('/');
+		var jsonModel = {ModelTitle: user.title, ModelDesc: user.description, ModelKeywords: user.keywords, userID: "1",
+			concepts: ConceptsDetail.getConcepts(), connections: AssociationsDetail.getAssociations()};
+
+		$scope.fcmModel = new Fcm();
+		$scope.fcmModel.data = jsonModel;
+
+                Fcm.save($scope.fcmModel, function (value) {
+			var dlg = dialogs.notify("FCM Model", "'" + user.title + "' FCM Model has been saved!");
+			$scope.md = value;
                     },
                     function (err) {
                         throw { message: err.data};
@@ -140,6 +117,20 @@ else
     };
 
     $scope.updateModel = function(){
+		var jsonModel = {model: FCMModelsDetail.getModels(),
+			concepts: ConceptsDetail.getConcepts(), connections: AssociationsDetail.getAssociations()};
+
+		$scope.fcmModelUpdate = new FcmModel();
+		$scope.fcmModelUpdate.data = jsonModel;
+
+                FcmModel.update({id: $routeParams.fcmId}, $scope.fcmModelUpdate, function (value) {
+			var dlg = dialogs.notify("FCM Model", "'" + jsonModel.model.title + "' FCM Model has been saved!");
+			$scope.md = value;
+                    },
+                    function (err) {
+                        throw { message: err.data};
+                    }
+                );
     };
 
     // add object from the form then broadcast event which triggers the directive redrawing of the chart
@@ -177,7 +168,7 @@ else
 		user.Id = 'e'+($scope.edgeData.length);
 		// building the new Edge object from the data
 		// using the array length to generate an id for the sample (you can do it any other way)
-		var newEdge = {id:'e'+($scope.edgeData.length), source: edge1, target: edge2};
+		var newEdge = {id:'e'+($scope.edgeData.length), source: edge1, target: edge2, weighted: user.weight};
 		// adding the new edge object to the adges array
 		$scope.edgeData.push(newEdge);
 		$scope.Associations.push(user);
@@ -206,18 +197,7 @@ else
 })
 
 .controller('ConceptController',function($scope, $modalInstance, Metric, $log, $routeParams, data, ConceptsDetail){
-  $scope.user = [ 
-  {Id: -1}, 
-  {title: ''}, 
-  {description: ''}, 
-  {input: ''}, 
-  {activetor: ''}, 
-  {metrics: ''}, 
-  {fixedoutput: ''}
-  ];
-  
-  $scope.Concepts = [];	
-  $scope.Concepts = ConceptsDetail.getConcepts();
+  $scope.user = {Id: -1, title: '', description: '', input: '', activetor: '', metrics: '', fixedoutput: ''};
 
 	$scope.metrics = Metric.query(
             {page: $routeParams.page},
@@ -239,12 +219,7 @@ else
 }) // end ConceptController
 
 .controller('AssociationController',function($scope, $modalInstance, data, ConceptsDetail){
-  $scope.user = [ 
-  {Id: -1}, 
-  {source: ''}, 
-  {destination: ''}, 
-  {weight: 0}
-  ];
+  $scope.user = {Id: -1, source: '', destination: '', weight: 0};
   
   $scope.Concepts = [];	
   $scope.Concepts = ConceptsDetail.getConcepts();

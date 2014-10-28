@@ -51,7 +51,7 @@ angular.module('pcApp.fcm.controllers.fcm', [
 		}
 		for (i=0; i<$scope.models.connections.length; i++)
 		{
-		    var newEdge = {id:$scope.models.connections[i].connectionID.toString(), source: $scope.models.connections[i].conceptFrom.toString(), target: $scope.models.connections[i].conceptTo.toString()};
+		    var newEdge = {id:$scope.models.connections[i].connectionID.toString(), source: $scope.models.connections[i].conceptFrom.toString(), target: $scope.models.connections[i].conceptTo.toString(), weighted: $scope.models.connections[i].weighted};
 		    $scope.edgeData.push(newEdge);
 		}
 		// broadcasting the event
@@ -70,10 +70,8 @@ angular.module('pcApp.fcm.controllers.fcm', [
             "Do you want to delete the FCM model '" + model.title + "' permanently?");
         dlg.result.then(function () {
             // Delete the metric via the API
-            FcmModel.delete(
-                {},
-                function(){
-                    $location.path('/' + model.fcmmodelID);
+            FcmModel.delete({id: $routeParams.fcmId}, function() {
+                    $location.path('/models');
                 }
             );
         });

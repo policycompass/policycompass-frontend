@@ -40,7 +40,7 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                 {
                     // get id, name and type  from the object
                     var dId = scope.cyData[i].id;
-                    var dName = scope.cyData[i].name;
+                    var dName = scope.cyData[i].name.substring(0, 24);
                     var dType = 'roundrectangle';
                     // get color from the object-color dictionary
                     var typeColor = scope.typeColors[4];
@@ -69,13 +69,17 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                     var eTarget = scope.cyEdges[i].target;
                     // get edge id
                     var eId = scope.cyEdges[i].id;
+                    // get edge weight
+                    var eLabel = scope.cyEdges[i].weighted;
 
+//			alert(eId + '     ' + eSource + '    ' + eTarget);
                     // build the edge object
                     var edgeObj = {
                         data:{
                         id:eId,
                         source:eSource,
-                        target:eTarget
+                        target:eTarget,
+			label:eLabel
                         }
                     };
                     // adding the edge object to the edges array
@@ -101,26 +105,34 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                     style: cytoscape.stylesheet()
                         .selector('node')
                         .css({
-                            'shape': 'rectangle',
-                            'width': '120',
-                            'height': '20',
+                            'shape': 'roundrectangle',
+                            'width': '200',
+                            'height': '40',
                             'background-color': 'data(typeColor)',
                             'content': 'data(name)',
                             'text-valign': 'center',
                             'color': 'white',
-//                            'text-outline-width': 2,
                             'text-outline-color': 'data(typeColor)'
                         })
                         .selector('edge')
                         .css({
-                            'width': '1',
-			    'content': 'data(label)',
-                            'target-arrow-shape': 'triangle',
+			   'target-arrow-shape': 'triangle',
+			   'content': 'data(label)',
+			   'text-outline-color': '#FFFFFF',
+			   'text-outline-opacity': '1',
+			   'text-outline-width': 2,
+			   'text-valign': 'center',
+			   'color': '#777777',
+			   'width': '2px'
+
+//                            'width': '1',
+//			    'content': 'data(label)',
+//                            'target-arrow-shape': 'triangle',
 //                            'source-arrow-shape': 'triangle'
                         })
                         .selector(':selected')
                         .css({
-                            'background-color': 'black',
+		           'background-color': '#C50C44',
                             'line-color': 'black',
                             'target-arrow-color': 'black',
                             'source-arrow-color': 'black'
