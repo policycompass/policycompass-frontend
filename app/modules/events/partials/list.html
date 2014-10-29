@@ -20,10 +20,10 @@
 
 </div>
     <div class="row">
-        <a ng-disabled="!events.previous"  class="btn btn-warning" href="#/events{{ events.previous }}">
+        <a ng-disabled="!events.previous"  class="btn btn-warning" href="#/events?{{ events.previous.split('?')[1] }}">
             <span class="glyphicon glyphicon-chevron-left"></span> Previous
         </a>
-        <a ng-disabled="!events.next" class="btn btn-warning pull-right" href="#/events{{ events.next }}">
+        <a ng-disabled="!events.next" class="btn btn-warning pull-right" href="#/events?{{ events.next.split('?')[1] }}">
             Next <span class="glyphicon glyphicon-chevron-right"></span>
         </a>
     </div>
