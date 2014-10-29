@@ -39,7 +39,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
     };
 })
 
-.controller('CytoscapeCtrl', function($scope, $rootScope,  $routeParams, $location, $translate, Fcm, FcmModel, dialogs, FCMModelsDetail, ConceptsDetail, AssociationsDetail){
+.controller('CytoscapeCtrl', function($scope, $rootScope,  $routeParams, $location, $translate, Fcm, FcmModel, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, AssociationsDetail){
   // container objects
   $scope.Models = [];
   $scope.mapData = [];
@@ -200,7 +200,7 @@ else
   $scope.user = {Id: -1, title: '', description: '', input: '', activetor: '', metrics: '', fixedoutput: ''};
 
 	$scope.metrics = Metric.query(
-            {page: $routeParams.page},
+            {},
 			function(metricList) {
 			},
 			function(error) {

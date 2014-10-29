@@ -42,5 +42,35 @@ angular.module('pcApp.fcm.services.fcm',[
         });
 
 
+}])
+
+
+.factory('FcmSearchUpdate',  ['$resource', 'API_CONF', function($resource, API_CONF) {
+	var url = "api/v1/searchmanager/updateindexitem/fuzzymap/:id";
+
+	return $resource(url, 
+		{
+			id: "@id"
+		},
+        {
+            'create': { method: 'POST', params: {id: '@id'} },
+            'update': { method:'PUT', params: {id: '@id'} },
+        });
+
+
+}])
+
+.factory('FcmSearchDelete',  ['$resource', 'API_CONF', function($resource, API_CONF) {
+	var url = "api/v1/searchmanager/deleteindexitem/fuzzymap/:id";
+
+	return $resource(url, 
+		{
+			id: "@id"
+		},
+        {
+            'delete': { method:'DELETE', params: {id: '@id'} }
+        });
+
+
 }]);
 
