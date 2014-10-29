@@ -294,7 +294,7 @@ angular.module('pcApp.metrics.controllers.metric', [
     };
 
     $scope.linked_metric_visualization = LinkedMetricVisualization.get({id: $routeParams.metricId},
-        function(metric) {
+        function(linked_metric_visualization) {
         },
         function(err) {
             throw { message: JSON.stringify(err.data)};

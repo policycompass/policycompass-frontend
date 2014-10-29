@@ -20,8 +20,9 @@ angular.module('pcApp.events.controllers.event', [
         '$routeParams',
         '$location',
         'Event',
+        'LinkedEventVisualization',
         '$log',
-        function ($scope, $routeParams, $location, Event, $log) {
+        function ($scope, $routeParams, $location, Event, LinkedEventVisualization, $log) {
 
             $scope.event = Event.get({id: $routeParams.eventId},
                 function (event) {
@@ -39,7 +40,13 @@ angular.module('pcApp.events.controllers.event', [
                     }
                 );
             };
-
+            $scope.linked_event_visualization = LinkedEventVisualization.get({id: $routeParams.eventId},
+                function(linked_event_visualization) {
+                },
+                function(err) {
+                    throw { message: JSON.stringify(err.data)};
+                }
+            );
         }])
 
     .controller('EventEditController', [
