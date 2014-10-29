@@ -1,6 +1,4 @@
-<div class="container containerWithSecondBar">
-
-    <browse-submenu></browse-submenu>
+<div class="container">
 
 <h1><span class="glyphicon glyphicon-list-alt"></span> {{ metric.acronym }}</h1>
 <br />
@@ -127,9 +125,23 @@
                 <td><b>License:</b></td>
                 <td>{{ metric.license }}</td>
             </tr>
+
         </table>
     </div>
-
+    <div class="col-lg-3">
+        <table class="table table-hover">
+            <tr ng-show="linked_metric_visualization.results">
+                <td><b>Linked Visualizations:</b></td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-lg-3">
+        <table class="table table-hover">
+            <tr ng-repeat="linked in linked_metric_visualization.results">
+                <td><a href="/app/#/visualizations/{{ linked.visualization }}" target="_blank">{{ linked.title }}</a></td>
+            </tr>
+        </table>
+    </div>
 </div>
 
 

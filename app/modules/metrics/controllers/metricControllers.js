@@ -223,9 +223,10 @@ angular.module('pcApp.metrics.controllers.metric', [
         '$routeParams',
         '$location',
         'Metric',
+        'LinkedMetricVisualization',
         'dialogs',
         '$log',
-        function($scope, $routeParams, $location, Metric, dialogs, $log) {
+        function($scope, $routeParams, $location, Metric, LinkedMetricVisualization, dialogs, $log) {
 
     // The grid view is not visible at first
     $scope.gridvisible = false;
@@ -291,6 +292,14 @@ angular.module('pcApp.metrics.controllers.metric', [
             );
         });
     };
+
+    $scope.linked_metric_visualization = LinkedMetricVisualization.get({id: $routeParams.metricId},
+        function(metric) {
+        },
+        function(err) {
+            throw { message: JSON.stringify(err.data)};
+        }
+    );
 
 }])
 

@@ -57,6 +57,20 @@ factory('ExtraCategory',  ['$resource', 'API_CONF', function($resource, API_CONF
         }
     );
     return ExtraCategory;
+}])
+
+.factory('LinkedMetricVisualization',  ['$resource', 'API_CONF', function($resource, API_CONF) {
+        var url = API_CONF.VISUALIZATIONS_MANAGER_URL + "/linkedVisualizationsByMetric?metric_id=:id";
+        var LinkedMetricVisualization = $resource(url,
+            {
+                id: "@id"
+            },
+            {
+                'update': { method:'PUT' },
+                'query': { method: 'GET', isArray:false}
+            }
+        );
+        return LinkedMetricVisualization;
 }]);
 
 
