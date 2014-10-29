@@ -1399,7 +1399,11 @@ return 0;}
 		    				   
 		    				//tooltip.style("opacity",1.0).html(resX+" <br /> "+resY+"<br />"+endDateToPlot);
 		    				
-		    				var twoPlacedFloat = parseFloat(resY);
+		    				//var twoPlacedFloat = parseFloat(resY);
+		    				
+		    				var twoPlacedFloat = (parseFloat(resY * 100) / 100).toFixed(2);
+		    				
+		    				//twoPlacedFloat = Math.round(twoPlacedFloat,2);
 		    				//var twoPlacedFloat = parseFloat(resY).toFixed(2);
 		    				
 		    				var resSplit = keyCircle.split("_");
