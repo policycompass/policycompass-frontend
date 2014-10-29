@@ -368,21 +368,25 @@ return 0;}
         
         var formatdecimal = 0;
         
-        //console.log(Math.round(self.maxVy/100));
-        //console.log(self.maxVy.toString().length)
+        //console.log(Math.round(self.maxVy/100)+1);
+        //console.log(self.maxVy)
         
         
-        formatdecimal = parseInt(self.maxVy.toString().length);
+        //formatdecimal = parseInt(self.maxVy.toString().length);
+        formatdecimal = Math.round(self.maxVy/100)+1;
         
         if (formatdecimal<2)
         {
         	formatdecimal =2;
         }
-//        console.log(formatdecimal);
+        //formatdecimal=4;
+        //console.log(formatdecimal);
         var orientText = "left"; 
         if (formatdecimal>4)
         {
-        	orientText = "right";
+        	//orientText = "right";
+        	orientText = "left"; 
+        	formatdecimal=4;
         }
 		/* 
         self.xInversa = d3.scale.linear().domain([0,self.width]).range([0,lines[0].Values.length-1]).clamp(true);
@@ -768,8 +772,9 @@ return 0;}
 				if (cnti===1)
 				{
 					
-					formatdecimal = parseInt(self.maxVy.toString().length);
-        
+					//formatdecimal = parseInt(self.maxVy.toString().length);
+        			formatdecimal = Math.round(self.maxVy/100)+1;
+        			
 			        if (formatdecimal<2)
 	        		{
 	        			formatdecimal =2;
@@ -777,7 +782,9 @@ return 0;}
 					var orientText = "left"; 
 	        		if (formatdecimal>4)
 	        		{
-	        			orientText = "right";
+	        			//orientText = "right";
+	        			orientText = "left"; 
+	        			formatdecimal = 4;
 	        		}	
         		
 					transform = "translate(0,0)";
