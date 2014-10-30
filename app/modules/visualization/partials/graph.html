@@ -1,38 +1,41 @@
-
-    
 <div>
-	
-<div ng-show="isSelectedSon('graph_pie')">
-<form>
-<!--
-<select 	
-	ng-model="form.dateselector" 
-	id="dateselector"
-	ng-change="angularpiechartdisplay();"						
-	ng-options="option.Key as option.Key for option in numbers2"></select>
--->
-<span>
-	<label class="checkbox-inline" for="selectedAll">
-		<input type="checkbox" ng-model="selectedAll" ng-change="checkAll();angularpiechartdisplaybycheckbox();" /> Check All
-	</label>
-</span>
-<br/>
-<span ng-repeat="option in numbers2">
-      <label class="checkbox-inline" for="{{option.Key}}">
-        <input id="dateselectorcheckbox" class="dateselectorcheckbox" ng-change="angularpiechartdisplaybycheckbox();" type="checkbox" ng-model="selection.Keys[option.Key]" name="dateselectorcheckbox"  />
-        {{option.Key}}
-      </label>
-</span>
-</form>	
-</div>
+	<div ng-hide="list">
+		<div ng-show="isSelectedSon('graph_pie')">
+			<form>
+				<!--
+				<select 	
+				ng-model="form.dateselector" 
+				id="dateselector"
+				ng-change="angularpiechartdisplay();"						
+				ng-options="option.Key as option.Key for option in numbers2"></select>
+				-->
+				<span>
+					<label class="checkbox-inline" for="selectedAll">
+						<input type="checkbox" ng-model="selectedAll" ng-change="checkAll();angularpiechartdisplaybycheckbox();" /> Check All
+					</label>
+				</span>
+				<br/>
+				<span ng-repeat="option in numbers2">
+      				<label class="checkbox-inline" for="{{option.Key}}">
+        				<input id="dateselectorcheckbox" class="dateselectorcheckbox" ng-change="angularpiechartdisplaybycheckbox();" type="checkbox" ng-model="selection.Keys[option.Key]" name="dateselectorcheckbox"  />
+        				{{option.Key}}
+      				</label>
+				</span>
+			</form>	
+		</div>
+	</div>
 
-
 	
-	<div id="container_graph" class="container_graph">
-		
+	<div id="container_graph_{{visualization.id}}" class="container_graph">		
 		<div class="loading-container">
-			<div class="loading"></div>
-			<div id="loading-text">loading</div>
+			<div ng-hide="list">
+				<div class="loading"></div>
+				<div id="loading-text">loading</div>
+			</div>
+			<div ng-show="list">
+				<div class="loading loading-small"></div>
+				<div id="loading-small-text">loading</div>
+			</div>
 		</div>
 		
 	</div>

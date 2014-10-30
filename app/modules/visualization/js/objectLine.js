@@ -469,7 +469,7 @@ return 0;}
 	      		.attr("class", "x axis")
 	      		.attr("transform", "translate(0," + self.height + ")")      		
 	      		.call(xAxis)	
-	      		.attr("font-size", 11)
+	      		.attr("font-size", self.font_size)
 	      		.selectAll("text")  
             		.style("text-anchor", "end")
             		//.attr("dx", "-.8em")
@@ -489,7 +489,7 @@ return 0;}
 		  		self.svg.append("g")
 		      		.attr("class", "y axis")
 		      		.call(yAxis)
-		      		.attr("font-size", 11);	
+		      		.attr("font-size", self.font_size);	
 			     
 			    var arrayYaxisProcessed = [];
 				var cnt_keyIndex = 0;
@@ -513,18 +513,19 @@ return 0;}
 					var offsetYaxes = 0;
 					if (orientText == "left")
 					{
-						offsetYaxes = 10;					}
+						offsetYaxes = self.offsetYaxesR;					
+					}
 					else
 					{
-						offsetYaxes = -20;
+						offsetYaxes = self.offsetYaxesL;
 					}
 					self.svg.append("g")									      		      		
 				    		.append("text")
-				    			.attr("font-size", 11)
+				    			.attr("font-size", self.font_size)
 				      			.attr("transform", "rotate(-90)")
 				      			.attr("y", offsetYaxes)
 				      			//.attr("dy", ".71em")
-				      			.attr("dy", "15px")
+				      			.attr("dy", self.dymarging+"px")
 				      			//.attr("x", 50*(keyIndex))
 				      			.style("text-anchor", "end")
 				      			.text(self.labelY[0]);					
@@ -537,11 +538,11 @@ return 0;}
 					//for (keyIndex in arrayYaxisProcessed) {
 				  		self.svg.append("g")									      		      		
 				    		.append("text")
-				    			.attr("font-size", 11)
+				    			.attr("font-size", self.font_size)
 				      			.attr("transform", "rotate(-90)")
-				      			.attr("y", 15*(keyIndex))
+				      			.attr("y", self.dymarging*(keyIndex))
 				      			//.attr("dy", ".71em")
-				      			.attr("dy", "15px")
+				      			.attr("dy", self.dymarging+"px")
 				      			//.attr("x", 50*(keyIndex))
 				      			.style("stroke", function(d,i) {
 					      			return colorScale(lines[keyIndex].Key);
@@ -551,13 +552,8 @@ return 0;}
 	
 					}
 				}
-				
-
-									
 			}
-			
 		}
-
 		
 
 		if (showGrid)
@@ -828,7 +824,8 @@ return 0;}
 				var paddingText = "";
 				if (cnti==1) 
 				{
-					paddingText="15px";
+					//paddingText="15px";
+					paddingText= self.dymarging+"px";
 				}
 				else
 				{
@@ -842,10 +839,11 @@ return 0;}
 				
 				if (orientText == "left")
 				{
-					offsetYaxes = 10;					}
+					offsetYaxes = self.offsetYaxesR;					
+				}
 				else
 				{
-					offsetYaxes = -10;
+					offsetYaxes = self.offsetYaxesL/2;
 				}
 								
 				self.svg.append("svg:g")
@@ -856,7 +854,7 @@ return 0;}
 				      	return colorScale(key);
 				      	})
 				      //.style("stroke-width", 2)				      
-				      .attr("font-size", 11)
+				      .attr("font-size", self.font_size)
 				      .call(yAxisLeft)
 				      .append("text")
 		      			.attr("transform", "rotate(-90)")		      			
@@ -1090,7 +1088,7 @@ return 0;}
 					.attr("text-anchor","center")
 					.attr("text-decoration","none")					
 					.attr("class", "link superior legend value")				
-					.attr("font-size", 11)
+					.attr("font-size", self.font_size)
 					.style("stroke", function(d,i) {
 						//console.log("key="+key);
 						return colorScale(key);})										
@@ -1242,7 +1240,7 @@ return 0;}
 					.attr("y", function(d,i){return (0) + (0) ;})
 					.attr("text-anchor","center")
 					.attr("class", "link superior legend value")				
-					.attr("font-size", 11)
+					.attr("font-size", self.font_size)
 					.style("stroke", function(d,i) {return 'black';})									
 					.on("click", function (openedLabels) {
 
@@ -1408,7 +1406,28 @@ return 0;}
 		    				
 		    				var resSplit = keyCircle.split("_");
 		    				
-		    				tooltip.style("opacity",1.0).html("<font color='"+colorScale(keyCircle)+"'>"+resSplit[0]+"<br/>"+endDateToPlot+" <br /> "+twoPlacedFloat+" "+units+"</font>");
+		    				var number = resY;
+		    				console.log(number);
+		    				number = (parseFloat(number * 100) / 100).toFixed(2);
+		      	
+		      				var formatdecimal = 0;
+
+			        		formatdecimal = Math.round(number/100)+1;
+        
+			        		if (formatdecimal<2)
+			        		{
+			        			formatdecimal =2;
+			        		}
+			        		else if (formatdecimal>4)
+			        		{
+			        			formatdecimal =4;
+			        		} 
+					      	
+					      	var si = d3.format('.'+formatdecimal+'s');
+					      	
+					      	number = si(number);
+		    				
+		    				tooltip.style("opacity",1.0).html("<font color='"+colorScale(keyCircle)+"'>"+resSplit[0]+"<br/>"+endDateToPlot+" <br /> "+number+" "+units+"</font>");
 		    				
 			    			//renderLine((self.x(i)), (self.y(d))); 
 			    		}
@@ -1478,6 +1497,10 @@ return 0;}
 
        // console.log($scope.mode);
        	
+       	self.parentSelect = self.parentSelect.replace("undefined","");
+       	//console.log(self.parentSelect);
+       	//console.log(self.font_size);
+       	
 		self.svg = d3.select(self.parentSelect).append("svg")
 			.attr("width", self.width + self.margin.left + self.margin.right)
 			.attr("height", self.height + self.margin.top + self.margin.bottom)
@@ -1524,14 +1547,13 @@ return 0;}
 	/* function to Plot data into the graph*/
 	self.render = function(dataToPlot, eventsData, modeGraph) {
 		
-		//console.log("dataToPlot");
-		
+		//console.log("dataToPlot");		
 		//console.log(dataToPlot);		
 		//console.log("eventsData");
 		//console.log(eventsData);
 		self.modeGraph = modeGraph;
 
-								
+		//console.log(self);						
 		//console.log(eventsData);
 		if (Object.keys(dataToPlot).length === 0)
 		{

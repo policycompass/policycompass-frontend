@@ -1,10 +1,8 @@
 <div class="container">
-
-<h1><span class="glyphicon glyphicon-search"></span> Browse Visualizations ({{ visualizations.count }})</h1>
-<br />
-<div class="container">
-<div class="row">
-
+	<h1><span class="glyphicon glyphicon-search"></span> Browse Visualisations ({{ visualizations.count }})</h1>
+	<br />
+	<div class="container">
+		<div class="row">
             <div class="col-lg-3 pc-tile" ng-show="visualizations" ng-repeat="visualization in visualizations.results" >
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -12,15 +10,15 @@
                     </div>
                     <div class="panel-body">
                         {{ visualization.created_at | date:'longDate' }}    
-                        <br /><br />
+                        <br />
+						<div class="visualization-graph-page-content">	
+							<div ng-controller="VisualizationsEditController" ng-repeat="idvisulist in [visualization.id]" ng-include='"modules/visualization/partials/graph.html"' ></div>	
+						</div>
+						<br />
                         <a href="#/visualizations/{{ visualization.id }}" type="button" class="btn btn-primary">Details</a>
                     </div>
                 </div>
-                
-                
-                
             </div>
-
         </div>
         
 		<div class="row">

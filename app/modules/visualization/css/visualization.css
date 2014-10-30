@@ -1,3 +1,10 @@
+.visualization-graph-page-content {
+padding-left: 0px;
+padding-right: 0px;
+padding-top: 5px;
+padding-bottom: 5px;
+}
+
 .stroke {
   fill: none;
   stroke: #000;

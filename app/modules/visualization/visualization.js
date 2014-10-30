@@ -36,7 +36,7 @@ visu.config(function($routeProvider) {
         })
 		.when('/visualizations/graph/:visualizationId', {
             //controller: 'VisualizationsGraphController',
-            controller: 'VisualizationsEditController',            
+            controller: 'VisualizationsEditController',          
             templateUrl: 'modules/visualization/partials/graph.html'
         })
         .when('/visualizations/:visualizationId', {

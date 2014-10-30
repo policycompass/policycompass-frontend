@@ -117,26 +117,66 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			$scope.plotPieChart = function () {
 				
 				//var width = 600,
-				var width = 980,
-				height = 400,
-				//radius = Math.min(width, height) / 2;
-				radius = 200;
-				var cntPies = 0;
-//				console.log($scope.dataset);
-				document.getElementById("container_graph").innerHTML = "";
-				$scope.dataset.forEach(function(d,i) {
-					//console.log("1er foreach i="+i);
-					if (i==0)
-					{
-						$style='';
-					}
-					else
-					{
-						$style='style="display: none;"';
-					}
-					document.getElementById("container_graph").innerHTML = document.getElementById("container_graph").innerHTML + "<div class='pie' id='pie_"+i+"' "+$style+"></div>"
+				var margin = {top: 20, right: 20, bottom: 40, left: 20};
 				
-				});
+				var width = 980,
+				height = 326,
+				//radius = Math.min(width, height) / 2;
+				radius = 180,
+				
+				innerRadious = 50,
+				font_size = 11;
+				
+				var cntPies = 0;
+				
+				if ($scope.list)
+				{
+						radius = radius / 5;
+						width = width / 5;
+						height = height / 5;
+						margin.top = margin.top / 5;
+						margin.right = margin.right / 5;
+						margin.bottom = margin.bottom / 5 + 3;
+						margin.left = margin.left / 5;
+						innerRadious = innerRadious / 5;
+						font_size = font_size / 5;
+						$scope.showLegend = false;						
+				}
+				
+//				console.log($scope.dataset);
+				//document.getElementById("container_graph_"+$scope.visualization.id).innerHTML = "";
+				if ($scope.visualization.id)
+				{
+					document.getElementById("container_graph_"+$scope.visualization.id).innerHTML = "";
+				}
+				else
+				{
+					document.getElementById("container_graph_").innerHTML = "";
+				}
+				
+
+					$scope.dataset.forEach(function(d,i) {
+						//console.log("1er foreach i="+i);
+						if (i==0)
+						{
+							$style='';
+						}
+						else
+						{
+							$style='style="display: none;"';
+						}
+						
+						if ($scope.visualization.id)
+						{ 
+							document.getElementById("container_graph_"+$scope.visualization.id).innerHTML = document.getElementById("container_graph_"+$scope.visualization.id).innerHTML + "<div class='pie_"+$scope.visualization.id+"' id='pie_"+$scope.visualization.id+"_"+i+"' "+$style+"></div>"
+						}
+						else
+						{
+							document.getElementById("container_graph_").innerHTML = document.getElementById("container_graph_").innerHTML + "<div class='pie_' id='pie__"+i+"' "+$style+"></div>"
+						}
+						
+					
+					});
 				
 				
 				$scope.dataset.forEach(function(d,i) {
@@ -150,13 +190,15 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						//console.log(labelYAxe);
 						var pieObj = policycompass.viz.pie(
 						{
-							'idName':"pie_"+i,
+							'idName':"pie_"+$scope.visualization.id+"_"+i,
+							'visualizationid':$scope.visualization,
 							'idPie': cntPies,
 							'width': width,
 							'height':height,
-							'margin': 20,
+							'margin': margin,
 							'radius':radius,
-							'innerRadious': 50,
+							'innerRadious': innerRadious,
+							'font_size': font_size,
 							//'labelY': labelYAxe,
 							//'showLegend': document.getElementById("showLegend").checked,
 							//'showLines': document.getElementById("showLines").checked,
@@ -923,11 +965,12 @@ angular.module('pcApp.visualization.controllers.visualization', [
   			arrayJsonFiles.forEach(function(d,i) 
   			{
   				//console.log("-- arrayJsonFiles.forEach -- i="+i+".d="+d);
-  				q = q.defer(d3.json, d);  		
+  				q = q.defer(d3.json, d);
+  				  		
 	  		});
 			
   			q.await($scope.plotGraph);
-  		  			
+
 		};
 
 
@@ -1370,8 +1413,16 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					
 				}
 			}
-										
-			document.getElementById("container_graph").innerHTML = "";
+			
+			if ($scope.visualization.id)
+			{
+				document.getElementById("container_graph_"+$scope.visualization.id).innerHTML = "";
+			}
+			else
+			{
+				document.getElementById("container_graph_").innerHTML = "";
+			}
+			
 			//var numbers1 = [];
 	        		 
 			//console.log(numbers1);	        		 
@@ -1434,18 +1485,43 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			|| ($scope.typeToPlot==='orthographic')
 			|| ($scope.typeToPlot==='azimuthalEqualArea')
 			)
-			{
-				document.getElementById("container_graph").innerHTML = "";
-				var margin = {top: 20, right: 20, bottom: 20, left: 20},
-				width = 800,
-				height = 400;
+			{				
+				
+				if ($scope.visualization.id)
+				{
+					document.getElementById("container_graph_"+$scope.visualization.id).innerHTML = "";
+				}
+				else
+				{
+					document.getElementById("container_graph_").innerHTML = "";
+				}
+				
+				var margin = {top: 20, right: 20, bottom: 55, left: 44},
+				width = 980,
+				height = 326,
+				font_size = 11;
+				
+				if ($scope.list)
+				{
+						margin.top = margin.top / 5;
+						margin.right = margin.right / 5;
+						margin.bottom = margin.bottom / 5;
+						margin.left = margin.left / 5;
+						width = width / 5;
+						height = height / 5;
+						font_size = font_size / 5;
+						$scope.showLegend = false;	
+						$scope.showZoom = false;
+						$scope.showMovement = false;					
+				}
 					
 				var mapObj = policycompass.viz.mapW(
 				{
-					'idName':"container_graph",
+					'idName':"container_graph_"+$scope.visualization.id,
 					'width': width,
 					'height': height,
 					'margin': margin,
+					'font_size': font_size,
 					'legend': $scope.showLegend,
 					'projection': $scope.typeToPlot,
 					'showZoom': $scope.showZoom,
@@ -1455,9 +1531,16 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			}
 			else if ($scope.typeToPlot==='graph_line')
 			{
-
-
-				document.getElementById("container_graph").innerHTML = "";
+				
+				if ($scope.visualization.id)
+				{
+					document.getElementById("container_graph_"+$scope.visualization.id).innerHTML = "";
+				}
+				else
+				{
+					document.getElementById("container_graph_").innerHTML = "";
+				}
+				
 				
 				var legendsColumn = 0;
 				if ($scope.showLegend)
@@ -1471,23 +1554,59 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				 	
 				if (numbers1)
 				{					
+				    
 					//
+					if ($scope.list) {
+						legendsColumn = 0;
+					}
+					
 					var margin = {top: 20, right: 20, bottom: 55+(legendsColumn)*20, left: 44},
 					//width = 700,
 					width = 980,
 					//width = 1050,
 					//height = 200;
-					height = 326;
+					height = 326,
+					font_size = 11,
+					radiouspoint = 5,
+					dymarging = 15,
+					offsetYaxesR = 10,
+					offsetYaxesL = -20,
+					distanceXaxes = 45
+					;
+					
+					if ($scope.list)
+					{
+						margin.top = margin.top / 5;
+						margin.right = margin.right / 5;
+						margin.bottom = margin.bottom / 5;
+						margin.left = margin.left / 5;
+						width = width / 5;
+						height = height/ 5;
+						font_size = font_size / 5;
+						radiouspoint = radiouspoint / 5;
+						dymarging = dymarging / 5;
+						offsetYaxesR = offsetYaxesR / 5;
+						offsetYaxesL = offsetYaxesL / 5;
+						distanceXaxes = distanceXaxes / 5;
+						$scope.showLegend = false;	
+										
+					}
+					//console.log("height="+height);
+					
 					var barLine = policycompass.viz.line(
 						{
-	                		'idName':"container_graph",
+	                		'idName':"container_graph_"+$scope.visualization.id,
 	                		'width': width,
 	                		'height': height,
 	                		'margin': margin,
 	                		'labelX': "label X",
 	                		'labelY': labelYAxe,
-	                		'radius': 4,
-	                		'distanceXaxes': 45,
+	                		'radius': radiouspoint,
+	                		'dymarging': dymarging,
+	                		'offsetYaxesR': offsetYaxesR,
+	                		'offsetYaxesL': offsetYaxesL,
+	                		'distanceXaxes': distanceXaxes,
+	                		'font_size': font_size,
 							//'showYAxesTogether': document.getElementById("showYAxes").checked,
 							//'showLegend': document.getElementById("showLegend").checked,
 							//'showLines': document.getElementById("showLines").checked,
@@ -1571,7 +1690,14 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			} 
 			else if ($scope.typeToPlot==='graph_bars')
 			{
-				document.getElementById("container_graph").innerHTML = "";
+				if ($scope.visualization.id)
+				{
+					document.getElementById("container_graph_"+$scope.visualization.id).innerHTML = "";
+				}
+				else
+				{
+					document.getElementById("container_graph_").innerHTML = "";
+				}
 		
 				var datasetToSend = numbers1;
 				//console.log(numbers1);
@@ -1587,15 +1713,36 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				//legendsColumn = 10;
 				//console.log(datasetToSend);
 	        	
-				var margin = {top: 20, right: 0, bottom: 40+(legendsColumn)*20, left: 40};
-				var width = 980 - margin.left - margin.right;
+	        	if ($scope.list)
+	        	{
+	        		legendsColumn = 0;
+	        	}
+	        	
+				var margin = {top: 20, right: 20, bottom: 55+(legendsColumn)*20, left: 44};
+				var width = 980;// - margin.left - margin.right;
 	    		//var width = 400 - margin.left - margin.right;
 	    		//var height = 300 - margin.top - margin.bottom;
 				var height = 326;
 				
+				var font_size = 11;
+				
+				if ($scope.list)
+				{
+						
+						width = width / 5;
+						height = height / 5;
+						margin.top = margin.top / 5;
+						margin.right = margin.right / 5;
+						margin.bottom = margin.bottom / 5;
+						margin.left = margin.left / 5;
+						font_size = font_size / 5;
+						$scope.showLegend = false;	
+					
+				}
+				
 				var barObj = policycompass.viz.barsMultiple(
 				{
-	                'idName':"container_graph",
+	                'idName':"container_graph_"+$scope.visualization.id,
 	            	'width': width,
 	            	'height':height,
 	            	'margin': margin,
@@ -1604,6 +1751,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	            	'labelX': "",
 	            	'labelY': labelYAxe,
 	            	'radius': 4,
+	            	'font_size': font_size,
 	            	//'showLegend': document.getElementById("showLegend").checked,
 					//'showLines': document.getElementById("showLines").checked,
 					//'showPoints': document.getElementById("showPoints").checked,
@@ -1817,8 +1965,8 @@ $scope.map = {
 
 
 
-			console.log("---------");
-			console.log($scope.map);
+			//console.log("---------");
+			//console.log($scope.map);
 		};
 
 		$scope.loadMapExample();
@@ -1900,7 +2048,9 @@ $scope.xAxisTickFormatFunction = function(){
 	                
 		//console.log("VisualizationsController");	
 		$scope.visualizations = Visualization.query(
-			 {page: $routeParams.page},
+			 {page: $routeParams.page
+			 //, page_size: 12
+			 },
 			function(visualizationList) {
 			},
 			function(error) {
@@ -1960,6 +2110,15 @@ $scope.xAxisTickFormatFunction = function(){
 
 		//console.log("controller VisualizationsEditController");
 
+	//console.log("-----------");
+	//console.log($scope.idvisulist);
+	$scope.list = false;
+	if ($scope.idvisulist)
+	{
+		$routeParams.visualizationId = $scope.idvisulist;
+		$scope.list = true;
+	}
+	//console.log("-----------");
 	
 	var locationURL = $location.path();
 	

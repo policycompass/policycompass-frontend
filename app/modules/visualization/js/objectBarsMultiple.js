@@ -358,7 +358,8 @@ policycompass.viz.barsMultiple = function(options) {
     	
 		var xAxis = d3.svg.axis()
     		.scale(x0)
-    		.orient("bottom");
+    		.orient("bottom")
+    		;
 
 		var yAxis = d3.svg.axis()
     		.scale(y)
@@ -405,9 +406,10 @@ policycompass.viz.barsMultiple = function(options) {
 			{
 		  		self.svg.append("g")
       				.attr("class", "x axis")
+      				.attr("font-size", self.font_size)
       				.attr("transform", "translate(0,"+self.height+")")
       				.call(xAxis)
-      				.append("text")
+      				.append("text")      				    		
       				//.attr("x", self.width)
 					//.attr("dx", self.width- (self.margin.left*2))
             		//.attr("dy", self.width- (self.margin.left*2))
@@ -422,6 +424,7 @@ policycompass.viz.barsMultiple = function(options) {
 				
 				self.svg.append("g")
       				.attr("class", "y axis")
+      				.attr("font-size", self.font_size)
       				.call(yAxis);
       			//console.log(bars);
 				for (keyIndex in self.labelY) {
@@ -437,7 +440,7 @@ policycompass.viz.barsMultiple = function(options) {
 						
 						self.svg.append("g")
 	    					.append("text")
-			    			.attr("font-size", 11)
+			    			.attr("font-size", self.font_size)
 			      			.attr("transform", "rotate(-90)")
 			      			.attr("y", 15*(cnt_keyIndex))
 			      			//.style("stroke", function(d,i) {
@@ -690,7 +693,7 @@ policycompass.viz.barsMultiple = function(options) {
 					.attr("text-anchor","center")
 					.attr("text-decoration","none")					
 					.attr("class", "link superior legend value")				
-					.attr("font-size", 11)					
+					.attr("font-size", self.font_size)					
 					.style("stroke", color(xAxisData[i]))					
 					
 					      					
@@ -713,6 +716,11 @@ policycompass.viz.barsMultiple = function(options) {
 		{
 			self.extraWidth = 60;
 		}
+		
+		//console.log(self.parentSelect);
+		self.parentSelect = self.parentSelect.replace("undefined","");
+		//console.log(self.parentSelect);
+		
 		self.svg = d3.select(self.parentSelect).append("svg")
     		.attr("width", self.width + self.margin.left + self.margin.right + self.extraWidth)
     		.attr("height", self.height + self.margin.top + self.margin.bottom)

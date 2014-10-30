@@ -5,12 +5,12 @@ function piechartdisplay()
 	var selectedValue = $('#dateselector').val();
 	if (isNaN(selectedValue))
 	{
-		$('.pie').show();
+		$('.pie_'+self.visualizationid).show();
 	}
 	else
 	{
-		$('.pie').hide();	
-		$('#pie_'+selectedValue).show();
+		$('.pie_'+self.visualizationid).hide();	
+		$('#pie_'+self.visualizationid+'_'+selectedValue).show();
 		
 	}
 	
@@ -70,7 +70,7 @@ policycompass.viz.pie = function(options)
   		*/
   		//var arc = d3.svg.arc()
   		var arc = self.arc = d3.svg.arc()
-  			.outerRadius(self.radius - self.margin)  			
+  			.outerRadius(self.radius - self.margin.top)  			
   			.innerRadius(self.innerRadious);
  
   
@@ -79,7 +79,7 @@ policycompass.viz.pie = function(options)
 
 		//var arcOver 
 		self.arcOver = d3.svg.arc() 
-			.outerRadius(self.radius + self.margin/4)
+			.outerRadius(self.radius + self.margin.top/4)
 			.innerRadius(self.innerRadious);
 			; 
        
@@ -126,7 +126,26 @@ policycompass.viz.pie = function(options)
 		      	//console.log("sumatotal="+sumatotal);
 		      	var average = Math.round((pies[i]*100/sumatotal),2);
 		      	var number = pies[i];
-		      	number =  Math.round(number, 2);
+		      	//number =  Math.round(number, 2);
+
+		      	number = (parseFloat(number * 100) / 100).toFixed(2);
+		      	
+		      	var formatdecimal = 0;
+
+        		formatdecimal = Math.round(number/100)+1;
+        
+        		if (formatdecimal<2)
+        		{
+        			formatdecimal =2;
+        		}
+        		else if (formatdecimal>4)
+        		{
+        			formatdecimal =4;
+        		} 
+		      	
+		      	var si = d3.format('.'+formatdecimal+'s');
+		      	
+		      	number = si(number);
 		      	
 		      	var textToReturn = number + " ("+average+"%)";
 		      					
@@ -200,7 +219,7 @@ policycompass.viz.pie = function(options)
 		      	})	
 		         
 		      //.attr("dy", ".35em")
-		      .attr("font-size", 11)
+		      .attr("font-size", self.font_size)
 		      
 	   			.attr("stroke", "rgb(0, 0, 0)")
 				.attr("stroke-width", "0px")
@@ -217,7 +236,25 @@ policycompass.viz.pie = function(options)
 		      	//console.log("sumatotal="+sumatotal);
 		      	var average = Math.round((pies[i]*100/sumatotal),2);
 		      	var number = pies[i];
-		      	number =  Math.round(number, 2);
+		      	//number =  Math.round(number, 2);		      	
+		      	number = (parseFloat(number * 100) / 100).toFixed(2);
+		      	
+		      	var formatdecimal = 0;
+
+        		formatdecimal = Math.round(number/100)+1;
+        
+        		if (formatdecimal<2)
+        		{
+        			formatdecimal =2;
+        		}
+        		else if (formatdecimal>4)
+        		{
+        			formatdecimal =4;
+        		} 
+		      	
+		      	var si = d3.format('.'+formatdecimal+'s');
+		      	
+		      	number = si(number);
 		      	
 		      	var textToReturn = number + " ("+average+"%)";	
 		      	
@@ -250,7 +287,7 @@ policycompass.viz.pie = function(options)
 		    		.attr("dy", ".35em")
 					.attr("text-anchor","center")
 					.attr("class", "link superior legend value")				
-					.attr("font-size", 11)
+					.attr("font-size", self.font_size)
 					.style("stroke", function(d,i) {return 'black';})												      					
 					.text(function(d,i) {
 						var resTRext = piesArray['Key'].split("_");
@@ -267,6 +304,7 @@ policycompass.viz.pie = function(options)
 								arrayLabelsToPlot.push(piesArray['Units'][ij]);
 								if (labelY!="")
 								{
+									
 									labelY = labelY +",";
 								}
 								labelY = labelY +" "+piesArray['Units'][ij];	
@@ -302,16 +340,17 @@ policycompass.viz.pie = function(options)
 			legend.append("rect")
 		  		//.attr("class", "rect_pie_"+self.idName) 
 		    	.attr("x", self.radius + 5)	   		      		 	
-		    	.attr("width", 18)
-		    	.attr("height", 18)
+		    	.attr("width", 5)
+		    	.attr("height", 5)
 		    	.style("fill", function(d,i) {return colorScale(i);});
 		
 		  	legend.append("text")
 		  		//.attr("class", "text_pie_"+self.idName) 
-		    	.attr("x", self.radius + 5 + 18+ 5)
+		    	.attr("x", self.radius + 5 + 5 + 5)
 		    	.attr("y", 9)
-		    	.attr("font-size", 11)		
-		    	.attr("dy", ".35em")
+		    	.attr("font-size", self.font_size)		
+		    	//.attr("dy", ".35em")
+		    	.attr("dy", "-.30em")
 		    	//.style("text-anchor", "end")
 		    	.style("stroke", function(d,i) {return colorScale(i);})
 		    	.text(function(d,i) {
@@ -327,15 +366,19 @@ policycompass.viz.pie = function(options)
 
     self.init = function () {
 		//console.log("self.init "+self.idName);
+		//console.log(self.parentSelect);
+		self.parentSelect = self.parentSelect.replace("undefined","");
+		//console.log(self.parentSelect);
+		
 		self.svg = d3.select(self.parentSelect).append("svg")
 					.attr("id", "graph_"+self.idName)
-                    .attr("width", self.width+self.margin*2)
-                    .attr("height", self.height+self.margin*2)
+                    .attr("width", self.width+self.margin.right+self.margin.left)
+                    .attr("height", self.height+self.margin.top+self.margin.bottom)
                     .on("mousemove", mousemove)
                     //.on("mouseover", console.log("aaaaaaa"))
-                    .style("float","left")
+                    //.style("float","left")
                     .append("g")
-                    	.attr("transform", "translate(" + (self.width+self.margin*2) / 2 + "," + (self.height+self.margin*2) / 2 + ")")
+                    	.attr("transform", "translate(" + (self.width+self.margin.right+self.margin.left) / 2 + "," + (self.height+self.margin.top+self.margin.bottom) / 2 + ")")
                     ;
 	}
 

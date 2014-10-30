@@ -113,6 +113,10 @@ policycompass.viz.mapW = function(options)
 					
         path = d3.geo.path().projection(projection);    	
 
+		//console.log(self.parentSelect);
+		self.parentSelect = self.parentSelect.replace("undefined","");
+		//console.log(self.parentSelect);
+		
 		self.svg = d3.select(self.parentSelect).append("svg")
 			.attr("width", width)
 			.attr("height", height)
@@ -210,7 +214,7 @@ policycompass.viz.mapW = function(options)
 						.attr("text-anchor","center")
 						.attr("text-decoration","none")					
 						.attr("class", "link superior legend value")				
-						.attr("font-size", 11)
+						.attr("font-size", self.font_size)
 						.text("A"+i)
 						.style("fill", function(d,i) {return color(key);});
 						;
@@ -349,8 +353,11 @@ self.svg.append("path")
 			;
 
 		//offsets for tooltips
-		var offsetL = document.getElementById('container_graph').offsetLeft+20;
-		var offsetT = document.getElementById('container_graph').offsetTop+10;
+		//var offsetL = document.getElementById('container_graph').offsetLeft+20;
+		//var offsetT = document.getElementById('container_graph').offsetTop+10;
+		var offsetL = document.getElementById(self.parentSelect.replace("#",'')).offsetLeft+20;
+		var offsetT = document.getElementById(self.parentSelect.replace("#",'')).offsetTop+10;
+		
 
 		//tooltips
 		country
@@ -391,11 +398,14 @@ self.svg.append("path")
 
 	function redraw() 
 	{
-		width = document.getElementById('container_graph').offsetWidth;
+	/*		
+		//width = document.getElementById('container_graph').offsetWidth;
+		width = document.getElementById(self.parentSelect.replace("#",'')).offsetWidth;
 		height = width / 2;
 		d3.select('svg').remove();
 		setup(width,height);
 		draw(topo);
+		*/
 	}
 
 
