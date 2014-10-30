@@ -21,8 +21,9 @@ angular.module('pcApp.events.controllers.event', [
         '$location',
         'Event',
         'LinkedEventVisualization',
+        'dialogs',
         '$log',
-        function ($scope, $routeParams, $location, Event, LinkedEventVisualization, $log) {
+        function ($scope, $routeParams, $location, Event, LinkedEventVisualization, dialogs, $log) {
 
             $scope.event = Event.get({id: $routeParams.eventId},
                 function (event) {
@@ -32,14 +33,23 @@ angular.module('pcApp.events.controllers.event', [
                 }
             );
 
-            $scope.deleteEvent = function (event) {
-                event.$delete(
-                    {},
-                    function () {
-                        $location.path('/events');
-                    }
-                );
+            $scope.deleteEvent = function(event) {
+                // Open a confirmation dialog
+                var dlg = dialogs.confirm(
+                    "Are you sure?",
+                        "Do you want to delete the Event '" + event.title + "' permanently?");
+                dlg.result.then(function () {
+                    // Delete the metric via the API
+                    event.$delete(
+                        {},
+                        function(){
+                            $location.path('/events');
+                        }
+                    );
+                });
             };
+
+
             $scope.linked_event_visualization = LinkedEventVisualization.get({id: $routeParams.eventId},
                 function(linked_event_visualization) {
                 },
