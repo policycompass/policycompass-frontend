@@ -31,8 +31,8 @@
             controller: 'StaticController',
             templateUrl: 'modules/common/partials/request.html'
         })
-        .when('/termsOfUse', {
-            templateUrl: 'modules/common/partials/termsOfUse.html'
+        .when('/publishingNotes', {
+            templateUrl: 'modules/common/partials/publishingNotes.html'
         })
         .otherwise({ redirectTo: '/' });
 });
