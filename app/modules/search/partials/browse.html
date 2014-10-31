@@ -67,147 +67,49 @@
           <div class="num-results" ng-show="searchResults.length">
             <span>Page {{currentPage}} of {{searchResultsCount}} results found</span>
           </div>
-
-          <article class="search-result col-md-6" ng-repeat="searchResult in searchResults" ng-cloak>
-
-            <div class="search-result-container">
-              <div class="search-result-title">
-                <a href="/app/#/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}">
-                  <div>{{ searchResult['_source']['title']}}</div>
-                </a>
+       <div class="col-lg-12 result-wrapper">
+		   <span ng-repeat="searchResult in searchResults">  
+          <div ng-class="{row: !(($index + 1) % 4)}">
+              <div class="result-block col-lg-3 col-md-3 col-sm-6 col-xs-6"  ng-cloak>
+                  <div class=".searchItemIcon-effect">
+                      <div class="searchItemIcon {{searchResult['_type']}}Icon col-lg-12"></div>
+                      <!-- /.col-lg-12  -->
+                  </div>
+                  <div class="col-lg-12">
+                      <a ng-show="searchResult['_type']=='metric'" href="/app/#/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}" popover="{{ searchResult['_source']['publisher'] }}" popover-title="Publisher" popover-trigger="mouseenter">
+                          <h5>{{ searchResult['_source']['title']}}</h5>
+                          <p class="text-justify">{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
+                      </a>
+                     <a ng-show="searchResult['_type']=='event'" href="/app/#/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}" popover="{{ searchResult['_source']['startEventDate']|date:'d-M-yy'}}" popover-title="Start of Event" popover-trigger="mouseenter">
+                          <h5>{{ searchResult['_source']['title']}}</h5>
+                          <p class="text-justify">{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
+                      </a>
+                     <a ng-show="searchResult['_type']=='visualization'" href="/app/#/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}" popover="{{ searchResult['_source']['created_at']|date:'d-M-yy'}}" popover-title="Created on" popover-trigger="mouseenter">
+                          <h5>{{ searchResult['_source']['title']}}</h5>
+                          <p class="text-justify">{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
+                      </a>
+                   <a ng-show="searchResult['_type']=='fuzzymap'" href="/app/#/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}" popover="{{ searchResult['_source']['keywords']|date:'d-M-yy'}}" popover-title="Keywords" popover-trigger="mouseenter">
+                          <h5>{{ searchResult['_source']['title']}}</h5>
+                          <p class="text-justify">{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
+                      </a>
+                  </div>
+                  <!-- /.col-lg-12  -->
               </div>
-              <div class="search-result-description">
-                {{ searchResult['_source']['description'] | limitTo:200 }}...
-              </div>
-              <div class="row search-meta-left">
-                <div class="col-md-6 ">
-                  <!-- Metric Specific -->
-                  <div ng-show="searchResult['_type']=='metric'" class="search-result-date">
-                    Issued:
-                    <time>{{ searchResult['_source']['issued']|date:'d-M-yy'}}</time>
-                  </div>
-                  <div ng-show="searchResult['_type']=='metric'" class="search-result-publisher">
-                    Publisher: <a href="{{ searchResult['_source']['external_resource']['url'] }}" target="_blank">{{ searchResult['_source']['publisher'] }}</a>
-                  </div>
-                  <!-- Event Specific -->
-                  <div ng-show="searchResult['_type']=='event'" class="search-result-startdate">
-                    Start of Event:
-                    <time>{{ searchResult['_source']['startEventDate']|date:'d-M-yy'}}</time>
-                  </div>
-                  <div ng-show="searchResult['_type']=='event'" class="search-result-enddate">
-                    End of Event:
-                    <time>{{ searchResult['_source']['endEventDate']|date:'d-M-yy'}}</time>
-                  </div>
-                  <!-- Visualization Specific -->
-                  <div ng-show="searchResult['_type']=='visualization'" class="search-result-date">
-                    Created at:
-                    <time>{{ searchResult['_source']['created_at']|date:'d-M-yy'}}</time>
-                  </div>
-                  <div ng-show="searchResult['_type']=='visualization'" class="search-result-publisher">
-                    Keywords:
-                    <time>{{ searchResult['_source']['keywords']}}</time>
-                  </div>
-                  <!-- FCM Specific -->
-                </div>
-                <div class="col-md-6">
-                  <div class="searchItemIcon {{searchResult['_type']}}Icon"></div>
-                  <div class="searchItemType">{{searchResult['_type']}}</div>
-                </div>
-              </div>
-            </div>
+              <!-- /result-block .col-lg-3  -->
 
+          <!-- /.row  -->
+          </div>
+          </span>
+        </div>
+        <!-- /.col-lg-12 result-wrapper -->
+ 
 
-          </article>
           <div class="clearfix"></div>
         </div>
         <div style="text-align: center">
           <pagination total-items="totalItems" ng-change="pageChanged()" items-per-page="itemsperPage" ng-model="currentPage" max-size="paginationSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
         </div>
 
-        <div class="col-lg-12 result-wrapper">
-          <div class="row">
-              <div class="result-block col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                  <div class=".searchItemIcon-effect">
-                      <div class="searchItemIcon fuzzymapIcon col-lg-12"></div>
-                      <!-- /.col-lg-12  -->
-                  </div>
-                  <div class="col-lg-12">
-                      <a href="#/models" popover="dynamicPopover" popover-title="dynamicPopoverTitle" popover-trigger="mouseenter">
-                          <h5>Fuzzy Cognitive Map</h5>
-                          <p class="text-justify">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidun</p>
-                      </a>
-                  </div>
-                  <!-- /.col-lg-12  -->
-                  <div class="col-lg-12">
-                      <div class="rating">
-                          <rating ng-model="rate" max="max" readonly="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null"></rating>
-                          <span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" ng-show="overStar && !isReadonly">{{percent}}%</span>
-                      </div>
-                  </div>
-                  <!-- /.col-lg-12  -->
-              </div>
-              <!-- /result-block .col-lg-3  -->
-            <div class="result-block col-lg-3 col-md-3 col-sm-6 col-xs-6">
-              <div class="searchItemIcon visualizationIcon col-lg-12"></div>
-              <!-- /.col-lg-12  -->
-              <div class="col-lg-12">
-                <a href="#/visualizations">
-                  <h5>Visualisation</h5>
-                  <p class="text-justify">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidun</p>
-                </a>
-              </div>
-              <!-- /.col-lg-12  -->
-              <div class="col-lg-12">
-                <div class="rating">
-                  <rating ng-model="rate" max="max" readonly="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null"></rating>
-                  <span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" ng-show="overStar && !isReadonly">{{percent}}%</span>
-                </div>
-              </div>
-              <!-- /.col-lg-12  -->
-            </div>
-            <!-- /result-block .col-lg-3  -->
-            <div class="result-block col-lg-3 col-md-3 col-sm-6 col-xs-6">
-              <div class="searchItemIcon eventIcon col-lg-12"></div>
-              <!-- /.col-lg-12  -->
-              <div class="col-lg-12">
-                <a href="#/events">
-                  <h5>Historical Events</h5>
-                  <p class="text-justify">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidun</p>
-                </a>
-              </div>
-              <!-- /.col-lg-12  -->
-              <div class="col-lg-12">
-                <div class="rating">
-                  <rating ng-model="rate" max="max" readonly="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null"></rating>
-                  <span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" ng-show="overStar && !isReadonly">{{percent}}%</span>
-                </div>
-              </div>
-              <!-- /.col-lg-12  -->
-            </div>
-            <!-- /result-block .col-lg-3  -->
-            <div class="result-block col-lg-3 col-md-3 col-sm-6 col-xs-6">
-              <div class="searchItemIcon metricIcon col-lg-12"></div>
-              <!-- /.col-lg-12  -->
-              <div class="col-lg-12">
-                <a href="#/metrics">
-                  <h5>Metric</h5>
-                  <p class="text-justify">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidun</p>
-                </a>
-              </div>
-              <!-- /.col-lg-12  -->
-              <div class="col-lg-12">
-                <div class="rating">
-                  <rating ng-model="rate" max="max" readonly="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null"></rating>
-                  <span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" ng-show="overStar && !isReadonly">{{percent}}%</span>
-                </div>
-              </div>
-              <!-- /.col-lg-12  -->
-            </div>
-            <!-- /result-block .col-lg-3  -->
-          </div>
-          <!-- /.row  -->
-        </div>
-        <!-- /.col-lg-12 result-wrapper -->
       </div>
       <!-- myNavmenuCanvas -->
     </div>
