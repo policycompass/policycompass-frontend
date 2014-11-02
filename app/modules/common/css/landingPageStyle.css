@@ -36,13 +36,13 @@
 .home-actions {
     padding: 2em 0;
 }
-.landing-page-content > a > h3 {
+.landing-page-content  > h3 {
     text-transform: uppercase;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: 300;
     margin: 1em 0 0.3em;
 }
-.landing-page-content > a >p {
+.landing-page-content  >p {
     font-size: 1.1em;
     font-weight: 300;
     color: #58595b;

@@ -1,6 +1,6 @@
 /* Policy Compass Style  */
 body{
-    padding-top: 90px;
+    padding-top: 86px;
 }
 header{
     background-color: #FFF !important;
@@ -244,6 +244,10 @@ pre {
 .create-submenu{
     margin-top: -5px;
 }
+.create-submenu > .well{
+    margin-bottom: 0px !important;
+    border: none !important;
+}
 .create-submenu-well{
     padding-top: 5px !important;
 }
@@ -398,7 +402,6 @@ pre {
 /* footer*/
 footer{
     border-top: 1px solid #CCCCCC;
-    margin-top: 20px;
 }
 .footer-wrapper a{
     color: #58595b;
@@ -449,7 +452,7 @@ footer{
 @media only screen and (min-width: 1024px){
     /* nav-small*/
     body{
-        padding-top: 90px;
+        padding-top: 86px;
     }
     .nav-small > .col-lg-12 > .pull-right > a {
         color:#777;

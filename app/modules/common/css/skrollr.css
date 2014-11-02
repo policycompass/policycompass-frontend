@@ -15,7 +15,8 @@
     vertical-align: middle;
     color: #ebebeb;
     padding: 0 8%;
-    text-align: center}
+    text-align: center
+}
 .bcg {
     background-position: center center;
     background-repeat: no-repeat;
@@ -29,7 +30,7 @@
 }
 /* Slide 1 */
 #slide-1 .bcg {
-    background-image:url('../../../img/test/bcg_slide-1.jpg');
+    background-image:url('');
 }
 
 /* CSS - Slide 2 */
@@ -41,4 +42,49 @@
 }
 /* CSS - Slide 3 */
 #slide-3 .bcg {
-    background-image:url('../../../img/test/bcg_slide-3.jpg');}
+    background-image:url('');}
+
+
+.div_table {
+    height: 100%;
+    display: table;
+    margin: auto;
+}
+.div_tablecell {
+    display: table-cell;
+    vertical-align: middle;
+}
+#slide1{
+    background-image:url('../../../img/parallaxImg/bcg_section-1.png');
+    background-position: center center;
+    background-repeat: repeat;
+    height: 600px;
+}
+#slide2{
+    background-color: #ffffff;
+    height: 200px;
+}
+#slide3{
+    background-image:url('../../../img/parallaxImg/bcg_section-3.png');
+    background-position: center center;
+    background-repeat: repeat;
+/*    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;*/
+    height: 600px;
+}
+#slide4{
+    background-image:url('../../../img/parallaxImg/bcg_section-4.png');
+    background-position: center center;
+    background-repeat: repeat;
+    height: 600px;
+    width: 100%;
+}
+#slide5{
+    background-image:url('../../../img/parallaxImg/bcg_section-5.png');
+    background-position: center center;
+    background-repeat: repeat;
+    height: 600px;
+    width: 100%;
+}
