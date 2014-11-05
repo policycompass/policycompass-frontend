@@ -10,20 +10,18 @@ angular.module('pcApp.auth.services.auth', [
             username: undefined,
             userData: undefined
         },
-    };
 
-    Adhocracy.then(function (adh) {
-        adh.registerMessageHandler('login', function (data) {
+        login: function (userData, token, userPath) {
             $rootScope.$apply(function () {
                 Auth.state.loggedIn = true;
-                Auth.state.userData = data.userData;
+                Auth.state.userData = userData;
 
-                $http.defaults.headers.common["X-User-Token"] = data.token;
-                $http.defaults.headers.common["X-User-Path"] = data.userPath;
-
+                $http.defaults.headers.common["X-User-Token"] = token;
+                $http.defaults.headers.common["X-User-Path"] = userPath;
             });
-        });
-        adh.registerMessageHandler('logout', function (data) {
+        },
+
+        logout: function () {
             $rootScope.$apply(function () {
                 Auth.state.loggedIn = false;
                 Auth.state.UserData = undefined;
@@ -31,6 +29,15 @@ angular.module('pcApp.auth.services.auth', [
                 delete $http.defaults.headers.common["X-User-Token"];
                 delete $http.defaults.headers.common["X-User-Path"];
             });
+        }
+    };
+
+    Adhocracy.then(function (adh) {
+        adh.registerMessageHandler('login', function (data) {
+            Auth.login(data.userData, data.token, data.userPath);
+        });
+        adh.registerMessageHandler('logout', function (data) {
+            Auth.logout();
         });
     });
 
