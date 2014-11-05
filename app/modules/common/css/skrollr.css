@@ -88,3 +88,10 @@
     height: 600px;
     width: 100%;
 }
+#slide6{
+    background-image:url('../../../img/parallaxImg/bcg_section-6.png');
+    background-position: center center;
+    background-repeat: repeat;
+    height: 600px;
+    width: 100%;
+}
