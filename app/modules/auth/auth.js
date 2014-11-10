@@ -1,5 +1,6 @@
 var auth = angular.module('pcApp.auth', [
     'pcApp.auth.services.auth',
+    'pcApp.auth.controllers.authControllers',
     'pcApp.auth.directives.login',
     'pcApp.auth.directives.userIndicator',
 ]);
