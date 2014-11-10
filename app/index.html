@@ -41,7 +41,7 @@
         <div class="logo-wrapper col-lg-12">
             <a href="#" ng-click="isCollapsed = true"><img src="img/PolicyCompass-logo.png" alt="Policy Compass's Logo"></a>
             <div collapse="navCollapsed" class=" collapse navbar-collapse columns-4 pull-right nav-medium  nav-medium-effect sign-in-wrapper">
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav" data-ng-controller="UserState">
                     <li><a id="createLink" href="" ng-click="isCollapsed = !isCollapsed" data-hover="Create">Create</a></li>
                     <li class="divider-vertical"></li>
                     <li><a  href="#/browse"  data-hover="Browse" ng-click="isCollapsed = true">Browse</a></li>
@@ -51,11 +51,10 @@
                     <li><a href="#/how-it-works" data-hover="How It Works" ng-click="isCollapsed = true">How It Works </a></li>
                     <li class="divider-vertical"></li>
                     <li><a href="#/request" data-hover="Request" ng-click="isCollapsed = true">Request</a></li>
-                    <li><a href="#/login" data-hover="Sign Up" ng-click="isCollapsed = true">Sign Up</a></li>
-                    <p class="navbar-text">OR</p>
-                    <li><button type="button" class="btn btn-primary btn-sm login-btn"  ng-click="isCollapsed = true;go('/login')">
-                        <span class="glyphicon glyphicon-user"></span> Log In
-                    </button></li>
+                    <li ng-if="authState.loggedIn===false"><a href="#/register" data-hover="Sign Up" ng-click="isCollapsed = true">Sign Up</a></li>
+                    <p ng-if="authState.loggedIn===false" class="navbar-text">OR</p>
+                    <li ng-if="authState.loggedIn===false"><a href="#/login" class="btn btn-primary btn-sm login-btn" ng-click="isCollapsed = true"><span class="glyphicon glyphicon-user"></span> Log In</a></li>
+                    <li ng-if="authState.loggedIn"><a href="#/logout" ng-click="isCollapsed = true">Logout ({{ authState.userData.name }})</a></li>
                 </ul>
             </div>
         </div><!-- /.logo-wrapper -->
