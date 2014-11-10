@@ -11,7 +11,10 @@ angular.module('pcApp.auth.services.auth', [
             userData: undefined
         },
 
-        login: function (userData, token, userPath) {
+        // NOTE: _login and _logout are only meant to be called through
+        // the AdhocracySDK.
+
+        _login: function (userData, token, userPath) {
             _.defer(function () {
                 $rootScope.$apply(function () {
                     Auth.state.loggedIn = true;
@@ -23,7 +26,7 @@ angular.module('pcApp.auth.services.auth', [
             });
         },
 
-        logout: function () {
+        _logout: function () {
             _.defer(function () {
                 $rootScope.$apply(function () {
                     Auth.state.loggedIn = false;
@@ -38,14 +41,14 @@ angular.module('pcApp.auth.services.auth', [
 
     Adhocracy.then(function (adh) {
         adh.registerMessageHandler('login', function (data) {
-            Auth.login(data.userData, data.token, data.userPath);
+            Auth._login(data.userData, data.token, data.userPath);
 
             if (($location.path() === '/login') || ($location.path() === '/register')) {
                 $location.path('/');
             }
         });
         adh.registerMessageHandler('logout', function (data) {
-            Auth.logout();
+            Auth._logout();
 
             if ($location.path() === '/logout') {
                 $location.path('/');
