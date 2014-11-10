@@ -2,7 +2,7 @@ angular.module('pcApp.auth.services.auth', [
     'pcApp.adhocracyEmbedder.services.adhocracy'
 ])
 
-.factory('Auth', ['Adhocracy', '$rootScope', '$http', function (Adhocracy, $rootScope, $http) {
+.factory('Auth', ['Adhocracy', '$rootScope', '$http', '$location', function (Adhocracy, $rootScope, $http, $location) {
 
     var Auth = {
         state: {
@@ -39,9 +39,17 @@ angular.module('pcApp.auth.services.auth', [
     Adhocracy.then(function (adh) {
         adh.registerMessageHandler('login', function (data) {
             Auth.login(data.userData, data.token, data.userPath);
+
+            if (($location.path() === '/login') || ($location.path() === '/register')) {
+                $location.path('/');
+            }
         });
         adh.registerMessageHandler('logout', function (data) {
             Auth.logout();
+
+            if ($location.path() === '/logout') {
+                $location.path('/');
+            }
         });
     });
 
