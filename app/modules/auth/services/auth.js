@@ -12,22 +12,26 @@ angular.module('pcApp.auth.services.auth', [
         },
 
         login: function (userData, token, userPath) {
-            $rootScope.$apply(function () {
-                Auth.state.loggedIn = true;
-                Auth.state.userData = userData;
+            _.defer(function () {
+                $rootScope.$apply(function () {
+                    Auth.state.loggedIn = true;
+                    Auth.state.userData = userData;
 
-                $http.defaults.headers.common["X-User-Token"] = token;
-                $http.defaults.headers.common["X-User-Path"] = userPath;
+                    $http.defaults.headers.common["X-User-Token"] = token;
+                    $http.defaults.headers.common["X-User-Path"] = userPath;
+                });
             });
         },
 
         logout: function () {
-            $rootScope.$apply(function () {
-                Auth.state.loggedIn = false;
-                Auth.state.UserData = undefined;
+            _.defer(function () {
+                $rootScope.$apply(function () {
+                    Auth.state.loggedIn = false;
+                    Auth.state.UserData = undefined;
 
-                delete $http.defaults.headers.common["X-User-Token"];
-                delete $http.defaults.headers.common["X-User-Path"];
+                    delete $http.defaults.headers.common["X-User-Token"];
+                    delete $http.defaults.headers.common["X-User-Path"];
+                });
             });
         }
     };
