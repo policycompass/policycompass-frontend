@@ -57,6 +57,10 @@ http.createServer(function(request, response) {
         proxy.web(request, response, {
             target: pcServicesUrl
         });
+    } else if (/^\/api\/v[0-9]+\/searchmanager/.exec(request.url)) {
+        proxy.web(request, response, {
+            target: pcServicesUrl
+        });
     } else if (/^\/api\/v[0-9]+\/fcmmanager/.exec(request.url)) {
         proxy.web(request, response, {
             target: fcmServicesUrl

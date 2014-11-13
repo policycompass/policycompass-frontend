@@ -102,7 +102,12 @@ else
 		$scope.fcmModel.data = jsonModel;
 
                 Fcm.save($scope.fcmModel, function (value) {
-			var dlg = dialogs.notify("FCM Model", "'" + user.title + "' FCM Model has been saved!");
+			FcmSearchUpdate.create({id: $routeParams.fcmId}, $scope.fcmModel, function () {			
+				var dlg = dialogs.notify("FCM Model", "'" + user.title + "' FCM Model has been saved!");
+                    	},
+                    	function (err) {
+                        	throw { message: err.data};
+                    	});
 			$scope.md = value;
                     },
                     function (err) {
@@ -124,7 +129,12 @@ else
 		$scope.fcmModelUpdate.data = jsonModel;
 
                 FcmModel.update({id: $routeParams.fcmId}, $scope.fcmModelUpdate, function (value) {
-			var dlg = dialogs.notify("FCM Model", "'" + jsonModel.model.title + "' FCM Model has been saved!");
+			FcmSearchUpdate.update({id: $routeParams.fcmId}, $scope.fcmModel, function () {			
+				var dlg = dialogs.notify("FCM Model", "'" + jsonModel.model.title + "' FCM Model has been saved!");
+                    	},
+                    	function (err) {
+                        	throw { message: err.data};
+                    	});
 			$scope.md = value;
                     },
                     function (err) {
@@ -145,7 +155,7 @@ else
 		// building the new Node object
 		// using the array length to generate an id for the sample (you can do it any other way)
 	//        var newNode = {id:'n'+($scope.mapData.length), name:newObj, type:newObjType};
-		var newNode = {id:'n'+($scope.mapData.length), name:newObj};
+		var newNode = {id:'n'+($scope.mapData.length), name:newObj, x:user.x, y:user.y};
 		// adding the new Node to the nodes array
 		$scope.mapData.push(newNode);
 		$scope.Concepts.push(user);		
@@ -186,6 +196,7 @@ else
     {
         // sample just passes the object's ID then output it to the console and to an alert
         console.debug(value);
+	alert(value);
     };
 
     // reset the sample nodes
@@ -197,10 +208,10 @@ else
 })
 
 .controller('ConceptController',function($scope, $modalInstance, Metric, $log, $routeParams, data, ConceptsDetail){
-  $scope.user = {Id: -1, title: '', description: '', input: '', activetor: '', metrics: '', fixedoutput: ''};
+  $scope.user = {Id: -1, title: '', description: '', input: '', activetor: '', metrics: '', fixedoutput: '', x: '200', y: '100'};
 
 	$scope.metrics = Metric.query(
-            {},
+            {page_size: 100},
 			function(metricList) {
 			},
 			function(error) {

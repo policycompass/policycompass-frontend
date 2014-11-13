@@ -96,8 +96,10 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
 //	            minZoom: 0.1,
 //	            maxZoom: 4.0,
                     layout: {
-//                        name: 'circle',
+                        name: 'grid',
+			columns: 4, // force num of cols in the grid
                         fit: true, // whether to fit the viewport to the graph
+			avoidOverlap: true, // prevents node overlap, may overflow boundingBox if not enough space
 //                        ready: undefined, // callback on layoutready
 //                        stop: undefined, // callback on layoutstop
 //                        padding: 5 // the padding on fit

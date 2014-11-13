@@ -13,6 +13,13 @@
     { id: 20, name: '20'},
     { id: 30, name: '30'}
     ]; 
+    
+  //Init Sort Options
+	$scope.sortOptions = [
+    { id: 'Relevance', name: 'Relevance'},
+    { id: 'Date', name: 'Date Created'}
+    ]; 
+
 	 
 	// Set Search Fire Event
 	goSearch = function(){
@@ -35,6 +42,12 @@
 		 $scope.itemsperPage = $scope.selectedItemPerPage.id;
 		 goSearch();
     };
+    
+    //Define function that fires search when Sort By selection box changes
+     $scope.sortItemsChanged = function() {
+		 $scope.sortByItem = $scope.selectedSortItem.id;
+		 goSearch();
+    }; 
     
     //Define function that fires when Item Type is filtered (Metrics,Visualization, Events of Fuzzy Maps)
      $scope.filterSearchType = function(searchItemType) {
@@ -73,6 +86,13 @@ switch(searchItemType) {
 	if (typeof searchQuery == 'undefined') {searchQuery = ""};
  	//Get current result item offset depending on current page
 	itemOffset = ($scope.currentPage -1) * $scope.itemsperPage
+	//Build Sort
+	if ($scope.sortByItem == 'Relevance') {
+	 var sort =    ["_score"];
+    }
+    else {
+	 var sort =     [{"id" : {"order" : "desc"}},"_score"];
+	}
 	//Build query
 	if (searchQuery != "") {
 			var query = {
@@ -94,6 +114,7 @@ switch(searchItemType) {
       body: {
         size: $scope.itemsperPage,
         from: itemOffset,
+        sort:  sort,
         query: query
       }
       }).then(function(resp) {
@@ -113,6 +134,8 @@ switch(searchItemType) {
     $scope.paginationSize = 5;
     //Default values for how many items per page
     $scope.itemsperPage = 10
+     //Default sort
+    $scope.sortByItem = 'Relevance'
     //Default current page
     $scope.currentPage = 1;
     
