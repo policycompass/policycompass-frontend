@@ -39,16 +39,16 @@
                 <ul class="nav navbar-nav">
                     <li><a id="createLink" href="" ng-click="isCollapsed = !isCollapsed" data-hover="Create">Create</a></li>
                     <li class="divider-vertical"></li>
-                    <li><a  href="#/browse"  data-hover="Browse">Browse</a></li>
+                    <li><a  href="#/browse"  data-hover="Browse" ng-click="isCollapsed = true">Browse</a></li>
                     <li class="divider-vertical"></li>
-                    <li><a href="#/i-want-to" data-hover="I want to">I want to</a></li>
+                    <li><a href="#/i-want-to" data-hover="I want to" ng-click="isCollapsed = true">I want to</a></li>
                     <li class="divider-vertical"></li>
-                    <li><a href="#/how-it-works" data-hover="How It Works">How It Works </a></li>
+                    <li><a href="#/how-it-works" data-hover="How It Works" ng-click="isCollapsed = true">How It Works </a></li>
                     <li class="divider-vertical"></li>
-                    <li><a href="#/request" data-hover="Request">Request</a></li>
-                    <li><a href="#" data-hover="Sign Up">Sign Up</a></li>
+                    <li><a href="#/request" data-hover="Request" ng-click="isCollapsed = true">Request</a></li>
+                    <li><a href="#" data-hover="Sign Up" ng-click="isCollapsed = true">Sign Up</a></li>
                     <p class="navbar-text">OR</p>
-                    <li><button type="button" class="btn btn-primary btn-sm login-btn">
+                    <li><button type="button" class="btn btn-primary btn-sm login-btn" ng-click="isCollapsed = true">
                         <span class="glyphicon glyphicon-user"></span> Log In
                     </button></li>
                 </ul>
@@ -57,7 +57,7 @@
     </div><!-- /.container -->
     <!-- LandingPageContent -->
 </header>
-<div class="create-submenu" collapse="isCollapsed" ng-cloak>
+<div class="create-submenu" collapse="isCollapsed" ng-hide="isCollapsed" ng-cloak>
         <div class="well well-lg well-primary create-submenu-well">
             <div class="container">
                 <div class="row">

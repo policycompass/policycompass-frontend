@@ -10,14 +10,15 @@ angular.module('pcApp.common.controllers', [
     $scope.isActive = function (viewLocation) {
         return viewLocation === $location.path();
     };
-    /* Functions for Submenu Collapse.*/
+        $scope.isCollapsed = true;
+    /* Functions for Submenu Collapse.
     $scope.isCollapsed = true;
     $(document).on('click',function(e) {
         var link= e.target.id;
         if((link!=="createLink") && ($scope.isCollapsed = true)){
             $scope.isCollapsed = true;
         }
-    });
+    });*/
 }])
 
 .controller('StaticController', ['$scope', function($scope) {
