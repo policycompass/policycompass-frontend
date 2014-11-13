@@ -35,9 +35,10 @@ angular.module('pcApp.fcm.controllers.fcm', [
     '$routeParams',
     '$location',
     'FcmModel',
+    'FcmSearchDelete',
     'dialogs',
     '$log',
-    function ($scope, $rootScope, $routeParams, $location, FcmModel, dialogs, $log) {
+    function ($scope, $rootScope, $routeParams, $location, FcmModel, FcmSearchDelete, dialogs, $log) {
 	$scope.mapData = [];
 	$scope.edgeData = [];
 	
@@ -70,6 +71,8 @@ angular.module('pcApp.fcm.controllers.fcm', [
             "Do you want to delete the FCM model '" + model.title + "' permanently?");
         dlg.result.then(function () {
             // Delete the metric via the API
+            FcmSearchDelete.delete({id: $routeParams.fcmId}, function() {
+                });
             FcmModel.delete({id: $routeParams.fcmId}, function() {
                     $location.path('/models');
                 }
