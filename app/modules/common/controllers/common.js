@@ -11,14 +11,18 @@ angular.module('pcApp.common.controllers', [
         return viewLocation === $location.path();
     };
         $scope.isCollapsed = true;
-    /* Functions for Submenu Collapse.
-    $scope.isCollapsed = true;
+        $scope.navCollapsed=true;
+    /* Functions for Submenu Collapse.*/
     $(document).on('click',function(e) {
         var link= e.target.id;
-        if((link!=="createLink") && ($scope.isCollapsed = true)){
+        if((link!=="createLink") && ($scope.isCollapsed == false)){
             $scope.isCollapsed = true;
         }
-    });*/
+    });
+    /* Functions for login Button to call a route.*/
+    $scope.go = function ( path ) {
+        $location.path( path );
+    };
 }])
 
 .controller('StaticController', ['$scope', function($scope) {

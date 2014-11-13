@@ -34,5 +34,8 @@
         .when('/publishingNotes', {
             templateUrl: 'modules/common/partials/publishingNotes.html'
         })
+        .when('/login', {
+            templateUrl: 'modules/common/partials/login.html'
+        })
         .otherwise({ redirectTo: '/' });
 });

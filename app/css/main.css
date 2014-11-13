@@ -1,5 +1,8 @@
 /* Policy Compass Style  */
-body{
+[ng\:cloak], [ng-cloak], .ng-cloak {
+    display: none !important;
+}
+.page{
     padding-top: 86px;
 }
 header{
@@ -91,12 +94,11 @@ pre {
     margin-top: 30px;
 }
 /*nav bar*/
-.secondBar {
-    top:128px;
-    background-color: #ffffff;
-    -webkit-box-shadow: 0px 6px 22px 9px rgba(255, 255, 255, 0.75);
-    -moz-box-shadow:    0px 6px 22px 9px rgba(255, 255, 255, 0.75);
-    box-shadow:         0px 6px 22px 9px rgba(255, 255, 255, 0.75);
+#btn-navbar-toggle{
+ border:1px solid #eee;
+}
+.icon-bar{
+    background-color: #CCCCCC;
 }
 /* Button*/
 .btn{
@@ -241,8 +243,9 @@ pre {
     right: 0;
     top: 87px;
 }
-.create-submenu{
-    margin-top: -5px;
+
+.close-create-submenu{
+    height: 20px;
 }
 .create-submenu > .well{
     margin-bottom: 0px !important;
@@ -451,9 +454,7 @@ footer{
 /* Pc*/
 @media only screen and (min-width: 1024px){
     /* nav-small*/
-    body{
-        padding-top: 86px;
-    }
+
     .nav-small > .col-lg-12 > .pull-right > a {
         color:#777;
         font-weight: 400;
@@ -614,8 +615,8 @@ footer{
     }
 }
 /* ipad landscape*/
-@media only screen and (min-width: 768px)and (orientation : landscape) and (-webkit-min-device-pixel-ratio: 1)  {
-    /* nav-small*/
+@media only screen and (min-width : 768px) and (max-width : 1185px)  {
+        /* nav-small*/
     .nav-small > .col-lg-12 > .pull-right > a {
         color:#777;
         font-weight: 400;
@@ -644,9 +645,9 @@ footer{
         margin-top: 10px;
         text-align: center;
     }
-
-    /*
-     */
+    .page{
+        padding-top: 155px;
+    }
     .sign-in-wrapper {
         margin-bottom: 10px;
         margin-top: 15px;
@@ -767,10 +768,7 @@ footer{
     }
 }
 /* ipad portrait*/
-@media only screen and (max-width: 768px) /*and (orientation : portrait) and (-webkit-min-device-pixel-ratio: 1)*/{
-    body {
-        padding-top: 150px;
-    }
+@media only screen and (min-width: 768px)  and (max-width : 990px) /*and (orientation : portrait) and (-webkit-min-device-pixel-ratio: 1)*/{
     /* nav-small*/
     .nav-small > .col-lg-12 > .pull-right > a {
         color:#777;
@@ -803,8 +801,9 @@ footer{
         margin-top: 10px;
         text-align: center;
     }
-    /*
-     */
+    .page{
+        padding-top: 165px;
+    }
     .sign-in-wrapper {
         margin-bottom: 10px;
         margin-top: 15px;
@@ -816,7 +815,12 @@ footer{
     .nav-medium > button{
         margin-bottom: 10px;
     }
+    .nav-medium{
+        font-size: 12px;
+    }
     .nav-medium a {
+        padding:0px 0px 10px  0px !important;
+        margin: 15px 15px 15px 5px!important;
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         position: relative;
         display: inline-block;
@@ -830,9 +834,9 @@ footer{
         text-shadow: 0 0 1px rgba(255,255,255,0.3);
         font-size: 1em;
     }
-
     .nav-medium a:hover,.nav-medium a:active,
     .nav-medium a:focus {
+        background-color: #ffffff !important;
         outline: none;
     }
     /* nav-medium-effect: move up fade out, push border */
@@ -861,7 +865,6 @@ footer{
         bottom: 0;
         width: 100%;
         height: 2px;
-        background: #eb8000;
         opacity: 0;
         -webkit-transform: translateY(5px);
         -moz-transform: translateY(5px);
