@@ -89,7 +89,7 @@
                           <h5>{{ searchResult['_source']['title']}}</h5>
                           <p class="text-justify">{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
                       </a>
-                   <a ng-show="searchResult['_type']=='fuzzymap'" href="/app/#/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}" popover="{{ searchResult['_source']['keywords']|date:'d-M-yy'}}" popover-title="Keywords" popover-trigger="mouseenter">
+                   <a ng-show="searchResult['_type']=='fuzzymap'" href="/app/#/models/{{ searchResult['_source']['fcmmodelID'] }}" popover="{{ searchResult['_source']['keywords']|date:'d-M-yy'}}" popover-title="Keywords" popover-trigger="mouseenter">
                           <h5>{{ searchResult['_source']['title']}}</h5>
                           <p class="text-justify">{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
                       </a>
