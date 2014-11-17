@@ -50,17 +50,16 @@
                     <li class="divider-vertical"></li>
                     <li><a href="#/how-it-works" data-hover="How It Works" ng-click="expandCreateMenu()">How It Works </a></li>
                     <li class="divider-vertical"></li>
-                    <li><a href="#/request" data-hover="Request" ng-click="isCollapsed = true">Request</a></li>
+                    <li><a href="#/request" data-hover="Request" ng-click="expandCreateMenu()">Request</a></li>
                     <li><a href="#/login" data-hover="Sign Up" ng-click="isCollapsed = true">Sign Up</a></li>
                     <p class="navbar-text">OR</p>
                     <li id="btn-login"><a type="button" class="btn btn-primary btn-sm login-btn"  ng-click="isCollapsed = true;go('/login')">
                         <span class="glyphicon glyphicon-user"></span> Log In
                     </a></li>
-                    <li><a href="#/request" data-hover="Request" ng-click="expandCreateMenu()">Request</a></li>
-                    <li ng-if="authState.loggedIn===false"><a href="#/register" data-hover="Sign Up" ng-click="expandCreateMenu()">Sign Up</a></li>
-                    <p ng-if="authState.loggedIn===false" class="navbar-text">OR</p>
-                    <li ng-if="authState.loggedIn===false"><a href="#/login" class="btn btn-primary btn-sm login-btn" ng-click="expandCreateMenu()"><span class="glyphicon glyphicon-user"></span> Log In</a></li>
-                    <li ng-if="authState.loggedIn"><a href="#/logout" ng-click="expandCreateMenu()">Logout ({{ authState.userData.name }})</a></li>
+                    <li ng-if="authState.loggedIn===false" ng-cloak><a href="#/register" data-hover="Sign Up" ng-click="expandCreateMenu()">Sign Up</a></li>
+                    <p ng-if="authState.loggedIn===false" class="navbar-text" ng-cloak>OR</p>
+                    <li ng-if="authState.loggedIn===false" ng-cloak><a href="#/login" class="btn btn-primary btn-sm login-btn" ng-click="expandCreateMenu()"><span class="glyphicon glyphicon-user"></span> Log In</a></li>
+                    <li ng-if="authState.loggedIn" ng-cloak><a href="#/logout" ng-click="expandCreateMenu()">Logout ({{ authState.userData.name }})</a></li>
                 </ul>
             </div>
         </div><!-- /.logo-wrapper -->
