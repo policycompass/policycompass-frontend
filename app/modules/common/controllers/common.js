@@ -10,8 +10,14 @@ angular.module('pcApp.common.controllers', [
     $scope.isActive = function (viewLocation) {
         return viewLocation === $location.path();
     };
+    $scope.isCollapsed = true;
+    $scope.navCollapsed = true;
+    $scope.collapseCreateMenu = function () {
         $scope.isCollapsed = true;
-        $scope.navCollapsed=true;
+    }
+    $scope.expandCreateMenu = function () {
+        $scope.isCollapsed = false;
+    }
     /* Functions for Submenu Collapse.*/
     $(document).on('click',function(e) {
         var link= e.target.id;

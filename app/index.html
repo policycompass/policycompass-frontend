@@ -39,23 +39,22 @@
             </button>
         </div>
         <div class="logo-wrapper col-lg-12">
-            <a href="#" ng-click="isCollapsed = true"><img src="img/PolicyCompass-logo.png" alt="Policy Compass's Logo"></a>
-            <div collapse="navCollapsed" class=" collapse navbar-collapse columns-4 pull-right nav-medium  nav-medium-effect sign-in-wrapper">
-                <ul class="nav navbar-nav">
-                    <li><a id="createLink" href="" ng-click="isCollapsed = !isCollapsed" data-hover="Create">Create</a></li>
+            <a href="#" ng-click="collapseCreateMenu()"><img src="img/PolicyCompass-logo.png" alt="Policy Compass's Logo"></a>
+            <div collapse="navCollapsed" class=" collapse navbar-collapse columns-4 pull-right nav-medium  nav-medium-effect sign-in-wrapper ng-cloak" ng-cloak>
+                <ul class="nav navbar-nav" data-ng-controller="UserState">
+                    <li><a id="createLink" href="" ng-click="expandCreateMenu()" data-hover="Create">Create</a></li>
                     <li class="divider-vertical"></li>
-                    <li><a  href="#/browse"  data-hover="Browse" ng-click="isCollapsed = true">Browse</a></li>
+                    <li><a  href="#/browse"  data-hover="Browse" ng-click="expandCreateMenu()">Browse</a></li>
                     <li class="divider-vertical"></li>
-                    <li><a href="#/i-want-to" data-hover="I want to" ng-click="isCollapsed = true">I want to</a></li>
+                    <li><a href="#/i-want-to" data-hover="I want to" ng-click="expandCreateMenu()">I want to</a></li>
                     <li class="divider-vertical"></li>
-                    <li><a href="#/how-it-works" data-hover="How It Works" ng-click="isCollapsed = true">How It Works </a></li>
+                    <li><a href="#/how-it-works" data-hover="How It Works" ng-click="expandCreateMenu()">How It Works </a></li>
                     <li class="divider-vertical"></li>
-                    <li><a href="#/request" data-hover="Request" ng-click="isCollapsed = true">Request</a></li>
-                    <li><a href="#/login" data-hover="Sign Up" ng-click="isCollapsed = true">Sign Up</a></li>
-                    <p class="navbar-text">OR</p>
-                    <li><button type="button" class="btn btn-primary btn-sm login-btn"  ng-click="isCollapsed = true;go('/login')">
-                        <span class="glyphicon glyphicon-user"></span> Log In
-                    </button></li>
+                    <li><a href="#/request" data-hover="Request" ng-click="expandCreateMenu()">Request</a></li>
+                    <li ng-if="authState.loggedIn===false"><a href="#/register" data-hover="Sign Up" ng-click="expandCreateMenu()">Sign Up</a></li>
+                    <p ng-if="authState.loggedIn===false" class="navbar-text">OR</p>
+                    <li ng-if="authState.loggedIn===false"><a href="#/login" class="btn btn-primary btn-sm login-btn" ng-click="expandCreateMenu()"><span class="glyphicon glyphicon-user"></span> Log In</a></li>
+                    <li ng-if="authState.loggedIn"><a href="#/logout" ng-click="expandCreateMenu()">Logout ({{ authState.userData.name }})</a></li>
                 </ul>
             </div>
         </div><!-- /.logo-wrapper -->
@@ -66,14 +65,14 @@
         <div class="well well-lg well-primary create-submenu-well">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-12 close-create-submenu"><a href="" ng-click="isCollapsed = !isCollapsed" class="pull-right"><span class="glyphicon glyphicon-remove "></span></a></div>
+                    <div class="col-lg-12 close-create-submenu"><a href="" ng-click="collapseCreateMenu()" class="pull-right"><span class="glyphicon glyphicon-remove "></span></a></div>
                     <div class="col-lg-12">
                         <div class="row">
                             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 columns-create-submenu">
                                 <div class="row">
                                     <div class="col-lg-4 columns-create-submenu-icon-1"></div>
                                     <div class="col-lg-8 columns-create-submenu-text">
-                                        <a href="#/metrics/create" ng-click="isCollapsed = true">
+                                        <a href="#/metrics/create" ng-click="collapseCreateMenu()">
                                             <h3>CREATE METRICS</h3>
                                         </a>
                                     </div>
@@ -83,7 +82,7 @@
                                 <div class="row">
                                     <div class="col-lg-4 columns-create-submenu-icon-2"></div>
                                     <div class="col-lg-8 columns-create-submenu-text">
-                                        <a href="#/events/create" ng-click="isCollapsed = true">
+                                        <a href="#/events/create" ng-click="collapseCreateMenu()">
                                             <h3>CREATE HISTORICAL EVENTS</h3>
                                         </a>
                                     </div>
@@ -93,7 +92,7 @@
                                 <div class="row">
                                     <div class="col-lg-4 columns-create-submenu-icon-3"></div>
                                     <div class="col-lg-8 columns-create-submenu-text">
-                                        <a href="#/visualizations/create" ng-click="isCollapsed = true">
+                                        <a href="#/visualizations/create" ng-click="collapseCreateMenu()">
                                             <h3>CREATE VISUALISATION</h3>
                                         </a>
                                     </div>
@@ -103,7 +102,7 @@
                                 <div class="row">
                                     <div class="col-lg-4 columns-create-submenu-icon-4"></div>
                                     <div class="col-lg-8 columns-create-submenu-text">
-                                        <a href="#/models/create" ng-click="isCollapsed = true">
+                                        <a href="#/models/create" ng-click="collapseCreateMenu()">
                                             <h3>CREATE FUZZY COGNITIVE MAP</h3>
                                         </a>
                                     </div>
@@ -158,6 +157,8 @@
         <!--<p ng-show="error" class="alert alert-danger">{{ error }}</p>-->
     </div>
 </footer>
+
+<adh-cross-window-channel></adh-cross-window-channel>
 
 <!--  Vendor Libs -->
 <script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
@@ -215,7 +216,8 @@
 
 <script type="text/javascript" src="modules/auth/auth.js"></script>
 <script type="text/javascript" src="modules/auth/services/auth.js"></script>
-<script type="text/javascript" src="modules/auth/directives/userIndicator.js"></script>
+<script type="text/javascript" src="modules/auth/controllers/authControllers.js"></script>
+<script type="text/javascript" src="modules/auth/directives/login.js"></script>
 
 <script type="text/javascript" src="modules/deliberation/deliberation.js"></script>
 <script type="text/javascript" src="modules/deliberation/directives/showDiscussion.js"></script>

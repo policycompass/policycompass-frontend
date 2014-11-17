@@ -16,7 +16,9 @@ var policyCompassConfig = {
     'FCM_URL': '/api/v1/fcmmanager',
     'ELASTIC_URL' : 'localhost:9000',
     'ELASTIC_INDEX_NAME' : 'policycompass_search',
-    'ENABLE_ADHOCRACY': false,
+    // FIXME: disabling adhocracy doesn't work due to use of
+    // UserState controller in index.html
+    'ENABLE_ADHOCRACY': true,
     'ADHOCRACY_BACKEND_URL': 'http://localhost:6541',
     'ADHOCRACY_FRONTEND_URL': 'http://localhost:6551'
 };
