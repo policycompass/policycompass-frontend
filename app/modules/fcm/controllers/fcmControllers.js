@@ -74,7 +74,7 @@ angular.module('pcApp.fcm.controllers.fcm', [
             FcmSearchDelete.delete({id: $routeParams.fcmId}, function() {
                 });
             FcmModel.delete({id: $routeParams.fcmId}, function() {
-                    $location.path('/models');
+                    $location.path('/browse');
                 }
             );
         });
