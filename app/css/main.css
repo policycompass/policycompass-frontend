@@ -155,20 +155,6 @@ pre {
 .cursor-pointer{
     cursor: pointer;
 }
-
-#btn-login > a {
-    margin: 0px;
-    color: white;
-}
-#btn-login > a:hover {
-    margin: 0px;
-    color: white;
-    background-color: #3276b1 !important;
-    border-color: #285e8e !important;
-}
-#btn-login  a::after{
-    background: none !important;
-}
 /*Dropdown menu*/
 .dropdown-menu{
     border-radius: 0px;

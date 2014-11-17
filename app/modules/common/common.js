@@ -17,7 +17,7 @@
         })
         .when('/create', {
             controller: 'StaticController',
-            templateUrl: 'modules/comodulesmon/partials/create.html'
+            templateUrl: 'modules/common/partials/create.html'
         })
         .when('/how-it-works', {
             controller: 'StaticController',
