@@ -17,11 +17,11 @@
         })
         .when('/create', {
             controller: 'StaticController',
-            templateUrl: 'modules/common/partials/create.html'
+            templateUrl: 'modules/comodulesmon/partials/create.html'
         })
         .when('/how-it-works', {
             controller: 'StaticController',
-            templateUrl: 'modules/common/partials/howItWorks.html'
+            templateUrl: ''
         })
         .when('/i-want-to', {
             controller: 'StaticController',
