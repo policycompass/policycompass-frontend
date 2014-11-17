@@ -102,20 +102,18 @@ else
 		$scope.fcmModel.data = jsonModel;
 
                 Fcm.save($scope.fcmModel, function (value) {
-			FcmSearchUpdate.create({id: $routeParams.fcmId}, $scope.fcmModel, function () {			
+			FcmSearchUpdate.create({id: value.model.fcmmodelID}, function () {			
 				var dlg = dialogs.notify("FCM Model", "'" + user.title + "' FCM Model has been saved!");
                     	},
                     	function (err) {
                         	throw { message: err.data};
                     	});
-			$scope.md = value;
+			$location.path('/models/' + value.model.fcmmodelID + '/edit');
                     },
                     function (err) {
                         throw { message: err.data};
                     }
                 );
-		// Mode is editing
-		$scope.mode = "edit";
         },function(){
           $scope.name = 'You decided not to enter in your name, that makes me sad.';
         });

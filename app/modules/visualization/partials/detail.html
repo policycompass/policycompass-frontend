@@ -261,7 +261,12 @@
 		
       <br/>		
 		
-      
+      <div class="row">
+          <div class="col-lg-12">
+              <legend class="legend-primary">Discussion</legend>
+              <show-discussion ng-if="visualization.id" data-key="visualization_{{ visualization.id }}"></show-discussion>
+          </div>
+      </div>
 
   </div>
 </div>
