@@ -21,7 +21,7 @@
         })
         .when('/how-it-works', {
             controller: 'StaticController',
-            templateUrl: ''
+            templateUrl: 'modules/common/partials/howItWorks.html'
         })
         .when('/i-want-to', {
             controller: 'StaticController',
