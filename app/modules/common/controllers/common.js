@@ -12,6 +12,9 @@ angular.module('pcApp.common.controllers', [
     };
     $scope.isCollapsed = true;
     $scope.navCollapsed = true;
+    $scope.toggleCreateMenu = function () {
+        $scope.isCollapsed = !$scope.isCollapsed
+    }
     $scope.collapseCreateMenu = function () {
         $scope.isCollapsed = true;
     }

@@ -42,24 +42,24 @@
             <a href="#" ng-click="collapseCreateMenu()"><img src="img/PolicyCompass-logo.png" alt="Policy Compass's Logo"></a>
             <div collapse="navCollapsed" class=" collapse navbar-collapse columns-4 pull-right nav-medium  nav-medium-effect sign-in-wrapper ng-cloak" ng-cloak>
                 <ul class="nav navbar-nav" data-ng-controller="UserState">
-                    <li><a id="createLink" href="" ng-click="expandCreateMenu()" data-hover="Create">Create</a></li>
+                    <li><a id="createLink" href="" ng-click="toggleCreateMenu()" data-hover="Create">Create</a></li>
                     <li class="divider-vertical"></li>
-                    <li><a  href="#/browse"  data-hover="Browse" ng-click="expandCreateMenu()">Browse</a></li>
+                    <li><a  href="#/browse"  data-hover="Browse" ng-click="collapseCreateMenu()">Browse</a></li>
                     <li class="divider-vertical"></li>
-                    <li><a href="#/i-want-to" data-hover="I want to" ng-click="expandCreateMenu()">I want to</a></li>
+                    <li><a href="#/i-want-to" data-hover="I want to" ng-click="collapseCreateMenu()">I want to</a></li>
                     <li class="divider-vertical"></li>
-                    <li><a href="#/how-it-works" data-hover="How It Works" ng-click="expandCreateMenu()">How It Works </a></li>
+                    <li><a href="#/how-it-works" data-hover="How It Works" ng-click="collapseCreateMenu()">How It Works </a></li>
                     <li class="divider-vertical"></li>
-                    <li><a href="#/request" data-hover="Request" ng-click="expandCreateMenu()">Request</a></li>
-                    <li><a href="#/login" data-hover="Sign Up" ng-click="isCollapsed = true">Sign Up</a></li>
+                    <li><a href="#/request" data-hover="Request" ng-click="collapseCreateMenu()">Request</a></li>
+                    <li><a href="#/login" data-hover="Sign Up" ng-click="collapseCreateMenu()">Sign Up</a></li>
                     <p class="navbar-text">OR</p>
-                    <li id="btn-login"><a type="button" class="btn btn-primary btn-sm login-btn"  ng-click="isCollapsed = true;go('/login')">
+                    <li id="btn-login"><a type="button" class="btn btn-primary btn-sm login-btn"  ng-click="collapseCreateMenu();go('/login')">
                         <span class="glyphicon glyphicon-user"></span> Log In
                     </a></li>
-                    <li ng-if="authState.loggedIn===false" ng-cloak><a href="#/register" data-hover="Sign Up" ng-click="expandCreateMenu()">Sign Up</a></li>
+                    <li ng-if="authState.loggedIn===false" ng-cloak><a href="#/register" data-hover="Sign Up" ng-click="collapseCreateMenu()">Sign Up</a></li>
                     <p ng-if="authState.loggedIn===false" class="navbar-text" ng-cloak>OR</p>
-                    <li ng-if="authState.loggedIn===false" ng-cloak><a href="#/login" class="btn btn-primary btn-sm login-btn" ng-click="expandCreateMenu()"><span class="glyphicon glyphicon-user"></span> Log In</a></li>
-                    <li ng-if="authState.loggedIn" ng-cloak><a href="#/logout" ng-click="expandCreateMenu()">Logout ({{ authState.userData.name }})</a></li>
+                    <li ng-if="authState.loggedIn===false" ng-cloak><a href="#/login" class="btn btn-primary btn-sm login-btn" ng-click="collapseCreateMenu()"><span class="glyphicon glyphicon-user"></span> Log In</a></li>
+                    <li ng-if="authState.loggedIn" ng-cloak><a href="#/logout" ng-click="collapseCreateMenu()">Logout ({{ authState.userData.name }})</a></li>
                 </ul>
             </div>
         </div><!-- /.logo-wrapper -->
