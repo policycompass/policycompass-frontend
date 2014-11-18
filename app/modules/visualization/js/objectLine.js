@@ -647,11 +647,12 @@ return 0;}
 				{
 					dif=1;
 				}
-				if (dif==0)
+				//console.log("dif="+dif);
+				if (dif<=0)
 				{
 					dif=1;
 				}
-				//console.log("dif="+dif);
+				//console.log("last dif="+dif);
 				return dif;
 			})
 			.attr("height", self.height)                        
@@ -1407,7 +1408,7 @@ return 0;}
 		    				var resSplit = keyCircle.split("_");
 		    				
 		    				var number = resY;
-		    				console.log(number);
+		    				//console.log(number);
 		    				number = (parseFloat(number * 100) / 100).toFixed(2);
 		      	
 		      				var formatdecimal = 0;
