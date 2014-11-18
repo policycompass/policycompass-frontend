@@ -51,11 +51,6 @@
                     <li><a href="#/how-it-works" data-hover="How It Works" ng-click="collapseCreateMenu()">How It Works </a></li>
                     <li class="divider-vertical"></li>
                     <li><a href="#/request" data-hover="Request" ng-click="collapseCreateMenu()">Request</a></li>
-                    <li><a href="#/login" data-hover="Sign Up" ng-click="collapseCreateMenu()">Sign Up</a></li>
-                    <p class="navbar-text">OR</p>
-                    <li id="btn-login"><a type="button" class="btn btn-primary btn-sm login-btn"  ng-click="collapseCreateMenu();go('/login')">
-                        <span class="glyphicon glyphicon-user"></span> Log In
-                    </a></li>
                     <li ng-if="authState.loggedIn===false" ng-cloak><a href="#/register" data-hover="Sign Up" ng-click="collapseCreateMenu()">Sign Up</a></li>
                     <p ng-if="authState.loggedIn===false" class="navbar-text" ng-cloak>OR</p>
                     <li ng-if="authState.loggedIn===false" ng-cloak><a href="#/login" class="btn btn-primary btn-sm login-btn" ng-click="collapseCreateMenu()"><span class="glyphicon glyphicon-user"></span> Log In</a></li>
