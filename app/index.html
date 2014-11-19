@@ -53,7 +53,7 @@
                     <li><a href="#/request" data-hover="Request" ng-click="collapseCreateMenu()">Request</a></li>
                     <li ng-if="authState.loggedIn===false" ng-cloak><a href="#/register" data-hover="Sign Up" ng-click="collapseCreateMenu()">Sign Up</a></li>
                     <p ng-if="authState.loggedIn===false" class="navbar-text" ng-cloak>OR</p>
-                    <li ng-if="authState.loggedIn===false" ng-cloak><a href="#/login" class="btn btn-primary btn-sm login-btn" ng-click="collapseCreateMenu()"><span class="glyphicon glyphicon-user"></span> Log In</a></li>
+                    <li id="btn-login" ng-if="authState.loggedIn===false" ng-cloak><a href="#/login" class="btn btn-primary btn-sm login-btn" ng-click="collapseCreateMenu()"><span class="glyphicon glyphicon-user"></span> Log In</a></li>
                     <li ng-if="authState.loggedIn" ng-cloak><a href="#/logout" ng-click="collapseCreateMenu()">Logout ({{ authState.userData.name }})</a></li>
                 </ul>
             </div>
