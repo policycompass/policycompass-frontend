@@ -80,6 +80,10 @@ angular.module('pcApp.fcm.controllers.fcm', [
         });
     };
 
+    // Fit the nodes in the Editor
+    $scope.reset = function(){
+        $rootScope.$broadcast('appChanged');
+    };
     }])
 
 .controller('FcmCreateController', [

@@ -197,10 +197,8 @@ else
 	alert(value);
     };
 
-    // reset the sample nodes
+    // Fit the nodes in the Editor
     $scope.reset = function(){
-        $scope.mapData = [];
-        $scope.edgeData = [];
         $rootScope.$broadcast('appChanged');
     };
 })
