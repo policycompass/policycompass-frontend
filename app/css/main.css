@@ -256,7 +256,12 @@ pre {
     right: 0;
     top: 87px;
 }
-
+.fix .create-submenu{
+    right: 0px !important;
+    left: 0px !important;
+    position: fixed !important;
+    z-index: 10 !important;
+}
 .close-create-submenu{
     height: 20px;
 }

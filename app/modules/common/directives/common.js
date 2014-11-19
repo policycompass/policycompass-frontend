@@ -2,7 +2,20 @@ angular.module('pcApp.common.directives.common', [
 
 ])
 
-
+.directive("scroll", function ($window) {
+    return function(scope, element, attrs) {
+        angular.element($window).bind("scroll", function() {
+            if (this.pageYOffset >= 1) {
+                scope.CreateMenu = true;
+                console.log('Scrolled below header.');
+            } else {
+                scope.CreateMenu = false;
+                console.log('Header is in view.');
+            }
+            scope.$apply();
+        });
+    };
+})
 .directive('customTabs', function () {
     return {
         restrict: 'A',
