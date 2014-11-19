@@ -7,7 +7,7 @@ angular.module('pcApp.auth.directives.login', [
         restrict: 'E',
         link: function(scope, element, attrs) {
             Adhocracy.then(function (adh) {
-                element.append(adh.getIframe('login', {}))
+                element.append(adh.getIframe('login', {noheader: true}))
             });
         }
     };
@@ -17,7 +17,7 @@ angular.module('pcApp.auth.directives.login', [
         restrict: 'E',
         link: function(scope, element, attrs) {
             Adhocracy.then(function (adh) {
-                element.append(adh.getIframe('register', {}))
+                element.append(adh.getIframe('register', {noheader: true}))
             });
         }
     };
