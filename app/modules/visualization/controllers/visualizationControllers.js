@@ -79,7 +79,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 }])
 
 ////////////
-.factory('VisualizationsControllerHelper', ['dialogs', '$log', function(dialogs, $log) {
+.factory('VisualizationsControllerHelper', ['$filter', 'dialogs', '$log', function($filter, dialogs, $log) {
     return {
     	
     	baseVisualizationsCreateController: function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF) {
@@ -805,6 +805,10 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					posI=$scope.idHE.length;
 				}
 				//console.log("$scope.idHE.length="+$scope.idHE.length);
+				
+				dateStartRec = $filter('date')(dateStartRec, "yyyy-MM-dd");
+				dateEndRec = $filter('date')(dateEndRec, "yyyy-MM-dd");
+				
 				$scope.idHE[posI] =idRec;
 				$scope.titleHE[posI] =titleRec;
 				$scope.startDateHE[posI] =dateStartRec;
@@ -821,7 +825,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					color: colorRec,
 					desc : $('#descriptionHEToAdd').val()
 				}
-	
+				//console.log("**********datosInT");
+				//console.log(datosInT);
 				$scope.eventsToPlot.push(datosInT);			
 			
 				$scope.historicalevent_id = '';
@@ -2095,6 +2100,7 @@ $scope.xAxisTickFormatFunction = function(){
 
 
 .controller('VisualizationsEditController', [
+	'$filter',
 	'$scope', 
 	'$route',
 	'$routeParams',
@@ -2106,7 +2112,7 @@ $scope.xAxisTickFormatFunction = function(){
 	'VisualizationsControllerHelper',	
 	'$log', 
 	'API_CONF',
-	function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF) {
+	function($filter, $scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF) {
 
 		//console.log("controller VisualizationsEditController");
 
@@ -2365,16 +2371,26 @@ $scope.xAxisTickFormatFunction = function(){
             		//console.log("------>event id="+her.id);
             		//console.log("------>title="+her.title);
             		
+					var tmp_startDate = $filter('date')(her.startEventDate, "yyyy-MM-dd");
+					//console.log("tmp_startDate="+tmp_startDate);
+					
+					var tmp_endDate = $filter('date')(her.endEventDate, "yyyy-MM-dd");
+					//console.log("tmp_endDate="+tmp_endDate);
+					
+					//console.log("her.startEventDate="+{her.startEventDate | date:'longDate'});
 					
 					var myObject =  {
 						id : her.id,
 						title : her.title,
-						startDate : her.startEventDate,
-						endDate : her.endEventDate,
+						//startDate : her.startEventDate,
+						//endDate : her.endEventDate,
+						startDate : tmp_startDate,
+						endDate : tmp_endDate,
 						desc :  datIn.description,
 						color : datIn.color
 					}
-
+					//console.log("myObject");
+					//console.log(myObject);
 					$scope.titleHE[(parseInt(posI)+1)]=her.title;
 					$scope.startDateHE[(parseInt(posI)+1)] = her.startEventDate;
 					$scope.endDateHE[(parseInt(posI)+1)] = her.endEventDate;

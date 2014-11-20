@@ -636,8 +636,9 @@ return 0;}
 			})
 			.attr("y", 0)
 			.attr("width",function(d,i){
-				//console.log(d.startDate);
-				//console.log(d.endDate);
+				//console.log("i="+i+"---stardate="+d.startDate);
+				//console.log("i="+i+"---endDate="+d.endDate);
+				
 				var dif = "1";
 				if (d.endDate!="")
 				{
