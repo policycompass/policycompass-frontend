@@ -6,17 +6,20 @@
         <div class="col-lg-12">
             <div class="row">
                 <div class="col-lg-12 col-md-10 col-sm-10 col-xs-10">
-                    
 			<cytoscape cy-data="mapData" cy-edges="edgeData" cy-click="doClick(value)"></cytoscape>
-                </div><!-- /.col-lg-9  -->
+		</div><!-- /.col-lg-9  -->
             </div><!-- /.row  -->
         </div><!-- /.col-lg-12  -->
 
 	    <div class="col-lg-12"><br /><br />
 		<legend class="legend-primary">Options</legend>
-			<button type="button" class="btn btn-primary" ng-click="reset()">Fit to Editor</button>
 			<a type="button" class="btn btn-primary" href="#/models/{{ models.model.fcmmodelID }}/edit">Edit</a>
 			<button type="button" class="btn btn-danger" ng-click="deleteModel(models.model)">Delete</button>
+			<button type="button" class="btn btn-success" ng-click="reset()">Fit to Editor</button>
+			<button type="button" class="btn btn-success" ng-click="reset()">Grid</button>
+			<button type="button" class="btn btn-success" ng-click="reset()">Circle</button>
+			<button type="button" class="btn btn-success" ng-click="reset()">Concentric</button>
+			<button type="button" class="btn btn-success" ng-click="reset()">Breadthfirst</button>
 	    </div>
 
         <div class="col-lg-12">

@@ -27,6 +27,8 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                 'star':'#113355'
             };
 
+	    var layout = 'grid';
+
             // graph  build
             scope.doCy = function(){ // will be triggered on an event broadcast
                 // initialize data object
@@ -96,7 +98,7 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
 //	            minZoom: 0.1,
 //	            maxZoom: 4.0,
                     layout: {
-                        name: 'grid',
+                        name: layout,
 			columns: 4, // force num of cols in the grid
                         fit: true, // whether to fit the viewport to the graph
 			avoidOverlap: true, // prevents node overlap, may overflow boundingBox if not enough space

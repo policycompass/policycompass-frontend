@@ -42,6 +42,14 @@ angular.module('pcApp.fcm.controllers.fcm', [
 	$scope.mapData = [];
 	$scope.edgeData = [];
 	
+//	var myScroll = new IScroll('#cy', {
+//		zoom: true,
+//		scrollX: true,
+//		scrollY: true,
+//		mouseWheel: true,
+//		wheelAction: 'zoom'
+//	});
+
 	$scope.models = FcmModel.get(
 	    {id: $routeParams.fcmId},
 	    function (fcmList) {
