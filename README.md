@@ -14,7 +14,7 @@ npm install
 ./node_modules/.bin/bower install
 ```
 * Copy the development.sample.json to development.json and configure the development.json with your service domains
-* Copy the app/config.sample.json to config.js and configure it with your service domains
+* Copy the app/config.sample.js to config.js and configure it with your service domains
 * Start App
 ```
 npm start
