@@ -14,7 +14,7 @@ var policyCompassConfig = {
     'EVENTS_MANAGER_URL': '/api/v1/eventsmanager',
     'REFERENCE_POOL_URL': '/api/v1/references',
     'FCM_URL': '/api/v1/fcmmanager',
-    'ELASTIC_URL' : 'xubuntu:9000',
+    'ELASTIC_URL' : 'localhost:9000',
     'ELASTIC_INDEX_NAME' : 'policycompass_search',
     // FIXME: disabling adhocracy doesn't work due to use of
     // UserState controller in index.html

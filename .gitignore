@@ -1,6 +1,7 @@
 node_modules/
 bower_components
 development.json
+config.js
 .idea
 npm-debug.log
 
