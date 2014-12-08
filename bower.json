@@ -1,8 +1,8 @@
 {
-  "name": "policycompassPortal",
+  "name": "policycompass-portal",
   "version": "0.2.0",
   "authors": [
-    "Policy Compass Project"
+      "Policy Compass Project"
   ],
   "description": "Policy Compass Portal",
   "main": "portal",
