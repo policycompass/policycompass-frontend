@@ -164,10 +164,14 @@ policycompass.viz.line = function(options)
 		//console.log("lines.length="+lines.length);
 		//var colorScale = d3.scale.category20c();
 		var colorScale = d3.scale.category20();
-//		var colorScale = d3.scale.linear()  
-//			.domain([0,1])
-//			.range(['#FFF', '#933'])
+		//var colorScaleLinel = d3.scale.linear().domain([0,(lines.length-1)]).range(["black","red"]);
 		
+		//var colorScale = d3.scale.linear().domain([0,1]).range(["red","blue"]);
+		/*
+		var colorScaleLinel = d3.scale.linear()  
+			.domain([0,1])
+			.range(['#FFF', '#933'])
+		*/
 		var colorScaleForHE = d3.scale.category20();
 		
 		var parseDate = d3.time.format("%Y-%m-%d").parse;
@@ -177,7 +181,10 @@ policycompass.viz.line = function(options)
 		//console.log("--------------");
 		self.arrayMaxVy = [];
 		self.arrayMinVy = [];
+		
+
 		lines.forEach(function(d,i) {
+			//console.log(i)
 			//console.log(d.Values);
 			//console.log(d.ValueY);
 			//console.log("d.Position="+d.Position)
@@ -533,8 +540,9 @@ return 0;}
 				else
 				{
 					
-					
+					var cnt_linea = 0;
 					for (keyIndex in self.labelY) {
+						cnt_linea = cnt_linea+1;
 					//for (keyIndex in arrayYaxisProcessed) {
 				  		self.svg.append("g")									      		      		
 				    		.append("text")
@@ -546,6 +554,7 @@ return 0;}
 				      			//.attr("x", 50*(keyIndex))
 				      			.style("stroke", function(d,i) {
 					      			return colorScale(lines[keyIndex].Key);
+					      			//return colorScaleLinel((cnt_linea-1));
 					      		})
 				      			.style("text-anchor", "end")
 				      			.text(self.labelY[keyIndex]);
@@ -574,132 +583,21 @@ return 0;}
 	            .tickFormat("")
 			)
 		}
-
-		/*************Ini plot historical events *******/
-
-		var dataForCircles = [];
-		for (var i in eventsData) {
-      		//dataForCircles[eventsData[i].posX]=eventsData[i].posY;
-      		//console.log(eventsData[i]);
-      		 var arrayTemporal = [];
-      		 arrayTemporal['index']=i;
-      		 arrayTemporal['color']=eventsData[i].color;
-      		 arrayTemporal['title']=eventsData[i].title;
-      		 arrayTemporal['startDate']=eventsData[i].startDate;
-      		 arrayTemporal['endDate']=eventsData[i].endDate;
-      			 
-      		 //arrayTemporal['posY']=eventsData[i].posY;
-      		 arrayTemporal['posY']=0;
-      		 arrayTemporal['desc']=eventsData[i].desc;
-      		 dataForCircles[i]=arrayTemporal;
-   		} 
-
-		var historicalEvents = self.svg.selectAll("rectagles").data(dataForCircles);
-		
-	//	console.log("d.startDate="+d.startDate);
-	//	console.log("getDate(d.startDate)="+getDate(d.startDate));
-	//	console.log("x="+self.xScale(getDate(d.startDate));
-		
-		historicalEvents.enter().append("rect")
-			.attr("class","lineXDisco")
-			//.style("stroke", function(d,i) {return colorScale("event");})
-			//.style("stroke", "grey")
-			.style("stroke", function(d,i) {
-				//console.log("d.index"+d.index);				
-					var colorToPlot = colorScaleForHE(d.index);
-					if (d.color)
-					{
-						colorToPlot = d.color;
-					}
-					return colorToPlot;
-				}
-				)												
-			//.style("stroke", "red")			
-			.style("fill", function(d,i) {
-				//console.log("d.index"+d.index);				
-					var colorToPlot = colorScaleForHE(d.index);
-					if (d.color)
-					{
-						colorToPlot = d.color;
-					}
-					return colorToPlot;
-				}
-				)									
-			.attr("opacity", 0.5)
-            .attr("x", function(d,i){
-            	//console.log(i);
-				//console.log(d.startDate);
-				//console.log(self.xScale(d.startDate));
-				var posXToPlot = self.xScale(getDate(d.startDate));
-				//console.log("posXToPlot="+posXToPlot);
-				return posXToPlot;
-			})
-			.attr("y", 0)
-			.attr("width",function(d,i){
-				//console.log("i="+i+"---stardate="+d.startDate);
-				//console.log("i="+i+"---endDate="+d.endDate);
-				
-				var dif = "1";
-				if (d.endDate!="")
-				{
-					dif = self.xScale(getDate(d.endDate)) - self.xScale(getDate(d.startDate));					
-				}
-				else
-				{
-					dif=1;
-				}
-				//console.log("dif="+dif);
-				if (dif<=0)
-				{
-					dif=1;
-				}
-				//console.log("last dif="+dif);
-				return dif;
-			})
-			.attr("height", self.height)                        
-			.on("mouseover", function (d,i) {
-				d3.select(this).style("stroke-width", 2);
-				//d3.select(this).classed("pointOn", true);
-				var textTooltip="";
-				
-				var resSplit = d.startDate.split("-");
-				var monthNames = [ "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
-		    				
-				var startDateToPlot = monthNames[parseInt(resSplit[1])]+" "+parseInt(resSplit[2])+", "+resSplit[0];
-				
-				
-				//textTooltip = d.title+": "+d.startDate;
-				textTooltip = d.title+"<br /> From: "+startDateToPlot;
-				if (d.endDate!="")
-				{
-					var resSplit = d.endDate.split("-");
-					var endDateToPlot = monthNames[parseInt(resSplit[1])]+" "+parseInt(resSplit[2])+", "+resSplit[0];
-					//textTooltip = textTooltip+" - "+d.endDate;
-					textTooltip = textTooltip+" <br /> To: "+endDateToPlot;
-					
-				}
-				if (d.desc!="")
-				{
-					textTooltip = textTooltip+"<br/> Desc.: "+d.desc;	
-				}
-				
-				var posXToPlot = self.xScale(getDate(d.startDate));
-				if (posXToPlot>0)
-				{
-					
-					tooltip.style("opacity",1.0).html(textTooltip);
-					//d3.tooltip().placement("right")	
-				}
-				    
-			})
-			.on("mouseout", function(d,i) {
-				//d3.select(this).classed("pointOn",false);
-				mouseout();  
-				d3.select(this).style("stroke-width", 1);
-			})
-   
-			/******** end plot historical events ***********/
-      		
+		var cntpasadas;
+		if (showAreas)
+		{
+			cntpasadas=1;
+		}
+		else
+		{
+			cntpasadas=2;
+		}
+		while (cntpasadas<=2) {
+			
+		//for (cntpasadas = 1; cntpasadas <= 2; cntpasadas++) {		 
+      		//console.log("cntpasadas="+cntpasadas);
+      	
+      	
         self.legendText = "";
         var cntiMultiple = 0;
         var incremetY = 0;
@@ -872,9 +770,6 @@ return 0;}
 				      
 				      
 				 /*****************************/
-				
-				
-				
 				      
 			}
     		
@@ -955,7 +850,7 @@ return 0;}
   			}));
   			*/
   			
-			if (showAreas)
+			if ((showAreas) && (cntpasadas==1))
 			{
 				
 				//console.log("key="+key);
@@ -972,14 +867,16 @@ return 0;}
 
 				self.svg.append("path")
       				.datum(data)
-      				.attr("class", "area area_item area_class_"+key.replace(/\W/g, ''))
+      				.attr("class", "area area_item item_"+(cnti-1)+" area_class_"+key.replace(/\W/g, ''))
       				.attr("d", area)
       				.style("fill", function(d,i) {return colorScale(key);})
       				.style("stroke", function(d,i) {return colorScale(key);})
+      				//.style("fill", function(d,i) {return colorScaleLinel((cnti-1));})
+      				//.style("stroke", function(d,i) {return colorScaleLinel(cnti-1);})
       				.style("opacity",0.3)
       				;
       		}
-          	if (showLines)
+          	if ((showLines) && (cntpasadas==2))
 		  	{
 	  			var path = self.svg.append("path")
 		      		.datum(data)
@@ -989,6 +886,7 @@ return 0;}
 		      		.attr("id", 'tag_'+key.replace(/\W/g, '')) // assign ID
 	    	  		.style("stroke-width", 2)
 		      		.style("stroke", function(d,i) {return colorScale(key);})
+		      		//.style("stroke", function(d,i) {return colorScaleLinel(cnti-1);})
 		      		.attr("d", lineFunction)
 	    	  		//.on("mouseover", mouseover)
 	      			.on("mouseover", function (d,i) {
@@ -1047,6 +945,8 @@ return 0;}
         	var resTRext = key.split("_");
         	
             self.legendText = self.legendText + '<div style="margin-top: 2px; width: 5px; background: '+colorScale(key)+'; height: 5px; float: left;"> </div>&nbsp;<font color="'+colorScale(key)+'">'+resTRext[0]+'</font><br/>';
+            //self.legendText = self.legendText + '<div style="margin-top: 2px; width: 5px; background: '+colorScaleLinel(cnti-1)+'; height: 5px; float: left;"> </div>&nbsp;<font color="'+colorScaleLinel(cnti-1)+'">'+resTRext[0]+'</font><br/>';
+            
 	    	if (showLegend)
 	    	//if (1==1) 
 	    	{
@@ -1072,7 +972,10 @@ return 0;}
 				.attr("y", valueY-5) 	
 		    	.attr("width", 5)
 		    	.attr("height", 5)
-		    	.style("fill", function(d,i) {return colorScale(key);});
+		    	.style("fill", function(d,i) {
+		    		return colorScale(key);
+		    		//return colorScaleLinel(cnti-1);
+		    		});
 
 
   				self.svg.append("text")
@@ -1093,7 +996,9 @@ return 0;}
 					.attr("font-size", self.font_size)
 					.style("stroke", function(d,i) {
 						//console.log("key="+key);
-						return colorScale(key);})										
+						return colorScale(key);
+						//return colorScaleLinel(cnti-1);
+						})										
 					//.on("mouseover", function (d,i) {
 				    .on("mouseover", function() {
 				    	
@@ -1233,6 +1138,10 @@ return 0;}
                 	
 			}
   		});
+
+
+		cntpasadas = cntpasadas+1;
+		}
 			/*
 			self.showLegendOpened = 0;
 			if (showLegend) 
@@ -1357,7 +1266,10 @@ return 0;}
                     //.attr("class", "pointIn class_"+keyCircle.replace(/\s+/g, ''))
                     .attr("class", "pointIn active_item point_"+keyCircle.replace(/\W/g, '')+" class_"+keyCircle.replace(/\W/g, ''))                     
                     .style("stroke-width", self.radius)
-                    .style("stroke", function(d,i) {return colorScale(keyCircle);})
+                    .style("stroke", function(d,i) {
+                    	return colorScale(keyCircle);
+                    	//return colorScaleLinel(cntLine);
+                    	})
                     //.attr("opacity", 1.0)
                     .on("mouseover", function (d,i) {
                     	
@@ -1430,6 +1342,7 @@ return 0;}
 					      	number = si(number);
 		    				
 		    				tooltip.style("opacity",1.0).html("<font color='"+colorScale(keyCircle)+"'>"+resSplit[0]+"<br/>"+endDateToPlot+" <br /> "+number+" "+units+"</font>");
+		    				//tooltip.style("opacity",1.0).html("<font color='"+colorScaleLinel(cntLine)+"'>"+resSplit[0]+"<br/>"+endDateToPlot+" <br /> "+number+" "+units+"</font>");
 		    				
 			    			//renderLine((self.x(i)), (self.y(d))); 
 			    		}
@@ -1454,7 +1367,132 @@ return 0;}
 		}    
 		
 		
+
+/*************Ini plot historical events *******/
+
+		var dataForCircles = [];
+		for (var i in eventsData) {
+      		//dataForCircles[eventsData[i].posX]=eventsData[i].posY;
+      		//console.log(eventsData[i]);
+      		 var arrayTemporal = [];
+      		 arrayTemporal['index']=i;
+      		 arrayTemporal['color']=eventsData[i].color;
+      		 arrayTemporal['title']=eventsData[i].title;
+      		 arrayTemporal['startDate']=eventsData[i].startDate;
+      		 arrayTemporal['endDate']=eventsData[i].endDate;
+      			 
+      		 //arrayTemporal['posY']=eventsData[i].posY;
+      		 arrayTemporal['posY']=0;
+      		 arrayTemporal['desc']=eventsData[i].desc;
+      		 dataForCircles[i]=arrayTemporal;
+   		} 
+
+		var historicalEvents = self.svg.selectAll("rectagles").data(dataForCircles);
 		
+	//	console.log("d.startDate="+d.startDate);
+	//	console.log("getDate(d.startDate)="+getDate(d.startDate));
+	//	console.log("x="+self.xScale(getDate(d.startDate));
+		
+		historicalEvents.enter().append("rect")
+			.attr("class","lineXDisco")
+			//.style("stroke", function(d,i) {return colorScale("event");})
+			//.style("stroke", "grey")
+			.style("stroke", function(d,i) {
+				//console.log("d.index"+d.index);				
+					var colorToPlot = colorScaleForHE(d.index);
+					if (d.color)
+					{
+						colorToPlot = d.color;
+					}
+					return colorToPlot;
+				}
+				)												
+			//.style("stroke", "red")			
+			.style("fill", function(d,i) {
+				//console.log("d.index"+d.index);				
+					var colorToPlot = colorScaleForHE(d.index);
+					if (d.color)
+					{
+						colorToPlot = d.color;
+					}
+					return colorToPlot;
+				}
+				)									
+			.attr("opacity", 0.5)
+            .attr("x", function(d,i){
+            	//console.log(i);
+				//console.log(d.startDate);
+				//console.log(self.xScale(d.startDate));
+				var posXToPlot = self.xScale(getDate(d.startDate));
+				//console.log("posXToPlot="+posXToPlot);
+				return posXToPlot;
+			})
+			.attr("y", 0)
+			.attr("width",function(d,i){
+				//console.log("i="+i+"---stardate="+d.startDate);
+				//console.log("i="+i+"---endDate="+d.endDate);
+				
+				var dif = "1";
+				if (d.endDate!="")
+				{
+					dif = self.xScale(getDate(d.endDate)) - self.xScale(getDate(d.startDate));					
+				}
+				else
+				{
+					dif=1;
+				}
+				//console.log("dif="+dif);
+				if (dif<=0)
+				{
+					dif=1;
+				}
+				//console.log("last dif="+dif);
+				return dif;
+			})
+			.attr("height", self.height)                        
+			.on("mouseover", function (d,i) {
+				d3.select(this).style("stroke-width", 2);
+				//d3.select(this).classed("pointOn", true);
+				var textTooltip="";
+				
+				var resSplit = d.startDate.split("-");
+				var monthNames = [ "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+		    				
+				var startDateToPlot = monthNames[parseInt(resSplit[1])]+" "+parseInt(resSplit[2])+", "+resSplit[0];
+				
+				
+				//textTooltip = d.title+": "+d.startDate;
+				textTooltip = d.title+"<br /> From: "+startDateToPlot;
+				if (d.endDate!="")
+				{
+					var resSplit = d.endDate.split("-");
+					var endDateToPlot = monthNames[parseInt(resSplit[1])]+" "+parseInt(resSplit[2])+", "+resSplit[0];
+					//textTooltip = textTooltip+" - "+d.endDate;
+					textTooltip = textTooltip+" <br /> To: "+endDateToPlot;
+					
+				}
+				if (d.desc!="")
+				{
+					textTooltip = textTooltip+"<br/> Desc.: "+d.desc;	
+				}
+				
+				var posXToPlot = self.xScale(getDate(d.startDate));
+				if (posXToPlot>0)
+				{
+					
+					tooltip.style("opacity",1.0).html(textTooltip);
+					//d3.tooltip().placement("right")	
+				}
+				    
+			})
+			.on("mouseout", function(d,i) {
+				//d3.select(this).classed("pointOn",false);
+				mouseout();  
+				d3.select(this).style("stroke-width", 1);
+			})
+   
+			/******** end plot historical events ***********/
+					
 		
 		self.svg
   			.attr("transform", "translate(0, "+self.height+") scale(1, 0)")
@@ -1502,10 +1540,18 @@ return 0;}
        	self.parentSelect = self.parentSelect.replace("undefined","");
        	//console.log(self.parentSelect);
        	//console.log(self.font_size);
-       	
+
+/*
+            function redraw () {
+				self.svg.attr("transform", "translate(" + d3.event.translate + ")"
+					+ " scale(" + d3.event.scale + ")");
+    	    };
+*/    	           	
 		self.svg = d3.select(self.parentSelect).append("svg")
 			.attr("width", self.width + self.margin.left + self.margin.right)
 			.attr("height", self.height + self.margin.top + self.margin.bottom)
+			//.call(d3.behavior.zoom().on("zoom", redraw))
+			
 			.on("mousemove", function(d,i) {
 				var posMouse = d3.mouse(this);
 				var posX = posMouse[0];

@@ -1572,7 +1572,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					//height = 200;
 					height = 326,
 					font_size = 11,
-					radiouspoint = 5,
+					radiouspoint = 4,
 					dymarging = 15,
 					offsetYaxesR = 10,
 					offsetYaxesL = -20,
@@ -1804,12 +1804,14 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	'Event', 
 	'Metric', 
 	'Visualization', 
+	'VisualizationByMetric',
+	'VisualizationByEvent',
 	'$location', 
 	'GetRelatedData',
 	'dialogs',
 	'$log', 
 	'API_CONF',
-	function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, dialogs, $log, API_CONF) {
+	function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, VisualizationByMetric, VisualizationByEvent, $location, helper, dialogs, $log, API_CONF) {
 	
 	//this.message = "Hello VisualizationsDetailController";
 	//console.log("Hello VisualizationsDetailController");
@@ -1822,14 +1824,51 @@ angular.module('pcApp.visualization.controllers.visualization', [
     
 	$scope.visualization = Visualization.get({id: $routeParams.visualizationId},
 			function(visualizationList) {		
-				
-				
+				var id_visu = $routeParams.visualizationId;
+				//console.log("id_visu="+id_visu);
+				$scope.relatedVisualizations = [];
 				
 				for (i in $scope.visualization.metrics_in_visualization)
 				{
 					id = $scope.visualization.metrics_in_visualization[i].metric_id;
 					//console.log(id);
 					$scope.getMetricData(i, id, "", "", "");
+					
+					$scope.visualizationByMetricList = VisualizationByMetric.get({id: id},
+					function(visualizationByMetricList) {
+						
+						for (i in visualizationByMetricList.results)
+						{							
+							var Tmp = {"visualization_id": visualizationByMetricList.results[i]['visualization'], "title": visualizationByMetricList.results[i]['title']}
+							
+							found = false;
+														
+ 							if (id_visu==visualizationByMetricList.results[i]['visualization'])
+ 							{
+ 								found = true;
+ 							}
+ 							else
+ 							{
+								for(var j = 0; j < $scope.relatedVisualizations.length; j++) 
+								{
+    								if ($scope.relatedVisualizations[j].visualization_id == visualizationByMetricList.results[i]['visualization']) 
+    								{
+        								found = true;
+        								break;
+    								}
+								} 								
+ 							}
+ 							
+ 							if (!found)
+ 							{ 							
+ 								$scope.relatedVisualizations.push(Tmp);	
+ 							}
+							
+							
+						}
+						
+					});		
+				
 				}
 							
 				//console.log($scope.visualization.historical_events_in_visualization)
@@ -1838,6 +1877,44 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					id = $scope.visualization.historical_events_in_visualization[i].historical_event_id;
 					//console.log("event id="+id);
 					$scope.getHistoricalEventcData(id);
+					
+					
+
+					$scope.visualizationByEventList = VisualizationByEvent.get({id: id},
+					function(visualizationByEventList) {
+						
+						for (i in visualizationByEventList.results)
+						{							
+							var Tmp = {"visualization_id": visualizationByEventList.results[i]['visualization'], "title": visualizationByEventList.results[i]['title']}
+							
+							found = false;
+							
+ 							if (id_visu==visualizationByEventList.results[i]['visualization'])
+ 							{
+ 								found = true;
+ 							}
+ 							else
+ 							{
+								for(var j = 0; j < $scope.relatedVisualizations.length; j++) 
+								{
+    								if ($scope.relatedVisualizations[j].visualization_id == visualizationByEventList.results[i]['visualization']) 
+    								{
+        								found = true;
+        								break;
+    								}
+								} 								
+ 							}
+ 							
+ 							if (!found)
+ 							{ 								
+ 								$scope.relatedVisualizations.push(Tmp);	
+ 							}
+							
+							
+						}
+						
+					});	
+					
 				}
     	
 			},

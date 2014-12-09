@@ -15,4 +15,36 @@ angular.module('pcApp.visualization.services.visualization',[
         }
 	);
 	return Visualization;
-}]);
+}])
+
+.factory('VisualizationByMetric',  ['$resource', 'API_CONF', function($resource, API_CONF) {
+	var url = API_CONF.VISUALIZATIONS_MANAGER_URL + "/linkedVisualizationsByMetric?metric_id=:id&page_size=100";
+	//console.log(url);
+	var VisualizationByMetric = $resource(url,
+		{
+			id: "@id"
+		},
+        {
+            'update': { method:'PUT' },
+            'query': { method: 'GET', isArray:false}
+        }
+	);
+	return VisualizationByMetric;
+}])
+
+.factory('VisualizationByEvent',  ['$resource', 'API_CONF', function($resource, API_CONF) {
+	var url = API_CONF.VISUALIZATIONS_MANAGER_URL + "/linkedVisualizationsByEvent?historical_event_id=:id&page_size=100";
+	//console.log(url);
+	var VisualizationByEvent = $resource(url,
+		{
+			id: "@id"
+		},
+        {
+            'update': { method:'PUT' },
+            'query': { method: 'GET', isArray:false}
+        }
+	);
+	return VisualizationByEvent;
+}])
+
+;

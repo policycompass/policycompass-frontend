@@ -92,6 +92,8 @@
             	</div>
             </td>
         </tr>  
+
+       
         
         </table>
     </div>
@@ -100,6 +102,33 @@
 
 </div>
 
+
+<div class="row" ng-show="relatedVisualizations.length>0">
+    <div class="col-lg-12">
+        <legend class="legend-primary">Related Visualisations</legend>
+
+
+		<div class="col-lg-3 pc-tile" ng-repeat="rv in relatedVisualizations" >
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{ rv.title | limitTo: 25}}</h3>
+                    </div>
+                    <div class="panel-body">
+
+						<div class="visualization-graph-page-content">	
+							<div ng-controller="VisualizationsEditController" ng-repeat="idvisulist in [rv.visualization_id]" ng-include='"modules/visualization/partials/graph.html"' ></div>	
+						</div>
+						<br />
+                        <a href="#/visualizations/{{ rv.visualization_id }}" type="button" class="btn btn-primary">Details</a>
+                    </div>
+                </div>
+            </div>
+
+	
+					
+
+    </div>
+</div>
 
 
 <div class="row">
