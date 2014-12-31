@@ -27,8 +27,6 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                 'star':'#113355'
             };
 
-	    var layout = 'grid';
-
             // graph  build
             scope.doCy = function(){ // will be triggered on an event broadcast
                 // initialize data object
@@ -54,7 +52,12 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                             typeColor:typeColor,
                             typeShape:dType,
                             type:dType
-                    }};
+                    },
+             	    position: {
+                	x: scope.cyData[i].posX,
+                	y: scope.cyData[i].posY
+                    }
+		};
                     // add new object to the Nodes array
                     scope.elements.nodes.push(elementObj);
                 }
@@ -95,16 +98,23 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                 // here are just some basic options
                 $('#cy').cytoscape({
 	            showOverlay: false,
-//	            minZoom: 0.1,
-//	            maxZoom: 4.0,
                     layout: {
-                        name: layout,
-			columns: 4, // force num of cols in the grid
-                        fit: true, // whether to fit the viewport to the graph
-			avoidOverlap: true, // prevents node overlap, may overflow boundingBox if not enough space
-//                        ready: undefined, // callback on layoutready
-//                        stop: undefined, // callback on layoutstop
-//                        padding: 5 // the padding on fit
+		       name: 'random',
+		       refresh             : 0,
+		       fit                 : true, 
+		       padding             : 30, 
+		       randomize           : true,
+		       debug               : false,
+		       nodeRepulsion       : 10000,
+		       nodeOverlap         : 10,
+		       idealEdgeLength     : 10,
+		       edgeElasticity      : 100,
+		       nestingFactor       : 5, 
+		       gravity             : 250, 
+		       numIter             : 100,
+		       initialTemp         : 200,
+		       coolingFactor       : 0.95, 
+		       minTemp             : 1
                     },
                     style: cytoscape.stylesheet()
                         .selector('node')
@@ -160,6 +170,9 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                             scope.cyClick({value:nodeId});
                         });
 
+				cy.panzoom({
+					// options go here
+				});
                         // load the objects array
                         // use cy.add() / cy.remove() with passed data to add or remove nodes and edges without rebuilding the graph
                         // sample use can be adding a passed variable which will be broadcast on change
@@ -172,7 +185,7 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
             // When the app object changed = redraw the graph
             // you can use it to pass data to be added or removed from the object without redrawing it
             // using cy.remove() / cy.add()
-            $rootScope.$on('appChanged', function(){
+            $rootScope.$on('appChanged', function(e){
                 scope.doCy();
             });
         }

@@ -6,7 +6,8 @@
         <div class="col-lg-12">
             <div class="row">
                 <div class="col-lg-12 col-md-10 col-sm-10 col-xs-10">
-			<cytoscape cy-data="mapData" cy-edges="edgeData" cy-click="doClick(value)"></cytoscape>
+			<cytoscape cy-data="mapData" cy-edges="edgeData" cy-layouts="editorLayout" cy-click="doClick(value)"></cytoscape>  
+<!--			<cytoscape cy-data="mapData" cy-edges="edgeData" cy-click="doClick(value)"></cytoscape>  -->
 		</div><!-- /.col-lg-9  -->
             </div><!-- /.row  -->
         </div><!-- /.col-lg-12  -->
@@ -15,11 +16,6 @@
 		<legend class="legend-primary">Options</legend>
 			<a type="button" class="btn btn-primary" href="#/models/{{ models.model.fcmmodelID }}/edit">Edit</a>
 			<button type="button" class="btn btn-danger" ng-click="deleteModel(models.model)">Delete</button>
-			<button type="button" class="btn btn-success" ng-click="reset()">Fit to Editor</button>
-			<button type="button" class="btn btn-success" ng-click="reset()">Grid</button>
-			<button type="button" class="btn btn-success" ng-click="reset()">Circle</button>
-			<button type="button" class="btn btn-success" ng-click="reset()">Concentric</button>
-			<button type="button" class="btn btn-success" ng-click="reset()">Breadthfirst</button>
 	    </div>
 
         <div class="col-lg-12">
@@ -57,7 +53,7 @@
 			    <td align="center"><b>Title</b></td>
 			    <td align="center"><b>Description</b></td>
 			    <td align="center"><b>Input</b></td>
-			    <td align="center"><b>Activetor</b></td>
+			    <td align="center"><b>Activator</b></td>
 			    <td align="center"><b>Metrics</b></td>
 			    <td align="center"><b>Fixed Output</b></td>
 			    <td align="center"><b>Issued</b></td>

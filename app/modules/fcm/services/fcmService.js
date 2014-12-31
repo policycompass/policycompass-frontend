@@ -45,6 +45,22 @@ angular.module('pcApp.fcm.services.fcm',[
 }])
 
 
+/**
+ * Factory for the Resource for FCM Concept Activator
+ */
+.factory('FcmActivator',  ['$resource', 'API_CONF', function($resource, API_CONF) {
+    // Get the base URL from the configuration
+	var url = API_CONF.FCM_URL + "/activators";
+	
+	return $resource(url, {},
+        {
+            // Add support for create
+            'create': { method:'POST' }
+        });
+
+
+}])
+
 .factory('FcmSearchUpdate',  ['$resource', 'API_CONF', function($resource, API_CONF) {
 	var url = "/api/v1/searchmanager/updateindexitem/fuzzymap/:id";
 

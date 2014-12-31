@@ -5,32 +5,36 @@
 </legend>
 
     <div class="row">
-        <!-- <div class="col-lg-12"><a type="button" class="btn btn-primary pull-left">Save</a></div>  -->
         <div class="col-lg-12">
             <div class="row">
-                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 center-block">
+			<cytoscape cy-data="mapData" cy-edges="edgeData" cy-click="doClick(value)"></cytoscape>
+            </div><!-- /.row  -->
+        </div><!-- /.col-lg-12  -->
+        <div class="col-lg-12">
+                <div class="center-block">
                     <div  class="fcm-editor-effect well-primary">
                         <a type="button" class="btn btn-primary" ng-click="addObj()">
                             <span class="glyphicon glyphicon-unchecked fcm-editor-icon"></span>
-                            <p>Concepts</p>
-                        </a><br><br>
+                            <p>Add Concept</p>
+                        </a>
                         <a type="button" class="btn btn-primary" ng-click="addEdge()">
                             <span class="glyphicon glyphicon-random fcm-editor-icon"></span>
-                            <p>Association</p>
-                        </a><br><br>
-		 	<button type="button" class="btn btn-primary" ng-click="reset()">Fit to Editor</button><br><br>
+                            <p>Create Association</p>
+                        </a>
+			<a ng-if="mode == 'create'" type="button" class="btn btn-primary" ng-click="saveModel()">
+                            <span class="glyphicon glyphicon- fcm-editor-icon"></span>
+			    <p>Save Model</p>
+			</a>
+			<a ng-if="mode == 'edit'" type="button" class="btn btn-primary" ng-click="updateModel()">
+                            <span class="glyphicon glyphicon- fcm-editor-icon"></span>
+			    <p>Save Model</p>
+			</a>
+		 	<a type="button" class="btn btn-primary" ng-click="reset()">
+                            <span class="glyphicon glyphicon- fcm-editor-icon"></span>
+			    <p>Run Simulation</p>
+			</a>
                     </div>
                 </div><!-- /.col-lg-3 well-primary  -->
-                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
-                    
-			<cytoscape cy-data="mapData" cy-edges="edgeData" cy-click="doClick(value)"></cytoscape>
-
-                </div><!-- /.col-lg-9  -->
-            </div><!-- /.row  -->
-        </div><!-- /.col-lg-12  -->
-        <div class="col-lg-12"><br /><br />
-            <a ng-if="mode == 'create'" type="button" class="btn btn-primary pull-right" ng-click="saveModel()">Save</a>
-            <a ng-if="mode == 'edit'" type="button" class="btn btn-primary pull-right" ng-click="updateModel()">Save</a>
         </div><!-- /.col-lg-12  -->
         <div class="col-lg-12">
             <hr>
@@ -66,7 +70,7 @@
 			    <td align="center"><b>Title</b></td>
 			    <td align="center"><b>Description</b></td>
 			    <td align="center"><b>Input</b></td>
-			    <td align="center"><b>Activetor</b></td>
+			    <td align="center"><b>Activator</b></td>
 			    <td align="center"><b>Metrics</b></td>
 			    <td align="center"><b>Fixed Output</b></td>
 			    <td align="center"><b>Issued</b></td>

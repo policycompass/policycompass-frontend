@@ -444,8 +444,9 @@ footer{
     font-size: 66px;
 }
 .fcm-editor-effect{
-    min-height:250px;
-    padding-top:20px;
+    min-height:135px;
+    padding-top:10px;
+    padding-left:20px;
     text-align: center;
 }
 .fcm-editor-effect > a{

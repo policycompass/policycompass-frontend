@@ -156,7 +156,8 @@ else
 		var newNode = {id:'n'+($scope.mapData.length), name:newObj, x:user.x, y:user.y};
 		// adding the new Node to the nodes array
 		$scope.mapData.push(newNode);
-		$scope.Concepts.push(user);		
+		$scope.Concepts.push(user);
+
 		// broadcasting the event
 		$rootScope.$broadcast('appChanged');
 		// resetting the form
@@ -203,8 +204,8 @@ else
     };
 })
 
-.controller('ConceptController',function($scope, $modalInstance, Metric, $log, $routeParams, data, ConceptsDetail){
-  $scope.user = {Id: -1, title: '', description: '', input: '', activetor: '', metrics: '', fixedoutput: '', x: '200', y: '100'};
+.controller('ConceptController',function($scope, $modalInstance, Metric, FcmActivator, $log, $routeParams, data, ConceptsDetail){
+  $scope.user = {Id: -1, title: '', description: '', input: '0.0', activator: '', metrics: '', fixedoutput: 'False', x: '200', y: '100'};
 
 	$scope.metrics = Metric.query(
             {page_size: 100},
@@ -215,6 +216,22 @@ else
 			}
 	);
   
+	$scope.activators = FcmActivator.query(
+            {page_size: 100},
+			function(activatorList) {
+				for (i=0;i<activatorList.length;i++)
+				{
+					if ($scope.activators[i].title=="Sigmoid Activator")
+					{
+						$scope.user.activator=$scope.activators[i];
+					}
+				}
+			},
+			function(error) {
+                throw { message: JSON.stringify(err.data)};
+			}
+	);
+
   $scope.cancel = function(){
     $modalInstance.dismiss('canceled');  
   }; // end cancel
@@ -264,7 +281,7 @@ else
 }) // end ModelController
 
 .run(['$templateCache',function($templateCache){
-  $templateCache.put('/dialogs/addconcept.html', '<div class="modal-header"><h4 class="modal-title">Add Concept</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="title">Title :</label><input type="text" class="form-control" name="title" id="title" ng-model="user.title" text="Vale here" required><br /><label class="control-label" for="description">Description :</label><input type="text" class="form-control" name="description" id="description" ng-model="user.description"><br /><label class="control-label" for="input">Input :</label><input type="text" class="form-control" name="input" id="input" ng-model="user.input"><br /><label class="control-label" for="activetor">Activetor :</label><select class="form-control" name="activetor" id="activetor" ng-model="user.activetor" value="Select..."></select><br /><label class="control-label" for="metrics">Metrics :</label><select class="form-control" name="metrics" id="metrics" ng-model="user.metrics" ng-options="metric.title for metric in metrics.results"></select><br /><label class="control-label" for="fixedoutput">Fixed output :</label><select class="form-control" name="fixedoutput" id="fixedoutput" ng-model="user.fixedoutput" value="Select..."></select></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Add</button></div>');
+  $templateCache.put('/dialogs/addconcept.html', '<div class="modal-header"><h4 class="modal-title">Add Concept</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="title">Title :</label><input type="text" class="form-control" name="title" id="title" ng-model="user.title" text="Vale here" required><br /><label class="control-label" for="description">Description :</label><input type="text" class="form-control" name="description" id="description" ng-model="user.description"><br /><label class="control-label" for="input">Input :</label><input type="text" class="form-control" name="input" id="input" ng-model="user.input"><br /><label class="control-label" for="activator">Activator :</label><select class="form-control" name="activator" id="activator" ng-model="user.activator" ng-options="activator.title for activator in activators"></select><br /><label class="control-label" for="metrics">Metrics :</label><select class="form-control" name="metrics" id="metrics" ng-model="user.metrics" ng-options="metric.title for metric in metrics.results"></select><br /><label class="control-label" for="fixedoutput">Fixed output :</label><select class="form-control" name="fixedoutput" id="fixedoutput" ng-model="user.fixedoutput"><option value="True">True</option><option value="False">False</option></select></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Add</button></div>');
 
   $templateCache.put('/dialogs/addassociation.html', '<div class="modal-header"><h4 class="modal-title">Association</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="source">Source Concept :</label><select class="form-control" name="source" id="source" ng-model="user.source" ng-options="concept.title for concept in Concepts" required></select><br /><label class="control-label" for="destination">Destination Concept :</label><select class="form-control" name="destination" id="destination" ng-model="user.destination" ng-options="concept.title for concept in Concepts" required></select><br /><label class="control-label" for="weight">Weight :</label><input type="text" class="form-control" name="weight" id="weight" ng-model="user.weight" required></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Add</button></div>');
 

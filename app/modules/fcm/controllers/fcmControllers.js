@@ -41,21 +41,14 @@ angular.module('pcApp.fcm.controllers.fcm', [
     function ($scope, $rootScope, $routeParams, $location, FcmModel, FcmSearchDelete, dialogs, $log) {
 	$scope.mapData = [];
 	$scope.edgeData = [];
+	$scope.editorLayout;
 	
-//	var myScroll = new IScroll('#cy', {
-//		zoom: true,
-//		scrollX: true,
-//		scrollY: true,
-//		mouseWheel: true,
-//		wheelAction: 'zoom'
-//	});
-
 	$scope.models = FcmModel.get(
 	    {id: $routeParams.fcmId},
 	    function (fcmList) {
 		for (i=0; i<$scope.models.concepts.length; i++)
 		{
-		    var newNode = {id:$scope.models.concepts[i].conceptID.toString(), name:$scope.models.concepts[i].title};
+		    var newNode = {id:$scope.models.concepts[i].conceptID.toString(), name:$scope.models.concepts[i].title, posX:$scope.models.concepts[i].positionX, posY:$scope.models.concepts[i].positionY};
 		    $scope.mapData.push(newNode);
 		}
 		for (i=0; i<$scope.models.connections.length; i++)
@@ -63,6 +56,8 @@ angular.module('pcApp.fcm.controllers.fcm', [
 		    var newEdge = {id:$scope.models.connections[i].connectionID.toString(), source: $scope.models.connections[i].conceptFrom.toString(), target: $scope.models.connections[i].conceptTo.toString(), weighted: $scope.models.connections[i].weighted};
 		    $scope.edgeData.push(newEdge);
 		}
+		
+		$scope.editorLayout=1;
 		// broadcasting the event
 		$rootScope.$broadcast('appChanged');
 	    },
@@ -86,11 +81,6 @@ angular.module('pcApp.fcm.controllers.fcm', [
                 }
             );
         });
-    };
-
-    // Fit the nodes in the Editor
-    $scope.reset = function(){
-        $rootScope.$broadcast('appChanged');
     };
     }])
 
