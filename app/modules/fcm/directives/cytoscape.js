@@ -54,8 +54,8 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                             type:dType
                     },
              	    position: {
-                	x: scope.cyData[i].posX,
-                	y: scope.cyData[i].posY
+                	x: 100,
+                	y: 100
                     }
 		};
                     // add new object to the Nodes array
@@ -98,10 +98,11 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                 // here are just some basic options
                 $('#cy').cytoscape({
 	            showOverlay: false,
+		    zoom: 1,
                     layout: {
 		       name: 'random',
 		       refresh             : 0,
-		       fit                 : true, 
+		       fit                 : false, 
 		       padding             : 30, 
 		       randomize           : true,
 		       debug               : false,
