@@ -104,7 +104,7 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
 		       refresh             : 0,
 		       fit                 : false, 
 		       padding             : 30, 
-		       randomize           : true,
+		       randomize           : false,
 		       debug               : false,
 		       nodeRepulsion       : 10000,
 		       nodeOverlap         : 10,

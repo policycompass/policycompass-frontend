@@ -29,7 +29,6 @@
     "angular-spectrum-colorpicker": "=1.2.0",
     "elasticsearch": "=2.4.3",
     "skrollr": "=0.6.27",
-    "cytoscape.js-panzoom": "",
     "topojson": "=1.6.18"
   },
   "resolutions": {
