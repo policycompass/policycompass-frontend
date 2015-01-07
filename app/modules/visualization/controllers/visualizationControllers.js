@@ -40,18 +40,29 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			
 			
 			
-			$scope.getHistoricalEventcData = function(eventId) {
+			$scope.getHistoricalEventcData = function(eventId, colorevent) {
 				//console.log("getHistoricalEventcData metricId="+eventId);
-				
+				//console.log("getHistoricalEventcData colorevent="+colorevent);
+				var coloreventFinal = [];
+				if (colorevent)
+				{
+					coloreventFinal[eventId] = colorevent;
+				}
+				else{
+					coloreventFinal[eventId] = '#ffffff';
+				}
 				$scope.her = Event.get({id: eventId},
             	function(her) {
+            		//console.log("------>her=");
+            		//console.log(her);
             		//console.log("------>her id="+her.id);
             		//console.log("------>title="+her.title);
-            		
+            		//console.log("------>color="+coloreventFinal[her.id]);
             		
             		var data =  {
 					event_id : her.id,
 					title : her.title,
+					color: coloreventFinal[her.id],
 					};
 				
             		$scope.historicalEventsRelated.push(data);
@@ -1872,11 +1883,18 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				}
 							
 				//console.log($scope.visualization.historical_events_in_visualization)
+				var colorTmp =[];
 				for (i in $scope.visualization.historical_events_in_visualization )
 				{
 					id = $scope.visualization.historical_events_in_visualization[i].historical_event_id;
 					//console.log("event id="+id);
-					$scope.getHistoricalEventcData(id);
+					
+					colorTmp[id] =$scope.visualization.historical_events_in_visualization[i].color;
+					
+					
+					//console.log("colorTmp[id]="+colorTmp[id]);
+					
+					$scope.getHistoricalEventcData(id, colorTmp[id]);
 					
 					
 

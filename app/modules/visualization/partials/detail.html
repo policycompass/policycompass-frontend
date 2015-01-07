@@ -75,20 +75,27 @@
             <td><b>Linked to Metrics:</b></td>            
             <td>            	
             	<div class="field-content  field-content-editable">
-					<li	ng-repeat="metric in meticsRelated">
-						<a target="_blank" ng-href="/app/#/metrics/{{metric.id}}">{{metric.title}}</a>
-					</li>              
+            		<ul>
+						<li	ng-repeat="metric in meticsRelated">
+							<a target="_blank" ng-href="/app/#/metrics/{{metric.id}}">{{metric.title}}</a>
+						</li>
+					</ul>
             	</div>
             </td>
         </tr>        
 
         <tr ng-show="visualization.historical_events_in_visualization">
-            <td><b>Linked to Historical Events:</b></td>            
-            <td>            	
+            <td><b>Linked to Historical Events:</b></td>
+            <td>
             	<div class="field-content  field-content-editable">
+            		<ul>
 					<li ng-repeat="her in historicalEventsRelated">
-						<a target="_blank" ng-href="/app/#/events/{{her.event_id}}">{{her.title}}</a>
-					</li>             
+						<div class='square-box'>
+							<div class='square-content' style="background:{{her.color}};"><div><span>&nbsp;</span></div></div>
+						</div>
+						<a target="_blank" ng-href="/app/#/events/{{her.event_id}}">{{her.title}}</a>										
+					</li>
+					</ul>        
             	</div>
             </td>
         </tr>  
