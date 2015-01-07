@@ -552,10 +552,19 @@ return 0;}
 				      			//.attr("dy", ".71em")
 				      			.attr("dy", self.dymarging+"px")
 				      			//.attr("x", 50*(keyIndex))
+				      			
+				      			//.style("fill", function (d, i) { return colorScale(lines[keyIndex].Key); })
+				      			/*
 				      			.style("stroke", function(d,i) {
 					      			return colorScale(lines[keyIndex].Key);
 					      			//return colorScaleLinel((cnt_linea-1));
 					      		})
+					      		 */
+					      		 .style("fill", function(d,i) {
+					      			return colorScale(lines[keyIndex].Key);
+					      			//return colorScaleLinel((cnt_linea-1));
+					      		})
+					      		 
 				      			.style("text-anchor", "end")
 				      			.text(self.labelY[keyIndex]);
 	
@@ -749,10 +758,14 @@ return 0;}
 				self.svg.append("svg:g")
 				      .attr("class", "y axis axisLeft")				      
 				      .attr("transform", transform)
+				      /*
 				      .style("stroke", function(d,i) {
 				      	//console.log("----->key="+key);
 				      	return colorScale(key);
 				      	})
+				      	*/
+				      .style("fill", function (d, i) { return colorScale(key); })
+				      
 				      //.style("stroke-width", 2)				      
 				      .attr("font-size", self.font_size)
 				      .call(yAxisLeft)
@@ -994,11 +1007,14 @@ return 0;}
 					.attr("text-decoration","none")					
 					.attr("class", "link superior legend value")				
 					.attr("font-size", self.font_size)
+					.style("fill", function (d, i) { return colorScale(key); })
+					/*
 					.style("stroke", function(d,i) {
 						//console.log("key="+key);
 						return colorScale(key);
 						//return colorScaleLinel(cnti-1);
-						})										
+						})
+						*/										
 					//.on("mouseover", function (d,i) {
 				    .on("mouseover", function() {
 				    	

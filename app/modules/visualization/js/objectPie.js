@@ -352,7 +352,8 @@ policycompass.viz.pie = function(options)
 		    	//.attr("dy", ".35em")
 		    	.attr("dy", "-.30em")
 		    	//.style("text-anchor", "end")
-		    	.style("stroke", function(d,i) {return colorScale(i);})
+		    	//.style("stroke", function(d,i) {return colorScale(i);})
+		    	.style("fill", function (d, i) { return colorScale(i); })		    	
 		    	.text(function(d,i) {
 					var textToReturn = pieslabels[i];
 					//textToReturn = textToReturn+": "+pies[i];

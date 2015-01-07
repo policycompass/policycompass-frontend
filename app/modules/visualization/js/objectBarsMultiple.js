@@ -694,8 +694,8 @@ policycompass.viz.barsMultiple = function(options) {
 					.attr("text-decoration","none")					
 					.attr("class", "link superior legend value")				
 					.attr("font-size", self.font_size)					
-					.style("stroke", color(xAxisData[i]))					
-					
+					//.style("stroke", color(xAxisData[i]))					
+					.style("fill",  color(xAxisData[i]))
 					      					
 					.text(xAxisData[i]);
 					
