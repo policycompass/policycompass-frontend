@@ -87,9 +87,12 @@
 						</div>
 					</div>
 				</div>
-                <tabset>                                        
-					<!-- ini tab metrics -->
-                    <tab heading="Metrics">                    
+				
+				
+				<accordion close-others="oneAtATime">
+        			<accordion-group heading="Graph properties" is-open="isFirstOpen">
+            			
+            			
 						<div id="showFilterContainer" class="showFilterContainer">
 							<div id="showFilter" ng-show="isSelectedParent(1) || isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')" class="showFilter on_check">
 								<div id="div_showLegend" ng-show="isSelectedParent(1) || isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')" class="on_check">
@@ -139,7 +142,21 @@
 								</div>
 								
 							</div>
-						</div>
+						</div>            			
+            			
+        			</accordion-group>
+				</accordion>
+				
+				
+					
+					
+						
+				
+				
+                <tabset>                                        
+					<!-- ini tab metrics -->
+                    <tab heading="Metrics">                    
+						
 								
 								
 

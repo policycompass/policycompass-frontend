@@ -75,16 +75,27 @@ shape-rendering: crispEdges;
     padding: 8px;
     font: 15px Helvetica Neue;
     background: #FFF;
-    border: solid 1px #aaa;
+    /*background: #f7941e;*/
+    border: solid 1px #f7941e;
     border-radius: 8px;
     pointer-events: none;
     z-order:1000;
     text-align:center;
 }
 
-.tooltipLegend {
+.tooltipdd {
+    position: absolute;
+    display: block;
+    background: #f7941e;
+    color: white;
+    border-radius: 3px;
+    padding: 10px;
+    width: 200px;
+    opacity: 0.95;
+}
 
-	
+
+.tooltipLegend {
     position: absolute;
     width: 200px;
     min-height: 50px;

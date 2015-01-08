@@ -2226,6 +2226,7 @@ $scope.xAxisTickFormatFunction = function(){
 	if (locationURL.indexOf("edit") > -1)
 	{
 		$scope.mode = "edit";
+		$scope.isFirstOpen = false;
 	}
 	else
 	{
@@ -2790,6 +2791,7 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 	//console.log('VisualizationsCreateController');
 	
 	$scope.mode = "create";
+	$scope.isFirstOpen = true;
 	$scope.resetlocation = "/visualizations/create/";
 
 
