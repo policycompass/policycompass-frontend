@@ -39,7 +39,7 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                 for (i=0; i<scope.cyData.length; i++)
                 {
                     // get id, name and type  from the object
-                    var dId = scope.cyData[i].id;
+                    var dId = "n" + scope.cyData[i].id;
                     var dName = scope.cyData[i].name.substring(0, 24);
                     var dType = 'roundrectangle';
                     // get color from the object-color dictionary
@@ -69,11 +69,11 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                 for (i=0; i<scope.cyEdges.length; i++)
                 {
                     // get edge source
-                    var eSource = scope.cyEdges[i].source;
+                    var eSource = "n" + scope.cyEdges[i].source;
                     // get edge target
-                    var eTarget = scope.cyEdges[i].target;
+                    var eTarget = "n" + scope.cyEdges[i].target;
                     // get edge id
-                    var eId = scope.cyEdges[i].id;
+                    var eId = "e" + scope.cyEdges[i].id;
                     // get edge weight
                     var eLabel = scope.cyEdges[i].weighted;
 
@@ -171,6 +171,11 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                             scope.cyClick({value:nodeId});
                         });
 
+                        cy.on('tap', 'edge', function(e){
+                            var evtTarget = e.cyTarget;
+                            var nodeId = evtTarget.id();
+                            scope.cyClick({value:nodeId});
+                        });
 				cy.panzoom({
 					// options go here
 				});

@@ -73,7 +73,7 @@ angular.module('pcApp.fcm.controllers.fcm', [
             "Are you sure?",
             "Do you want to delete the FCM model '" + model.title + "' permanently?");
         dlg.result.then(function () {
-            // Delete the metric via the API
+            // Delete the model via the API
             FcmSearchDelete.delete({id: $routeParams.fcmId}, function() {
                 });
             FcmModel.delete({id: $routeParams.fcmId}, function() {
