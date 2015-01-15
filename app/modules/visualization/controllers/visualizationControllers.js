@@ -1532,6 +1532,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				}
 					
 				var mapObj = policycompass.viz.mapW(
+				//var mapObj = policycompass.viz.mapW_datamaps(
 				{
 					'idName':"container_graph_"+$scope.visualization.id,
 					'width': width,

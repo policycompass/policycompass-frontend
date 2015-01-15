@@ -339,7 +339,15 @@ self.svg.append("path")
 		var country = g.selectAll(".country").data(topo);
 
 		country.enter().insert("path")
-			.attr("class", "country")
+			//.attr("class", "country ")
+			.attr("class", function(d,i) {
+			var countryname = d.properties.name;
+			countryname = countryname.replace(/ /g, "_");
+			countryname = countryname.replace(/\,/g, "_");
+			countryname = countryname.replace(/\./g, "_");
+				return "country "+countryname;
+			 	}
+				)
 			.attr("d", path)
 			.attr("id", function(d,i) { return d.id; })
 			.attr("title", function(d,i) { return d.properties.name; })
@@ -384,7 +392,7 @@ self.svg.append("path")
       		//.style("fill", function(d,i) { return color(d.id); })
       		; 
 
-/*
+
 		//EXAMPLE: adding some capitals from external CSV file
 		d3.csv("/app/modules/visualization/json/country-capitals.csv", function(err, capitals) {
 			capitals.forEach(function(i){
@@ -392,7 +400,7 @@ self.svg.append("path")
 			});
 
 		});
-*/
+
 	}
 
 
@@ -461,14 +469,17 @@ self.svg.append("path")
         	.attr("cx", x)
         	.attr("cy", y)
         	.attr("class","point")
-        	.attr("r", 1.5);
+        	.attr("r", 2)
+        	.style("fill", "blue")
+        	;
 
 		//conditional in case a point has no associated text
 		if(text.length>0){
     		gpoint.append("text")
-				.attr("x", x+2)
+				.attr("x", x+5)
 				.attr("y", y+2)
 				.attr("class","text")
+				.style("fill", "blue")
 				.text(text);
   		}
 

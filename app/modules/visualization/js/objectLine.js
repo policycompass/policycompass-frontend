@@ -1018,9 +1018,12 @@ return 0;}
 					//.on("mouseover", function (d,i) {
 				    .on("mouseover", function() {
 				    	
+				    	
 						if (self.modeGraph=='view')
 						{
-							var str = d3.select(this).text();
+							//var str = d3.select(this).text();
+							var keyTmp = d['Key'].split("_");
+							var str = keyTmp[0];
 							
 							if(d3.select(this).attr("text-decoration")=='none')
 							{
@@ -1073,8 +1076,55 @@ return 0;}
 					      					
 					.text(function(d,i) {
 						var resTRext = key.split("_");
+						
+						var trimmedString = resTRext[0];
+						var length = 100;
+						
+						if (lines.length==1)
+						{
+							length = 150;
+						}
+						else if (lines.length==2)
+						{
+							length = 80;
+						}
+						else if (lines.length==3)
+						{
+							length = 60;
+						}
+						else if (lines.length==4)
+						{
+							length = 40;
+						}
+						else if (lines.length==5)
+						{
+							length = 28;
+						}
+						else if (lines.length==6)
+						{
+							length = 25;
+						}
+						else if (lines.length==7)
+						{
+							length = 20;
+						}
+						else if (lines.length==8)
+						{
+							length = 18;
+						}
+						else
+						{
+							length = 18;
+						}
+						
+						if (trimmedString.length>length)
+						{
+							trimmedString = trimmedString.substring(0, length)+"...";	
+						}
+						 
+						
 						//return "Click to hide "+resTRext[0];})
-						return resTRext[0];})
+						return trimmedString;})
 					
 					.on("click", function() {
 						//console.log("-----key="+d.Key.replace(/\s+/g, ''))
