@@ -42,14 +42,16 @@
               <td><b>Geolocation:</b></td>
               <td>{{ event.geoLocation }}</td>
           </tr>
-          <tr ng-show="event.languageID">
+          <tr ng-show="language.title">
               <td><b>Language:</b></td>
-              <td>{{ event.languageID }}</td>
+              <td>{{ language.title }}</td>
           </tr>
+          <!--
           <tr ng-show="event.userID">
               <td><b>User:</b></td>
               <td>{{ event.userID }}</td>
           </tr>
+          -->
           <tr ng-show="event.scale">
               <td><b>Scale:</b></td>
               <td>{{ event.scale }}</td>
@@ -70,10 +72,12 @@
               <td><b>Modified:</b></td>
               <td>{{ event.dateModified | date:'longDate' }}</td>
           </tr>
+          <!--
           <tr ng-show="event.viewsCount">
               <td><b>Views:</b></td>
               <td>{{ event.viewsCount }}</td>
           </tr>
+          -->
       </table>
       </div>
       <div class="col-lg-6">

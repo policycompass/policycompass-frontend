@@ -21,9 +21,10 @@ angular.module('pcApp.events.controllers.event', [
         '$location',
         'Event',
         'LinkedEventVisualization',
+        'Language',
         'dialogs',
         '$log',
-        function ($scope, $routeParams, $location, Event, LinkedEventVisualization, dialogs, $log) {
+        function ($scope, $routeParams, $location, Event, LinkedEventVisualization, Language, dialogs, $log) {
 
             $scope.event = Event.get({id: $routeParams.eventId},
                 function (event) {
@@ -57,6 +58,17 @@ angular.module('pcApp.events.controllers.event', [
                     throw { message: JSON.stringify(err.data)};
                 }
             );
+
+            $scope.event.$promise.then(function (event) {
+                $scope.language = Language.get({id: event.languageID},
+                    function (language) {
+                    },
+                    function (err) {
+                        throw {message: JSON.stringify(err.data)};
+                    }
+                );
+            });
+
         }])
 
     .controller('EventEditController', [
