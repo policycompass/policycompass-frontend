@@ -79,13 +79,14 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
     };
 })
 
-.controller('CytoscapeCtrl', function($scope, $rootScope,  $routeParams, $location, $translate, Fcm, FcmModel, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, AssociationsDetail, EditConcept, EditAssociation){
+.controller('CytoscapeCtrl', function($scope, $rootScope,  $routeParams, $location, $translate, Fcm, FcmModel, FcmSearchUpdate, FcmActivator, dialogs, FCMModelsDetail, ConceptsDetail, AssociationsDetail, EditConcept, EditAssociation){
   // container objects
   $scope.Models = [];
   $scope.mapData = [];
   $scope.edgeData = [];
   $scope.Concepts = [];
   $scope.Associations = [];
+  $scope.NodeID = 0;
 
   FCMModelsDetail.setModels($scope.Models);
   ConceptsDetail.setConcepts($scope.Concepts);
@@ -95,6 +96,12 @@ if ($routeParams.fcmId)
 {
     // Mode is editing
     $scope.mode = "edit";
+
+    $scope.Fcmactivators = FcmActivator.query({}, function(activatorList) {
+    },
+    function(error) {
+	throw { message: JSON.stringify(err.data)};
+    });
 
   $scope.modeldetail = FcmModel.get(
     {id: $routeParams.fcmId},
@@ -106,18 +113,33 @@ if ($routeParams.fcmId)
 	FCMModelsDetail.setModels(model);
 	for (i=0; i<$scope.modeldetail.concepts.length; i++)
 	{
-	    var newNode = {id:$scope.modeldetail.concepts[i].conceptID.toString(), name:$scope.modeldetail.concepts[i].title};
-	    var Concept = {Id: $scope.modeldetail.concepts[i].conceptID.toString(), title: $scope.modeldetail.concepts[i].title, description: $scope.modeldetail.concepts[i].description, input: $scope.modeldetail.concepts[i].input, activatorID: $scope.modeldetail.concepts[i].activatorID, activator: '', metricsID: $scope.modeldetail.concepts[i].metricID, metrics: '', fixedoutputID: $scope.modeldetail.concepts[i].fixedOutput, fixedoutput: '', x: $scope.modeldetail.concepts[i].positionX, y: $scope.modeldetail.concepts[i].positionY};
+	    var newNode = {id:$scope.modeldetail.concepts[i].conceptID.toString(), name:$scope.modeldetail.concepts[i].title, posX:$scope.modeldetail.concepts[i].positionX, posY:$scope.modeldetail.concepts[i].positionY};
+	    var Concept = {Id: $scope.modeldetail.concepts[i].conceptID.toString(), title: $scope.modeldetail.concepts[i].title, description: $scope.modeldetail.concepts[i].description, input: $scope.modeldetail.concepts[i].input, activatorID: $scope.modeldetail.concepts[i].activatorID, activator: '', metricsID: $scope.modeldetail.concepts[i].metricID, metrics: '', fixedoutputID: $scope.modeldetail.concepts[i].fixedOutput, fixedoutput: '', x: $scope.modeldetail.concepts[i].positionX, y: $scope.modeldetail.concepts[i].positionY, dateAddedtoPC:$scope.modeldetail.concepts[i].dateAddedtoPC, dateModified:$scope.modeldetail.concepts[i].dateModified};
+	    if (Concept.fixedoutputID==false)
+	    {
+		Concept.fixedoutput='False';
+	    }
+	    else
+	    {
+		Concept.fixedoutput='True';
+	    }
+	    for (j=0;j<$scope.Fcmactivators.length;j++)
+	    {
+		if ($scope.Fcmactivators[j].activatorID==Concept.activatorID)
+		{
+		    Concept.activator=$scope.Fcmactivators[j];
+		}
+	    }
+
 	    $scope.mapData.push(newNode);
-//	    $scope.Concepts.push($scope.modeldetail.concepts[i]);
 	    $scope.Concepts.push(Concept);
 	}
 	for (i=0; i<$scope.modeldetail.connections.length; i++)
 	{
-		    var newEdge = {id:$scope.modeldetail.connections[i].connectionID.toString(), source: $scope.modeldetail.connections[i].conceptFrom.toString(), target: $scope.modeldetail.connections[i].conceptTo.toString(), weighted: $scope.modeldetail.connections[i].weighted};
-		    var Association = {Id: $scope.modeldetail.connections[i].connectionID.toString(), sourceID: $scope.modeldetail.connections[i].conceptFrom.toString(), source: '', destinationID: $scope.modeldetail.connections[i].conceptTo.toString(), destination: '', weight: $scope.modeldetail.connections[i].weighted};
+	    var newEdge = {id:$scope.modeldetail.connections[i].connectionID.toString(), source: $scope.modeldetail.connections[i].conceptFrom.toString(), target: $scope.modeldetail.connections[i].conceptTo.toString(), weighted: $scope.modeldetail.connections[i].weighted};
+	    var Association = {Id: $scope.modeldetail.connections[i].connectionID.toString(), sourceID: $scope.modeldetail.connections[i].conceptFrom.toString(), source: '', destinationID: $scope.modeldetail.connections[i].conceptTo.toString(), destination: '', weight: $scope.modeldetail.connections[i].weighted};
+
 	    $scope.edgeData.push(newEdge);
-//	    $scope.Associations.push($scope.modeldetail.connections[i]);
 	    $scope.Associations.push(Association);
 	}
 	// broadcasting the event
@@ -152,6 +174,7 @@ else
                     	function (err) {
                         	throw { message: err.data};
                     	});
+			$scope.md = value;
 			$location.path('/models/' + value.model.fcmmodelID + '/edit');
                     },
                     function (err) {
@@ -164,15 +187,14 @@ else
     };
 
     $scope.updateModel = function(){
-		var jsonModel = {model: FCMModelsDetail.getModels(),
+		var jsonModel = {model: FCMModelsDetail.getModels(), userID: "1",
 			concepts: ConceptsDetail.getConcepts(), connections: AssociationsDetail.getAssociations()};
-
 		$scope.fcmModelUpdate = new FcmModel();
 		$scope.fcmModelUpdate.data = jsonModel;
 
                 FcmModel.update({id: $routeParams.fcmId}, $scope.fcmModelUpdate, function (value) {
-			FcmSearchUpdate.update({id: $routeParams.fcmId}, $scope.fcmModel, function () {			
-				var dlg = dialogs.notify("FCM Model", "'" + jsonModel.model.title + "' FCM Model has been saved!");
+			FcmSearchUpdate.update({id: $routeParams.fcmId}, function () {			
+				var dlg = dialogs.notify("FCM Model", "'" + value.model.title + "' FCM Model has been saved!");
                     	},
                     	function (err) {
                         	throw { message: err.data};
@@ -192,10 +214,13 @@ else
 	dlg.result.then(function(user){
 		// collecting data from the form
 		var newObj = user.title;
-		user.Id = 'n'+($scope.mapData.length);
+		user.Id = 'n' + $scope.NodeID;
+		user.x = $scope.NodeID*100+200;
+		user.y = $scope.NodeID*100+200;
 		// building the new Node object
 		// using the array length to generate an id for the sample (you can do it any other way)
-		var newNode = {id:'n'+($scope.mapData.length), name:newObj, x:user.x, y:user.y};
+		var newNode = {id:'n' + ($scope.NodeID), name:newObj, posX:user.x, posY:user.y};
+		$scope.NodeID = $scope.NodeID + 1;
 		// adding the new Node to the nodes array
 		$scope.mapData.push(newNode);
 		$scope.Concepts.push(user);
@@ -203,7 +228,6 @@ else
 		// broadcasting the event
 		$rootScope.$broadcast('appChanged');
 		// resetting the form
-//		$scope.form.obj = '';
         },function(){
           $scope.name = 'You decided not to enter in your name, that makes me sad.';
         });
@@ -226,7 +250,6 @@ else
 		// broadcasting the event
 		$rootScope.$broadcast('appChanged');
 		// resetting the form
-//		$scope.formEdges = '';
         },function(){
           $scope.name = 'You decided not to enter in your name, that makes me sad.';
         });
@@ -253,32 +276,28 @@ else
 	    dlg.result.then(function(user){
 	    if (user=="D")
 	    {
-		var deleted="True";
-	    	for (i=0;i<$scope.Associations.length-1;i++)
+	    	for (i=0;i<$scope.Associations.length;i++)
 	    	{
-		    if ($scope.Associations[i].source = $scope.Concepts[pos].Id)
+		    if (($scope.Associations[i].sourceID == $scope.Concepts[pos].Id) || ($scope.Associations[i].destinationID == $scope.Concepts[pos].Id))
 		    {
-			deleted="False";
-		    }
-		    if ($scope.Associations[i].destination = $scope.Concepts[pos].Id)
-		    {
-			deleted="False";
+			for (j=i;j<$scope.Associations.length-1;j++)
+			{
+			    $scope.Associations[j] = $scope.Associations[j+1];
+			    $scope.edgeData[j] = $scope.edgeData[j+1];
+			}
+			$scope.Associations.pop();
+			$scope.edgeData.pop();
+			i--;
 		    }
 	    	}
-		if (deleted=="True")
+
+		for (i=pos;i<$scope.Concepts.length-1;i++)
 		{
-	    	    for (i=pos;i<$scope.Concepts.length-1;i++)
-	    	    {
-		    	$scope.Concepts[i] = $scope.Concepts[i+1];
-		    	$scope.mapData[i] = $scope.mapData[i+1];
-	    	    }
-		    $scope.Concepts.pop();
-		    $scope.mapData.pop();
+		    $scope.Concepts[i] = $scope.Concepts[i+1];
+		    $scope.mapData[i] = $scope.mapData[i+1];
 		}
-		else
-		{
-		    var dlg = dialogs.notify("FCM Model", "First, delete all the associations of this concept!");
-		}
+		$scope.Concepts.pop();
+		$scope.mapData.pop();
 	    }
 	    else
 	    {
@@ -353,6 +372,19 @@ else
 	}
     };
 
+    $scope.doMouseUp = function(value,posx,posy)
+    {
+	for (i=0;i<$scope.Concepts.length;i++)
+	{
+	    if ($scope.Concepts[i].Id==value.substring(1, value.length))
+	    {
+		$scope.Concepts[i].x=posx;
+		$scope.Concepts[i].y=posy;
+		$scope.mapData[i].posX=posx;
+		$scope.mapData[i].posY=posy;
+	    }
+	}
+    };
     // Fit the nodes in the Editor
     $scope.reset = function(){
         $rootScope.$broadcast('appChanged');
@@ -360,7 +392,7 @@ else
 })
 
 .controller('ConceptController',function($scope, $modalInstance, Metric, FcmActivator, $log, $routeParams, data){
-  $scope.user = {Id: -1, title: '', description: '', input: '0.0', activator: '', metrics: '', fixedoutput: 'False', x: '200', y: '100'};
+  $scope.user = {Id: -1, title: '', description: '', input: '0.0', activatorID: '', metricsID: 0, activator: '', metrics: '', fixedoutput: 'False', x: '300', y: '300'};
 
 	$scope.metrics = Metric.query(
             {page_size: 100},
@@ -391,6 +423,15 @@ else
   }; // end cancel
   
   $scope.save = function(){
+    $scope.user.activatorID=$scope.user.activator.activatorID;
+    if ($scope.user.metrics=="")
+    {
+    	$scope.user.metricsID=0;
+    }
+    else
+    {
+    	$scope.user.metricsID=$scope.user.metrics.id;
+    }
     $modalInstance.close($scope.user);
   }; // end save
   
@@ -398,7 +439,6 @@ else
 
 .controller('EditConceptController',function($scope, $modalInstance, Metric, FcmActivator, $log, $routeParams, dialogs, data, EditConcept){
   $scope.user = {Id: -1, title: '', description: '', input: '0.0', activatorID: '', metricsID: '', activator: '', metrics: '', fixedoutput: 'False', x: '200', y: '100'};
-//  $scope.user = EditConcept.getConcept();
   $scope.user.Id = EditConcept.getConcept().Id;
   $scope.user.title = EditConcept.getConcept().title;
   $scope.user.description = EditConcept.getConcept().description;
@@ -417,23 +457,13 @@ else
 //alert($scope.user.metrics);
 //alert($scope.metrics[0]);
 //alert(metricList.);
-		for (i=0;i<metricList.length;i++)
+	    for (i=0;i<metricList.length;i++)
+	    {
+		if ($scope.metrics[i].metricID==$scope.user.metrics)
 		{
-		    if (mode=="edit")
-		    {
-			if ($scope.metrics[i].metricID==$scope.user.metrics)
-			{
-				$scope.user.metrics=$scope.metrics[i];
-			}
-		    }
-		    else
-		    {
-			if ($scope.metrics[i].title==$scope.user.metrics.title)
-			{
-				$scope.user.metrics=$scope.metrics[i];
-			}
-		    }
+		    $scope.user.metrics=$scope.metrics[i];
 		}
+	    }
 	},
 	function(error) {
 	    throw { message: JSON.stringify(err.data)};
@@ -442,23 +472,13 @@ else
   
 	$scope.activators = FcmActivator.query({},
 	function(activatorList) {
-		for (i=0;i<activatorList.length;i++)
+	    for (i=0;i<activatorList.length;i++)
+	    {
+		if ($scope.activators[i].activatorID==$scope.user.activatorID)
 		{
-		    if (mode=="edit")
-		    {
-			if ($scope.activators[i].activatorID==$scope.user.activatorID)
-			{
-				$scope.user.activator=$scope.activators[i];
-			}
-		    }
-		    else
-		    {
-			if ($scope.activators[i].title==$scope.user.activator.title)
-			{
-				$scope.user.activator=$scope.activators[i];
-			}
-		    }
+		    $scope.user.activator=$scope.activators[i];
 		}
+	    }
 	},
 	function(error) {
 	    throw { message: JSON.stringify(err.data)};
@@ -488,7 +508,7 @@ else
         // Open a confirmation dialog
         var dlg = dialogs.confirm(
             "Are you sure?",
-            "Do you want to delete this concept permanently?");
+            "Do you want to delete this concept permanently? All associations of this concept will also deleted.");
         dlg.result.then(function () {
             // Delete the concept
     	    $modalInstance.close("D");
@@ -498,7 +518,7 @@ else
 }) // end ConceptController
 
 .controller('AssociationController',function($scope, $modalInstance, data, ConceptsDetail){
-  $scope.user = {Id: -1, source: '', destination: '', weight: 0};
+  $scope.user = {Id: -1, sourceID: '', destinationID: '', source: '', destination: '', weight: 0};
   
   $scope.Concepts = [];	
   $scope.Concepts = ConceptsDetail.getConcepts();
@@ -508,6 +528,8 @@ else
   }; // end cancel
   
   $scope.save = function(){
+    $scope.user.sourceID=$scope.user.source.Id;
+    $scope.user.destinationID=$scope.user.destination.Id;
     $modalInstance.close($scope.user);
   }; // end save
   
@@ -515,7 +537,6 @@ else
 
 .controller('EditAssociationController',function($scope, $modalInstance, dialogs, data, ConceptsDetail, EditAssociation){
   $scope.user = {Id: -1, sourceID: '', destinationID: '', source: '', destination: '', weight: 0};
-//  $scope.user = EditAssociation.getAssociation();
   var mode = EditAssociation.getEditMode();
   $scope.user.Id = EditAssociation.getAssociation().Id;
   $scope.user.sourceID = EditAssociation.getAssociation().sourceID;
@@ -594,9 +615,9 @@ else
 }) // end ModelController
 
 .run(['$templateCache',function($templateCache){
-  $templateCache.put('/dialogs/addconcept.html', '<div class="modal-header"><h4 class="modal-title">Add Concept</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="title">Title :</label><input type="text" class="form-control" name="title" id="title" ng-model="user.title" text="Vale here" required><br /><label class="control-label" for="description">Description :</label><input type="text" class="form-control" name="description" id="description" ng-model="user.description" required><br /><label class="control-label" for="input">Input :</label><input type="text" class="form-control" name="input" id="input" ng-model="user.input" required><br /><label class="control-label" for="activator">Activator :</label><select class="form-control" name="activator" id="activator" ng-model="user.activator" ng-options="activator.title for activator in activators" required></select><br /><label class="control-label" for="metrics">Metrics :</label><select class="form-control" name="metrics" id="metrics" ng-model="user.metrics" ng-options="metric.title for metric in metrics.results" required></select><br /><label class="control-label" for="fixedoutput">Fixed output :</label><select class="form-control" name="fixedoutput" id="fixedoutput" ng-model="user.fixedoutput" required><option value="True">True</option><option value="False">False</option></select></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Add</button></div>');
+  $templateCache.put('/dialogs/addconcept.html', '<div class="modal-header"><h4 class="modal-title">Add Concept</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="title">Title :</label><input type="text" class="form-control" name="title" id="title" ng-model="user.title" text="Vale here" required><br /><label class="control-label" for="description">Description :</label><input type="text" class="form-control" name="description" id="description" ng-model="user.description" required><br /><label class="control-label" for="input">Input :</label><input type="text" class="form-control" name="input" id="input" ng-model="user.input" required><br /><label class="control-label" for="activator">Activator :</label><select class="form-control" name="activator" id="activator" ng-model="user.activator" ng-options="activator.title for activator in activators" required></select><br /><label class="control-label" for="metrics">Metrics :</label><select class="form-control" name="metrics" id="metrics" ng-model="user.metrics" ng-options="metric.title for metric in metrics.results"></select><br /><label class="control-label" for="fixedoutput">Fixed output :</label><select class="form-control" name="fixedoutput" id="fixedoutput" ng-model="user.fixedoutput" required><option value="True">True</option><option value="False">False</option></select></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Add</button></div>');
 
-  $templateCache.put('/dialogs/editconcept.html', '<div class="modal-header"><h4 class="modal-title">Edit Concept</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="title">Title :</label><input type="text" class="form-control" name="title" id="title" ng-model="user.title" text="Vale here" required><br /><label class="control-label" for="description">Description :</label><input type="text" class="form-control" name="description" id="description" ng-model="user.description" required><br /><label class="control-label" for="input">Input :</label><input type="text" class="form-control" name="input" id="input" ng-model="user.input" required><br /><label class="control-label" for="activator">Activator :</label><select class="form-control" name="activator" id="activator" ng-model="user.activator" ng-options="activator.title for activator in activators" required></select><br /><label class="control-label" for="metrics">Metrics :</label><select class="form-control" name="metrics" id="metrics" ng-model="user.metrics" ng-options="metric.title for metric in metrics.results" required></select><br /><label class="control-label" for="fixedoutput">Fixed output :</label><select class="form-control" name="fixedoutput" id="fixedoutput" ng-model="user.fixedoutput" required><option value="True">True</option><option value="False">False</option></select></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button><button type="button" class="btn btn-danger" ng-click="delete()">Delete</button></div>');
+  $templateCache.put('/dialogs/editconcept.html', '<div class="modal-header"><h4 class="modal-title">Edit Concept</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="title">Title :</label><input type="text" class="form-control" name="title" id="title" ng-model="user.title" text="Vale here" required><br /><label class="control-label" for="description">Description :</label><input type="text" class="form-control" name="description" id="description" ng-model="user.description" required><br /><label class="control-label" for="input">Input :</label><input type="text" class="form-control" name="input" id="input" ng-model="user.input" required><br /><label class="control-label" for="activator">Activator :</label><select class="form-control" name="activator" id="activator" ng-model="user.activator" ng-options="activator.title for activator in activators" required></select><br /><label class="control-label" for="metrics">Metrics :</label><select class="form-control" name="metrics" id="metrics" ng-model="user.metrics" ng-options="metric.title for metric in metrics.results"></select><br /><label class="control-label" for="fixedoutput">Fixed output :</label><select class="form-control" name="fixedoutput" id="fixedoutput" ng-model="user.fixedoutput" required><option value="True">True</option><option value="False">False</option></select></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button><button type="button" class="btn btn-danger" ng-click="delete()">Delete</button></div>');
 
   $templateCache.put('/dialogs/addassociation.html', '<div class="modal-header"><h4 class="modal-title">Association</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="source">Source Concept :</label><select class="form-control" name="source" id="source" ng-model="user.source" ng-options="concept.title for concept in Concepts" required></select><br /><label class="control-label" for="destination">Destination Concept :</label><select class="form-control" name="destination" id="destination" ng-model="user.destination" ng-options="concept.title for concept in Concepts" required></select><br /><label class="control-label" for="weight">Weight :</label><input type="text" class="form-control" name="weight" id="weight" ng-model="user.weight" required></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Add</button></div>');
 

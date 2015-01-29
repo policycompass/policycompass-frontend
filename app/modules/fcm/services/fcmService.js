@@ -37,7 +37,7 @@ angular.module('pcApp.fcm.services.fcm',[
             // Array is false due to additional pagination data
             'show': { method: 'GET' },
             // Add support for create
-            'update': { method:'PUT' },
+            'update': { method:'PUT', params: {id: '@id'} },
             'delete': { method:'DELETE', params: {id: '@id'} }
         });
 

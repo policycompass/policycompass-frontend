@@ -11,7 +11,8 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
             cyData: '=',
             cyEdges: '=',
             // controller function to be triggered when clicking on a node
-            cyClick:'&'
+            cyClick:'&',
+            cyMouseup:'&'
         },
         link: function(scope, element, attrs, fn) {
             // dictionary of colors by types. Just to show some design options
@@ -42,6 +43,8 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                     var dId = "n" + scope.cyData[i].id;
                     var dName = scope.cyData[i].name.substring(0, 24);
                     var dType = 'roundrectangle';
+                    var posX = scope.cyData[i].posX;
+                    var posY = scope.cyData[i].posY;
                     // get color from the object-color dictionary
                     var typeColor = scope.typeColors[4];
                     // build the object, add or change properties as you need - just have a name and id
@@ -54,8 +57,8 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                             type:dType
                     },
              	    position: {
-                	x: 100,
-                	y: 100
+                	x: posX,
+                	y: posY
                     }
 		};
                     // add new object to the Nodes array
@@ -77,7 +80,6 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                     // get edge weight
                     var eLabel = scope.cyEdges[i].weighted;
 
-//			alert(eId + '     ' + eSource + '    ' + eTarget);
                     // build the edge object
                     var edgeObj = {
                         data:{
@@ -100,22 +102,16 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
 	            showOverlay: false,
 		    zoom: 1,
                     layout: {
-		       name: 'random',
-		       refresh             : 0,
+		       name: 'preset',
+		       positions           : undefined,
+		       zoom                : undefined,
+		       pan                 : undefined,
 		       fit                 : false, 
 		       padding             : 30, 
-		       randomize           : false,
-		       debug               : false,
-		       nodeRepulsion       : 10000,
-		       nodeOverlap         : 10,
-		       idealEdgeLength     : 10,
-		       edgeElasticity      : 100,
-		       nestingFactor       : 5, 
-		       gravity             : 250, 
-		       numIter             : 100,
-		       initialTemp         : 200,
-		       coolingFactor       : 0.95, 
-		       minTemp             : 1
+		       animate             : false,
+		       animationDuration   : 500,
+		       ready               : undefined,
+		       stop                : undefined,
                     },
                     style: cytoscape.stylesheet()
                         .selector('node')
@@ -139,11 +135,6 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
 			   'text-valign': 'center',
 			   'color': '#777777',
 			   'width': '2px'
-
-//                            'width': '1',
-//			    'content': 'data(label)',
-//                            'target-arrow-shape': 'triangle',
-//                            'source-arrow-shape': 'triangle'
                         })
                         .selector(':selected')
                         .css({
@@ -165,10 +156,38 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
 
                         // Event listeners
                         // with sample calling to the controller function as passed as an attribute
+                        cy.on('unselect', 'node', function(e){
+			    var nodes = cy.elements('node');
+			    nodes.css('background-color', 'gray');
+                        });
+
                         cy.on('tap', 'node', function(e){
+			    var nodes = cy.elements('node');
+			    nodes.css('background-color', 'gray');
                             var evtTarget = e.cyTarget;
                             var nodeId = evtTarget.id();
+			    var edgesFrom = cy.elements('edge[source="' + nodeId + '"]');
+			    var edgesTo = cy.elements('edge[target="' + nodeId + '"]');
+			    evtTarget.css('background-color', '#C50C44');
+			    for (i=0;i<edgesFrom.length;i++)
+			    {
+			    	var nodeChild = edgesFrom[i].target();
+			    	nodeChild.css('background-color', 'blue');
+			    }
+			    for (i=0;i<edgesTo.length;i++)
+			    {
+			    	var nodeParent = edgesTo[i].source();
+			    	nodeParent.css('background-color', 'green');
+			    }
                             scope.cyClick({value:nodeId});
+                        });
+
+                        cy.on('mouseup', 'node', function(e){
+                            var evtTarget = e.cyTarget;
+                            var nodeId = evtTarget.id();
+			    var posX = evtTarget.position("x");
+			    var posY = evtTarget.position("y");
+                            scope.cyMouseup({value:nodeId,x:posX,y:posY});
                         });
 
                         cy.on('tap', 'edge', function(e){
