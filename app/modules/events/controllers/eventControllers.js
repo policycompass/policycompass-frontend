@@ -21,10 +21,10 @@ angular.module('pcApp.events.controllers.event', [
         '$location',
         'Event',
         'LinkedEventVisualization',
-        'Language',
+        'Languages',
         'dialogs',
         '$log',
-        function ($scope, $routeParams, $location, Event, LinkedEventVisualization, Language, dialogs, $log) {
+        function ($scope, $routeParams, $location, Event, LinkedEventVisualization, Languages, dialogs, $log) {
 
             $scope.event = Event.get({id: $routeParams.eventId},
                 function (event) {

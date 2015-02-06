@@ -33,7 +33,7 @@ angular.module('pcApp.events.services.event',[
     return LinkedEventVisualization;
 }])
 
-.factory('Language', ['$resource', 'API_CONF', function ($resource, API_CONF) {
+.factory('Languages', ['$resource', 'API_CONF', function ($resource, API_CONF) {
     var url = API_CONF.REFERENCE_POOL_URL + "/languages/:id";
     var Language = $resource(url,
         {
