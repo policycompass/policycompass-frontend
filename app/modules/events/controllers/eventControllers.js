@@ -60,7 +60,7 @@ angular.module('pcApp.events.controllers.event', [
             );
 
             $scope.event.$promise.then(function (event) {
-                $scope.language = Language.get({id: event.languageID},
+                $scope.language = Languages.get({id: event.languageID},
                     function (language) {
                     },
                     function (err) {
