@@ -3,6 +3,27 @@ angular.module('pcApp.visualization.services.visualization',[
     'pcApp.config'
 ])
 
+
+.factory('SearchVisualisations',  ['$resource', 'API_CONF', function($resource, API_CONF) {
+	var url = "/"+API_CONF.ELASTIC_INDEX_NAME+'/:type/_search';
+	//console.log("url");
+	//console.log(url);
+	
+	var SearchVisualisations = $resource(url,
+		{		
+			search: "@search",
+			type: "@type"
+		},
+        {
+            'update': { method:'PUT' },
+            'post': { method:'POST', isArray:false },
+            'query': { method: 'GET', isArray:false}
+            //'query': { method: 'POST', isArray:false}
+        }
+	);
+	return SearchVisualisations;
+}])
+
 .factory('Visualization',  ['$resource', 'API_CONF', function($resource, API_CONF) {
 	var url = API_CONF.VISUALIZATIONS_MANAGER_URL + "/visualizations/:id";
 	var Visualization = $resource(url,

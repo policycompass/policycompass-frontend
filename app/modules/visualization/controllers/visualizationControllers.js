@@ -9,7 +9,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 .factory('GetRelatedData', ['dialogs', '$log', function(dialogs, $log) {
     return {
 		
-		baseGetRelatedDataController: function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF) 
+		baseGetRelatedDataController: function($scope, $route, $routeParams, $modal, Event, Metric, SearchVisualisations, Visualization, $location, helper, $log, API_CONF) 
 		{
 
 			//console.log("factory baseGetRelatedDataController");
@@ -93,7 +93,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 .factory('VisualizationsControllerHelper', ['$filter', 'dialogs', '$log', function($filter, dialogs, $log) {
     return {
     	
-    	baseVisualizationsCreateController: function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF) {
+    	baseVisualizationsCreateController: function($scope, $route, $routeParams, $modal, Event, Metric, SearchVisualisations, Visualization, $location, helper, $log, API_CONF) {
 			
 			$scope.checkAll = function () {
 				
@@ -562,6 +562,10 @@ angular.module('pcApp.visualization.controllers.visualization', [
 		//funtion used when a metic is selected. Add a metric into the list	
 		$scope.addFilterMetric = function(idMetric, title, issued) {
 			//console.log("---addFilterMetric--")
+			//console.log("idMetric="+idMetric);
+			//console.log("title="+title);
+			//console.log("issued="+issued);
+			
 			var containerLink = document.getElementById("metric-list-item-item-"+idMetric);		
     		$(containerLink).addClass('active');
     		var str =  $(containerLink).attr("name");
@@ -646,14 +650,27 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			//console.log("findMetricsByFilter");
 			//console.log(pagIn);
 			//console.log(textIn);
-			if (pagIn)
+			if (pagIn=='next')
 			{
-				pagToSearch = pagIn.replace('?page=','');
+				//pagToSearch = pagIn.replace('?page=','');
+				$scope.pagToSearch= $scope.pagToSearch+1;
+			}
+			else if (pagIn=='prev')
+			{
+				//pagToSearch = pagIn.replace('?page=','');
+				$scope.pagToSearch = $scope.pagToSearch-1;
 			}
 			else
 			{
+				$scope.pagToSearch = 1;
 				pagToSearch = 1;
 			}
+			//$scope.pagToSearch=pagToSearch;
+			
+			$scope.itemsperpagesize = 10;
+			$scope.itemssearchfrom = ($scope.pagToSearch-1)*$scope.itemsperpagesize;
+			
+			console.log("pag="+$scope.pagToSearch);
 			$scope.filterMetric = "";
 			if (textIn)
 			{
@@ -662,13 +679,30 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							
 			//console.log("pagToSearch="+pagToSearch);
 			//console.log("$scope.filterMetric="+$scope.filterMetric);
-			    
+			
+			/* 
 			$scope.metricsFilter = Metric.query(
             {
             	//page: $routeParams.page,
             	page: pagToSearch,
             	search: $scope.filterMetric,
             	sort: 'title'
+            },
+			function(metricList) {
+			},
+			function(error) {
+               	//throw { message: JSON.stringify(err.data)};
+               	throw { message: JSON.stringify(error.data)};
+			});
+			*/
+			$scope.metricsFilter = SearchVisualisations.query(
+            {
+            	//page: $routeParams.page,
+            	type: 'metric',
+            	sort: 'title',
+            	size: $scope.itemsperpagesize,
+            	from: $scope.itemssearchfrom,
+            	q: 'title:*'+$scope.filterMetric+'*',
             },
 			function(metricList) {
 			},
@@ -772,13 +806,28 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
 		$scope.selectHE = function(idselected) 
 		{
+			//console.log(idselected);
 			$scope.isOpened = false;
 			//console.log("selectHE. Id="+idselected);
+			/*
 			$scope.historicalevent_id = idselected['id'];
 			$scope.historicalevent_title = idselected['title'];
 			$scope.historicalevent_startDate = idselected['startEventDate'];
 			$scope.historicalevent_endDate = idselected['endEventDate'];
-			$scope.historicalevent_description = idselected['description'];				
+			$scope.historicalevent_description = idselected['description'];
+			*/				
+			$scope.historicalevent_id = idselected['_source']['id'];
+			$scope.historicalevent_title = idselected['_source']['title'];
+			$scope.historicalevent_startDate = idselected['_source']['startEventDate'];
+			$scope.historicalevent_endDate = idselected['_source']['endEventDate'];
+			
+			var string = idselected['_source']['description'];
+			if(string.length > 150) {
+ 			   string = string.substring(0,150);
+			}
+			
+			$scope.historicalevent_description = string;
+
 		};	
 	
 			//funtion to add historical event to the array - uses in the modal window
@@ -1815,6 +1864,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	'$modal', 
 	'Event', 
 	'Metric', 
+	'SearchVisualisations',
 	'Visualization', 
 	'VisualizationByMetric',
 	'VisualizationByEvent',
@@ -1823,14 +1873,14 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	'dialogs',
 	'$log', 
 	'API_CONF',
-	function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, VisualizationByMetric, VisualizationByEvent, $location, helper, dialogs, $log, API_CONF) {
+	function($scope, $route, $routeParams, $modal, Event, Metric, SearchVisualisations, Visualization, VisualizationByMetric, VisualizationByEvent, $location, helper, dialogs, $log, API_CONF) {
 	
 	//this.message = "Hello VisualizationsDetailController";
 	//console.log("Hello VisualizationsDetailController");
 	//alert($routeParams.visualizationId);
     //$scope.test = "hallo---";
     
-    helper.baseGetRelatedDataController($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF);
+    helper.baseGetRelatedDataController($scope, $route, $routeParams, $modal, Event, Metric, SearchVisualisations, Visualization, $location, helper, $log, API_CONF);
     			
 
     
@@ -2203,12 +2253,13 @@ $scope.xAxisTickFormatFunction = function(){
 	'$modal', 
 	'Event', 
 	'Metric', 
+	'SearchVisualisations',
 	'Visualization', 
 	'$location', 
 	'VisualizationsControllerHelper',	
 	'$log', 
 	'API_CONF',
-	function($filter, $scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF) {
+	function($filter, $scope, $route, $routeParams, $modal, Event, Metric, SearchVisualisations, Visualization, $location, helper, $log, API_CONF) {
 
 		//console.log("controller VisualizationsEditController");
 
@@ -2227,7 +2278,8 @@ $scope.xAxisTickFormatFunction = function(){
 	if (locationURL.indexOf("edit") > -1)
 	{
 		$scope.mode = "edit";
-		$scope.isFirstOpen = false;
+		//$scope.isFirstOpen = false;
+		$scope.isFirstOpen = true;
 	}
 	else
 	{
@@ -2240,7 +2292,7 @@ $scope.xAxisTickFormatFunction = function(){
 	
 	$scope.resetlocation = '/visualizations/'+$routeParams.visualizationId+'/edit/';
 	
-	helper.baseVisualizationsCreateController($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF);
+	helper.baseVisualizationsCreateController($scope, $route, $routeParams, $modal, Event, Metric, SearchVisualisations, Visualization, $location, helper, $log, API_CONF);
 	
 			
 	$scope.visualization = Visualization.get({id: $routeParams.visualizationId},
@@ -2752,12 +2804,13 @@ $scope.xAxisTickFormatFunction = function(){
 	'$modal', 
 	'Event', 
 	'Metric', 
+	'SearchVisualisations',
 	'Visualization', 
 	'$location', 
 	'VisualizationsControllerHelper',
 	'$log', 
 	'API_CONF',
-function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF) {
+function($scope, $route, $routeParams, $modal, Event, Metric, SearchVisualisations, Visualization, $location, helper, $log, API_CONF) {
 	
 	//console.log('VisualizationsGraphController');
 	//this.message = "Hello VisualizationsDetailController";
@@ -2782,12 +2835,13 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 	'$modal', 
 	'Event', 
 	'Metric', 
+	'SearchVisualisations',
 	'Visualization', 
 	'$location', 
 	'VisualizationsControllerHelper',
 	'$log', 
 	'API_CONF',
-function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF) {
+function($scope, $route, $routeParams, $modal, Event, Metric, SearchVisualisations, Visualization, $location, helper, $log, API_CONF) {
 	
 	//console.log('VisualizationsCreateController');
 	
@@ -2800,7 +2854,7 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
         //console.log('Hello World 1');
   //  });
     
-	helper.baseVisualizationsCreateController($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF);
+	helper.baseVisualizationsCreateController($scope, $route, $routeParams, $modal, Event, Metric, SearchVisualisations, Visualization, $location, helper, $log, API_CONF);
 	
 	//$scope.tabParent = 0;
 	//$scope.tabSon = 0;
@@ -3050,11 +3104,11 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 	'$modalInstance', 
 	'$modal', 
 	'item',
-	'Event',
+	'searchclient',
 	'$location', 
 	'$log',
 	'API_CONF',
-	function($scope, $filter, $route, $routeParams, $modalInstance, $modal, item, Event, $location, $log, API_CONF) {
+	function($scope, $filter, $route, $routeParams, $modalInstance, $modal, item, searchclient, $location, $log, API_CONF) {
 
 	//console.log("ModalInstanceCtrl");
 	
@@ -3080,91 +3134,208 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 		//console.log("..text_endDateToFilter="+text_endDateToFilter);
 		//console.log("$scope.endDateToFilter="+$scope.endDateToFilter);
 		
+		
 		var endDateToSearch = "";
 		var startDateToSearch = "";
 		
 		if (pagIn)
 		{
-			//console.log("pagIn="+pagIn);
-			//pagToSearch = pagIn.replace('?page=','');
+
 			if (pagIn=='ini')
 			{
-				$scope.paginationEvents = 1;
-			}			
-			else if (pagIn=='add')
-			{
-				$scope.paginationEvents = $scope.paginationEvents+1;
+				$scope.pagToSearch=1;
 			}
-			
-			else if (pagIn=='del')
+			else if (pagIn=='next')
 			{
-				$scope.paginationEvents = $scope.paginationEvents-1;
+				//pagToSearch = pagIn.replace('?page=','');
+				$scope.pagToSearch= $scope.pagToSearch+1;
+			}
+			else if (pagIn=='prev')
+			{
+				//pagToSearch = pagIn.replace('?page=','');
+				$scope.pagToSearch = $scope.pagToSearch-1;
 			}
 			else
 			{
-				$scope.paginationEvents = 1;
+				$scope.pagToSearch = 1;
+				pagToSearch = 1;
 			}
-			pagToSearch = $scope.paginationEvents;
+			//$scope.pagToSearch=pagToSearch;
+			
+			$scope.itemsperpagesize = 10;
+			$scope.itemssearchfrom = ($scope.pagToSearch-1)*$scope.itemsperpagesize;			
+			
 		}
 		else
 		{
 			pagToSearch = 1;
+			$scope.pagToSearch = 1;
+			$scope.itemssearchfrom = 0;
 		}
 		$scope.filterEvents = "";
 		if (textIn)
 		{
 			$scope.filterEvents= textIn;
 		}
+		
+		
 		if (text_startDateToFilter)
 		{
 			$scope.startDateToFilter=text_startDateToFilter;
-			//var resStartDate = text_startDateToFilter.split("T");
-			//startDateToSearch = resStartDate[0];
 			startDateToSearch = text_startDateToFilter;
 			startDateToSearch = $filter('date')(text_startDateToFilter, "yyyy-MM-dd");
-						
-			
-			//startDateToSearch = $scope.startDateToFilter;
 		}
 		if (text_endDateToFilter)
 		{
 			$scope.text_endDateToFilter=text_endDateToFilter;
-			//var resEndDate = text_endDateToFilter.split("T");
-			//endDateToSearch = resEndDate[0];
 			endDateToSearch = text_endDateToFilter;
 			endDateToSearch = $filter('date')(text_endDateToFilter, "yyyy-MM-dd");
-			
 		}
 		
 		if (!endDateToSearch)
 		{
 			var d = new Date();
-			endDateToSearch = $filter('date')(d, "yyyy-MM-dd");
-		
-		}
-		//console.log("endDateToSearch="+endDateToSearch);
-		
-		if (pagToSearch<1)
-		{
-			pagToSearch = 1;
+			endDateToSearch = $filter('date')(d, "yyyy-MM-dd");	
 		}
 
-				$scope.events = Event.query(
-            	{
-            		//page: $routeParams.page,            		
-            		title: $scope.filterEvents,
-            		start: startDateToSearch,
-            		end: endDateToSearch,
-            		page: pagToSearch,
-            		sort: 'title'
-            	},
-				function(eventList) {
-				},
-				function(error) {
-                	//throw { message: JSON.stringify(err.data)};
-                	throw { message: JSON.stringify(error.data)};
+		//Build Sort
+		var sort = ["title"];
+
+		//Build query
+		/*
+		var query = {
+			  match_all: {
+			  },
+			  
+		};
+		*/
+		var query = 
+			{
+				"filtered" : {
+        			"query" : {            
+    					"match_all" : {
+    					}
+        			}
+    			}		
+			};		
+		
+		
+		if (!startDateToSearch)
+		{
+			startDateToSearch = '0000-01-01';	
+		}
+		
+		//console.log("startDateToSearch="+startDateToSearch);
+		//console.log("endDateToSearch="+startDateToSearch);
+		
+		if ($scope.filterEvents)
+		{	
+			query = {};
+			/*
+			query = 
+			{
+				"filtered" : {
+        			"query" : {            
+    					"fuzzy_like_this" : {
+        					"fields" : ["title","description"],
+        					"like_text" : $scope.filterEvents
+    					}
+        			},
+        			"filter" : {
+            			"and" : [
+                		{
+                    		"range" : {
+		    	                "startEventDate" : {"gte" : startDateToSearch,}
+                			}
+                		},
+                		{
+                    		"range" : {
+	    	                	"endEventDate" : {"lte" : endDateToSearch,}
+                			}
+                		}
+            			]
+        			}
+    			}		
+			};*/		
+
+
+			query = 
+			{
+				"filtered" : {
+        			"query" : {            
+    					"fuzzy_like_this" : {
+        					"fields" : ["title","description"],
+        					"like_text" : $scope.filterEvents
+    					}
+        			}
+    			}		
+			};	
+				
+		}
+
+
+	if  (startDateToSearch || endDateToSearch) 
+	{
+	
+		query.filtered['filter'] = {
+            			"and" : [
+                		{
+                    		"range" : {
+		    	                "startEventDate" : {"gte" : startDateToSearch,}
+                			}
+                		},
+                		{
+                    		"range" : {
+	    	                	"endEventDate" : {"lte" : endDateToSearch,}
+                			}
+                		}
+            			]
+        		};
+	}
+
+
+	
+	if ($scope.itemssearchfrom<0)
+	{
+		$scope.itemssearchfrom = 0;		
+	}
+	
+    //console.log("fromValue="+fromvalue);
+
+    //Perform search through client and get a search Promise
+      searchclient.search({
+        index: API_CONF.ELASTIC_INDEX_NAME,
+        type: 'event',
+      body: {
+        //size: $scope.itemsperpagesize,
+        from: $scope.itemssearchfrom,
+        sort:  sort,
+        query: query
+      }
+      }).then(function(resp) {
+		//If search is successfull return results in searchResults objects
+        $scope.searchResults = resp.hits.hits;
+        $scope.searchResultsCount = resp.hits.total;
+        $scope.totalItems = $scope.searchResultsCount;
+        
+        $scope.events = resp;
+        
+      }, function(err) {
+        console.trace(err.message);
+      });
+
+    //};
+    				
+				/*
+				var query = {
+				  match_all: {
+				  }
 				}
-				);
+				;
+				*/
+				
+
+
 				
 				//console.log("----");
 				//console.log($scope.events);

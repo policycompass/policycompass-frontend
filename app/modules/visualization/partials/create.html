@@ -180,19 +180,39 @@
 											
 						<div class="filterMetricsPaginationHeader" id="filterMetricsPaginationHeader" style="display: none;">
 							<div >
+							<!--
 							<label ng-show="metricsFilter.count>1" for="">{{metricsFilter.count}} metrics found</label> 
 							<label ng-show="metricsFilter.count==1" for="">{{metricsFilter.count}} metric found</label>
 							<label ng-show="metricsFilter.count==0" for="">no metrics found</label>  
+							-->
+							<label ng-show="metricsFilter.hits.total>1" for="">{{metricsFilter.hits.total}} metrics found</label> 
+							<label ng-show="metricsFilter.hits.total==1" for="">{{metricsFilter.hits.totalt}} metric found</label>
+							<label ng-show="metricsFilter.hits.total==0" for="">no metrics found</label> 
+							
+							
 							</div>
-							<ul class="metrics-list" id="metrics-list" style="display: none;">													
-								<li ng-class="{'metrics-list active':MetricSelectediId_[metric.id]>0,'metrics-list':MetricSelectediId_[metric.id]}" id="metric-list-item-item-{{metric.id}}" name="designer-metrics-num-{{metric.id}}" ng-repeat="metric in metricsFilter.results track by $index" ><a href="" ng-click="addFilterMetric(metric.id, metric.title, metric.issued);" title="{{metric.title}}">{{metric.title}} - {{ metric.issued | date:'longDate' }}</a></li>
+							<ul class="metrics-list" id="metrics-list" style="display: none;">	
+								<!--												
+								<li ng-class="{'metrics-list active':MetricSelectediId_[metric.id]>0,'metrics-list':MetricSelectediId_[metric.id]}" id="old-metric-list-item-item-{{metric.id}}" name="designer-metrics-num-{{metric.id}}" ng-repeat="metric in metricsFilter.results track by $index" ><a href="" ng-click="addFilterMetric(metric.id, metric.title, metric.issued);" title="{{metric.title}}">{{metric.title}} - {{ metric.issued | date:'longDate' }}</a></li>
+								-->
+								<li ng-class="{'metrics-list active':MetricSelectediId_[metric._source.id]>0,'metrics-list':MetricSelectediId_[metric.id]}" id="metric-list-item-item-{{metric._source.id}}" name="designer-metrics-num-{{metric.id}}" ng-repeat="metric in metricsFilter.hits.hits track by $index" ><a href="" ng-click="addFilterMetric(metric._source.id, metric._source.title, metric._source.issued);" title="{{metric.title}}">{{metric._source.title}} - {{ metric._source.issued | date:'longDate' }}</a></li>								
 							</ul>
 								
-								<div class="filterMetricsPagination" id="filterMetricsPagination" style="display: none;">									
+								<div class="filterMetricsPagination" id="filterMetricsPagination" style="display: none;">
+									<!--									
 		    						<button ng-show="metricsFilter.count>1" ng-disabled="!metricsFilter.previous"  class="btn btn-warning" ng-click="findMetricsByFilter(metricsFilter.previous, filterMetric)">
 		        					 <span class="glyphicon glyphicon-chevron-left"></span>  Previous
 		    						</button>
+		    						-->
+		    						<button ng-show="metricsFilter.hits.total>1" ng-disabled="pagToSearch==1"  class="btn btn-warning" ng-click="findMetricsByFilter('prev', filterMetric)">
+		        					 <span class="glyphicon glyphicon-chevron-left"></span>  Previous
+		    						</button>
+		    						<!--
 		    						<button ng-show="metricsFilter.count>1" ng-disabled="!metricsFilter.next" class="btn btn-warning pull-right" ng-click="findMetricsByFilter(metricsFilter.next, filterMetric)">
+		        					Next <span class="glyphicon glyphicon-chevron-right"></span>
+		    						</button>
+		    						-->
+		    						<button ng-show="metricsFilter.hits.total>1" ng-disabled="metricsFilter.hits.total<=pagToSearch*itemsperpagesize" class="btn btn-warning pull-right" ng-click="findMetricsByFilter('next', filterMetric)">	
 		        					Next <span class="glyphicon glyphicon-chevron-right"></span>
 		    						</button>
 								</div>
