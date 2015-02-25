@@ -8,7 +8,7 @@
     <div class="col-lg-12 pc-visualization-formcontrols">
         <div class="form-group pull-left">
 	
-				<button type="submit"  ng-disabled="visualizationForm.$invalid" class="btn btn-default" ng-click="createVisualization()"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>				
+				<button type="submit"  ng-disabled="visualizationForm.$invalid" class="btn btn-default" ng-click="createVisualization(ListMetricsFilter)"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>				
 				<button type="submit" class="btn btn-default" ng-click="revertVisualization()">Revert</button>
 				
 				<!--
@@ -57,13 +57,6 @@
 						<div ng-click="isSelectedSon('graph_line') ? showModal() : void(0)">
 
 <div ng-show="isSelectedSon('graph_pie')">
-<!--
-<select 	
-	ng-model="form.dateselector" 
-	id="dateselector"
-	ng-change="angularpiechartdisplay();"						
-	ng-options="option.Key as option.Key for option in numbers2"></select>
--->
 <span>
 	<label class="checkbox-inline" for="selectedAll">
 		<input type="checkbox" ng-model="selectedAll" ng-change="checkAll();angularpiechartdisplaybycheckbox();" /> Check All
@@ -148,131 +141,43 @@
 				</accordion>
 				
 				
-					
-					
-						
-				
-				
                 <tabset>                                        
 					<!-- ini tab metrics -->
                     <tab heading="Metrics">                    
-						
-								
-								
-
-						
     								
 						<div class="buttonline clearfix-min">	
-							
-							<input type="hidden" ng-required="true" class="form-control" id="correctmetrics"  ng-model="correctmetrics">					
+							<input ng-controller="controllercorrectmetriclist" type="hidden" ng-required="true" class="form-control" id="correctmetrics"  ng-model="correctmetrics" ng-repeat="numberrows in [ListMetricsFilter.length]">					
 							<button  type="submit" class="btn btn-primary button-metrics" id="addmetricsbutton" ng-click="addMetrictoList();findMetricsByFilter();">Add metric</button>
 							
-							
-    					
-    					
 						</div>
 						<br />	
-						
-						<div class="filterMetrics" id="filterMetrics" style="display: none;">
-							<label for="">Search metric by title</label>
-							<input placeholder="--all metrics--" ng-change="findMetricsByFilter('1', filterMetric)" type="text" id="filterMetric" ng-model="filterMetric" name="filterMetric">
-						</div>
-											
-						<div class="filterMetricsPaginationHeader" id="filterMetricsPaginationHeader" style="display: none;">
-							<div >
-							<!--
-							<label ng-show="metricsFilter.count>1" for="">{{metricsFilter.count}} metrics found</label> 
-							<label ng-show="metricsFilter.count==1" for="">{{metricsFilter.count}} metric found</label>
-							<label ng-show="metricsFilter.count==0" for="">no metrics found</label>  
-							-->
-							<label ng-show="metricsFilter.hits.total>1" for="">{{metricsFilter.hits.total}} metrics found</label> 
-							<label ng-show="metricsFilter.hits.total==1" for="">{{metricsFilter.hits.totalt}} metric found</label>
-							<label ng-show="metricsFilter.hits.total==0" for="">no metrics found</label> 
-							
-							
-							</div>
-							<ul class="metrics-list" id="metrics-list" style="display: none;">	
-								<!--												
-								<li ng-class="{'metrics-list active':MetricSelectediId_[metric.id]>0,'metrics-list':MetricSelectediId_[metric.id]}" id="old-metric-list-item-item-{{metric.id}}" name="designer-metrics-num-{{metric.id}}" ng-repeat="metric in metricsFilter.results track by $index" ><a href="" ng-click="addFilterMetric(metric.id, metric.title, metric.issued);" title="{{metric.title}}">{{metric.title}} - {{ metric.issued | date:'longDate' }}</a></li>
-								-->
-								<li ng-class="{'metrics-list active':MetricSelectediId_[metric._source.id]>0,'metrics-list':MetricSelectediId_[metric.id]}" id="metric-list-item-item-{{metric._source.id}}" name="designer-metrics-num-{{metric.id}}" ng-repeat="metric in metricsFilter.hits.hits track by $index" ><a href="" ng-click="addFilterMetric(metric._source.id, metric._source.title, metric._source.issued);" title="{{metric.title}}">{{metric._source.title}} - {{ metric._source.issued | date:'longDate' }}</a></li>								
-							</ul>
-								
-								<div class="filterMetricsPagination" id="filterMetricsPagination" style="display: none;">
-									<!--									
-		    						<button ng-show="metricsFilter.count>1" ng-disabled="!metricsFilter.previous"  class="btn btn-warning" ng-click="findMetricsByFilter(metricsFilter.previous, filterMetric)">
-		        					 <span class="glyphicon glyphicon-chevron-left"></span>  Previous
-		    						</button>
-		    						-->
-		    						<button ng-show="metricsFilter.hits.total>1" ng-disabled="pagToSearch==1"  class="btn btn-warning" ng-click="findMetricsByFilter('prev', filterMetric)">
-		        					 <span class="glyphicon glyphicon-chevron-left"></span>  Previous
-		    						</button>
-		    						<!--
-		    						<button ng-show="metricsFilter.count>1" ng-disabled="!metricsFilter.next" class="btn btn-warning pull-right" ng-click="findMetricsByFilter(metricsFilter.next, filterMetric)">
-		        					Next <span class="glyphicon glyphicon-chevron-right"></span>
-		    						</button>
-		    						-->
-		    						<button ng-show="metricsFilter.hits.total>1" ng-disabled="metricsFilter.hits.total<=pagToSearch*itemsperpagesize" class="btn btn-warning pull-right" ng-click="findMetricsByFilter('next', filterMetric)">	
-		        					Next <span class="glyphicon glyphicon-chevron-right"></span>
-		    						</button>
-								</div>
-								
-							<hr>
-							
-						</div>
-						
-						
-						
-						<!--
-						<div ng-hide="!MetricSelectediId_[metric.id]" ng-class="{'designer-metrics active':MetricSelectediId_[metric.id],'designer-metrics':MetricSelectediId_[metric.id]}" class="designer-metrics" id="designer-metrics-num-{{metric.id}}" ng-repeat="metric in metrics.results track by $index" >						
-						-->
-						<div ng-show="(MetricSelectediId_[metric.id] && metric.title)" ng-class="{'designer-metrics active':MetricSelectediId_[metric.id],'designer-metrics':MetricSelectediId_[metric.id]}" class="designer-metrics" id="designer-metrics-num-{{metric.id}}" ng-repeat="metric in ListMetricsFilter track by $index" >						
+
+						<div id="filterMetrics" style="display: none;" class="selectorMetrics" metrics-list="ListMetricsFilter" number-Max-Metrics="50" functionformetric="rePlotGraph()"></div>
+
+						<div ng-controller="LoadCombosMetric" class="designer-metrics active" class="designer-metrics" id="designer-metrics-num-{{metric.id}}" ng-repeat="metric in ListMetricsFilter track by $index" >
 							<h4>{{metric.title}} -- {{metric.issued | date:'longDate' }}</h4>							
 							<input type="hidden" ng-model="MetricSelectediId_[metric.id]" id="MetricSelectediId_{{metric.id}}" name="MetricSelectedId[]" value="">
-							<!--
-							<input type="hidden" ng-model="MetricSelectediIndex_[metric.id]" ng-init="MetricSelectediIndex_[metric.id]=$index+1" id="MetricSelectediIndex_{{metric.id}}" name="MetricSelectediIndex[]" value="{{$index+1}}">
-							-->
+
 							<input type="hidden" ng-model="MetricSelectediIndex_[metric.id]" ng-init="MetricSelectediIndex_[metric.id]=metric.id" id="MetricSelectediIndex_{{metric.id}}" name="MetricSelectediIndex[]" value="{{metric.id}}">
 							
 
 							<div class="metric-buttons">
 								<a type="button" class="btn btn-primary" ng-click="displaycontentMetric(metric.id);" id="edit-metric-button-{{metric.id}}">Edit</a>			    	
-						    	<button type="button" class="btn btn-danger" ng-click="deleteMetricFromList(metric.id, metric.title);" id="delete-metric-button-{{metric.id}}">Delete</button>
+						    	<button type="button" class="btn btn-danger" ng-click="deleteMetricFromList(metric.id, metric.title, ListMetricsFilter, $index);" id="delete-metric-button-{{metric.id}}">Delete</button>
 						    	<a type="button" class="btn btn-info" href="#/metrics/{{metric.id}}" target="_blank" id="view-metric-button-{{metric.id}}">View Metric in detaill</a>						    	
-						    	
-						    	
 						  	</div>
 
 							<div class="metric-forms" style="display: none;">
 								<div class="metric-form-item">
 									<label for="">Date</label>
 									<select ng-change="rePlotGraph();" ng-model="MetricSelectorLabelColumn_[metric.id]" id="MetricSelectorLabelColumn_{{metric.id}}" name="MetricSelectorLabelColumn[]" class="form-select">
-										<!--
-										<option value="label column">Label Column</option>
-										-->
 										<option value="from">From</option>
 										<option value="to">To</option>
-										<!--
-										<option value="category">Category</option>
-										<option value="value">Value</option>
-										-->												
+										
 									</select>
 								</div>
 								<div class="metric-form-item">
 									<label for="">Grouping</label>
-									<!--
-									<select ng-change="rePlotGraph();" ng-model="MetricSelectorDataColumn_[metric.id]" id="MetricSelectorDataColumn_{{metric.id}}" name="MetricSelectorDataColumn[]" class="form-select">
-										<option value="row column">Row Column</option>
-										<option value="category">Category</option>
-										<option value="value">Value</option>	    				
-								    </select>
-								   	-->
-								   	
-								   	<!--
-								   		ng-options="option.title for option in optionsCombo_value_[metric.id] track by option.id"
-								   		<option value="{{option.id}}" ng-repeat="option in optionsCombo_value_[metric.id] track by option.id" >{{option.title}}</option>
-								   	-->
-								   	
 								    <select 								        
 										ng-model="MetricSelectorDataColumn_[metric.id]" id="MetricSelectorDataColumn_{{metric.id}}" 
                 						name="MetricSelectorDataColumn_[]" class="form-select"
@@ -288,17 +193,7 @@
 
 
 									<label for="">Grouping</label>
-									<!--
-									<select ng-change="rePlotGraph();" ng-model="MetricSelectorGroupingData_[metric.id]" id="MetricSelectorGroupingData_{{metric.id}}" name="MetricselectorGroupingData[]" class="form-select">
-										<option value="grouping column">Grouping Column</option>
-										<option value="1">aaaaaaaa</option>
-										<option value="2">bb</option>
-									</select>
-									-->
-									<!--
-										
-										<option value="{{option.id}}" ng-repeat="option in optionsCombo_[metric.id] track by option.id" >{{option.title}}</option>
-									-->
+
 									
 									<select 
 										ng-model="MetricSelectorGroupingData_[metric.id]" id="MetricSelectorGroupingData_{{metric.id}}"  

@@ -3,7 +3,7 @@ angular.module('pcApp.visualization.services.visualization',[
     'pcApp.config'
 ])
 
-
+/*
 .factory('SearchVisualisations',  ['$resource', 'API_CONF', function($resource, API_CONF) {
 	var url = "/"+API_CONF.ELASTIC_INDEX_NAME+'/:type/_search';
 	//console.log("url");
@@ -23,6 +23,7 @@ angular.module('pcApp.visualization.services.visualization',[
 	);
 	return SearchVisualisations;
 }])
+*/
 
 .factory('Visualization',  ['$resource', 'API_CONF', function($resource, API_CONF) {
 	var url = API_CONF.VISUALIZATIONS_MANAGER_URL + "/visualizations/:id";
