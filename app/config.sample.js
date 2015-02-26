@@ -7,6 +7,11 @@
  * injection, this should be fixed.
  */
 
+
+// Set to true to use the frontend stand-alone without installing the services
+var useRemoteServices = false;
+
+// Configuration for locally installed services
 var policyCompassConfig = {
     'URL': '/api/v1',
     'METRICS_MANAGER_URL': '/api/v1/metricsmanager',
@@ -23,6 +28,24 @@ var policyCompassConfig = {
     'ADHOCRACY_FRONTEND_URL': 'http://localhost:6551'
 };
 
-angular.module('pcApp.config', [])
+// Configuration for remote services
+var remotePolicyCompassConfig = {
+    'URL': '/api/v1',
+    'METRICS_MANAGER_URL': 'https://services-dev.policycompass.eu/api/v1/metricsmanager',
+    'VISUALIZATIONS_MANAGER_URL': 'https://services-dev.policycompass.eu/api/v1/visualizationsmanager',
+    'EVENTS_MANAGER_URL': 'https://services-dev.policycompass.eu/api/v1/eventsmanager',
+    'REFERENCE_POOL_URL': 'https://services-dev.policycompass.eu/api/v1/references',
+    'FCM_URL': 'https://alpha.policycompass.eu/api/v1/fcmmanager',
+    'ELASTIC_URL' : 'https://search-dev.policycompass.eu/',
+    'ELASTIC_INDEX_NAME' : 'policycompass_search',
+    'ENABLE_ADHOCRACY': true,
+    'ADHOCRACY_BACKEND_URL': 'https://adhocracy-backend-dev.policycompass.eu',
+    'ADHOCRACY_FRONTEND_URL': 'https://adhocracy-frontend-dev.policycompass.eu'
+};
 
-.constant('API_CONF', policyCompassConfig);
+if(useRemoteServices == false) {
+    angular.module('pcApp.config', []).constant('API_CONF', policyCompassConfig);
+} else {
+    angular.module('pcApp.config', []).constant('API_CONF', remotePolicyCompassConfig);
+}
+
