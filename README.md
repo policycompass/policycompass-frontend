@@ -15,6 +15,7 @@ npm install
 ```
 * Copy the development.sample.json to development.json and configure the development.json with your service domains
 * Copy the app/config.sample.js to config.js and configure it with your service domains
+* If you don't have the services locally installed set 'useRemoteServices' in the config.js to true
 * Start App
 ```
 npm start
