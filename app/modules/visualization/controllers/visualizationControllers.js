@@ -2841,6 +2841,15 @@ $scope.xAxisTickFormatFunction = function(){
 		//console.log($scope.visualization);
 		//console.log("------------------");
 		
+		var svgString = new XMLSerializer().serializeToString(document.querySelector('svg'));
+		var canvas = document.getElementById("canvas");
+		var ctx = canvas.getContext("2d");
+		var DOMURL = self.URL || self.webkitURL || self;		
+		var svg = new Blob([svgString], {type: "image/svg+xml;charset=utf-8"});
+		var imgurl = DOMURL.createObjectURL(svg);
+		//console.log(imgurl);
+		$scope.visualization.imageurl = imgurl;		
+		
 		Visualization.update($scope.visualization,function(value, responseHeaders){
 			$location.path('/visualizations/' + value.id);
 		},
@@ -3091,7 +3100,7 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 		//console.log("$scope.createVisualization create controller")
 		//console.log("createVisualization");
 		
-		console.log(metricListIn);
+		//console.log(metricListIn);
 		
         $scope.visualization.user_id = 1;        				     
         $scope.visualization.views_count = 0;
@@ -3203,6 +3212,16 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 		console.log($scope.visualization);		
 		console.log("------------------");
 		*/
+		
+		var svgString = new XMLSerializer().serializeToString(document.querySelector('svg'));
+		var canvas = document.getElementById("canvas");
+		var ctx = canvas.getContext("2d");
+		var DOMURL = self.URL || self.webkitURL || self;		
+		var svg = new Blob([svgString], {type: "image/svg+xml;charset=utf-8"});
+		var imgurl = DOMURL.createObjectURL(svg);
+		//console.log(imgurl);
+		$scope.visualization.imageurl = imgurl;
+		
 		Visualization.save($scope.visualization,function(value, responseHeaders){
 			$location.path('/visualizations/' + value.id);
 		},

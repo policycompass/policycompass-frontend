@@ -17,7 +17,8 @@ policycompass.viz.line = function(options)
 	}
 
     self.parentSelect = "#"+self.idName;
-    
+	
+	//console.log("self.todelete="+self.todelete);
 
 	
     
@@ -472,11 +473,15 @@ return 0;}
 
 		if (showLabels)
 		{
+			
 			self.svg.append("g")
 	      		.attr("class", "x axis")
 	      		.attr("transform", "translate(0," + self.height + ")")      		
 	      		.call(xAxis)	
 	      		.attr("font-size", self.font_size)
+ 		        .attr("fill", "none")	
+		        .style("stroke", '#000000')
+		        .style("stroke-width", '1')
 	      		.selectAll("text")  
             		.style("text-anchor", "end")
             		//.attr("dx", "-.8em")
@@ -495,6 +500,9 @@ return 0;}
 
 		  		self.svg.append("g")
 		      		.attr("class", "y axis")
+ 		        	.attr("fill", "none")	
+		        	.style("stroke", '#000000')
+		        	.style("stroke-width", '1')
 		      		.call(yAxis)
 		      		.attr("font-size", self.font_size);	
 			     
@@ -756,21 +764,21 @@ return 0;}
 				}
 								
 				self.svg.append("svg:g")
-				      .attr("class", "y axis axisLeft")				      
+				      .attr("class", "y axis axisLeft")
 				      .attr("transform", transform)
 				      /*
 				      .style("stroke", function(d,i) {
 				      	//console.log("----->key="+key);
 				      	return colorScale(key);
 				      	})
-				      	*/
-				      .style("fill", function (d, i) { return colorScale(key); })
-				      
-				      //.style("stroke-width", 2)				      
+				      	*/				      	
+				       .attr("fill", "none")
+		        	   .style("stroke", function (d, i) { return colorScale(key); })
+		               .style("stroke-width", '1')
 				      .attr("font-size", self.font_size)
 				      .call(yAxisLeft)
 				      .append("text")
-		      			.attr("transform", "rotate(-90)")		      			
+		      			.attr("transform", "rotate(-90)")
 		      			//.attr("dy", ".71em")
 		      			.attr("dy", paddingText)
 		      			.attr("y", offsetYaxes)
@@ -897,8 +905,13 @@ return 0;}
 		      		.attr("class", "line line--hover active_item class_"+key.replace(/\W/g, ''))	      		
 		      		//.attr("id", 'tag_'+key.replace(/\s+/g, '')) // assign ID     	
 		      		.attr("id", 'tag_'+key.replace(/\W/g, '')) // assign ID
-	    	  		.style("stroke-width", 2)
-		      		.style("stroke", function(d,i) {return colorScale(key);})
+	    	  		//.style("stroke-width", 2)
+		      		//.style("stroke", function(d,i) {return colorScale(key);})
+		      		
+				       .attr("fill", "none")
+		        	   .style("stroke", function (d, i) { return colorScale(key); })
+		               .style("stroke-width", 2)		      		
+		      		
 		      		//.style("stroke", function(d,i) {return colorScaleLinel(cnti-1);})
 		      		.attr("d", lineFunction)
 	    	  		//.on("mouseover", mouseover)
@@ -1422,7 +1435,12 @@ return 0;}
 						mouseout();
 					})
                     .on("click", function(d,i){
-                    	//console.log(d);                   	
+                    	//console.log(d);
+                    	//var datos = d.split("|");
+                    	//console.log(datos[0]);
+                    	//console.log(datos[1]);
+                    	//self.todelete=datos[1];
+                    	//policycompass.viz.line(self);	
 					})
 					.transition()
 						.attr("r", self.radius)
@@ -1665,6 +1683,7 @@ return 0;}
 		//console.log(dataToPlot);		
 		//console.log("eventsData");
 		//console.log(eventsData);
+		
 		self.modeGraph = modeGraph;
 
 		//console.log(self);						
