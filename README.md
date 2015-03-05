@@ -2,16 +2,20 @@
 
 ## Installation
 
-* Requirements: node.js (http://nodejs.org/download/)
+* Requirements: node.js (http://nodejs.org/download/), git (http://git-scm.com/downloads)
 * Clone the repository
 * Navigate to the cloned folder
 * Install node packages
 ```
 npm install
 ```
-* Install front-end packages
+* Install front-end packages (linux)
 ```
 ./node_modules/.bin/bower install
+```
+* Install front-end packages (windows)
+```
+node_modules\.bin\bower install
 ```
 * Copy the development.sample.json to development.json and configure the development.json with your service domains
 * Copy the app/config.sample.js to config.js and configure it with your service domains
