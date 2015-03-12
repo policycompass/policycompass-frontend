@@ -366,6 +366,17 @@ policycompass.viz.pie = function(options)
     
 
     self.init = function () {
+    	
+    	
+    		var mousemove = function() 
+			{
+					//console.log(d3.event.pageX);
+				tooltip
+					.style("left", (d3.event.pageX +20) + "px")
+					.style("top", (d3.event.pageY - 12) + "px");
+										
+			};
+			
 		//console.log("self.init "+self.idName);
 		//console.log(self.parentSelect);
 		self.parentSelect = self.parentSelect.replace("undefined","");

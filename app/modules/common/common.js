@@ -1,8 +1,11 @@
  angular.module('pcApp.common',[
      'pcApp.common.controllers',
-     'pcApp.search',
+     'pcApp.common.directives.search',
      'pcApp.common.directives.submenus',
-     'pcApp.common.directives.common'
+     'pcApp.common.directives.common',
+     'pcApp.common.directives.piecharts',
+     'pcApp.common.directives.barscharts',
+     'pcApp.common.directives.linescharts'    
 ])
 
 .config(function($routeProvider) {

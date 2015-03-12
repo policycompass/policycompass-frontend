@@ -25,7 +25,28 @@
 		</div>
 	</div>
 
-	
+
+	<div ng-show="isSelectedSon('graph_pie')">
+		<div class="pcPieChart" dataset="dataset" chartid="visualization.id" show-Legend="showLegend" small="list" mode="mode" show-Labels="showLabels"></div>
+	</div>
+
+	<div ng-show="isSelectedSon('graph_bars')">
+		<div class="pcBarsChart" dataset="datasetToSend" chartid="visualization.id" small="list"  mode="mode" show-Legend="showLegend" show-Labels="showLabels"></div>
+	</div>
+
+	<div ng-show="isSelectedSon('graph_line')">
+		<div class="pcLinesChart" dataset="numbers1" events="eventsToPlot" 
+		labels="labelYAxe" small="list"  mode="mode" chartid="visualization.id" 
+		show-Legend="showLegend" 
+		show-Labels="showLabels"
+		show-Lines="showLines"
+		show-Areas="showAreas"
+		show-Points="showPoints"
+		show-Grid="showGrid"
+		show-Together="showYAxes"
+		></div>
+	</div>
+<!--
 	<div id="container_graph_{{visualization.id}}" class="container_graph">		
 		<div class="loading-container">
 			<div ng-hide="list">
@@ -36,9 +57,9 @@
 				<div class="loading loading-small"></div>
 				<div id="loading-small-text">loading</div>
 			</div>
-		</div>
-		
+		</div>		
 	</div>
+-->
 </div>
 
 <!--

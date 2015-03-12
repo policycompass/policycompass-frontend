@@ -1,6 +1,13 @@
+/*
 angular.module('pcApp.common.directives.common', [
 
 ])
+*/
+angular.module('pcApp.common.directives.search', [
+
+])
+
+
 
 /***** How to use this directive
  Example:
@@ -36,6 +43,29 @@ angular.module('pcApp.common.directives.common', [
         	
         	$scope.MetricSelectediId_ = [];
         	//to set the input metrics list as selected
+        	
+        	
+			$scope.$watch('metricsList', function(metricsList) {
+
+
+	        	if (isNaN($scope.numberMaxMetrics))
+	        	{
+	        		$scope.numberMaxMetrics=1;
+	        	}
+	        	
+	        	if (!metricsList)
+				{
+					$scope.metricsList = [];
+				}
+				
+                for (var k in $scope.metricsList)
+				{
+					$scope.MetricSelectediId_[$scope.metricsList[k].id]=$scope.metricsList[k].id;
+				}
+			
+            });
+            
+        	/*
         	setTimeout(function () {
 								
 	        	if (isNaN($scope.numberMaxMetrics))
@@ -54,7 +84,7 @@ angular.module('pcApp.common.directives.common', [
 				}
                 
             }, 1000);
-        	
+        	*/
         	
         	$scope.searchtext = '';
         	$scope.itemsperpagesize = 10;

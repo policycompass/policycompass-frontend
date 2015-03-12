@@ -4,7 +4,6 @@ var policycompass = policycompass || {'version':0.1, 'controller':{}, 'viz': {} 
 
 policycompass.viz.line = function(options)
 {
-
     // Object
 
     var self = {};
@@ -141,7 +140,8 @@ policycompass.viz.line = function(options)
 			        	
         }
 
-			
+		self.linesIn=lines;
+		self.eventsDataIn=eventsData;
 			
 		/*
     	
@@ -192,7 +192,8 @@ policycompass.viz.line = function(options)
 			//console.log("---");
 			//console.log(d.Values);
 			var r_data = []
-			r_data = toIntArray(d.Values);
+			//r_data = toIntArray(d.Values);
+			r_data = toIntArray(d.ValueY);
 			//data = toIntArray(data);
 			//console.log(r_data);
 			
@@ -241,10 +242,19 @@ policycompass.viz.line = function(options)
 		//console.log("valuesY="+valuesY);
 		//console.log("lines="+lines);
 		//console.log("lines[0].Values="+lines[0].Values);
+		/*
 		if (!lines[0].Values)
 		{
 			lines[0].Values=1;
 		}
+		*/
+		if (!lines[0].ValueY)
+		{
+			lines[0].ValueY=1;
+		}
+		
+		
+		
 		//console.log(".....");
 		//console.log(lines[0].Values);
 		//console.log(".....");
@@ -642,7 +652,8 @@ return 0;}
     				//linesArray=d.ValueY;
     				linesArray = d.ValueY;
     				linesArrayX = d.ValueX;
-    				linesArrayXY = d.XY;
+    				//linesArrayXY = d.XY;
+    				linesArrayXY = d.ValueX+"|"+d.ValueY;
     			//}
     			//else
     			//{
@@ -899,6 +910,8 @@ return 0;}
       		}
           	if ((showLines) && (cntpasadas==2))
 		  	{
+//		  		console.log(data);
+		  		
 	  			var path = self.svg.append("path")
 		      		.datum(data)
 		      		//.attr("class", "line line--hover class_"+key.replace(/\s+/g, '')) 
@@ -1306,16 +1319,24 @@ return 0;}
 				//var myCircles = self.svg.selectAll("circles").data(d.Values);
 				//var myCircles = self.svg.selectAll("circles").data(d.ValueY);
 				//console.log("d.XY="+d.XY);
-				var myCircles = self.svg.selectAll("circles").data(d.XY);
+				//var myCircles = self.svg.selectAll("circles").data(d.XY);
 				
-				
-				var units = "";
-				
-				
-				if (typeof self.labelY[i] !== 'undefined') {
-					units = self.labelY[i];
+				var datosCircle= []
+				for (var i in d.ValueX) {				
+					datosCircle.push(d.ValueX[i]+"|"+d.ValueY[i])
 				}
 				
+				var myCircles = self.svg.selectAll("circles").data(datosCircle);
+				
+				var units = "";
+				units = "";
+				if (self.labelY)
+				{
+					if (typeof self.labelY[i] !== 'undefined') 
+					{					
+						units = self.labelY[i];
+					}
+				}
 				
 				myCircles.enter().append("circle")
                     .attr("cx", function(d,i){	                    	
@@ -1440,7 +1461,10 @@ return 0;}
                     	//console.log(datos[0]);
                     	//console.log(datos[1]);
                     	//self.todelete=datos[1];
-                    	//policycompass.viz.line(self);	
+                    	//policycompass.viz.line(self);
+                    	//document.getElementById("container_graph_6").innerHTML = "";
+                    	//self.init();
+                    	//self.drawLines(self.linesIn,self.eventsData);	
 					})
 					.transition()
 						.attr("r", self.radius)
@@ -1618,6 +1642,15 @@ return 0;}
 	/*** funtion to init. graph ***/	   
     self.init = function () {
 
+
+    		var mousemove = function() 
+			{
+					//console.log(d3.event.pageX);
+				tooltip
+					.style("left", (d3.event.pageX +20) + "px")
+					.style("top", (d3.event.pageY - 12) + "px");
+										
+			};
 
        // console.log($scope.mode);
        	

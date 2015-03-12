@@ -365,15 +365,21 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				
 //				console.log($scope.dataset);
 				//document.getElementById("container_graph_"+$scope.visualization.id).innerHTML = "";
-				if ($scope.visualization.id)
+				
+				if (($scope.mode=='create') || ($scope.mode=='edit'))
 				{
-					document.getElementById("container_graph_"+$scope.visualization.id).innerHTML = "";
-					//document.getElementById("container_graph_edit").innerHTML = "";
+					if ($scope.visualization.id)
+					{
+						document.getElementById("container_graph_"+$scope.visualization.id).innerHTML = "";
+						//document.getElementById("container_graph_edit").innerHTML = "";
+					}
+					else
+					{
+						document.getElementById("container_graph_").innerHTML = "";
+					}
 				}
-				else
-				{
-					document.getElementById("container_graph_").innerHTML = "";
-				}
+				
+
 				
 
 					$scope.dataset.forEach(function(d,i) {
@@ -386,7 +392,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						{
 							$style='style="display: none;"';
 						}
-						
+						/*
 						if ($scope.visualization.id)
 						{ 
 							document.getElementById("container_graph_"+$scope.visualization.id).innerHTML = document.getElementById("container_graph_"+$scope.visualization.id).innerHTML + "<div class='pie_"+$scope.visualization.id+"' id='pie_"+$scope.visualization.id+"_"+i+"' "+$style+"></div>"
@@ -395,8 +401,20 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						{
 							document.getElementById("container_graph_").innerHTML = document.getElementById("container_graph_").innerHTML + "<div class='pie_' id='pie__"+i+"' "+$style+"></div>"
 						}
-						
-					
+						*/
+				
+						if (($scope.mode=='create') || ($scope.mode=='edit'))
+						{
+							if (document.getElementById("container_graph_"+$scope.visualization.id) !=null)
+							{
+								document.getElementById("container_graph_"+$scope.visualization.id).innerHTML = document.getElementById("container_graph_"+$scope.visualization.id).innerHTML + "<div class='pie_"+$scope.visualization.id+"' id='pie_"+$scope.visualization.id+"_"+i+"' "+$style+"></div>"	
+							} 
+							else
+							{	
+								document.getElementById("container_graph_").innerHTML = document.getElementById("container_graph_").innerHTML + "<div class='pie_' id='pie__"+i+"' "+$style+"></div>"
+							}
+						}
+				
 					});
 				
 				
@@ -409,8 +427,12 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					{
 						var datasetToSend = d;
 						//console.log(labelYAxe);
-						var pieObj = policycompass.viz.pie(
+						
+						
+						if (($scope.mode=='create') || ($scope.mode=='edit'))
 						{
+							var pieObj = policycompass.viz.pie(
+							{
 							'idName':"pie_"+$scope.visualization.id+"_"+i,
 							'visualizationid':$scope.visualization,
 							'idPie': cntPies,
@@ -420,25 +442,18 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							'radius':radius,
 							'innerRadious': innerRadious,
 							'font_size': font_size,
-							//'labelY': labelYAxe,
-							//'showLegend': document.getElementById("showLegend").checked,
-							//'showLines': document.getElementById("showLines").checked,
-							//'showPoints': document.getElementById("showPoints").checked,
-							//'showLabels': document.getElementById("showLabels").checked,
-							//'showGrid': document.getElementById("showGrid").checked
 							'showLegend': $scope.showLegend,
 							'showLines': $scope.showLines,
 							'showAreas': $scope.showAreas,							
 							'showPoints': $scope.showPoints,
 							'showLabels': $scope.showLabels,
 							'showGrid': $scope.showGrid
-							//'arrayKeys': arrayKeys,
-							//'arrayXAxis': arrayXAxis,
-							//'arrayYAxis': arrayYAxis,
-							//'arrayGrouping': arrayGrouping
-						});
+							});
 		
 			        	pieObj.render(datasetToSend);
+						}
+						
+			        	
 					}
 					
 					cntPies = cntPies +1;
@@ -530,7 +545,12 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				
 				$scope.dataset.push(ObjectData);
 				
-				$scope.plotPieChart();
+				if (($scope.mode=='create') || ($scope.mode=='edit'))
+				{
+					$scope.plotPieChart();	
+				}
+				
+				
 				
 				//console.log("dataset");
 				//console.log($scope.dataset);
@@ -601,8 +621,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
     		.html("")
     		.attr("class", "tooltipLegend")
     		.style("opacity", 0);
-    		
+    	
     		var openedLabels = 0;
+ 		
 			mousemove = function() 
 			{
 					//console.log(d3.event.pageX);
@@ -721,7 +742,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 		};
 			
 		//function to select the type of graph (line, pie, chart) button 
-		$scope.selectTabSon = function(setTab) {
+		$scope.selectTabSon = function(setTab) {	
 			$scope.typeToPlot=setTab;
 			$scope.tabSon = setTab;
 			//rePlotGraph();
@@ -1029,7 +1050,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
 		$scope.optionToPlot = [];
 			
 		$scope.rePlotGraph = function() {
-			//console.log("--rePlotGraph--");
+			
+			
+			//console.log("--rePlotGraph--");		
 			var arrayJsonFiles = [];
 			var datosTemporales = new Object();
 			//var elems = $scope.MetricSelectediId_;
@@ -1175,7 +1198,6 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	
 		$scope.plotGraph = function() {
 	
-			//console.log("#############plotGraph########");
 			//console.log($scope.optionToPlot);
 			//console.log(arguments);
 			//console.log("#############");
@@ -1558,11 +1580,11 @@ angular.module('pcApp.visualization.controllers.visualization', [
 									var ObjectTemporal = new Object();			
 									//console.log("arrayValues[key]="+arrayValues[key]);
 									ObjectTemporal['Key']=key+"_"+cntNumbers;
-									ObjectTemporal['Values']=arrayValues[key];
+									//ObjectTemporal['Values']=arrayValues[key];
 									ObjectTemporal['Labels']=arrayLabels[key];
 									ObjectTemporal['ValueX']=arrayLabels[key];
 									ObjectTemporal['ValueY']=arrayValues[key];
-									ObjectTemporal['XY']=arrayValuesXY[key];
+									//ObjectTemporal['XY']=arrayValuesXY[key];
 									ObjectTemporal['Type']='metric';
 									//console.log("ObjectTemporal="+ObjectTemporal);
 									numbers1[cntNumbers]=ObjectTemporal;
@@ -1612,7 +1634,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					
 				}
 			}
-						
+			/*			
 			if ($scope.visualization.id)
 			{
 				document.getElementById("container_graph_"+$scope.visualization.id).innerHTML = "";
@@ -1621,7 +1643,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			{
 				document.getElementById("container_graph_").innerHTML = "";
 			}
-			
+			*/
 			//var numbers1 = [];
 	        		 
 			//console.log(numbers1);	        		 
@@ -1685,7 +1707,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			|| ($scope.typeToPlot==='azimuthalEqualArea')
 			)
 			{				
-				
+				/*
 				if ($scope.visualization.id)
 				{
 					document.getElementById("container_graph_"+$scope.visualization.id).innerHTML = "";
@@ -1694,7 +1716,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				{
 					document.getElementById("container_graph_").innerHTML = "";
 				}
-				
+				*/
 				var margin = {top: 20, right: 20, bottom: 55, left: 44},
 				width = 980,
 				height = 326,
@@ -1732,6 +1754,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			else if ($scope.typeToPlot==='graph_line')
 			{
 				
+				/*
 				if ($scope.visualization.id)
 				{
 					document.getElementById("container_graph_"+$scope.visualization.id).innerHTML = "";					
@@ -1740,7 +1763,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				{
 					document.getElementById("container_graph_").innerHTML = "";
 				}
-				
+				*/
 				
 				var legendsColumn = 0;
 				if ($scope.showLegend)
@@ -1792,8 +1815,35 @@ angular.module('pcApp.visualization.controllers.visualization', [
 										
 					}
 					//console.log("height="+height);
+					/*
+					if (document.getElementById("directive_container_lineschart_"+$scope.visualization.id) !=null)
+					{
+						document.getElementById("directive_container_lineschart_"+$scope.visualization.id).innerHTML = "";	
+					} 
+					else
+					{	
+						document.getElementById("directive_container_lineschart_").innerHTML = "";
+					}
+					*/
 					
-					var barLine = policycompass.viz.line(
+					if (numbers1.length>0)
+	                {
+	                	$scope.numbers1=numbers1;
+	                	
+	                }
+	                
+					if (($scope.mode=='create') || ($scope.mode=='edit'))
+					{
+						if (document.getElementById("container_graph_"+$scope.visualization.id) !=null)
+						{
+							document.getElementById("container_graph_"+$scope.visualization.id).innerHTML = "";	
+						} 
+						else
+						{	
+							document.getElementById("container_graph_").innerHTML = "";
+						}
+						
+						var barLine = policycompass.viz.line(
 						{
 	                		'idName':"container_graph_"+$scope.visualization.id,
 	                		'width': width,
@@ -1807,12 +1857,6 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	                		'offsetYaxesL': offsetYaxesL,
 	                		'distanceXaxes': distanceXaxes,
 	                		'font_size': font_size,
-							//'showYAxesTogether': document.getElementById("showYAxes").checked,
-							//'showLegend': document.getElementById("showLegend").checked,
-							//'showLines': document.getElementById("showLines").checked,
-							//'showPoints': document.getElementById("showPoints").checked,
-							//'showLabels': document.getElementById("showLabels").checked,
-							//'showGrid': document.getElementById("showGrid").checked
 							'showYAxesTogether': $scope.showYAxes,	                		
 	                		'showLegend': $scope.showLegend,							
 							'showLines': $scope.showLines,	
@@ -1821,16 +1865,17 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							'showLabels': $scope.showLabels,							
 							'showGrid': $scope.showGrid,
 							'legendsColumn': legendsColumn
-							//'arrayKeys': arrayKeys,
-							//'arrayXAxis': arrayXAxis,
-							//'arrayYAxis': arrayYAxis,
-							//'arrayGrouping': arrayGrouping
 						});
+						
+						if (numbers1.length>0)
+	                	{	                	
+	                		barLine.render(numbers1, $scope.eventsToPlot, $scope.mode);
+	                	}
 	                
-	                if (numbers1.length>0)
-	                {
-	                	barLine.render(numbers1, $scope.eventsToPlot, $scope.mode);
-	                }
+					}
+					
+	                
+	                
 					
 				}
 			}				
@@ -1888,6 +1933,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			} 
 			else if ($scope.typeToPlot==='graph_bars')
 			{
+				/*
 				if ($scope.visualization.id)
 				{
 					document.getElementById("container_graph_"+$scope.visualization.id).innerHTML = "";					
@@ -1896,7 +1942,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				{
 					document.getElementById("container_graph_").innerHTML = "";
 				}
-		
+				*/
 				var datasetToSend = numbers1;
 				//console.log(numbers1);
 				var legendsColumn = 0;
@@ -1938,23 +1984,44 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					
 				}
 				
-				var barObj = policycompass.viz.barsMultiple(
+				if (datasetToSend.length>0)
 				{
+					var eventsArray = [];
+					//barObj.render(datasetToSend, $scope.eventsToPlot);
+					$scope.datasetToSend=datasetToSend;				
+				}
+				
+				if (($scope.mode=='create') || ($scope.mode=='edit'))
+				{
+					/*
+					if (document.getElementById("directive_container_lineschart_"+$scope.visualization.id) !=null)
+					{
+						document.getElementById("directive_container_barschart_"+$scope.visualization.id).innerHTML = "";	
+					} 
+					else
+					{	
+						document.getElementById("directive_container_barschart_").innerHTML = "";
+					}
+					*/
+					if (document.getElementById("container_graph_"+$scope.visualization.id) !=null)
+					{
+						document.getElementById("container_graph_"+$scope.visualization.id).innerHTML = "";	
+					} 
+					else
+					{	
+						document.getElementById("container_graph_").innerHTML = "";
+					}
+					
+					var barObj = policycompass.viz.barsMultiple(
+					{
 	                'idName':"container_graph_"+$scope.visualization.id,
 	            	'width': width,
 	            	'height':height,
 	            	'margin': margin,
-	            	//'labelX': "label X",
-	            	//'labelY': "label Y",
 	            	'labelX': "",
 	            	'labelY': labelYAxe,
 	            	'radius': 4,
 	            	'font_size': font_size,
-	            	//'showLegend': document.getElementById("showLegend").checked,
-					//'showLines': document.getElementById("showLines").checked,
-					//'showPoints': document.getElementById("showPoints").checked,
-					//'showLabels': document.getElementById("showLabels").checked,
-					//'showGrid': document.getElementById("showGrid").checked
 	            	'showLegend': $scope.showLegend,
 					'showLines': $scope.showLines,
 					'showAreas': $scope.showAreas,					
@@ -1962,20 +2029,16 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					'showLabels': $scope.showLabels,
 					'showGrid': $scope.showGrid,
 					'legendsColumn': legendsColumn
-					//'arrayKeys': arrayKeys,
-					//'arrayXAxis': arrayXAxis,
-					//'arrayYAxis': arrayYAxis,
-					//'arrayGrouping': arrayGrouping
-	            });
+	            	});
+					
+					barObj.render(datasetToSend, eventsArray);
+				}
+					
+				
 				//console.log("----------------->>>>>datasetToSend");
 				//console.log(datasetToSend.length);
 				
-				if (datasetToSend.length>0)
-				{
-					var eventsArray = [];
-					//barObj.render(datasetToSend, $scope.eventsToPlot);
-					barObj.render(datasetToSend, eventsArray);
-				}
+				
 			}
 	
 	
@@ -2381,6 +2444,7 @@ $scope.xAxisTickFormatFunction = function(){
 	'API_CONF',
 	function($filter, $scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF) {
 
+		
 		//console.log("controller VisualizationsEditController");
 
 	//console.log("-----------");
@@ -2414,7 +2478,8 @@ $scope.xAxisTickFormatFunction = function(){
 	
 	helper.baseVisualizationsCreateController($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF);
 	
-			
+	$scope.ListMetricsFilter = [];
+	
 	$scope.visualization = Visualization.get({id: $routeParams.visualizationId},
         function(visualization) {
         	//console.log("---Visualization.get----");
@@ -2432,7 +2497,8 @@ $scope.xAxisTickFormatFunction = function(){
     
     
 	$scope.visualization.$promise.then(function(metric) {
-			//console.log("DINS $scope.visualization.$promise.then")
+//			console.log("DINS $scope.visualization.$promise.then")
+//			console.log(metric);
             $scope.visualization.language = $scope.visualization.language.id;
 			
     		var configurationFilter = $scope.visualization.filter_configuration;
@@ -2625,7 +2691,7 @@ $scope.xAxisTickFormatFunction = function(){
 				
 				
 				$scope.correctmetrics = "1";
-				//console.log($scope.ListMetricsFilter);
+//				console.log($scope.ListMetricsFilter);
 			}
 			
 				
@@ -2840,7 +2906,7 @@ $scope.xAxisTickFormatFunction = function(){
 		//console.log("------------------");
 		//console.log($scope.visualization);
 		//console.log("------------------");
-		
+		/*
 		var svgString = new XMLSerializer().serializeToString(document.querySelector('svg'));
 		var canvas = document.getElementById("canvas");
 		var ctx = canvas.getContext("2d");
@@ -2859,6 +2925,38 @@ $scope.xAxisTickFormatFunction = function(){
 		}
 
 		);
+		*/
+		var svgString = new XMLSerializer().serializeToString(document.querySelector('svg'));
+		var canvas = document.getElementById("canvas");
+		var ctx = canvas.getContext("2d");
+		var DOMURL = self.URL || self.webkitURL || self;
+		var img = new Image();		
+		var svg = new Blob([svgString], {type: "image/svg+xml;charset=utf-8"});
+		var imgurl = DOMURL.createObjectURL(svg);
+		//console.log(imgurl);
+
+		img.onload = function() {
+    		ctx.drawImage(img, 0, 0);
+    		
+    		var png = canvas.toDataURL("image/png");
+    		//document.querySelector('#png-container').innerHTML = '<img src="'+png+'"/>';
+    		//console.log(png);
+    		$scope.visualization.imageurlpng = png;
+    		//console.log($scope.visualization.imageurlpng);
+    		DOMURL.revokeObjectURL(png);
+
+			Visualization.update($scope.visualization,function(value, responseHeaders){
+				$location.path('/visualizations/' + value.id);
+			},
+			function(err) {
+	            throw { message: err.data};
+	            //console.log(err.data)
+			}
+	
+			);    		
+    		
+		};
+		img.src = imgurl;
 
 	};
 
@@ -3212,7 +3310,7 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 		console.log($scope.visualization);		
 		console.log("------------------");
 		*/
-		
+		/*
 		var svgString = new XMLSerializer().serializeToString(document.querySelector('svg'));
 		var canvas = document.getElementById("canvas");
 		var ctx = canvas.getContext("2d");
@@ -3228,7 +3326,35 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 		function(err) {
             throw { message: err.data};
 		}
-		);
+		);*/
+		var svgString = new XMLSerializer().serializeToString(document.querySelector('svg'));
+		var canvas = document.getElementById("canvas");
+		var ctx = canvas.getContext("2d");
+		var DOMURL = self.URL || self.webkitURL || self;
+		var img = new Image();		
+		var svg = new Blob([svgString], {type: "image/svg+xml;charset=utf-8"});
+		var imgurl = DOMURL.createObjectURL(svg);
+		//console.log(imgurl);
+
+		img.onload = function() {
+    		ctx.drawImage(img, 0, 0);
+    		
+    		var png = canvas.toDataURL("image/png");
+    		//document.querySelector('#png-container').innerHTML = '<img src="'+png+'"/>';
+    		//console.log(png);
+    		$scope.visualization.imageurlpng = png;
+    		DOMURL.revokeObjectURL(png);
+    		
+			Visualization.save($scope.visualization,function(value, responseHeaders){
+				$location.path('/visualizations/' + value.id);
+			},
+			function(err) {
+	            throw { message: err.data};
+			}
+			);    		
+			
+		};
+		img.src = imgurl;		
 		
 	};
 
