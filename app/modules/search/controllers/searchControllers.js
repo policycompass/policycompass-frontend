@@ -17,6 +17,7 @@
   //Init Sort Options
 	$scope.sortOptions = [
     { id: 'Relevance', name: 'Relevance'},
+    { id: 'Title', name: 'Title'},
     { id: 'Date', name: 'Date Created'}
     ]; 
 
@@ -89,6 +90,9 @@ switch(searchItemType) {
 	//Build Sort
 	if ($scope.sortByItem == 'Relevance') {
 	 var sort =    ["_score"];
+    }
+    else if ($scope.sortByItem == 'Title') {
+         var sort = ["title.lower_case_sort"];
     }
     else {
 	 var sort =     [{"id" : {"order" : "desc"}},"_score"];
