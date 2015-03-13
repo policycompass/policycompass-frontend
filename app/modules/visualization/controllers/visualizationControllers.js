@@ -3470,7 +3470,8 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 		}
 
 		//Build Sort
-		var sort = ["title"];
+		//var sort = ["title"];
+		var sort = ["title.lower_case_sort"];
 
 		//Build query
 		/*

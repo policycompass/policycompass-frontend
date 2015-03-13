@@ -179,7 +179,8 @@ angular.module('pcApp.common.directives.search', [
 				});
 				*/
 				//var sort =    ["title"];
-				 var sort =     [{"title" : {"order" : "asc"}}];
+				 //var sort =     [{"title" : {"order" : "asc"}}];
+				 var sort = ["title.lower_case_sort"];
 				 //var sort =     [{"id" : {"order" : "desc"}},"_score"];
 				  
 				//Build query
