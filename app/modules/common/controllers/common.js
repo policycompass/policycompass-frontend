@@ -6,6 +6,33 @@ angular.module('pcApp.common.controllers', [
 
 ])
 
+/****
+Used to search metrics using ekasticsearch api
+******/
+/*
+.factory('SearchMetrics',  ['$resource', 'API_CONF', function($resource, API_CONF) {
+	var url = "/"+API_CONF.ELASTIC_INDEX_NAME+'/:type/_search';
+	//var url = 'http://'+API_CONF.ELASTIC_URL + "/" + API_CONF.ELASTIC_INDEX_NAME + '/:type/_search';
+	//console.log("url");
+	//console.log(url);
+	
+	var SearchMetrics = $resource(url,
+		{		
+			search: "@search",
+			type: "@type"
+		},
+        {
+            'update': { method:'PUT' },
+            'post': { method:'POST', isArray:false },
+            'query': { method: 'GET', isArray:false}
+            //'query': { method: 'POST', isArray:false}
+        }
+	);
+	return SearchMetrics;
+}])
+*/
+
+
 .controller('CommonController', ['$scope', '$location', function($scope, $location) {
     $scope.isActive = function (viewLocation) {
         return viewLocation === $location.path();

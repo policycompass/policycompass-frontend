@@ -14,90 +14,108 @@
 		
 
 <div>
-	<button class="btn btn-default" ng-click="collapseFilter()">Filter</button>
-    <hr>
+	<button ng-hide="isOpened" class="btn btn-primary" ng-click="collapseFilter()">View Filter</button>
+	<button ng-hide="!isOpened" class="btn btn-primary" ng-click="collapseFilter()">Hide Filter</button>
+   
+    <div  collapse="!isOpened">
     <form action="#" name="searchEventsForm" role="form"  novalidate >
-    <div collapse="!isOpened">
-        <div class="well well-lg">
-	        <label for="">Search event by title</label>
-    	    <input placeholder="--all events--" ng-change="findEventsByFilter('ini', filterEvent, startDateToFilter, endDateToFilter)" type="text" id="filterEvent" ng-model="filterEvent" name="filterEvent">
-        </div>
 
-		<div class="well well-lg">
-			
-			
+<hr>
+		<div class="row">
 
-			<div class="form-group date-picker" ng-controller="DateController">
-                <label for="retrievalDate">Start date</label>
-                <p class="input-group">
-                    <input type="text"
-                           id="startDateToFilter"
-                           name="startDateToFilter"
-                           class="form-control"
-                           datepicker-popup=""
-                           ng-model="startDateToFilter"
-                           is-open="opened"
-                           min-date="minDate"
-                           max-date="maxDate"
-                           datepicker-options="dateOptions"
-                           show-button-bar="false"
-                           ng-required="false"
-                           ng-disabled="true"
-                           ng-change="findEventsByFilter('ini', filterEvent, startDateToFilter, endDateToFilter)"
-                           close-text="Close" />
-                    <span class="input-group-btn">
-                        <a type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></a>
-                    </span>
-                </p>
-            </div>
-            			
-	        
-	       	
-        </div>        
+			<div class="col-sm-4">
+		        <label for="">Search text</label>
+	    	    <input placeholder="--all events--" ng-change="findEventsByFilter('ini', filterEvent, startDateToFilter, endDateToFilter)" type="text" id="filterEvent" ng-model="filterEvent" name="filterEvent">
+			</div>
+						
+			<div class="col-sm-4">
+				<div class="form-group date-picker" ng-controller="DateController">
+	                <label for="retrievalDate">Start date</label>
+	                <p class="input-group">
+	                    <input type="text"
+	                           id="startDateToFilter"
+	                           name="startDateToFilter"
+	                           class="form-control"
+	                           datepicker-popup=""
+	                           ng-model="startDateToFilter"
+	                           is-open="opened"
+	                           min-date="minDate"
+	                           max-date="maxDate"
+	                           datepicker-options="dateOptions"
+	                           show-button-bar="false"
+	                           ng-required="false"
+	                           ng-disabled="true"
+	                           ng-change="findEventsByFilter('ini', filterEvent, startDateToFilter, endDateToFilter)"
+	                           close-text="Close" />
+	                    <span class="input-group-btn">
+	                        <a type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></a>
+	                    </span>
+	                </p>
+	            </div>
+	        </div>        
      
-		<div class="well well-lg">
+			<div class="col-sm-4">
+				<div class="form-group date-picker" ng-controller="DateController">
+	                <label for="retrievalDate">End date</label>
+	                <p class="input-group">
+	                    <input type="text"
+	                           id="endDateToFilter"
+	                           name="endDateToFilter"
+	                           class="form-control"
+	                           datepicker-popup=""
+	                           ng-model="endDateToFilter"
+	                           is-open="opened"
+	                           min-date="minDate"
+	                           max-date="maxDate"
+	                           datepicker-options="dateOptions"
+	                           show-button-bar="false"
+	                           ng-required="false"
+	                           ng-disabled="true"
+	                           ng-change="findEventsByFilter('ini', filterEvent, startDateToFilter, endDateToFilter)"
+	                           close-text="Close" />
+	                    <span class="input-group-btn">
+	                        <a type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></a>
+	                    </span>
+	                </p>
+	            </div>  	
+	        </div>     
+	    </div>
 
-			<div class="form-group date-picker" ng-controller="DateController">
-                <label for="retrievalDate">End date</label>
-                <p class="input-group">
-                    <input type="text"
-                           id="endDateToFilter"
-                           name="endDateToFilter"
-                           class="form-control"
-                           datepicker-popup=""
-                           ng-model="endDateToFilter"
-                           is-open="opened"
-                           min-date="minDate"
-                           max-date="maxDate"
-                           datepicker-options="dateOptions"
-                           show-button-bar="false"
-                           ng-required="false"
-                           ng-disabled="true"
-                           ng-change="findEventsByFilter('ini', filterEvent, startDateToFilter, endDateToFilter)"
-                           close-text="Close" />
-                    <span class="input-group-btn">
-                        <a type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></a>
-                    </span>
-                </p>
-            </div>
-	        
-	       	
-        </div>        
-               
-    </div>        
+            
     </form>
-    
+
+
+	</div>
+
+	<hr>		    
         <div>
         	<label for="historicalEvents">Historical events:</label>
-        	<ul class="metrics-list" id="metrics-list">													
+        	<div>        		
+        		<label ng-show="events.hits.total>1" for="">{{events.hits.total}} events found</label> 
+				<label ng-show="events.hits.total==1" for="">{{events.hits.total}} event found</label>
+        		<label ng-show="events.hits.total==0" for="">no events found</label> 
+        	</div>
+
+        	<ul class="metrics-list" id="metrics-list">			
+        		<!--										
 				<li ng-repeat="event in events.results track by $index" ><a href ng-click="selectHE(event)">{{event.title}}</a></li>
+				-->
+				<li ng-repeat="event in events.hits.hits track by $index" ><a href ng-click="selectHE(event)">{{event._source.title}}</a></li>				
 			</ul>
 								
-			<div>									
+			<div>				
+				<!--					
 				<button ng-show="events.count>1" ng-disabled="!events.previous"  class="btn btn-warning" ng-click="findEventsByFilter('del', filterEvent)">
 				 <span class="glyphicon glyphicon-chevron-left"></span>  Previous
 				</button>
 				<button ng-show="events.count>1" ng-disabled="!events.next" class="btn btn-warning pull-right" ng-click="findEventsByFilter('add', filterEvent)">
+				Next <span class="glyphicon glyphicon-chevron-right"></span>
+				</button>
+				-->
+				<button ng-show="events.hits.total>1" ng-disabled="pagToSearch==1"  class="btn btn-warning" ng-click="findEventsByFilter('prev', filterEvent)">
+				 <span class="glyphicon glyphicon-chevron-left"></span>  Previous
+				</button>
+				<button ng-show="events.hits.total>1" ng-disabled="events.hits.total<=pagToSearch*itemsperpagesize" class="btn btn-warning pull-right" ng-click="findEventsByFilter('next', filterEvent)">
 				Next <span class="glyphicon glyphicon-chevron-right"></span>
 				</button>
 			</div>
