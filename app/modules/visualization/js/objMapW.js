@@ -316,6 +316,7 @@ self.svg.append("path")
 		self.svg.append("path")
 			.datum(graticule)
 			.attr("class", "graticule")
+			.attr("fill", "none")
 			.attr("d", path)			
 			.on("mousemove", function(d,i) {
 				var posMouse = d3.mouse(this);

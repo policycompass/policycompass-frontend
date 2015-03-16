@@ -408,6 +408,9 @@ policycompass.viz.barsMultiple = function(options) {
       				.attr("class", "x axis")
       				.attr("font-size", self.font_size)
       				.attr("transform", "translate(0,"+self.height+")")
+ 			        .attr("fill", "none")
+		        	.style("stroke", "#000000")
+		            .style("stroke-width", 1)		                     				
       				.call(xAxis)
       				.append("text")      				    		
       				//.attr("x", self.width)
@@ -425,6 +428,9 @@ policycompass.viz.barsMultiple = function(options) {
 				self.svg.append("g")
       				.attr("class", "y axis")
       				.attr("font-size", self.font_size)
+ 			        .attr("fill", "none")
+		        	.style("stroke", "#000000")
+		            .style("stroke-width", 1)      				
       				.call(yAxis);
       			//console.log(bars);
 				for (keyIndex in self.labelY) {

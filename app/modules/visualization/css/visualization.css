@@ -22,7 +22,7 @@ padding-bottom: 5px;
 }
 
 .graticule {
-  fill: none;
+  /*fill: none;*/
   stroke: #777;
   stroke-width: .5px;
   stroke-opacity: .5;
@@ -58,13 +58,13 @@ padding-bottom: 5px;
 }
 
 .axis path, .axis line {
-fill: none;
+/*fill: none;*/
 stroke: #000;
 shape-rendering: crispEdges;
 }
 
 .line {
-  fill: none;
+/*fill: none;*/
   stroke-width: 1.5px;
 }
 
