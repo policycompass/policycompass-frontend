@@ -51,6 +51,8 @@ Used to search metrics using ekasticsearch api
     /* Functions for Submenu Collapse.*/
     $(document).on('click',function(e) {
         var link= e.target.id;
+        // var link= e.target.className;
+        
         if((link!=="createLink") && ($scope.isCollapsed == false)){
             $scope.isCollapsed = true;
         }

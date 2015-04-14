@@ -1,0 +1,110 @@
+/* line 5, ../sass/readme.scss */
+body {
+  font-size: 11pt;
+  font-family: arial, sans-serif;
+  color: #525252;
+  line-height: 1.3em;
+}
+
+/* line 11, ../sass/readme.scss */
+#page {
+  background: white;
+  padding: 2em;
+}
+
+@media all and (min-width: 720px) {
+  /* line 19, ../sass/readme.scss */
+  body {
+    background: #ebebeb;
+  }
+
+  /* line 23, ../sass/readme.scss */
+  #page {
+    max-width: 960px;
+    margin: 1em auto;
+    box-shadow: 2px 2px 4px #bababa;
+  }
+}
+/* line 35, ../sass/readme.scss */
+pre {
+  color: #b8a871;
+  line-height: 1.2em;
+}
+
+@font-face {
+  font-family: 'iconos';
+  src: url("../fonts/icomoon.eot");
+  src: url("../fonts/icomoon.eot?#iefix") format("embedded-opentype"), url("../fonts/icomoon.woff") format("woff"), url("../fonts/icomoon.ttf") format("truetype"), url("../fonts/icomoon.svg#iconosRegular") format("svg");
+}
+
+/* line 47, ../sass/readme.scss */
+a {
+  text-decoration: none;
+  color: #525252;
+  border-bottom: 1px solid #cbcbcb;
+}
+
+/* line 54, ../sass/readme.scss */
+.icono:before {
+  font-family: 'iconos';
+  margin-right: 5px;
+}
+
+/* line 60, ../sass/readme.scss */
+img {
+  max-width: 100%;
+}
+
+/* line 65, ../sass/readme.scss */
+.mockups {
+  overflow: hidden;
+}
+
+/* line 70, ../sass/readme.scss */
+label {
+  padding: 0.3em;
+  text-align: center;
+  display: block;
+}
+
+/* line 76, ../sass/readme.scss */
+li {
+  margin: 0.5em 0;
+}
+
+/* line 80, ../sass/readme.scss */
+.cols {
+  width: 31%;
+  float: left;
+  margin: 0 1%;
+}
+
+/* line 85, ../sass/readme.scss */
+code {
+  color: #cbcbcb;
+}
+
+/* line 88, ../sass/readme.scss */
+h3 {
+  margin-top: 3em;
+  background: #50929e;
+  color: white;
+  padding: 0.3em;
+  font-weight: normal;
+}
+
+/* line 95, ../sass/readme.scss */
+em {
+  color: #b7b7b7;
+}
+
+/* line 99, ../sass/readme.scss */
+ol.letras {
+  list-style-type: lower-alpha;
+}
+
+/* line 104, ../sass/readme.scss */
+p.description {
+  color: #b7b7b7;
+  margin-top: 0.2em;
+}

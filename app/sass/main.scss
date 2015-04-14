@@ -1,0 +1,270 @@
+/* Policy Compass Style  */
+[ng\:cloak], [ng-cloak], .ng-cloak {
+    display: none !important;
+}
+.page{
+    // padding-top: 72px;
+}
+header{
+    
+    
+}
+.border-top{
+    background:url(../img/border-top.png) no-repeat center ;
+    height:15px;
+}
+.border-bottom{
+    background:url(../img/border-bottom.png) no-repeat center ;
+    height:15px;
+}
+
+
+.legend-primary{
+    color: #428BCA;
+    border-color: #428BCA;
+}
+.legend-warning{
+    color: #f7941e;
+    border-color:#f7941e;
+
+}
+.legend-default{
+    color: #58595b;
+    border-color:#58595b;
+}
+
+/* Input*/
+.form-control{
+    // height: 39px;
+    // border-radius: 0px !important;
+    // box-shadow:none;
+}
+/* Pre */
+pre {
+    box-shadow:none;
+    border-radius: 0px !important;
+}
+
+/* Tooltip */
+.tooltip-primary + .tooltip > .tooltip-inner {background-color: #428BCA;}
+.tooltip-primary +.tooltip > .tooltip-arrow {
+    border-top-color: #428BCA;
+}
+.tooltip-warning + .tooltip > .tooltip-inner {background-color: #f7941e;}
+.tooltip-warning + .tooltip > .tooltip-arrow {
+    border-top-color: #f7941e;
+}
+/*container*/
+.containerWithSecondBar{
+   padding-top: 80px;
+    margin-top: 30px;
+}
+/*nav bar*/
+#btn-navbar-toggle{
+ border:1px solid #eee;
+}
+.icon-bar{
+    background-color: #CCCCCC;
+}
+/*Dropdown menu*/
+.dropdown-menu{
+    border-radius: 0px;
+    -webkit-box-shadow: none;
+}
+.dropdown-menu>li>a {
+    text-align: left;
+}
+.dropdown-menu>li>a:hover,.dropdown-menu>li>a:focus,.dropdown-menu>li>a:active {
+    color: #f7941e !important;
+    -webkit-transition: color 300ms ease-out;
+    -moz-transition: color 300ms ease-out;
+    transition: color 300ms ease-out;
+}
+/*Dropdown menu effect*/
+.open > .dropdown-menu {
+    -webkit-transform: scale(1, 1);
+    transform: scale(1, 1);
+
+}
+.open > .dropdown-menu li a {
+    color: #000;
+}
+
+
+.date-picker > p > ul {
+    -webkit-transform-origin: none !important;
+    transform-origin: none !important;
+    -webkit-animation-fill-mode: none !important;
+    animation-fill-mode: none !important;
+    -webkit-transform: none !important;
+    transform: none !important;
+    transition: none !important;
+    -webkit-transition: none !important;
+}
+
+
+/*input*/
+.browse-input{
+    border-right: none;
+    border-left: none;
+}
+
+/* Panel */
+.panel {
+    border-radius: 0px !important;
+    box-shadow:none;
+}
+.panel-default{
+    border-color: #428bca;
+}
+.panel-default > .panel-heading {
+    color: #fff;
+    background-color: #428bca;
+    border-color: #428bca;
+}
+.panel-title > a {
+    cursor: pointer;
+}
+/* Tab */
+.nav-tabs > li {
+    cursor: pointer;
+}
+.nav-tabs > li > a {
+    color:#58595b ;
+    border-radius: 0px;
+    -webkit-transition: background-color 300ms ease-out;
+    -moz-transition: background-color 300ms ease-out;
+    transition: background-color 300ms ease-out;
+}
+.nav-tabs > li > a:hover, .nav-tabs > li > a:focus {
+    text-decoration: none;
+    background-color: #f7941e !important;
+    color: #f7941e;
+    -webkit-transition: background-color 300ms ease-out;
+    -moz-transition: background-color 300ms ease-out;
+    transition: background-color 300ms ease-out;
+}
+.nav-tabs.nav-justified > li > a {
+    border-bottom: 0px !important;
+}
+.nav-tabs.nav-justified > .active > a, .nav-tabs.nav-justified > .active > a:hover, .nav-tabs.nav-justified > .active > a:focus
+.nav-pills > li > a:hover , .nav-pills > li > a:focus {
+    text-decoration: none;
+    background-color: #f7941e !important;
+    color: #fff !important;
+    cursor: pointer;
+}
+.nav-pills > li > a {
+    cursor: pointer;
+}
+.nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+    color: #FFF;
+    background-color: #428BCA !important;
+    cursor: pointer;
+}
+.nav-pills > .tab-content >.tab-pane{
+    border-top: solid 1px #ddd;
+}
+.nav-tabs {
+    border-bottom: 0px;
+}
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover{
+    text-decoration: none;
+    background-color: #f7941e !important;
+    color: #fff !important;
+}
+.nav > li.disabled > a:hover, .nav > li.disabled > a:focus {
+    background-color: #F5F5F5 !important;
+}
+.nav-tabs.nav-justified > li > a {
+    border-radius: 0px;
+}
+.tab-content > .tab-pane{
+    min-height: 50px;
+    padding: 10px;
+}
+.tab-content {
+    border: 1px solid #ddd;
+}
+.tabScrollable  .ng-isolate-scope .tab-content{
+    overflow:auto;
+    height: 200px;
+}
+/* Pagination*/
+.pagination > li:last-child > a, .pagination > li:last-child > span {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+.pagination > li:first-child > a, .pagination > li:first-child > span {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+.pager li > a, .pager li > span {
+    border-radius: 0px;
+}
+/* Rating */
+.rating{
+    color: #f7941e;
+}
+/* footer*/
+footer{
+    border-top: 1px solid #CCCCCC;
+}
+.footer-wrapper a{
+    color: #58595b;
+    font-weight: 400;
+}
+.footer-wrapper >.col-lg-6:first-child{
+    border-right: 1px solid #CCCCCC;
+}
+.footer-wrapper a:hover,.footer-wrapper a:focus,.footer-wrapper a:active{
+    color:#fa8800;
+    font-weight: 400;
+    -webkit-transition: color 300ms ease-out;
+    -moz-transition: color 300ms ease-out;
+    transition: color 300ms ease-out;
+}
+
+/*Fcm Page*/
+.fcm-editor-icon{
+    font-size: 66px;
+}
+.fcm-editor-effect{
+    min-height:135px;
+    padding-top:10px;
+    padding-left:20px;
+    text-align: center;
+}
+.fcm-editor-effect > a{
+    color: #ffffff;
+    -webkit-transition:color 300ms ease-out;
+    -moz-transition:color 300ms ease-out;
+    transition: color 300ms ease-out;
+
+}
+.fcm-editor-effect > a:hover,.fcm-editor-effect > a:active,.fcm-editor-effect > a:focus{
+    color: #E3E3E3;
+    text-decoration: none;
+    font-weight: 400;
+    -webkit-transition:color 300ms ease-out;
+    -moz-transition:color 300ms ease-out;
+    transition: color 300ms ease-out;
+}
+.fcm-editor-window{
+    min-height:250px;
+    border: 1px solid #eeeeee;
+    margin-bottom: 10px;
+}
+
+/* Pc*/
+@media only screen and (min-width: 1024px){
+    /* nav-small*/
+
+    
+
+    
+
+}
+
+
+

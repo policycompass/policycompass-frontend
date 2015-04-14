@@ -1,140 +1,236 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:700,300,600,400);
+@font-face {}
 @font-face {
-    font-family: 'Glyphicons Halflings';
-    src:url('../../../../bower_components/bootstrap/fonts/glyphicons-halflings-regular.eot');
-    src:url('../../../../bower_components/bootstrap/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'),
-    url('../../../../bower_components/bootstrap/fonts/glyphicons-halflings-regular.woff') format('woff'),
-    url('../../../../bower_components/bootstrap/fonts/glyphicons-halflings-regular.ttf') format('truetype'),
-    url('../../../../bower_components/bootstrap/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
-    font-weight: normal;
-    font-style: normal;
+  font-family: 'iconos';
+  src: url("../fonts/icomoon.eot");
+  src: url("../fonts/icomoon.eot?#iefix") format("embedded-opentype"), url("../fonts/icomoon.woff") format("woff"), url("../fonts/icomoon.ttf") format("truetype"), url("../fonts/icomoon.svg#iconosRegular") format("svg");
 }
-.landing-page-wrapper{
-    margin-top:10px;
-    margin-bottom: 30px;
+
+/* line 23, ../../../sass/_base.scss */
+.fonticon:before,
+.designer-metrics:before,
+.button:before,
+li:before,
+.metric-button:before,
+.field-content li:before,
+.field-content:before,
+.star:before,
+.home-action:before,
+.parent:before,
+a:before {
+  padding: 0 0.3em;
+  font-family: iconos;
 }
-.landing-page-wrapper > .col-lg-3{
-    text-align: center;
+
+/* line 57, ../../../sass/_base.scss */
+.clearfix-min:after,
+.clearfix:after {
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
 }
-.home-statement-phrase{
-    margin-top:25px;
-    margin-bottom: 30px;
+
+/* line 67, ../../../sass/_base.scss */
+.clearfix {
+  display: inline-block;
 }
-.home-statement-phrase > p{
-    text-align: center;
-    font-weight: 200;
-    font-size: 2em;
-    color: #285e8e;
+
+/* line 74, ../../../sass/_base.scss */
+.cf:before,
+.cf:after {
+  content: " ";
+  /* 1 */
+  display: table;
+  /* 2 */
 }
+
+/* line 79, ../../../sass/_base.scss */
+.cf:after {
+  clear: both;
+}
+
+/* line 84, ../../../sass/_base.scss */
+html[xmlns] .clearfix {
+  display: block;
+}
+
+/* line 88, ../../../sass/_base.scss */
+* html .clearfix {
+  height: 1%;
+}
+
+/* line 13, ../sass/landingPageStyle.scss */
+.landing-page-wrapper {
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+/* line 17, ../sass/landingPageStyle.scss */
+.landing-page-wrapper > .col-lg-3 {
+  text-align: center;
+}
+
+/* line 20, ../sass/landingPageStyle.scss */
+.home-statement-phrase {
+  margin-top: 25px;
+  margin-bottom: 30px;
+}
+
+/* line 24, ../sass/landingPageStyle.scss */
+.home-statement-phrase > p {
+  text-align: center;
+  font-weight: 200;
+  font-size: 2em;
+  color: #285e8e;
+}
+
+/* line 30, ../sass/landingPageStyle.scss */
 .home-statement-phrase > p:last-child {
-    text-align: center;
-    font-weight: 200;
-    font-size: 1.3em;
-    color: #58595b !important;
-    padding-left: 30px !important;
-    padding-right: 30px !important;
+  text-align: center;
+  font-weight: 200;
+  font-size: 1.3em;
+  color: #58595b !important;
+  padding-left: 30px !important;
+  padding-right: 30px !important;
 }
+
+/* line 38, ../sass/landingPageStyle.scss */
 .home-actions {
-    padding: 2em 0;
+  padding: 2em 0;
 }
-.landing-page-content  > h3 {
-    text-transform: uppercase;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-weight: 300;
-    margin: 1em 0 0.3em;
+
+/* line 41, ../sass/landingPageStyle.scss */
+.landing-page-content > h3 {
+  text-transform: uppercase;
+  font-weight: 300;
+  margin: 1em 0 0.3em;
 }
-.landing-page-content  >p {
-    font-size: 1.1em;
-    font-weight: 300;
-    color: #58595b;
-    margin-top: 0;
-    text-decoration: none;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    text-align: justify;
+
+/* line 47, ../sass/landingPageStyle.scss */
+.landing-page-content > p {
+  margin-top: 0;
+  text-decoration: none;
 }
+
+/* line 57, ../sass/landingPageStyle.scss */
 .home-actions a {
-    text-decoration: none;
-    color: #666666;
+  text-decoration: none;
+  color: #666666;
 }
 
+/* line 62, ../sass/landingPageStyle.scss */
 .landing-page-content {
-    position: relative;
+  position: relative;
 }
 
+/* line 66, ../sass/landingPageStyle.scss */
 .landing-page-content:hover a, .landing-page-content:hover:before {
-    color: #fff;
-    background: none repeat scroll 0% 0% #f6921e;
-}
-.landing-page-content > a{
-    text-decoration: none;
-}
-.landing-page-content > a > h3{
-    font-weight: 300;
-    text-transform: uppercase;
+  color: #fff;
+  background: none repeat scroll 0% 0% #f6921e;
 }
 
+/* line 70, ../sass/landingPageStyle.scss */
+.landing-page-content > a {
+  text-decoration: none;
+}
+
+/* line 73, ../sass/landingPageStyle.scss */
+.landing-page-content > a > h3 {
+  font-weight: 300;
+  text-transform: uppercase;
+}
+
+/* line 78, ../sass/landingPageStyle.scss */
 .landing-page-content:before {
-    text-decoration: none;
-    display: inline-block;
-    font-size: 18px;
-    cursor: pointer;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    text-align: center;
-    position: relative;
-    z-index: 1;
-    color: #FFF;
-    background: none repeat scroll 0% 0% #58595B;
-    transition: background-color 300ms ease-in 0s;
-    transition: background-color 300ms ease-out 0s;
-    font-size: 30px;
-    position: absolute;
-    top: 0;
-    left: 0%;
-    color: #fff;
-    line-height: 40px;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 18px;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  color: #FFF;
+  background: none repeat scroll 0% 0% #58595B;
+  transition: background-color 300ms ease-in 0s;
+  transition: background-color 300ms ease-out 0s;
+  font-size: 30px;
+  position: absolute;
+  top: 0;
+  left: 0%;
+  color: #fff;
+  line-height: 1.6em;
+}
+
+/* line 110, ../sass/landingPageStyle.scss */
+.fonticon-pencil:before {
+  content: "\e60d";
+}
+
+/* line 111, ../sass/landingPageStyle.scss */
+.fonticon-search:before {
+  content: "\f002";
+}
+
+/* line 112, ../sass/landingPageStyle.scss */
+.fonticon-th-list:before {
+  content: "\e018";
+}
+
+/* line 113, ../sass/landingPageStyle.scss */
+.fonticon-export:before {
+  content: "\e170";
 }
 
 @media all and (min-width: 960px) {
-    /* line 95, ../sass/components/_pages.scss */
-    .landing-page-content {
-        float: left;
-        padding-left: 0px;
-        padding-top: 40px;
-        text-align: center;
-    }
+  /* line 95, ../sass/components/_pages.scss */
+  /* line 116, ../sass/landingPageStyle.scss */
+  .landing-page-content {
+    float: left;
+    padding-left: 0px;
+    padding-top: 40px;
+  }
 
-    /* line 102, ../sass/components/_pages.scss */
-    .landing-page-content:before {
-        left: 40%;
-    }
+  /* line 102, ../sass/components/_pages.scss */
+  /* line 124, ../sass/landingPageStyle.scss */
+  .landing-page-content:before {
+    left: 40%;
+  }
 }
 /* Pc*/
-@media only screen and (min-width: 1024px){
-    .home-statement-phrase{
-        margin-top:25px;
-        margin-bottom: 30px;
-    }
+@media only screen and (min-width: 1024px) {
+  /* line 130, ../sass/landingPageStyle.scss */
+  .home-statement-phrase {
+    margin-top: 25px;
+    margin-bottom: 30px;
+  }
 }
 /* ipad landscape*/
-@media only screen and (max-width: 768px) and (max-width: 1024px) /*and (orientation : landscape) and (-webkit-min-device-pixel-ratio: 1) */ {
-    .home-statement-phrase{
-        margin-top:90px;
-        margin-bottom: 20px;
-    }
+@media only screen and (max-width: 768px) and (max-width: 1024px) {
+  /* line 137, ../sass/landingPageStyle.scss */
+  .home-statement-phrase {
+    margin-top: 90px;
+    margin-bottom: 20px;
+  }
 }
 /* ipad portrait*/
-@media only screen and (max-width: 768px) /*and (orientation : portrait) and (-webkit-min-device-pixel-ratio: 1)*/ {
-    .home-statement-phrase{
-        margin-top:140px;
-        margin-bottom: 20px;
-    }
+@media only screen and (max-width: 768px) {
+  /* line 144, ../sass/landingPageStyle.scss */
+  .home-statement-phrase {
+    margin-top: 140px;
+    margin-bottom: 20px;
+  }
 }
 /* iPhone*/
-@media only screen and (max-width: 400px){
-    .home-statement-phrase{
-        margin-top:120px;
-        margin-bottom: 20px;
-    }
-
+@media only screen and (max-width: 400px) {
+  /* line 151, ../sass/landingPageStyle.scss */
+  .home-statement-phrase {
+    margin-top: 120px;
+    margin-bottom: 20px;
+  }
 }

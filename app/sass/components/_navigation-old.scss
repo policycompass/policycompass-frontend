@@ -1,0 +1,59 @@
+
+#logo-wrapper {
+    .nav {
+      margin-top:1.5em;
+      a {
+        color:$general;
+        &:focus,
+        &:hover {
+          color:$texto_negativo;
+          background:$bk_1_2;
+          background:$gris_50;
+          
+          // background:linear-gradient(to top,$gris_90,white);
+        }
+        padding-bottom:20px;
+        padding-top:5px;
+        padding-right:15px;
+        padding-left:5px;
+        
+      }
+      li a {
+        // border-right:1px solid $bk_1_2;
+      }
+      li:last-of-type  a {
+        border-right:none;
+      }
+    }
+  }
+ .navbar-nav a.fonticon:before {
+  
+ }
+
+
+
+.nav > li > a:hover, .nav > li > a:focus {
+ 
+  background-color:transparentize(white,.5);
+}
+
+
+.fonticon-create:before { content:"\e60d";}
+.fonticon-search:before { content:"\e622";}
+.fonticon-want:before { content:"\f00b";}
+.fonticon-how:before { content:"\f059";}
+.fonticon-request:before { content:"\e170";}
+.fonticon-signup:before { content:"\e601";}
+.fonticon-login:before { content:"\e12c";}
+.fonticon-logout:before { content:"\e12d";}
+@media screen and (min-width:$device) {
+  #logo-wrapper {
+    .main-menu-wrap {
+      bottom:0;
+      position:absolute;
+      right:0;
+    }
+  }
+}
+
+

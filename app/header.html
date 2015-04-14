@@ -1,0 +1,99 @@
+<!--<ul data-ng-controller="UserState" id="user-menu" class="user-menu">
+
+  <li ng-if="authState.loggedIn===false" ng-cloak><a href="#/register" data-hover="Sign Up" ng-click="collapseCreateMenu()" class="fonticon fonticon-signup">Sign Up</a></li>
+    
+    <li id="btn-login" ng-if="authState.loggedIn===false" ng-cloak>
+      <a href="#/login" class="login-btn" ng-click="collapseCreateMenu()" class="fonticon fonticon-login">Log In</a></li>
+    <li ng-if="authState.loggedIn" ng-cloak><a href="#/logout" ng-click="collapseCreateMenu()" class="fonticon fonticon-logout">Logout ({{ authState.userData.name }})</a></li>
+
+            <li>
+          <a  href="#/myPolicyCompass"  data-hover="My Policy Compass" class="fonticon fonticon-signup">My Policy Compass</a>
+      </li>
+      <li>
+          <a  href="#/myPolicyCompass"  data-hover="My Policy Compass" class="fonticon fonticon-logout">My Policy Compass</a>
+      </li>
+      <a  href="#/myPolicyCompass"  data-hover="My Policy Compass" class="fonticon fonticon-my">My Policy Compass</a>
+      </li>
+</ul>
+-->
+<!--
+<div ng-app>
+  <div id="demo">
+   <ul class="nav nav-tabs" >
+    <li  ng-click="i=1">
+      <a href="">Home</a>
+    </li>
+    <li ng-click="i=2">
+      <a href="">Profile</a>
+    </li>
+    <li  ng-click="i=3">
+      <a href="">Messages</a>
+    </li>
+   </ul>
+  </div>
+  
+  
+  <div ng-class="{active: i==1}" class="sub">home text</div>
+  <div ng-class="{active: i==2}" class="sub">profile text</div>
+  <div ng-class="{active: i==3}" class="sub">other text</div>
+</div>
+
+-->
+
+
+<header> 
+  <!-- navbar -->
+  <div class="container">
+    <div class="navbar-header">
+      <button id="btn-navbar-toggle" type="button" ng-click="navCollapsed = !navCollapsed" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+    </div>
+    <div class="logo-wrapper" id="logo-wrapper"> 
+
+
+      <a href="#" ng-click="collapseCreateMenu()" id="logo"><img src="img/logo.svg" alt="Policy Compass's Logo"></a>
+
+      
+<div class="sign-in-wrapper ng-cloak main-menu-wrap" ng-cloak>
+  <ul class="main-menu"  id="main-menu">
+    <li> <a id="createLink" href="" ng-click="i=1" data-hover="Create" class="fonticon fonticon-create">Create</a>
+
+    </li>
+    <li><a href="#/browse"  data-hover="Browse" ng-click="i=0" class="fonticon fonticon-search">Browse</a></li>
+    <li><a href="#/i-want-to" data-hover="I want to" ng-click="i=0" class="fonticon fonticon-want">I want to</a></li>
+
+    <li><a href="#/request" data-hover="Request" ng-click="i=0" class="fonticon fonticon-request">Request</a></li>
+        <li><a href="#/how-it-works" data-hover="How It Works" ng-click="i=0" class="fonticon fonticon-how">How It Works </a></li>
+    <li><a href="" data-hover="" class="fonticon fonticon-user" ng-click="i=0"> User </a></li>
+  </ul>
+</div>
+
+     
+    </div>
+    <!-- /.logo-wrapper --> 
+  </div>
+
+<div class="submenu submenu-create" id="submenu-create" ng-class="{active: i==1}">
+<div class="fonticon fonticon-close" ng-click="i=0"></div>
+<ul>
+    <li> <a href="#/d" class="fonticon font-icon-datasets">Create Datasets</a> </li>
+    <li> <a href="#/browse" class="fonticon font-icon-properties">Create Properties</a> </li>
+    <li> <a href="#/i-want-to" class="fonticon font-icon-metrics">Create Metrics</a> </li>
+    <li> <a href="#/request" class="fonticon font-icon-historical_events">Create Historical Events</a> </li>
+    <li> <a href="#/how-it-works" class="fonticon font-icon-visualisation">Create Visualisation</a> </li>
+    <li> <a href="#/d" class="fonticon font-icon-causal_models">Create Causal Models</a> </li>
+  </ul>
+
+</div>
+  
+  <!-- /.container --> 
+  <!-- LandingPageContent --> 
+</header>
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,94 @@
+.landing-page-wrapper,
+.nav {
+  a {
+    color:$general;
+  }
+}
+
+.main-content {
+  // background:white;
+  // padding-top:4em;
+  padding-bottom:4em;
+}
+#logo {
+  margin:10px 0;
+  // margin-bottom:0em;
+  // margin-top:2em;
+  float:left;
+  width:$unidad * 2;
+  // padding-bottom:1em;
+}
+body > header {
+ // @include clearfix();
+ // height:86px;
+ // background:$gris_98;
+ }
+ 
+ .content-header {
+  padding-top:2em;
+  padding-bottom:1em;
+  // background:red;
+ }
+ 
+ .subtitle {
+  // font-size:22px;
+  // color:$claro;
+  text-transform:uppercase;
+  width:$unidad * 10;
+  
+}
+.content-header-presentation {
+  text-align:center;
+    // margin-left:$unidad * 2 ;
+  .subtitle {
+    @media all and (min-width:$device) {
+    margin-left:$unidad ;
+    margin-right:$unidad;
+    margin:0 auto;
+     // width:$unidad * 8;
+    }
+  }  
+}
+
+.subtitle {
+  color:$claro;
+  
+}
+
+footer {
+  font-size:.875em;
+  color:$claro;
+  padding-top:2em;
+  .alert-paragraph {
+    position:relative;
+  }
+  .alert-paragraph:before {
+    content:"\f06a";
+    position:absolute;
+    left:-2em;
+    font-size:3em;
+    color:$bk;
+    color:lighten($claro, 20);
+    
+  
+  }
+  
+}
+
+#eu-logo {
+  display:block;
+  margin-top:1em;
+}
+
+.footer-links {
+  margin:.5em 0;
+  a {
+    border-right:1px solid $gris_80;
+    padding:0 5px;
+  }
+  li:last-of-type a {border-right:none;}
+}
+
+
+
+
