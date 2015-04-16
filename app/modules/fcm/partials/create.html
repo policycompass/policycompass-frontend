@@ -22,16 +22,12 @@
                             <p>Create Association</p>
                         </a>
 			<a ng-if="mode == 'create'" type="button" class="btn btn-primary" ng-click="saveModel()">
-                            <span class="glyphicon glyphicon- fcm-editor-icon"></span>
+                            <span class="glyphicon glyphicon-floppy-disk"></span>
 			    <p>Save Model</p>
 			</a>
 			<a ng-if="mode == 'edit'" type="button" class="btn btn-primary" ng-click="updateModel()">
-                            <span class="glyphicon glyphicon- fcm-editor-icon"></span>
+                            <span class="glyphicon glyphicon-floppy-disk"></span>
 			    <p>Save Model</p>
-			</a>
-		 	<a type="button" class="btn btn-primary" ng-click="reset()">
-                            <span class="glyphicon glyphicon- fcm-editor-icon"></span>
-			    <p>Run Simulation</p>
 			</a>
                     </div>
                 </div><!-- /.col-lg-3 well-primary  -->
@@ -64,37 +60,104 @@
 		     </table>
 		</tab>
 
-                <tab heading="Show Concepts">
+                <tab heading="Run Simulation">
+    		    <h4>Concepts :</h4>
 		    <table class="table table-hover">
 			<tr>
 			    <td align="center" width="20%"><b>Title</b></td>
-			    <td align="center" width="30%"><b>Description</b></td>
-			    <td align="center" width="5%"><b>Input</b></td>
-			    <td align="center" width="14%"><b>Activator</b></td>
-			    <td align="center" width="5%"><b>Fixed Output</b></td>
-			    <td align="center" width="13%"><b>Issued</b></td>
-			    <td align="center" width="13%"><b>Last Modified</b></td>
+			    <td align="center" width="8%"><b>Scale</b></td>
+			    <td align="center" width="14%"><b>Value</b></td>
+			    <td align="center" width="10%"><b>Fixed Output</b></td>
+			    <td align="center" width="18%"><b>Activator</b></td>
+			    <td align="center" width="30%"><b>Metric</b></td>
 			</tr>
 			<tr ng-show="Concepts" ng-repeat="concept in Concepts">
 			    <td>{{ concept.title }}</td>
-			    <td>{{ concept.description }}</td>
-			    <td align="center">{{ concept.input }}</td>
-			    <td align="center">{{ concept.activator.title }}</td>
-			    <td align="center">{{ concept.fixedoutput }}</td>
-			    <td align="center">{{ concept.dateAddedtoPC | date:'longDate' }}</td>
-			    <td align="center">{{ concept.dateModified | date:'longDate' }}</td>
+			    <td align="center">{{ concept.scale }}</td>
+			    <td align="center">
+			    <select class="form-control" name="fixedoutput" id="value" ng-model="user.value" required>
+				<option value="VeryLow">0.2 (Very Low)</option>
+				<option value="Low">0.4 (Low)</option>
+				<option value="Medium">0.6 (Medium)</option>
+				<option value="High">0.8 (High)</option>
+				<option value="VeryHigh">1.0 (Very High)</option>
+			    </select></td>
+			    <td align="center">
+			    <select class="form-control" name="fixedoutput" id="fixedoutput" ng-model="user.fixedoutput" required>
+				<option value="True">True</option>
+				<option value="False">False</option>
+			    </select></td>
+			    <td align="center">
+			    <select class="form-control" name="activator" id="activator" ng-model="user.activator" ng-options="activator.title for activator in Fcmactivators" required>
+			    </select></td>
+			    <td align="center">
+			    <button  type="submit" class="btn btn-primary button-metrics" id="addmetricsbutton" ng-click="editMetrics();findMetricsByFilter();">Add metric</button>
+			    </td>
+			</tr>
+			<tr>
+			    <td></td>
+			    <td></td>
+			    <td></td>
+			    <td></td>
+			    <td></td>
+			    <td></td>
 			</tr>
 		     </table>
+    		    <h4>Relationships :</h4>
+		    <table class="table table-hover">
+			<tr>
+			    <td align="center" width="8%"><b>Relation ID</b></td>
+			    <td align="center" width="20%"><b>Source Concept</b></td>
+			    <td align="center" width="20%"><b>Sink Concept</b></td>
+			    <td align="center" width="10%"><b>Weight</b></td>
+			    <td align="center" width="42%"><b>Metrics Manager</b></td>
+			</tr>
+			<tr ng-show="Associations" ng-repeat="connection in Associations">
+			    <td align="center">{{ connection.Id }}</td>
+			    <td>{{ connection.source.title }}</td>
+			    <td>{{ connection.destination.title }}</td>
+			    <td align="center"><input type="text" class="form-control" name="weight" id="weight" ng-model="user.weight" required></td>
+			    <td align="center">
+			    <button  type="submit" class="btn btn-primary button-metrics" id="metricsmanagerbutton" ng-click="metricsManager();findMetricsByFilter();">Add metric, Add metric</button>
+			    </td>
+			</tr>
+			<tr>
+			    <td></td>
+			    <td></td>
+			    <td></td>
+			    <td></td>
+			    <td></td>
+			</tr>
+		     </table>
+		     <button type="submit" class="btn btn-default" ng-click="correlationMatrix();">Correlation Matrix between Concepts</button>
+		     <button type="submit" class="btn btn-default">Weight Calculation using the Historical Data</button>
+		     <button type="submit" class="btn btn-default">Reset Weights</button>
+		     <button type="submit" class="btn btn-default">Run Simulation</button>
 		</tab>
 
-                <tab heading="Simulation">Simulation</tab>
+                <tab heading="Simulation Results">
+    		    <h4>Changes of Concept Values</h4>
+		    <table class="table table-hover">
+			<tr>
+			    <td align="center" width="20%"><b># of Iteration</b></td>
+			    <td align="center" ng-repeat="n in range(1,15,1)"><b>{{ n }}</b></td>
+			</tr>
+			<tr ng-show="Concepts" ng-repeat="concept in Concepts">
+			    <td>{{ concept.title }}</td>
+			    <td align="center" ng-repeat="result in Results1" ng-if="concept.title == 'Interest Rate'"><b>{{ result.Val }}</b></td>
+			    <td align="center" ng-repeat="result in Results2" ng-if="concept.title == 'Productive Investments'"><b>{{ result.Val }}</b></td>
+			    <td align="center" ng-repeat="result in Results3" ng-if="concept.title == 'Occupation'"><b>{{ result.Val }}</b></td>
+			    <td align="center" ng-repeat="result in Results4" ng-if="concept.title == 'Inflation'"><b>{{ result.Val }}</b></td>
+			</tr>
+			<tr>
+			    <td></td>
+			    <td align="center" ng-repeat="n in range(1,15,1)"></td>
+			</tr>
+		     </table>
+		     <button type="submit" class="btn btn-default" ng-click="impactAnalysis();">Impact Analysis</button>
+		</tab>
 
-                <tab heading="Graph">Graph</tab>
+                <tab heading="Graph"><div align="center"><img src="img/graph.png" height="400" width="800"></div></tab>
 
                 <tab heading="Comments">Comments</tab>
             </tabset>
-
-        </div><!-- /.col-lg-12  -->
-
-    </div><!-- /.row  -->
-</div><!-- /.container -->
