@@ -2,23 +2,41 @@ angular.module('pcApp.common.directives.linescharts', [
 
 ])		
 //esemple of use:
-//<div class="pcLinesChart" dataset="dataset" labels="labelYAxe" small="list"  mode="view" chartid="2" show-Legend="showLegend" show-Labels="showLabels"	show-Lines="showLines" show-Areas="showAreas" show-Points="showPoints" show-Grid="showGrid"	show-Together="showYAxes"></div>
+//<div class="pcLinesChart" dataset="dataset" labels="labels" small="list"  mode="modeg" chartid="2" show-Legend="showLegend" show-Labels="showLabels"	show-Lines="showLines" show-Areas="showAreas" show-Points="showPoints" show-Grid="showGrid"	show-Together="showYAxes" show-Percentatge="showAsPercentatge" xaxeformat="xaxeformat"></div>
 //dataset -> array. Content expected
 //array contetn like
 /*
 $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01","2004-01-01"],"ValueX":["1989-01-01","2003-01-01","2004-01-01"],"ValueY":[99,33,53],"Type":"metric"},{"Key":"Germany_1","Labels":["2000-01-01","2004-01-01","2010-01-01"],"ValueX":["2000-01-01","2004-01-01","2010-01-01"],"ValueY":[14,66,33],"Type":"metric"},{"Key":"Canada_2","Labels":["2001-01-01","2003-01-01","2004-01-01"],"ValueX":["2001-01-01","2003-01-01","2004-01-01"],"ValueY":[33,54,12],"Type":"metric"},{"Key":"Spain_3","Labels":["2002-01-01","2003-01-01","2004-01-01","2005-01-01"],"ValueX":["2002-01-01","2003-01-01","2004-01-01","2005-01-01"],"ValueY":[23,55,88,36],"Type":"metric"},{"Key":"Andorra_4","Labels":["2003-01-01","2004-01-01"],"ValueX":["2003-01-01","2004-01-01"],"ValueY":[6,23],"Type":"metric"},{"Key":"Spain_5","Labels":["1989-01-01","2011-01-01","2012-01-01"],"ValueX":["1989-01-01","2011-01-01","2012-01-01"],"ValueY":[33,1,2],"Type":"metric"}];
 */
 //a row per line to plot	
+/*labels (mandatory) = array with label per line*/
 /*events (optional) = array of events to plot (used only for visualisations)*/
 /*chartid (mandatory) = unique id for the visualisation*/
-/*small (mandatory) = boolean, true or false to plot image size */ 
-/*showLegend, showLabels, showLines, showAreas, showPoints, showGrid, showTogether boolean to configure the template */
-
+/*small (mandatory) = boolean, true or false to plot image size */
+/*xaxeformat => 'sequence' to plot sequencial x axe 'time' to plot xaxe time */ 
+/*showLegend, showLabels, showLines, showAreas, showPoints, showGrid, showTogether, showPercentatge boolean to configure the template */
+//if mode = 'view' the legends can be clickable to hide/show lines
+/*
+ in your controller:
+ 	$scope.dataset =[{"Key":"USA_0","ValueX":["1989-01-01","2003-01-01","2004-01-01"],"ValueY":[99,33,53],"Type":"metric"},{"Key":"Germany_1","ValueX":["2000-01-01","2004-01-01","2010-01-01"],"ValueY":[14,66,33],"Type":"metric"},{"Key":"Canada_2","ValueX":["2001-01-01","2003-01-01","2004-01-01"],"ValueY":[33,54,12],"Type":"metric"},{"Key":"Spain_3","ValueX":["2002-01-01","2003-01-01","2004-01-01","2005-01-01"],"ValueY":[23,55,88,36],"Type":"metric"},{"Key":"Andorra_4","ValueX":["2003-01-01","2004-01-01"],"ValueY":[6,23],"Type":"metric"},{"Key":"Spain_5","ValueX":["1989-01-01","2011-01-01","2012-01-01"],"ValueY":[33,1,2],"Type":"metric"}];
+	$scope.labels = ["Dollar","Dollar","Dollar","Dollar","Dollar","kg"];
+	$scope.showLegend = true;
+	$scope.showLabels = true;
+	$scope.showLines = true;
+	$scope.showAreas = true;
+	$scope.showPoints = true;
+	$scope.showGrid = true;
+	$scope.showYAxes = true;
+	$scope.showAsPercentatge = false;
+	$scope.xaxeformat = 'sequence'
+	$scope.modeg= 'view';
+ */
 .directive('pcLinesChart', ['$log', 'API_CONF', function ($log,  API_CONF) {
 	
     return {
         restrict: 'C',
         scope: {
+        	labels: '=labels',
         	dataset: '=dataset',          
         	events: '=events',
         	chartid: '=chartid',
@@ -30,7 +48,9 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
         	showAreas: '=showAreas',
         	showPoints: '=showPoints',
         	showGrid: '=showGrid',
-        	showTogether: '=showTogether'
+        	showTogether: '=showTogether',
+        	showPercentatge: '=showPercentatge',
+        	xaxeformat: '=xaxeformat',
         }, 
 		compile: function(element, attributes){ 
          return {
@@ -67,7 +87,22 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
 					.style("top", (d3.event.pageY - 12) + "px");
 										
 			};
-                                    
+
+			$scope.$watch('xaxeformat', function(xaxeformat) {
+				if ($scope.numbers1)
+				{
+					$scope.directivePlotLineChart();	
+				}				
+            });
+
+
+			$scope.$watch('labels', function(labels) {
+				if ($scope.numbers1)
+				{
+					$scope.directivePlotLineChart();	
+				}				
+            });
+                                                
 			$scope.$watch('showLegend', function(showLegend) {
 				if ($scope.numbers1)
 				{
@@ -117,6 +152,14 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
 				}
 				
             });
+                        
+            $scope.$watch('showPercentatge', function(showPercentatge) {
+				if ($scope.numbers1)
+				{
+					$scope.directivePlotLineChart();
+				}
+				
+            });
                                 	            
 			$scope.$watch('dataset', function(dataset) {
 				numbers1=dataset;
@@ -141,10 +184,15 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
 					document.getElementById("directive_container_lineschart_"+$scope.chartid).innerHTML = "";
 					$scope.iddiv="directive_container_lineschart_"+$scope.chartid;
 				} 
-				else
+				else if (document.getElementById("directive_container_lineschart_") !=null)
 				{
 					document.getElementById("directive_container_lineschart_").innerHTML = "";
 					$scope.iddiv="directive_container_lineschart_";
+				}
+				else if ($scope.chartid)
+				{
+					document.getElementById("directive_container_lineschart_2").innerHTML = "";
+					$scope.iddiv="directive_container_lineschart_"+$scope.chartid;
 				}
 							
 				var legendsColumn = 0;
@@ -207,7 +255,7 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
 	                		'height': height,
 	                		'margin': margin,
 	                		'labelX': "label X",
-	                		'labelY': $scope.labelYAxe,
+	                		'labelY': $scope.labels,
 	                		'radius': radiouspoint,
 	                		'dymarging': dymarging,
 	                		'offsetYaxesR': offsetYaxesR,
@@ -221,13 +269,16 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
 							'showPoints': $scope.showPoints,							
 							'showLabels': $scope.showLabels,							
 							'showGrid': $scope.showGrid,
-							'legendsColumn': legendsColumn
+							'legendsColumn': legendsColumn,
+							'showAsPercentatge': $scope.showPercentatge,
+							'xaxeformat': $scope.xaxeformat
 						});
 	                
 	                if ($scope.dataset.length>0)
 	                {
-	                	
-	                	barLine.render($scope.dataset, $scope.events, $scope.mode);
+	                	var dataToSend2 = []
+	                	dataToSend2 = $scope.dataset;
+	                	barLine.render(dataToSend2, $scope.events, $scope.mode);
 	                }
 					
 				}
@@ -235,7 +286,18 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
         	}
         },
 
-        template: '<div id="directive_container_lineschart_{{chartid}}" class="container_graph directive_container_chart_{{chartid}}">' +        
+        template: '' +
+        '<div ng-hide="small" class="showFilter">' +
+        '<label class="checkbox-inline"><input ng-model="showLegend" type="checkbox" name="showLegend" class="checkbox filterCheckBox"> Show Legend</label>' +
+        '<label class="checkbox-inline"><input ng-model="showLines"  type="checkbox" name="showLines"  class="checkbox filterCheckBox"> Show Lines</label>' +
+        '<label class="checkbox-inline"><input ng-model="showAreas"  type="checkbox" name="showAreas"  class="checkbox filterCheckBox"> Show Areas</label>' +
+        '<label class="checkbox-inline"><input ng-model="showPoints" type="checkbox" name="showPoints" class="checkbox filterCheckBox"> Show Points</label>' +
+        '<label class="checkbox-inline"><input ng-model="showLabels" type="checkbox" name="showLabels" class="checkbox filterCheckBox"> Show Labels</label>' +
+		'<label class="checkbox-inline"><input ng-model="showGrid"   type="checkbox" name="showGrid"   class="checkbox filterCheckBox"> Show Grid</label>' +
+		'<label class="checkbox-inline"><input ng-model="showTogether"  type="checkbox" name="showTogether"  class="checkbox filterCheckBox"> Show only one Y axe</label>' +
+        '<label class="checkbox-inline"><input ng-model="showPercentatge" type="checkbox" name="showPercentatge" class="checkbox filterCheckBox"> Show as %</label>' +
+        '</div>' +
+        '<div id="directive_container_lineschart_{{chartid}}" class="container_graph directive_container_chart directive_container_chart_{{chartid}}">' +        
         '<div class="loading-container">'+
 			'<div ng-hide="small">'+
 				'<div class="loading"></div>'+

@@ -304,6 +304,14 @@ angular.module('pcApp.visualization.controllers.visualization', [
     	
     	baseVisualizationsCreateController: function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF) {
 			
+			$scope.resolutionoptions = [
+    			{ label: 'Daily', value: 'Daily' },
+    			{ label: 'Monthly', value: 'Monthly' },
+    			{ label: 'Yearly', value: 'Yearly' }
+  			];
+			$scope.resolution = $scope.resolutionoptions[0];
+			//console.log($scope.resolution);
+			
 			$scope.checkAll = function () {
 				
 				
@@ -639,7 +647,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			$scope.loadDataCombos = function(idMetric, valueColumTemp, valueGroupTemp) {
     		//console.log("--loadDataCombos--idMetric="+idMetric+"---valueColumTemp="+valueColumTemp+"----valueGroupTemp="+valueGroupTemp+"-----");
 			id = idMetric;
-			$scope.metricSelectedArray[idMetric] = Metric.get({id: idMetric},
+			//$scope.metricSelectedArray[idMetric] = []; 
+			var tmp = Metric.get({id: idMetric},
         			function(getMetric) {
         				
         				//console.log("mode="+$scope.mode);
@@ -647,9 +656,13 @@ angular.module('pcApp.visualization.controllers.visualization', [
         				var containerIndex = idMetric;
         				//console.log("id="+idMetric);
 						
-					
+						//console.log(tmp.data['extra_columns']);
+						//console.log($scope.metricSelectedArray[idMetric]);
+						
+						$scope.metricSelectedArray[idMetric]=tmp;
+						
         				arrayExtraColumnsMetric = $scope.metricSelectedArray[idMetric].data['extra_columns'];
-
+						//arrayExtraColumnsMetric = tmp.data['extra_columns'];
         				
         				myText = "grouping column";
         				$arrayComboValues_yaxe = [];
@@ -819,11 +832,11 @@ angular.module('pcApp.visualization.controllers.visualization', [
             	"Do you want to delete '"+metrictitle+"' from the list of metrics?");
         	dlg.result.then(function () {
         		
-        		console.log(metriclistIn);
-        		console.log("indexIn="+indexIn);
+        		//console.log(metriclistIn);
+        		//console.log("indexIn="+indexIn);
         		metriclistIn.splice(indexIn, 1);
         		
-        		console.log(metriclistIn.length);
+        		//console.log(metriclistIn.length);
         		if (metriclistIn.length==0)
         		{
         			$scope.correctmetrics = "";
@@ -876,7 +889,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 		$scope.name = 'Link an event';
       
    		$scope.showModal = function() {        
-			//console.log("show modal");        
+			//console.log("show modal");
+			      
 	   		var s= document.getElementById("startDatePosX");
 	   		//console.log("s.value="+s.value);        
 	   		dateRec = s.value;
@@ -896,7 +910,15 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				//$scope.startDate = $filter("date")(Date.now(), 'yyyy-MM-dd');	
 				$scope.startDate = "";
 			}
-	
+			
+			var arrayIdsMetricsSelected = [];
+			
+			for (var i=0; i < $scope.ListMetricsFilter.length; i++) 
+			{			
+				arrayIdsMetricsSelected[i]=$scope.ListMetricsFilter[i].id;
+			};
+			
+			
 			//$scope.startDate = '01-01-2011';
 			//$scope.startDate = s.value;
 			//$scope.startDateToFilter = '2014-09-17';
@@ -915,7 +937,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	  		};
 	
 	        $scope.opts.resolve.item = function() {
-	    		return angular.copy({name:$scope.name, startDate:$scope.startDate}); // pass name to Dialog
+	    		return angular.copy({name:$scope.name, startDate:$scope.startDate, metricsArray: arrayIdsMetricsSelected}); // pass name to Dialog
 			}
 	        
 	  		var modalInstance = $modal.open($scope.opts);
@@ -949,30 +971,32 @@ angular.module('pcApp.visualization.controllers.visualization', [
 		}
 			
 
-		$scope.selectHE = function(idselected) 
+		$scope.selectHE = function(idselected, source) 
 		{
 			//console.log(idselected);
 			$scope.isOpened = false;
-			//console.log("selectHE. Id="+idselected);
-			/*
-			$scope.historicalevent_id = idselected['id'];
-			$scope.historicalevent_title = idselected['title'];
-			$scope.historicalevent_startDate = idselected['startEventDate'];
-			$scope.historicalevent_endDate = idselected['endEventDate'];
-			$scope.historicalevent_description = idselected['description'];
-			*/				
-			$scope.historicalevent_id = idselected['_source']['id'];
-			$scope.historicalevent_title = idselected['_source']['title'];
-			$scope.historicalevent_startDate = idselected['_source']['startEventDate'];
-			$scope.historicalevent_endDate = idselected['_source']['endEventDate'];
-			
-			var string = idselected['_source']['description'];
+			if (source=='search')
+			{				
+				$scope.historicalevent_id = idselected['_source']['id'];
+				$scope.historicalevent_title = idselected['_source']['title'];
+				$scope.historicalevent_startDate = idselected['_source']['startEventDate'];
+				$scope.historicalevent_endDate = idselected['_source']['endEventDate'];
+				var string = idselected['_source']['description'];
+			}
+			else
+			{
+				$scope.historicalevent_id = idselected['id'];
+				$scope.historicalevent_title = idselected['title'];
+				$scope.historicalevent_startDate = idselected['startEventDate'];
+				$scope.historicalevent_endDate = idselected['endEventDate'];
+				var string = idselected['description'];
+				
+			}
 			if(string.length > 150) {
  			   string = string.substring(0,150);
 			}
 			
 			$scope.historicalevent_description = string;
-
 		};	
 	
 			//funtion to add historical event to the array - uses in the modal window
@@ -1185,8 +1209,19 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			var q = queue();
   			arrayJsonFiles.forEach(function(d,i) 
   			{
-  				//console.log("-- arrayJsonFiles.forEach -- i="+i+".d="+d);
-  				q = q.defer(d3.json, d);
+//  				console.log("-- arrayJsonFiles.forEach -- i="+i+".d="+d);
+  				
+  				var pathToJson = d;
+  				/*
+  				if ($scope.resolution)
+  				{
+  					console.log($scope.resolution.value);
+  					pathToJson =pathToJson+'?resolution='+$scope.resolution.value;	
+  				}
+  				*/
+  				//console.log("pathToJson="+pathToJson);  				
+  				//q = q.defer(d3.json, d);
+  				q = q.defer(d3.json, pathToJson);
   				  		
 	  		});
 			
@@ -1829,7 +1864,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					if (numbers1.length>0)
 	                {
 	                	$scope.numbers1=numbers1;
-	                	
+	                	$scope.labelYAxe= labelYAxe;
 	                }
 	                
 					if (($scope.mode=='create') || ($scope.mode=='edit'))
@@ -1864,8 +1899,10 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							'showPoints': $scope.showPoints,							
 							'showLabels': $scope.showLabels,							
 							'showGrid': $scope.showGrid,
+							'showAsPercentatge': $scope.showAsPercentatge,
 							'legendsColumn': legendsColumn
 						});
+						
 						
 						if (numbers1.length>0)
 	                	{	                	
@@ -2780,6 +2817,24 @@ $scope.xAxisTickFormatFunction = function(){
         $scope.visualization.user_id = 1;        				     
         $scope.visualization.views_count = 0;
         $scope.visualization.visualization_type_id = 1;
+        
+        if ($scope.typeToPlot=='graph_line')
+        {
+        	$scope.visualization.visualization_type_id = 1;
+        }
+        else if ($scope.typeToPlot=='graph_pie')
+        {
+        	$scope.visualization.visualization_type_id = 2;
+        }
+        else if ($scope.typeToPlot=='graph_bars')
+        {
+        	$scope.visualization.visualization_type_id = 3;
+        }
+        else
+        {
+        	$scope.visualization.visualization_type_id = 4;
+        }
+        
         $scope.visualization.status_flag_id = 0;
 		
         		
@@ -2801,7 +2856,7 @@ $scope.xAxisTickFormatFunction = function(){
         dataConfig['showYAxes'] = $scope.showYAxes;
         dataConfig['showZoom'] = $scope.showZoom;
         dataConfig['showMovement'] = $scope.showMovement;
-               
+        dataConfig['showAsPercentatge'] = $scope.showAsPercentatge;       
         
         var dataMetrics = [];
         //console.log(metricListIn);
@@ -3203,6 +3258,26 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
         $scope.visualization.user_id = 1;        				     
         $scope.visualization.views_count = 0;
         $scope.visualization.visualization_type_id = 1;
+        
+        
+        if ($scope.typeToPlot=='graph_line')
+        {
+        	$scope.visualization.visualization_type_id = 1;
+        }
+        else if ($scope.typeToPlot=='graph_pie')
+        {
+        	$scope.visualization.visualization_type_id = 2;
+        }
+        else if ($scope.typeToPlot=='graph_bars')
+        {
+        	$scope.visualization.visualization_type_id = 3;
+        }
+        else
+        {
+        	$scope.visualization.visualization_type_id = 4;
+        }
+        
+        
         $scope.visualization.status_flag_id = 0;
     	
         var dataConfig = [];
@@ -3216,6 +3291,7 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
         dataConfig['showYAxes'] = $scope.showYAxes;
         dataConfig['showZoom'] = $scope.showZoom;
         dataConfig['showMovement'] = $scope.showMovement;
+        dataConfig['showAsPercentatge'] = $scope.showAsPercentatge;
                
         
         var dataMetrics = [];
@@ -3367,8 +3443,21 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 }])
 
 
+angular.module('pcApp.visualization').filter('pagination', function()
+{
+ return function(input, start)
+ {
+  start = +start;
+  return input.slice(start);
+ };
+})
+
+
 .controller('ModalInstanceCtrl', [
 	'$scope', 
+	'VisualizationByMetric',
+	'Visualization',
+	'Event',
 	'$filter',
 	'$route',
 	'$routeParams',	
@@ -3379,10 +3468,19 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 	'$location', 
 	'$log',
 	'API_CONF',
-	function($scope, $filter, $route, $routeParams, $modalInstance, $modal, item, searchclient, $location, $log, API_CONF) {
+	function($scope, VisualizationByMetric, Visualization, Event, $filter, $route, $routeParams, $modalInstance, $modal, item, searchclient, $location, $log, API_CONF) {
 
 	//console.log("ModalInstanceCtrl");
-	
+	$scope.metricslist=item.metricsArray;
+	$scope.recomendationevents = [];
+	$scope.curPage = 0;
+ 	$scope.pageSize = 10;
+	$scope.numberOfPages = function() 
+ 	{
+ 		return Math.ceil($scope.recomendationevents.length / $scope.pageSize);
+ 	};
+
+	//console.log($scope.metricslist)
 	
 	// in controller		
 	$scope.startDateToFilter=item.startDate;
@@ -3395,7 +3493,88 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 	$scope.filterEvents = "";
 	//$scope.startDateToFilter = "";
 	$scope.paginationEvents = "";
-		
+	
+	for (var i=0; i < $scope.metricslist.length; i++) {
+		console.log($scope.metricslist[i]);
+		var metricId =$scope.metricslist[i]
+
+		var arrayHE=[];
+		$scope.visualizationByMetricList = VisualizationByMetric.get({id: metricId},
+		function(visualizationByMetricList) {
+						
+			for (i in visualizationByMetricList.results)
+			{							
+				
+				//console.log(visualizationByMetricList.results[i]);
+				var idVisu = visualizationByMetricList.results[i]['visualization'];
+				//console.log(idVisu);
+				
+				$scope.visualizationRec = Visualization.get({id: idVisu},
+				function(visualizationList) {
+						
+						//console.log(visualizationList.historical_events_in_visualization);
+						//console.log(visualizationList.historical_events_in_visualization.length);
+						if (visualizationList.historical_events_in_visualization.length>0)
+						{
+							
+							for (var i=0; i < visualizationList.historical_events_in_visualization.length; i++) {
+							  
+							    //console.log(visualizationList.historical_events_in_visualization[i]);
+							    //console.log(visualizationList.historical_events_in_visualization[i].historical_event_id);
+							    //console.log(arrayHE);
+								if(arrayHE.indexOf(visualizationList.historical_events_in_visualization[i].historical_event_id)==-1)
+								{
+  									//console.log("element doesn't exist");
+  									arrayHE[visualizationList.historical_events_in_visualization[i].historical_event_id]=visualizationList.historical_events_in_visualization[i].historical_event_id;
+  									
+  									var eventId =visualizationList.historical_events_in_visualization[i].historical_event_id;
+
+									$scope.herec = Event.get({id: eventId},
+            						function(herec) {
+            							
+            							//console.log(herec);
+            							var arrayDatos =[]
+            							arrayDatos['_source']=herec;
+            							//$scope.recomendationevents.push(arrayDatos);
+            							$scope.recomendationevents.push(herec);
+            		
+					            	},
+            						function(err) {
+	                					throw { message: JSON.stringify(err.data)};
+    	        					}
+        							);
+  									
+  									
+  								}
+								else
+								{
+  									//console.log("element found");
+  								}
+							  
+							  
+							  //console.log(arrayHE);
+							  
+							};
+							
+						}
+				}
+				,
+				function(error) {
+					//alert(error.data.message);
+					throw { message: JSON.stringify(error.data.message)};
+				}
+				);	
+				
+			}
+			
+			
+					
+		});		
+	  
+	  
+	}
+	
+	
 	
 	$scope.findEventsByFilter = function(pagIn, textIn, text_startDateToFilter, text_endDateToFilter) {
 		//console.log("findEventsByFilter");
