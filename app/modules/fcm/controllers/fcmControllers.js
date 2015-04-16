@@ -36,10 +36,10 @@ angular.module('pcApp.fcm.controllers.fcm', [
     '$location',
     'FcmModel',
     'FcmActivator',
-    'FcmSearchUpdate',
+    'FcmSearchDelete',
     'dialogs',
     '$log',
-    function ($scope, $rootScope, $routeParams, $location, FcmModel, FcmActivator, FcmSearchUpdate, dialogs, $log) {
+    function ($scope, $rootScope, $routeParams, $location, FcmModel, FcmActivator, FcmSearchDelete, dialogs, $log) {
 	$scope.mapData = [];
 	$scope.edgeData = [];
   	$scope.Concepts = [];
