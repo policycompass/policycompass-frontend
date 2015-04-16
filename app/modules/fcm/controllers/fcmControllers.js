@@ -36,9 +36,10 @@ angular.module('pcApp.fcm.controllers.fcm', [
     '$location',
     'FcmModel',
     'FcmActivator',
+    'FcmSearchUpdate',
     'dialogs',
     '$log',
-    function ($scope, $rootScope, $routeParams, $location, FcmModel, FcmActivator, dialogs, $log) {
+    function ($scope, $rootScope, $routeParams, $location, FcmModel, FcmActivator, FcmSearchUpdate, dialogs, $log) {
 	$scope.mapData = [];
 	$scope.edgeData = [];
   	$scope.Concepts = [];
@@ -77,8 +78,8 @@ angular.module('pcApp.fcm.controllers.fcm', [
             "Do you want to delete the FCM model '" + model.title + "' permanently?");
         dlg.result.then(function () {
             // Delete the model via the API
-//            FcmSearchDelete.delete({id: $routeParams.fcmId}, function() {
-//                });
+            FcmSearchDelete.delete({id: $routeParams.fcmId}, function() {
+                });
             FcmModel.delete({id: $routeParams.fcmId}, function() {
                     $location.path('/browse');
                 }

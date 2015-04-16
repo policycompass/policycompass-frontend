@@ -79,7 +79,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
     };
 })
 
-.controller('CytoscapeCtrl', function($scope, $rootScope,  $routeParams, $location, $translate, Fcm, FcmModel, FcmActivator, dialogs, FCMModelsDetail, ConceptsDetail, AssociationsDetail, EditConcept, EditAssociation){
+.controller('CytoscapeCtrl', function($scope, $rootScope,  $routeParams, $location, $translate, Fcm, FcmModel, FcmActivator, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, AssociationsDetail, EditConcept, EditAssociation){
   // container objects
   $scope.Models = [];
   $scope.mapData = [];
@@ -307,8 +307,13 @@ else
 		$scope.fcmModel = new Fcm();
 		$scope.fcmModel.data = jsonModel;
 
-                Fcm.save($scope.fcmModel, function (value) {
+               Fcm.save($scope.fcmModel, function (value) {
+			FcmSearchUpdate.create({id: value.model.id}, function () {			
 			var dlg = dialogs.notify("FCM Model", "'" + user.title + "' FCM Model has been saved!");
+                    	},
+                    	function (err) {
+                        	throw { message: err.data};
+                    	});
 			$scope.md = value;
 			$location.path('/models/' + value.model.id + '/edit');
                     },
@@ -328,7 +333,12 @@ else
 		$scope.fcmModelUpdate.data = jsonModel;
 
                 FcmModel.update({id: $routeParams.fcmId}, $scope.fcmModelUpdate, function (value) {
+			FcmSearchUpdate.update({id: $routeParams.fcmId}, function () {			
 				var dlg = dialogs.notify("FCM Model", "'" + value.model.title + "' FCM Model has been saved!");
+                    	},
+                    	function (err) {
+                        	throw { message: err.data};
+                    	});
 			$scope.md = value;
                     },
                     function (err) {
