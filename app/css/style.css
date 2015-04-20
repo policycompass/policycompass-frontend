@@ -4,6 +4,7 @@
   src: url("../fonts/icomoon.eot");
   src: url("../fonts/icomoon.eot?#iefix") format("embedded-opentype"), url("../fonts/icomoon.woff") format("woff"), url("../fonts/icomoon.ttf") format("truetype"), url("../fonts/icomoon.svg#iconosRegular") format("svg");
 }
+
 /* line 23, ../sass/_base.scss */
 .columns-create-submenu-icon:before,
 .fonticon:before,
@@ -19,9 +20,10 @@ li:before,
 a:before {
   padding: 0 0.3em;
   font-family: iconos;
+  line-height: 1em;
 }
 
-/* line 57, ../sass/_base.scss */
+/* line 58, ../sass/_base.scss */
 .clearfix-min:after,
 .clearfix:after {
   content: ".";
@@ -32,12 +34,12 @@ a:before {
   height: 0;
 }
 
-/* line 67, ../sass/_base.scss */
+/* line 68, ../sass/_base.scss */
 .clearfix {
   display: inline-block;
 }
 
-/* line 73, ../sass/_base.scss */
+/* line 75, ../sass/_base.scss */
 .cf:before,
 .cf:after {
   content: " ";
@@ -46,17 +48,17 @@ a:before {
   /* 2 */
 }
 
-/* line 79, ../sass/_base.scss */
+/* line 80, ../sass/_base.scss */
 .cf:after {
   clear: both;
 }
 
-/* line 84, ../sass/_base.scss */
+/* line 85, ../sass/_base.scss */
 html[xmlns] .clearfix {
   display: block;
 }
 
-/* line 88, ../sass/_base.scss */
+/* line 89, ../sass/_base.scss */
 * html .clearfix {
   height: 1%;
 }
@@ -99,7 +101,7 @@ img {
   max-width: 100%;
 }
 
-/* line 15, ../sass/components/_normalize.scss */
+/* line 17, ../sass/components/_normalize.scss */
 p,
 ul,
 ol {
@@ -117,7 +119,7 @@ h2.page-title {
   margin-top: 0;
 }
 
-/* line 29, ../sass/components/_normalize.scss */
+/* line 30, ../sass/components/_normalize.scss */
 h2.page-title,
 .subtitle {
   padding-right: 10px;
@@ -320,7 +322,7 @@ footer .alert-paragraph:before {
   top: 10px;
   line-height: 1em;
   left: -116px;
-  color: #04C395;
+  color: #04c395;
 }
 /* line 45, ../sass/components/_pages-create.scss */
 .row-view-create .view-item-metrics .view-item-wrap:before {
@@ -372,7 +374,7 @@ footer .alert-paragraph:before {
   border-left: 6px solid transparent;
 }
 
-/* line 85, ../sass/components/_well.scss */
+/* line 88, ../sass/components/_well.scss */
 .columns-4 .nav,
 .columns-4 .collapse,
 .columns-4 .dropup,
@@ -486,7 +488,7 @@ footer .alert-paragraph:before {
   background-color: #a8d3d2;
   color: #e5e5e5;
 }
-/* line 196, ../sass/components/_well.scss */
+/* line 197, ../sass/components/_well.scss */
 .well a,
 .well h3 {
   color: #e5e5e5;
@@ -507,11 +509,11 @@ footer .alert-paragraph:before {
   color: #666666;
   padding: 10px 15px 30px 5px;
 }
-/* line 9, ../sass/components/_navigation.scss */
+/* line 10, ../sass/components/_navigation.scss */
 #main-menu a:focus, #main-menu a:hover {
   color: white;
-  background: #907F4B;
-  background: #808080;
+  background: #907f4b;
+  background: gray;
   text-decoration: none;
 }
 /* line 25, ../sass/components/_navigation.scss */
@@ -597,9 +599,9 @@ header .container {
   overflow: hidden;
   background: linear-gradient(to bottom, #808080, #b3b3b3);
   /* animacion */
+  -webkit-transition: all 0.4s linear;
   -moz-transition: all 0.4s linear;
   -o-transition: all 0.4s linear;
-  -webkit-transition: all 0.4s linear;
   transition: all 0.4s linear;
   height: 1px;
   opacity: 0;
@@ -696,6 +698,21 @@ header .container {
   content: "\e637";
 }
 
+/* line 167, ../sass/components/_navigation.scss */
+.font-icon-sign_up:before {
+  content: "\e14a";
+}
+
+/* line 168, ../sass/components/_navigation.scss */
+.font-icon-log_out:before {
+  content: "\e12d";
+}
+
+/* line 169, ../sass/components/_navigation.scss */
+.font-icon-log_in:before {
+  content: "\e12c";
+}
+
 /* line 1, ../sass/components/_main-buttons.scss */
 .btn {
   background: #cccccc;
@@ -710,7 +727,7 @@ header .container {
 /* line 17, ../sass/components/_main-buttons.scss */
 .btn.active, .btn:hover, .btn:focus {
   background: #f6921e;
-  border-color: #808080;
+  border-color: gray;
   color: white;
 }
 /* line 23, ../sass/components/_main-buttons.scss */
@@ -733,7 +750,7 @@ header .container {
   float: left;
   margin-right: 20px;
 }
-/* line 10, ../sass/components/_myPolicyCompass.scss */
+/* line 12, ../sass/components/_myPolicyCompass.scss */
 .user-info .user-name,
 .user-info .user-mail,
 .user-info .user-role {
@@ -776,7 +793,7 @@ header .container {
 
 /* line 63, ../sass/components/_myPolicyCompass.scss */
 .title:before {
-  color: #04C395;
+  color: #04c395;
   padding-left: 0;
 }
 
@@ -908,7 +925,7 @@ header .container {
   content: "\e170";
 }
 
-/* line 2, ../sass/components/_pages-search.scss */
+/* line 3, ../sass/components/_pages-search.scss */
 .browse-filters,
 .search-content {
   padding-right: 10px;
@@ -936,7 +953,7 @@ header .container {
   overflow: hidden;
 }
 
-/* line 25, ../sass/components/_pages-search.scss */
+/* line 26, ../sass/components/_pages-search.scss */
 .num-results-wrap,
 .filterbar {
   padding-right: 10px;
