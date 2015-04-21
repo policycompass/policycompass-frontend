@@ -1830,7 +1830,20 @@ return 0;}
 				.attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
 	}
 
-
+	//function to clone an object
+	self.clone = function ( obj ) {
+    			if ( obj === null || typeof obj  !== 'object' ) {
+        			return obj;
+    			}
+ 
+    			var temp = obj.constructor();
+    			for ( var key in obj ) {
+        			temp[ key ] = self.clone( obj[ key ] );
+    			}
+ 
+    			return temp;
+	}
+			
 	/* function to Plot data into the graph*/
 	self.render = function(dataToPlot, eventsData, modeGraph) {
 		
@@ -1857,19 +1870,8 @@ return 0;}
 			//self.legendsColumn = Math.ceil(Object.keys(dataToPlot).length/9);
 			//self.legendsColumn = Math.ceil(3/9);
 			//console.log(self.legendsColumn);
-			function clone( obj ) {
-    			if ( obj === null || typeof obj  !== 'object' ) {
-        			return obj;
-    			}
- 
-    			var temp = obj.constructor();
-    			for ( var key in obj ) {
-        			temp[ key ] = clone( obj[ key ] );
-    			}
- 
-    			return temp;
-			}
-			var dataToPlotUpdate = clone( dataToPlot );
+
+			var dataToPlotUpdate = self.clone( dataToPlot );
 			
 			//var dataToPlotUpdate = dataToPlot;
 			self.drawLines(dataToPlotUpdate, eventsData);
