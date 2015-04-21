@@ -8,7 +8,7 @@
       <div class="browse-filters-block">
         <h4>Output</h4>
         <ul>
-                  <li>
+                <li>
             <input type="checkbox">
             All</li>
           <li>
@@ -112,21 +112,43 @@
         <div class="search-results"><div ng-repeat="searchResult in searchResults" class="result-wrapper">
           <div class="result-block searchItemIcon {{searchResult['_type']}}Icon"  ng-cloak>
 
-                               <a ng-show="searchResult['_type']=='metric'" href="/app/#/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}" popover="{{ searchResult['_source']['publisher'] }}" popover-title="Publisher" popover-trigger="mouseenter">
+                       <a ng-show="searchResult['_type']=='metric'" href="/app/#/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}" class="search-result" >
                           <h5>{{ searchResult['_source']['title']}}</h5>
-                          <p class="">{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
+                          <div class="fonticon switch-description"></div>
+                          <p class="description">{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
+                          <div class="popinfo">
+                          <h6 class="poptitle">Publisher</h6>
+                          {{ searchResult['_source']['publisher'] }}
+                          </div>
                       </a>
-                     <a ng-show="searchResult['_type']=='event'" href="/app/#/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}" popover="{{ searchResult['_source']['startEventDate']|date:'d-M-yy'}}" popover-title="Start of Event" popover-trigger="mouseenter">
+                      
+                      
+                     <a ng-show="searchResult['_type']=='event'" href="/app/#/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}"  class="search-result">
                           <h5>{{ searchResult['_source']['title']}}</h5>
-                          <p class="">{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
+                          <div class="fonticon switch-description"></div>
+                          <p class="description">{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
+                          <div class="fonticon switch-popinfo"></div>
+                          <div class="popinfo">
+                          <h6 class="poptitle">Start of Event</h6>
+                          {{ searchResult['_source']['startEventDate']|date:'d-M-yy'}}</div>
                       </a>
-                     <a ng-show="searchResult['_type']=='visualization'" href="/app/#/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}" popover="{{ searchResult['_source']['created_at']|date:'d-M-yy'}}" popover-title="Created on" popover-trigger="mouseenter">
+                     <a ng-show="searchResult['_type']=='visualization'" href="/app/#/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}" class="search-result">
                           <h5>{{ searchResult['_source']['title']}}</h5>
-                          <p class="">{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
+                          <div class="fonticon switch-description"></div>
+                          <p class="description">{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
+                          <div class="fonticon switch-popinfo"></div>
+                          <div class="popinfo">
+                          <h6 class="poptitle">Created on</h6>
+                          {{ searchResult['_source']['created_at']|date:'d-M-yy'}}</div>
                       </a>
-                   <a ng-show="searchResult['_type']=='fuzzymap'" href="/app/#/models/{{ searchResult['_source']['fcmmodelID'] }}" popover="{{ searchResult['_source']['keywords']|date:'d-M-yy'}}" popover-title="Keywords" popover-trigger="mouseenter">
+                   <a ng-show="searchResult['_type']=='fuzzymap'" href="/app/#/models/{{ searchResult['_source']['fcmmodelID'] }}" class="search-result">
                           <h5>{{ searchResult['_source']['title']}}</h5>
-                          <p class="">{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
+                          <div class="fonticon switch-description"></div>
+                          <p class="description">{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
+                          <div class="popinfo">
+                          <h6 class="poptitle">Keywords</h6>
+                          {{ searchResult['_source']['keywords']|date:'d-M-yy'}}
+                          </div>
                       </a>
 
             <!-- /.col-lg-12  --> 

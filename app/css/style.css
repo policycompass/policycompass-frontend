@@ -960,41 +960,67 @@ header .container {
   padding-left: 10px;
   width: 50.0%;
   float: left;
+  position: relative;
 }
 
-/* line 33, ../sass/components/_pages-search.scss */
+/* line 34, ../sass/components/_pages-search.scss */
 .result-wrapper {
   width: 49%;
   padding-right: 10px;
   padding-left: 10px;
-  background: white;
-  margin: 10px .5%;
+  background: #f2f2f2;
+  margin-bottom: 10px;
   display: block;
 }
 /* line 42, ../sass/components/_pages-search.scss */
 .result-wrapper p {
   display: none;
 }
+/* line 46, ../sass/components/_pages-search.scss */
+.result-wrapper:nth-child(2n) {
+  margin-left: 1%;
+}
+/* line 50, ../sass/components/_pages-search.scss */
+.result-wrapper:nth-child(2n + 1) {
+  margin-right: 1%;
+}
 
-/* line 47, ../sass/components/_pages-search.scss */
+/* line 55, ../sass/components/_pages-search.scss */
 .search-results {
   display: flex;
   flex-flow: row wrap;
 }
 
-/* line 54, ../sass/components/_pages-search.scss */
+/* line 63, ../sass/components/_pages-search.scss */
 .search-results h5 {
   font-size: 1em;
   line-height: 1.4em;
 }
+/* line 73, ../sass/components/_pages-search.scss */
+.search-results .switch-description,
+.search-results .switch-popinfo {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+/* line 77, ../sass/components/_pages-search.scss */
+.search-results .switch-description:before,
+.search-results .switch-popinfo:before {
+  content: "\e000";
+}
+/* line 81, ../sass/components/_pages-search.scss */
+.search-results .switch-popinfo {
+  right: 30px;
+}
 
-/* line 60, ../sass/components/_pages-search.scss */
+/* line 88, ../sass/components/_pages-search.scss */
 .searchItemIcon a {
   position: relative;
   padding-left: 3em;
+  padding-top: 1em;
   display: block;
 }
-/* line 64, ../sass/components/_pages-search.scss */
+/* line 93, ../sass/components/_pages-search.scss */
 .searchItemIcon a:before {
   font-family: iconos;
   content: "\e638";
@@ -1005,40 +1031,40 @@ header .container {
   line-height: 1em;
 }
 
-/* line 76, ../sass/components/_pages-search.scss */
+/* line 105, ../sass/components/_pages-search.scss */
 .metricIcon a:before {
   content: "\e639";
 }
 
-/* line 79, ../sass/components/_pages-search.scss */
+/* line 108, ../sass/components/_pages-search.scss */
 .fuzzymapIcon a:before {
   content: "\e639";
 }
 
-/* line 82, ../sass/components/_pages-search.scss */
+/* line 111, ../sass/components/_pages-search.scss */
 .visualizationIcon a:before {
   content: "\e636";
 }
 
-/* line 91, ../sass/components/_pages-search.scss */
+/* line 120, ../sass/components/_pages-search.scss */
 .browse-filters-block {
   font-size: 13px;
   border: 1px solid #cccccc;
   border-radius: 6px;
 }
-/* line 93, ../sass/components/_pages-search.scss */
+/* line 122, ../sass/components/_pages-search.scss */
 .browse-filters-block ul {
   list-style-type: none;
   list-style-image: none;
   margin: 0;
   padding: 0;
 }
-/* line 96, ../sass/components/_pages-search.scss */
+/* line 125, ../sass/components/_pages-search.scss */
 .browse-filters-block ul li {
   line-height: 1.5em;
   margin: 0;
 }
-/* line 104, ../sass/components/_pages-search.scss */
+/* line 133, ../sass/components/_pages-search.scss */
 .browse-filters-block h4 {
   margin: 0;
   border-bottom: 1px solid #cccccc;
@@ -1046,11 +1072,11 @@ header .container {
   font-size: 16px;
   padding: 0 10px;
 }
-/* line 111, ../sass/components/_pages-search.scss */
+/* line 140, ../sass/components/_pages-search.scss */
 .browse-filters-block + .browse-filters-block {
   margin: 1em 0;
 }
-/* line 114, ../sass/components/_pages-search.scss */
+/* line 143, ../sass/components/_pages-search.scss */
 .browse-filters-block h3, .browse-filters-block ul {
   padding: 5px;
 }
