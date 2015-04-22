@@ -47,7 +47,7 @@ angular.module('pcApp.common.directives.search', [
         	
 			$scope.$watch('metricsList', function(metricsList) {
 
-
+				$scope.MetricSelectediId_ = [];
 	        	if (isNaN($scope.numberMaxMetrics))
 	        	{
 	        		$scope.numberMaxMetrics=1;
@@ -108,16 +108,20 @@ angular.module('pcApp.common.directives.search', [
 					$scope.metricsList = [];
 				}	
 				
-				for (var k in $scope.metricsList)
+				for (var k=0; k < $scope.metricsList.length; k++) 
+				//for (var k in $scope.metricsList)
 				{
+					//console.log("id="+$scope.metricsList[k].id);
 					if ($scope.metricsList[k].id==idMetric)
 					{
 						addmetric = false;
 						var dlg = dialogs.confirm(
             			"Are you sure?",
             			"Do you want to delete '"+title+"' from the list of metrics?");
-        				dlg.result.then(function () {
-        		        		
+        				dlg.result.then(function (k) {
+        		            //console.log(k);
+        		            
+        		            //console.log("idMetric="+idMetric);
 							$scope.metricsList.splice(k, 1);
 							$scope.MetricSelectediId_[idMetric]='';
 							$scope.functionformetric();
