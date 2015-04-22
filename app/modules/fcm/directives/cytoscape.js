@@ -161,7 +161,7 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
 			    nodes.css('background-color', 'gray');
                         });
 
-                        cy.on('tap', 'node', function(e){
+                        cy.on('click', 'node', function(e){
 			    var nodes = cy.elements('node');
 			    nodes.css('background-color', 'gray');
                             var evtTarget = e.cyTarget;
@@ -190,7 +190,7 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                             scope.cyMouseup({value:nodeId,x:posX,y:posY});
                         });
 
-                        cy.on('tap', 'edge', function(e){
+                        cy.on('click', 'edge', function(e){
                             var evtTarget = e.cyTarget;
                             var nodeId = evtTarget.id();
                             scope.cyClick({value:nodeId});
