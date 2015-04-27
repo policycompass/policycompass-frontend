@@ -36,18 +36,4 @@ var pcApp = angular.module('pcApp', pcAppDependencies)
 .run(function($http, $rootScope, $location, $translate) {
     $http.defaults.headers.common.Authorization = 'Token 1';
     $rootScope.location = $location;
-
-})
-
-/**
- * Very simple central error handling
- */
-    .factory('$exceptionHandler', ['$injector', '$log',  function ($injector, $log) {
-        return function (exception, cause) {
-            // Use the dialogs module to display error messages
-            var dialogs =  $injector.get("dialogs");
-            dialogs.notify("Error", String(exception.message));
-            $log.error(cause);
-            $log.error(exception);
-        };
-    }]);
+});
