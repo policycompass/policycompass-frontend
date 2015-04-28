@@ -306,7 +306,12 @@ $scope.dataset (mandatory) = [{"Key":"2003-01-01","Labels":["Hungary","European 
 			}
         },
 
-        template: '<div id="directive_container_piechart_{{chartid}}" class="container_graph directive_container_chart_{{chartid}}">' +
+        template: ''+
+        '<div ng-hide="small" class="showFilter">' +
+        '<label class="checkbox-inline"><input ng-model="showLegend" type="checkbox" name="showLegend" class="checkbox filterCheckBox"> Show Legend</label>' +
+        '<label class="checkbox-inline"><input ng-model="showLabels" type="checkbox" name="showLabels" class="checkbox filterCheckBox"> Show Labels</label>' +
+        '</div>' +
+        '<div id="directive_container_piechart_{{chartid}}" class="container_graph directive_container_chart_{{chartid}}">' +
         '<div class="loading-container">'+
 			'<div ng-hide="small">'+
 				'<div class="loading"></div>'+

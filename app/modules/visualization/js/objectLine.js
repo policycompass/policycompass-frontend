@@ -118,6 +118,7 @@ policycompass.viz.line = function(options)
 	}
     
 	self.drawLines = function (lines, eventsData) {
+		
 		//console.log("cnt="+lines.length);
 		//console.log(lines);
         //console.log("self.showYAxesTogether="+self.showYAxesTogether);
@@ -162,6 +163,8 @@ policycompass.viz.line = function(options)
 		var showPoints = self.showPoints;
 		var showLabels = self.showLabels;
 		var showGrid = self.showGrid;
+		var showAsPercentatge = self.showAsPercentatge
+		//console.log(showAsPercentatge);
 		//console.log("lines.length="+lines.length);
 		//var colorScale = d3.scale.category20c();
 		var colorScale = d3.scale.category20();
@@ -182,7 +185,29 @@ policycompass.viz.line = function(options)
 		//console.log("--------------");
 		self.arrayMaxVy = [];
 		self.arrayMinVy = [];
-		
+
+		if (showAsPercentatge)
+		{
+			lines.forEach(function(d,i) {
+				//console.log(i);
+				//console.log(lines[i]);
+				var iniValue = lines[i].ValueY[0];
+				
+				if (iniValue!=0)
+				{
+					lines[i].ValueX.forEach(function(d,j) {
+						
+						//console.log(lines[i].ValueY[j]);
+						
+						var valueTMP = ((lines[i].ValueY[j] - iniValue) / iniValue)*100;
+						
+						lines[i].ValueY[j] = valueTMP;
+						//console.log(valueTMP);
+											
+					});
+				}		
+			});			
+		}
 
 		lines.forEach(function(d,i) {
 			//console.log(i)
@@ -308,16 +333,18 @@ if (a <b) return 1;
 return 0;}
 		
 		//valuesX.sort(dmyOrdA);
-		valuesX.sort(mdyOrdA);
+		//console.log(self.xaxeformat);
+		if (self.xaxeformat=='sequence')
+		{		
+			valuesX.sort();			
+		}
+		else
+		{
+			valuesX.sort(mdyOrdA);
+			self.minDate = getDate(valuesX[0]),
+			self.maxDate = getDate(valuesX[valuesX.length-1]);
+		}
 		
-		//console.log(valuesX);
-		
-		
-		
-		//console.log(valuesX);
-		
-		self.minDate = getDate(valuesX[0]),
-		self.maxDate = getDate(valuesX[valuesX.length-1]);
        	
        	//console.log(valuesX[0]);
 		//console.log("self.minDate="+self.minDate);
@@ -329,24 +356,74 @@ return 0;}
 		//console.log("self.minDate="+self.minDate);
         //self.x = d3.scale.linear().domain([0,lines[0].Values.length-1]).range([0,self.width]).clamp(true);
         //self.xScale = d3.scale.linear().domain([self.minVx, self.maxVx]).range([0, self.width]).clamp(true);
-        self.xScale = d3.time.scale().domain([self.minDate, self.maxDate]).range([0, self.width]).clamp(true);
+        
+        if (self.xaxeformat=='sequence')
+        {
+        	self.xScale = d3.scale.linear().domain([self.minVx, self.maxVx]).range([0, self.width]).clamp(true);
+        }
+        else
+        {
+        	self.xScale = d3.time.scale().domain([self.minDate, self.maxDate]).range([0, self.width]).clamp(true);	
+        }
+        
         
         //self.xScaleInversa = d3.scale.linear().domain([0, self.width]).range([self.minVx, self.maxVx]).clamp(true);
-        self.xScaleInversa = d3.time.scale().domain([0, self.width]).range([self.minDate, self.maxDate]).clamp(true);
+        if (self.xaxeformat=='sequence')
+        {
+        	self.xScaleInversa = d3.scale.linear().domain([0, self.width]).range([self.minVx, self.maxVx]).clamp(true);
+        }
+        else
+        {
+        	self.xScaleInversa = d3.time.scale().domain([0, self.width]).range([self.minDate, self.maxDate]).clamp(true);	
+        }
+        
         
         //self.xScaleX = d3.scale.linear().domain([self.minVx, self.maxVx]).range([0, lines[0].Values.length-1]).clamp(true);
-        self.xScaleX = d3.time.scale().domain([self.minDate, self.maxDate]).range([0, self.maxDate]).clamp(true);
+        if (self.xaxeformat=='sequence')
+        {
+        	self.xScaleX = d3.scale.linear().domain([self.minVx, self.maxVx]).range([0, self.maxVx]).clamp(true);
+        }
+        else
+        {
+        	self.xScaleX = d3.time.scale().domain([self.minDate, self.maxDate]).range([0, self.maxDate]).clamp(true);	
+        }
+        
         
         //self.xScaleXInversa = d3.scale.linear().domain([0, lines[0].Values.length-1]).range([self.minVx, self.maxVx]).clamp(true);
-        self.xScaleXInversa = d3.time.scale().domain([0, self.maxDate]).range([self.minDate, self.maxDate]).clamp(true);
+        if (self.xaxeformat=='sequence')
+        {
+        	self.xScaleXInversa = d3.scale.linear().domain([0, self.maxVx]).range([self.minVx, self.maxVx]).clamp(true);
+        }
+        else
+        {
+        	self.xScaleXInversa = d3.time.scale().domain([0, self.maxDate]).range([self.minDate, self.maxDate]).clamp(true);	
+        }
+        
         
         //self.x = d3.scale.linear().domain([0,lines[0].Values.length-1]).range([0,self.width]).clamp(true);
-        self.x = d3.time.scale().domain([0, self.maxDate]).range([0, self.width]);
+        if (self.xaxeformat=='sequence')
+        {
+        	self.x = d3.scale.linear().domain([0, self.maxVx]).range([0,self.width]).clamp(true);
+        }
+        else
+        {
+        	self.x = d3.time.scale().domain([0, self.maxDate]).range([0, self.width]);	
+        }
+        
         
         
         //self.xInversa = d3.scale.linear().domain([0, self.width]).range([self.minVx, self.maxVx]).clamp(true);
         //self.xInversa = d3.scale.linear().domain([0,self.width]).range([0,lines[0].Values.length-1]).clamp(true);
-        self.xInversa = d3.time.scale().domain([0,self.width]).range([0,self.maxDate]).clamp(true);
+        
+        if (self.xaxeformat=='sequence')
+        {
+        	self.xInversa = d3.scale.linear().domain([0,self.width]).range([0, self.maxVx]).clamp(true);
+        }
+        else
+        {
+        	self.xInversa = d3.time.scale().domain([0,self.width]).range([0,self.maxDate]).clamp(true);	
+        }
+        
         
         //self.minVy = 0;
         //console.log("self.maxVy="+self.maxVy);
@@ -414,13 +491,25 @@ return 0;}
     	//	.range([0, self.width])		
 		//var y = d3.scale.linear()
     	//	.range([self.height, 0]);
-
-		var xAxis = d3.svg.axis()
-    		.scale(self.xScale)
-    		.orient("bottom")
-    		//.ticks(d3.time.months, 1)
-    		//.ticks(d3.time.weeks, 2)
-    		.tickFormat(d3.time.format("%d-%m-%Y"));
+		
+		if (self.xaxeformat=='sequence')
+		{
+			var xAxis = d3.svg.axis()
+	    		.scale(self.xScale)
+	    		.orient("bottom")
+	    		//.ticks(d3.time.months, 1)
+	    		//.ticks(d3.time.weeks, 2)
+	    		.tickFormat(d3.format("."+formatdecimal+"s"));			
+		}
+		else
+		{
+			var xAxis = d3.svg.axis()
+	    		.scale(self.xScale)
+	    		.orient("bottom")
+	    		//.ticks(d3.time.months, 1)
+	    		//.ticks(d3.time.weeks, 2)
+	    		.tickFormat(d3.time.format("%d-%m-%Y"));			
+		}
 		
 		var yAxis = d3.svg.axis()
     		.scale(self.y)
@@ -970,15 +1059,18 @@ return 0;}
 	      			})
 	      			;	
 
-					var totalLength = path.node().getTotalLength();    	      			
-								
-					path
-      					.attr("stroke-dasharray", totalLength + " " + totalLength)
-      					.attr("stroke-dashoffset", totalLength)
-      					.transition()
-        					.duration(2000)
-        					.ease("linear")
-        					.attr("stroke-dashoffset", 0);
+					if (path.node())
+					{
+						var totalLength = path.node().getTotalLength();    	      			
+									
+						path
+	      					.attr("stroke-dasharray", totalLength + " " + totalLength)
+	      					.attr("stroke-dashoffset", totalLength)
+	      					.transition()
+	        					.duration(2000)
+	        					.ease("linear")
+	        					.attr("stroke-dashoffset", 0);
+        			}
 	      				
 			}
         	var resTRext = key.split("_");
@@ -1044,7 +1136,7 @@ return 0;}
 					//.on("mouseover", function (d,i) {
 				    .on("mouseover", function() {
 				    	
-				    	
+				    	console.log(self.modeGraph);
 						if (self.modeGraph=='view')
 						{
 							//var str = d3.select(this).text();
@@ -1351,7 +1443,16 @@ return 0;}
                     	//console.log("self.xScaleX(resX)="+self.x(self.xScaleX(resX)));
                     	//console.log("self.xScaleXInversa="+self.xScaleXInversa(resX));
                     	//return self.x(resX);
-                    	return (self.xScale(getDate(resX)));
+                    	
+                    		if (self.xaxeformat=='sequence')
+                    		{
+                    			return (self.xScale((resX)));
+                    		}
+                    		else
+                    		{
+                    			return (self.xScale(getDate(resX)));	
+                    		}
+                    		
                     	//return 200;
                     	})	                    	
                     .attr("cy", function(d,i){
@@ -1407,7 +1508,16 @@ return 0;}
 		    				var monthNames = [ "", "January", "February", "March", "April", "May", "June",
     						"July", "August", "September", "October", "November", "December" ];
 		    				
-		    				var endDateToPlot = monthNames[parseInt(resSplit[1])]+" "+parseInt(resSplit[2])+", "+resSplit[0];
+		    				var endDateToPlot = "";
+		    				if (self.xaxeformat=='sequence')
+		    				{
+		    					endDateToPlot = resX;
+		    				}
+		    				else
+		    				{
+		    					endDateToPlot = monthNames[parseInt(resSplit[1])]+" "+parseInt(resSplit[2])+", "+resSplit[0];	
+		    				}
+		    				
 		    				   
 		    				//tooltip.style("opacity",1.0).html(resX+" <br /> "+resY+"<br />"+endDateToPlot);
 		    				
@@ -1427,8 +1537,9 @@ return 0;}
 		      				var formatdecimal = 0;
 
 			        		formatdecimal = Math.round(number/100)+1;
-        
-			        		if (formatdecimal<2)
+        					//console.log(formatdecimal);
+        					
+        					if (formatdecimal<2)
 			        		{
 			        			formatdecimal =2;
 			        		}
@@ -1436,10 +1547,21 @@ return 0;}
 			        		{
 			        			formatdecimal =4;
 			        		} 
-					      	
-					      	var si = d3.format('.'+formatdecimal+'s');
-					      	
-					      	number = si(number);
+					      	else if (formatdecimal==2)
+			        		{
+			        			formatdecimal =2;
+			        		}
+			        		
+			        		if (formatdecimal>2)
+			        		{
+					      		var si = d3.format('.'+formatdecimal+'s');					      	
+					      		number = si(number);
+		    				}
+		    				
+		    				if (showAsPercentatge)
+		    				{
+		    					units = units +" %";	
+		    				}
 		    				
 		    				tooltip.style("opacity",1.0).html("<font color='"+colorScale(keyCircle)+"'>"+resSplit[0]+"<br/>"+endDateToPlot+" <br /> "+number+" "+units+"</font>");
 		    				//tooltip.style("opacity",1.0).html("<font color='"+colorScaleLinel(cntLine)+"'>"+resSplit[0]+"<br/>"+endDateToPlot+" <br /> "+number+" "+units+"</font>");
@@ -1608,7 +1730,7 @@ return 0;}
   			.attr("transform", "translate("+self.margin.left+", "+self.margin.top+") scale(1, 1)")
   			;
              
-	
+
 	}
 
 
@@ -1708,7 +1830,20 @@ return 0;}
 				.attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
 	}
 
-
+	//function to clone an object
+	self.clone = function ( obj ) {
+    			if ( obj === null || typeof obj  !== 'object' ) {
+        			return obj;
+    			}
+ 
+    			var temp = obj.constructor();
+    			for ( var key in obj ) {
+        			temp[ key ] = self.clone( obj[ key ] );
+    			}
+ 
+    			return temp;
+	}
+			
 	/* function to Plot data into the graph*/
 	self.render = function(dataToPlot, eventsData, modeGraph) {
 		
@@ -1716,7 +1851,7 @@ return 0;}
 		//console.log(dataToPlot);		
 		//console.log("eventsData");
 		//console.log(eventsData);
-		
+		//console.log(modeGraph)
 		self.modeGraph = modeGraph;
 
 		//console.log(self);						
@@ -1735,8 +1870,12 @@ return 0;}
 			//self.legendsColumn = Math.ceil(Object.keys(dataToPlot).length/9);
 			//self.legendsColumn = Math.ceil(3/9);
 			//console.log(self.legendsColumn);
-			var dataToPlotUpdate = dataToPlot;
-			self.drawLines(dataToPlotUpdate, eventsData);			
+
+			var dataToPlotUpdate = self.clone( dataToPlot );
+			
+			//var dataToPlotUpdate = dataToPlot;
+			self.drawLines(dataToPlotUpdate, eventsData);
+			
 		}
 	}
 

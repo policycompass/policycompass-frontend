@@ -676,13 +676,15 @@ policycompass.viz.barsMultiple = function(options) {
 				}	        
 				
 				
-				self.svg.append("rect")
-		    	.attr("x", valueX-10)
-				.attr("y", valueY-5) 	
-		    	.attr("width", 5)
-		    	.attr("height", 5)
-		    	.style("fill", color(xAxisData[i]));
-
+				if (showLegend)
+				{									
+					self.svg.append("rect")
+			    	.attr("x", valueX-10)
+					.attr("y", valueY-5) 	
+			    	.attr("width", 5)
+			    	.attr("height", 5)
+			    	.style("fill", color(xAxisData[i]));
+				
 
   				self.svg.append("text")
                     //.attr("x", function(d,i){return self.width + 10 ;})
@@ -705,7 +707,7 @@ policycompass.viz.barsMultiple = function(options) {
 					      					
 					.text(xAxisData[i]);
 					
-					 
+				} 
                 	
                 	cnti = cnti+1;
 				

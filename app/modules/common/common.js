@@ -37,9 +37,6 @@
         .when('/publishingNotes', {
             templateUrl: 'modules/common/partials/publishingNotes.html'
         })
-        .when('/myPolicyCompass', {
-            templateUrl: 'modules/common/partials/my.html'
-        })
         .when('/login', {
             templateUrl: 'modules/common/partials/login.html'
         })
