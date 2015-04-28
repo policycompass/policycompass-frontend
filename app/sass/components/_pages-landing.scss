@@ -1,7 +1,19 @@
 .row-view-main {
   .view-item {
-    width:20%;
+    width:50%;
     text-align:center;
+    @media (min-width:$device_4) {
+
+        width:33%;
+    }
+    @media (min-width:$device_7) {
+
+        width:25%;
+    }
+    @media (min-width:$device) {
+
+        width:20%;
+    }
     
   }
    h3.fonticon {

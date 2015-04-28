@@ -1,0 +1,89 @@
+.main-menu-wrap {
+  width:100%;
+  clear:both;
+  
+}
+#main-menu {
+  @include reset-list();
+  ul {
+    
+    @include reset-list();
+  }
+  a {
+    color:$general;
+    padding:1em;
+    // background:white;
+    
+    display:block;
+    
+    
+    
+    &:focus,
+    &:hover {
+      color:$texto_negativo;
+      background:$bk_1_2;
+      background:$gris_50;
+      text-decoration:none;
+      
+      // background:linear-gradient(to top,$gris_90,white);
+    }
+    
+    
+    
+  }
+  
+  ul a {
+    padding-left:2em;
+    color:$claro;
+  }
+  li a {
+    // border-right:1px solid $bk_1_2;
+  }
+  li:last-of-type  a {
+    border-right:none;
+  }
+  
+  
+  
+}
+
+
+.fonticon-create:before { content:"\e60d";}
+.fonticon-search:before { content:"\e622";}
+.fonticon-want:before { content:"\f00b";}
+.fonticon-how:before { content:"\f059";}
+.fonticon-request:before { content:"\e170";}
+.fonticon-signup:before { content:"\e601";}
+.fonticon-login:before { content:"\e12c";}
+.fonticon-logout:before { content:"\e12d";}
+.fonticon-user:before { content:"\e124";}
+
+
+.font-icon-historical_events:before {content:"\e638";}
+.font-icon-datasets:before {content:"\f0ce";}
+.font-icon-properties:before {content:"\e133";}
+.font-icon-metrics:before {content:"\e639";}
+.font-icon-visualisation:before {content:"\e636";}
+.font-icon-causal_models:before {content:"\e637";}
+.font-icon-sign_up:before {content:"\e14a";}
+.font-icon-log_out:before {content:"\e12d";} 
+.font-icon-log_in:before {content:"\e12c";}
+
+
+#main-menu {
+  // display:none;
+}
+
+@media (min-width:$device_7) {
+  .navbar-toggle {
+    display: block;
+  }
+}
+
+@media (max-width:$device) {
+  #main-menu {
+    a {
+      border-bottom:1px solid $gris_80;
+      }
+  }
+}

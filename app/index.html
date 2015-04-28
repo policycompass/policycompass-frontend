@@ -36,59 +36,11 @@
 </head>
 <body class="page" scroll ng-class="{fix:CreateMenu}">
 
-
 <div ng-include="'header.html'"></div>
 
-<div class="create-submenu" collapse="isCollapsed" ng-cloak>
-  <div class="well well-lg well-primary create-submenu-well">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12 close-create-submenu"><a href="" ng-click="collapseCreateMenu()" class="pull-right"><span class="glyphicon glyphicon-remove "></span></a></div>
-        <div class="col-lg-12">
-          <div class="row">
-            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 columns-create-submenu well-menu-item">
-              <div class="row">
-                <div class="col-lg-4 columns-create-submenu-icon columns-create-submenu-icon-1"></div>
-                <div class="col-lg-8 columns-create-submenu-text">
-                  <a href="#/metrics/create" ng-click="collapseCreateMenu()">
-                  
-                  <h3>Create Metrics</h3>
-                  </a> 
-                  
-                  </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 columns-create-submenu well-menu-item">
-              <div class="row">
-                <div class="col-lg-4 columns-create-submenu-icon columns-create-submenu-icon-2"></div>
-                <div class="col-lg-8 columns-create-submenu-text"> <a href="#/events/create" ng-click="collapseCreateMenu()">
-                  <h3>Create Historical Events</h3>
-                  </a> </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 columns-create-submenu well-menu-item">
-              <div class="row">
-                <div class="col-lg-4 columns-create-submenu-icon columns-create-submenu-icon-3 well-menu-item"></div>
-                <div class="col-lg-8 columns-create-submenu-text"> <a href="#/visualizations/create" ng-click="collapseCreateMenu()">
-                  <h3>Create Visualisation</h3>
-                  </a> </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 well-menu-item">
-              <div class="row">
-                <div class="col-lg-4 columns-create-submenu-icon columns-create-submenu-icon-4"></div>
-                <div class="col-lg-8 columns-create-submenu-text"> <a href="#/models/create" ng-click="collapseCreateMenu()">
-                  <h3>Create Fuzzy Cognitive Map</h3>
-                  </a> </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+
 <div ng-view=""></div>
+
 <footer>
   <div class="container">
     <div class="row footer-wrapper">
@@ -111,7 +63,7 @@
         </li>
       </ul>
       <div class="row" >
-        <div class="col-lg-2">
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
           <p>
             <img src="img/euflag.svg" id="eu-logo">
           </p>
@@ -121,7 +73,7 @@
         </div>
       </div>
       </div>
-      <!-- /.col-lg-6 -->
+      
       <div class="col-lg-6 col-md-6 col-sm-12">
         <div class="muted pull-right col-lg-12 col-md-12 col-sm-12">
         <p>Copyright &copy; 2014 Policy Compass Project. All rights reserved.</p>
@@ -136,14 +88,12 @@
           </div>
         </div>
       </div>
-      <!-- /.col-lg-6 --> 
+
     </div>
-    <!-- /.row .footer-wrapper --> 
-    <!--<p ng-show="error" class="alert alert-danger">{{ error }}</p>--> 
+
   </div>
-  
-  <p style="height:600px;"></p>
 </footer>
+
 <adh-cross-window-channel></adh-cross-window-channel>
 
 <!--  Vendor Libs --> 

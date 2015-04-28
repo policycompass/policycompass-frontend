@@ -1,35 +1,25 @@
 
 
-    #main-menu {
-      // margin-top:1.5em;
-      a {
-        color:$general;
-        
-        
-        &:focus,
-        &:hover {
-          color:$texto_negativo;
-          background:$bk_1_2;
-          background:$gris_50;
-          text-decoration:none;
-          
-          // background:linear-gradient(to top,$gris_90,white);
-        }
-        
-        padding:10px 15px 30px 5px;
-        
-      }
-      li a {
-        // border-right:1px solid $bk_1_2;
-      }
-      li:last-of-type  a {
-        border-right:none;
-      }
-    }
+@media screen and(min-width:$device) {
+  #btn-navbar-toggle {
+    display:none;
+  }
+  #page-header {
+    // overflow:hidden;
+  }
+  .collapse {
+  display: block;
+  visibility: visible;
+}
 
- .navbar-nav a.fonticon:before {
-  
- }
+
+  #main-menu {
+        
+    & > li > a {
+      padding:10px 15px 30px 5px;
+    }
+  }
+
 
 
 
@@ -39,15 +29,7 @@
 }
 
 
-.fonticon-create:before { content:"\e60d";}
-.fonticon-search:before { content:"\e622";}
-.fonticon-want:before { content:"\f00b";}
-.fonticon-how:before { content:"\f059";}
-.fonticon-request:before { content:"\e170";}
-.fonticon-signup:before { content:"\e601";}
-.fonticon-login:before { content:"\e12c";}
-.fonticon-logout:before { content:"\e12d";}
-.fonticon-user:before { content:"\e124";}
+
 header .container  {
   position:relative;
 }
@@ -55,11 +37,18 @@ header .container  {
 
   
 .main-menu-wrap {
-top:11px;
-position:absolute;
-right:0;
+
+  
+
+  
 }
 #main-menu {
+    top:11px;
+    position:absolute;
+    right:0;
+      // FLOAT:RIGHT;
+      width:100%;
+
   li {
   display:inline;
     a {
@@ -76,14 +65,22 @@ right:0;
   // height:2em;
   // position:relative;
    // background:linear-gradient(to bottom,$gris_50,$gris_70);
+
 }
 .submenu {
   width:100%;
   position:relative;
   overflow:hidden;
+// display:none;
+
   // height:2em;
   // position:relative;
    background:linear-gradient(to bottom,$gris_50,$gris_70);
+   
+   position:absolute;
+   top:50px;
+   right:0;
+   width:100%;
   ul {
     @include reset-list();
   }
@@ -92,8 +89,8 @@ right:0;
   // top:0px;
   /* animacion */
   @include transition(all 0.4s linear);
-  height:1px;
-  opacity:0;
+  // height:1px;
+  // opacity:0;
   // position:absolute;
   // top:0;
   
@@ -158,10 +155,8 @@ right:0;
   }
   
 }
-.font-icon-historical_events:before {content:"\e638";}
-.font-icon-datasets:before {content:"\f0ce";}
-.font-icon-properties:before {content:"\e133";}
-.font-icon-metrics:before {content:"\e639";}
-.font-icon-visualisation:before {content:"\e636";}
-.font-icon-causal_models:before {content:"\e637";}
 
+
+
+
+}

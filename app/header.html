@@ -1,46 +1,3 @@
-<!--<ul data-ng-controller="UserState" id="user-menu" class="user-menu">
-
-  <li ng-if="authState.loggedIn===false" ng-cloak><a href="#/register" data-hover="Sign Up" ng-click="collapseCreateMenu()" class="fonticon fonticon-signup">Sign Up</a></li>
-    
-    <li id="btn-login" ng-if="authState.loggedIn===false" ng-cloak>
-      <a href="#/login" class="login-btn" ng-click="collapseCreateMenu()" class="fonticon fonticon-login">Log In</a></li>
-    <li ng-if="authState.loggedIn" ng-cloak><a href="#/logout" ng-click="collapseCreateMenu()" class="fonticon fonticon-logout">Logout ({{ authState.userData.name }})</a></li>
-
-            <li>
-          <a  href="#/myPolicyCompass"  data-hover="My Policy Compass" class="fonticon fonticon-signup">My Policy Compass</a>
-      </li>
-      <li>
-          <a  href="#/myPolicyCompass"  data-hover="My Policy Compass" class="fonticon fonticon-logout">My Policy Compass</a>
-      </li>
-      <a  href="#/myPolicyCompass"  data-hover="My Policy Compass" class="fonticon fonticon-my">My Policy Compass</a>
-      </li>
-</ul>
--->
-<!--
-<div ng-app>
-  <div id="demo">
-   <ul class="nav nav-tabs" >
-    <li  ng-click="i=1">
-      <a href="">Home</a>
-    </li>
-    <li ng-click="i=2">
-      <a href="">Profile</a>
-    </li>
-    <li  ng-click="i=3">
-      <a href="">Messages</a>
-    </li>
-   </ul>
-  </div>
-  
-  
-  <div ng-class="{active: i==1}" class="sub">home text</div>
-  <div ng-class="{active: i==2}" class="sub">profile text</div>
-  <div ng-class="{active: i==3}" class="sub">other text</div>
-</div>
-
--->
-
-
 <header> 
   <!-- navbar -->
   <div class="container">
@@ -50,10 +7,10 @@
     <div class="logo-wrapper" id="logo-wrapper"> 
 
 
-      <a href="#" ng-click="collapseCreateMenu()" id="logo"><img src="img/logo.svg" alt="Policy Compass's Logo"></a>
+     <a href="#" ng-click="collapseCreateMenu()" id="logo"><img src="img/logo.svg" alt="Policy Compass's Logo"></a>
 
       
-<div class="sign-in-wrapper ng-cloak main-menu-wrap" ng-cloak>
+<div collapse="navCollapsed" class=" collapse sign-in-wrapper ng-cloak main-menu-wrap" ng-cloak>
   <ul class="main-menu"  id="main-menu">
     <li> <a id="createLink" href="" ng-click="i=1" data-hover="Create" class="fonticon fonticon-create">Create</a>
 
