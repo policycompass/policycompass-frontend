@@ -12,9 +12,10 @@
 				<button type="submit"  ng-disabled="visualizationForm.$invalid" class="btn btn-default" ng-click="createVisualization(ListMetricsFilter)"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>				
 				<button type="submit" class="btn btn-default" ng-click="revertVisualization()">Revert</button>
 				
+				<!--				
+				<button ng-disabled="false" type="button" ng-class="{'btn btn-default':!isSelectedParent(1),'btn btn-info':isSelectedParent(1)}" ng-click="selectTabParent(1); selectTabSon('mercator');rePlotGraph();">Map</button>
+				-->		
 				<!--
-				<button ng-disabled="false" type="button" ng-class="{'btn btn-default':!isSelectedParent(1),'btn btn-info':isSelectedParent(1)}" ng-click="selectTabParent(1); selectTabSon('mercator');rePlotGraph();">Map</button>		
-				
 				<button type="button" ng-hide="!isSelectedParent(1)" ng-disabled="!isSelectedParent(1)" ng-class="{'btn btn-default':!isSelectedSon('mercator'),'btn btn-info':isSelectedSon('mercator')}" ng-click="selectTabParent(1);selectTabSon('mercator');rePlotGraph();">Mercator</button>
 				<button type="button" ng-hide="!isSelectedParent(1)" ng-disabled="!isSelectedParent(1)" ng-class="{'btn btn-default':!isSelectedSon('conicConformal'),'btn btn-info':isSelectedSon('conicConformal')}" ng-click="selectTabParent(1);selectTabSon('conicConformal');rePlotGraph();">ConicConformal</button>
 				<button type="button" ng-hide="!isSelectedParent(1)" ng-disabled="!isSelectedParent(1)" ng-class="{'btn btn-default':!isSelectedSon('equirectangular'),'btn btn-info':isSelectedSon('equirectangular')}" ng-click="selectTabParent(1);selectTabSon('equirectangular');rePlotGraph();">Equirectangular</button>
@@ -147,6 +148,19 @@
 										<input ng-model="showYAxes" type="checkbox" ng-click="rePlotGraph();" name="showYAxes"  id="showYAxes" class="checkbox filterCheckBox"> Show only one Y axe
 									</label>
 								</div>
+								
+								<div id="div_showAsPercentatge" ng-show="isSelectedSon('graph_line')" class="on_check">
+									<label class="checkbox-inline">
+										<input ng-model="showAsPercentatge" type="checkbox" ng-click="rePlotGraph();" name="showAsPercentatge"  id="showAsPercentatge" class="checkbox filterCheckBox"> Show as %
+									</label>
+								</div>
+								<!--
+								<div id="div_showAsPercentatge" ng-show="isSelectedSon('graph_line')" class="on_check">
+									<label class="checkbox-inline">
+										Resolution <select id="resolution" ng-change="rePlotGraph();" ng-model="resolution" ng-options="opt as opt.label for opt in resolutionoptions"></select>
+									</label>
+								</div>								
+								-->
 								<div id="div_showZoom" ng-show="isSelectedParent(1) && !isSelectedSon('orthographic') && !isSelectedSon('azimuthalEqualArea')" class="on_check">
 									<label class="checkbox-inline">
 										<input ng-model="showZoom" type="checkbox" ng-click="rePlotGraph();" name="showZoom"  id="showZoom" class="checkbox filterCheckBox"> Enable Zoom
@@ -157,7 +171,17 @@
 										<input ng-model="showMovement" type="checkbox" ng-click="rePlotGraph();" name="showMovement"  id="showMovement" class="checkbox filterCheckBox"> Enable Movement
 									</label>
 								</div>
-								
+								<!--
+								<div id="granularity" class="on_check">
+									<label class="checkbox-inline">Granularity
+										<select name="granularity" >
+  											<option value="Daily">Daily</option>
+											<option value="Montly">Montly</option>  											
+											<option value="Yearly">Yearly</option>
+										</select>
+									</label>
+								</div>
+								-->
 							</div>
 						</div>            			
             	<!--
@@ -167,11 +191,11 @@
 				
                 <tabset>                                        
 					<!-- ini tab metrics -->
-                    <tab heading="Metrics">                    
+                    <tab heading="Datasets">                    
     								
 						<div class="buttonline clearfix-min">	
 							<input ng-controller="controllercorrectmetriclist" type="hidden" ng-required="true" class="form-control" id="correctmetrics"  ng-model="correctmetrics" ng-repeat="numberrows in [ListMetricsFilter.length]">					
-							<button  type="submit" class="btn btn-primary button-metrics" id="addmetricsbutton" ng-click="addMetrictoList();findMetricsByFilter();">Add metric</button>
+							<button  type="submit" class="btn btn-primary button-metrics" id="addmetricsbutton" ng-click="addMetrictoList();findMetricsByFilter();">Add dataset</button>
 							
 						</div>
 						<br />	
@@ -188,7 +212,7 @@
 							<div class="metric-buttons">
 								<a type="button" class="btn btn-primary" ng-click="displaycontentMetric(metric.id);" id="edit-metric-button-{{metric.id}}">Edit</a>			    	
 						    	<button type="button" class="btn btn-danger" ng-click="deleteMetricFromList(metric.id, metric.title, ListMetricsFilter, $index);" id="delete-metric-button-{{metric.id}}">Delete</button>
-						    	<a type="button" class="btn btn-info" href="#/metrics/{{metric.id}}" target="_blank" id="view-metric-button-{{metric.id}}">View Metric in detaill</a>						    	
+						    	<a type="button" class="btn btn-info" href="#/metrics/{{metric.id}}" target="_blank" id="view-metric-button-{{metric.id}}">View Dataset in detaill</a>						    	
 						  	</div>
 
 							<div class="metric-forms" style="display: none;">

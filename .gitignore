@@ -1,4 +1,7 @@
 node_modules/
+app/sass/
+app/.sass-cache/
+app/config.rb
 bower_components
 development.json
 config.js

@@ -993,55 +993,64 @@ header .container {
   background-color: #f6921e;
 }
 
-/* line 56, ../sass/components/_pages-landing.scss */
+/* line 54, ../sass/components/_pages-landing.scss */
+.main-content-landing .page-title {
+  padding-top: 1em;
+}
+/* line 55, ../sass/components/_pages-landing.scss */
+.main-content-landing .subtitle {
+  padding-bottom: 1.5em;
+}
+
+/* line 62, ../sass/components/_pages-landing.scss */
 .home-actions a {
   text-decoration: none;
   color: #666666;
 }
 
-/* line 61, ../sass/components/_pages-landing.scss */
+/* line 67, ../sass/components/_pages-landing.scss */
 .landing-page-content {
   position: relative;
 }
 
-/* line 65, ../sass/components/_pages-landing.scss */
+/* line 71, ../sass/components/_pages-landing.scss */
 .landing-page-content:hover a, .landing-page-content:hover:before {
   color: #fff;
   background: none repeat scroll 0% 0% #f6921e;
 }
 
-/* line 69, ../sass/components/_pages-landing.scss */
+/* line 75, ../sass/components/_pages-landing.scss */
 .landing-page-content > a {
   text-decoration: none;
 }
 
-/* line 72, ../sass/components/_pages-landing.scss */
+/* line 78, ../sass/components/_pages-landing.scss */
 .landing-page-content > a > h3 {
   font-weight: 300;
   text-transform: uppercase;
 }
 
-/* line 87, ../sass/components/_pages-landing.scss */
+/* line 93, ../sass/components/_pages-landing.scss */
 .fonticon-browse:before {
   content: "\f002";
 }
 
-/* line 88, ../sass/components/_pages-landing.scss */
+/* line 94, ../sass/components/_pages-landing.scss */
 .fonticon-pencil:before {
   content: "\e60d";
 }
 
-/* line 89, ../sass/components/_pages-landing.scss */
+/* line 95, ../sass/components/_pages-landing.scss */
 .fonticon-search:before {
   content: "\f002";
 }
 
-/* line 90, ../sass/components/_pages-landing.scss */
+/* line 96, ../sass/components/_pages-landing.scss */
 .fonticon-th-list:before {
   content: "\e018";
 }
 
-/* line 91, ../sass/components/_pages-landing.scss */
+/* line 97, ../sass/components/_pages-landing.scss */
 .fonticon-export:before {
   content: "\e170";
 }
