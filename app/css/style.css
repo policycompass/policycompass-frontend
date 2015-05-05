@@ -63,27 +63,6 @@ html[xmlns] .clearfix {
   height: 1%;
 }
 
-/* line 1, ../sass/components/_bootstrap.scss */
-.pagination > li > a, .pagination > li > span {
-  background-color: transparent;
-}
-
-/* line 7, ../sass/components/_bootstrap.scss */
-.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
-  background-color: white;
-  color: #666666;
-}
-
-/* line 18, ../sass/components/_bootstrap.scss */
-.pagination > .disabled > span, .pagination > .disabled > span:hover, .pagination > .disabled > span:focus, .pagination > .disabled > a, .pagination > .disabled > a:hover, .pagination > .disabled > a:focus {
-  background-color: transparent;
-}
-
-/* line 21, ../sass/components/_bootstrap.scss */
-.pagination {
-  float: right;
-}
-
 /* line 3, ../sass/components/_normalize.scss */
 html {
   font-size: 15px;
