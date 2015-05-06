@@ -1,0 +1,69 @@
+
+/* Button*/
+.btn{
+    cursor: pointer;
+    font-family: "Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
+    font-weight: normal;
+    line-height: normal;
+    position: relative;
+    text-decoration: none;
+    text-align: center;
+    display: inline-block;
+    padding-top: 1rem;
+    padding-right: 2rem;
+    padding-bottom: 1.0625rem;
+    padding-left: 2rem;
+    color: white;
+    -webkit-transition: background-color 300ms ease-out;
+    -moz-transition: background-color 300ms ease-out;
+    transition: background-color 300ms ease-out;
+    padding-top: 1rem;
+    padding-right: 2rem;
+    padding-bottom: 1.0625rem;
+    padding-left: 2rem;
+    border-radius: 0px;
+
+}
+.btn-default{
+    border-style: solid;
+    border-color: #ccc;
+    color: #000;
+}
+.btn-link{
+    color: #777;
+}
+.btn-link:hover,.btn-link:active,.btn-link:focus{
+    color: #000;
+}
+.btn-warning{
+    background-color: #f7941e;
+}
+.btn-warning:hover,.btn-warning:active,.btn-warning:focus{
+    background-color: #eb8000;
+}
+.login-btn{
+    padding: 1.5rem 2.4rem !important
+}
+.nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
+    background-color: #ffffff;
+    border-color: #428bca;
+}
+.nav > li > a:hover, .nav > li > a:focus{
+    // background-color: #f5f5f5 !important;
+ }
+.cursor-pointer{
+    cursor: pointer;
+}
+#btn-login > a{
+    margin: 0px;
+    color: #ffffff;
+}
+#btn-login > a:hover{
+    margin: 0px;
+    color:#ffffff;
+    background-color: #3276b1 !important;
+    border-color: #285e8e !important;
+}
+#btn-login  a::after{
+    background: none !important;
+}

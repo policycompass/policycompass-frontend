@@ -1,6 +1,5 @@
 node_modules/
 app/fonts/icomoon/
-app/sass/
 app/.sass-cache/
 app/config.rb
 bower_components
