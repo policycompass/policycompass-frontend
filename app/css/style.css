@@ -63,6 +63,27 @@ html[xmlns] .clearfix {
   height: 1%;
 }
 
+/* line 1, ../sass/components/_bootstrap.scss */
+.pagination > li > a, .pagination > li > span {
+  background-color: transparent;
+}
+
+/* line 7, ../sass/components/_bootstrap.scss */
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
+  background-color: white;
+  color: #666666;
+}
+
+/* line 18, ../sass/components/_bootstrap.scss */
+.pagination > .disabled > span, .pagination > .disabled > span:hover, .pagination > .disabled > span:focus, .pagination > .disabled > a, .pagination > .disabled > a:hover, .pagination > .disabled > a:focus {
+  background-color: transparent;
+}
+
+/* line 21, ../sass/components/_bootstrap.scss */
+.pagination {
+  float: right;
+}
+
 /* line 3, ../sass/components/_normalize.scss */
 html {
   font-size: 15px;
@@ -976,60 +997,60 @@ header .container {
 .main-content-landing .page-title {
   padding-top: 1em;
 }
-/* line 55, ../sass/components/_pages-landing.scss */
+/* line 57, ../sass/components/_pages-landing.scss */
 .main-content-landing .subtitle {
   padding-bottom: 1.5em;
 }
 
-/* line 62, ../sass/components/_pages-landing.scss */
+/* line 63, ../sass/components/_pages-landing.scss */
 .home-actions a {
   text-decoration: none;
   color: #666666;
 }
 
-/* line 67, ../sass/components/_pages-landing.scss */
+/* line 68, ../sass/components/_pages-landing.scss */
 .landing-page-content {
   position: relative;
 }
 
-/* line 71, ../sass/components/_pages-landing.scss */
+/* line 72, ../sass/components/_pages-landing.scss */
 .landing-page-content:hover a, .landing-page-content:hover:before {
   color: #fff;
   background: none repeat scroll 0% 0% #f6921e;
 }
 
-/* line 75, ../sass/components/_pages-landing.scss */
+/* line 76, ../sass/components/_pages-landing.scss */
 .landing-page-content > a {
   text-decoration: none;
 }
 
-/* line 78, ../sass/components/_pages-landing.scss */
+/* line 79, ../sass/components/_pages-landing.scss */
 .landing-page-content > a > h3 {
   font-weight: 300;
   text-transform: uppercase;
 }
 
-/* line 93, ../sass/components/_pages-landing.scss */
+/* line 94, ../sass/components/_pages-landing.scss */
 .fonticon-browse:before {
   content: "\f002";
 }
 
-/* line 94, ../sass/components/_pages-landing.scss */
+/* line 95, ../sass/components/_pages-landing.scss */
 .fonticon-pencil:before {
   content: "\e60d";
 }
 
-/* line 95, ../sass/components/_pages-landing.scss */
+/* line 96, ../sass/components/_pages-landing.scss */
 .fonticon-search:before {
   content: "\f002";
 }
 
-/* line 96, ../sass/components/_pages-landing.scss */
+/* line 97, ../sass/components/_pages-landing.scss */
 .fonticon-th-list:before {
   content: "\e018";
 }
 
-/* line 97, ../sass/components/_pages-landing.scss */
+/* line 98, ../sass/components/_pages-landing.scss */
 .fonticon-export:before {
   content: "\e170";
 }
