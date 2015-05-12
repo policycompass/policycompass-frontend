@@ -80,14 +80,17 @@
 }
 .tab-content {
     margin-bottom:1.5em;
-    border-radius:$radius;
+    border-radius:0 0 $radius $radius;
+    border-radius:0 $radius $radius $radius;
+    background:white;
+    padding:20px;
 }
 
 
 .tab-pane {
-  background:red;
+  // background:red;
 
   &.active {
-    background:white;
+    
   }
 }

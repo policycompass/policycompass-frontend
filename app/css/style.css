@@ -768,16 +768,10 @@ header .container {
 /* line 81, ../sass/components/_navigation-tabs.scss */
 .tab-content {
   margin-bottom: 1.5em;
-  border-radius: 6px;
-}
-
-/* line 87, ../sass/components/_navigation-tabs.scss */
-.tab-pane {
-  background: red;
-}
-/* line 90, ../sass/components/_navigation-tabs.scss */
-.tab-pane.active {
+  border-radius: 0 0 6px 6px;
+  border-radius: 0 6px 6px 6px;
   background: white;
+  padding: 20px;
 }
 
 /* line 1, ../sass/components/_main-buttons.scss */
