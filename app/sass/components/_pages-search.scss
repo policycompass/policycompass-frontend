@@ -116,8 +116,8 @@ $ancho:$unidad * 2;
  // padding-top:1em;
  display:block;
  &:before {
-  font-family:iconos;
-  content:"\e638";
+  
+  content:"\e612";
   position:absolute;
   left:-5px;
   top:10px;
@@ -128,13 +128,13 @@ $ancho:$unidad * 2;
 }
 
 .metricIcon a:before {
-  content:"\e639";
+  content:"\e613";
 }
 .fuzzymapIcon a:before {
-  content:"\e639";
+  content:"\e610";
 }
 .visualizationIcon a:before {
-  content:"\e636";
+  content:"\e615";
 }
 .browse-filters-block > ul {
  

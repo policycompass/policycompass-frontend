@@ -1,14 +1,14 @@
 @font-face {
-font-family: 'iconos';
-
-src: url('../fonts/icomoon.eot');
-src: url('../fonts/icomoon.eot?#iefix') format('embedded-opentype'),
-     url('../fonts/icomoon.woff') format('woff'),
-     url('../fonts/icomoon.ttf') format('truetype'),
-     url('../fonts/icomoon.svg#iconosRegular') format('svg');
- 
+	font-family: 'policy';
+	src:url('../fonts/policy.eot?rqnk2q');
+	src:url('../fonts/policy.eot?#iefixrqnk2q') format('embedded-opentype'),
+		url('../fonts/policy.woff?rqnk2q') format('woff'),
+		url('../fonts/policy.ttf?rqnk2q') format('truetype'),
+		url('../fonts/policy.svg?rqnk2q#policy') format('svg');
+	font-weight: normal;
+	font-style: normal;
 }
-
+.searchItemIcon a,
 .columns-create-submenu-icon,
 .fonticon,
 .designer-metrics,
@@ -23,7 +23,7 @@ li,
 a {
   &:before {
     padding:0 0.3em;
-    font-family:iconos;
+    font-family:policy;
     line-height:1em;
   }
 }

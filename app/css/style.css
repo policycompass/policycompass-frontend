@@ -1,11 +1,14 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:700,300,600,400);
 @font-face {
-  font-family: 'iconos';
-  src: url("../fonts/icomoon.eot");
-  src: url("../fonts/icomoon.eot?#iefix") format("embedded-opentype"), url("../fonts/icomoon.woff") format("woff"), url("../fonts/icomoon.ttf") format("truetype"), url("../fonts/icomoon.svg#iconosRegular") format("svg");
+  font-family: 'policy';
+  src: url("../fonts/policy.eot?rqnk2q");
+  src: url("../fonts/policy.eot?#iefixrqnk2q") format("embedded-opentype"), url("../fonts/policy.woff?rqnk2q") format("woff"), url("../fonts/policy.ttf?rqnk2q") format("truetype"), url("../fonts/policy.svg?rqnk2q#policy") format("svg");
+  font-weight: normal;
+  font-style: normal;
 }
 
 /* line 24, ../sass/_base.scss */
+.searchItemIcon a:before,
 .columns-create-submenu-icon:before,
 .fonticon:before,
 .designer-metrics:before,
@@ -19,7 +22,7 @@ li:before,
 .parent:before,
 a:before {
   padding: 0 0.3em;
-  font-family: iconos;
+  font-family: policy;
   line-height: 1em;
 }
 
@@ -413,27 +416,27 @@ footer {
 }
 /* line 12, ../sass/components/_navigation.scss */
 .fonticon-create:before {
-  content: "\e60d";
+  content: "\e60f";
 }
 
 /* line 13, ../sass/components/_navigation.scss */
 .fonticon-search:before {
-  content: "\e622";
+  content: "\e60e";
 }
 
 /* line 14, ../sass/components/_navigation.scss */
 .fonticon-want:before {
-  content: "\f00b";
+  content: "\e61a";
 }
 
 /* line 15, ../sass/components/_navigation.scss */
 .fonticon-how:before {
-  content: "\f059";
+  content: "\e617";
 }
 
 /* line 16, ../sass/components/_navigation.scss */
 .fonticon-request:before {
-  content: "\e170";
+  content: "\e618";
 }
 
 /* line 17, ../sass/components/_navigation.scss */
@@ -453,82 +456,82 @@ footer {
 
 /* line 20, ../sass/components/_navigation.scss */
 .fonticon-user:before {
-  content: "\e124";
+  content: "\e619";
 }
 
 /* line 23, ../sass/components/_navigation.scss */
 .font-icon-historical_events:before {
-  content: "\e638";
-}
-
-/* line 24, ../sass/components/_navigation.scss */
-.font-icon-datasets:before {
-  content: "\f0ce";
+  content: "\e612";
 }
 
 /* line 25, ../sass/components/_navigation.scss */
-.font-icon-properties:before {
-  content: "\e133";
+.font-icon-datasets:before {
+  content: "\e611";
 }
 
 /* line 26, ../sass/components/_navigation.scss */
-.font-icon-metrics:before {
-  content: "\e639";
-}
-
-/* line 27, ../sass/components/_navigation.scss */
-.font-icon-visualisation:before {
-  content: "\e636";
+.font-icon-properties:before {
+  content: "\e614";
 }
 
 /* line 28, ../sass/components/_navigation.scss */
-.font-icon-causal_models:before {
-  content: "\e637";
+.font-icon-metrics:before {
+  content: "\e613";
 }
 
 /* line 29, ../sass/components/_navigation.scss */
-.font-icon-sign_up:before {
-  content: "\e14a";
+.font-icon-visualisation:before {
+  content: "\e615";
 }
 
 /* line 30, ../sass/components/_navigation.scss */
-.font-icon-log_out:before {
-  content: "\e12d";
+.font-icon-causal_models:before {
+  content: "\e610";
 }
 
 /* line 31, ../sass/components/_navigation.scss */
-.font-icon-log_in:before {
-  content: "\e12c";
+.font-icon-sign_up:before {
+  content: "\e605";
 }
 
-/* line 35, ../sass/components/_navigation.scss */
+/* line 32, ../sass/components/_navigation.scss */
+.font-icon-log_out:before {
+  content: "\e61c";
+}
+
+/* line 33, ../sass/components/_navigation.scss */
+.font-icon-log_in:before {
+  content: "\e61b";
+}
+
+/* line 38, ../sass/components/_navigation.scss */
 #main-menu a {
   color: #666666;
   padding: 10px 15px 30px 5px;
 }
-/* line 40, ../sass/components/_navigation.scss */
+/* line 43, ../sass/components/_navigation.scss */
 #main-menu a:focus, #main-menu a:hover {
   color: white;
   background: #907f4b;
   background: gray;
   text-decoration: none;
 }
-/* line 55, ../sass/components/_navigation.scss */
+/* line 58, ../sass/components/_navigation.scss */
 #main-menu li:last-of-type a {
   border-right: none;
 }
 
-/* line 66, ../sass/components/_navigation.scss */
+/* line 69, ../sass/components/_navigation.scss */
 .nav > li > a:hover, .nav > li > a:focus {
   background-color: rgba(255, 255, 255, 0.5);
 }
 
-/* line 73, ../sass/components/_navigation.scss */
+/* line 76, ../sass/components/_navigation.scss */
 header .container {
   position: relative;
 }
 
-/* line 88, ../sass/components/_navigation.scss */
+/* line 91, ../sass/components/_navigation.scss */
 .submenu {
   width: 100%;
   position: relative;
@@ -544,27 +547,27 @@ header .container {
   position: absolute;
   top: 0;
 }
-/* line 95, ../sass/components/_navigation.scss */
+/* line 98, ../sass/components/_navigation.scss */
 .submenu ul {
   list-style-type: none;
   list-style-image: none;
   margin: 0;
   padding: 0;
 }
-/* line 112, ../sass/components/_navigation.scss */
+/* line 115, ../sass/components/_navigation.scss */
 .submenu ul {
   width: 992px;
   overflow: hidden;
   margin: 0 auto;
   padding: 1em 0;
 }
-/* line 118, ../sass/components/_navigation.scss */
+/* line 121, ../sass/components/_navigation.scss */
 .submenu ul li {
   width: 16.66%;
   width: 33.33%;
   float: left;
 }
-/* line 123, ../sass/components/_navigation.scss */
+/* line 126, ../sass/components/_navigation.scss */
 .submenu ul li a {
   display: block;
   padding: 1em 0 1em 5em;
@@ -572,7 +575,7 @@ header .container {
   color: rgba(255, 255, 255, 0.8);
   position: relative;
 }
-/* line 131, ../sass/components/_navigation.scss */
+/* line 134, ../sass/components/_navigation.scss */
 .submenu ul li a:before {
   font-size: 40px;
   line-height: 1em;
@@ -580,18 +583,18 @@ header .container {
   top: 5px;
   left: 0em;
 }
-/* line 139, ../sass/components/_navigation.scss */
+/* line 142, ../sass/components/_navigation.scss */
 .submenu ul li a:hover, .submenu ul li a:focus {
   color: white;
 }
-/* line 146, ../sass/components/_navigation.scss */
+/* line 149, ../sass/components/_navigation.scss */
 .submenu.active {
   height: auto;
   position: relative;
   opacity: 1;
 }
 
-/* line 154, ../sass/components/_navigation.scss */
+/* line 157, ../sass/components/_navigation.scss */
 .fonticon-close {
   position: absolute;
   top: 20px;
@@ -601,52 +604,52 @@ header .container {
   color: rgba(255, 255, 255, 0.8);
   cursor: pointer;
 }
-/* line 165, ../sass/components/_navigation.scss */
+/* line 168, ../sass/components/_navigation.scss */
 .fonticon-close:before {
-  content: "\f00d";
+  content: "\e60d";
 }
 
-/* line 174, ../sass/components/_navigation.scss */
+/* line 177, ../sass/components/_navigation.scss */
 .main-menu-wrap {
   clear: both;
 }
 
-/* line 179, ../sass/components/_navigation.scss */
+/* line 182, ../sass/components/_navigation.scss */
 #main-menu {
   list-style-type: none;
   list-style-image: none;
   margin: 0;
   padding: 0;
 }
-/* line 182, ../sass/components/_navigation.scss */
+/* line 185, ../sass/components/_navigation.scss */
 #main-menu li,
 #main-menu a {
   display: block;
 }
 
 @media (min-width: 992px) {
-  /* line 189, ../sass/components/_navigation.scss */
+  /* line 192, ../sass/components/_navigation.scss */
   .navbar-toggle {
     display: none;
   }
 
-  /* line 192, ../sass/components/_navigation.scss */
+  /* line 195, ../sass/components/_navigation.scss */
   .main-menu-wrap {
     top: 18px;
     position: absolute;
     right: 0;
   }
-  /* line 196, ../sass/components/_navigation.scss */
+  /* line 199, ../sass/components/_navigation.scss */
   .main-menu-wrap.collapse {
     display: block;
     visibility: visible;
   }
 
-  /* line 202, ../sass/components/_navigation.scss */
+  /* line 205, ../sass/components/_navigation.scss */
   #main-menu li {
     display: inline;
   }
-  /* line 204, ../sass/components/_navigation.scss */
+  /* line 207, ../sass/components/_navigation.scss */
   #main-menu li a {
     float: left;
   }
@@ -867,7 +870,7 @@ header .container {
 
 /* line 95, ../sass/components/_pages-landing.scss */
 .fonticon-browse:before {
-  content: "\f002";
+  content: "\e60e";
 }
 
 /* line 96, ../sass/components/_pages-landing.scss */
@@ -877,7 +880,7 @@ header .container {
 
 /* line 97, ../sass/components/_pages-landing.scss */
 .fonticon-search:before {
-  content: "\f002";
+  content: "\e60e";
 }
 
 /* line 98, ../sass/components/_pages-landing.scss */
@@ -995,8 +998,7 @@ header .container {
 }
 /* line 118, ../sass/components/_pages-search.scss */
 .searchItemIcon a:before {
-  font-family: iconos;
-  content: "\e638";
+  content: "\e612";
   position: absolute;
   left: -5px;
   top: 10px;
@@ -1006,17 +1008,17 @@ header .container {
 
 /* line 130, ../sass/components/_pages-search.scss */
 .metricIcon a:before {
-  content: "\e639";
+  content: "\e613";
 }
 
 /* line 133, ../sass/components/_pages-search.scss */
 .fuzzymapIcon a:before {
-  content: "\e639";
+  content: "\e610";
 }
 
 /* line 136, ../sass/components/_pages-search.scss */
 .visualizationIcon a:before {
-  content: "\e636";
+  content: "\e615";
 }
 
 /* line 145, ../sass/components/_pages-search.scss */
