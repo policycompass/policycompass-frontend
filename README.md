@@ -51,5 +51,7 @@ gem install compass
 ```
 compass watch
 
+* for modify certain styles inspect the element in Chrome and click the .css file at the right panel, the comment has the exact .scss line in which the style is defined.
+
 
 
