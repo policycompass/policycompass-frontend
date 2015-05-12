@@ -125,71 +125,9 @@ pre {
 .panel-title > a {
     cursor: pointer;
 }
+
 /* Tab */
-.nav-tabs > li {
-    cursor: pointer;
-}
-.nav-tabs > li > a {
-    color:#58595b ;
-    border-radius: 0px;
-    -webkit-transition: background-color 300ms ease-out;
-    -moz-transition: background-color 300ms ease-out;
-    transition: background-color 300ms ease-out;
-}
-.nav-tabs > li > a:hover, .nav-tabs > li > a:focus {
-    text-decoration: none;
-    background-color: #f7941e !important;
-    color: #f7941e;
-    -webkit-transition: background-color 300ms ease-out;
-    -moz-transition: background-color 300ms ease-out;
-    transition: background-color 300ms ease-out;
-}
-.nav-tabs.nav-justified > li > a {
-    border-bottom: 0px !important;
-}
-.nav-tabs.nav-justified > .active > a, .nav-tabs.nav-justified > .active > a:hover, .nav-tabs.nav-justified > .active > a:focus
-.nav-pills > li > a:hover , .nav-pills > li > a:focus {
-    text-decoration: none;
-    background-color: #f7941e !important;
-    color: #fff !important;
-    cursor: pointer;
-}
-.nav-pills > li > a {
-    cursor: pointer;
-}
-.nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
-    color: #FFF;
-    background-color: #428BCA !important;
-    cursor: pointer;
-}
-.nav-pills > .tab-content >.tab-pane{
-    border-top: solid 1px #ddd;
-}
-.nav-tabs {
-    border-bottom: 0px;
-}
-.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover{
-    text-decoration: none;
-    background-color: #f7941e !important;
-    color: #fff !important;
-}
-.nav > li.disabled > a:hover, .nav > li.disabled > a:focus {
-    background-color: #F5F5F5 !important;
-}
-.nav-tabs.nav-justified > li > a {
-    border-radius: 0px;
-}
-.tab-content > .tab-pane{
-    min-height: 50px;
-    padding: 10px;
-}
-.tab-content {
-    border: 1px solid #ddd;
-}
-.tabScrollable  .ng-isolate-scope .tab-content{
-    overflow:auto;
-    height: 200px;
-}
+
 /* Pagination*/
 .pagination > li:last-child > a, .pagination > li:last-child > span {
     border-top-right-radius: 0px;

@@ -69,9 +69,12 @@
 .nav > li > a:hover, .nav > li > a:focus {
  
   background-color:transparentize(white,.5);
+  
 }
-
-
+.nav > li > a:focus {
+  background:black;
+  color:white;
+}
 
 header .container  {
   position:relative;

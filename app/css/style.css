@@ -527,12 +527,18 @@ footer {
   background-color: rgba(255, 255, 255, 0.5);
 }
 
-/* line 76, ../sass/components/_navigation.scss */
+/* line 74, ../sass/components/_navigation.scss */
+.nav > li > a:focus {
+  background: black;
+  color: white;
+}
+
+/* line 79, ../sass/components/_navigation.scss */
 header .container {
   position: relative;
 }
 
-/* line 91, ../sass/components/_navigation.scss */
+/* line 94, ../sass/components/_navigation.scss */
 .submenu {
   width: 100%;
   position: relative;
@@ -548,27 +554,27 @@ header .container {
   position: absolute;
   top: 0;
 }
-/* line 98, ../sass/components/_navigation.scss */
+/* line 101, ../sass/components/_navigation.scss */
 .submenu ul {
   list-style-type: none;
   list-style-image: none;
   margin: 0;
   padding: 0;
 }
-/* line 115, ../sass/components/_navigation.scss */
+/* line 118, ../sass/components/_navigation.scss */
 .submenu ul {
   width: 992px;
   overflow: hidden;
   margin: 0 auto;
   padding: 1em 0;
 }
-/* line 121, ../sass/components/_navigation.scss */
+/* line 124, ../sass/components/_navigation.scss */
 .submenu ul li {
   width: 16.66%;
   width: 33.33%;
   float: left;
 }
-/* line 126, ../sass/components/_navigation.scss */
+/* line 129, ../sass/components/_navigation.scss */
 .submenu ul li a {
   display: block;
   padding: 1em 0 1em 5em;
@@ -576,7 +582,7 @@ header .container {
   color: rgba(255, 255, 255, 0.8);
   position: relative;
 }
-/* line 134, ../sass/components/_navigation.scss */
+/* line 137, ../sass/components/_navigation.scss */
 .submenu ul li a:before {
   font-size: 40px;
   line-height: 1em;
@@ -584,18 +590,18 @@ header .container {
   top: 5px;
   left: 0em;
 }
-/* line 142, ../sass/components/_navigation.scss */
+/* line 145, ../sass/components/_navigation.scss */
 .submenu ul li a:hover, .submenu ul li a:focus {
   color: white;
 }
-/* line 149, ../sass/components/_navigation.scss */
+/* line 152, ../sass/components/_navigation.scss */
 .submenu.active {
   height: auto;
   position: relative;
   opacity: 1;
 }
 
-/* line 157, ../sass/components/_navigation.scss */
+/* line 160, ../sass/components/_navigation.scss */
 .fonticon-close {
   position: absolute;
   top: 20px;
@@ -605,56 +611,175 @@ header .container {
   color: rgba(255, 255, 255, 0.8);
   cursor: pointer;
 }
-/* line 168, ../sass/components/_navigation.scss */
+/* line 171, ../sass/components/_navigation.scss */
 .fonticon-close:before {
   content: "\e60d";
 }
 
-/* line 177, ../sass/components/_navigation.scss */
+/* line 180, ../sass/components/_navigation.scss */
 .main-menu-wrap {
   clear: both;
 }
 
-/* line 182, ../sass/components/_navigation.scss */
+/* line 185, ../sass/components/_navigation.scss */
 #main-menu {
   list-style-type: none;
   list-style-image: none;
   margin: 0;
   padding: 0;
 }
-/* line 185, ../sass/components/_navigation.scss */
+/* line 188, ../sass/components/_navigation.scss */
 #main-menu li,
 #main-menu a {
   display: block;
 }
 
 @media (min-width: 992px) {
-  /* line 192, ../sass/components/_navigation.scss */
+  /* line 195, ../sass/components/_navigation.scss */
   .navbar-toggle {
     display: none;
   }
 
-  /* line 195, ../sass/components/_navigation.scss */
+  /* line 198, ../sass/components/_navigation.scss */
   .main-menu-wrap {
     top: 18px;
     position: absolute;
     right: 0;
   }
-  /* line 199, ../sass/components/_navigation.scss */
+  /* line 202, ../sass/components/_navigation.scss */
   .main-menu-wrap.collapse {
     display: block;
     visibility: visible;
   }
 
-  /* line 205, ../sass/components/_navigation.scss */
+  /* line 208, ../sass/components/_navigation.scss */
   #main-menu li {
     display: inline;
   }
-  /* line 207, ../sass/components/_navigation.scss */
+  /* line 210, ../sass/components/_navigation.scss */
   #main-menu li a {
     float: left;
   }
 }
+/*** old tabs ***/
+/* line 2, ../sass/components/_navigation-tabs.scss */
+.nav-tabs > li {
+  cursor: pointer;
+}
+
+/* line 5, ../sass/components/_navigation-tabs.scss */
+.nav-tabs > li > a {
+  color: #58595b;
+  border-radius: 0px;
+  -webkit-transition: background-color 300ms ease-out;
+  -moz-transition: background-color 300ms ease-out;
+  transition: background-color 300ms ease-out;
+}
+
+/* line 12, ../sass/components/_navigation-tabs.scss */
+.nav-tabs > li > a:hover, .nav-tabs > li > a:focus {
+  text-decoration: none;
+  background-color: #f7941e;
+  color: white;
+  transition: background-color 300ms ease-out;
+}
+
+/* line 19, ../sass/components/_navigation-tabs.scss */
+.nav-tabs.nav-justified > li > a {
+  border-bottom: 0px !important;
+}
+
+/* line 23, ../sass/components/_navigation-tabs.scss */
+.nav-tabs.nav-justified > .active > a, .nav-tabs.nav-justified > .active > a:hover, .nav-tabs.nav-justified > .active > a:focus
+.nav-pills > li > a:hover, .nav-pills > li > a:focus {
+  text-decoration: none;
+  background-color: #f7941e;
+  color: white;
+  cursor: pointer;
+}
+
+/* line 29, ../sass/components/_navigation-tabs.scss */
+.nav-pills > li > a {
+  cursor: pointer;
+}
+
+/* line 32, ../sass/components/_navigation-tabs.scss */
+.nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+  color: #FFF;
+  background-color: #428BCA !important;
+  cursor: pointer;
+}
+
+/* line 37, ../sass/components/_navigation-tabs.scss */
+.nav-pills > .tab-content > .tab-pane {
+  border-top: solid 1px #ddd;
+}
+
+/* line 40, ../sass/components/_navigation-tabs.scss */
+.nav-tabs {
+  border-bottom: 0px;
+}
+
+/* line 43, ../sass/components/_navigation-tabs.scss */
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover {
+  text-decoration: none;
+  background-color: #f7941e;
+  color: white;
+}
+
+/* line 48, ../sass/components/_navigation-tabs.scss */
+.nav > li.disabled > a:hover, .nav > li.disabled > a:focus {
+  background-color: #F5F5F5 !important;
+}
+
+/* line 51, ../sass/components/_navigation-tabs.scss */
+.nav-tabs.nav-justified > li > a {
+  border-radius: 0px;
+}
+
+/* line 54, ../sass/components/_navigation-tabs.scss */
+.tab-content > .tab-pane {
+  min-height: 50px;
+  padding: 10px;
+}
+
+/* line 58, ../sass/components/_navigation-tabs.scss */
+.tab-content {
+  border: 1px solid #ddd;
+}
+
+/* line 61, ../sass/components/_navigation-tabs.scss */
+.tabScrollable .ng-isolate-scope .tab-content {
+  overflow: auto;
+  height: 200px;
+}
+
+/*** new tabs ***/
+/* line 72, ../sass/components/_navigation-tabs.scss */
+.nav-tabs li a {
+  border-radius: 6px 6px 0 0;
+}
+/* line 75, ../sass/components/_navigation-tabs.scss */
+.nav-tabs > li.active > a {
+  background: white;
+  color: #666666;
+}
+
+/* line 81, ../sass/components/_navigation-tabs.scss */
+.tab-content {
+  margin-bottom: 1.5em;
+  border-radius: 6px;
+}
+
+/* line 87, ../sass/components/_navigation-tabs.scss */
+.tab-pane {
+  background: red;
+}
+/* line 90, ../sass/components/_navigation-tabs.scss */
+.tab-pane.active {
+  background: white;
+}
+
 /* line 1, ../sass/components/_main-buttons.scss */
 .btn {
   background: #cccccc;
