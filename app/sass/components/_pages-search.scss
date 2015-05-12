@@ -190,8 +190,8 @@ $ancho:$unidad * 2;
   }
 .stars {
   overflow:hidden;
-  text-align:right;
-  
+  // text-align:right;
+  margin-bottom:10px;
   .star {
     font-size:0.875em;
     width:1.2em;
