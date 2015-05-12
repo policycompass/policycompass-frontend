@@ -274,7 +274,7 @@ footer .alert-paragraph {
 }
 /* line 70, ../sass/components/_pages.scss */
 footer .alert-paragraph:before {
-  content: "\f06a";
+  content: "\e606";
   position: absolute;
   left: -2em;
   font-size: 3em;
@@ -1082,12 +1082,12 @@ header .container {
 }
 /* line 204, ../sass/components/_pages-search.scss */
 .stars .star:before {
-  content: "\e61f";
+  content: "\e60b";
   position: absolute;
   top: 2px;
   left: 0px;
 }
 /* line 212, ../sass/components/_pages-search.scss */
 .stars .star-inactive:before {
-  content: "\e61e";
+  content: "\e60a";
 }
