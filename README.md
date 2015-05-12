@@ -37,3 +37,19 @@ npm run-script protractor
 ```
 node_modules/.bin/webdriver-manager update
 ```
+
+* Install Ruby/Sass/compass for compile css files: 
+* Ruby: https://www.ruby-lang.org/en/documentation/installation/ (http://rubyinstaller.org/ for Ruby for Windows)
+* install sass:
+```
+gem install sass
+* install compass:
+```
+gem install compass
+* the file config.rb defines the Sass variables and directories
+* for compile Sass files into Css while editing run command in the config.rb directory:
+```
+compass watch
+
+
+

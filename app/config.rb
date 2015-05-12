@@ -1,7 +1,7 @@
 #config.rb
-css_dir = "css" # Carpeta en donde iran los .css
-sass_dir = "sass" # Carpeta en donde iran los .scss
+css_dir = "css"
+sass_dir = "sass" 
 # extensions_dir  = "sass-extensions"
-images_dir = "images" # Carpeta en donde van las imagenes
+images_dir = "img" 
 javascripts_dir = "js"
 output_style = :expanded # :expanded, :nested, :compact, :compressed
