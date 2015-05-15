@@ -2961,26 +2961,8 @@ $scope.xAxisTickFormatFunction = function(){
 		//console.log("------------------");
 		//console.log($scope.visualization);
 		//console.log("------------------");
-		/*
-		var svgString = new XMLSerializer().serializeToString(document.querySelector('svg'));
-		var canvas = document.getElementById("canvas");
-		var ctx = canvas.getContext("2d");
-		var DOMURL = self.URL || self.webkitURL || self;		
-		var svg = new Blob([svgString], {type: "image/svg+xml;charset=utf-8"});
-		var imgurl = DOMURL.createObjectURL(svg);
-		//console.log(imgurl);
-		$scope.visualization.imageurl = imgurl;		
 		
-		Visualization.update($scope.visualization,function(value, responseHeaders){
-			$location.path('/visualizations/' + value.id);
-		},
-		function(err) {
-            throw { message: err.data};
-            //console.log(err.data)
-		}
-
-		);
-		*/
+		/*
 		var svgString = new XMLSerializer().serializeToString(document.querySelector('svg'));
 		var canvas = document.getElementById("canvas");
 		var ctx = canvas.getContext("2d");
@@ -3012,7 +2994,17 @@ $scope.xAxisTickFormatFunction = function(){
     		
 		};
 		img.src = imgurl;
-
+		*/
+		
+		Visualization.update($scope.visualization,function(value, responseHeaders){
+				$location.path('/visualizations/' + value.id);
+		},
+		function(err) {
+	           throw { message: err.data};
+	           //console.log(err.data)
+		}	
+		); 
+		
 	};
 
 	
@@ -3386,23 +3378,8 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 		console.log($scope.visualization);		
 		console.log("------------------");
 		*/
-		/*
-		var svgString = new XMLSerializer().serializeToString(document.querySelector('svg'));
-		var canvas = document.getElementById("canvas");
-		var ctx = canvas.getContext("2d");
-		var DOMURL = self.URL || self.webkitURL || self;		
-		var svg = new Blob([svgString], {type: "image/svg+xml;charset=utf-8"});
-		var imgurl = DOMURL.createObjectURL(svg);
-		//console.log(imgurl);
-		$scope.visualization.imageurl = imgurl;
 		
-		Visualization.save($scope.visualization,function(value, responseHeaders){
-			$location.path('/visualizations/' + value.id);
-		},
-		function(err) {
-            throw { message: err.data};
-		}
-		);*/
+		/*
 		var svgString = new XMLSerializer().serializeToString(document.querySelector('svg'));
 		var canvas = document.getElementById("canvas");
 		var ctx = canvas.getContext("2d");
@@ -3431,7 +3408,16 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 			
 		};
 		img.src = imgurl;		
+		*/
 		
+		Visualization.save($scope.visualization,function(value, responseHeaders){
+				$location.path('/visualizations/' + value.id);
+			},
+			function(err) {
+	            throw { message: err.data};
+			}
+			);  
+					
 	};
 
 
