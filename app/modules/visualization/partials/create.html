@@ -9,8 +9,9 @@
         <div class="form-group pull-left">
 				<canvas ng-show="false" id="canvas" width="800" height="400"></canvas>
 				<div id="png-container"></div>
-				<button type="submit"  ng-disabled="visualizationForm.$invalid" class="btn btn-default" ng-click="createVisualization(ListMetricsFilter)"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>				
-				<button type="submit" class="btn btn-default" ng-click="revertVisualization()">Revert</button>
+				<span class="helpbutton"></span>
+				<button type="submit" data-intro="Save data" data-position="top" ng-disabled="visualizationForm.$invalid" class="btn btn-default" ng-click="createVisualization(ListMetricsFilter)"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>				
+				<button type="submit" data-intro="Revert data" data-position="top" class="btn btn-default" ng-click="revertVisualization()">Revert</button>
 				
 				<!--				
 				<button ng-disabled="false" type="button" ng-class="{'btn btn-default':!isSelectedParent(1),'btn btn-info':isSelectedParent(1)}" ng-click="selectTabParent(1); selectTabSon('mercator');rePlotGraph();">Map</button>
@@ -23,16 +24,16 @@
 				<button type="button" ng-hide="!isSelectedParent(1)" ng-disabled="!isSelectedParent(1)" ng-class="{'btn btn-default':!isSelectedSon('azimuthalEqualArea'),'btn btn-info':isSelectedSon('azimuthalEqualArea')}" ng-click="selectTabParent(1);selectTabSon('azimuthalEqualArea');rePlotGraph();">Azimuthal Equal Area</button>
 				-->
 											
-				<button type="button" ng-class="{'btn btn-default':!isSelectedParent(2),'btn btn-info':isSelectedParent(2)}" ng-click="selectTabParent(2);selectTabSon('graph_line');rePlotGraph();">Graph</button>
+				<button type="button" data-intro="To plot data as Line, Pie or Bars chart" data-position="top" ng-class="{'btn btn-default':!isSelectedParent(2),'btn btn-info':isSelectedParent(2)}" ng-click="selectTabParent(2);selectTabSon('graph_line');rePlotGraph();">Graph</button>
 										
 				<!--
 				<button ng-hide="!isSelectedParent(2)" type="submit" ng-disabled="!isSelectedParent(2)" class="btn btn-default" ng-click="selectTabParent(2);selectTabSon('graph_line');rePlotGraph();">Line</button>
 				<button ng-hide="!isSelectedParent(2)" type="submit" ng-disabled="!isSelectedParent(2)" class="btn btn-default" ng-click="selectTabParent(2);selectTabSon('graph_pie');rePlotGraph();">Pie</button>
 				<button ng-hide="!isSelectedParent(2)" type="submit" ng-disabled="!isSelectedParent(2)" class="btn btn-default" ng-click="selectTabParent(2);selectTabSon('graph_bars');rePlotGraph();">Bars</button>
 				-->				
-				<button type="button" ng-hide="!isSelectedParent(2)" ng-disabled="!isSelectedParent(2)" ng-class="{'btn btn-default':!isSelectedSon('graph_line'),'btn btn-info':isSelectedSon('graph_line')}" ng-click="selectTabParent(2);selectTabSon('graph_line');rePlotGraph();">Line</button>
-				<button type="button" ng-hide="!isSelectedParent(2)" ng-disabled="!isSelectedParent(2)" ng-class="{'btn btn-default':!isSelectedSon('graph_pie'),'btn btn-info':isSelectedSon('graph_pie')}" ng-click="selectTabParent(2);selectTabSon('graph_pie');rePlotGraph();">Pie</button>
-				<button type="button" ng-hide="!isSelectedParent(2)" ng-disabled="!isSelectedParent(2)" ng-class="{'btn btn-default':!isSelectedSon('graph_bars'),'btn btn-info':isSelectedSon('graph_bars')}" ng-click="selectTabParent(2);selectTabSon('graph_bars');rePlotGraph();">Bars</button>
+				<button type="button" data-intro="Plot data as line chart" data-position="bottom" ng-hide="!isSelectedParent(2)" ng-disabled="!isSelectedParent(2)" ng-class="{'btn btn-default':!isSelectedSon('graph_line'),'btn btn-info':isSelectedSon('graph_line')}" ng-click="selectTabParent(2);selectTabSon('graph_line');rePlotGraph();">Line</button>
+				<button type="button" data-intro="Plot data as pie chart" data-position="bottom" ng-hide="!isSelectedParent(2)" ng-disabled="!isSelectedParent(2)" ng-class="{'btn btn-default':!isSelectedSon('graph_pie'),'btn btn-info':isSelectedSon('graph_pie')}" ng-click="selectTabParent(2);selectTabSon('graph_pie');rePlotGraph();">Pie</button>
+				<button type="button" data-intro="Plot data as bars chart" data-position="bottom" ng-hide="!isSelectedParent(2)" ng-disabled="!isSelectedParent(2)" ng-class="{'btn btn-default':!isSelectedSon('graph_bars'),'btn btn-info':isSelectedSon('graph_bars')}" ng-click="selectTabParent(2);selectTabSon('graph_bars');rePlotGraph();">Bars</button>
 	            		
         </div>
     </div>
@@ -195,7 +196,7 @@
     								
 						<div class="buttonline clearfix-min">	
 							<input ng-controller="controllercorrectmetriclist" type="hidden" ng-required="true" class="form-control" id="correctmetrics"  ng-model="correctmetrics" ng-repeat="numberrows in [ListMetricsFilter.length]">					
-							<button  type="submit" class="btn btn-primary button-metrics" id="addmetricsbutton" ng-click="addMetrictoList();findMetricsByFilter();">Add dataset</button>
+							<button data-intro="To find datasets" data-position="left" type="submit" class="btn btn-primary button-metrics" id="addmetricsbutton" ng-click="addMetrictoList();findMetricsByFilter();">Add dataset</button>
 							
 						</div>
 						<br />	
@@ -210,9 +211,9 @@
 							
 
 							<div class="metric-buttons">
-								<a type="button" class="btn btn-primary" ng-click="displaycontentMetric(metric.id);" id="edit-metric-button-{{metric.id}}">Edit</a>			    	
-						    	<button type="button" class="btn btn-danger" ng-click="deleteMetricFromList(metric.id, metric.title, ListMetricsFilter, $index);" id="delete-metric-button-{{metric.id}}">Delete</button>
-						    	<a type="button" class="btn btn-info" href="#/metrics/{{metric.id}}" target="_blank" id="view-metric-button-{{metric.id}}">View Dataset in detaill</a>						    	
+								<a type="button" data-intro="Edit dataset view properties" data-position="top" class="btn btn-primary" ng-click="displaycontentMetric(metric.id);" id="edit-metric-button-{{metric.id}}">Edit</a>			    	
+						    	<button type="button" data-intro="Delete dataset fomr the visualisation" data-position="top" class="btn btn-danger" ng-click="deleteMetricFromList(metric.id, metric.title, ListMetricsFilter, $index);" id="delete-metric-button-{{metric.id}}">Delete</button>
+						    	<a type="button" data-intro="Access to the dataset data" data-position="right" class="btn btn-info" href="#/metrics/{{metric.id}}" target="_blank" id="view-metric-button-{{metric.id}}">View Dataset in detaill</a>						    	
 						  	</div>
 
 							<div class="metric-forms" style="display: none;">
