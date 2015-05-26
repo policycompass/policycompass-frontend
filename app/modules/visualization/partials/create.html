@@ -196,7 +196,7 @@
     								
 						<div class="buttonline clearfix-min">	
 							<input ng-controller="controllercorrectmetriclist" type="hidden" ng-required="true" class="form-control" id="correctmetrics"  ng-model="correctmetrics" ng-repeat="numberrows in [ListMetricsFilter.length]">					
-							<button  type="submit" class="btn btn-primary button-metrics" id="addmetricsbutton" ng-click="addMetrictoList();findMetricsByFilter();">Add dataset</button>
+							<button data-intro="To find datasets" data-position="left" type="submit" class="btn btn-primary button-metrics" id="addmetricsbutton" ng-click="addMetrictoList();findMetricsByFilter();">Add dataset</button>
 							
 						</div>
 						<br />	
@@ -211,9 +211,9 @@
 							
 
 							<div class="metric-buttons">
-								<a type="button" class="btn btn-primary" ng-click="displaycontentMetric(metric.id);" id="edit-metric-button-{{metric.id}}">Edit</a>			    	
-						    	<button type="button" class="btn btn-danger" ng-click="deleteMetricFromList(metric.id, metric.title, ListMetricsFilter, $index);" id="delete-metric-button-{{metric.id}}">Delete</button>
-						    	<a type="button" class="btn btn-info" href="#/metrics/{{metric.id}}" target="_blank" id="view-metric-button-{{metric.id}}">View Dataset in detaill</a>						    	
+								<a type="button" data-intro="Edit dataset view properties" data-position="top" class="btn btn-primary" ng-click="displaycontentMetric(metric.id);" id="edit-metric-button-{{metric.id}}">Edit</a>			    	
+						    	<button type="button" data-intro="Delete dataset fomr the visualisation" data-position="top" class="btn btn-danger" ng-click="deleteMetricFromList(metric.id, metric.title, ListMetricsFilter, $index);" id="delete-metric-button-{{metric.id}}">Delete</button>
+						    	<a type="button" data-intro="Access to the dataset data" data-position="right" class="btn btn-info" href="#/metrics/{{metric.id}}" target="_blank" id="view-metric-button-{{metric.id}}">View Dataset in detaill</a>						    	
 						  	</div>
 
 							<div class="metric-forms" style="display: none;">
