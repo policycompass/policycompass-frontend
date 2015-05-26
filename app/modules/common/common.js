@@ -6,7 +6,8 @@
      'pcApp.common.directives.piecharts',
      'pcApp.common.directives.barscharts',
      'pcApp.common.directives.linescharts',
-     'pcApp.common.directives.wizard'
+     'pcApp.common.directives.wizard',
+     'pcApp.common.directives.helpbutton'
 ])
 
 commonmanager.config(function($routeProvider) {
