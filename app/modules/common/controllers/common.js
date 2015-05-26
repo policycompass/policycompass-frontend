@@ -32,6 +32,46 @@ Used to search metrics using ekasticsearch api
 }])
 */
 
+.factory('Progress', function (ngProgress, $http) {
+    var timer;
+    return {
+        start: function () {
+            var me = this;
+            // reset the status of the progress bar
+            me.reset();
+            // if the `complete` method is not called
+            // complete the progress of the bar after 5 seconds
+            timer = setTimeout(function () {
+                me.complete();
+            }, 5000);
+            
+            $http({method: 'GET', url: '/app'})
+      		.success(function(data, status, headers, config) {
+          		me.complete();
+       		});
+            
+        },
+        complete: function () {
+            ngProgress.complete();
+            if (timer) {
+                // remove the 5 second timer
+                clearTimeout(timer);
+                timer = null;
+            }
+        },
+        reset: function () {             
+            if (timer) {
+                // remove the 5 second timer
+                clearTimeout(timer);
+                // reset the progress bar
+                ngProgress.reset();
+            }
+            // start the progress bar
+            ngProgress.start();
+        }
+    };
+})
+     
 
 .controller('CommonController', ['$scope', '$location', function($scope, $location) {
     $scope.isActive = function (viewLocation) {
@@ -61,10 +101,11 @@ Used to search metrics using ekasticsearch api
     };
 }])
 
-.controller('StaticController', ['$scope', function($scope) {
+.controller('StaticController', ['$scope', '$modal', function($scope, $modal) {
 
 
-}])
+}])	
+
 
 /**
  * Controller for setting the UI Bootstrap date selection.
