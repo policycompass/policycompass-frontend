@@ -113,7 +113,7 @@ ol {
 
 /* line 21, ../sass/components/_normalize.scss */
 h1, h2, h3, h4 {
-  color: #038a89;
+  color: #9D5858;
 }
 
 /* line 25, ../sass/components/_normalize.scss */
@@ -198,7 +198,7 @@ body {
 
 /* line 44, ../sass/components/_backgrounds.scss */
 a {
-  color: #038a89;
+  color: #9D5858;
 }
 /* line 47, ../sass/components/_backgrounds.scss */
 a:hover {
@@ -283,44 +283,50 @@ footer .alert-paragraph:before {
 }
 
 /* line 83, ../sass/components/_pages.scss */
+footer .license {
+  margin-top: 20px;
+}
+
+/* line 87, ../sass/components/_pages.scss */
 #eu-logo {
   display: block;
   margin-top: 1em;
 }
 
-/* line 88, ../sass/components/_pages.scss */
+/* line 92, ../sass/components/_pages.scss */
 .footer-links {
   margin: .5em 0;
 }
-/* line 90, ../sass/components/_pages.scss */
+/* line 94, ../sass/components/_pages.scss */
 .footer-links a {
   border-right: 1px solid #cccccc;
   padding: 0 5px;
   color: #999999;
 }
-/* line 95, ../sass/components/_pages.scss */
+/* line 99, ../sass/components/_pages.scss */
 .footer-links li:last-of-type a {
   border-right: none;
 }
 
-/* line 97, ../sass/components/_pages.scss */
+/* line 101, ../sass/components/_pages.scss */
 .footer-wrapper > .col-lg-6:first-child {
   border-right: 1px solid #e5e5e5;
 }
 
-/* line 100, ../sass/components/_pages.scss */
+/* line 104, ../sass/components/_pages.scss */
 footer {
   border-top-color: #e5e5e5;
+  background: #ffffff;
 }
 
 @media (min-width: 480px) {
-  /* line 108, ../sass/components/_pages.scss */
+  /* line 113, ../sass/components/_pages.scss */
   #logo {
     width: 33.33333%;
   }
 }
 @media (min-width: 992px) {
-  /* line 118, ../sass/components/_pages.scss */
+  /* line 123, ../sass/components/_pages.scss */
   #logo {
     width: 16.66667%;
     margin-bottom: 10px;
@@ -385,7 +391,7 @@ footer {
   top: 10px;
   line-height: 1em;
   left: -116px;
-  color: #04C395;
+  color: #9D5858;
   padding: 0;
 }
 /* line 46, ../sass/components/_pages-create.scss */
@@ -775,13 +781,8 @@ header .container {
 
 /* line 1, ../sass/components/_main-buttons.scss */
 .btn {
-  background: #cccccc;
   border: 1px solid #999999;
-  background: #da995f;
-  background: #999999;
   /* colores claros */
-  background: linear-gradient(to bottom, #fafafa 0%, #e5e5e5 100%);
-  color: #666666;
   border-color: #b3b3b3;
 }
 /* line 17, ../sass/components/_main-buttons.scss */
@@ -853,7 +854,7 @@ header .container {
 
 /* line 63, ../sass/components/_myPolicyCompass.scss */
 .title:before {
-  color: #04C395;
+  color: #9D5858;
   padding-left: 0;
 }
 

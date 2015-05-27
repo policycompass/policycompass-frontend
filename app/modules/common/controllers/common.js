@@ -34,8 +34,9 @@ Used to search metrics using ekasticsearch api
 
 .factory('Progress', function (ngProgress, $http) {
     var timer;
-    return {
+    return {    	
         start: function () {
+        	ngProgress.color('#f6921e');
             var me = this;
             // reset the status of the progress bar
             me.reset();
