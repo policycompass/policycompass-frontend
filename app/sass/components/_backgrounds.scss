@@ -41,6 +41,13 @@ body {
   }
 }
 
+footer {
+  //background:linear-gradient(to bottom,$gris_95 0%,$gris_80 100%); 
+  //background: $footercolor;
+  background: $gris_95;
+  // border-top-color:red;
+}
+
 a {
   color:$bk_2_2;
   // text-decoration:none;

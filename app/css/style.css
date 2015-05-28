@@ -197,19 +197,24 @@ body {
 }
 
 /* line 44, ../sass/components/_backgrounds.scss */
+footer {
+  background: #f2f2f2;
+}
+
+/* line 51, ../sass/components/_backgrounds.scss */
 a {
   color: #9D5858;
 }
-/* line 47, ../sass/components/_backgrounds.scss */
+/* line 54, ../sass/components/_backgrounds.scss */
 a:hover {
   text-decoration: none;
   color: #f6921e;
 }
-/* line 51, ../sass/components/_backgrounds.scss */
+/* line 58, ../sass/components/_backgrounds.scss */
 a:hover h3 {
   color: #f6921e;
 }
-/* line 53, ../sass/components/_backgrounds.scss */
+/* line 60, ../sass/components/_backgrounds.scss */
 a:hover h3:before {
   color: #f6921e;
 }
@@ -316,17 +321,16 @@ footer .license {
 /* line 104, ../sass/components/_pages.scss */
 footer {
   border-top-color: #e5e5e5;
-  background: #ffffff;
 }
 
 @media (min-width: 480px) {
-  /* line 113, ../sass/components/_pages.scss */
+  /* line 111, ../sass/components/_pages.scss */
   #logo {
     width: 33.33333%;
   }
 }
 @media (min-width: 992px) {
-  /* line 123, ../sass/components/_pages.scss */
+  /* line 121, ../sass/components/_pages.scss */
   #logo {
     width: 16.66667%;
     margin-bottom: 10px;
