@@ -6,6 +6,7 @@ policycompass.viz.line = function(options)
 {
     // Object
 
+
     var self = {};
 
     // Get options data
@@ -14,8 +15,27 @@ policycompass.viz.line = function(options)
         
         self[key] = options[key];
 	}
-
+	
     self.parentSelect = "#"+self.idName;
+
+	self.maxWidth = self.width;
+	self.cntResizes = 0;
+	d3.select(window).on('resize', resize);
+	
+	function resize() {		
+		self.cntResizes = self.cntResizes+1;
+		if (self.cntResizes>1)
+		{
+			var element=document.getElementById(self.parentSelect.replace("#",''));
+			element.innerHTML = "";		
+			self.init();	
+			self.render(self.dataToPlot, self.eventsData, self.modeGraph);
+		}
+		else
+		{
+			self.init();
+		}
+	}
 	
 	//console.log("self.todelete="+self.todelete);
 
@@ -2069,7 +2089,8 @@ return 0;}
 	/*** funtion to init. graph ***/	   
     self.init = function () {
 
-
+		//resize();
+		
     		var mousemove = function() 
 			{
 					//console.log(d3.event.pageX);
@@ -2090,7 +2111,21 @@ return 0;}
 				self.svg.attr("transform", "translate(" + d3.event.translate + ")"
 					+ " scale(" + d3.event.scale + ")");
     	    };
-*/    	           	
+*/    	           
+
+		var selection = d3.select(self.parentSelect); 
+		var clientwidth = selection[0][0].clientWidth;
+		
+		if (self.maxWidth<clientwidth)
+		{
+			self.width = self.maxWidth;
+		}
+		else
+		{			
+			self.width=clientwidth-20;	
+		}
+		//console.log(self.parentSelect);
+	
 		self.svg = d3.select(self.parentSelect).append("svg")
 		    .attr("class","pc_chart")
 			.attr("width", self.width + self.margin.left + self.margin.right)
@@ -2172,6 +2207,10 @@ return 0;}
 		//console.log("eventsData");
 		//console.log(eventsData);
 		//console.log(modeGraph)
+		self.modeGraph = modeGraph;
+
+		self.dataToPlot = dataToPlot;
+		self.eventsData = eventsData;
 		self.modeGraph = modeGraph;
 
 		//console.log(self);						
