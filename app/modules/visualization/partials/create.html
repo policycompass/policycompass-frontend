@@ -24,7 +24,7 @@
 				<button type="button" ng-hide="!isSelectedParent(1)" ng-disabled="!isSelectedParent(1)" ng-class="{'btn btn-default':!isSelectedSon('azimuthalEqualArea'),'btn btn-info':isSelectedSon('azimuthalEqualArea')}" ng-click="selectTabParent(1);selectTabSon('azimuthalEqualArea');rePlotGraph();">Azimuthal Equal Area</button>
 				-->
 											
-				<button type="button" data-intro="To plot data as Line, Pie or Bars chart" data-position="top" ng-class="{'btn btn-default':!isSelectedParent(2),'btn btn-info':isSelectedParent(2)}" ng-click="selectTabParent(2);selectTabSon('graph_line');rePlotGraph();">Graph</button>
+				<button type="button" data-intro="To plot data as Line, Pie or Bars chart" data-position="top" ng-class="{'btn btn-default btn':!isSelectedParent(2),'btn btn-info':isSelectedParent(2)}" ng-click="selectTabParent(2);selectTabSon('graph_line');rePlotGraph();">Graph</button>
 										
 				<!--
 				<button ng-hide="!isSelectedParent(2)" type="submit" ng-disabled="!isSelectedParent(2)" class="btn btn-default" ng-click="selectTabParent(2);selectTabSon('graph_line');rePlotGraph();">Line</button>
@@ -196,7 +196,7 @@
     								
 						<div class="buttonline clearfix-min">	
 							<input ng-controller="controllercorrectmetriclist" type="hidden" ng-required="true" class="form-control" id="correctmetrics"  ng-model="correctmetrics" ng-repeat="numberrows in [ListMetricsFilter.length]">					
-							<button data-intro="To find datasets" data-position="left" type="submit" class="btn btn-primary button-metrics" id="addmetricsbutton" ng-click="addMetrictoList();findMetricsByFilter();">Add dataset</button>
+							<button data-intro="To find datasets" data-position="left" type="submit" class="btn btn-info button-metrics" id="addmetricsbutton" ng-click="addMetrictoList();findMetricsByFilter();">Add dataset</button>
 							
 						</div>
 						<br />	

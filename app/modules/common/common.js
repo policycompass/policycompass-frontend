@@ -1,4 +1,4 @@
- angular.module('pcApp.common',[
+ var commonmanager = angular.module('pcApp.common',[
      'pcApp.common.controllers',
      'pcApp.common.directives.search',
      'pcApp.common.directives.submenus',
@@ -6,10 +6,11 @@
      'pcApp.common.directives.piecharts',
      'pcApp.common.directives.barscharts',
      'pcApp.common.directives.linescharts',
-     'pcApp.common.directives.helpbutton',    
+     'pcApp.common.directives.wizard',
+     'pcApp.common.directives.helpbutton'
 ])
 
-.config(function($routeProvider) {
+commonmanager.config(function($routeProvider) {
     $routeProvider
         .when('/', {
             controller: 'StaticController',
@@ -42,4 +43,13 @@
             templateUrl: 'modules/common/partials/login.html'
         })
         .otherwise({ redirectTo: '/' });
-});
+})
+
+
+commonmanager.run(function(Progress, $rootScope) {
+	 $rootScope.$on('$locationChangeSuccess', function () {
+            Progress.start();
+        });
+})
+
+;

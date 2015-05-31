@@ -2,7 +2,7 @@ angular.module('pcApp.common.directives.linescharts', [
 
 ])		
 //esemple of use:
-//<div class="pcLinesChart" dataset="dataset" labels="labels" small="list"  mode="modeg" chartid="2" show-Legend="showLegend" show-Labels="showLabels"	show-Lines="showLines" show-Areas="showAreas" show-Points="showPoints" show-Grid="showGrid"	show-Together="showYAxes" show-Percentatge="showAsPercentatge" xaxeformat="xaxeformat"></div>
+//<div class="pcLinesChart" dataset="dataset" labels="labels" small="list"  mode="mode" chartid="2" show-Legend="showLegend" show-Labels="showLabels"	show-Lines="showLines" show-Areas="showAreas" show-Points="showPoints" show-Grid="showGrid"	show-Together="showYAxes" show-Percentatge="showAsPercentatge" xaxeformat="xaxeformat"></div>
 //dataset -> array. Content expected
 //array contetn like
 /*
@@ -18,8 +18,16 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
 //if mode = 'view' the legends can be clickable to hide/show lines
 /*
  in your controller:
- 	$scope.dataset =[{"Key":"USA_0","ValueX":["1989-01-01","2003-01-01","2004-01-01"],"ValueY":[99,33,53],"Type":"metric"},{"Key":"Germany_1","ValueX":["2000-01-01","2004-01-01","2010-01-01"],"ValueY":[14,66,33],"Type":"metric"},{"Key":"Canada_2","ValueX":["2001-01-01","2003-01-01","2004-01-01"],"ValueY":[33,54,12],"Type":"metric"},{"Key":"Spain_3","ValueX":["2002-01-01","2003-01-01","2004-01-01","2005-01-01"],"ValueY":[23,55,88,36],"Type":"metric"},{"Key":"Andorra_4","ValueX":["2003-01-01","2004-01-01"],"ValueY":[6,23],"Type":"metric"},{"Key":"Spain_5","ValueX":["1989-01-01","2011-01-01","2012-01-01"],"ValueY":[33,1,2],"Type":"metric"}];
+	$scope.dataset =[
+ 	{"Key":"USA_0","ValueX":["1","2","3"],"ValueY":[99,33,53],"Type":"metric"},
+ 	{"Key":"Germany_1","ValueX":["1","2","3"],"ValueY":[14,66,33],"Type":"metric"},
+ 	{"Key":"Canada_2","ValueX":["1","2","3"],"ValueY":[33,54,12],"Type":"metric"},
+ 	{"Key":"Spain_3","ValueX":["1","2","3"],"ValueY":[23,55,88],"Type":"metric"},
+ 	{"Key":"Andorra_4","ValueX":["1","2","3"],"ValueY":[6,23,21],"Type":"metric"},
+ 	{"Key":"Spain_5","ValueX":["1","2","3"],"ValueY":[33,1,2],"Type":"metric"}];
+
 	$scope.labels = ["Dollar","Dollar","Dollar","Dollar","Dollar","kg"];
+
 	$scope.showLegend = true;
 	$scope.showLabels = true;
 	$scope.showLines = true;
@@ -29,7 +37,8 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
 	$scope.showYAxes = true;
 	$scope.showAsPercentatge = false;
 	$scope.xaxeformat = 'sequence'
-	$scope.modeg= 'view';
+	$scope.mode= 'view';
+	$scope.chartid= '2'; 	
  */
 .directive('pcLinesChart', ['$log', 'API_CONF', function ($log,  API_CONF) {
 	
@@ -62,7 +71,7 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
              }
          }
      	},             
-        controller: function($scope, $element, $attrs, $location, dialogs){
+        controller: function($scope, $element, $attrs, $location, dialogs, $timeout){
                                     
 
 			tooltip =  d3.select("body").append("div")
@@ -89,84 +98,118 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
 			};
 
 			$scope.$watch('xaxeformat', function(xaxeformat) {
-				if ($scope.numbers1)
+				if (($scope.numbers1) && ($scope.chartid))
 				{
-					$scope.directivePlotLineChart();	
+					//$scope.directivePlotLineChart();	
+					$timeout($scope.directivePlotLineChart, 0);
 				}				
             });
 
 
 			$scope.$watch('labels', function(labels) {
-				if ($scope.numbers1)
+				if (($scope.numbers1) && ($scope.chartid))
 				{
-					$scope.directivePlotLineChart();	
+					//$scope.directivePlotLineChart();	
+					$timeout($scope.directivePlotLineChart, 0);
 				}				
             });
                                                 
 			$scope.$watch('showLegend', function(showLegend) {
-				if ($scope.numbers1)
+				if (($scope.numbers1) && ($scope.chartid))
 				{
-					$scope.directivePlotLineChart();	
+					//$scope.directivePlotLineChart();
+					$timeout($scope.directivePlotLineChart, 0);	
 				}				
             });
 
 			$scope.$watch('showLabels', function(showLabels) {
-				if ($scope.numbers1)
+				if (($scope.numbers1) && ($scope.chartid))
 				{
-					$scope.directivePlotLineChart();
+					//$scope.directivePlotLineChart();
+					$timeout($scope.directivePlotLineChart, 0);
 				}				
             });            
 
 			$scope.$watch('showLines', function(showLabels) {
-				if ($scope.numbers1)
+				if (($scope.numbers1) && ($scope.chartid))
 				{
-					$scope.directivePlotLineChart();
+					//$scope.directivePlotLineChart();
+					$timeout($scope.directivePlotLineChart, 0);
 				}				
             });  
 
 			$scope.$watch('showAreas', function(showAreas) {
-				if ($scope.numbers1)
+				if (($scope.numbers1) && ($scope.chartid))
 				{
-					$scope.directivePlotLineChart();
+					//$scope.directivePlotLineChart();
+					$timeout($scope.directivePlotLineChart, 0);
 				}				
             }); 
                     	
 			$scope.$watch('showPoints', function(showPoints) {
-				if ($scope.numbers1)
+				if (($scope.numbers1) && ($scope.chartid))
 				{
-					$scope.directivePlotLineChart();
+					//$scope.directivePlotLineChart();
+					$timeout($scope.directivePlotLineChart, 0);
 				}				
             });         	
 
 			$scope.$watch('showGrid', function(showGrid) {
-				if ($scope.numbers1)
+				if (($scope.numbers1) && ($scope.chartid))
 				{
-					$scope.directivePlotLineChart();
+					//$scope.directivePlotLineChart();
+					$timeout($scope.directivePlotLineChart, 0);
 				}				
             });
                     	            
 			$scope.$watch('showTogether', function(showTogether) {
-				if ($scope.numbers1)
+				if (($scope.numbers1) && ($scope.chartid))
 				{
-					$scope.directivePlotLineChart();
+					//$scope.directivePlotLineChart();
+					$timeout($scope.directivePlotLineChart, 0);
 				}
 				
             });
                         
             $scope.$watch('showPercentatge', function(showPercentatge) {
-				if ($scope.numbers1)
+				if (($scope.numbers1) && ($scope.chartid))
 				{
-					$scope.directivePlotLineChart();
+					//$scope.directivePlotLineChart();
+					$timeout($scope.directivePlotLineChart, 0);
 				}
 				
             });
+			
+			$scope.$watch('chartid', function(chartid) {
+				$scope.chartid=chartid;
+				
+				if (($scope.numbers1) && ($scope.chartid))
+				{
+					//$scope.directivePlotLineChart();
+					$timeout($scope.directivePlotLineChart, 0);
+				}
+				
+            });
+			
+
+        	$scope.$watchCollection('events', function(events) {
+        		
+				if (($scope.numbers1) && ($scope.chartid))
+				{
+					//$scope.directivePlotLineChart();
+					$timeout($scope.directivePlotLineChart, 0);
+				}
+
+        	});
+        	            
                                 	            
-			$scope.$watch('dataset', function(dataset) {
+			$scope.$watchCollection('dataset', function(dataset) {
 				numbers1=dataset;
 				$scope.numbers1=dataset;
-				if ($scope.numbers1)
+				if (($scope.numbers1) && ($scope.chartid))
 				{
-					$scope.directivePlotLineChart();
+					$timeout($scope.directivePlotLineChart, 0);
+					//$scope.directivePlotLineChart();
 				}
 				
             });
@@ -177,8 +220,16 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
 			$scope.directivePlotLineChart = function () {				
 				//console.log("directivePlotLineChart");
            				
-				//console.log($scope.chartid);
+				//console.log("$scope.chartid="+$scope.chartid);
 				$scope.iddiv="";
+				/*
+				if ($scope.xaxeformat=='sequence')
+				{			
+					document.getElementById("sequence").innerHTML = "";
+					$scope.iddiv="sequence";
+				}
+				else 
+				*/
 				if (document.getElementById("directive_container_lineschart_"+$scope.chartid) !=null)
 				{
 					document.getElementById("directive_container_lineschart_"+$scope.chartid).innerHTML = "";
@@ -188,13 +239,14 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
 				{
 					document.getElementById("directive_container_lineschart_").innerHTML = "";
 					$scope.iddiv="directive_container_lineschart_";
-				}
+				}				
 				else if ($scope.chartid)
-				{
-					document.getElementById("directive_container_lineschart_2").innerHTML = "";
+				{					
+					//document.getElementById("directive_container_lineschart_"+$scope.chartid).innerHTML = "";
 					$scope.iddiv="directive_container_lineschart_"+$scope.chartid;
 				}
-							
+			
+			
 				var legendsColumn = 0;
 				if ($scope.showLegend)
 				{
@@ -297,7 +349,7 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
 		'<label class="checkbox-inline"><input ng-model="showTogether"  type="checkbox" name="showTogether"  class="checkbox filterCheckBox"> Show only one Y axe</label>' +
         '<label class="checkbox-inline"><input ng-model="showPercentatge" type="checkbox" name="showPercentatge" class="checkbox filterCheckBox"> Show as %</label>' +
         '</div>' +
-        '<div id="directive_container_lineschart_{{chartid}}" class="container_graph directive_container_chart directive_container_chart_{{chartid}}">' +        
+        '<div id="directive_container_lineschart_{{chartid}}" class="{{xaxeformat}} pcchart container_graph directive_container_chart directive_container_chart_{{chartid}}">' +        
         '<div class="loading-container">'+
 			'<div ng-hide="small">'+
 				'<div class="loading"></div>'+

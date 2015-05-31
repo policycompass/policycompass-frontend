@@ -1,0 +1,42 @@
+.btn {
+    //background:$gris_80;
+    // padding:4px 10px 2px;
+    // border-radius:$radius;
+    border:1px solid $gris_60;
+    //background:#da995f;
+    //background:$gris_60;
+    
+    /* colores claros */
+    //background:linear-gradient(to bottom, $gris_98 0%, $gris_90 100%); 
+    //color:$general;
+    border-color:$gris_70;
+    
+    &:before {
+      
+    }
+    &.active, &:hover , &:focus {
+      background:$bk;
+      border-color:$gris_50;
+      color:white;
+      
+    }
+    &.disabled {
+       background:$gris_90;
+       text-shadow:none;
+       color:$gris_70;
+       background:transparent;
+       border-color:$gris_80;
+    }    
+    &.disabled {
+       // background:$gris_70;
+       // border-color:$gris_70;
+       // color:$gris_90;
+       
+       // opacity:0.7;
+       // text-shadow:none;
+       // color:$gris_70;
+       // background:transparent;
+       // border-color:$gris_80;
+    }
+  
+}

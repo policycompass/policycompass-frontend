@@ -45,7 +45,7 @@ angular.module('pcApp.common.directives.search', [
         	//to set the input metrics list as selected
         	
         	
-			$scope.$watch('metricsList', function(metricsList) {
+			$scope.$watchCollection('metricsList', function(metricsList) {
 
 				$scope.MetricSelectediId_ = [];
 	        	if (isNaN($scope.numberMaxMetrics))
