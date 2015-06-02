@@ -144,24 +144,6 @@ pre {
 .rating{
     color: #f7941e;
 }
-/* footer*/
-footer{
-    border-top: 1px solid #CCCCCC;
-}
-.footer-wrapper a{
-    color: #58595b;
-    font-weight: 400;
-}
-.footer-wrapper >.col-lg-6:first-child{
-    border-right: 1px solid #CCCCCC;
-}
-.footer-wrapper a:hover,.footer-wrapper a:focus,.footer-wrapper a:active{
-    color:#fa8800;
-    font-weight: 400;
-    -webkit-transition: color 300ms ease-out;
-    -moz-transition: color 300ms ease-out;
-    transition: color 300ms ease-out;
-}
 
 /*Fcm Page*/
 .fcm-editor-icon{

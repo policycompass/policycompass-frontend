@@ -6,6 +6,7 @@
   font-weight: normal;
   font-style: normal;
 }
+
 /* line 25, ../sass/_base.scss */
 .row-view-create .view-item-wrap:before,
 .searchItemIcon a:before,
@@ -42,7 +43,7 @@ a:before {
   display: inline-block;
 }
 
-/* line 76, ../sass/_base.scss */
+/* line 77, ../sass/_base.scss */
 .cf:before,
 .cf:after {
   content: " ";
@@ -104,7 +105,7 @@ img {
   max-width: 100%;
 }
 
-/* line 15, ../sass/components/_normalize.scss */
+/* line 17, ../sass/components/_normalize.scss */
 p,
 ul,
 ol {
@@ -113,7 +114,7 @@ ol {
 
 /* line 21, ../sass/components/_normalize.scss */
 h1, h2, h3, h4 {
-  color: #9D5858;
+  color: #9d5858;
 }
 
 /* line 25, ../sass/components/_normalize.scss */
@@ -127,7 +128,7 @@ h2.page-title {
   margin-top: 0;
 }
 
-/* line 33, ../sass/components/_normalize.scss */
+/* line 34, ../sass/components/_normalize.scss */
 h2.page-title,
 .subtitle {
   padding-right: 10px;
@@ -158,63 +159,69 @@ h1, h2 {
 body {
   background: white;
   background: #fafafa;
+  background: #f2f2f2;
 }
 
-/* line 9, ../sass/components/_backgrounds.scss */
+/* line 10, ../sass/components/_backgrounds.scss */
 #logo a {
   display: block;
   float: left;
 }
 
-/* line 12, ../sass/components/_backgrounds.scss */
+/* line 13, ../sass/components/_backgrounds.scss */
 header {
   background: linear-gradient(to bottom, #fafafa 0%, #f2f2f2 99.5%, #e5e5e5);
 }
 
-/* line 17, ../sass/components/_backgrounds.scss */
+/* line 18, ../sass/components/_backgrounds.scss */
 #content {
   background: linear-gradient(to bottom, #f2f2f2 0%, #fafafa 10px);
   border-top: 1px solid #dddddd;
 }
 
-/* line 27, ../sass/components/_backgrounds.scss */
+/* line 25, ../sass/components/_backgrounds.scss */
+#main-content {
+  background: #fafafa;
+}
+
+/* line 30, ../sass/components/_backgrounds.scss */
 body {
   color: #666666;
 }
 
-/* line 31, ../sass/components/_backgrounds.scss */
+/* line 34, ../sass/components/_backgrounds.scss */
 .fcm-editor {
   background: #e5e5e5;
 }
-/* line 33, ../sass/components/_backgrounds.scss */
+/* line 36, ../sass/components/_backgrounds.scss */
 .fcm-editor #header {
   background: linear-gradient(to bottom, #f2f2f2 0%, #cccccc 100%);
 }
-/* line 37, ../sass/components/_backgrounds.scss */
+/* line 40, ../sass/components/_backgrounds.scss */
 .fcm-editor #content {
   background: linear-gradient(to bottom, #cccccc 0%, #e5e5e5 10px);
   border-top: 1px solid #ababab;
 }
 
-/* line 44, ../sass/components/_backgrounds.scss */
+/* line 47, ../sass/components/_backgrounds.scss */
 footer {
-  background: #f2f2f2;
+  background: linear-gradient(to bottom, #ededed, #f2f2f2 10px);
 }
 
-/* line 51, ../sass/components/_backgrounds.scss */
-a {
-  color: #9D5858;
-}
 /* line 54, ../sass/components/_backgrounds.scss */
+a {
+  color: #9d5858;
+}
+/* line 57, ../sass/components/_backgrounds.scss */
 a:hover {
   text-decoration: none;
   color: #f6921e;
 }
-/* line 58, ../sass/components/_backgrounds.scss */
+/* line 61, ../sass/components/_backgrounds.scss */
 a:hover h3 {
   color: #f6921e;
 }
-/* line 60, ../sass/components/_backgrounds.scss */
+/* line 63, ../sass/components/_backgrounds.scss */
 a:hover h3:before {
   color: #f6921e;
 }
@@ -267,70 +274,27 @@ a:hover h3:before {
   color: #999999;
 }
 
-/* line 63, ../sass/components/_pages.scss */
-footer {
-  font-size: .875em;
-  color: #999999;
-  padding-top: 2em;
+/* line 62, ../sass/components/_pages.scss */
+.flex-container {
+  display: flex;
+  flex-flow: row wrap;
+  margin-left: -10px;
+  margin-right: -10px;
 }
-/* line 67, ../sass/components/_pages.scss */
-footer .alert-paragraph {
-  position: relative;
-}
-/* line 70, ../sass/components/_pages.scss */
-footer .alert-paragraph:before {
-  content: "\e606";
-  position: absolute;
-  left: -2em;
-  font-size: 3em;
-  color: #f6921e;
-  color: #cccccc;
-}
-
-/* line 83, ../sass/components/_pages.scss */
-footer .license {
-  margin-top: 20px;
-}
-
-/* line 87, ../sass/components/_pages.scss */
-#eu-logo {
-  display: block;
-  margin-top: 1em;
-}
-
-/* line 92, ../sass/components/_pages.scss */
-.footer-links {
-  margin: .5em 0;
-}
-/* line 94, ../sass/components/_pages.scss */
-.footer-links a {
-  border-right: 1px solid #cccccc;
-  padding: 0 5px;
-  color: #999999;
-}
-/* line 99, ../sass/components/_pages.scss */
-.footer-links li:last-of-type a {
-  border-right: none;
-}
-
-/* line 101, ../sass/components/_pages.scss */
-.footer-wrapper > .col-lg-6:first-child {
-  border-right: 1px solid #e5e5e5;
-}
-
-/* line 104, ../sass/components/_pages.scss */
-footer {
-  border-top-color: #e5e5e5;
+/* line 88, ../sass/_custom.scss */
+.flex-container > div {
+  padding-right: 10px;
+  padding-left: 10px;
 }
 
 @media (min-width: 480px) {
-  /* line 111, ../sass/components/_pages.scss */
+  /* line 67, ../sass/components/_pages.scss */
   #logo {
     width: 33.33333%;
   }
 }
 @media (min-width: 992px) {
-  /* line 121, ../sass/components/_pages.scss */
+  /* line 77, ../sass/components/_pages.scss */
   #logo {
     width: 16.66667%;
     margin-bottom: 10px;
@@ -395,7 +359,7 @@ footer {
   top: 10px;
   line-height: 1em;
   left: -116px;
-  color: #9D5858;
+  color: #9d5858;
   padding: 0;
 }
 /* line 46, ../sass/components/_pages-create.scss */
@@ -519,11 +483,11 @@ footer {
   color: #666666;
   padding: 10px 15px 30px 5px;
 }
-/* line 42, ../sass/components/_navigation.scss */
+/* line 43, ../sass/components/_navigation.scss */
 #main-menu a:focus, #main-menu a:hover {
   color: white;
-  background: #907F4B;
-  background: #808080;
+  background: #907f4b;
+  background: gray;
   text-decoration: none;
 }
 /* line 58, ../sass/components/_navigation.scss */
@@ -554,9 +518,9 @@ header .container {
   overflow: hidden;
   background: linear-gradient(to bottom, #808080, #b3b3b3);
   /* animacion */
+  -webkit-transition: all 0.4s linear;
   -moz-transition: all 0.4s linear;
   -o-transition: all 0.4s linear;
-  -webkit-transition: all 0.4s linear;
   transition: all 0.4s linear;
   height: 1px;
   opacity: 0;
@@ -637,7 +601,7 @@ header .container {
   margin: 0;
   padding: 0;
 }
-/* line 187, ../sass/components/_navigation.scss */
+/* line 188, ../sass/components/_navigation.scss */
 #main-menu li,
 #main-menu a {
   display: block;
@@ -698,12 +662,12 @@ header .container {
   border-bottom: 0px !important;
 }
 
-/* line 22, ../sass/components/_navigation-tabs.scss */
+/* line 23, ../sass/components/_navigation-tabs.scss */
 .nav-tabs.nav-justified > .active > a, .nav-tabs.nav-justified > .active > a:hover, .nav-tabs.nav-justified > .active > a:focus
 .nav-pills > li > a:hover, .nav-pills > li > a:focus {
   text-decoration: none;
   background-color: #f7941e;
-  color: #fff;
+  color: white;
   cursor: pointer;
 }
 
@@ -733,7 +697,7 @@ header .container {
 .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover {
   text-decoration: none;
   background-color: #f7941e;
-  color: #fff;
+  color: white;
 }
 
 /* line 48, ../sass/components/_navigation-tabs.scss */
@@ -792,7 +756,7 @@ header .container {
 /* line 17, ../sass/components/_main-buttons.scss */
 .btn.active, .btn:hover, .btn:focus {
   background: #f6921e;
-  border-color: #808080;
+  border-color: gray;
   color: white;
 }
 /* line 23, ../sass/components/_main-buttons.scss */
@@ -815,7 +779,7 @@ header .container {
   float: left;
   margin-right: 20px;
 }
-/* line 10, ../sass/components/_myPolicyCompass.scss */
+/* line 12, ../sass/components/_myPolicyCompass.scss */
 .user-info .user-name,
 .user-info .user-mail,
 .user-info .user-role {
@@ -858,7 +822,7 @@ header .container {
 
 /* line 63, ../sass/components/_myPolicyCompass.scss */
 .title:before {
-  color: #9D5858;
+  color: #9d5858;
   padding-left: 0;
 }
 
@@ -1017,7 +981,7 @@ header .container {
   content: "\e170";
 }
 
-/* line 2, ../sass/components/_pages-search.scss */
+/* line 3, ../sass/components/_pages-search.scss */
 .browse-filters,
 .search-content {
   padding-right: 10px;
@@ -1053,7 +1017,7 @@ header .container {
   overflow: hidden;
 }
 
-/* line 35, ../sass/components/_pages-search.scss */
+/* line 36, ../sass/components/_pages-search.scss */
 .num-results-wrap,
 .filterbar {
   padding-right: 10px;
@@ -1348,9 +1312,9 @@ ul.toc .active {
   padding-top: 20%;
   color: white;
   opacity: 0;
+  -webkit-transition: all 0.4s linear;
   -moz-transition: all 0.4s linear;
   -o-transition: all 0.4s linear;
-  -webkit-transition: all 0.4s linear;
   transition: all 0.4s linear;
   position: absolute;
 }
@@ -1364,16 +1328,16 @@ ul.toc .active {
   color: #cccccc;
   opacity: .9;
   display: block;
+  -webkit-transition: all 0.4s linear;
   -moz-transition: all 0.4s linear;
   -o-transition: all 0.4s linear;
-  -webkit-transition: all 0.4s linear;
   transition: all 0.4s linear;
   transform: translateX(-50%) translateY(-50%);
 }
 /* line 219, ../sass/components/_pages-want.scss */
 .want-list .want-item:hover h3 a {
   opacity: 1;
-  background: #808080;
+  background: gray;
   padding-top: 20%;
 }
 /* line 225, ../sass/components/_pages-want.scss */
@@ -1468,9 +1432,9 @@ ul.toc .active {
 
 /* line 318, ../sass/components/_pages-want.scss */
 #modal-background {
+  -webkit-transition: all 0.2s linear;
   -moz-transition: all 0.2s linear;
   -o-transition: all 0.2s linear;
-  -webkit-transition: all 0.2s linear;
   transition: all 0.2s linear;
   opacity: 0;
 }
@@ -1602,3 +1566,153 @@ ul.toc .active {
   left: auto;
   right: 1%;
 }
+
+/* line 1, ../sass/components/_pages-footer.scss */
+#footer {
+  padding-top: 2em;
+  padding-bottom: 2em;
+  font-size: .825em;
+  color: #999999;
+}
+/* line 6, ../sass/components/_pages-footer.scss */
+#footer a {
+  color: #999999;
+}
+/* line 10, ../sass/components/_pages-footer.scss */
+#footer .footer-links {
+  list-style-type: none;
+  list-style-image: none;
+  margin: 0;
+  padding: 0;
+}
+/* line 12, ../sass/components/_pages-footer.scss */
+#footer .footer-links li {
+  display: inline-block;
+  border-right: 1px solid #cccccc;
+  padding: 5px 10px;
+}
+/* line 16, ../sass/components/_pages-footer.scss */
+#footer .footer-links li:last-of-type {
+  border-right: none;
+}
+/* line 22, ../sass/components/_pages-footer.scss */
+#footer .flag-wrap {
+  display: flex;
+  flex-flow: row wrap;
+  margin-left: -10px;
+  margin-right: -10px;
+}
+/* line 88, ../sass/_custom.scss */
+#footer .flag-wrap > div {
+  padding-right: 10px;
+  padding-left: 10px;
+}
+/* line 24, ../sass/components/_pages-footer.scss */
+#footer .flag-wrap > div {
+  width: 16.66667%;
+}
+/* line 27, ../sass/components/_pages-footer.scss */
+#footer .flag-wrap .cols-flag-text {
+  width: 83.33333%;
+}
+/* line 33, ../sass/components/_pages-footer.scss */
+#footer .alert-paragraph {
+  position: relative;
+}
+/* line 37, ../sass/components/_pages-footer.scss */
+#footer .license-image {
+  float: left;
+  margin-right: 20px;
+}
+/* line 41, ../sass/components/_pages-footer.scss */
+#footer .alert-paragraph:before {
+  content: "\e606";
+}
+/* line 52, ../sass/components/_pages-footer.scss */
+#footer .footer-wrapper > div {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+@media (min-width: 992px) {
+  /* line 60, ../sass/components/_pages-footer.scss */
+  #footer .footer-wrapper {
+    display: flex;
+    flex-flow: row wrap;
+    margin-left: -10px;
+    margin-right: -10px;
+  }
+  /* line 88, ../sass/_custom.scss */
+  #footer .footer-wrapper > div {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+  /* line 62, ../sass/components/_pages-footer.scss */
+  #footer .footer-wrapper > div {
+    width: 50%;
+  }
+  /* line 68, ../sass/components/_pages-footer.scss */
+  #footer .footer-wrapper .footer-links {
+    margin-top: 1em;
+  }
+}
+
+/*
+footer{
+    border-top: 1px solid #CCCCCC;
+}
+.footer-wrapper a{
+    color: #58595b;
+    font-weight: 400;
+}
+.footer-wrapper >.col-lg-6:first-child{
+    border-right: 1px solid #CCCCCC;
+}
+.footer-wrapper a:hover,.footer-wrapper a:focus,.footer-wrapper a:active{
+    color:#fa8800;
+    font-weight: 400;
+    -webkit-transition: color 300ms ease-out;
+    -moz-transition: color 300ms ease-out;
+    transition: color 300ms ease-out;
+}
+
+
+
+
+
+footer {
+  font-size:.875em;
+  color:$claro;
+  padding-top:2em;
+  
+  
+}
+
+footer .license {
+  margin-top: 20px;  
+}
+
+#eu-logo {
+  display:block;
+  margin-top:1em;
+}
+
+.footer-links {
+  margin:.5em 0;
+  a {
+    border-right:1px solid $gris_80;
+    padding:0 5px;
+     color:$claro;
+  }
+  li:last-of-type a {border-right:none;}
+}
+.footer-wrapper > .col-lg-6:first-child {
+  border-right: 1px solid $gris_90;
+}
+footer {
+  border-top-color:$gris_90;
+  a {
+   
+  }
+}
+
+*/

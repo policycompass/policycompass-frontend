@@ -59,54 +59,10 @@ body > header {
   color:$claro;
   
 }
-
-footer {
-  font-size:.875em;
-  color:$claro;
-  padding-top:2em;
-  .alert-paragraph {
-    position:relative;
-  }
-  .alert-paragraph:before {
-    content:"\e606";
-    position:absolute;
-    left:-2em;
-    font-size:3em;
-    color:$bk;
-    color:lighten($claro, 20);
-    
-  
-  }
-  
+.flex-container {
+  @include  flex-container();
 }
 
-footer .license {
-  margin-top: 20px;  
-}
-
-#eu-logo {
-  display:block;
-  margin-top:1em;
-}
-
-.footer-links {
-  margin:.5em 0;
-  a {
-    border-right:1px solid $gris_80;
-    padding:0 5px;
-     color:$claro;
-  }
-  li:last-of-type a {border-right:none;}
-}
-.footer-wrapper > .col-lg-6:first-child {
-  border-right: 1px solid $gris_90;
-}
-footer {
-  border-top-color:$gris_90;
-  a {
-   
-  }
-}
 @media (min-width:$device_4) {
   #logo {
     width:$unidad * 4;
@@ -124,4 +80,6 @@ footer {
     margin-top:10px;
   }
 }
+
+
 
