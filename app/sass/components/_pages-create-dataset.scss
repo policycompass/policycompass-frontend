@@ -2,4 +2,63 @@
   .fonticon-dataset:before {
     content: "\e611";
   }
+  .content-header {
+    position:relative;
+  }
+  
+  
 }
+
+.help-switch {
+  float:left;
+  &:before {
+  content: "\e30f";
+  }
+
+}
+.dataset-create-table {
+  background:white;
+  font-size:.875em;
+  width:100%;
+  border:1px solid $gris_70;
+  td:nth-child(1),
+  th {
+    text-align:center;
+    background:$gris_95;
+  }
+  
+  td,
+  th {
+    padding:3px 6px;
+  }
+  td {
+    border:1px solid $gris_90;
+  }
+  tbody tr:nth-child(odd) {
+    background:transparentize($gris_95,.5);
+  }
+  td:nth-child(odd) {
+    background:transparentize($gris_95,.7);
+  }
+
+}
+.help-text {
+    position:absolute;
+    top:100px;
+    left:10px;
+    width:650px;
+    background:white;
+    padding:20px;
+    border:1px solid $gris_70;
+    box-shadow:5px 5px 10px transparentize($gris_50,.5);
+    border-radius:$radius;
+    display:none;
+    
+    &.active {
+      // background:green;
+      display:block;
+      z-index:2;
+    }
+  }
+  
+  

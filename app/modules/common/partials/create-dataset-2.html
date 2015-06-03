@@ -2,25 +2,24 @@
 <div class="content-header">
     <h3 class="fonticon fonticon-dataset">Create Dataset</h3>
     <div class="subtitle-help">
-    <h4><div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div> Step 1 - Provide Source Data</h4>
+    <h4><div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div>Step 2 - Class and Metadata</h4>
     
     <div ng-class="{active: help}" class="help-text">
     
-<p>Provide your source data, either by typing or copying it into the data grid or by uploading a file(CSV, XLS, XLSX). You can easely pre-edit your data here.</p>
+<p>Your data refers to a specific class type. e.g several couontries. Please select your class type. The instances for a class type, e.g. France for class type Country are called individuals.</p>
+<p>Pick the corresponding cells in the source data which represent your individuals.
+        Furthermore you can add specific metadata in order to describe your dataset in more detail. For example: Create a dataset for serveral countries, but just refering to women.
+        If you want to refer to men as well you need to create another dataset.</p>
     </div>
     </div>
     <ul class="navigation-steps">
-      <li><a href="" class="btn btn-prev">Previous Step</a></li>
-      <li><a href="#/create-dataset-2" class="btn btn-next">Next Step</a></li>
+      <li><a href="#/create-dataset" class="btn btn-prev">Previous Step</a></li>
+      <li><a href="" class="btn btn-next">Next Step</a></li>
     </ul>
   </div>
-      <div class="pc-visualization-formcontrols">
-        <div class="button-group"><button type="submit"  class="btn btn-rotate">Rotate Data</button>		
-          <button type="submit"  class="btn btn-clear">Clear Grid</button>				
-          <button type="submit"  class="btn btn-xy">Option XY</button>				
-          <button type="submit"  class="btn btn-file">From File</button>		</div>		
-      </div>
-    <div class="content-body">
+
+    <div class="content-body content-body-2 row">
+      <div class="content-column-main">
       <table class="dataset-create-table">
         <thead>
         <th></th>
@@ -215,5 +214,44 @@
           </tr>
         </tbody>
       </table>
+      </div>
+      <div class="content-column-second">
+        <div class="block block-tag">
+        <h5>Class type</h5>
+          <select>
+            <option value="country">Country</option>
+            <option value="age">Age Class</option>
+            <option value="gender">Gender</option>
+            
+          </select><div class="block-button-bar">
+          <input type="submit" value="Not there yet? Make a Request" class="btn">
+          </div>
+          
+        </div>
+        <div class="block block-tag">
+        <h5>Metadata</h5>
+          <select>
+            <option value="country">Country</option>
+            <option value="age">Age Class</option>
+            <option value="gender">Death Rate</option>
+            
+          </select>
+
+          
+
+        <h5>Gender</h5>
+          <select>
+            <option value="country">Male</option>
+            <option value="age">Female</option>
+            <option value="gender">Death Rate</option>
+            
+          </select>
+<div class="block-button-bar">
+               <input type="submit" value="Add" class="btn">
+                         <input type="submit" value="Not there yet? Make a Request" class="btn">
+             </div>
+          
+        </div>
+      </div>
     </div>
 </div>

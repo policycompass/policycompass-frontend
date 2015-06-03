@@ -20,3 +20,26 @@
     
   }
 }
+
+
+.content-body-2 {
+  $width:$unidad * 3;
+  .content-column-main,
+  .content-column-second {
+    // background:$gris_80;
+    @include paddings();
+  }
+  .content-column-main {
+    margin-left:$width;
+    width:100% - $width;
+    margin-right:-100%;
+    float:left;
+  }
+  .content-column-second {
+    width:$width;
+    float:left;
+    margin-right:-$width;
+  
+  }
+}
+

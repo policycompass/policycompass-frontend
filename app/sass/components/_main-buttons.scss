@@ -114,12 +114,36 @@ opacity:.5;
 .helpbutton .btn:before {
   content: "\e617";
 }
+.btn-rotate:before {
+  content: "\e984";
+}
+.btn-clear:before {
+  content: "\e60d";
+}
+.btn-xy:before {
+  content: "\ea45";
+}
+.btn-file:before {
+  content: "\e92f";
+}
+.btn-prev:before {
+  content: "\e601";
+}
+.btn-next:after {
+  content: "\e602";
+}
+
+
+
 .btn:before {
   opacity:.7;
   &:hover {
     opacity:1;
   }
 }
+
+
+
 
 .button-group {
   // outline:2px solid black;
@@ -142,6 +166,31 @@ opacity:.5;
       border-radius:0 $radius $radius 0;  
     }
      &:not(:last-of-type) {
+      border-right:none;
+    }
+  }
+}
+
+
+.navigation-steps {
+  @include reset-list();
+  position:absolute;
+  top:30px;
+  right:20px;
+  li {
+    float:left;
+    a {
+      float:left;
+      margin:0;
+       border-radius:0;
+    }
+    &:first-of-type a {
+      border-radius:$radius 0 0 $radius;  
+    }
+    &:last-of-type  a {
+      border-radius:0 $radius $radius 0;  
+    }
+    &:not(:last-of-type)  a {
       border-right:none;
     }
   }
