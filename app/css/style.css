@@ -7,7 +7,8 @@
   font-style: normal;
 }
 
-/* line 25, ../sass/_base.scss */
+/* line 27, ../sass/_base.scss */
+.btn:before,
 .row-view-create .view-item-wrap:before,
 .searchItemIcon a:before,
 .columns-create-submenu-icon:before,
@@ -27,7 +28,14 @@ a:before {
   line-height: 1em;
 }
 
-/* line 60, ../sass/_base.scss */
+/* line 34, ../sass/_base.scss */
+.btn-parent:after {
+  padding-left: 0.5em;
+  font-family: policy;
+  line-height: 1em;
+}
+
+/* line 70, ../sass/_base.scss */
 .clearfix-min:after,
 .clearfix:after {
   content: ".";
@@ -38,12 +46,12 @@ a:before {
   height: 0;
 }
 
-/* line 70, ../sass/_base.scss */
+/* line 80, ../sass/_base.scss */
 .clearfix {
   display: inline-block;
 }
 
-/* line 77, ../sass/_base.scss */
+/* line 87, ../sass/_base.scss */
 .cf:before,
 .cf:after {
   content: " ";
@@ -52,17 +60,17 @@ a:before {
   /* 2 */
 }
 
-/* line 82, ../sass/_base.scss */
+/* line 92, ../sass/_base.scss */
 .cf:after {
   clear: both;
 }
 
-/* line 87, ../sass/_base.scss */
+/* line 97, ../sass/_base.scss */
 html[xmlns] .clearfix {
   display: block;
 }
 
-/* line 91, ../sass/_base.scss */
+/* line 101, ../sass/_base.scss */
 * html .clearfix {
   height: 1%;
 }
@@ -233,8 +241,8 @@ a:hover h3:before {
 }
 
 /* line 8, ../sass/components/_pages.scss */
-.main-content {
-  padding-bottom: 4em;
+#main-content {
+  padding-bottom: 2em;
 }
 
 /* line 13, ../sass/components/_pages.scss */
@@ -328,7 +336,13 @@ a:hover h3:before {
   border-radius: 0 4px 4px 0;
 }
 
-/* line 5, ../sass/components/_pages-create.scss */
+/* line 7, ../sass/components/_pages-create.scss */
+.pc-visualization-formcontrols button {
+  float: left;
+  margin-right: 10px;
+}
+
+/* line 19, ../sass/components/_pages-create.scss */
 .row-view-create .view-item {
   width: 48%;
   margin-left: 1%;
@@ -338,18 +352,18 @@ a:hover h3:before {
   padding: 25px 10px;
   border: 1px solid #fafafa;
 }
-/* line 18, ../sass/components/_pages-create.scss */
+/* line 32, ../sass/components/_pages-create.scss */
 .row-view-create .view-item:hover {
   border: 1px solid #e5e5e5;
   border-radius: 1em;
   background: white;
 }
-/* line 25, ../sass/components/_pages-create.scss */
+/* line 39, ../sass/components/_pages-create.scss */
 .row-view-create .view-item-wrap {
   position: relative;
   margin-left: 116px;
 }
-/* line 30, ../sass/components/_pages-create.scss */
+/* line 44, ../sass/components/_pages-create.scss */
 .row-view-create .view-item-wrap:before {
   content: "\e615";
   font-size: 96px;
@@ -360,17 +374,32 @@ a:hover h3:before {
   color: #9d5858;
   padding: 0;
 }
-/* line 46, ../sass/components/_pages-create.scss */
+/* line 60, ../sass/components/_pages-create.scss */
 .row-view-create .view-item-metrics .view-item-wrap:before {
   content: "\e613";
 }
-/* line 49, ../sass/components/_pages-create.scss */
+/* line 63, ../sass/components/_pages-create.scss */
 .row-view-create .view-item-events .view-item-wrap:before {
   content: "\e612";
 }
-/* line 52, ../sass/components/_pages-create.scss */
+/* line 66, ../sass/components/_pages-create.scss */
 .row-view-create .view-item-models .view-item-wrap:before {
   content: "\e610";
+}
+
+/* line 73, ../sass/components/_pages-create.scss */
+.showFilterContainer {
+  font-size: .875em;
+  color: #999999;
+}
+/* line 76, ../sass/components/_pages-create.scss */
+.showFilterContainer .on_check {
+  color: #999999;
+}
+
+/* line 80, ../sass/components/_pages-create.scss */
+.on_check {
+  color: #666666;
 }
 
 /* line 1, ../sass/components/_navigation.scss */
@@ -746,24 +775,137 @@ header .container {
 }
 
 /* line 1, ../sass/components/_main-buttons.scss */
+.btn-warning.disabled, .btn-warning[disabled], fieldset[disabled] .btn-warning, .btn-warning.disabled:hover, .btn-warning[disabled]:hover, fieldset[disabled] .btn-warning:hover, .btn-warning.disabled:focus, .btn-warning[disabled]:focus, fieldset[disabled] .btn-warning:focus, .btn-warning.disabled.focus, .btn-warning[disabled].focus, fieldset[disabled] .btn-warning.focus, .btn-warning.disabled:active, .btn-warning[disabled]:active, fieldset[disabled] .btn-warning:active, .btn-warning.disabled.active, .btn-warning[disabled].active, fieldset[disabled] .btn-warning.active {
+  background: #e5e5e5;
+  background: transparent;
+  border-color: #cccccc;
+  color: #b3b3b3;
+}
+
+/* line 10, ../sass/components/_main-buttons.scss */
+.btn-primary {
+  color: #666666;
+}
+
+/* line 14, ../sass/components/_main-buttons.scss */
 .btn {
   border: 1px solid #999999;
+  outline: none;
   /* colores claros */
+  background: linear-gradient(to bottom, #fafafa 0%, #e5e5e5 100%);
   border-color: #b3b3b3;
+  border-bottom-color: #999999;
+  padding: 5px 10px 3px;
 }
-/* line 17, ../sass/components/_main-buttons.scss */
+/* line 36, ../sass/components/_main-buttons.scss */
 .btn.active, .btn:hover, .btn:focus {
   background: #f6921e;
   border-color: gray;
-  color: white;
 }
-/* line 23, ../sass/components/_main-buttons.scss */
+/* line 42, ../sass/components/_main-buttons.scss */
 .btn.disabled {
   background: #e5e5e5;
   text-shadow: none;
   color: #b3b3b3;
   background: transparent;
   border-color: #cccccc;
+}
+/* line 60, ../sass/components/_main-buttons.scss */
+.btn:focus {
+  outline: none;
+}
+
+/* line 66, ../sass/components/_main-buttons.scss */
+.btn-danger {
+  background: #9d5858;
+}
+
+/* line 69, ../sass/components/_main-buttons.scss */
+.btn-warning {
+  background: #963333;
+}
+
+/* line 73, ../sass/components/_main-buttons.scss */
+.btn-info {
+  background: linear-gradient(to bottom, #e5e5e5 0%, #cccccc 100%);
+  border-color: #3177b3;
+  color: #666666;
+  border-bottom-color: gray;
+  color: #333333;
+  background: linear-gradient(to bottom, #9ac1e3, #72a9d8);
+  color: white;
+}
+
+/* line 87, ../sass/components/_main-buttons.scss */
+.helpbutton {
+  float: left;
+}
+
+/* line 93, ../sass/components/_main-buttons.scss */
+.btn-revert:before {
+  content: "\e984";
+}
+
+/* line 97, ../sass/components/_main-buttons.scss */
+.btn-line:before {
+  content: "\e99b";
+}
+
+/* line 101, ../sass/components/_main-buttons.scss */
+.btn-pie:before {
+  content: "\e99a";
+}
+
+/* line 105, ../sass/components/_main-buttons.scss */
+.btn-bars:before {
+  content: "\e99c";
+}
+
+/* line 109, ../sass/components/_main-buttons.scss */
+.btn-parent:after {
+  content: "\ea1c";
+  opacity: .5;
+}
+
+/* line 114, ../sass/components/_main-buttons.scss */
+.helpbutton .btn:before {
+  content: "\e617";
+}
+
+/* line 117, ../sass/components/_main-buttons.scss */
+.btn:before {
+  opacity: .7;
+}
+/* line 119, ../sass/components/_main-buttons.scss */
+.btn:before:hover {
+  opacity: 1;
+}
+
+/* line 124, ../sass/components/_main-buttons.scss */
+.button-group {
+  margin-right: 10px;
+  display: inline-block;
+  padding: 0 5px;
+  overflow: hidden;
+  float: left;
+}
+/* line 131, ../sass/components/_main-buttons.scss */
+.button-group button {
+  border-radius: 0;
+  float: left;
+  margin: 0;
+}
+/* line 138, ../sass/components/_main-buttons.scss */
+.button-group button:first-of-type {
+  border-radius: 6px 0 0 6px;
+}
+/* line 141, ../sass/components/_main-buttons.scss */
+.button-group button:last-of-type {
+  border-radius: 0 6px 6px 0;
+}
+/* line 144, ../sass/components/_main-buttons.scss */
+.button-group button:not(:last-of-type) {
+  border-right: none;
 }
 
 /* line 2, ../sass/components/_myPolicyCompass.scss */
@@ -820,7 +962,7 @@ header .container {
 
 /* line 63, ../sass/components/_myPolicyCompass.scss */
 .title:before {
-  color: #9d5858;
+  color: #04c395;
   padding-left: 0;
 }
 
