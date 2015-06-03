@@ -21,8 +21,6 @@ angular.module('pcApp.fcm.services.fcm',[
             // Add support for create
             'create': { method:'POST' }
         });
-
-
 }])
 
 .factory('FcmModel',  ['$resource', 'API_CONF', function($resource, API_CONF) {
@@ -40,8 +38,33 @@ angular.module('pcApp.fcm.services.fcm',[
             'update': { method:'PUT', params: {id: '@id'} },
             'delete': { method:'DELETE', params: {id: '@id'} }
         });
+}])
 
+// **-*-****
+.factory('FcmSimulation',  ['$resource', 'API_CONF', function($resource, API_CONF) {
+    // Get the base URL from the configuration
+	var url = API_CONF.FCM_URL + "/simulation";
 
+	return $resource(url, {},
+        {
+            // Add support for create
+            'create': { method:'POST' }
+        });
+}])
+
+// **-*-****
+.factory('FcmImpactAnalysis',  ['$resource', 'API_CONF', function($resource, API_CONF) {
+    // Get the base URL from the configuration
+	var url = API_CONF.FCM_URL + "/impactanalysis/:id";
+
+	return $resource(url,
+		{
+			id: "@id"
+		},
+        {
+            // Add support for create
+            'create': { method:'POST', params: {id: '@id'} }
+        });
 }])
 
 
