@@ -278,8 +278,6 @@ a:hover h3:before {
 .flex-container {
   display: flex;
   flex-flow: row wrap;
-  margin-left: -10px;
-  margin-right: -10px;
 }
 /* line 88, ../sass/_custom.scss */
 .flex-container > div {
@@ -906,7 +904,7 @@ header .container {
   text-align: center;
   position: relative;
   z-index: 1;
-  background: none repeat scroll 0% 0% #666666;
+  background: none repeat scroll 0% 0% #9d5858;
   font-size: 30px;
   position: absolute;
   top: 0;
@@ -1569,8 +1567,8 @@ ul.toc .active {
 
 /* line 1, ../sass/components/_pages-footer.scss */
 #footer {
-  padding-top: 2em;
-  padding-bottom: 2em;
+  padding-top: 3em;
+  padding-bottom: 3em;
   font-size: .825em;
   color: #999999;
 }
@@ -1599,8 +1597,6 @@ ul.toc .active {
 #footer .flag-wrap {
   display: flex;
   flex-flow: row wrap;
-  margin-left: -10px;
-  margin-right: -10px;
 }
 /* line 88, ../sass/_custom.scss */
 #footer .flag-wrap > div {
@@ -1611,46 +1607,49 @@ ul.toc .active {
 #footer .flag-wrap > div {
   width: 16.66667%;
 }
-/* line 27, ../sass/components/_pages-footer.scss */
+/* line 35, ../sass/components/_pages-footer.scss */
 #footer .flag-wrap .cols-flag-text {
   width: 83.33333%;
 }
-/* line 33, ../sass/components/_pages-footer.scss */
+/* line 41, ../sass/components/_pages-footer.scss */
 #footer .alert-paragraph {
   position: relative;
 }
-/* line 37, ../sass/components/_pages-footer.scss */
+/* line 45, ../sass/components/_pages-footer.scss */
 #footer .license-image {
   float: left;
   margin-right: 20px;
+  width: 16.66667%;
 }
-/* line 41, ../sass/components/_pages-footer.scss */
+/* line 50, ../sass/components/_pages-footer.scss */
 #footer .alert-paragraph:before {
   content: "\e606";
+  font-size: 1.2em;
 }
-/* line 52, ../sass/components/_pages-footer.scss */
+/* line 61, ../sass/components/_pages-footer.scss */
 #footer .footer-wrapper > div {
-  margin-top: 1em;
-  margin-bottom: 1em;
+  margin-top: 10PX;
 }
 @media (min-width: 992px) {
-  /* line 60, ../sass/components/_pages-footer.scss */
+  /* line 69, ../sass/components/_pages-footer.scss */
   #footer .footer-wrapper {
     display: flex;
     flex-flow: row wrap;
-    margin-left: -10px;
-    margin-right: -10px;
   }
   /* line 88, ../sass/_custom.scss */
   #footer .footer-wrapper > div {
     padding-right: 10px;
     padding-left: 10px;
   }
-  /* line 62, ../sass/components/_pages-footer.scss */
+  /* line 71, ../sass/components/_pages-footer.scss */
   #footer .footer-wrapper > div {
     width: 50%;
   }
-  /* line 68, ../sass/components/_pages-footer.scss */
+  /* line 81, ../sass/components/_pages-footer.scss */
+  #footer .footer-wrapper > div:nth-child(1) {
+    padding-top: 5px;
+  }
+  /* line 85, ../sass/components/_pages-footer.scss */
   #footer .footer-wrapper .footer-links {
     margin-top: 1em;
   }
