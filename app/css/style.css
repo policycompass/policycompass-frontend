@@ -1315,6 +1315,11 @@ header .container {
   content: "\e60a";
 }
 
+/* line 2, ../sass/components/_pages-create-dataset.scss */
+#container-create-dataset .fonticon-dataset:before {
+  content: "\e611";
+}
+
 /* line 2, ../sass/components/_pages-want.scss */
 .want-to-page h2.page-title {
   float: left;
