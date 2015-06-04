@@ -15,7 +15,7 @@ policycompass.viz.line = function(options)
         
         self[key] = options[key];
 	}
-	console.log(self);
+	//console.log(self);
     self.parentSelect = "#"+self.idName;
 
 	self.maxMargin = self.margin;
