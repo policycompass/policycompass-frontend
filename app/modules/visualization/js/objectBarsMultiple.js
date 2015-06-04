@@ -17,8 +17,10 @@ policycompass.viz.barsMultiple = function(options) {
 
     self.parentSelect = "#"+self.idName;
 
-
+	self.maxMargin = self.margin;
 	self.maxWidth = self.width;
+	self.maxHeight = self.height;
+	self.maxFont_size = self.font_size;
 	
 	self.cntResizes = 0;
 	d3.select(window).on('resize', resize);
@@ -524,10 +526,19 @@ policycompass.viz.barsMultiple = function(options) {
 		if (self.maxWidth<clientwidth)
 		{
 			self.width = self.maxWidth;
+			self.height = self.maxHeight;
+			self.font_size = self.maxFont_size;
+			self.margin = self.maxMargin;
 		}
 		else
 		{			
 			self.width = clientwidth-20;
+			var newScale = (self.width) / self.maxWidth;
+			//console.log("newScale="+newScale);
+			self.height = self.maxHeight * newScale;	
+			self.font_size = self.maxFont_size * newScale;
+			self.margin = {'top': self.maxMargin.top * newScale, 'right': self.maxMargin.right * newScale, 'bottom': self.maxMargin.bottom * newScale, 'left': self.maxMargin.left * newScale};
+
 		}
 		//console.log(self.parentSelect);
 		
