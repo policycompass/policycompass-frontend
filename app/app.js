@@ -16,7 +16,8 @@ var pcAppDependencies = [
     'dialogs.default-translations',
     'angularSpectrumColorpicker',
     'skrollrDirectives',
-    'ngProgress'
+    'ngProgress',
+    'isteven-multi-select'
     //'nvd3ChartDirectives'
 ];
 
