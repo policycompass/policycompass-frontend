@@ -1164,35 +1164,40 @@ header .container {
   content: "\e121";
 }
 
-/* line 2, ../sass/components/_pages-landing.scss */
+/* line 1, ../sass/components/_pages-landing.scss */
+.row-view-main {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+/* line 4, ../sass/components/_pages-landing.scss */
 .row-view-main .view-item {
   width: 50%;
   text-align: center;
 }
 @media (min-width: 480px) {
-  /* line 2, ../sass/components/_pages-landing.scss */
+  /* line 4, ../sass/components/_pages-landing.scss */
   .row-view-main .view-item {
     width: 33%;
   }
 }
 @media (min-width: 768px) {
-  /* line 2, ../sass/components/_pages-landing.scss */
+  /* line 4, ../sass/components/_pages-landing.scss */
   .row-view-main .view-item {
     width: 25%;
   }
 }
 @media (min-width: 992px) {
-  /* line 2, ../sass/components/_pages-landing.scss */
+  /* line 4, ../sass/components/_pages-landing.scss */
   .row-view-main .view-item {
     width: 20%;
   }
 }
-/* line 20, ../sass/components/_pages-landing.scss */
+/* line 22, ../sass/components/_pages-landing.scss */
 .row-view-main h3.fonticon {
   position: relative;
   padding-top: 70px;
 }
-/* line 24, ../sass/components/_pages-landing.scss */
+/* line 26, ../sass/components/_pages-landing.scss */
 .row-view-main h3.fonticon:before {
   text-decoration: none;
   display: inline-block;
@@ -1212,69 +1217,69 @@ header .container {
   color: #fff;
   line-height: 1.6em;
 }
-/* line 47, ../sass/components/_pages-landing.scss */
+/* line 49, ../sass/components/_pages-landing.scss */
 .row-view-main .view-item:hover h3.fonticon:before {
   background-color: #f6921e;
 }
 
-/* line 55, ../sass/components/_pages-landing.scss */
+/* line 57, ../sass/components/_pages-landing.scss */
 .main-content-landing .page-title {
   padding-top: 1em;
 }
-/* line 58, ../sass/components/_pages-landing.scss */
+/* line 60, ../sass/components/_pages-landing.scss */
 .main-content-landing .subtitle {
   padding-bottom: 1.5em;
 }
 
-/* line 64, ../sass/components/_pages-landing.scss */
+/* line 66, ../sass/components/_pages-landing.scss */
 .home-actions a {
   text-decoration: none;
   color: #666666;
 }
 
-/* line 69, ../sass/components/_pages-landing.scss */
+/* line 71, ../sass/components/_pages-landing.scss */
 .landing-page-content {
   position: relative;
 }
 
-/* line 73, ../sass/components/_pages-landing.scss */
+/* line 75, ../sass/components/_pages-landing.scss */
 .landing-page-content:hover a, .landing-page-content:hover:before {
   color: #fff;
   background: none repeat scroll 0% 0% #f6921e;
 }
 
-/* line 77, ../sass/components/_pages-landing.scss */
+/* line 79, ../sass/components/_pages-landing.scss */
 .landing-page-content > a {
   text-decoration: none;
 }
 
-/* line 80, ../sass/components/_pages-landing.scss */
+/* line 82, ../sass/components/_pages-landing.scss */
 .landing-page-content > a > h3 {
   font-weight: 300;
   text-transform: uppercase;
 }
 
-/* line 95, ../sass/components/_pages-landing.scss */
+/* line 97, ../sass/components/_pages-landing.scss */
 .fonticon-browse:before {
   content: "\e60e";
 }
 
-/* line 96, ../sass/components/_pages-landing.scss */
+/* line 98, ../sass/components/_pages-landing.scss */
 .fonticon-pencil:before {
   content: "\e60d";
 }
 
-/* line 97, ../sass/components/_pages-landing.scss */
+/* line 99, ../sass/components/_pages-landing.scss */
 .fonticon-search:before {
   content: "\e60e";
 }
 
-/* line 98, ../sass/components/_pages-landing.scss */
+/* line 100, ../sass/components/_pages-landing.scss */
 .fonticon-th-list:before {
   content: "\e018";
 }
 
-/* line 99, ../sass/components/_pages-landing.scss */
+/* line 101, ../sass/components/_pages-landing.scss */
 .fonticon-export:before {
   content: "\e170";
 }
