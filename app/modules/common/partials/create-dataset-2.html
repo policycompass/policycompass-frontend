@@ -17,9 +17,20 @@
       <li><a href="" class="btn btn-next">Next Step</a></li>
     </ul>
   </div>
-
-    <div class="content-body content-body-2 row">
-      <div class="content-column-main">
+        <div class="content-column block block-tag">
+        <h5>Class type</h5>
+          <select multiple>
+            <option value="country">Country</option>
+            <option value="age">Age Class</option>
+            <option value="gender">Gender</option>
+            
+          </select><div class="block-button-bar">
+          <input type="submit" value="Not there yet? Make a Request" class="btn">
+          </div>
+          
+        </div>
+    <div class="content-body content-body-2 flex-container" ng-class="{compressed: closed}">
+      <div class="content-column content-column-main">
       <table class="dataset-create-table">
         <thead>
         <th></th>
@@ -215,20 +226,38 @@
         </tbody>
       </table>
       </div>
-      <div class="content-column-second">
-        <div class="block block-tag">
-        <h5>Class type</h5>
-          <select>
-            <option value="country">Country</option>
-            <option value="age">Age Class</option>
-            <option value="gender">Gender</option>
-            
-          </select><div class="block-button-bar">
-          <input type="submit" value="Not there yet? Make a Request" class="btn">
-          </div>
-          
-        </div>
-        <div class="block block-tag">
+      <div class="content-column content-column-second content-column-validate content-column-expanded block" ng-class="{closed: closed}">
+
+  <div class="fonticon fonticon-validate fonticon-open" ng-click="closed=!closed"></div>
+  <div class="content-column-wrap">
+  <div class="fonticon fonticon-close" ng-click="closed=!closed"></div>
+<table>
+  <tbody>
+    <tr>
+      <td>Bulgaria</td>
+    </tr>
+    <tr>
+      <td>Czech Republic</td>
+    </tr>
+    <tr>
+      <td>Denmark</td>
+    </tr>
+    <tr>
+      <td>Germany</td>
+    </tr>
+    <tr>
+      <td>Estonia</td>
+    </tr>
+    <tr>
+      <td>Ireland</td>
+    </tr>
+  </tbody>
+</table>
+
+      </div>
+      </div>
+    </div>
+            <div class="block block-tag">
         <h5>Metadata</h5>
           <select>
             <option value="country">Country</option>
@@ -252,6 +281,4 @@
              </div>
           
         </div>
-      </div>
-    </div>
 </div>

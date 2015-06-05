@@ -112,3 +112,42 @@ body > header {
   }
 
 } 
+
+
+.content-column {
+
+
+  position:relative;
+  
+  
+  &.content-column-expanded {
+    .fonticon-validate {
+      display:none;
+    }
+  }
+  &.closed {
+    .fonticon-validate {
+      display:block;
+    }
+    .content-column-wrap {
+      display:none;
+    }
+  }
+  
+  .fonticon-close {
+    color:$general;
+    top:10px;
+    right:5px;
+    
+  }
+  .fonticon-validate {
+    position:absolute;
+    display:block;
+    top:5px;
+    right:5px;
+  }
+  .fonticon-validate:before {
+      content: "\e605";
+      font-size:30px;
+  }
+}

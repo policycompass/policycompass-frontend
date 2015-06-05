@@ -1,4 +1,47 @@
+/* layout overrides */
+
+
+
+
+
 #container-create-dataset {
+
+  /*layout */
+  
+  
+  .content-column-main {
+    width:75%;
+    
+  }
+    .content-column-second {
+    width:25%;
+    
+  }
+  .compressed {
+    .content-column-main {
+      width:95%;
+      // padding-right:5em;
+      
+    }
+      .content-column-second {
+      width:5%;
+      
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   .fonticon-dataset:before {
     content: "\e611";
   }
