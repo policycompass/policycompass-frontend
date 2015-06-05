@@ -438,28 +438,44 @@ a:hover h3:before {
 }
 /* line 60, ../sass/components/_pages-create.scss */
 .row-view-create .view-item-metrics .view-item-wrap:before {
-  content: "\e613";
+  content: "\e61d";
 }
-/* line 63, ../sass/components/_pages-create.scss */
+/* line 64, ../sass/components/_pages-create.scss */
 .row-view-create .view-item-events .view-item-wrap:before {
   content: "\e612";
 }
-/* line 66, ../sass/components/_pages-create.scss */
+/* line 67, ../sass/components/_pages-create.scss */
 .row-view-create .view-item-models .view-item-wrap:before {
   content: "\e610";
 }
+/* line 71, ../sass/components/_pages-create.scss */
+.row-view-create .view-item-upload .view-item-wrap:before {
+  content: "\e611";
+}
+/* line 74, ../sass/components/_pages-create.scss */
+.row-view-create .view-item-indicators .view-item-wrap:before {
+  content: "\e0db";
+}
+/* line 77, ../sass/components/_pages-create.scss */
+.row-view-create .view-item-define-metrics .view-item-wrap:before {
+  content: "\e613";
+}
+/* line 80, ../sass/components/_pages-create.scss */
+.row-view-create .view-item-apply .view-item-wrap:before {
+  content: "\e61d";
+}
 
-/* line 73, ../sass/components/_pages-create.scss */
+/* line 90, ../sass/components/_pages-create.scss */
 .showFilterContainer {
   font-size: .875em;
   color: #999999;
 }
-/* line 76, ../sass/components/_pages-create.scss */
+/* line 93, ../sass/components/_pages-create.scss */
 .showFilterContainer .on_check {
   color: #999999;
 }
 
-/* line 80, ../sass/components/_pages-create.scss */
+/* line 97, ../sass/components/_pages-create.scss */
 .on_check {
   color: #666666;
 }
