@@ -13,7 +13,33 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
     };
 })
 
+.service("SimulationConceptsDetail", function() {
+    var Concepts = [];
+
+    return {
+        setConcepts: function(ConceptObj) {
+            Concepts = ConceptObj;
+        },
+        getConcepts: function() {
+            return Concepts;
+        },
+    };
+})
+
 .service("AssociationsDetail", function() {
+    var Associations = [];
+
+    return {
+        setAssociations: function(AssociationObj) {
+            Associations = AssociationObj;
+        },
+        getAssociations: function() {
+            return Associations;
+        },
+    };
+})
+
+.service("SimulationAssociationsDetail", function() {
     var Associations = [];
 
     return {
@@ -79,18 +105,37 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
     };
 })
 
-.controller('CytoscapeCtrl', function($scope, $rootScope,  $routeParams, $location, $translate, Fcm, FcmModel, FcmActivator, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, AssociationsDetail, EditConcept, EditAssociation){
+.controller('CytoscapeCtrl', function($scope, $rootScope,  $routeParams, $location, $translate, Fcm, FcmModel, FcmSimulation, FcmActivator, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, SimulationConceptsDetail, AssociationsDetail, SimulationAssociationsDetail, EditConcept, EditAssociation){
   // container objects
   $scope.Models = [];
   $scope.mapData = [];
   $scope.edgeData = [];
   $scope.Concepts = [];
+  $scope.SimulationConcepts = [];
   $scope.Associations = [];
+  $scope.SimulationAssociations = [];
+  $scope.SimulationResults = [];
   $scope.NodeID = 0;
 
   FCMModelsDetail.setModels($scope.Models);
   ConceptsDetail.setConcepts($scope.Concepts);
   AssociationsDetail.setAssociations($scope.Associations);
+  SimulationConceptsDetail.setConcepts($scope.SimulationConcepts);
+  SimulationAssociationsDetail.setAssociations($scope.SimulationAssociations);
+
+
+	$scope.dataset =[{"Key":"USA_0","ValueX":["1989-01-01","2003-01-01","2004-01-01"],"ValueY":[99,33,53],"Type":"metric"},{"Key":"Germany_1","ValueX":["2000-01-01","2004-01-01","2010-01-01"],"ValueY":[14,66,33],"Type":"metric"},{"Key":"Canada_2","ValueX":["2001-01-01","2003-01-01","2004-01-01"],"ValueY":[33,54,12],"Type":"metric"},{"Key":"Spain_3","ValueX":["2002-01-01","2003-01-01","2004-01-01","2005-01-01"],"ValueY":[23,55,88,36],"Type":"metric"},{"Key":"Andorra_4","ValueX":["2003-01-01","2004-01-01"],"ValueY":[6,23],"Type":"metric"},{"Key":"Spain_5","ValueX":["1989-01-01","2011-01-01","2012-01-01"],"ValueY":[33,1,2],"Type":"metric"}];
+	$scope.labels = ["Dollar","Dollar","Dollar","Dollar","Dollar","kg"];
+	$scope.showLegend = true;
+	$scope.showLabels = true;
+	$scope.showLines = true;
+	$scope.showAreas = true;
+	$scope.showPoints = true;
+	$scope.showGrid = true;
+	$scope.showYAxes = true;
+	$scope.showAsPercentatge = false;
+	$scope.xaxeformat = 'sequence'
+	$scope.modeg= 'view';
 
 if ($routeParams.fcmId)
 {
@@ -115,14 +160,17 @@ if ($routeParams.fcmId)
 	{
 	    var newNode = {id:$scope.modeldetail.concepts[i].id.toString(), name:$scope.modeldetail.concepts[i].title, posX:$scope.modeldetail.concepts[i].positionX, posY:$scope.modeldetail.concepts[i].positionY};
 	    var Concept = {Id: $scope.modeldetail.concepts[i].id.toString(), title: $scope.modeldetail.concepts[i].title, description: $scope.modeldetail.concepts[i].description, scale: $scope.modeldetail.concepts[i].scale, x: $scope.modeldetail.concepts[i].positionX, y: $scope.modeldetail.concepts[i].positionY, dateAddedtoPC:$scope.modeldetail.concepts[i].dateAddedtoPC, dateModified:$scope.modeldetail.concepts[i].dateModified};
+	    var SimulationConcept = {Id: $scope.modeldetail.concepts[i].id.toString(), title: $scope.modeldetail.concepts[i].title, scale: $scope.modeldetail.concepts[i].scale, value: 0.0, fixedoutput: 'False'};
 
 	    $scope.mapData.push(newNode);
 	    $scope.Concepts.push(Concept);
+	    $scope.SimulationConcepts.push(SimulationConcept);
 	}
 	for (i=0; i<$scope.modeldetail.connections.length; i++)
 	{
 	    var newEdge = {id:$scope.modeldetail.connections[i].id.toString(), source: $scope.modeldetail.connections[i].conceptFrom.toString(), target: $scope.modeldetail.connections[i].conceptTo.toString(), weighted: '?'};
 	    var Association = {Id: $scope.modeldetail.connections[i].id.toString(), sourceID: $scope.modeldetail.connections[i].conceptFrom.toString(), source: '', destinationID: $scope.modeldetail.connections[i].conceptTo.toString(), destination: ''};
+	    var SimulationAssociation = {Sno: i+1, Id: $scope.modeldetail.connections[i].id.toString(), sourceID: $scope.modeldetail.connections[i].conceptFrom.toString(), source: '', destinationID: $scope.modeldetail.connections[i].conceptTo.toString(), destination: '', weighted: '0.0'};
 
 	    for (j=0; j<$scope.Concepts.length; j++)
 	    {
@@ -131,8 +179,12 @@ if ($routeParams.fcmId)
 		if (Association.destinationID==$scope.Concepts[j].Id)
 		    Association.destination=$scope.Concepts[j];
 	    }
+	    SimulationAssociation.source=Association.source;
+	    SimulationAssociation.destination=Association.destination;
+
 	    $scope.edgeData.push(newEdge);
 	    $scope.Associations.push(Association);
+	    $scope.SimulationAssociations.push(SimulationAssociation);
 	}
 	// broadcasting the event
 	$rootScope.$broadcast('appChanged');
@@ -148,16 +200,6 @@ else
     $scope.mode = "create";
 }
 
-// For Exaple of Results
-
-  $scope.ConceptsResults = [];	
-  $scope.ConceptsResults = $scope.Concepts;
-  $scope.Results1 = [];	
-  $scope.Results2 = [];	
-  $scope.Results3 = [];	
-  $scope.Results4 = [];	
-
-
     $scope.range = function(min,max,step) {
 	step = step || 1;
 	var input = [];
@@ -166,135 +208,6 @@ else
 	return input;
     };
 
-  var res={Val: "0.40"};
-  $scope.Results1.push(res);	
-  res={Val: "0.53"};
-  $scope.Results1.push(res);	
-  res={Val: "0.53"};
-  $scope.Results1.push(res);	
-  res={Val: "0.59"};
-  $scope.Results1.push(res);	
-  res={Val: "0.59"};
-  $scope.Results1.push(res);	
-  res={Val: "0.59"};
-  $scope.Results1.push(res);	
-  res={Val: "0.59"};
-  $scope.Results1.push(res);	
-  res={Val: "0.59"};
-  $scope.Results1.push(res);	
-  res={Val: "0.59"};
-  $scope.Results1.push(res);	
-  res={Val: "0.59"};
-  $scope.Results1.push(res);	
-  res={Val: "0.59"};
-  $scope.Results1.push(res);	
-  res={Val: "0.59"};
-  $scope.Results1.push(res);	
-  res={Val: "0.59"};
-  $scope.Results1.push(res);	
-  res={Val: "0.59"};
-  $scope.Results1.push(res);	
-  res={Val: "0.59"};
-  $scope.Results1.push(res);	
- // $scope.ConceptsResults[0].results=$scope.Results1;
-
-  res={Val: "0.20"};
-  $scope.Results2.push(res);	
-  res={Val: "0.42"};
-  $scope.Results2.push(res);	
-  res={Val: "0.40"};
-  $scope.Results2.push(res);	
-  res={Val: "0.38"};
-  $scope.Results2.push(res);	
-  res={Val: "0.38"};
-  $scope.Results2.push(res);	
-  res={Val: "0.38"};
-  $scope.Results2.push(res);	
-  res={Val: "0.38"};
-  $scope.Results2.push(res);	
-  res={Val: "0.38"};
-  $scope.Results2.push(res);	
-  res={Val: "0.38"};
-  $scope.Results2.push(res);	
-  res={Val: "0.38"};
-  $scope.Results2.push(res);	
-  res={Val: "0.38"};
-  $scope.Results2.push(res);	
-  res={Val: "0.38"};
-  $scope.Results2.push(res);	
-  res={Val: "0.38"};
-  $scope.Results2.push(res);	
-  res={Val: "0.38"};
-  $scope.Results2.push(res);	
-  res={Val: "0.38"};
-  $scope.Results2.push(res);	
- // $scope.ConceptsResults[1].results=$scope.Results2;
-
-  res={Val: "0.80"};
-  $scope.Results3.push(res);	
-  res={Val: "0.53"};
-  $scope.Results3.push(res);	
-  res={Val: "0.56"};
-  $scope.Results3.push(res);	
-  res={Val: "0.56"};
-  $scope.Results3.push(res);	
-  res={Val: "0.56"};
-  $scope.Results3.push(res);	
-  res={Val: "0.56"};
-  $scope.Results3.push(res);	
-  res={Val: "0.56"};
-  $scope.Results3.push(res);	
-  res={Val: "0.56"};
-  $scope.Results3.push(res);	
-  res={Val: "0.56"};
-  $scope.Results3.push(res);	
-  res={Val: "0.56"};
-  $scope.Results3.push(res);	
-  res={Val: "0.56"};
-  $scope.Results3.push(res);	
-  res={Val: "0.56"};
-  $scope.Results3.push(res);	
-  res={Val: "0.56"};
-  $scope.Results3.push(res);	
-  res={Val: "0.56"};
-  $scope.Results3.push(res);	
-  res={Val: "0.56"};
-  $scope.Results3.push(res);	
- // $scope.ConceptsResults[2].results=$scope.Results3;
-
-  res={Val: "0.20"};
-  $scope.Results4.push(res);	
-  res={Val: "0.65"};
-  $scope.Results4.push(res);	
-  res={Val: "0.60"};
-  $scope.Results4.push(res);	
-  res={Val: "0.61"};
-  $scope.Results4.push(res);	
-  res={Val: "0.61"};
-  $scope.Results4.push(res);	
-  res={Val: "0.61"};
-  $scope.Results4.push(res);	
-  res={Val: "0.61"};
-  $scope.Results4.push(res);	
-  res={Val: "0.61"};
-  $scope.Results4.push(res);	
-  res={Val: "0.61"};
-  $scope.Results4.push(res);	
-  res={Val: "0.61"};
-  $scope.Results4.push(res);	
-  res={Val: "0.61"};
-  $scope.Results4.push(res);	
-  res={Val: "0.61"};
-  $scope.Results4.push(res);	
-  res={Val: "0.61"};
-  $scope.Results4.push(res);	
-  res={Val: "0.61"};
-  $scope.Results4.push(res);	
-  res={Val: "0.61"};
-  $scope.Results4.push(res);	
- // $scope.ConceptsResults[3].results=$scope.Results4;
-
-// end of Example of Results
 
     $scope.saveModel = function(){
 	dlg = dialogs.create('/dialogs/savemodel.html','ModelController',{},{key: false,back: 'static'});
@@ -365,6 +278,39 @@ else
 
     $scope.correlationMatrix = function(){
 	dlg = dialogs.create('/dialogs/correlationmatrix.html','CorrelationMatrixController',{},{key: false,back: 'static'});
+	dlg.result.then(function(user){
+        },function(){
+          $scope.name = 'You decided not to enter in your name, that makes me sad.';
+        });
+    };
+
+
+// **-*-****
+    $scope.runSimulation = function(){
+	var jsonSimulation = {model: FCMModelsDetail.getModels(), userID: "1",
+		concepts: SimulationConceptsDetail.getConcepts(), connections: SimulationAssociationsDetail.getAssociations()};
+
+	$scope.fcmSimulation = new FcmSimulation();
+	$scope.fcmSimulation.data = jsonSimulation;
+
+	$scope.SimulationResults.splice(0, $scope.SimulationResults.length);
+
+        FcmSimulation.save($scope.fcmSimulation, function (value) {
+	$scope.md = value;
+	    for (i=0; i<value.result.length; i++)
+	    {
+	    	var ConceptResults = {Id: value.result[i].id.toString(), iterationID: value.result[i].iteration_id.toString(), conceptID: value.result[i].conceptID.toString(), output: value.result[i].output.toString()};
+
+	    	$scope.SimulationResults.push(ConceptResults);
+	    }
+
+	    $scope.totalIteration = value.result[value.result.length-1].iteration_id;
+        },
+        function (err) {
+            throw { message: err.data};
+        });
+
+	dlg = dialogs.create('/dialogs/runsimulation.html','RunSimulationController',{},{key: false,back: 'static'});
 	dlg.result.then(function(user){
         },function(){
           $scope.name = 'You decided not to enter in your name, that makes me sad.';
@@ -764,10 +710,26 @@ else
   
 }) // end CorrelationMatrixController
 
-.controller('ImpactAnalysisController',function($scope, $modalInstance, data, ConceptsDetail){
+.controller('RunSimulationController',function($scope, $modalInstance, data){
+  $scope.cancel = function(){
+    $modalInstance.dismiss('canceled');  
+  }; // end cancel
+  
+  $scope.save = function(){
+    $modalInstance.close($scope.user);
+  }; // end save
+  
+}) // end RunSimulationController
+
+.controller('ImpactAnalysisController',function($scope, $modalInstance, data, FcmImpactAnalysis, FCMModelsDetail, ConceptsDetail, SimulationConceptsDetail, SimulationAssociationsDetail){
   $scope.user = [{selectConcept: ''}, {selectConcept1: ''}, {selectConcept2: ''}, {selectConcept3: ''}];
   $scope.Concepts = [];	
+  $scope.ImpactAnalysisResults = [];
+  $scope.twoImpactAnalysisResults = [];
   $scope.Concepts = ConceptsDetail.getConcepts();
+  $scope.selectedConcept1Input = [];
+  $scope.selectedConcept2Input = [];
+  $scope.selectedConceptOutput = [];
   
   $scope.user.selectConcept = $scope.Concepts[0];
   $scope.user.selectConcept1 = $scope.Concepts[0];
@@ -790,6 +752,96 @@ else
     $modalInstance.close($scope.user);
   }; // end save
   
+  $scope.single = function(){
+	var jsonSimulation = {model: FCMModelsDetail.getModels(), userID: "1", selectedConcept: $scope.user.selectConcept,
+		concepts: SimulationConceptsDetail.getConcepts(), connections: SimulationAssociationsDetail.getAssociations()};
+
+	$scope.fcmImpactAnalysis = new FcmImpactAnalysis();
+	$scope.fcmImpactAnalysis.data = jsonSimulation;
+	
+	$scope.ImpactAnalysisResults.splice(0, $scope.ImpactAnalysisResults.length);
+
+        FcmImpactAnalysis.save({id: 1}, $scope.fcmImpactAnalysis, function (value) {
+$scope.res=value;
+	    for (i=0; i<value.result.length; i++)
+	    {
+	    	var ConceptResults = {Id: value.result[i].id.toString(), iterationID: value.result[i].iteration_id.toString(), conceptID: value.result[i].conceptID.toString(), input: value.result[i].input, output: value.result[i].output};
+
+	    	$scope.ImpactAnalysisResults.push(ConceptResults);
+	    } 
+        },
+        function (err) {
+            throw { message: err.data};
+        });
+
+  }; // end Single Impact Analysis
+
+  $scope.two = function(){
+	var jsonSimulation = {model: FCMModelsDetail.getModels(), userID: "1", selectedConcept1: $scope.user.selectConcept1, selectedConcept2: $scope.user.selectConcept2, selectedConcept3: $scope.user.selectConcept3, concepts: SimulationConceptsDetail.getConcepts(), connections: SimulationAssociationsDetail.getAssociations()};
+	var unique=true;
+	var Concept1Input, Concept2Input, ConceptOutput, IterationID=1;
+
+	$scope.fcmImpactAnalysis = new FcmImpactAnalysis();
+	$scope.fcmImpactAnalysis.data = jsonSimulation;
+	
+	$scope.twoImpactAnalysisResults.splice(0, $scope.ImpactAnalysisResults.length);
+	$scope.selectedConcept1Input.splice(0, $scope.selectedConcept1Input.length);
+	$scope.selectedConcept2Input.splice(0, $scope.selectedConcept2Input.length);
+	$scope.selectedConceptOutput.splice(0, $scope.selectedConceptOutput.length);
+
+        FcmImpactAnalysis.save({id: 2}, $scope.fcmImpactAnalysis, function (value) {
+$scope.res=value;
+	    for (i=0; i<value.result.length; i++)
+	    {
+	    	var ConceptResults = {Id: value.result[i].id.toString(), iterationID: value.result[i].iteration_id.toString(), conceptID: value.result[i].conceptID.toString(), input: value.result[i].input, output: value.result[i].output};
+
+		if (IterationID!=value.result[i].iteration_id)
+		{
+	    	    var IterationResults = {iterationID: IterationID, concept1Input: Concept1Input, concept2Input: Concept2Input, conceptOutput: ConceptOutput};
+		    $scope.selectedConceptOutput.push(IterationResults);
+		    IterationID=value.result[i].iteration_id;
+		}
+
+		if (value.result[i].conceptID == $scope.user.selectConcept1.Id)
+		{
+		    for (j=0; j<$scope.selectedConcept1Input.length; j++)
+		    {
+			if ($scope.selectedConcept1Input[j]==value.result[i].input)
+			    unique=false;
+		    }
+		    if (unique==true)
+			$scope.selectedConcept1Input.push(value.result[i].input);
+		    unique=true;
+		    Concept1Input=value.result[i].input;
+		}
+
+
+		if (value.result[i].conceptID == $scope.user.selectConcept2.Id)
+		{
+		    for (j=0; j<$scope.selectedConcept2Input.length; j++)
+		    {
+			if ($scope.selectedConcept2Input[j]==value.result[i].input)
+			    unique=false;
+		    }
+		    if (unique==true)
+			$scope.selectedConcept2Input.push(value.result[i].input);
+		    unique=true;
+		    Concept2Input=value.result[i].input;
+		}
+
+		if (value.result[i].conceptID == $scope.user.selectConcept3.Id)
+		    ConceptOutput=value.result[i].output;
+
+	    	$scope.twoImpactAnalysisResults.push(ConceptResults);
+	    }
+    	    var IterationResults = {iterationID: IterationID, concept1Input: Concept1Input, concept2Input: Concept2Input, conceptOutput: ConceptOutput};
+	    $scope.selectedConceptOutput.push(IterationResults);
+        },
+        function (err) {
+            throw { message: err.data};
+        });
+
+  }; // end Impact of Two Concepts
 }) // end ImpactAnalysisController
 
 .run(['$templateCache',function($templateCache){
@@ -809,7 +861,9 @@ else
 
  $templateCache.put('/dialogs/correlationmatrix.html', '<div class="modal-header"><h4 class="modal-title">Correlation Matrix between Concepts</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><p>Matrix below shows the correlation between selected concepts.<br>This can be the reference data for determining the weights between concepts if you want to insert the weight value manaully.</p></div><table class="table table-hover"><tr><td></td><td  align="center" ng-repeat="concept in Concepts">{{ concept.title }}</td></tr><tr ng-repeat="concept in Concepts"><td>{{ concept.title }}</td align="center"><td ng-repeat="val in concept.values">{{ val.Id }}</td></tr></table><div class="modal-footer"><button type="button" class="btn btn-primary" ng-click="save()">Use the Correlations for Weight</button><button type="button" class="btn btn-default" ng-click="cancel()">Close</button></div>');
 
- $templateCache.put('/dialogs/impactanalysis.html', '<div class="modal-header"><h4 class="modal-title">Impact Analysis</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><tabset justified="false"><tab heading="Impact of Single Concept"><label class="control-label" for="impactanalysis">Impact of Change in</label><select class="form-control" name="source" id="source" ng-model="user.selectConcept" ng-options="concept.title for concept in Concepts"></select>(initial concept value)<br /><br /><br /><table class="table table-hover"><tr><td width="20%"><b>Initial Value of {{ user.selectConcept.title }}</b></td><td align="center" ng-repeat="n in range(0.20,1.00,0.20)"><b>{{ n }}</b></td></tr><tr ng-show="Concepts" ng-repeat="concept in Concepts"><td>{{ concept.title }}</td><td align="center" ng-repeat="n in range(0.2,1.0,0.2)"></td></tr></table>* Value of each cell indicate the final value of simulation with given initial value of <b>{{ user.selectConcept.title }}</b>.</tab><tab heading="Impact of Two Concepts"><label class="control-label" for="impactanalysis">Impact of Change in</label><select class="form-control" name="source" id="source" ng-model="user.selectConcept1" ng-options="concept.title for concept in Concepts" required></select><label class="control-label" for="impactanalysis">and</label><select class="form-control" name="source" id="source" ng-model="user.selectConcept2" ng-options="concept.title for concept in Concepts" required></select>(initial concept value)<br /><label class="control-label" for="impactanalysis">on</label><select class="form-control" name="source" id="source" ng-model="user.selectConcept3" ng-options="concept.title for concept in Concepts" required></select><br /><br /><br /><table class="table table-hover"><tr><td width="20%"></td><td width="10%"></td><td align="center" colspan=5><b>{{ user.selectConcept1.title }}</b></td></tr><tr><td></td><td></td><td align="center" ng-repeat="n in range(0.20,1.00,0.20)"><b>{{ n }}</b></td></tr><tr><td rowspan=5 align="center" valign="middle"><b>{{ user.selectConcept2.title }}</b></td><td align="center"><b>0.2</b></td><td align="center" ng-repeat="n in range(0.20,1.00,0.20)"></td></tr><tr><td align="center"><b>0.4</b></td><td align="center" ng-repeat="n in range(0.20,1.00,0.20)"></td></tr><tr><td align="center"><b>0.6</b></td><td align="center" ng-repeat="n in range(0.20,1.00,0.20)"></td></tr><tr><td align="center"><b>0.8</b></td><td align="center" ng-repeat="n in range(0.20,1.00,0.20)"></td></tr><tr><td align="center"><b>1.0</b></td><td align="center" ng-repeat="n in range(0.20,1.00,0.20)"></td></tr></table>* Value of each cell indicate the final value of <b>{{ user.selectConcept3.title }}</b> with regards to the change of <b>{{ user.selectConcept1.title }}</b> & <b>{{ user.selectConcept2.title }}</b>.</tab></tabset></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Close</button></div>');
+ $templateCache.put('/dialogs/runsimulation.html', '<div class="modal-header"><h4 class="modal-title">Simulation job has submitted successfully.</h4></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Close</button></div>');
+
+ $templateCache.put('/dialogs/impactanalysis.html', '<div class="modal-header"><h4 class="modal-title">Impact Analysis</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><tabset justified="false"><tab heading="Impact of Single Concept"><label class="control-label" for="impactanalysis">Impact of Change in</label><select class="form-control" name="source" id="source" ng-model="user.selectConcept" ng-options="concept.title for concept in Concepts"></select>(initial concept value)<br /><div class="modal-footer"><button type="button" class="btn btn-primary" ng-click="single()">Calculate</button></div><table class="table table-hover"><tr><td width="20%"><b>Initial Value of {{ user.selectConcept.title }}</b></td><td align="center" ng-repeat="result in ImpactAnalysisResults" ng-if="result.conceptID == user.selectConcept.Id"><b>{{ result.input }}</b></td></tr><tr ng-show="Concepts" ng-repeat="concept in Concepts"><td>{{ concept.title }}</td><td align="center" ng-repeat="result in ImpactAnalysisResults" ng-if="concept.Id == result.conceptID">{{ result.output }}</td></tr></table>* Value of each cell indicate the final value of simulation with given initial value of <b>{{ user.selectConcept.title }}</b>.</tab><tab heading="Impact of Two Concepts"><label class="control-label" for="impactanalysis">Impact of Change in</label><select class="form-control" name="source" id="source" ng-model="user.selectConcept1" ng-options="concept.title for concept in Concepts" required></select><label class="control-label" for="impactanalysis">and</label><select class="form-control" name="source" id="source" ng-model="user.selectConcept2" ng-options="concept.title for concept in Concepts" required></select>(initial concept value)<br /><label class="control-label" for="impactanalysis">on</label><select class="form-control" name="source" id="source" ng-model="user.selectConcept3" ng-options="concept.title for concept in Concepts" required></select><br /><div class="modal-footer"><button type="button" class="btn btn-primary" ng-click="two()">Calculate</button></div><table class="table table-hover"><tr><td width="20%"></td><td width="10%"></td><td align="center" colspan=5><b>{{ user.selectConcept1.title }}</b></td></tr><tr><td></td><td></td><td align="center" ng-repeat="input in selectedConcept1Input"><b>{{ input }}</b></td></tr><tr ng-repeat="input in selectedConcept2Input"><td rowspan="5" align="center" valign="middle" ng-if="input == 0.2"><b>{{ user.selectConcept2.title }}</b></td><td align="center"><b>{{ input }}</b></td><td align="center" ng-repeat="output in selectedConceptOutput" ng-if="output.concept2Input == input">{{ output.conceptOutput }}</td></tr></table>* Value of each cell indicate the final value of <b>{{ user.selectConcept3.title }}</b> with regards to the change of <b>{{ user.selectConcept1.title }}</b> & <b>{{ user.selectConcept2.title }}</b>.</tab></tabset></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Close</button></div>');
 
 }]); // end run / module
 
