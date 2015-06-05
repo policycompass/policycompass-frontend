@@ -304,7 +304,7 @@ a:hover h3:before {
   flex-flow: row wrap;
   -webkit-flex-flow: row wrap;
 }
-/* line 90, ../sass/_custom.scss */
+/* line 97, ../sass/_custom.scss */
 .flex-container > div {
   padding-right: 10px;
   padding-left: 10px;
@@ -378,7 +378,7 @@ a:hover h3:before {
   position: absolute;
   display: block;
   top: 5px;
-  right: 5px;
+  right: 0;
 }
 /* line 149, ../sass/components/_pages.scss */
 .content-column .fonticon-validate:before {
@@ -993,20 +993,36 @@ header .container {
 }
 
 /* line 132, ../sass/components/_main-buttons.scss */
+.btn-validate:before {
+  content: "\e604";
+}
+
+/* line 136, ../sass/components/_main-buttons.scss */
+.btn-add:before {
+  content: "\e608";
+}
+
+/* line 139, ../sass/components/_main-buttons.scss */
+.btn-request:before {
+  content: "\e618";
+}
+
+/* after icons */
+/* line 145, ../sass/components/_main-buttons.scss */
 .btn-next:after {
   content: "\e602";
 }
 
-/* line 138, ../sass/components/_main-buttons.scss */
+/* line 152, ../sass/components/_main-buttons.scss */
 .btn:before {
   opacity: .7;
 }
-/* line 140, ../sass/components/_main-buttons.scss */
+/* line 154, ../sass/components/_main-buttons.scss */
 .btn:before:hover {
   opacity: 1;
 }
 
-/* line 148, ../sass/components/_main-buttons.scss */
+/* line 162, ../sass/components/_main-buttons.scss */
 .button-group {
   margin-right: 10px;
   display: inline-block;
@@ -1014,26 +1030,26 @@ header .container {
   overflow: hidden;
   float: left;
 }
-/* line 155, ../sass/components/_main-buttons.scss */
+/* line 169, ../sass/components/_main-buttons.scss */
 .button-group button {
   border-radius: 0;
   float: left;
   margin: 0;
 }
-/* line 162, ../sass/components/_main-buttons.scss */
+/* line 176, ../sass/components/_main-buttons.scss */
 .button-group button:first-of-type {
   border-radius: 6px 0 0 6px;
 }
-/* line 165, ../sass/components/_main-buttons.scss */
+/* line 179, ../sass/components/_main-buttons.scss */
 .button-group button:last-of-type {
   border-radius: 0 6px 6px 0;
 }
-/* line 168, ../sass/components/_main-buttons.scss */
+/* line 182, ../sass/components/_main-buttons.scss */
 .button-group button:not(:last-of-type) {
   border-right: none;
 }
 
-/* line 175, ../sass/components/_main-buttons.scss */
+/* line 189, ../sass/components/_main-buttons.scss */
 .navigation-steps {
   list-style-type: none;
   list-style-image: none;
@@ -1043,27 +1059,50 @@ header .container {
   top: 30px;
   right: 20px;
 }
-/* line 180, ../sass/components/_main-buttons.scss */
+/* line 194, ../sass/components/_main-buttons.scss */
 .navigation-steps li {
   float: left;
 }
-/* line 182, ../sass/components/_main-buttons.scss */
+/* line 196, ../sass/components/_main-buttons.scss */
 .navigation-steps li a {
   float: left;
   margin: 0;
   border-radius: 0;
 }
-/* line 187, ../sass/components/_main-buttons.scss */
+/* line 201, ../sass/components/_main-buttons.scss */
 .navigation-steps li:first-of-type a {
   border-radius: 6px 0 0 6px;
 }
-/* line 190, ../sass/components/_main-buttons.scss */
+/* line 204, ../sass/components/_main-buttons.scss */
 .navigation-steps li:last-of-type a {
   border-radius: 0 6px 6px 0;
 }
-/* line 193, ../sass/components/_main-buttons.scss */
+/* line 207, ../sass/components/_main-buttons.scss */
 .navigation-steps li:not(:last-of-type) a {
   border-right: none;
+}
+
+/* line 213, ../sass/components/_main-buttons.scss */
+.multiSelect {
+  padding: 0;
+}
+/* line 215, ../sass/components/_main-buttons.scss */
+.multiSelect .buttonLabel {
+  padding: 0 0 0 5px;
+}
+
+/* line 220, ../sass/components/_main-buttons.scss */
+.multiSelect > button {
+  padding: 5px 10px 3px;
+  background: linear-gradient(to bottom, #9ac1e3, #72a9d8);
+  border: 1px solid #3177b3;
+  color: white;
+  min-height: inherit !important;
+  font-size: 1em;
+}
+/* line 230, ../sass/components/_main-buttons.scss */
+.multiSelect > button:hover {
+  background: linear-gradient(to bottom, #72a9d8, #9ac1e3);
 }
 
 /* line 2, ../sass/components/_myPolicyCompass.scss */
@@ -1500,56 +1539,81 @@ header .container {
 #container-create-dataset .compressed .content-column-second {
   width: 5%;
 }
-/* line 45, ../sass/components/_pages-create-dataset.scss */
+/* line 34, ../sass/components/_pages-create-dataset.scss */
+#container-create-dataset .dataset-filters-bottom {
+  margin-top: 1.5em;
+}
+/* line 47, ../sass/components/_pages-create-dataset.scss */
 #container-create-dataset .fonticon-dataset:before {
   content: "\e611";
 }
-/* line 48, ../sass/components/_pages-create-dataset.scss */
+/* line 50, ../sass/components/_pages-create-dataset.scss */
 #container-create-dataset .content-header {
   position: relative;
 }
 
-/* line 55, ../sass/components/_pages-create-dataset.scss */
+/* line 57, ../sass/components/_pages-create-dataset.scss */
 .help-switch {
   float: left;
 }
-/* line 57, ../sass/components/_pages-create-dataset.scss */
+/* line 59, ../sass/components/_pages-create-dataset.scss */
 .help-switch:before {
   content: "\e30f";
 }
 
-/* line 62, ../sass/components/_pages-create-dataset.scss */
+/* line 66, ../sass/components/_pages-create-dataset.scss */
 .dataset-create-table {
   background: white;
   font-size: .875em;
   width: 100%;
   border: 1px solid #b3b3b3;
 }
-/* line 68, ../sass/components/_pages-create-dataset.scss */
+/* line 72, ../sass/components/_pages-create-dataset.scss */
 .dataset-create-table td:nth-child(1),
 .dataset-create-table th {
   text-align: center;
   background: #f2f2f2;
 }
-/* line 74, ../sass/components/_pages-create-dataset.scss */
+/* line 78, ../sass/components/_pages-create-dataset.scss */
 .dataset-create-table td,
 .dataset-create-table th {
   padding: 3px 6px;
 }
-/* line 77, ../sass/components/_pages-create-dataset.scss */
+/* line 81, ../sass/components/_pages-create-dataset.scss */
 .dataset-create-table td {
   border: 1px solid #e5e5e5;
 }
-/* line 80, ../sass/components/_pages-create-dataset.scss */
+/* line 84, ../sass/components/_pages-create-dataset.scss */
 .dataset-create-table tbody tr:nth-child(odd) {
   background: rgba(242, 242, 242, 0.5);
 }
-/* line 83, ../sass/components/_pages-create-dataset.scss */
+/* line 87, ../sass/components/_pages-create-dataset.scss */
 .dataset-create-table td:nth-child(odd) {
   background: rgba(242, 242, 242, 0.3);
 }
 
-/* line 88, ../sass/components/_pages-create-dataset.scss */
+/* line 93, ../sass/components/_pages-create-dataset.scss */
+.create-dataset-result {
+  background: #fff2ca;
+  background: #fffae9;
+  font-size: .875em;
+  width: 100%;
+}
+/* line 103, ../sass/components/_pages-create-dataset.scss */
+.create-dataset-result td,
+.create-dataset-result th {
+  padding: 3px 6px;
+}
+/* line 106, ../sass/components/_pages-create-dataset.scss */
+.create-dataset-result td {
+  border: 1px solid #b6a572;
+}
+/* line 109, ../sass/components/_pages-create-dataset.scss */
+.create-dataset-result tbody tr:nth-child(odd) {
+  background: rgba(255, 242, 202, 0.3);
+}
+
+/* line 118, ../sass/components/_pages-create-dataset.scss */
 .help-text {
   position: absolute;
   top: 100px;
@@ -1562,10 +1626,36 @@ header .container {
   border-radius: 6px;
   display: none;
 }
-/* line 100, ../sass/components/_pages-create-dataset.scss */
+/* line 130, ../sass/components/_pages-create-dataset.scss */
 .help-text.active {
   display: block;
   z-index: 2;
+}
+
+/* line 137, ../sass/components/_pages-create-dataset.scss */
+.dataset-filter {
+  width: 100%;
+  margin: 5px 0;
+  background: #e5e5e5;
+  border: 1px solid #cccccc;
+  padding: 10px;
+  border-radius: 6px;
+}
+/* line 140, ../sass/components/_pages-create-dataset.scss */
+.dataset-filter h5 {
+  width: 8.33333%;
+  text-align: right;
+  float: left;
+  margin-right: 20px;
+}
+/* line 146, ../sass/components/_pages-create-dataset.scss */
+.dataset-filter .dataset-select {
+  float: left;
+  margin-right: 20px;
+}
+/* line 151, ../sass/components/_pages-create-dataset.scss */
+.dataset-filter .dataset-select-buttonbar {
+  float: left;
 }
 
 /* line 2, ../sass/components/_pages-want.scss */
@@ -1995,7 +2085,7 @@ ul.toc .active {
   flex-flow: row wrap;
   -webkit-flex-flow: row wrap;
 }
-/* line 90, ../sass/_custom.scss */
+/* line 97, ../sass/_custom.scss */
 #footer .flag-wrap > div {
   padding-right: 10px;
   padding-left: 10px;
@@ -2035,7 +2125,7 @@ ul.toc .active {
     flex-flow: row wrap;
     -webkit-flex-flow: row wrap;
   }
-  /* line 90, ../sass/_custom.scss */
+  /* line 97, ../sass/_custom.scss */
   #footer .footer-wrapper > div {
     padding-right: 10px;
     padding-left: 10px;

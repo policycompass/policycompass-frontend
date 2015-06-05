@@ -20,6 +20,13 @@
   clip: rect(1px, 1px, 1px, 1px);
 }
 
+@mixin secondary-box {
+  background:$gris_90;
+  border:1px solid $gris_80;
+  padding:10px;
+  border-radius:6px;
+ 
+}
 // Turns off the element-invisible effect.
 @mixin element-invisible-off {
   position: static !important;

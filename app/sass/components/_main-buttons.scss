@@ -129,9 +129,23 @@ opacity:.5;
 .btn-prev:before {
   content: "\e601";
 }
+.btn-validate:before {
+  content: "\e604";
+}
+
+.btn-add:before {
+  content: "\e608";
+}
+.btn-request:before {
+  content: "\e618";
+}
+
+/* after icons */
+
 .btn-next:after {
   content: "\e602";
 }
+
 
 
 
@@ -194,4 +208,31 @@ opacity:.5;
       border-right:none;
     }
   }
+}
+
+.multiSelect {
+  padding:0;
+  .buttonLabel  {
+    padding:0 0 0 5px;
+  }
+}
+
+.multiSelect > button {
+
+  
+  
+ padding: 5px 10px 3px;
+  background:linear-gradient(to bottom,$bk_4_4, $bk_4_3);
+  border:1px solid $bk_4_1;
+  color:white;
+    min-height: inherit !important;
+    font-size:1em;
+  &:hover {
+    background:linear-gradient(to bottom,$bk_4_3, $bk_4_4);
+    
+  }
+  
+ 
+  // padding:0;
+  // line-height:1em;
 }
