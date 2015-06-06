@@ -7,8 +7,7 @@ var events = angular.module('pcApp.events', [
 events.config(function($routeProvider) {
     $routeProvider
         .when('/events', {
-            controller: 'EventsController',
-            templateUrl: 'modules/events/partials/list.html'
+            redirectTo: '/browse/event'
         })
         .when('/events/create', {
             controller: 'EventCreateController',

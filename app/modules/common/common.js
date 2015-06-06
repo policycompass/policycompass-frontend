@@ -20,6 +20,10 @@ commonmanager.config(function($routeProvider) {
             controller: 'searchMainController',
             templateUrl: 'modules/search/partials/browse.html'
         })
+        .when('/browse/:type', {
+            controller: 'searchMainController',
+            templateUrl: 'modules/search/partials/browse.html'
+        })
         .when('/create', {
             controller: 'StaticController',
             templateUrl: 'modules/common/partials/create.html'

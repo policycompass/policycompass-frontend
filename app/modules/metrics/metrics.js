@@ -16,8 +16,7 @@ var metrics = angular.module('pcApp.metrics', [
 metrics.config(function($routeProvider) {
     $routeProvider
         .when('/metrics', {
-            controller: 'MetricsController',
-            templateUrl: 'modules/metrics/partials/list.html'
+            redirectTo: '/browse/metric'
         })
         .when('/metrics/create', {
             controller: 'MetricCreateController',
