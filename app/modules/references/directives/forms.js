@@ -27,6 +27,27 @@ angular.module('pcApp.references.directives.forms', [
     };
 }])
 
+
+/**
+ * Returns HTML option tags for the selection of the unit category
+ */
+.directive('unitCategoryOptions', ['$log', 'UnitCategory', function ($log, UnitCategory) {
+    return {
+        restrict: 'C',
+        scope: {
+            model: '=model'
+        },
+        controller: function($scope){
+            $scope.c = UnitCategory.query(
+                null,
+                function() {
+                }
+            );
+        },
+        template: '<option value="{{ u.id }}" ng-repeat="u in c" ng-selected="u.id == model">{{ u.title }}</option>'
+    };
+}])
+
 /**
  * Returns HTML option tags for the selection of the policy domain
  */
@@ -66,6 +87,27 @@ angular.module('pcApp.references.directives.forms', [
             );
         },
         template: '<option value="{{ l.id }}" ng-repeat="l in languages" ng-selected="l.id == model">{{ l.title }}</option>'
+    };
+}])
+
+
+/**
+ * Returns HTML option tags for the selection of the class
+ */
+.directive('classOptions', ['$log', 'Class', function ($log, Class) {
+    return {
+        restrict: 'C',
+        scope: {
+            model: '=model'
+        },
+        controller: function($scope){
+            $scope.classes = Class.query(
+                null,
+                function() {
+                }
+            );
+        },
+        template: '<option value="{{ c.id }}" ng-repeat="c in classes" ng-selected="c.id == model">{{c.title }}</option>'
     };
 }])
 

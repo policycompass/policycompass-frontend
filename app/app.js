@@ -12,6 +12,7 @@ var pcAppDependencies = [
     'pcApp.fcm',
     'pcApp.developer',
     'pcApp.search',
+    'pcApp.indicators',
     'dialogs.main',
     'dialogs.default-translations',
     'angularSpectrumColorpicker',
