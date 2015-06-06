@@ -7,8 +7,7 @@ angular.module('pcApp.fcm', [
 config(function($routeProvider) {
     $routeProvider
         .when('/models', {
-            controller: 'FcmController',
-            templateUrl: 'modules/fcm/partials/list.html'
+            redirectTo: '/browse/fuzzymap'
         })
         .when('/models/create', {
             controller: 'FcmCreateController', 
