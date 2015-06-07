@@ -77,7 +77,7 @@ rzslider span.bubble.selection {
 }
 
 rzslider span.bubble.limit {
-  /*color: #808080;*/
+  
 
 }
 
@@ -106,7 +106,7 @@ padding-bottom: 5px;
 }
 
 .graticule {
-  /*fill: none;*/
+  
   stroke: #777;
   stroke-width: .5px;
   stroke-opacity: .5;
@@ -148,7 +148,7 @@ shape-rendering: crispEdges;
 }
 
 .line {
-/*fill: none;*/
+
   stroke-width: 1.5px;
 }
 
@@ -159,7 +159,7 @@ shape-rendering: crispEdges;
     padding: 8px;
     font: 15px Helvetica Neue;
     background: #FFF;
-    /*background: #f7941e;*/
+    
     border: solid 1px #f7941e;
     border-radius: 8px;
     pointer-events: none;
@@ -250,7 +250,7 @@ shape-rendering: crispEdges;
 }
 
 
-/* line 1, ../sass/components/_metrics.scss */
+
 .createvisualization .designer-datasets,
 .createvisualization .designer-metrics {
   background: #f2f2f2;
@@ -262,30 +262,30 @@ shape-rendering: crispEdges;
   display: none;
   margin-bottom: 20px;
 }
-/* line 11, ../sass/components/_metrics.scss */
+
 .createvisualization .designer-datasets.active,
 .createvisualization .designer-metrics.active {
   display: block;
 }
-/* line 14, ../sass/components/_metrics.scss */
+
 .createvisualization .designer-datasets label,
 .createvisualization .designer-metrics label {
   display: block;
 }
-/* line 17, ../sass/components/_metrics.scss */
+
 .createvisualization .designer-datasets h3, 
 .createvisualization .designer-datasets h4,
 .createvisualization .designer-metrics h3, 
 .createvisualization .designer-metrics h4 {
   margin: 0 0 1em;
 }
-/* line 20, ../sass/components/_metrics.scss */
+
 .createvisualization .designer-datasets h4,
 .createvisualization .designer-metrics h4 {
   font-weight: normal;
   padding: 0 40px;
 }
-/* line 25, ../sass/components/_metrics.scss */
+
 .createvisualization .designer-datasets:before,
 .createvisualization .designer-metrics:before {
   content: "\e614";
@@ -295,7 +295,7 @@ shape-rendering: crispEdges;
   color: #b3b3b3;
 }
 
-/* line 66, ../sass/components/_metrics.scss */
+
 .createvisualization .datasets-list,
 .createvisualization .metrics-list {
   list-style-type: none;
@@ -305,7 +305,7 @@ shape-rendering: crispEdges;
   color: #999999;
   margin-bottom: 1em;
 }
-/* line 71, ../sass/components/_metrics.scss */
+
 .createvisualization .datasets-list li,
 .createvisualization .metrics-list li {
   margin: 2px;
@@ -313,7 +313,7 @@ shape-rendering: crispEdges;
   padding-left: 1.2em;
   position: relative;
 }
-/* line 75, ../sass/components/_metrics.scss */
+
 .createvisualization .datasets-list li:before,
 .createvisualization .metrics-list li:before {
   content: "\e014";
@@ -321,34 +321,34 @@ shape-rendering: crispEdges;
   left: -0.5em;
   top: 2px;
 }
-/* line 83, ../sass/components/_metrics.scss */
+
 .createvisualization .datasets-list li.active,
 .createvisualization .metrics-list li.active {
   color: #1a1a1a;
 }
 
 
-/* line 42, ../sass/components/_metrics.scss */
+
 .createvisualization .dataset-button,
 .createvisualization .metric-button {
   position: absolute;
   top: 10px;
   right: 35px;
 }
-/* line 49, ../sass/components/_metrics.scss */
+
 .createvisualization .dataset-button:before,
 .createvisualization .metric-button:before {
   content: "\e600";
 }
 
 
-/* line 58, ../sass/components/_metrics.scss */
+
 .createvisualization .dataset-delete-button,
 .createvisualization .metric-delete-button {
   right: 10px;
 }
 
-/* line 60, ../sass/components/_metrics.scss */
+
 .createvisualization .dataset-delete-button:before,
 .createvisualization .metric-delete-button:before {
   content: "\e14b";
@@ -357,12 +357,12 @@ shape-rendering: crispEdges;
 
 
 
-/* line 83, ../sass/components/_metrics.scss */
+
 .createvisualization .datasetss-list li.active,
 .createvisualization .metrics-list li.active {
   color: #1a1a1a;
 }
-/* line 85, ../sass/components/_metrics.scss */
+
 .createvisualization .datasets-list li.active:before,
 .createvisualization .metrics-list li.active:before {
   content: "\e001";

@@ -8,6 +8,7 @@
 }
 
 /* line 27, ../sass/_base.scss */
+h4:before,
 .btn:before,
 .row-view-create .view-item-wrap:before,
 .searchItemIcon a:before,
@@ -1658,6 +1659,447 @@ header .container {
   float: left;
 }
 
+/* line 3, ../sass/components/_pages-visualization.scss */
+.createvisualization .metrics-list {
+  list-style-type: none;
+  list-style-image: none;
+  margin: 0;
+  padding: 0;
+}
+/* line 5, ../sass/components/_pages-visualization.scss */
+.createvisualization .metrics-list li {
+  width: 100%;
+  padding: 0 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+/* line 11, ../sass/components/_pages-visualization.scss */
+.createvisualization .metrics-list li.active a {
+  background: #72a9d8;
+  color: white;
+}
+/* line 14, ../sass/components/_pages-visualization.scss */
+.createvisualization .metrics-list li.active a:before {
+  content: "\e607";
+}
+/* line 19, ../sass/components/_pages-visualization.scss */
+.createvisualization .metrics-list li a {
+  background: #fafafa;
+  display: block;
+  padding: 10px;
+  width: 100%;
+}
+/* line 24, ../sass/components/_pages-visualization.scss */
+.createvisualization .metrics-list li a:before {
+  content: "\e608";
+}
+@media (min-width: 992px) {
+  /* line 3, ../sass/components/_pages-visualization.scss */
+  .createvisualization .metrics-list {
+    display: flex;
+    display: -webkit-flex;
+    flex-flow: row wrap;
+    -webkit-flex-flow: row wrap;
+  }
+  /* line 97, ../sass/_custom.scss */
+  .createvisualization .metrics-list > div {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+  /* line 32, ../sass/components/_pages-visualization.scss */
+  .createvisualization .metrics-list li {
+    width: 50%;
+  }
+}
+/* line 38, ../sass/components/_pages-visualization.scss */
+.createvisualization .designer-metrics {
+  background: #fafafa;
+  padding: 10px;
+  margin: 5px 0;
+}
+/* line 42, ../sass/components/_pages-visualization.scss */
+.createvisualization .designer-metrics h4:before {
+  content: "\e993";
+}
+
+/* line 57, ../sass/components/_pages-visualization.scss */
+rzslider {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  height: 2px;
+  margin: 30px 0 15px 0;
+  vertical-align: middle;
+}
+
+/* line 66, ../sass/components/_pages-visualization.scss */
+rzslider span {
+  position: absolute;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+/* line 72, ../sass/components/_pages-visualization.scss */
+rzslider span.base {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+}
+
+/* line 78, ../sass/components/_pages-visualization.scss */
+rzslider span.bar {
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  background: #58595b;
+}
+
+/* line 85, ../sass/components/_pages-visualization.scss */
+rzslider span.bar.selection {
+  z-index: 1;
+  width: 0;
+  background: #f7941e;
+}
+
+/* line 91, ../sass/components/_pages-visualization.scss */
+rzslider span.pointer {
+  top: -15px;
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  background-color: #58595b;
+  -webkit-border-radius: 16px;
+  -moz-border-radius: 16px;
+  border-radius: 16px;
+}
+
+/* line 103, ../sass/components/_pages-visualization.scss */
+rzslider span.pointer:after {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: 8px;
+  height: 8px;
+  background: #71818e;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  content: '';
+}
+
+/* line 116, ../sass/components/_pages-visualization.scss */
+rzslider span.pointer:hover:after {
+  background-color: #f7941e;
+}
+
+/* line 120, ../sass/components/_pages-visualization.scss */
+rzslider span.pointer.active:after {
+  background-color: #f7941e;
+}
+
+/* line 124, ../sass/components/_pages-visualization.scss */
+rzslider span.bubble {
+  top: -32px;
+  padding: 1px 3px 1px 3px;
+  color: #f7941e;
+  cursor: default;
+}
+
+/* line 131, ../sass/components/_pages-visualization.scss */
+rzslider span.bubble.selection {
+  top: 15px;
+}
+
+/* line 141, ../sass/components/_pages-visualization.scss */
+.square-box {
+  width: 20px;
+  display: inline-table;
+}
+
+/* line 147, ../sass/components/_pages-visualization.scss */
+.visualization-graph-page-content {
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+/* line 154, ../sass/components/_pages-visualization.scss */
+.stroke {
+  fill: none;
+  stroke: #000;
+  stroke-width: 3px;
+}
+
+/* line 160, ../sass/components/_pages-visualization.scss */
+.fill {
+  fill: #fff;
+}
+
+/* line 164, ../sass/components/_pages-visualization.scss */
+.graticule {
+  stroke: #777;
+  stroke-width: .5px;
+  stroke-opacity: .5;
+}
+
+/* line 171, ../sass/components/_pages-visualization.scss */
+.land {
+  fill: #222;
+}
+
+/* line 175, ../sass/components/_pages-visualization.scss */
+.boundary {
+  fill: none;
+  stroke: #fff;
+  stroke-width: .5px;
+}
+
+/* line 182, ../sass/components/_pages-visualization.scss */
+.grid .tick {
+  stroke: lightblue;
+  opacity: 0.2;
+}
+
+/* line 186, ../sass/components/_pages-visualization.scss */
+.grid path {
+  stroke-width: 0;
+}
+
+/* line 190, ../sass/components/_pages-visualization.scss */
+.nodatatoplot {
+  font-size: 20px;
+}
+
+/* line 194, ../sass/components/_pages-visualization.scss */
+.axis path, .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+/* line 200, ../sass/components/_pages-visualization.scss */
+.line {
+  stroke-width: 1.5px;
+}
+
+/* line 205, ../sass/components/_pages-visualization.scss */
+.tooltip {
+  position: absolute;
+  width: 200px;
+  min-height: 50px;
+  padding: 8px;
+  font: 15px Helvetica Neue;
+  background: #FFF;
+  border: solid 1px #f7941e;
+  border-radius: 8px;
+  pointer-events: none;
+  z-order: 1000;
+  text-align: center;
+}
+
+/* line 220, ../sass/components/_pages-visualization.scss */
+.tooltipdd {
+  position: absolute;
+  display: block;
+  background: #f7941e;
+  color: white;
+  border-radius: 3px;
+  padding: 10px;
+  width: 200px;
+  opacity: 0.95;
+}
+
+/* line 232, ../sass/components/_pages-visualization.scss */
+.tooltipLegend {
+  position: absolute;
+  width: 200px;
+  min-height: 50px;
+  padding: 8px;
+  font: 15px Helvetica Neue;
+  background: #FFF;
+  border: solid 1px #aaa;
+  border-radius: 8px;
+  pointer-events: none;
+  z-order: 1000;
+  text-align: left;
+}
+
+/* line 246, ../sass/components/_pages-visualization.scss */
+.showFilter {
+  background: #f2f2f2;
+  padding: 10px 20px;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+/* line 256, ../sass/components/_pages-visualization.scss */
+.on_check {
+  display: block;
+  float: left;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #000000;
+}
+
+/* line 264, ../sass/components/_pages-visualization.scss */
+.graphContainerdiv {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* line 270, ../sass/components/_pages-visualization.scss */
+.tabsCreateMetric {
+  float: left;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+/* line 278, ../sass/components/_pages-visualization.scss */
+.contentHE {
+  font-weight: normal;
+  padding: 0 40px;
+}
+
+/*
+.createvisualization .designer-datasets:before,
+.createvisualization .designer-metrics:before,
+.createvisualization .button:before,
+.createvisualization li:before,
+.createvisualization .dataset-button:before,
+.createvisualization .metric-button:before,
+.createvisualization .field-content li:before,
+.createvisualization .a:before {
+  padding: 0 0.3em;
+  font-family: iconos;
+}
+
+
+
+.createvisualization .designer-datasets,
+.createvisualization .designer-metrics {
+  background: #f2f2f2;
+  overflow: hidden;
+  padding: 10px 20px;
+  position: relative;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  display: none;
+  margin-bottom: 20px;
+}
+
+.createvisualization .designer-datasets.active,
+.createvisualization .designer-metrics.active {
+  display: block;
+}
+
+.createvisualization .designer-datasets label,
+.createvisualization .designer-metrics label {
+  display: block;
+}
+
+.createvisualization .designer-datasets h3, 
+.createvisualization .designer-datasets h4,
+.createvisualization .designer-metrics h3, 
+.createvisualization .designer-metrics h4 {
+  margin: 0 0 1em;
+}
+
+.createvisualization .designer-datasets h4,
+.createvisualization .designer-metrics h4 {
+  font-weight: normal;
+  padding: 0 40px;
+}
+
+.createvisualization .designer-datasets:before,
+.createvisualization .designer-metrics:before {
+  content: "\e614";
+  position: absolute;
+  font-size: 35px;
+  left: 0;
+  color: #b3b3b3;
+}
+
+
+.createvisualization .datasets-list,
+.createvisualization .metrics-list {
+  list-style-type: none;
+  list-style-image: none;
+  margin: 0;
+  padding: 0;
+  color: #999999;
+  margin-bottom: 1em;
+}
+
+.createvisualization .datasets-list li,
+.createvisualization .metrics-list li {
+
+  
+  position: relative;
+}
+
+.createvisualization .datasets-list li:before,
+.createvisualization .metrics-list li:before {
+  content: "\e014";
+  position: absolute;
+  left: -0.5em;
+  top: 2px;
+}
+
+.createvisualization .datasets-list li.active,
+.createvisualization .metrics-list li.active {
+  color: #1a1a1a;
+}
+
+
+
+.createvisualization .dataset-button,
+.createvisualization .metric-button {
+  position: absolute;
+  top: 10px;
+  right: 35px;
+}
+
+.createvisualization .dataset-button:before,
+.createvisualization .metric-button:before {
+  content: "\e600";
+}
+
+
+
+.createvisualization .dataset-delete-button,
+.createvisualization .metric-delete-button {
+  right: 10px;
+}
+
+
+.createvisualization .dataset-delete-button:before,
+.createvisualization .metric-delete-button:before {
+  content: "\e14b";
+  color: #ad5353;
+}
+
+
+
+
+.createvisualization .datasetss-list li.active,
+.createvisualization .metrics-list li.active {
+  color: #1a1a1a;
+}
+
+.createvisualization .datasets-list li.active:before,
+.createvisualization .metrics-list li.active:before {
+  content: "\e001";
+  color: #53ad56;
+}
+
+*/
 /* line 2, ../sass/components/_pages-want.scss */
 .want-to-page h2.page-title {
   float: left;
@@ -2204,3 +2646,70 @@ footer {
 }
 
 */
+@media (min-width: 992px) {
+  /* line 2, ../sass/components/_modal.scss */
+  .modal-dialog {
+    width: 720px;
+  }
+}
+/* line 7, ../sass/components/_modal.scss */
+.modal-content {
+  background: #fafafa;
+  /*
+  form[name='neweventForm'] {
+    .form-group.ng-binding {
+      background:red;
+      overflow:hidden;
+      label {
+        
+      }
+      p {
+        
+      }
+    
+    }
+  }
+  */
+}
+/* line 13, ../sass/components/_modal.scss */
+.modal-content textarea {
+  width: 100%;
+}
+/* line 16, ../sass/components/_modal.scss */
+.modal-content .metrics-list {
+  list-style-type: none;
+  list-style-image: none;
+  margin: 0;
+  padding: 0;
+  margin: 10px 0;
+}
+/* line 20, ../sass/components/_modal.scss */
+.modal-content .metrics-list li {
+  background: #fafafa;
+  padding: 5px 10px;
+  border-bottom: #cccccc;
+  margin: 5px 0;
+}
+/* line 41, ../sass/components/_modal.scss */
+.modal-content form[name='searchEventsForm'] .col-sm-4:first-of-type input {
+  margin-top: 8px;
+  width: 90%;
+}
+/* line 64, ../sass/components/_modal.scss */
+.modal-content .events-display-fields .form-group {
+  overflow: hidden;
+  padding: 5px;
+  background: #f2f2f2;
+  margin: 5px 0;
+}
+/* line 71, ../sass/components/_modal.scss */
+.modal-content .events-display-fields .field-label {
+  width: 8em;
+  float: left;
+  margin-right: -8em;
+  text-align: right;
+}
+/* line 77, ../sass/components/_modal.scss */
+.modal-content .events-display-fields .field-content {
+  padding-left: 9em;
+}
