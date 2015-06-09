@@ -23,6 +23,19 @@ angular.module('pcApp.references.services.reference',[
 }])
 
 /**
+ * Factory for getting a Resource, which connects to the unit endpoint
+ */
+.factory('UnitCategory',  ['$resource', 'API_CONF', function($resource, API_CONF) {
+    var url = API_CONF.REFERENCE_POOL_URL + "/unitcategories/:id";
+    var UnitCategory = $resource(url,
+        {
+            id: "@id"
+        }
+    );
+    return UnitCategory;
+}])
+
+/**
  * Factory for getting a Resource, which connects to the policy domains endpoint
  */
 .factory('PolicyDomain',  ['$resource', 'API_CONF', function($resource, API_CONF) {
@@ -73,6 +86,20 @@ angular.module('pcApp.references.services.reference',[
         }
     );
     return DateFormat;
+}])
+
+
+/**
+ * Factory for getting a Class, which connects to the class endpoint
+ */
+.factory('Class',  ['$resource', 'API_CONF', function($resource, API_CONF) {
+    var url = API_CONF.REFERENCE_POOL_URL + "/classes/:id";
+    var Class = $resource(url,
+        {
+            id: "@id"
+        }
+    );
+    return Class;
 }]);
 
 

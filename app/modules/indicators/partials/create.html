@@ -1,0 +1,60 @@
+<div class="container">
+
+<legend>
+    <h3 ng-if="mode == 'create'"><span class="glyphicon glyphicon-pencil"></span> Define a New  Indicator</h3>
+    <h3 ng-if="mode == 'edit'"><span class="glyphicon glyphicon-pencil"></span> Edit Indicator</h3>
+</legend>
+
+
+<form name="indicatorForm" role="form" novalidate>
+    <div class="row">
+        <div class="col-lg-4">
+            <fieldset>
+                <legend>Main Details</legend>
+                <div class="form-group" ng-class="{'has-error': indicatorForm.name.$dirty && indicatorForm.name.$invalid}">
+                    <label for="name">Name *</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Indicator Name" ng-model="indicator.title" ng-minlength="3" required>
+                </div>
+                <div class="form-group" ng-class="{'has-error': indicatorForm.description.$dirty && indicatorForm.description.$invalid}">
+                    <label for="indicator-description" class="">Description *</label>
+                    <textarea class="form-control" rows="5" id="indicator-description" name="indicator-description" ng-model="indicator.description" required></textarea>
+                </div>
+                <div class="form-group" ng-class="{'has-error': indicatorForm.units.$dirty && indicatorForm.units.$invalid}">
+                    <label for="unit">Units *</label>
+                    <select multiple class="form-control unit-options" id="unit" name="unit" ng-model="indicator.units" required>
+                    </select>
+                </div>
+                <div class="form-group" ng-class="{'has-error': indicatorForm.classes.$dirty && indicatorForm.classes.$invalid}">
+                    <label for="class">Classes *</label>
+                    <select multiple class="form-control class-options" id="class" name="unit" ng-model="indicator.classes" required>
+                    </select>
+                </div>
+            </fieldset>
+        </div>
+        <div class="col-lg-8">
+            <fieldset>
+                <legend>Indication</legend>
+                <div class="form-group" ng-class="">
+                    <label for="policy-domain">Policy Domain *</label>
+                    <select class="form-control policydomain-options" id="policy-domain" name="policy-domain" ng-model="indicator.policy_domain">
+                    </select>
+                </div>
+
+                <div class="form-group" ng-class="">
+                    <label for="indicators">Indicates *</label>
+                    <select multiple class="form-control indicator-options" id="indicators" name="indicators" ng-model="indicator.indicators">
+                    </select>
+                </div>
+            </fieldset>
+
+            <div class="form-group pull-right pc-metric-formcontrols">
+                <a type="button" class="btn btn-danger" href="#/">Cancel</a>
+                <button type="submit" id="saveButton" ng-disabled="indicatorForm.$invalid" class="btn btn-default" ng-click="createIndicator()"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>
+            </div>
+
+        </div>
+    </div>
+
+</form>
+
+</div>
