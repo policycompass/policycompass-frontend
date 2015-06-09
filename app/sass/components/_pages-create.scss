@@ -1,3 +1,17 @@
+.pc-visualization-formcontrols {
+  & div > * {
+    // border:1px solid red;
+    
+    
+  }
+  button {
+    float:left;
+    margin-right:10px;
+  }
+  
+}
+
+
 
 $size:50px;
 $top:0px;
@@ -35,7 +49,7 @@ $top:0px;
       top:10px;
       line-height:1em;
       left:-$size - 20px;
-      color:$bk_2;
+      color:$bk_3;
       padding:0;
       // color:$gris_60;
     }
@@ -44,7 +58,8 @@ $top:0px;
   
   }
   .view-item-metrics .view-item-wrap:before {
-    content:"\e613";
+    // content:"\e613";
+        content: "\e61d";
   }
   .view-item-events .view-item-wrap:before {
     content:"\e612";
@@ -53,6 +68,34 @@ $top:0px;
     content:"\e610";
   }
   
+    .view-item-upload .view-item-wrap:before {
+    content: "\e611";
+  }
+  .view-item-indicators .view-item-wrap:before {
+    content: "\e0db";
+  }
+  .view-item-define-metrics .view-item-wrap:before {
+    content: "\e613";
+  }
+  .view-item-apply .view-item-wrap:before {
+ content: "\e61d";
+  }
   
+  
+  
+
+  
+}
+
+.showFilterContainer {
+  font-size:.875em;
+  color:$claro;
+  .on_check {
+    color:$claro;
+  }
+}
+.on_check {
+  color:$general;
+
 }
 

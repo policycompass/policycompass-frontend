@@ -1,6 +1,7 @@
 body {
   background:white;
   background:$gris_98;
+  background:$gris_95;
   // padding:0;margin:0;
 }
 
@@ -21,7 +22,9 @@ header {
 
 }
 
-
+#main-content {
+  background:$gris_98;
+}
 
 
 body {
@@ -42,9 +45,9 @@ body {
 }
 
 footer {
-  //background:linear-gradient(to bottom,$gris_95 0%,$gris_80 100%); 
+  background:linear-gradient(to bottom,#ededed,$gris_95 10px); 
   //background: $footercolor;
-  background: $gris_95;
+  // background: $gris_95;
   // border-top-color:red;
 }
 

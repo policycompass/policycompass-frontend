@@ -181,39 +181,13 @@ pre {
   color: #f7941e;
 }
 
-/* footer*/
-/* line 148, ../sass/main.scss */
-footer {
-  border-top: 1px solid #CCCCCC;
-}
-
-/* line 151, ../sass/main.scss */
-.footer-wrapper a {
-  color: #58595b;
-  font-weight: 400;
-}
-
-/* line 155, ../sass/main.scss */
-.footer-wrapper > .col-lg-6:first-child {
-  border-right: 1px solid #CCCCCC;
-}
-
-/* line 158, ../sass/main.scss */
-.footer-wrapper a:hover, .footer-wrapper a:focus, .footer-wrapper a:active {
-  color: #fa8800;
-  font-weight: 400;
-  -webkit-transition: color 300ms ease-out;
-  -moz-transition: color 300ms ease-out;
-  transition: color 300ms ease-out;
-}
-
 /*Fcm Page*/
-/* line 167, ../sass/main.scss */
+/* line 149, ../sass/main.scss */
 .fcm-editor-icon {
   font-size: 66px;
 }
 
-/* line 170, ../sass/main.scss */
+/* line 152, ../sass/main.scss */
 .fcm-editor-effect {
   min-height: 135px;
   padding-top: 10px;
@@ -221,7 +195,7 @@ footer {
   text-align: center;
 }
 
-/* line 176, ../sass/main.scss */
+/* line 158, ../sass/main.scss */
 .fcm-editor-effect > a {
   color: #ffffff;
   -webkit-transition: color 300ms ease-out;
@@ -229,7 +203,7 @@ footer {
   transition: color 300ms ease-out;
 }
 
-/* line 183, ../sass/main.scss */
+/* line 165, ../sass/main.scss */
 .fcm-editor-effect > a:hover, .fcm-editor-effect > a:active, .fcm-editor-effect > a:focus {
   color: #E3E3E3;
   text-decoration: none;
@@ -239,7 +213,7 @@ footer {
   transition: color 300ms ease-out;
 }
 
-/* line 191, ../sass/main.scss */
+/* line 173, ../sass/main.scss */
 .fcm-editor-window {
   min-height: 250px;
   border: 1px solid #eeeeee;
