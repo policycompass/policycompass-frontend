@@ -34,6 +34,17 @@
         <div class="col-lg-8">
             <fieldset>
                 <legend>Indication</legend>
+                <div class="form-group" ng-class="">
+                    <label for="policy-domain">Policy Domain *</label>
+                    <select class="form-control policydomain-options" id="policy-domain" name="policy-domain" ng-model="indicator.policy_domain">
+                    </select>
+                </div>
+
+                <div class="form-group" ng-class="">
+                    <label for="indicators">Indicates *</label>
+                    <select multiple class="form-control indicator-options" id="indicators" name="indicators" ng-model="indicator.indicators">
+                    </select>
+                </div>
             </fieldset>
 
             <div class="form-group pull-right pc-metric-formcontrols">

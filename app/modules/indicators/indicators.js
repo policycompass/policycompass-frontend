@@ -4,7 +4,7 @@
 
 var indicators = angular.module('pcApp.indicators', [
     'pcApp.indicators.controllers.indicator',
-    'pcApp.metrics.directives.forms'
+    'pcApp.indicators.directives.forms'
 ]);
 
 /**
@@ -25,4 +25,4 @@ indicators.config(function($routeProvider) {
 //            templateUrl: 'modules/metrics/partials/detail.html'
 //        })
         .otherwise({ redirectTo: '/' });
-});s
+});

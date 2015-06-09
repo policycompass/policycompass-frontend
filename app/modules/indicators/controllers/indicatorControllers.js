@@ -4,6 +4,7 @@
 
 angular.module('pcApp.indicators.controllers.indicator', [
     'pcApp.references.services.reference',
+    'pcApp.indicators.services.indicator',
     'dialogs.main'
 ])
 
@@ -24,17 +25,36 @@ angular.module('pcApp.indicators.controllers.indicator', [
  * Controller for creating an indicator
  */
 .controller('IndicatorCreateController', [
-        '$scope',
-        '$location',
-        '$log',
-        'IndicatorControllerHelper',
-        '$filter',
-        function($scope, $location, $log, helper, $filter) {
+    '$scope',
+    'Indicator',
+    '$location',
+    '$log',
+    'IndicatorControllerHelper',
+    '$filter',
+    function ($scope, Indicator, $location, $log, helper, $filter) {
 
-    // Init the base functionalities
-    helper.baseCreateEditController($scope);
+        // Init the base functionalities
+        helper.baseCreateEditController($scope);
 
-    // Mode is creation
-    $scope.mode = "create";
+        // Mode is creation
+        $scope.mode = "create";
 
-}]);
+        // Empty indcator object
+        $scope.indicator = {};
+
+        // Create the indicator via the API
+        $scope.createIndicator = function() {
+            // Hardcoded user for the moment
+            // $scope.metric.user_id = 1;
+
+            // Save the Indicaotr and redirect to the detail view
+            Indicator.save($scope.indicator,function(value, responseHeaders){
+                    //$location.path('/');
+                },
+                function(err) {
+                    throw { message: JSON.stringify(err.data)};
+                }
+            );
+        };
+
+    }]);
