@@ -441,16 +441,16 @@ a:hover h3:before {
 /* line 39, ../sass/components/_pages-create.scss */
 .row-view-create .view-item-wrap {
   position: relative;
-  margin-left: 116px;
+  margin-left: 125px;
 }
 /* line 44, ../sass/components/_pages-create.scss */
 .row-view-create .view-item-wrap:before {
   content: "\e615";
-  font-size: 96px;
+  font-size: 75px;
   position: absolute;
   top: 10px;
   line-height: 1em;
-  left: -116px;
+  left: -125px;
   color: #9d5858;
   padding: 0;
 }
@@ -897,6 +897,7 @@ header .container {
 .btn.active, .btn:hover, .btn:focus {
   background: #f6921e;
   border-color: gray;
+  color: white;
 }
 /* line 42, ../sass/components/_main-buttons.scss */
 .btn.disabled {
@@ -913,7 +914,7 @@ header .container {
 
 /* line 66, ../sass/components/_main-buttons.scss */
 .btn-danger {
-  background: #9d5858;
+  background: #9dcf87;
 }
 
 /* line 69, ../sass/components/_main-buttons.scss */
@@ -1160,7 +1161,7 @@ header .container {
 
 /* line 63, ../sass/components/_myPolicyCompass.scss */
 .title:before {
-  color: #04c395;
+  color: #9d5858;
   padding-left: 0;
 }
 

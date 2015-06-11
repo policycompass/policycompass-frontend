@@ -37,9 +37,9 @@ $top:0px;
   
   }
   .view-item-wrap {
-    $size:96px;
+    $size:75px;
     position:relative;
-    margin-left:$size + 20px;
+    margin-left:$size +50px;
     
    &:before {
       
@@ -48,7 +48,7 @@ $top:0px;
       position:absolute;
       top:10px;
       line-height:1em;
-      left:-$size - 20px;
+      left:-$size - 50px;
       color:$bk_3;
       padding:0;
       // color:$gris_60;
