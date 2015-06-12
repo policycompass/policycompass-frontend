@@ -1,84 +1,45 @@
-<div>
-	<div ng-hide="list">
+<center>
+	<div>
+		<div ng-hide="list">
+			<div ng-show="isSelectedSon('graph_pie')">
+				<form>
+					<span>
+						<label class="checkbox-inline" for="selectedAll">
+							<input type="checkbox" ng-model="selectedAll" ng-change="checkAll();angularpiechartdisplaybycheckbox();" /> Check All
+						</label>
+					</span>
+					<br/>
+					<span ng-repeat="option in numbers2">
+      					<label class="checkbox-inline" for="{{option.Key}}">
+        					<input id="dateselectorcheckbox" class="dateselectorcheckbox" ng-change="angularpiechartdisplaybycheckbox();" type="checkbox" ng-model="selection.Keys[option.Key]" name="dateselectorcheckbox"  />
+        					{{option.Key}}
+      					</label>
+					</span>
+				</form>	
+			</div>
+		</div>
+
 		<div ng-show="isSelectedSon('graph_pie')">
-			<form>
-				<!--
-				<select 	
-				ng-model="form.dateselector" 
-				id="dateselector"
-				ng-change="angularpiechartdisplay();"						
-				ng-options="option.Key as option.Key for option in numbers2"></select>
-				-->
-				<span>
-					<label class="checkbox-inline" for="selectedAll">
-						<input type="checkbox" ng-model="selectedAll" ng-change="checkAll();angularpiechartdisplaybycheckbox();" /> Check All
-					</label>
-				</span>
-				<br/>
-				<span ng-repeat="option in numbers2">
-      				<label class="checkbox-inline" for="{{option.Key}}">
-        				<input id="dateselectorcheckbox" class="dateselectorcheckbox" ng-change="angularpiechartdisplaybycheckbox();" type="checkbox" ng-model="selection.Keys[option.Key]" name="dateselectorcheckbox"  />
-        				{{option.Key}}
-      				</label>
-				</span>
-			</form>	
+			<div class="pcPieChart" dataset="dataset" chartid="visualization.id" show-Legend="showLegend" small="list" mode="mode" show-Labels="showLabels"></div>
+		</div>
+
+		<div ng-show="isSelectedSon('graph_bars')">
+			<div class="pcBarsChart" dataset="datasetToSend" chartid="visualization.id" small="list"  mode="mode" show-Legend="showLegend" show-Labels="showLabels" show-Grid="showGrid"></div>
+		</div>
+
+		<div ng-show="isSelectedSon('graph_line')">
+			<div class="pcLinesChart" dataset="numbers1" events="eventsToPlot" 
+			labels="labelYAxe" small="list"  mode="mode" chartid="visualization.id" 
+			show-Legend="showLegend" 
+			show-Labels="showLabels"
+			show-Lines="showLines"
+			show-Areas="showAreas"
+			show-Points="showPoints"
+			show-Grid="showGrid"
+			show-Together="showYAxes"
+			show-Percentatge="showAsPercentatge"
+			xaxeformat=""
+			></div>
 		</div>
 	</div>
-
-	<div ng-show="isSelectedSon('graph_pie')">
-		<div class="pcPieChart" dataset="dataset" chartid="visualization.id" show-Legend="showLegend" small="list" mode="mode" show-Labels="showLabels"></div>
-	</div>
-
-	<div ng-show="isSelectedSon('graph_bars')">
-		<div class="pcBarsChart" dataset="datasetToSend" chartid="visualization.id" small="list"  mode="mode" show-Legend="showLegend" show-Labels="showLabels" show-Grid="showGrid"></div>
-	</div>
-
-	<div ng-show="isSelectedSon('graph_line')">
-		<div class="pcLinesChart" dataset="numbers1" events="eventsToPlot" 
-		labels="labelYAxe" small="list"  mode="mode" chartid="visualization.id" 
-		show-Legend="showLegend" 
-		show-Labels="showLabels"
-		show-Lines="showLines"
-		show-Areas="showAreas"
-		show-Points="showPoints"
-		show-Grid="showGrid"
-		show-Together="showYAxes"
-		show-Percentatge="showAsPercentatge"
-		xaxeformat=""
-		></div>
-	</div>
-<!--
-	<div id="container_graph_{{visualization.id}}" class="container_graph">		
-		<div class="loading-container">
-			<div ng-hide="list">
-				<div class="loading"></div>
-				<div id="loading-text">loading</div>
-			</div>
-			<div ng-show="list">
-				<div class="loading loading-small"></div>
-				<div id="loading-small-text">loading</div>
-			</div>
-		</div>		
-	</div>
--->
-</div>
-
-<!--
-<tabset>	
-	<tab heading="Metrics">
-		<div>
-			<div ng-repeat="metric in metricsFilter">
-				<h4><a href="/app/#/metrics/{{metric.id}}">{{metric.name}}</a></h4>
-			</div>
-		</div>
-	</tab>
-	<tab ng-if="eventsToPlot.length > 0 " heading="Historical Events">
-		<div ng-if="eventsToPlot.length > 0 " id="listHistoricalEventsToPlot">
-			<div ng-repeat="event in eventsToPlot track by $index">
-				<h4><a href="/app/#/events/{{event.id}}">{{event.title}}</a></h4> ({{event.startDate | date:'longDate'}} - {{event.endDate | date:'longDate'}})
-				<div>{{event.desc}}</div>
-			</div>
-		</div>
-	</tab>
-</tabset>
--->
+</center>
