@@ -731,28 +731,28 @@ header .container {
 }
 
 @media (min-width: 992px) {
-  /* line 195, ../sass/components/_navigation.scss */
-  .navbar-toggle {
+  /* line 196, ../sass/components/_navigation.scss */
+  .navbar-header .navbar-toggle {
     display: none;
   }
 
-  /* line 198, ../sass/components/_navigation.scss */
+  /* line 200, ../sass/components/_navigation.scss */
   .main-menu-wrap {
     top: 18px;
     position: absolute;
     right: 0;
   }
-  /* line 202, ../sass/components/_navigation.scss */
+  /* line 204, ../sass/components/_navigation.scss */
   .main-menu-wrap.collapse {
     display: block;
     visibility: visible;
   }
 
-  /* line 208, ../sass/components/_navigation.scss */
+  /* line 210, ../sass/components/_navigation.scss */
   #main-menu li {
     display: inline;
   }
-  /* line 210, ../sass/components/_navigation.scss */
+  /* line 212, ../sass/components/_navigation.scss */
   #main-menu li a {
     float: left;
   }
@@ -2713,4 +2713,1456 @@ footer {
 /* line 77, ../sass/components/_modal.scss */
 .modal-content .events-display-fields .field-content {
   padding-left: 9em;
+}
+
+/* Fix */
+/* line 3, ../sass/_offcanvas.scss */
+span.hidden-sm {
+  display: inline !important;
+}
+
+@media (min-width: 768px) and (max-width: 992px) {
+  /* line 7, ../sass/_offcanvas.scss */
+  span.hidden-sm {
+    display: none !important;
+  }
+}
+/* Keep code small in tables on account of limited space */
+/* line 13, ../sass/_offcanvas.scss */
+.table code {
+  font-size: 13px;
+  font-weight: normal;
+}
+
+/*
+ * Main navigation
+ *
+ * Style the `.navbar` at the top of the docs.
+ */
+/* line 25, ../sass/_offcanvas.scss */
+.bs-docs-nav {
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* line 29, ../sass/_offcanvas.scss */
+.bs-docs-nav .navbar-brand {
+  color: #fff;
+}
+
+/* line 32, ../sass/_offcanvas.scss */
+.bs-docs-nav .navbar-nav > li > a {
+  color: #ceb6b8;
+}
+
+/* line 35, ../sass/_offcanvas.scss */
+.bs-docs-nav .navbar-nav > li > a:hover {
+  color: #fff;
+}
+
+/* line 39, ../sass/_offcanvas.scss */
+.bs-docs-nav .navbar-nav > .active > a,
+.bs-docs-nav .navbar-nav > .active > a:hover {
+  color: #fff;
+  background-color: #6B313B;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* line 45, ../sass/_offcanvas.scss */
+.bs-docs-nav .navbar-toggle,
+.bs-docs-nav .navbar-toggle:focus {
+  border-color: #86555C;
+  border-color: rgba(255, 255, 255, 0.3);
+  background: transparent;
+}
+
+/* line 50, ../sass/_offcanvas.scss */
+.bs-docs-nav .navbar-toggle:hover {
+  background-color: #63303A;
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: transparent;
+}
+
+/*
+ * Footer
+ *
+ * Separated section of content at the bottom of all pages, save the homepage.
+ */
+/* line 63, ../sass/_offcanvas.scss */
+.bs-footer {
+  padding-top: 40px;
+  padding-bottom: 30px;
+  margin-top: 100px;
+  color: #777;
+  text-align: center;
+  border-top: 1px solid #e5e5e5;
+}
+
+/* line 71, ../sass/_offcanvas.scss */
+.footer-links {
+  padding-left: 0;
+}
+
+/* line 75, ../sass/_offcanvas.scss */
+.footer-links li {
+  display: inline;
+  padding: 0 2px;
+}
+
+/* line 79, ../sass/_offcanvas.scss */
+.footer-links li:first-child {
+  padding-left: 0;
+}
+
+@media (min-width: 768px) {
+  /* line 84, ../sass/_offcanvas.scss */
+  .bs-footer {
+    text-align: left;
+  }
+
+  /* line 87, ../sass/_offcanvas.scss */
+  .bs-footer p {
+    margin-bottom: 0;
+  }
+}
+/*
+ * Social buttons
+ *
+ * Twitter and GitHub social action buttons (for homepage and footer).
+ */
+/* line 99, ../sass/_offcanvas.scss */
+.bs-social {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* line 104, ../sass/_offcanvas.scss */
+.bs-social-buttons {
+  display: inline-block;
+  margin-bottom: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+/* line 110, ../sass/_offcanvas.scss */
+.bs-social-buttons li {
+  display: inline-block;
+  line-height: 1;
+  padding: 5px 8px;
+}
+
+/* line 115, ../sass/_offcanvas.scss */
+.bs-social-buttons .twitter-follow-button {
+  width: 225px !important;
+}
+
+/* line 118, ../sass/_offcanvas.scss */
+.bs-social-buttons .twitter-share-button {
+  width: 98px !important;
+}
+
+/* Style the GitHub buttons via CSS instead of inline attributes */
+/* line 122, ../sass/_offcanvas.scss */
+.github-btn {
+  border: 0;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  /* line 128, ../sass/_offcanvas.scss */
+  .bs-social {
+    text-align: left;
+  }
+
+  /* line 131, ../sass/_offcanvas.scss */
+  .bs-social-buttons li:first-child {
+    padding-left: 0;
+  }
+}
+/*
+ * Topography, yo!
+ *
+ * Apply the map background and relevant colors where we need 'em.
+ */
+/* line 145, ../sass/_offcanvas.scss */
+.bs-docs-nav,
+.bs-docs-home,
+.bs-header {
+  color: #ceb6b8;
+  background-color: #450915;
+  background-image: url(../img/bg-1920x1200.jpg);
+}
+
+@media (min-width: 1921px), (min-height: 1201px) {
+  /* line 151, ../sass/_offcanvas.scss */
+  .bs-header {
+    background-image: url(../img/bg-3500x2500.jpg);
+  }
+}
+/* line 155, ../sass/_offcanvas.scss */
+.bs-header {
+  background-position: 0 -51px;
+}
+
+/*
+ * Homepage
+ *
+ * Tweaks to the custom homepage and the masthead (main jumbotron).
+ */
+/* Masthead (headings and download button) */
+/* line 167, ../sass/_offcanvas.scss */
+.bs-masthead {
+  position: relative;
+  padding: 30px 15px;
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+}
+
+/* line 173, ../sass/_offcanvas.scss */
+.bs-masthead h1 {
+  font-size: 50px;
+  line-height: 1;
+  color: #fff;
+}
+
+/* line 178, ../sass/_offcanvas.scss */
+.bs-masthead .btn-outline-inverse {
+  margin: 10px;
+}
+
+/* Links to project-level content like the repo, Expo, etc */
+/* line 183, ../sass/_offcanvas.scss */
+.bs-masthead-links {
+  margin-top: 20px;
+  margin-bottom: 40px;
+  padding: 0 15px;
+  list-style: none;
+  text-align: center;
+}
+
+/* line 190, ../sass/_offcanvas.scss */
+.bs-masthead-links li {
+  display: inline;
+}
+
+/* line 193, ../sass/_offcanvas.scss */
+.bs-masthead-links li + li {
+  margin-left: 20px;
+}
+
+/* line 197, ../sass/_offcanvas.scss */
+.bs-masthead a,
+.bs-masthead-links a {
+  color: #fff;
+}
+
+@media (min-width: 768px) {
+  /* line 202, ../sass/_offcanvas.scss */
+  .bs-masthead {
+    text-align: left;
+    padding-top: 140px;
+    padding-bottom: 140px;
+  }
+
+  /* line 207, ../sass/_offcanvas.scss */
+  .bs-masthead h1 {
+    font-size: 100px;
+  }
+
+  /* line 210, ../sass/_offcanvas.scss */
+  .bs-masthead .lead {
+    margin-right: 25%;
+    font-size: 30px;
+  }
+
+  /* line 214, ../sass/_offcanvas.scss */
+  .bs-masthead .btn-outline-inverse {
+    width: auto;
+    margin: 20px 5px 20px 0;
+    padding: 0px 24px;
+    font-size: 21px;
+  }
+
+  /* line 220, ../sass/_offcanvas.scss */
+  .bs-masthead-links {
+    padding: 0;
+    text-align: left;
+  }
+}
+/*
+ * Page headers
+ *
+ * Jumbotron-esque headers at the top of every page that's not the homepage.
+ */
+/* Page headers */
+/* line 235, ../sass/_offcanvas.scss */
+.bs-header {
+  padding: 30px 15px 40px;
+  /* side padding builds on .container 15px, so 30px */
+  font-size: 16px;
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+}
+
+/* line 241, ../sass/_offcanvas.scss */
+.bs-header h1 {
+  color: #fff;
+}
+
+/* line 244, ../sass/_offcanvas.scss */
+.bs-header p {
+  font-weight: 300;
+  line-height: 1.5;
+}
+
+/* line 248, ../sass/_offcanvas.scss */
+.bs-header .container {
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  /* line 253, ../sass/_offcanvas.scss */
+  .bs-header {
+    font-size: 21px;
+    text-align: left;
+  }
+
+  /* line 257, ../sass/_offcanvas.scss */
+  .bs-header h1 {
+    font-size: 60px;
+    line-height: 1;
+  }
+}
+@media (min-width: 992px) {
+  /* line 265, ../sass/_offcanvas.scss */
+  .bs-header h1,
+  .bs-header p {
+    margin-right: 380px;
+  }
+}
+/*
+ * About me
+ *
+ * Single display ad that shows on all pages (except homepage) in page headers.
+ */
+/* line 277, ../sass/_offcanvas.scss */
+.aboutme {
+  display: block;
+  margin: 50px -30px -40px;
+  padding: 5px;
+  overflow: hidden;
+  /* clearfix */
+  background: #63303A;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.075);
+  font-size: 13px !important;
+  line-height: 16px !important;
+  text-decoration: none;
+  text-align: center;
+}
+
+/* line 290, ../sass/_offcanvas.scss */
+.aboutme:hover {
+  text-decoration: none;
+}
+
+/* line 293, ../sass/_offcanvas.scss */
+.aboutme-text {
+  margin-top: 5px;
+  color: #ceb6b8;
+}
+
+/* line 297, ../sass/_offcanvas.scss */
+.aboutme-title {
+  font-weight: bold;
+  margin-bottom: 4px;
+  color: #fff;
+}
+
+/* line 302, ../sass/_offcanvas.scss */
+.aboutme-name {
+  margin-top: 9px;
+  color: #fff;
+}
+
+/* line 306, ../sass/_offcanvas.scss */
+.aboutme img {
+  float: right;
+  height: 50px;
+  margin-left: 10px;
+}
+
+@media screen and (min-width: 768px) {
+  /* line 313, ../sass/_offcanvas.scss */
+  .aboutme {
+    margin: 0 !important;
+    border-radius: 4px;
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.075), 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  /* line 318, ../sass/_offcanvas.scss */
+  .aboutme-title {
+    display: block;
+  }
+}
+@media screen and (min-width: 992px) {
+  /* line 324, ../sass/_offcanvas.scss */
+  .aboutme {
+    position: absolute;
+    top: 20px;
+    right: 0;
+    padding: 15px !important;
+    width: 330px !important;
+    min-height: 132px;
+    text-align: left;
+  }
+
+  /* line 333, ../sass/_offcanvas.scss */
+  .aboutme-title, .aboutme-name {
+    display: block;
+  }
+
+  /* line 336, ../sass/_offcanvas.scss */
+  .aboutme img {
+    height: auto;
+  }
+}
+/* Homepage variations */
+/* line 342, ../sass/_offcanvas.scss */
+.bs-docs-home .aboutme {
+  margin: 0 -15px 40px !important;
+}
+
+@media screen and (min-width: 480px) {
+  /* line 346, ../sass/_offcanvas.scss */
+  .bs-docs-home .aboutme {
+    width: 330px !important;
+    margin: 0 auto 40px !important;
+    border-radius: 4px;
+  }
+}
+@media screen and (min-width: 768px) {
+  /* line 353, ../sass/_offcanvas.scss */
+  .bs-docs-home .aboutme {
+    float: left;
+    width: 330px !important;
+    margin: 0 !important;
+  }
+
+  /* line 359, ../sass/_offcanvas.scss */
+  .bs-docs-home .bs-social,
+  .bs-docs-home .bs-masthead-links {
+    margin-left: 350px;
+  }
+}
+@media screen and (min-width: 992px) {
+  /* line 364, ../sass/_offcanvas.scss */
+  .bs-docs-home .aboutme {
+    position: static;
+  }
+}
+@media screen and (min-width: 1170px) {
+  /* line 369, ../sass/_offcanvas.scss */
+  .bs-docs-home .aboutme {
+    margin-top: -25px !important;
+  }
+}
+/*
+ * Callout for 2.3.2 docs
+ *
+ * Only appears below page headers (not on the homepage). The homepage gets its
+ * own link with the masthead links.
+ */
+/* line 382, ../sass/_offcanvas.scss */
+.bs-old-docs {
+  padding: 15px 20px;
+  color: #777;
+  background-color: #fafafa;
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+/* line 389, ../sass/_offcanvas.scss */
+.bs-old-docs strong {
+  color: #555;
+}
+
+/*
+ * Side navigation
+ *
+ * Scrollspy and affixed enhanced navigation to highlight sections and secondary
+ * sections of docs content.
+ */
+/* By default it's not affixed in mobile views, so undo that */
+/* line 402, ../sass/_offcanvas.scss */
+.bs-sidebar.affix {
+  position: static;
+}
+
+/* First level of nav */
+/* line 407, ../sass/_offcanvas.scss */
+.bs-sidenav {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-shadow: 0 1px 0 #fff;
+  background-color: #f7f5fa;
+  border-radius: 5px;
+}
+
+/* All levels of nav */
+/* line 418, ../sass/_offcanvas.scss */
+.bs-sidebar .nav > li > a {
+  display: block;
+  color: #716b7a;
+  padding: 5px 20px;
+}
+
+/* line 424, ../sass/_offcanvas.scss */
+.bs-sidebar .nav > li > a:hover,
+.bs-sidebar .nav > li > a:focus {
+  text-decoration: none;
+  background-color: #e5e3e9;
+  border-right: 1px solid #dbd8e0;
+}
+
+/* line 431, ../sass/_offcanvas.scss */
+.bs-sidebar .nav > .active > a,
+.bs-sidebar .nav > .active:hover > a,
+.bs-sidebar .nav > .active:focus > a {
+  font-weight: bold;
+  color: #563d7c;
+  background-color: transparent;
+  border-right: 1px solid #563d7c;
+}
+
+/* Nav: second level (shown on .active) */
+/* line 439, ../sass/_offcanvas.scss */
+.bs-sidebar .nav .nav {
+  display: none;
+  /* Hide by default, but at >768px, show it */
+  margin-bottom: 8px;
+}
+
+/* line 443, ../sass/_offcanvas.scss */
+.bs-sidebar .nav .nav > li > a {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 30px;
+  font-size: 90%;
+}
+
+/* Show and affix the side nav when space allows it */
+@media (min-width: 992px) {
+  /* line 452, ../sass/_offcanvas.scss */
+  .bs-sidebar .nav > .active > ul {
+    display: block;
+  }
+
+  /* Widen the fixed sidebar */
+  /* line 457, ../sass/_offcanvas.scss */
+  .bs-sidebar.affix,
+  .bs-sidebar.affix-bottom {
+    width: 213px;
+  }
+
+  /* line 460, ../sass/_offcanvas.scss */
+  .bs-sidebar.affix {
+    position: fixed;
+    /* Undo the static from mobile first approach */
+    top: 80px;
+  }
+
+  /* line 464, ../sass/_offcanvas.scss */
+  .bs-sidebar.affix-bottom {
+    position: absolute;
+    /* Undo the static from mobile first approach */
+  }
+
+  /* line 468, ../sass/_offcanvas.scss */
+  .bs-sidebar.affix-bottom .bs-sidenav,
+  .bs-sidebar.affix .bs-sidenav {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+@media (min-width: 1200px) {
+  /* Widen the fixed sidebar again */
+  /* line 476, ../sass/_offcanvas.scss */
+  .bs-sidebar.affix-bottom,
+  .bs-sidebar.affix {
+    width: 263px;
+  }
+}
+/*
+ * Docs sections
+ *
+ * Content blocks for each component or feature.
+ */
+/* Space things out */
+/* line 489, ../sass/_offcanvas.scss */
+.bs-docs-section + .bs-docs-section {
+  padding-top: 40px;
+}
+
+/* Janky fix for preventing navbar from overlapping */
+/* line 494, ../sass/_offcanvas.scss */
+h1[id] {
+  padding-top: 80px;
+  margin-top: -80px;
+}
+
+/* line 498, ../sass/_offcanvas.scss */
+h2[id], h3[id] {
+  padding-top: 65px;
+  margin-top: -20px;
+}
+
+/*
+ * Callouts
+ *
+ * Not quite alerts, but custom and helpful notes for folks reading the docs.
+ * Requires a base and modifier class.
+ */
+/* Common styles for all types */
+/* line 512, ../sass/_offcanvas.scss */
+.bs-callout {
+  margin: 20px 0;
+  padding: 20px;
+  border-left: 3px solid #eee;
+}
+
+/* line 517, ../sass/_offcanvas.scss */
+.bs-callout h4 {
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+
+/* line 521, ../sass/_offcanvas.scss */
+.bs-callout p:last-child {
+  margin-bottom: 0;
+}
+
+/* Variations */
+/* line 526, ../sass/_offcanvas.scss */
+.bs-callout-danger {
+  background-color: #fdf7f7;
+  border-color: #eed3d7;
+}
+
+/* line 530, ../sass/_offcanvas.scss */
+.bs-callout-danger h4 {
+  color: #b94a48;
+}
+
+/* line 533, ../sass/_offcanvas.scss */
+.bs-callout-warning {
+  background-color: #faf8f0;
+  border-color: #faebcc;
+}
+
+/* line 537, ../sass/_offcanvas.scss */
+.bs-callout-warning h4 {
+  color: #c09853;
+}
+
+/* line 540, ../sass/_offcanvas.scss */
+.bs-callout-info {
+  background-color: #f4f8fa;
+  border-color: #bce8f1;
+}
+
+/* line 544, ../sass/_offcanvas.scss */
+.bs-callout-info h4 {
+  color: #3a87ad;
+}
+
+/*
+ * Team members
+ *
+ * Avatars, names, and usernames for core team.
+ */
+/* line 555, ../sass/_offcanvas.scss */
+.bs-team .team-member {
+  color: #555;
+  line-height: 32px;
+}
+
+/* line 559, ../sass/_offcanvas.scss */
+.bs-team .team-member:hover {
+  color: #333;
+  text-decoration: none;
+}
+
+/* line 563, ../sass/_offcanvas.scss */
+.bs-team .github-btn {
+  float: right;
+  margin-top: 6px;
+  width: 120px;
+  height: 20px;
+}
+
+/* line 569, ../sass/_offcanvas.scss */
+.bs-team img {
+  float: left;
+  width: 32px;
+  margin-right: 10px;
+  border-radius: 4px;
+}
+
+/*
+ * Grid examples
+ *
+ * Highlight the grid columns within the docs so folks can see their padding,
+ * alignment, sizing, etc.
+ */
+/* line 584, ../sass/_offcanvas.scss */
+.show-grid {
+  margin-bottom: 15px;
+}
+
+/* line 587, ../sass/_offcanvas.scss */
+.show-grid [class^="col-"] {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #eee;
+  background-color: rgba(86, 61, 124, 0.15);
+  border: 1px solid #ddd;
+  border: 1px solid rgba(86, 61, 124, 0.2);
+}
+
+/*
+ * Examples
+ *
+ * Isolated sections of example content for each component or feature. Usually
+ * followed by a code snippet.
+ */
+/* line 604, ../sass/_offcanvas.scss */
+.nav-wrapper {
+  position: relative;
+  padding: 45px 15px 15px;
+}
+
+/* Echo out a label for the example */
+/* line 609, ../sass/_offcanvas.scss */
+.nav-wrapper:after {
+  content: "Example";
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #bbb;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Tweak display of the code snippets when following an example */
+/* line 622, ../sass/_offcanvas.scss */
+.nav-wrapper + .highlight {
+  margin: -15px -15px 15px;
+  border-radius: 0;
+  border-width: 0 0 1px;
+}
+
+/* Make the examples and snippets not full-width */
+@media (min-width: 768px) {
+  /* line 630, ../sass/_offcanvas.scss */
+  .nav-wrapper {
+    background-color: #fff;
+    box-shadow: none;
+  }
+
+  /* line 634, ../sass/_offcanvas.scss */
+  .nav-wrapper + .highlight {
+    margin-top: -16px;
+    margin-left: 0;
+    margin-right: 0;
+    border-width: 1px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+  }
+}
+/* Undo width of container */
+/* line 645, ../sass/_offcanvas.scss */
+.nav-wrapper .container {
+  width: auto;
+}
+
+/* Tweak content of examples for optimum awesome */
+/* line 663, ../sass/_offcanvas.scss */
+.nav-wrapper > p:last-child,
+.nav-wrapper > ul:last-child,
+.nav-wrapper > ol:last-child,
+.nav-wrapper > blockquote:last-child,
+.nav-wrapper > .form-control:last-child,
+.nav-wrapper > .table:last-child,
+.nav-wrapper > .navbar:last-child,
+.nav-wrapper > .jumbotron:last-child,
+.nav-wrapper > .alert:last-child,
+.nav-wrapper > .panel:last-child,
+.nav-wrapper > .list-group:last-child,
+.nav-wrapper > .well:last-child,
+.nav-wrapper > .progress:last-child,
+.nav-wrapper > .table-responsive:last-child > .table {
+  margin-bottom: 0;
+}
+
+/* line 666, ../sass/_offcanvas.scss */
+.nav-wrapper > p > .close {
+  float: none;
+}
+
+/* Typography */
+/* line 671, ../sass/_offcanvas.scss */
+.nav-wrapper-type .table .info {
+  color: #999;
+  vertical-align: middle;
+}
+
+/* line 675, ../sass/_offcanvas.scss */
+.nav-wrapper-type .table td {
+  padding: 15px 0;
+  border-color: #eee;
+}
+
+/* line 679, ../sass/_offcanvas.scss */
+.nav-wrapper-type .table tr:first-child td {
+  border-top: 0;
+}
+
+/* line 687, ../sass/_offcanvas.scss */
+.nav-wrapper-type h1,
+.nav-wrapper-type h2,
+.nav-wrapper-type h3,
+.nav-wrapper-type h4,
+.nav-wrapper-type h5,
+.nav-wrapper-type h6 {
+  margin: 0;
+}
+
+/* Images */
+/* line 694, ../sass/_offcanvas.scss */
+.nav-wrapper > .img-circle,
+.nav-wrapper > .img-rounded,
+.nav-wrapper > .img-thumbnail {
+  margin: 5px;
+}
+
+/* Tables */
+/* line 699, ../sass/_offcanvas.scss */
+.nav-wrapper > .table-responsive > .table {
+  background-color: #fff;
+}
+
+/* Buttons */
+/* line 705, ../sass/_offcanvas.scss */
+.nav-wrapper > .btn,
+.nav-wrapper > .btn-group {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+/* line 709, ../sass/_offcanvas.scss */
+.nav-wrapper > .btn-toolbar + .btn-toolbar {
+  margin-top: 10px;
+}
+
+/* Forms */
+/* line 715, ../sass/_offcanvas.scss */
+.nav-wrapper-control-sizing select,
+.nav-wrapper-control-sizing input[type="text"] + input[type="text"] {
+  margin-top: 10px;
+}
+
+/* line 718, ../sass/_offcanvas.scss */
+.nav-wrapper-form .input-group {
+  margin-bottom: 10px;
+}
+
+/* line 721, ../sass/_offcanvas.scss */
+.nav-wrapper > textarea.form-control {
+  resize: vertical;
+}
+
+/* List groups */
+/* line 726, ../sass/_offcanvas.scss */
+.nav-wrapper > .list-group {
+  max-width: 400px;
+}
+
+/* Navbars */
+/* line 731, ../sass/_offcanvas.scss */
+.nav-wrapper .navbar:last-child {
+  margin-bottom: 0;
+}
+
+/* line 735, ../sass/_offcanvas.scss */
+.bs-navbar-top-example,
+.bs-navbar-bottom-example {
+  z-index: 1;
+  padding: 0;
+  overflow: hidden;
+  /* cut the drop shadows off */
+}
+
+/* line 741, ../sass/_offcanvas.scss */
+.bs-navbar-top-example .navbar-header,
+.bs-navbar-bottom-example .navbar-header {
+  margin-left: 0;
+}
+
+/* line 745, ../sass/_offcanvas.scss */
+.bs-navbar-top-example .navbar-fixed-top,
+.bs-navbar-bottom-example .navbar-fixed-bottom {
+  position: relative;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* line 750, ../sass/_offcanvas.scss */
+.bs-navbar-top-example {
+  padding-bottom: 45px;
+}
+
+/* line 753, ../sass/_offcanvas.scss */
+.bs-navbar-top-example:after {
+  top: auto;
+  bottom: 15px;
+}
+
+/* line 757, ../sass/_offcanvas.scss */
+.bs-navbar-top-example .navbar-fixed-top {
+  top: -1px;
+}
+
+/* line 760, ../sass/_offcanvas.scss */
+.bs-navbar-bottom-example {
+  padding-top: 45px;
+}
+
+/* line 763, ../sass/_offcanvas.scss */
+.bs-navbar-bottom-example .navbar-fixed-bottom {
+  bottom: -1px;
+}
+
+/* line 766, ../sass/_offcanvas.scss */
+.bs-navbar-bottom-example .navbar {
+  margin-bottom: 0;
+}
+
+@media (min-width: 768px) {
+  /* line 771, ../sass/_offcanvas.scss */
+  .bs-navbar-top-example .navbar-fixed-top,
+  .bs-navbar-bottom-example .navbar-fixed-bottom {
+    position: absolute;
+  }
+
+  /* line 774, ../sass/_offcanvas.scss */
+  .bs-navbar-top-example {
+    border-radius: 0 0 4px 4px;
+  }
+
+  /* line 777, ../sass/_offcanvas.scss */
+  .bs-navbar-bottom-example {
+    border-radius: 4px 4px 0 0;
+  }
+}
+/* line 782, ../sass/_offcanvas.scss */
+.bs-navmenu-fixed-example {
+  height: 200px;
+  padding-left: 315px;
+}
+
+/* line 786, ../sass/_offcanvas.scss */
+.bs-navmenu-fixed-example:after {
+  left: 315px;
+}
+
+/* line 789, ../sass/_offcanvas.scss */
+.navmenu {
+  padding-left: 0px !important;
+  -webkit-transition: background 300ms ease-out;
+  -moz-transition: background 300ms ease-out;
+  -ms-transition: background 300ms ease-out;
+  -o-transition: background 300ms ease-out;
+  transition: background 300ms ease-out;
+}
+
+/* line 797, ../sass/_offcanvas.scss */
+.navmenu > ul > li > a {
+  text-align: left !important;
+  background-color: #eeeeee;
+  border: 1px solid #ffffff;
+  -webkit-transition: background 300ms ease-out;
+  -moz-transition: background 300ms ease-out;
+  -ms-transition: background 300ms ease-out;
+  -o-transition: background 300ms ease-out;
+  transition: background 300ms ease-out;
+}
+
+/* line 807, ../sass/_offcanvas.scss */
+.navmenu > ul > li > a:hover {
+  color: #ffffff !important;
+  background-color: #428BCA !important;
+  border: 1px solid #ffffff;
+  -webkit-transition: background 300ms ease-out;
+  -moz-transition: background 300ms ease-out;
+  -ms-transition: background 300ms ease-out;
+  -o-transition: background 300ms ease-out;
+  transition: background 300ms ease-out;
+}
+
+/* line 817, ../sass/_offcanvas.scss */
+.offcanvas-wrapper {
+  min-height: 320px;
+  overflow: hidden;
+}
+
+/* line 821, ../sass/_offcanvas.scss */
+.offcanvas-wrapper:after {
+  display: none;
+}
+
+/* line 824, ../sass/_offcanvas.scss */
+.offcanvas-wrapper > div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  padding: 5px 5px 5px 5px;
+}
+
+/* line 832, ../sass/_offcanvas.scss */
+.offcanvas-wrapper p {
+  color: #bbb;
+}
+
+/* line 837, ../sass/_offcanvas.scss */
+.bs-navmenu-fixed-example .navmenu-fixed-left,
+.offcanvas-wrapper .navmenu-fixed-left,
+.offcanvas-wrapper .navbar-fixed-top {
+  position: absolute;
+  z-index: 1;
+}
+
+/* line 841, ../sass/_offcanvas.scss */
+.offcanvas-wrapper .navmenu-fixed-left {
+  -webkit-transform: translate(-300px, 0);
+  transform: translate(-300px, 0);
+}
+
+/* line 845, ../sass/_offcanvas.scss */
+.offcanvas-wrapper .navbar-toggle {
+  float: left;
+  margin-left: 5px;
+  display: block;
+}
+
+/* Pagination */
+/* line 852, ../sass/_offcanvas.scss */
+.nav-wrapper .pagination {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/* Alerts */
+/* line 858, ../sass/_offcanvas.scss */
+.nav-wrapper .alert-fixed-top {
+  position: absolute;
+  z-index: 1;
+  width: auto;
+  left: 0;
+  right: 0;
+  margin-left: 0;
+}
+
+@media (min-width: 992px) {
+  /* line 867, ../sass/_offcanvas.scss */
+  .nav-wrapper .alert-fixed-top {
+    left: 15px;
+    right: 15px;
+  }
+}
+/* Pager */
+/* line 874, ../sass/_offcanvas.scss */
+.nav-wrapper > .pager {
+  margin-top: 0;
+}
+
+/* Example modals */
+/* line 879, ../sass/_offcanvas.scss */
+.nav-wrapper-modal {
+  background-color: #f5f5f5;
+}
+
+/* line 882, ../sass/_offcanvas.scss */
+.nav-wrapper-modal .modal {
+  position: relative;
+  top: auto;
+  right: auto;
+  left: auto;
+  bottom: auto;
+  z-index: 1;
+  display: block;
+}
+
+/* line 891, ../sass/_offcanvas.scss */
+.nav-wrapper-modal .modal-dialog {
+  left: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Example dropdowns */
+/* line 898, ../sass/_offcanvas.scss */
+.nav-wrapper > .dropdown > .dropdown-menu {
+  position: static;
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Example tabbable tabs */
+/* line 905, ../sass/_offcanvas.scss */
+.nav-wrapper-tabs .nav-tabs {
+  margin-bottom: 15px;
+}
+
+/* Tooltips */
+/* line 910, ../sass/_offcanvas.scss */
+.nav-wrapper-tooltips {
+  text-align: center;
+}
+
+/* line 913, ../sass/_offcanvas.scss */
+.nav-wrapper-tooltips > .btn {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+/* Popovers */
+/* line 919, ../sass/_offcanvas.scss */
+.nav-wrapper-popover {
+  padding-bottom: 24px;
+  background-color: #f9f9f9;
+}
+
+/* line 923, ../sass/_offcanvas.scss */
+.nav-wrapper-popover .popover {
+  position: relative;
+  display: block;
+  float: left;
+  width: 260px;
+  margin: 20px;
+}
+
+/* Scrollspy demo on fixed height div */
+/* line 932, ../sass/_offcanvas.scss */
+.scrollspy-example {
+  position: relative;
+  height: 200px;
+  margin-top: 10px;
+  overflow: auto;
+}
+
+/*
+ * Code snippets
+ *
+ * Generated via Pygments and Jekyll, these are snippets of HTML, CSS, and JS.
+ */
+/* line 946, ../sass/_offcanvas.scss */
+.highlight {
+  display: none;
+  /* hidden by default, until >480px */
+  padding: 9px 14px;
+  margin-bottom: 14px;
+  background-color: #f7f7f9;
+  border: 1px solid #e1e1e8;
+  border-radius: 4px;
+}
+
+/* line 954, ../sass/_offcanvas.scss */
+.highlight pre {
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  background-color: transparent;
+  border: 0;
+  white-space: nowrap;
+}
+
+/* line 962, ../sass/_offcanvas.scss */
+.highlight pre code {
+  font-size: inherit;
+  color: #333;
+  /* Effectively the base text color */
+}
+
+/* line 966, ../sass/_offcanvas.scss */
+.highlight pre .lineno {
+  display: inline-block;
+  width: 22px;
+  padding-right: 5px;
+  margin-right: 10px;
+  text-align: right;
+  color: #bebec5;
+}
+
+/* Show code snippets when we have the space */
+@media (min-width: 481px) {
+  /* line 977, ../sass/_offcanvas.scss */
+  .highlight {
+    display: block;
+  }
+}
+/*
+ * Responsive tests
+ *
+ * Generate a set of tests to show the responsive utilities in action.
+ */
+/* Responsive (scrollable) doc tables */
+/* line 990, ../sass/_offcanvas.scss */
+.table-responsive .highlight pre {
+  white-space: normal;
+}
+
+/* Utility classes table  */
+/* line 996, ../sass/_offcanvas.scss */
+.bs-table th small,
+.responsive-utilities th small {
+  display: block;
+  font-weight: normal;
+  color: #999;
+}
+
+/* line 1001, ../sass/_offcanvas.scss */
+.responsive-utilities tbody th {
+  font-weight: normal;
+}
+
+/* line 1004, ../sass/_offcanvas.scss */
+.responsive-utilities td {
+  text-align: center;
+}
+
+/* line 1007, ../sass/_offcanvas.scss */
+.responsive-utilities td.is-visible {
+  color: #468847;
+  background-color: #dff0d8 !important;
+}
+
+/* line 1011, ../sass/_offcanvas.scss */
+.responsive-utilities td.is-hidden {
+  color: #ccc;
+  background-color: #f9f9f9 !important;
+}
+
+/* Responsive tests */
+/* line 1017, ../sass/_offcanvas.scss */
+.responsive-utilities-test {
+  margin-top: 5px;
+}
+
+/* line 1020, ../sass/_offcanvas.scss */
+.responsive-utilities-test .col-xs-6 {
+  margin-bottom: 10px;
+}
+
+/* line 1023, ../sass/_offcanvas.scss */
+.responsive-utilities-test span {
+  padding: 15px 10px;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.1;
+  text-align: center;
+  border-radius: 4px;
+}
+
+/* line 1038, ../sass/_offcanvas.scss */
+.visible-on .col-xs-6 .hidden-xs,
+.visible-on .col-xs-6 .hidden-sm,
+.visible-on .col-xs-6 .hidden-md,
+.visible-on .col-xs-6 .hidden-lg,
+.hidden-on .col-xs-6 .hidden-xs,
+.hidden-on .col-xs-6 .hidden-sm,
+.hidden-on .col-xs-6 .hidden-md,
+.hidden-on .col-xs-6 .hidden-lg {
+  color: #999;
+  border: 1px solid #ddd;
+}
+
+/* line 1049, ../sass/_offcanvas.scss */
+.visible-on .col-xs-6 .visible-xs,
+.visible-on .col-xs-6 .visible-sm,
+.visible-on .col-xs-6 .visible-md,
+.visible-on .col-xs-6 .visible-lg,
+.hidden-on .col-xs-6 .visible-xs,
+.hidden-on .col-xs-6 .visible-sm,
+.hidden-on .col-xs-6 .visible-md,
+.hidden-on .col-xs-6 .visible-lg {
+  color: #468847;
+  background-color: #dff0d8;
+  border: 1px solid #d6e9c6;
+}
+
+/*
+ * Customizer
+ *
+ * Since this is so form control heavy, we have quite a few styles to customize
+ * the display of inputs, headings, and more. Also included are all the download
+ * buttons and actions.
+ */
+/* line 1064, ../sass/_offcanvas.scss */
+.bs-customizer .toggle {
+  float: right;
+  margin-top: 80px;
+}
+
+/* Headings and form contrls */
+/* line 1070, ../sass/_offcanvas.scss */
+.bs-customizer label {
+  margin-top: 10px;
+  font-weight: 500;
+  color: #555;
+}
+
+/* line 1075, ../sass/_offcanvas.scss */
+.bs-customizer h2 {
+  margin-top: 0;
+  margin-bottom: 5px;
+  padding-top: 30px;
+}
+
+/* line 1080, ../sass/_offcanvas.scss */
+.bs-customizer h3 {
+  margin-bottom: 0;
+}
+
+/* line 1083, ../sass/_offcanvas.scss */
+.bs-customizer h4 {
+  margin-top: 15px;
+  margin-bottom: 0;
+}
+
+/* line 1087, ../sass/_offcanvas.scss */
+.bs-customizer .bs-callout h4 {
+  margin-top: 0;
+  /* lame, but due to specificity we have to duplicate */
+  margin-bottom: 5px;
+}
+
+/* line 1091, ../sass/_offcanvas.scss */
+.bs-customizer input[type="text"] {
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  background-color: #fafafa;
+}
+
+/* line 1095, ../sass/_offcanvas.scss */
+.bs-customizer .help-block {
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+/* For the variables, use regular weight */
+/* line 1101, ../sass/_offcanvas.scss */
+#less-section label {
+  font-weight: normal;
+}
+
+/* line 1105, ../sass/_offcanvas.scss */
+.bs-customizer-input {
+  float: left;
+  width: 33.333333%;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Downloads */
+/* line 1113, ../sass/_offcanvas.scss */
+.bs-customize-download .btn-outline {
+  padding: 20px;
+}
+
+/* Error handling */
+/* line 1118, ../sass/_offcanvas.scss */
+.bs-customizer-alert {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1030;
+  padding: 15px 0;
+  color: #fff;
+  background-color: #d9534f;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  border-bottom: 1px solid #b94441;
+}
+
+/* line 1130, ../sass/_offcanvas.scss */
+.bs-customizer-alert .close {
+  margin-top: -4px;
+  font-size: 24px;
+}
+
+/* line 1134, ../sass/_offcanvas.scss */
+.bs-customizer-alert p {
+  margin-bottom: 0;
+}
+
+/* line 1137, ../sass/_offcanvas.scss */
+.bs-customizer-alert .glyphicon {
+  margin-right: 5px;
+}
+
+/* line 1140, ../sass/_offcanvas.scss */
+.bs-customizer-alert pre {
+  margin: 10px 0 0;
+  color: #fff;
+  background-color: #a83c3a;
+  border-color: #973634;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/*
+ * Miscellaneous
+ *
+ * Odds and ends for optimum docs display.
+ */
+/* About page */
+/* line 1156, ../sass/_offcanvas.scss */
+.bs-about {
+  font-size: 16px;
+}
+
+/* Examples gallery: space out content better */
+/* line 1161, ../sass/_offcanvas.scss */
+.nav-wrappers h4 {
+  margin-bottom: 5px;
+}
+
+/* line 1164, ../sass/_offcanvas.scss */
+.nav-wrappers p {
+  margin-bottom: 20px;
+}
+
+/* Pseudo :focus state for showing how it looks in the docs */
+/* line 1169, ../sass/_offcanvas.scss */
+#focusedInput {
+  border-color: #52a8ec;
+  border-color: rgba(82, 168, 236, 0.8);
+  outline: 0;
+  outline: thin dotted \9;
+  /* IE6-9 */
+  -moz-box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);
+  box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);
+}
+
+/* Better spacing on download options in getting started */
+/* line 1179, ../sass/_offcanvas.scss */
+.bs-docs-dl-options h4 {
+  margin-top: 15px;
+  margin-bottom: 5px;
 }
