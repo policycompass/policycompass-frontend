@@ -124,4 +124,22 @@ angular.module('pcApp.events.controllers.event', [
                     }
                 );
             };
+        }])
+
+    .controller('EventSearchController', [
+        '$scope',
+        'Event',
+        '$location',
+        '$log',
+        function ($scope, Event, $location, $log) {
+
+            $scope.searchEvent = function () {
+
+                $scope.startEventDate = "";
+                $scope.endEventDate = "";
+                $scope.title = "";
+
+                console.log($scope.startEventDate + " " + $scope.endEventDate + " " + $scope.title);
+
+            };
         }]);
