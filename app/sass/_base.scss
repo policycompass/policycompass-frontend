@@ -8,6 +8,8 @@
 	font-weight: normal;
 	font-style: normal;
 }
+h4,
+.btn,
 .row-view-create .view-item-wrap,
 .searchItemIcon a,
 .columns-create-submenu-icon,
@@ -27,6 +29,15 @@ a {
     font-family:policy;
     line-height:1em;
   }
+}
+.btn-next,
+.btn-parent {
+  &:after {
+      padding-left:0.5em;
+      font-family:policy;
+      line-height:1em;
+    }
+
 }
 
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:700,300,600,400);

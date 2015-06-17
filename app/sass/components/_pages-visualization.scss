@@ -1,3 +1,59 @@
+.createvisualization {
+
+  .metrics-list {
+    @include reset-list();
+    li {
+      width:100%;
+            padding:0 10px;
+      margin-top:5px;
+      margin-bottom:5px;
+      &.active {
+        a {
+          background:$bk_4_3;
+          color:white;
+          &:before {
+            content: "\e607";
+          }
+        }
+      }
+      a {
+         background:$gris_98;
+         display:block;
+         padding:10px;
+         width:100%;
+         &:before {
+            content: "\e608";
+         }
+      }
+    }
+    @media (min-width:$device) {
+      @include  flex-container();
+
+      li {
+        width:50%;
+      }
+    
+    }
+  }
+  .designer-metrics {
+    background:$gris_98;
+    padding:10px;
+    margin:5px 0;
+    h4:before {
+      content: "\e993";
+    }
+  }
+    
+  
+}
+
+
+
+
+
+
+
+
 rzslider {
   position: relative;
   display: inline-block;
@@ -122,12 +178,6 @@ padding-bottom: 5px;
   stroke-width: .5px;
 }
 
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700);
-@font-face {
-  font-family: 'iconos';
-  src: url("../fonts/icomoon.eot");
-  src: url("../fonts/icomoon.eot?#iefix") format("embedded-opentype"), url("../fonts/icomoon.woff") format("woff"), url("../fonts/icomoon.ttf") format("truetype"), url("../fonts/icomoon.svg#iconosRegular") format("svg");
-}
 
 .grid .tick {
     stroke: lightblue;
@@ -236,7 +286,7 @@ shape-rendering: crispEdges;
 
 
 
-
+/*
 .createvisualization .designer-datasets:before,
 .createvisualization .designer-metrics:before,
 .createvisualization .button:before,
@@ -308,9 +358,8 @@ shape-rendering: crispEdges;
 
 .createvisualization .datasets-list li,
 .createvisualization .metrics-list li {
-  margin: 2px;
-  padding: 2px;
-  padding-left: 1.2em;
+
+  
   position: relative;
 }
 
@@ -368,3 +417,5 @@ shape-rendering: crispEdges;
   content: "\e001";
   color: #53ad56;
 }
+
+*/

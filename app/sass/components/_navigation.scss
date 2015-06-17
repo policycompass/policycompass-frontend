@@ -192,8 +192,10 @@ header .container  {
 
 
 @media (min-width:$device) {
-  .navbar-toggle {
-    display: none;
+  .navbar-header {
+    .navbar-toggle {
+      display: none;
+    }
   }
   .main-menu-wrap {
     top:18px;
