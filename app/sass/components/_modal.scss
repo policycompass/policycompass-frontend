@@ -1,0 +1,83 @@
+@media (min-width:$device) {
+  .modal-dialog {
+    width:720px;
+  }
+}
+
+.modal-content {
+  h1 {
+    // font-weight:bold;
+    // font-size:1em;
+  }
+  background:$gris_98;
+  textarea {
+    width:100%;
+  }
+  .metrics-list {
+  @include reset-list();
+  margin:10px 0 ;
+  
+    li {
+      background:$gris_98;
+      padding:5px 10px;
+      border-bottom:$gris_80;
+      margin:5px 0;
+    }
+  }
+  // .form-group {
+    // background:green;
+  // }
+  // label {
+    // background:red;
+    // width:10em;
+    // text-align:right;
+    // float:left;
+    
+  // }
+  
+  form[name='searchEventsForm'] {
+    // background:black;
+    .col-sm-4:first-of-type {
+      input {
+        margin-top:8px;
+        width:90%;
+        // background:$gris_90;
+      }
+    }
+  }
+  /*
+  form[name='neweventForm'] {
+    .form-group.ng-binding {
+      background:red;
+      overflow:hidden;
+      label {
+        
+      }
+      p {
+        
+      }
+    
+    }
+  }
+  */
+  .events-display-fields {
+    .form-group {
+      overflow:hidden;
+      padding:5px;
+      background:$gris_95;
+      // border:1px solid $gris_80;
+      margin:5px 0;
+    }
+    .field-label {
+      width:8em;
+        float:left;
+        margin-right:-8em;
+        text-align:right;
+    }
+    .field-content {
+        padding-left:9em;
+    }
+  }
+}
+
+

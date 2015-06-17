@@ -15,10 +15,19 @@ policycompass.viz.line = function(options)
         
         self[key] = options[key];
 	}
-	
+	//console.log(self);
     self.parentSelect = "#"+self.idName;
 
+	self.maxMargin = self.margin;
 	self.maxWidth = self.width;
+	self.maxHeight = self.height;
+	self.maxFont_size = self.font_size;
+	self.maxRadius = self.radius;
+	self.maxDymarging = self.dymarging;
+	self.maxOffsetYaxesR = self.offsetYaxesR;
+	self.maxOffsetYaxesL = self.offsetYaxesL;
+	self.maxDistanceXaxes = self.distanceXaxes;
+	
 	self.cntResizes = 0;
 	d3.select(window).on('resize', resize);
 	
@@ -2118,11 +2127,29 @@ return 0;}
 		
 		if (self.maxWidth<clientwidth)
 		{
+			self.margin = self.maxMargin;
 			self.width = self.maxWidth;
+			self.height = self.maxHeight;
+			self.font_size = self.maxFont_size;
+			self.radius = self.maxRadius;
+			self.dymarging = self.maxDymarging;
+			self.offsetYaxesR = self.maxOffsetYaxesR;
+			self.offsetYaxesL = self.maxOffsetYaxesL;
+			self.distanceXaxes = self.maxDistanceXaxes;			
 		}
 		else
 		{			
 			self.width=clientwidth-20;	
+			var newScale = (self.width) / self.maxWidth;
+			//console.log("newScale="+newScale);
+			self.margin = {'top': self.maxMargin.top * newScale, 'right': self.maxMargin.right * newScale, 'bottom': self.maxMargin.bottom * newScale, 'left': self.maxMargin.left * newScale};			
+			self.height = self.maxHeight * newScale;
+			self.font_size = self.maxFont_size * newScale;
+			self.radius = self.maxRadius * newScale;
+			self.dymarging = self.maxDymarging * newScale;
+			self.offsetYaxesR = self.maxOffsetYaxesR * newScale;
+			self.offsetYaxesL = self.maxOffsetYaxesL * newScale;
+			self.distanceXaxes = self.maxDistanceXaxes * newScale;
 		}
 		//console.log(self.parentSelect);
 	

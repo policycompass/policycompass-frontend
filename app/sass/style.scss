@@ -1,6 +1,7 @@
 
 @import "variables";
 
+
 @import "base";
 @import "custom";
 
@@ -27,9 +28,17 @@
 @import "components/myPolicyCompass";
 @import "components/pages-landing";
 @import "components/pages-search";
+@import "components/pages-create-dataset";
+@import "components/pages-visualization";
 // @import "components/navigation-top";
 // @import "components/metrics";
 // @import "components/landingPage";
 
 @import "components/pages-want";
+@import "components/pages-footer";
+@import "components/modal";
+// @import "components/colors";
+
+
+@import "offcanvas";
 

@@ -46,6 +46,18 @@ commonmanager.config(function($routeProvider) {
         .when('/login', {
             templateUrl: 'modules/common/partials/login.html'
         })
+        .when('/create-dataset', {
+            controller: 'StaticController',
+            templateUrl: 'modules/common/partials/create-dataset.html'
+        })
+        .when('/create-dataset-2', {
+            controller: 'CreateDataset2Controller',
+            templateUrl: 'modules/common/partials/create-dataset-2.html'
+        })
+        .when('/create-data', {
+            controller: 'StaticController',
+            templateUrl: 'modules/common/partials/create-data.html'
+        })
         .otherwise({ redirectTo: '/' });
 })
 
