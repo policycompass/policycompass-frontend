@@ -135,10 +135,6 @@ angular.module('pcApp.events.controllers.event', [
 
             $scope.searchEvent = function () {
 
-                $scope.startEventDate = "";
-                $scope.endEventDate = "";
-                $scope.title = "";
-
                 console.log($scope.startEventDate + " " + $scope.endEventDate + " " + $scope.title);
 
             };
