@@ -2058,13 +2058,14 @@ return 0;}
    
 			/******** end plot historical events ***********/
 					
-		
+		//delete this trnsition because causes problems in chrome per linux
+		/*
 		self.svg
   			.attr("transform", "translate(0, "+self.height+") scale(1, 0)")
   			.transition().duration(500)
   			.attr("transform", "translate("+self.margin.left+", "+self.margin.top+") scale(1, 1)")
   			;
-             
+        */   
 
 	}
 
