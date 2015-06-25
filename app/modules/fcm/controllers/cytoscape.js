@@ -115,6 +115,21 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
   $scope.Associations = [];
   $scope.SimulationAssociations = [];
   $scope.SimulationResults = [];
+  $scope.dataset = [];
+  $scope.labels = [];
+  $scope.labels = ["Dollar","Dollar","Dollar","Dollar"];
+  $scope.showLegend = true;
+  $scope.showLabels = true;
+  $scope.showLines = true;
+  $scope.showAreas = true;
+  $scope.showPoints = true;
+  $scope.showGrid = true;
+  $scope.showXAxes = true;
+  $scope.showYAxes = true;
+  $scope.showAsPercentatge = false;
+  $scope.xaxeformat = ''
+  $scope.modeg= 'view';
+
   $scope.NodeID = 0;
 
   FCMModelsDetail.setModels($scope.Models);
@@ -123,19 +138,6 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
   SimulationConceptsDetail.setConcepts($scope.SimulationConcepts);
   SimulationAssociationsDetail.setAssociations($scope.SimulationAssociations);
 
-
-	$scope.dataset =[{"Key":"USA_0","ValueX":["1989-01-01","2003-01-01","2004-01-01"],"ValueY":[99,33,53],"Type":"metric"},{"Key":"Germany_1","ValueX":["2000-01-01","2004-01-01","2010-01-01"],"ValueY":[14,66,33],"Type":"metric"},{"Key":"Canada_2","ValueX":["2001-01-01","2003-01-01","2004-01-01"],"ValueY":[33,54,12],"Type":"metric"},{"Key":"Spain_3","ValueX":["2002-01-01","2003-01-01","2004-01-01","2005-01-01"],"ValueY":[23,55,88,36],"Type":"metric"},{"Key":"Andorra_4","ValueX":["2003-01-01","2004-01-01"],"ValueY":[6,23],"Type":"metric"},{"Key":"Spain_5","ValueX":["1989-01-01","2011-01-01","2012-01-01"],"ValueY":[33,1,2],"Type":"metric"}];
-	$scope.labels = ["Dollar","Dollar","Dollar","Dollar","Dollar","kg"];
-	$scope.showLegend = true;
-	$scope.showLabels = true;
-	$scope.showLines = true;
-	$scope.showAreas = true;
-	$scope.showPoints = true;
-	$scope.showGrid = true;
-	$scope.showYAxes = true;
-	$scope.showAsPercentatge = false;
-	$scope.xaxeformat = 'sequence'
-	$scope.modeg= 'view';
 
 if ($routeParams.fcmId)
 {
@@ -289,14 +291,16 @@ else
     $scope.runSimulation = function(){
 	var jsonSimulation = {model: FCMModelsDetail.getModels(), userID: "1",
 		concepts: SimulationConceptsDetail.getConcepts(), connections: SimulationAssociationsDetail.getAssociations()};
-
+	var Concepts = ConceptsDetail.getConcepts();
+	
 	$scope.fcmSimulation = new FcmSimulation();
 	$scope.fcmSimulation.data = jsonSimulation;
 
 	$scope.SimulationResults.splice(0, $scope.SimulationResults.length);
+	$scope.dataset.splice(0, $scope.dataset.length);
+	$scope.labels.splice(0, $scope.labels.length);
 
         FcmSimulation.save($scope.fcmSimulation, function (value) {
-	$scope.md = value;
 	    for (i=0; i<value.result.length; i++)
 	    {
 	    	var ConceptResults = {Id: value.result[i].id.toString(), iterationID: value.result[i].iteration_id.toString(), conceptID: value.result[i].conceptID.toString(), output: value.result[i].output.toString()};
@@ -305,6 +309,27 @@ else
 	    }
 
 	    $scope.totalIteration = value.result[value.result.length-1].iteration_id;
+	    
+	    for (i=0;i<Concepts.length;i++)
+	    {
+		var iteration = [];
+		var output = [];
+
+		for (j=0; j<value.result.length; j++)
+		{
+		    if (value.result[j].conceptID==Concepts[i].Id)
+		    {
+			iteration.push(value.result[j].iteration_id.toString());
+			output.push(value.result[j].output);
+		    }
+		}
+		var data = {Key: Concepts[i].title, ValueX: iteration, ValueY: output, Type: "FCM"};
+    	    	$scope.dataset.push(data);
+		$scope.labels.push("Dollar");
+	    }
+
+	$scope.md = $scope.dataset;
+//	$scope.dataset =[{"Key":"USA_0","ValueX":["1989-01-01","2003-01-01","2004-01-01"],"ValueY":[99,33,53],"Type":"metric"},{"Key":"Germany_1","ValueX":["2000-01-01","2004-01-01","2010-01-01"],"ValueY":[14,66,33],"Type":"metric"},{"Key":"Canada_2","ValueX":["2001-01-01","2003-01-01","2004-01-01"],"ValueY":[33,54,12],"Type":"metric"},{"Key":"Spain_3","ValueX":["2002-01-01","2003-01-01","2004-01-01","2005-01-01"],"ValueY":[23,55,88,36],"Type":"metric"},{"Key":"Andorra_4","ValueX":["2003-01-01","2004-01-01"],"ValueY":[6,23],"Type":"metric"},{"Key":"Spain_5","ValueX":["1989-01-01","2011-01-01","2012-01-01"],"ValueY":[33,1,2],"Type":"metric"}];
         },
         function (err) {
             throw { message: err.data};
