@@ -319,13 +319,16 @@ else
 		{
 		    if (value.result[j].conceptID==Concepts[i].Id)
 		    {
-			iteration.push(value.result[j].iteration_id.toString());
+//			if (value.result[j].iteration_id<10)
+//			    iteration.push("0"+value.result[j].iteration_id.toString());
+//			else
+			    iteration.push(value.result[j].iteration_id.toString());
 			output.push(value.result[j].output);
 		    }
 		}
 		var data = {Key: Concepts[i].title, ValueX: iteration, ValueY: output, Type: "FCM"};
     	    	$scope.dataset.push(data);
-		$scope.labels.push("Dollar");
+		$scope.labels.push("");
 	    }
 
 	$scope.md = $scope.dataset;
