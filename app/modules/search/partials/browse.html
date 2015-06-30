@@ -1,252 +1,211 @@
 <div class="container">
-<div class="content-header">
+  <div class="content-header">
     <h2 class="page-title">Opening Policy Horizons</h2>
-
-    <p class="subtitle"> Policy Compass will simplify the way to utilize, interact, mash-up, visualise and interpret the
-        increasing amount of international open econonmic data and wealth indicators from reliable international data
-        sources </p>
-</div>
-<div class="row">
-<div class="search-content">
-    <div class="input-group">
+    <p class="subtitle"> Policy Compass will simplify the way to utilize, interact, mash-up, visualise and interpret the increasing amount of international open econonmic data and wealth indicators from reliable international data sources </p>
+  </div>
+  <div class="row">
+    <div class="search-content">
+      <div class="input-group" >
         <div class="input-group-btn dropdown" dropdown is-open="status.isopen">
-            <button type="button" class="btn dropdown-toggle" dropdown-toggle ng-disabled="disabled">
-                {{searchItemTypeInfoDropDown}} <span class="caret"></span></button>
-            <ul class="dropdown-menu" role="menu">
-                <li><a href="#/browse/metric">Metrics</a></li>
-                <li><a href="#/browse/fuzzymap">Fuzzy cognitive Maps</a></li>
-                <li><a href="#/browse/visualization">Visualisations</a></li>
-                <li><a href="#/browse/event">Events</a></li>
-                <li><a href="#/browse">All</a></li>
-            </ul>
+          <button type="button" class="btn dropdown-toggle" dropdown-toggle ng-disabled="disabled">{{searchItemTypeInfoDropDown}} <span class="caret"></span> </button>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="" ng-click="filterSearchType('metric')">Metrics</a> </li>
+            <li><a href="" ng-click="filterSearchType('fuzzymap')">Fuzzy cognitive Maps</a> </li>
+            <li><a href="" ng-click="filterSearchType('visualization')">Visualisations</a> </li>
+            <li><a href="" ng-click="filterSearchType('event')">Events</a> </li>
+            <li><a href="" ng-click="filterSearchType('metric,visualization,event,fuzzymap')">All</a> </li>
+          </ul>
         </div>
         <!-- /btn-group -->
-        <input type="search" ng-keyup="$event.keyCode == 13 && search(searchQuery)" class="browse-input form-control"
-               required="" placeholder="{{searchItemTypeInfo}}" ng-model="searchQuery"/>
+        <input type="search" ng-keyup="$event.keyCode == 13 && search(searchQuery)" class="browse-input form-control" required="" placeholder="{{searchItemTypeInfo}}" ng-model="searchQuery" />
         <span class="input-group-btn">
         <button class="btn" type="button" ng-click="search(searchQuery)">Go!</button>
-        </span></div>
-    <div class="search-results-header">
-        <div class="filterbar">
+        </span> </div>
+        <div class="search-results-header">
+          <div class="filterbar"> 
             <!--a class="search-icon-btn" data-placement="left" data-canvas="#myNavmenuCanvas" data-target="#myNavmenu" type="button" data-toggle="offcanvas"><span class="filter-menu-icon glyphicon glyphicon-th-list"></span><span class="filter-menu-link">Filter</span></a-->
-            <select class="btn btn-show btn-sm dropdown-toggle" ng-model="selectedSortItem"
-                    ng-change="sortItemsChanged()" ng-init="selectedSortItem = selectedSortItem || sortOptions[0]"
-                    ng-options="sortOptionItem.name for sortOptionItem in sortOptions">
+            <select class="btn btn-show btn-sm dropdown-toggle" ng-model="selectedSortItem" ng-change="sortItemsChanged()" ng-init="selectedSortItem = selectedSortItem || sortOptions[0]" ng-options="sortOptionItem.name for sortOptionItem in sortOptions">
             </select>
             <span class="text-show">Sort By</span>
-            <select class="btn btn-show btn-sm dropdown-toggle" ng-model="selectedItemPerPage"
-                    ng-change="itemsPerPageChanged()"
-                    ng-init="selectedItemPerPage = selectedItemPerPage || itemsPerPageChoices[0]"
-                    ng-options="itemIPP as itemIPP.name for itemIPP in itemsPerPageChoices">
+            <select class="btn btn-show btn-sm dropdown-toggle" ng-model="selectedItemPerPage" ng-change="itemsPerPageChanged()" ng-init="selectedItemPerPage = selectedItemPerPage || itemsPerPageChoices[0]" ng-options="itemIPP as itemIPP.name for itemIPP in itemsPerPageChoices">
             </select>
             <span class="text-show">Show</span>
+          </div>
+          <div class="num-results-wrap">
+            <div class="num-results" ng-hide="searchResults.length"> <span>No results found</span> </div>
+            <div class="num-results" ng-show="searchResults.length"> <span>Page {{currentPage}} of {{searchResultsCount}} results found</span> </div>
+          </div>
         </div>
-        <div class="num-results-wrap">
-            <div class="num-results" ng-hide="searchResults.length"><span>No results found</span></div>
-            <div class="num-results" ng-show="searchResults.length"><span>Page {{currentPage}} of {{searchResultsCount}} results found</span>
-            </div>
-        </div>
-    </div>
+ 
+        <div class="search-results row-flex"><div ng-repeat="searchResult in searchResults" class="result-wrapper">
+          <div class="result-block searchItemIcon {{searchResult['_type']}}Icon"  ng-cloak>
 
-    <div class="search-results row-flex">
-        <div ng-repeat="searchResult in searchResults" class="result-wrapper">
-            <div class="result-block searchItemIcon {{searchResult['_type']}}Icon" ng-cloak>
-
-                <div ng-show="searchResult['_type']=='metric'" class="search-result">
-                    <h5>
-                        <a href="/app/#/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}">{{
-                            searchResult['_source']['title']}}</a>
-                    </h5>
-
-                    <div class="attributes">
-
-                        <p class="description">{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
-
-                        <div class="key-field">
+                       <div ng-show="searchResult['_type']=='metric'"  class="search-result" >
+                          <h5>
+                          <a href="/app/#/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}">{{ searchResult['_source']['title']}}</a>
+                          </h5>
+<div class="attributes">
+                            
+                            <p class="description">{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
+                            <div class="key-field">
                             <label class="key-field-title">Publisher: </label>
                             {{ searchResult['_source']['publisher'] }}
-                        </div>
-                    </div>
-                </div>
-
-
-                <div ng-show="searchResult['_type']=='event'" class="search-result">
-                    <h5><a href="/app/#/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}">
-                        {{ searchResult['_source']['title']}}</a>
-
-                    </h5>
-
-                    <div class="attributes">
-
-                        <p class="description">{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
-
-                        <div class="key-field">
-                            <label class="key-field-title">Start of Event: </label>
-                            {{ searchResult['_source']['startEventDate']|date:'d-M-yy'}}
-                        </div>
-                        <div class="browse-item-stars">
-                            <div class="stars" title="4.1 points">
-                                <div class="star star-active"></div>
-                                <div class="star star-active"></div>
-                                <div class="star star-active"></div>
-                                <div class="star star-active"></div>
-                                <div class="star star-inactive"></div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div ng-show="searchResult['_type']=='visualization'" class="search-result">
-                    <h5>
-                        <a href="/app/#/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}">{{
-                            searchResult['_source']['title']}}</a>
-                    </h5>
+                          </div>
+                      </div>
+                      
+                      
+                     <div ng-show="searchResult['_type']=='event'"  class="search-result">
+                          <h5><a href="/app/#/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}">
+                          {{ searchResult['_source']['title']}}</a>
+                          
+                          </h5>
 
-                    <div class="attributes">
-
-                        <p class="description">{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
-
-                        <div class="key-field">
+                          <div class="attributes">
+                            
+                            <p class="description">{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
+                          
+                            <div class="key-field">
+                            <label class="key-field-title">Start of Event: </label>
+                            {{ searchResult['_source']['startEventDate']|date:'d-M-yy'}}</div>
+                                                        <div class="browse-item-stars">
+                              <div class="stars" title="4.1 points">
+                                 <div class="star star-active"></div>
+                                 <div class="star star-active"></div>
+                                 <div class="star star-active"></div>
+                                 <div class="star star-active"></div>
+                                 <div class="star star-inactive"></div>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                     <div ng-show="searchResult['_type']=='visualization'"class="search-result">
+                          <h5>
+                          <a  href="/app/#/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}" >{{ searchResult['_source']['title']}}</a>
+                          </h5>
+<div class="attributes">
+                            
+                            <p class="description">{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
+                            
+                            <div class="key-field">
                             <label class="key-field-title">Created on: </label>
-                            {{ searchResult['_source']['created_at']|date:'d-M-yy'}}
-                        </div>
-                    </div>
-                </div>
-                <div ng-show="searchResult['_type']=='fuzzymap'" class="search-result">
-                    <h5>
-                        <a href="/app/#/models/{{ searchResult['_source']['id'] }}">{{
-                            searchResult['_source']['title']}}</a>
-                    </h5>
-
+                            {{ searchResult['_source']['created_at']|date:'d-M-yy'}}</div>
+                          </div>
+                      </div>
+                   <div ng-show="searchResult['_type']=='fuzzymap'"  class="search-result">
+                          <h5>
+                          <a href="/app/#/models/{{ searchResult['_source']['fcmmodelID'] }}">{{ searchResult['_source']['title']}}</a>
+                          </h5>
                     <div class="attributes">
-
-                        <p class="description">{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
-
-                        <div class="key-field">
+                            
+                            <p class="description">{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
+                            <div class="key-field">
                             <label class="key-field-title">Keywords: </label>
                             {{ searchResult['_source']['keywords']|date:'d-M-yy'}}
-                        </div>
-                        <div class="browse-item-stars">
-                            <div class="stars" title="4.1 points">
-                                <div class="star star-active"></div>
-                                <div class="star star-active"></div>
-                                <div class="star star-active"></div>
-                                <div class="star star-active"></div>
-                                <div class="star star-inactive"></div>
                             </div>
-                        </div>
-                    </div>
-                </div>
+                            <div class="browse-item-stars">
+                              <div class="stars" title="4.1 points">
+                                 <div class="star star-active"></div>
+                                 <div class="star star-active"></div>
+                                 <div class="star star-active"></div>
+                                 <div class="star star-active"></div>
+                                 <div class="star star-inactive"></div>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
 
-                <!-- /.col-lg-12  -->
-            </div>
-            <!-- /result-block .col-lg-3  -->
-
-            <!-- /.row  -->
-
-        </div>
+            <!-- /.col-lg-12  --> 
+          </div>
+          <!-- /result-block .col-lg-3  --> 
+          
+          <!-- /.row  --> 
+          
+          </div> </div>
+      <!-- /.col-lg-12 result-wrapper -->
+      
+      <div class="clearfix"></div>
+      <div style="text-align: center">
+        <pagination total-items="totalItems" ng-change="pageChanged()" items-per-page="itemsperPage" ng-model="currentPage" max-size="paginationSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+      </div>
     </div>
-    <!-- /.col-lg-12 result-wrapper -->
-
-    <div class="clearfix"></div>
-    <div style="text-align: center">
-        <pagination total-items="totalItems" ng-change="pageChanged()" items-per-page="itemsperPage"
-                    ng-model="currentPage" max-size="paginationSize" class="pagination-sm" boundary-links="true"
-                    rotate="false" num-pages="numPages"></pagination>
-    </div>
-</div>
-<!-- /.search content  -->
-
-<div class="browse-filters">
-    <div class="browse-filters-block">
+    <!-- /.search content  --> 
+    
+    <div class="browse-filters">
+      <div class="browse-filters-block">
         <h4>Output</h4>
         <ul>
-            <li>
-                <input type="checkbox">
-                All
+           <li>
+            <input type="checkbox">
+            All
             </li>
-            <li>
-            <li>
-                <input type="checkbox">
-                Datasets
-            </li>
-            <li>
-            <li>
-                <input type="checkbox">
-                Properties
-            </li>
-            <li>
-            <li>
-                <input type="checkbox">
-                Metrics
-            </li>
+          <li>
+                    <li>
+            <input type="checkbox">
+            Datasets</li>
+          <li>
+          <li>
+            <input type="checkbox">
+            Properties</li>
+          <li>
+          <li>
+            <input type="checkbox">
+            Metrics</li>
 
             <input type="checkbox">
             Visualisations</li>
-            <li>
-                <input type="checkbox">
-                Causal Models
-            </li>
+          <li>
+            <input type="checkbox">
+            Causal Models</li>
         </ul>
-    </div>
-    <div class="browse-filters-block">
+      </div>
+      <div class="browse-filters-block">
         <h4>Propertiy</h4>
         <ul>
-            <li>
-                <input type="checkbox">
-                All
-            </li>
-            <li>
-                <input type="checkbox">
-                Unemployment
-            </li>
-            <li>
-                <input type="checkbox">
-                Child Mortality
-            </li>
-            <li>
-                <input type="checkbox">
-                Life expectancy
-            </li>
-            <li>
-                <input type="checkbox">
-                Drug Consumption
-            </li>
-
+          <li>
+            <input type="checkbox">
+            All</li>
+          <li>
+            <input type="checkbox">
+            Unemployment</li>
+          <li>
+            <input type="checkbox">
+            Child Mortality</li>
+          <li>
+            <input type="checkbox">
+            Life expectancy</li>
+          <li>
+            <input type="checkbox">
+            Drug Consumption</li>
+          
         </ul>
-    </div>
-    <div class="browse-filters-block">
+      </div>
+      <div class="browse-filters-block">
         <h4>Location</h4>
         <ul>
-            <li>
-                <input type="checkbox">
-                All
-            </li>
-            <li>
-                <input type="checkbox">
-                Europe
-            </li>
-            <li>
-                <input type="checkbox">
-                Spain
-            </li>
-            <li>
-                <input type="checkbox">
-                Greece
-            </li>
-            <li>
-                <input type="checkbox">
-                Germany
-            </li>
-            <li>
-                <input type="checkbox">
-                Uk
-            </li>
+          <li>
+            <input type="checkbox">
+            All</li>
+          <li>
+            <input type="checkbox">
+            Europe</li>
+          <li>
+            <input type="checkbox">
+            Spain</li>
+          <li>
+            <input type="checkbox">
+            Greece</li>
+          <li>
+            <input type="checkbox">
+            Germany</li>
+          <li>
+            <input type="checkbox">
+            Uk</li>
         </ul>
-    </div>
-</div>
-<!-- /.browse-filters  -->
-</div>
-<!-- /.row  -->
+      </div>
+    </div> <!-- /.browse-filters  --> 
+  </div>
+  <!-- /.row  --> 
 </div>
 
 <!-- /.container --> 

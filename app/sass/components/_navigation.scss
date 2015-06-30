@@ -44,12 +44,13 @@
           color:$texto_negativo;
           background:$bk_1_2;
           background:$gris_50;
+          background:linear-gradient( to top,$gris_50, $gris_70);
           text-decoration:none;
           
           // background:linear-gradient(to top,$gris_90,white);
         }
         
-        padding:10px 15px 30px 5px;
+        padding:20px 15px;
         
       }
       li a {
@@ -192,8 +193,10 @@ header .container  {
 
 
 @media (min-width:$device) {
-  .navbar-toggle {
-    display: none;
+  .navbar-header {
+    .navbar-toggle {
+      display: none;
+    }
   }
   .main-menu-wrap {
     top:18px;
@@ -205,6 +208,7 @@ header .container  {
     }
   }
   #main-menu {
+    // margin-top:10px;
     li {
     display:inline;
       a {

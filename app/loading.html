@@ -1,0 +1,23 @@
+<script>
+  window.onload = function(){
+  $('.loadingHome').animate({'opacity': 0},200, function() {
+   $('.loadingHome').remove();
+    console.info('Loading complete.');
+  });
+}
+</script>
+
+
+<div class="loadingHome">
+  <div class="loading-wrap">
+      <div class="loading-container">
+      <div class="loading"></div>
+      <div id="loading-text">loading</div>
+    </div>
+    <div id="loading-logo-wrap">
+      <img src="img/logo-neg.svg" alt="Policy Compass's Logo" id="loading-logo">
+    </div>
+
+
+  </div>
+</div>
