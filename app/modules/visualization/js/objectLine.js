@@ -589,16 +589,28 @@ return 0;}
 	    				
 		}
 		
-		var yAxis = d3.svg.axis()
-    		.scale(self.y)
-    		//.scale(self.yArray)
-    		//.orient("left")
-    		//.orient("right")
-    		.orient(orientText)
-    		//.tickFormat(d3.format("."+formatdecimal+"s"))
-    		.tickFormat(d3.format(".2s"))
-    		;
-
+		if (self.hideyaxeunits==true)
+		{
+			var yAxis = d3.svg.axis()
+	    		.scale(self.y)
+	    		//.scale(self.yArray)
+	    		//.orient("left")
+	    		//.orient("right")
+	    		.orient(orientText)
+	    		;
+		}
+		else
+		{
+			var yAxis = d3.svg.axis()
+	    		.scale(self.y)
+	    		//.scale(self.yArray)
+	    		//.orient("left")
+	    		//.orient("right")
+	    		.orient(orientText)
+	    		//.tickFormat(d3.format("."+formatdecimal+"s"))
+	    		.tickFormat(d3.format(".2s"))
+	    		;
+		}
 		var lineFunction = d3.svg.line()		
     		.x(function(d,i) {
     			//console.log(i);
@@ -921,15 +933,26 @@ return 0;}
         		
 					transform = "translate(0,0)";
 					
-					
-					var yAxisLeft = d3.svg.axis()
-					.scale(self.yArray[i])
-					//.ticks(10)
-					//.orient("left")
-					//.orient("right")
-					.orient(orientText)
-					//.tickFormat(d3.format("."+formatdecimal+"s"));
-					.tickFormat(d3.format(".2s"));
+					if (self.hideyaxeunits==true)					
+					{
+						var yAxisLeft = d3.svg.axis()
+						.scale(self.yArray[i])
+						//.ticks(10)
+						//.orient("left")
+						//.orient("right")
+						.orient(orientText);						
+					}
+					else
+					{
+						var yAxisLeft = d3.svg.axis()
+						.scale(self.yArray[i])
+						//.ticks(10)
+						//.orient("left")
+						//.orient("right")
+						.orient(orientText)
+						//.tickFormat(d3.format("."+formatdecimal+"s"));					
+						.tickFormat(d3.format(".2s"));
+					}
 				}
 				else
 				{
@@ -952,12 +975,23 @@ return 0;}
 					//console.log(posFinalXAxeY)
 					//console.log(self.yArray[i]);
 					transform = "translate("+posFinalXAxeY+",0)";
-					var yAxisLeft = d3.svg.axis()
-					.scale(self.yArray[i])
-					.ticks(10)
-					.orient("right")
-					//.tickFormat(d3.format("."+formatdecimal+"s"));
-					.tickFormat(d3.format(".2s"));
+					
+					if (self.hideyaxeunits==true)
+					{
+						var yAxisLeft = d3.svg.axis()
+						.scale(self.yArray[i])
+						.ticks(10)
+						.orient("right");						
+					}
+					else
+					{
+						var yAxisLeft = d3.svg.axis()
+						.scale(self.yArray[i])
+						.ticks(10)
+						.orient("right")
+						//.tickFormat(d3.format("."+formatdecimal+"s"));
+						.tickFormat(d3.format(".2s"));
+					}
 				}
 				
 				//console.log(self.labelY);
