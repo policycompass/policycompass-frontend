@@ -8,6 +8,14 @@
 	font-weight: normal;
 	font-style: normal;
 }
+// @import url(https://fonts.googleapis.com/css?family=Open+Sans:700,300,600,400);
+@font-face {font-family:'open sans';src:url(../fonts/OpenSans-Regular.Ttf);}
+@font-face {font-family:'open sans light';src:url(../fonts/OpenSans-Light.Ttf);}
+/*Other browsers*/
+
+/*Other browsers*/
+h4,
+.btn,
 .row-view-create .view-item-wrap,
 .searchItemIcon a,
 .columns-create-submenu-icon,
@@ -28,8 +36,17 @@ a {
     line-height:1em;
   }
 }
+.btn-next,
+.btn-parent {
+  &:after {
+      padding-left:0.5em;
+      font-family:policy;
+      line-height:1em;
+    }
 
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:700,300,600,400);
+}
+
+
 
 
 $helvetica:Helvetica, Arial, "Nimbus Sans L", sans-serif;

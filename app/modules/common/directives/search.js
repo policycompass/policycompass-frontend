@@ -229,6 +229,15 @@ angular.module('pcApp.common.directives.search', [
 
         template: '<div ng-show="metricsList.length<numberMaxMetrics">'+
         	'<label for="">Search metric by title</label> ' +
+          '<div class="filterMetricsPagination" id="filterMetricsPaginationDirective">' +
+           '<div class="button-group">'+
+					'<button ng-show="metricsFilter.hits.total>1" ng-disabled="pagToSearch==1"  class="btn" ng-click="findMetricsByFilter(\'prev\')">' +
+						'<span class="glyphicon glyphicon-chevron-left"></span>  Previous' +
+					'</button>' +
+					'<button ng-show="metricsFilter.hits.total>1" ng-disabled="metricsFilter.hits.total<=pagToSearch*itemsperpagesize" class="btn" ng-click="findMetricsByFilter(\'next\')">' +	
+						'Next <span class="glyphicon glyphicon-chevron-right"></span>' +
+					'</button>' +
+				'</div></div>' +	
 			'<input placeholder="--all metrics--" ng-model="searchtext" ng-change="findMetricsByFilter(\'1\')" type="text" id="filterMetricDirective" >' +
 			'<div class="filterMetricsPaginationHeader" id="filterMetricsPaginationHeaderDirective">' +
 				'<div>' +
@@ -241,14 +250,7 @@ angular.module('pcApp.common.directives.search', [
 				'<ul class="metrics-list">' +
         			'<li ng-class="{\'metrics-list active\':MetricSelectediId_[metric._source.id]>0,\'metrics-list\':MetricSelectediId_[metric.id]}" name="designer-metrics-num-{{metric.id}}" ng-repeat="metric in metricsFilter.hits.hits track by $index" ><a href="" x-ng-click="clickMetric(metric._source.id, metric._source.title, metric._source.issued);"  title="{{ !MetricSelectediId_[metric._source.id]>0 && \'Add \' || \'Delete \' }} \'{{metric._source.title}}\'">{{metric._source.title}} - {{ metric._source.issued | date:\'longDate\' }}</a></li>' +
         		'</ul>' +        		
-				'<div class="filterMetricsPagination" id="filterMetricsPaginationDirective">' +
-					'<button ng-show="metricsFilter.hits.total>1" ng-disabled="pagToSearch==1"  class="btn btn-warning" ng-click="findMetricsByFilter(\'prev\')">' +
-						'<span class="glyphicon glyphicon-chevron-left"></span>  Previous' +
-					'</button>' +
-					'<button ng-show="metricsFilter.hits.total>1" ng-disabled="metricsFilter.hits.total<=pagToSearch*itemsperpagesize" class="btn btn-warning pull-right" ng-click="findMetricsByFilter(\'next\')">' +	
-						'Next <span class="glyphicon glyphicon-chevron-right"></span>' +
-					'</button>' +
-				'</div>' +		
+	
 			'</div>' +
         '</div>' +
         '</div>' +

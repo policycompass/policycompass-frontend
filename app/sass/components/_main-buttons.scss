@@ -1,3 +1,16 @@
+.btn-warning.disabled, .btn-warning[disabled], fieldset[disabled] .btn-warning, .btn-warning.disabled:hover, .btn-warning[disabled]:hover, fieldset[disabled] .btn-warning:hover, .btn-warning.disabled:focus, .btn-warning[disabled]:focus, fieldset[disabled] .btn-warning:focus, .btn-warning.disabled.focus, .btn-warning[disabled].focus, fieldset[disabled] .btn-warning.focus, .btn-warning.disabled:active, .btn-warning[disabled]:active, fieldset[disabled] .btn-warning:active, .btn-warning.disabled.active, .btn-warning[disabled].active, fieldset[disabled] .btn-warning.active {
+  // background-color: inherit;
+  // border-color:  inherit;
+   background:$gris_90;
+   background:transparent;
+   border-color:$gris_80;
+    color:$gris_70;
+}
+
+.btn-primary {
+color:$general;
+}
+
 .btn {
     //background:$gris_80;
     // padding:4px 10px 2px;
@@ -6,10 +19,18 @@
     //background:#da995f;
     //background:$gris_60;
     
+    outline:none;
+    
     /* colores claros */
-    //background:linear-gradient(to bottom, $gris_98 0%, $gris_90 100%); 
+    background:linear-gradient(to bottom, $gris_98 0%, $gris_90 100%); 
     //color:$general;
     border-color:$gris_70;
+    border-bottom-color:$gris_60;
+    
+    // line-height:1em;
+    padding:5px 10px 3px;
+    
+    color:$general;
     
     &:before {
       
@@ -38,5 +59,232 @@
        // background:transparent;
        // border-color:$gris_80;
     }
+    &:focus {
+      // box-shadow:0 0 10px black;
+      outline:none;
+    }
   
+}
+
+.btn-danger {
+  background:$bk_3;
+  // color:$bk_1_1;
+}
+.btn-warning {
+  background:$bk_3_1;
+}
+.btn-danger {
+}
+.btn-danger,
+.btn-warning {
+  $info:lighten($bk_3_1,20);
+  $info2:$bk_3_1;
+  background:linear-gradient(to bottom,$info, $info2);
+  color:white;
+}
+.btn-danger {
+  $info:lighten($bk_3_1,20);
+  $info2:$bk_3;
+  background:linear-gradient(to bottom,$info, $info2);
+}
+// .btn-warning,
+// .btn-danger,
+.btn-info  {
+  
+  $info:lighten($bk_4_1,20);
+  $info2:lighten($bk_4_1,30);
+  background:linear-gradient(to bottom, $gris_90 0%, $gris_80 100%);
+  
+  border-color:$bk_4_1;
+  color:$general;
+  border-bottom-color:$gris_50;
+  color:$gris_20;
+  background:linear-gradient(to bottom,$info2, $info);
+  color:white;
+
+}
+.btn-danger {
+      // $info:$bk_3_1;
+  // $info2:lighten($bk_4_1,30);
+  // background:linear-gradient(to bottom,$gris_98,$bk_3_1 -30px);
+  // border-color:$bk_3;
+}
+.helpbutton {
+  float:left;
+}
+.btn-parent {
+}
+
+.btn-revert:before {
+  content: "\e984";
+
+}
+.btn-line:before {
+ content: "\e99b";
+
+}
+.btn-pie:before {
+  content: "\e99a";
+
+}
+.btn-bars:before {
+    content: "\e99c";
+
+}
+.btn-parent:after {
+content: "\ea1c";
+opacity:.5;
+
+}
+.helpbutton .btn:before {
+  content: "\e617";
+}
+.btn-rotate:before {
+  content: "\e984";
+}
+.btn-clear:before {
+  content: "\e60d";
+  // color:$bk_3;
+}
+.btn-xy:before {
+  content: "\ea45";
+}
+.btn-file:before {
+  content: "\e92f";
+}
+.btn-prev:before {
+  content: "\e601";
+}
+.btn-validate:before {
+  content: "\e604";
+}
+
+.btn-add:before {
+  content: "\e608";
+}
+.btn-request:before {
+  content: "\e618";
+}
+.btn-tree:before {
+  content: "\e9bc";
+}
+.btn-create:before {
+  content: "\e60f";
+}
+.btn-map:before {
+content: "\e9ca";
+}
+
+.btn-details {
+
+  &:before {
+    content: "\e611";
+    }
+     &.data:before {
+    content: "\f05a";
+      content: "\e616";
+}
+}
+
+
+ 
+
+/* after icons */
+
+.btn-next:after {
+  content: "\e602";
+}
+
+
+
+
+.btn:before {
+  opacity:.7;
+  &:hover {
+    opacity:1;
+  }
+}
+
+
+.pc-visualization-formcontrols {
+  @include clearfix();
+  margin:10px 0;
+}
+
+.button-group {
+  // outline:2px solid black;
+  margin-right:10px;
+  display:inline-block;
+  padding:0 5px;
+  overflow:hidden;
+  float:left;
+  .btn {
+    
+    border-radius:0;
+   // border-right:none;
+    float:left;
+    margin:0;
+    
+    &:first-of-type {
+      border-radius:$radius 0 0 $radius;  
+    }
+    &:last-of-type {
+      border-radius:0 $radius $radius 0;  
+    }
+     &:not(:last-of-type) {
+      border-right:none;
+    }
+  }
+}
+
+
+.navigation-steps {
+  @include reset-list();
+  position:absolute;
+  top:30px;
+  right:20px;
+  li {
+    float:left;
+    a {
+      float:left;
+      margin:0;
+       border-radius:0;
+    }
+    &:first-of-type a {
+      border-radius:$radius 0 0 $radius;  
+    }
+    &:last-of-type  a {
+      border-radius:0 $radius $radius 0;  
+    }
+    &:not(:last-of-type)  a {
+      border-right:none;
+    }
+  }
+}
+
+.multiSelect {
+  padding:0;
+  .buttonLabel  {
+    padding:0 0 0 5px;
+  }
+}
+
+.multiSelect > button {
+
+  
+  
+ padding: 5px 10px 3px;
+  background:linear-gradient(to bottom,$bk_4_4, $bk_4_3);
+  border:1px solid $bk_4_1;
+  color:white;
+    min-height: inherit !important;
+    font-size:1em;
+  &:hover {
+    background:linear-gradient(to bottom,$bk_4_3, $bk_4_4);
+    
+  }
+  
+ 
+  // padding:0;
+  // line-height:1em;
 }
