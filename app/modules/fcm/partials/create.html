@@ -29,6 +29,10 @@
                             <span class="glyphicon glyphicon-floppy-disk"></span>
 			    <p>Save Model</p>
 			</a>
+			<a type="button" class="btn btn-primary" ng-click="saveModel()">
+                            <span class="glyphicon glyphicon-floppy-disk"></span>
+			    <p>Save As Model</p>
+			</a>
                     </div>
                 </div><!-- /.col-lg-3 well-primary  -->
         </div><!-- /.col-lg-12  -->
@@ -36,41 +40,17 @@
          <hr> {{ md }}   
  <!--          <hr> curl -H "Content-Type: application/json" -i -X POST -d '{{ fcmSimulation }}' localhost:8080/api/v1/fcmmanager/simulation  -->
             <tabset justified="true">
-                <tab heading="Model Detail">
-		    <table class="table table-hover">
-			<tr>
-			    <td><b>Title:</b></td>
-			    <td>{{ modeldetail.model.title }}</td>
-			</tr>
-			<tr>
-			    <td><b>Description:</b></td>
-			    <td>{{ modeldetail.model.description }}</td>
-			</tr>
-			<tr>
-			    <td><b>Keywords:</b></td>
-			    <td>{{ modeldetail.model.keywords }}</td>
-			</tr>
-			<tr>
-			    <td><b>Issued:</b></td>
-			    <td>{{ modeldetail.model.dateAddedtoPC | date:'longDate' }}</td>
-			</tr>
-			<tr ng-show="modeldetail.model.dateModified">
-			    <td><b>Last Modified:</b></td>
-			    <td>{{ modeldetail.model.dateModified | date:'longDate' }}</td>
-			</tr>
-		     </table>
-		</tab>
-
                 <tab heading="Run Simulation">
+		    <button type="button" class="btn btn-danger pull-right" ng-click="advanceSettings()">Advance Settings</button>
     		    <h4>Concepts :</h4>
 		    <table class="table table-hover">
 			<tr>
-			    <td align="center" width="30%"><b>Title</b></td>
+			    <td align="center" width="35%"><b>Title</b></td>
 			    <td align="center" width="8%"><b>Scale</b></td>
-			    <td align="center" width="16%"><b>Value</b></td>
-			    <td align="center" width="10%"><b>Fixed Output</b></td>
-<!--			    <td align="center" width="18%"><b>Activator</b></td>   -->
-			    <td align="center" width="36%"><b>Metric</b></td>
+			    <td align="center" width="17%"><b>Value</b></td>
+<!--			    <td align="center" width="10%"><b>Fixed Output</b></td>
+			    <td align="center" width="18%"><b>Activator</b></td>   -->
+			    <td align="center" width="40%"><b>Metric</b></td>
 			</tr>
 			<tr ng-show="Concepts" ng-repeat="concept in SimulationConcepts track by $index">
 			    <td>{{ concept.title }}</td>
@@ -81,14 +61,14 @@
 				<option value="0.4">0.4 (Low)</option>
 				<option value="0.6">0.6 (Medium)</option>
 				<option value="0.8">0.8 (High)</option>
-				<option value="1.0">1.0 (Very High)</option>
+				<option value="1">1.0 (Very High)</option>
 			    </select></td>
-			    <td align="center">
+<!--			    <td align="center">
 			    <select class="form-control" name="fixedoutput" id="fixedoutput" ng-model="SimulationConcepts[$index].fixedoutput" required>
 				<option value="True">True</option>
 				<option value="False">False</option>
 			    </select></td>
-<!--			    <td align="center">
+			    <td align="center">
 			    <select class="form-control" name="activator" id="activator" ng-model="user.activator" ng-options="activator.title for activator in Fcmactivators" required>
 			    </select></td>     -->
 			    <td align="center">
@@ -96,8 +76,6 @@
 			    </td>
 			</tr>
 			<tr>
-			    <td></td>
-			    <td></td>
 			    <td></td>
 			    <td></td>
 			    <td></td>
@@ -123,7 +101,6 @@
 			    </td>   --->
 			</tr>
 			<tr>
-			    <td></td>
 			    <td></td>
 			    <td></td>
 			    <td></td>
@@ -156,6 +133,31 @@
 		</tab>
 
                 <tab heading="Graph"><div class="pcLinesChart" dataset="dataset" labels="labels" small="list"  mode="modeg" chartid="2" show-Legend="showLegend" show-Labels="showLabels" show-Lines="showLines" show-Areas="showAreas" show-Points="showPoints" show-Grid="showGrid"	show-Together="showYAxes" show-Percentatge="showAsPercentatge" xaxeformat="xaxeformat"></div></tab>
+
+                <tab heading="Model Detail">
+		    <table class="table table-hover">
+			<tr>
+			    <td><b>Title:</b></td>
+			    <td>{{ modeldetail.model.title }}</td>
+			</tr>
+			<tr>
+			    <td><b>Description:</b></td>
+			    <td>{{ modeldetail.model.description }}</td>
+			</tr>
+			<tr>
+			    <td><b>Keywords:</b></td>
+			    <td>{{ modeldetail.model.keywords }}</td>
+			</tr>
+			<tr>
+			    <td><b>Issued:</b></td>
+			    <td>{{ modeldetail.model.dateAddedtoPC | date:'longDate' }}</td>
+			</tr>
+			<tr ng-show="modeldetail.model.dateModified">
+			    <td><b>Last Modified:</b></td>
+			    <td>{{ modeldetail.model.dateModified | date:'longDate' }}</td>
+			</tr>
+		     </table>
+		</tab>
 
                 <tab heading="Comments">Comments</tab>
             </tabset>
