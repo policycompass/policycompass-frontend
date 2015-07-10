@@ -74,7 +74,7 @@
                     </div>
                     <div ng-switch-when="second">
                         <select multiple class="form-control" ng-model="search.selectedEvent">
-                            <option ng-repeat="result in searchResults" value="{{$index+1}}">{{ result.title }}</option>
+                            <option ng-repeat="result in searchResults" value="{{$index}}">{{ result.title }}</option>
                         </select><br>
                     </div>
                 </div>
