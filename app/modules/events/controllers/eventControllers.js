@@ -1,6 +1,7 @@
 angular.module('pcApp.events.controllers.event', [
     'pcApp.events.services.event',
-    'pcApp.references.services.reference'
+    'pcApp.references.services.reference',
+    'pcApp.config'
 ])
 
     .controller('EventsController', ['$scope', 'Event', '$log', '$routeParams', function ($scope, Event, $log, $routeParams) {
@@ -128,14 +129,46 @@ angular.module('pcApp.events.controllers.event', [
 
     .controller('EventSearchController', [
         '$scope',
+        '$filter',
         'Event',
         '$location',
         '$log',
-        function ($scope, Event, $location, $log) {
+        '$http',
+        'API_CONF',
+        function ($scope, $filter, Event, $location, $log, $http, API_CONF) {
 
+            $scope.step = 'one';
+            $scope.nextStep = function() {
+
+            };
+            
+            $scope.prevStep = function() {
+                $scope.step = 'one';
+            };
+
+            $scope.search = {};
+            $scope.searchResults = [];
             $scope.searchEvent = function () {
+                $http.get(API_CONF.EVENTS_MANAGER_URL + '/harvestevents?keyword=' + $scope.search.title + '&start=' +
+                    $filter('date')($scope.search.startEventDate, "yyyy-MM-dd") + '&end=' +
+                    $filter('date')($scope.search.endEventDate, "yyyy-MM-dd")).
 
-                console.log($scope.startEventDate + " " + $scope.endEventDate + " " + $scope.title);
-
+                    success(function(data, status, headers, config) {
+                        console.log(angular.toJson(data));
+                        $scope.searchResults = data;
+                    }).
+                    error(function(data, status, headers, config) {
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                    });
+                try {
+                    $scope.step = 'second';
+                }
+                catch(err) {
+                    console.log(err);
+                }
+            };
+            $scope.selectEvent = function () {
+                console.log(angular.toJson($scope.searchResults[$scope.search.selectedEvent[0]]));
             };
         }]);
