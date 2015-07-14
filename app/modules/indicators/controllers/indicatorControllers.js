@@ -57,4 +57,26 @@ angular.module('pcApp.indicators.controllers.indicator', [
             );
         };
 
-    }]);
+    }])
+
+    .controller('IndicatorDetailController', [
+        '$scope',
+        'Indicator',
+        '$location',
+        '$log',
+        'IndicatorControllerHelper',
+        '$filter',
+        '$routeParams',
+        function ($scope, Indicator, $location, $log, helper, $filter, $routeParams) {
+
+            $scope.indicator = Indicator.get({id: $routeParams.indicatorId},
+                function(indicator) {
+                },
+                function(err) {
+                    throw { message: JSON.stringify(err.data)};
+                }
+            );
+
+
+
+        }]);
