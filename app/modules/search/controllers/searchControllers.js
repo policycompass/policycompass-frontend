@@ -75,8 +75,12 @@
                     $scope.searchItemTypeInfo = 'Search for fuzzy maps';
                     $scope.searchItemTypeInfoDropDown = 'Fuzzy Maps';
                     break;
+                case 'dataset':
+                    $scope.searchItemTypeInfo = 'Search for datasets';
+                    $scope.searchItemTypeInfoDropDown = 'Datasets';
+                    break;
                 default:
-                    $scope.searchItemTypeInfo = 'Search for metrics, visualizations,FCM models, events';
+                    $scope.searchItemTypeInfo = 'Search for metrics, visualizations, FCM models, events, datasets';
             }
             //Perform search based on new Item Type
             //goSearch();
@@ -157,8 +161,8 @@
                 $scope.filterSearchType(type);
             } else {
                 //Default search item type
-                $scope.searchItemType = 'metric,visualization,event,fuzzymap';
-                $scope.searchItemTypeInfo = 'Search for metrics, visualizations,FCM models, events';
+                $scope.searchItemType = 'metric,visualization,event,fuzzymap,dataset';
+                $scope.searchItemTypeInfo = 'Search for metrics, visualizations, FCM models, events, datasets';
                 $scope.searchItemTypeInfoDropDown = 'All';
             }
 
