@@ -65,6 +65,19 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
     };
 })
 
+.service("FCMActivatorDetail", function() {
+    var Activator = [];
+
+    return {
+        setActivator: function(ActivatorObj) {
+            Activator = ActivatorObj;
+        },
+        getActivator: function() {
+            return Activator;
+        },
+    };
+})
+
 .service("EditConcept", function() {
     var Concept;
     var EditMode;
@@ -105,19 +118,19 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
     };
 })
 
-.controller('CytoscapeCtrl', function($scope, $rootScope,  $routeParams, $location, $translate, Fcm, FcmModel, FcmSimulation, FcmActivator, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, SimulationConceptsDetail, AssociationsDetail, SimulationAssociationsDetail, EditConcept, EditAssociation){
+.controller('CytoscapeCtrl', function($scope, $rootScope,  $window, $routeParams, $location, $translate, Fcm, FcmModel, FcmSimulation, FcmActivator, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, SimulationConceptsDetail, AssociationsDetail, SimulationAssociationsDetail, EditConcept, EditAssociation, FCMActivatorDetail){
   // container objects
   $scope.Models = [];
   $scope.mapData = [];
   $scope.edgeData = [];
   $scope.Concepts = [];
+  $scope.Activator = [];
   $scope.SimulationConcepts = [];
   $scope.Associations = [];
   $scope.SimulationAssociations = [];
   $scope.SimulationResults = [];
   $scope.dataset = [];
   $scope.labels = [];
-  $scope.labels = ["Dollar","Dollar","Dollar","Dollar"];
   $scope.showLegend = true;
   $scope.showLabels = true;
   $scope.showLines = true;
@@ -127,8 +140,9 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
   $scope.showXAxes = true;
   $scope.showYAxes = true;
   $scope.showAsPercentatge = false;
-  $scope.xaxeformat = ''
-  $scope.modeg= 'view';
+  $scope.xaxeformat = 'sequence';
+  $scope.mode= 'view';
+  $scope.chartid= '2';
 
   $scope.NodeID = 0;
 
@@ -137,18 +151,25 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
   AssociationsDetail.setAssociations($scope.Associations);
   SimulationConceptsDetail.setConcepts($scope.SimulationConcepts);
   SimulationAssociationsDetail.setAssociations($scope.SimulationAssociations);
+  FCMActivatorDetail.setActivator($scope.Activator);
 
+  $scope.Fcmactivators = FcmActivator.query({}, function(activatorList) {
+    for (i=0; i<activatorList.length;i++)
+    {
+      if (activatorList[i].title=="Sigmoid Activator")
+      {
+ 	  $scope.Activator.push(activatorList[i]);
+      }
+    }
+  },
+  function(error) {
+    throw { message: JSON.stringify(err.data)};
+  });
 
-if ($routeParams.fcmId)
-{
+  if ($routeParams.fcmId)
+  {
     // Mode is editing
     $scope.mode = "edit";
-
-    $scope.Fcmactivators = FcmActivator.query({}, function(activatorList) {
-    },
-    function(error) {
-	throw { message: JSON.stringify(err.data)};
-    });
 
   $scope.modeldetail = FcmModel.get(
     {id: $routeParams.fcmId},
@@ -161,8 +182,8 @@ if ($routeParams.fcmId)
 	for (i=0; i<$scope.modeldetail.concepts.length; i++)
 	{
 	    var newNode = {id:$scope.modeldetail.concepts[i].id.toString(), name:$scope.modeldetail.concepts[i].title, posX:$scope.modeldetail.concepts[i].positionX, posY:$scope.modeldetail.concepts[i].positionY};
-	    var Concept = {Id: $scope.modeldetail.concepts[i].id.toString(), title: $scope.modeldetail.concepts[i].title, description: $scope.modeldetail.concepts[i].description, scale: $scope.modeldetail.concepts[i].scale, x: $scope.modeldetail.concepts[i].positionX, y: $scope.modeldetail.concepts[i].positionY, dateAddedtoPC:$scope.modeldetail.concepts[i].dateAddedtoPC, dateModified:$scope.modeldetail.concepts[i].dateModified};
-	    var SimulationConcept = {Id: $scope.modeldetail.concepts[i].id.toString(), title: $scope.modeldetail.concepts[i].title, scale: $scope.modeldetail.concepts[i].scale, value: 0.0, fixedoutput: 'False'};
+	    var Concept = {Id: $scope.modeldetail.concepts[i].id.toString(), title: $scope.modeldetail.concepts[i].title, description: $scope.modeldetail.concepts[i].description, scale: $scope.modeldetail.concepts[i].scale, value: $scope.modeldetail.concepts[i].value, metric_id: $scope.modeldetail.concepts[i].metric_id, x: $scope.modeldetail.concepts[i].positionX, y: $scope.modeldetail.concepts[i].positionY, dateAddedtoPC:$scope.modeldetail.concepts[i].dateAddedtoPC, dateModified:$scope.modeldetail.concepts[i].dateModified};
+	    var SimulationConcept = {Id: $scope.modeldetail.concepts[i].id.toString(), title: $scope.modeldetail.concepts[i].title, scale: $scope.modeldetail.concepts[i].scale, value: $scope.modeldetail.concepts[i].value, fixedoutput: 'False'};
 
 	    $scope.mapData.push(newNode);
 	    $scope.Concepts.push(Concept);
@@ -170,9 +191,9 @@ if ($routeParams.fcmId)
 	}
 	for (i=0; i<$scope.modeldetail.connections.length; i++)
 	{
-	    var newEdge = {id:$scope.modeldetail.connections[i].id.toString(), source: $scope.modeldetail.connections[i].conceptFrom.toString(), target: $scope.modeldetail.connections[i].conceptTo.toString(), weighted: '?'};
-	    var Association = {Id: $scope.modeldetail.connections[i].id.toString(), sourceID: $scope.modeldetail.connections[i].conceptFrom.toString(), source: '', destinationID: $scope.modeldetail.connections[i].conceptTo.toString(), destination: ''};
-	    var SimulationAssociation = {Sno: i+1, Id: $scope.modeldetail.connections[i].id.toString(), sourceID: $scope.modeldetail.connections[i].conceptFrom.toString(), source: '', destinationID: $scope.modeldetail.connections[i].conceptTo.toString(), destination: '', weighted: '0.0'};
+	    var newEdge = {id:$scope.modeldetail.connections[i].id.toString(), source: $scope.modeldetail.connections[i].conceptFrom.toString(), target: $scope.modeldetail.connections[i].conceptTo.toString(), weighted: $scope.modeldetail.connections[i].weight.toString()};
+	    var Association = {Id: $scope.modeldetail.connections[i].id.toString(), sourceID: $scope.modeldetail.connections[i].conceptFrom.toString(), source: '', destinationID: $scope.modeldetail.connections[i].conceptTo.toString(), destination: '', weighted: $scope.modeldetail.connections[i].weight.toString()};
+	    var SimulationAssociation = {Sno: i+1, Id: $scope.modeldetail.connections[i].id.toString(), sourceID: $scope.modeldetail.connections[i].conceptFrom.toString(), source: '', destinationID: $scope.modeldetail.connections[i].conceptTo.toString(), destination: '', weighted: $scope.modeldetail.connections[i].weight.toString()};
 
 	    for (j=0; j<$scope.Concepts.length; j++)
 	    {
@@ -188,8 +209,20 @@ if ($routeParams.fcmId)
 	    $scope.Associations.push(Association);
 	    $scope.SimulationAssociations.push(SimulationAssociation);
 	}
+
+	for (i=0; i<$scope.SimulationConcepts.length; i++)
+	{
+	    var fixedOutput='True';
+	    for (j=0; j<$scope.SimulationAssociations.length; j++)
+		if ($scope.SimulationAssociations[j].destinationID==$scope.SimulationConcepts[i].Id)
+		    fixedOutput='False';
+	    $scope.SimulationConcepts[i].fixedoutput=fixedOutput;
+	}
+	
+
 	// broadcasting the event
 	$rootScope.$broadcast('appChanged');
+  var dlg = dialogs.notify("FCM Model", "Message here");
     },
     function (error) {
 	throw { message: JSON.stringify(err.data)};
@@ -202,6 +235,7 @@ else
     $scope.mode = "create";
 }
 
+
     $scope.range = function(min,max,step) {
 	step = step || 1;
 	var input = [];
@@ -209,7 +243,6 @@ else
 	    input.push(i);
 	return input;
     };
-
 
     $scope.saveModel = function(){
 	dlg = dialogs.create('/dialogs/savemodel.html','ModelController',{},{key: false,back: 'static'});
@@ -244,6 +277,7 @@ else
     $scope.updateModel = function(){
 		var jsonModel = {model: FCMModelsDetail.getModels(), userID: "1",
 			concepts: ConceptsDetail.getConcepts(), connections: AssociationsDetail.getAssociations()};
+
 		$scope.fcmModelUpdate = new FcmModel();
 		$scope.fcmModelUpdate.data = jsonModel;
 
@@ -255,11 +289,22 @@ else
                         	throw { message: err.data};
                     	});
 			$scope.md = value;
+			$window.location.reload();
                     },
                     function (err) {
                         throw { message: err.data};
                     }
                 );
+    };
+
+    $scope.advanceSettings = function(){
+	dlg = dialogs.create('/dialogs/advancesettings.html','AdvanceSettingsController',{},{key: false,back: 'static'});
+	dlg.result.then(function(user){
+		$scope.Activator.pop();
+		$scope.Activator.push(user);
+        },function(){
+          $scope.name = 'You decided not to enter in your name, that makes me sad.';
+        });
     };
 
     $scope.editMetrics = function(){
@@ -289,16 +334,25 @@ else
 
 // **-*-****
     $scope.runSimulation = function(){
-	var jsonSimulation = {model: FCMModelsDetail.getModels(), userID: "1",
+	var Activator=FCMActivatorDetail.getActivator();
+	var jsonSimulation = {model: FCMModelsDetail.getModels(), userID: "1", activatorId: Activator[0].id,
 		concepts: SimulationConceptsDetail.getConcepts(), connections: SimulationAssociationsDetail.getAssociations()};
 	var Concepts = ConceptsDetail.getConcepts();
-	
+	var Associations =  SimulationAssociationsDetail.getAssociations();
+
 	$scope.fcmSimulation = new FcmSimulation();
 	$scope.fcmSimulation.data = jsonSimulation;
 
 	$scope.SimulationResults.splice(0, $scope.SimulationResults.length);
 	$scope.dataset.splice(0, $scope.dataset.length);
 	$scope.labels.splice(0, $scope.labels.length);
+
+	$scope.md = $scope.fcmSimulation;
+
+	for (i=0; i<$scope.edgeData.length; i++)
+	    for (j=0; j<Associations.length; j++)
+		if (($scope.edgeData[i].id==Associations[j].Id))
+		    $scope.edgeData[i].weighted=Associations[j].weighted;
 
         FcmSimulation.save($scope.fcmSimulation, function (value) {
 	    for (i=0; i<value.result.length; i++)
@@ -319,9 +373,9 @@ else
 		{
 		    if (value.result[j].conceptID==Concepts[i].Id)
 		    {
-//			if (value.result[j].iteration_id<10)
-//			    iteration.push("0"+value.result[j].iteration_id.toString());
-//			else
+			if (value.result[j].iteration_id<10)
+			    iteration.push("0"+value.result[j].iteration_id.toString());
+			else
 			    iteration.push(value.result[j].iteration_id.toString());
 			output.push(value.result[j].output);
 		    }
@@ -331,8 +385,7 @@ else
 		$scope.labels.push("");
 	    }
 
-	$scope.md = $scope.dataset;
-//	$scope.dataset =[{"Key":"USA_0","ValueX":["1989-01-01","2003-01-01","2004-01-01"],"ValueY":[99,33,53],"Type":"metric"},{"Key":"Germany_1","ValueX":["2000-01-01","2004-01-01","2010-01-01"],"ValueY":[14,66,33],"Type":"metric"},{"Key":"Canada_2","ValueX":["2001-01-01","2003-01-01","2004-01-01"],"ValueY":[33,54,12],"Type":"metric"},{"Key":"Spain_3","ValueX":["2002-01-01","2003-01-01","2004-01-01","2005-01-01"],"ValueY":[23,55,88,36],"Type":"metric"},{"Key":"Andorra_4","ValueX":["2003-01-01","2004-01-01"],"ValueY":[6,23],"Type":"metric"},{"Key":"Spain_5","ValueX":["1989-01-01","2011-01-01","2012-01-01"],"ValueY":[33,1,2],"Type":"metric"}];
+//	$scope.md = $scope.dataset;
         },
         function (err) {
             throw { message: err.data};
@@ -343,6 +396,8 @@ else
         },function(){
           $scope.name = 'You decided not to enter in your name, that makes me sad.';
         });
+	// broadcasting the event
+	$rootScope.$broadcast('appChanged');
     };
 
     $scope.impactAnalysis = function(){
@@ -361,8 +416,8 @@ else
 		// collecting data from the form
 		var newObj = user.title;
 		user.Id = 'n' + $scope.NodeID;
-		user.x = $scope.NodeID*100+200;
-		user.y = $scope.NodeID*100+200;
+		user.x = $scope.NodeID*30+200;
+		user.y = $scope.NodeID*30+100;
 		// building the new Node object
 		// using the array length to generate an id for the sample (you can do it any other way)
 		var newNode = {id:'n' + ($scope.NodeID), name:newObj, posX:user.x, posY:user.y};
@@ -650,6 +705,27 @@ else
   
 }) // end ModelController
 
+.controller('AdvanceSettingsController',function($scope, $modalInstance, data, FcmActivator, FCMActivatorDetail){
+    $scope.Fcmactivators = FcmActivator.query({}, function(activatorList) {
+    },
+    function(error) {
+	throw { message: JSON.stringify(err.data)};
+    });
+
+  $scope.activator1 = FCMActivatorDetail.getActivator();
+  $scope.activator = $scope.activator1[0];
+  $scope.user = $scope.activator1[0];
+  
+  $scope.cancel = function(){
+    $modalInstance.dismiss('canceled');  
+  }; // end cancel
+  
+  $scope.save = function(){
+    $modalInstance.close($scope.user);
+  }; // end save
+  
+}) // end ModelController
+
 .controller('EditMetricsController',function($scope, $modalInstance, data, FCMModelsDetail){
   $scope.user = [ 
   {FCMModelId: -1}, 
@@ -882,6 +958,8 @@ $scope.res=value;
   $templateCache.put('/dialogs/editassociation.html', '<div class="modal-header"><h4 class="modal-title">Edit Association</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="source">Source Concept *</label><select class="form-control" name="source" id="source" ng-model="user.source" ng-options="concept.title for concept in Concepts" required></select><br /><label class="control-label" for="destination">Destination Concept *</label><select class="form-control" name="destination" id="destination" ng-model="user.destination" ng-options="concept.title for concept in Concepts" required></select></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button><button type="button" class="btn btn-danger" ng-click="delete()">Delete</button></div>');
 
   $templateCache.put('/dialogs/savemodel.html', '<div class="modal-header"><h4 class="modal-title">FCM Model</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="title">Policy Model Title *</label><input type="text" class="form-control" name="title" id="title" ng-model="user.title" text="Vale here" required><br /><label class="control-label" for="description">Description *</label><textarea class="form-control" rows="5" name="description" id="description" ng-model="user.description" required></textarea><br /><label class="control-label" for="keywords">Keywords : *</label><input type="text" class="form-control" name="keywords" id="keywords" ng-model="user.keywords" required><br /><label class="control-label" for="policyDomain">Policy Domain : *</label><select multiple class="form-control policydomain-options" id="policyDomain" name="policyDomain" ng-model="metric.policy_domains" required></select></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button></div>');
+
+  $templateCache.put('/dialogs/advancesettings.html', '<div class="modal-header"><h4 class="modal-title">Advance Settings</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="title">Activator *</label><select class="form-control" name="activator" id="activator" value="user.title" ng-model="user" ng-options="activator.title for activator in Fcmactivators" required></select></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button></div>');
 
   $templateCache.put('/dialogs/editmetrics.html', '<div class="modal-header"><h4 class="modal-title">Edit Metrics</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><div id="filterMetrics" class="selectorMetrics" metrics-list="ListMetricsFilter" number-Max-Metrics="1"></div></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button></div>');
 
