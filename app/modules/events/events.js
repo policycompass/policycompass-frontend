@@ -13,6 +13,10 @@ events.config(function($routeProvider) {
             controller: 'EventCreateController',
             templateUrl: 'modules/events/partials/create.html'
         })
+        .when('/events/search', {
+            controller: 'EventSearchController',
+            templateUrl: 'modules/events/partials/search.html'
+        })
         .when('/events/:eventId/edit', {
             controller: 'EventEditController',
             templateUrl: 'modules/events/partials/create.html'

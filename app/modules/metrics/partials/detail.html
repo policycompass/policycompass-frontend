@@ -64,9 +64,9 @@
                     <td><span ng-repeat="p in metric.policy_domains">{{ p.title }} </span></td>
                 </tr>
 
-                <tr ng-show="metric.unit">
+                <tr ng-if="metric.unit">
                     <td><b>Unit:</b></td>
-                    <td>{{ metric.unit.title }}</td>
+                    <td><span resolve-unit id="metric.unit.id"></span></td>
                 </tr>
                 <tr ng-show="metric.spatial">
                     <td><b>Spatial:</b></td>
@@ -166,6 +166,5 @@
             <show-discussion ng-if="metric.id" data-key="metric_{{ metric.id }}"></show-discussion>
         </div>
     </div>
-
 </div>
 </div>
