@@ -24,7 +24,24 @@
                 <table class="table table-hover">
                     <tr ng-show="indicator.policy_domains">
                         <td><b>Policy Domains:</b></td>
-                        <td>{{ indicator.policy_domains.join(', ') }}</td>
+                        <td><span ng-repeat="p in indicator.policy_domains">{{ p.title }}{{$last ? '' : ', '}}</span></td>
+                    </tr>
+                    <tr ng-if="indicator.unit_category">
+                        <td><b>Unit Category:</b></td>
+                        <td><span resource-title id="indicator.unit_category" resource="UnitCategory"></span></td>
+                    </tr>
+                    <tr ng-if="indicator.language">
+                        <td><b>Language:</b></td>
+                        <td><span resource-title id="indicator.language" resource="Language"></span></td>
+                    </tr>
+                    <tr ng-show="indicator.issued">
+                        <td><b>Issued:</b></td>
+                        <td>{{ indicator.issued | date:'longDate' }}</td>
+                    </tr>
+
+                    <tr ng-show="indicator.modified">
+                        <td><b>Last Modified:</b></td>
+                        <td>{{ indicator.modified | date:'longDate' }}</td>
                     </tr>
                 </table>
         </div>

@@ -16,10 +16,10 @@ indicators.config(function($routeProvider) {
             controller: 'IndicatorCreateController',
             templateUrl: 'modules/indicators/partials/create.html'
         })
-//        .when('/metrics/:metricId/edit', {
-//            controller: 'MetricEditController',
-//            templateUrl: 'modules/metrics/partials/create.html'
-//        })
+        .when('/indicators/:indicatorId/edit', {
+            controller: 'IndicatorEditController',
+            templateUrl: 'modules/indicators/partials/create.html'
+        })
         .when('/indicators/:indicatorId', {
             controller: 'IndicatorDetailController',
             templateUrl: 'modules/indicators/partials/detail.html'

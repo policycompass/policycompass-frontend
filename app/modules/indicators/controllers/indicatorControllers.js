@@ -43,13 +43,13 @@ angular.module('pcApp.indicators.controllers.indicator', [
         $scope.indicator = {};
 
         // Create the indicator via the API
-        $scope.createIndicator = function() {
+        $scope.save = function() {
             // Hardcoded user for the moment
             // $scope.metric.user_id = 1;
 
             // Save the Indicaotr and redirect to the detail view
             Indicator.save($scope.indicator,function(value, responseHeaders){
-                    //$location.path('/');
+                    $location.path('/indicators/' + value.id);
                 },
                 function(err) {
                     throw { message: JSON.stringify(err.data)};
@@ -59,24 +59,97 @@ angular.module('pcApp.indicators.controllers.indicator', [
 
     }])
 
-    .controller('IndicatorDetailController', [
-        '$scope',
-        'Indicator',
-        '$location',
-        '$log',
-        'IndicatorControllerHelper',
-        '$filter',
-        '$routeParams',
-        function ($scope, Indicator, $location, $log, helper, $filter, $routeParams) {
 
-            $scope.indicator = Indicator.get({id: $routeParams.indicatorId},
-                function(indicator) {
+.controller('IndicatorEditController', [
+    '$scope',
+    'Indicator',
+    '$location',
+    '$log',
+    'IndicatorControllerHelper',
+    '$filter',
+    '$routeParams',
+    function ($scope, Indicator, $location, $log, helper, $filter, $routeParams) {
+
+        // Init the base functionalities
+        helper.baseCreateEditController($scope);
+        // Mode is creation
+        $scope.mode = "edit";
+        $scope.indicator = Indicator.get({id: $routeParams.indicatorId},
+            function(indicator) {
+            },
+            function(err) {
+                throw { message: JSON.stringify(err.data)};
+            }
+        );
+
+        $scope.indicator.$promise.then(function (indicator) {
+            var domains = [];
+            $scope.indicator.policy_domains.forEach(function (e) {
+                domains.push(String(e));
+            });
+            $scope.indicator.policy_domains = domains;
+            $log.info($scope.indicator.policy_domains);
+
+        });
+
+        $scope.save = function() {
+            $log.info($scope.indicator);
+            Indicator.update($scope.indicator, function(value, responseHeaders){
+                    $location.path('/indicators/' + value.id);
                 },
                 function(err) {
                     throw { message: JSON.stringify(err.data)};
                 }
+
             );
+        };
+
+    }])
+
+
+.controller('IndicatorDetailController', [
+    '$scope',
+    'Indicator',
+    'PolicyDomain',
+    'UnitCategory',
+    '$location',
+    '$log',
+    'IndicatorControllerHelper',
+    '$filter',
+    '$routeParams',
+    'dialogs',
+    function ($scope, Indicator, PolicyDomain, UnitCategory, $location, $log, helper, $filter, $routeParams, dialogs) {
+
+        $scope.indicator = Indicator.get({id: $routeParams.indicatorId},
+            function(indicator) {
+                var domains = [];
+                indicator.policy_domains.forEach(function (p) {
+                    domains.push(PolicyDomain.getById(p))
+                });
+                indicator.policy_domains = domains;
+            },
+            function(err) {
+                throw { message: JSON.stringify(err.data)};
+            }
+        );
+
+        // Function for deleting the indicator
+        $scope.deleteIndicator = function(indicator) {
+            // Open a confirmation dialog
+            var dlg = dialogs.confirm(
+                "Are you sure?",
+                "Do you want to delete the Indicator " + indicator.acronym + " permanently?");
+            dlg.result.then(function () {
+                // Delete the metric via the API
+                indicator.$delete(
+                    {},
+                    function(){
+                        $location.path('/browse');
+                    }
+                );
+            });
+        };
 
 
 
-        }]);
+    }]);
