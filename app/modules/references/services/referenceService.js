@@ -39,8 +39,17 @@ angular.module('pcApp.references.services.reference',[
     var UnitCategory = $resource(url,
         {
             id: "@id"
+        },
+        {
+            get : {
+            method : 'GET',
+                cache : true
+        }
         }
     );
+    UnitCategory.getById = function (id) {
+        return this.get({id: id})
+    };
     return UnitCategory;
 }])
 
@@ -52,8 +61,17 @@ angular.module('pcApp.references.services.reference',[
     var PolicyDomain = $resource(url,
         {
             id: "@id"
+        },
+        {
+            get : {
+                method : 'GET',
+                cache : true
+            }
         }
     );
+    PolicyDomain.getById = function (id) {
+        return this.get({id: id})
+    };
     return PolicyDomain;
 }])
 
