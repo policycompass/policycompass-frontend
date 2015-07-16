@@ -8,12 +8,12 @@
 
 @font-face {
   font-family: 'open sans';
-  src: url(../fonts/OpenSans-Regular.Ttf);
+  src: url(../fonts/OpenSans-Regular.ttf);
 }
 
 @font-face {
   font-family: 'open sans light';
-  src: url(../fonts/OpenSans-Light.Ttf);
+  src: url(../fonts/OpenSans-Light.ttf);
 }
 
 /*Other browsers*/
