@@ -1,7 +1,15 @@
 <div class="container">
-
+  <div class="content-header">
     <h1><span class="glyphicon glyphicon-list-alt"></span> {{ metric.acronym }}</h1>
-    <br />
+    <div class="pc-visualization-formcontrols">
+      <div class="button-group">
+      <a type="button" ng-disabled="!gridloaded" class="btn btn-primary btn-details"               ng-class="{data: gridvisible}" ng-click="showData()">                <span ng-show="!gridvisible">View Data</span> <span ng-show="gridvisible">View Metric Details</span> </a> 
+      <a type="button" class="btn btn-primary btn-create" href="#/metrics/{{ metric.id }}/edit">Edit</a>
+      <a type="button" class="btn btn-line" href="#/visualizations/create/?metrics={{metric.id}}">Visualise</a>
+      <a type="button" class="btn btn-tree" href="https://carneades-dev.policycompass.eu/carneades/#/projects/compass" target="_blank">Create Argument Map</a>
+      <a type="button" class="btn btn-clear" ng-click="deleteMetric(metric)">Delete</a> </div>
+    </div>
+  </div>
 
 
     <div class="row" ng-if="gridvisible">
@@ -146,19 +154,7 @@
 
 
 
-    <div class="row">
-        <div class="col-lg-12">
-            <legend class="legend-primary">Options</legend>
-            <button type="button" ng-disabled="!gridloaded" class="btn btn-primary" ng-click="showData()">
-                <span ng-show="!gridvisible">View Data</span>
-                <span ng-show="gridvisible">View Metric Details</span>
-            </button>
-            <a type="button" class="btn btn-primary" href="#/metrics/{{ metric.id }}/edit">Edit</a>
-            <a type="button" class="btn btn-info" href="#/visualizations/create/?metrics={{metric.id}}">Visualise</a>
-            <a type="button" class="btn btn-warning" href="https://carneades-dev.policycompass.eu/carneades/#/projects/compass" target="_blank">Create Argument Map</a>
-            <button type="button" class="btn btn-danger" ng-click="deleteMetric(metric)">Delete</button>
-        </div>
-    </div>
+
 
     <div class="row">
         <div class="col-lg-12">

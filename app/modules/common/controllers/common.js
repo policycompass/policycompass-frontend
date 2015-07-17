@@ -105,7 +105,31 @@ Used to search metrics using ekasticsearch api
 .controller('StaticController', ['$scope', '$modal', function($scope, $modal) {
 
 
+}])
+
+.controller('CreateDataset2Controller', ['$scope', '$modal', function($scope, $modal) {
+	console.log("CreateDataset2Controller");
+
+$scope.classtypedata = [
+    { icon: "",   name: "Country",    maker: "",        ticked: false  },
+    { icon: "",   name: "Age Class",  maker: "",        ticked: false },
+    { icon: "",   name: "Gender",     maker: "",    	ticked: false  }
+]; 
+$scope.classtypedata2 = [
+    { icon: "",   name: "Country",    maker: "",        ticked: false  },
+    { icon: "",   name: "Age Class",  maker: "",        ticked: false },
+    { icon: "",   name: "Gender",     maker: "",    	ticked: false  }
+]; 
+
+$scope.gendermultiselect = [
+    { icon: "",   name: "Male",    maker: "",        ticked: false  },
+    { icon: "",   name: "Female",  maker: "",        ticked: false },
+    { icon: "",   name: "Death Rate",     maker: "",    	ticked: false  }
+];
+
+
 }])	
+
 
 
 /**

@@ -19,11 +19,25 @@ ol {
 }
 
 h1, h2, h3, h4 {
-  color:$bk_2_2;
+  color:$bk_3;
+ 
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-top:5px;
+  padding-bottom:5px;
+
 }
 
 h6 {
   font-size:1em;
+}
+h5 {
+  font-weight:bold;
+}
+.legend-primary {
+  margin-top:1em;
+  margin-bottom:1em;
+  border-bottom:1px solid $bk_4_3;
 }
 h2.page-title {
   
@@ -34,6 +48,8 @@ h2.page-title,
 .subtitle {
 @include paddings();
 }
+
 h1, h2 {
     font-weight: 200;
+    font-family:"open sans light";
 }

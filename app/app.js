@@ -18,7 +18,8 @@ var pcAppDependencies = [
     'dialogs.default-translations',
     'angularSpectrumColorpicker',
     'skrollrDirectives',
-    'ngProgress'
+    'ngProgress',
+    'isteven-multi-select'
     //'nvd3ChartDirectives'
 ];
 
@@ -53,4 +54,18 @@ var pcApp = angular.module('pcApp', pcAppDependencies)
             $log.error(cause);
             $log.error(exception);
         };
-    }]);
+    }])
+    
+    
+.controller('loadController', function($scope)
+{
+	$scope.loadPage = function () 
+	{      
+		$('.loadingHome').animate({'opacity': 0}, 250, function() 
+		{
+   			$('.loadingHome').remove();
+  		});
+   }
+});
+    
+;
