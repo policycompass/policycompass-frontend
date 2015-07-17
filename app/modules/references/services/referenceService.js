@@ -17,8 +17,17 @@ angular.module('pcApp.references.services.reference',[
 	var Unit = $resource(url,
 		{
 			id: "@id"
-		}
+		},
+        {
+            get : {
+                method : 'GET',
+                cache : true
+            }
+        }
 	);
+    Unit.getById = function (id) {
+        return this.get({id: id})
+    };
 	return Unit;
 }])
 
@@ -30,8 +39,17 @@ angular.module('pcApp.references.services.reference',[
     var UnitCategory = $resource(url,
         {
             id: "@id"
+        },
+        {
+            get : {
+            method : 'GET',
+                cache : true
+        }
         }
     );
+    UnitCategory.getById = function (id) {
+        return this.get({id: id})
+    };
     return UnitCategory;
 }])
 
@@ -43,8 +61,17 @@ angular.module('pcApp.references.services.reference',[
     var PolicyDomain = $resource(url,
         {
             id: "@id"
+        },
+        {
+            get : {
+                method : 'GET',
+                cache : true
+            }
         }
     );
+    PolicyDomain.getById = function (id) {
+        return this.get({id: id})
+    };
     return PolicyDomain;
 }])
 
@@ -100,7 +127,31 @@ angular.module('pcApp.references.services.reference',[
         }
     );
     return Class;
+}])
+
+
+/**
+ * Factory for getting a Class, which connects to the class endpoint
+ */
+.factory('Individual',  ['$resource', 'API_CONF', function($resource, API_CONF) {
+    var url = API_CONF.REFERENCE_POOL_URL + "/individuals/:id";
+    var Individual = $resource(url,
+        {
+            id: "@id"
+        },
+        {
+            get : {
+                method : 'GET',
+                cache : true
+            }
+        }
+    );
+    Individual.getById = function (id) {
+        return this.get({id: id})
+    };
+    return Individual;
 }]);
+
 
 
 

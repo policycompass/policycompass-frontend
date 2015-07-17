@@ -10,132 +10,157 @@
       <a type="button" class="btn btn-clear" ng-click="deleteMetric(metric)">Delete</a> </div>
     </div>
   </div>
-  <div class="row" ng-if="gridvisible">
-    <div class="col-lg-12">
-      <h3 class="legend-primary">Metric Data</h3>
-      <div class="pc-datagrid" data="grid.data" read-only="true" instance="grid.instance" ng-if="gridvisible"></div>
-      <br />
-    </div>
-  </div>
-  <div class="row" ng-if="gridvisible">
-    <div class="col-lg-12">
-      <h3 class="legend-primary">Legend</h3>
-      <div class="display-fields">
-        <div class="form-group">
-         <div class="field-label">A:</div>
-         <div class="field-content">From</div>
-        </div>
-        <div class="form-group">
-         <div class="field-label">B:</div>
-         <div class="field-content">To</div>
-        </div>
-        <div class="form-group">
-         <div class="field-label">C:</div>
-         <div class="field-content">Value in {{ metric.unit.title }}</div>
-        </div>
-        <div ng-repeat="e in extralegend"  class="form-group">
-         <div class="field-label">{{ e.column }}:</div>
-         <div class="field-content">{{ e.value }}</div>
-        </div>
-      
-    </div> </div>
-  </div>
-  <div class="" ng-if="!gridvisible">
-    <div class="display-fields display-fields-metrics">
-      <div class="form-group" ng-show="metric.title">
-        <div for="" class="field-label">Title</div>
-        <div class="field-content">{{ metric.title }}</div>
-      </div>
-      <div class="form-group" ng-show="metric.description">
-        <div for="" class="field-label">Description</div>
-        <div class="field-content">{{ metric.description }}</div>
-      </div>
-    </div>
-  </div>
-  <div class="row" ng-if="!gridvisible">
-    <div class="col-lg-6">
-      <h3 class="legend-primary">Details</h3>
-          <div class="display-fields display-fields-metrics">
 
-        <div class="form-group" ng-show="metric.keywords" >
-          <div class="field-label"><b>Keywords:</b></div>
-          <div class="field-content">{{ metric.keywords }}</div>
+
+    <div class="row" ng-if="gridvisible">
+        <div class="col-lg-12">
+            <legend class="legend-primary">Metric Data</legend>
+            <div class="pc-datagrid" data="grid.data" read-only="true" instance="grid.instance" ng-if="gridvisible"></div>
+            <br />
         </div>
-        <div class="form-group" ng-show="metric.policy_domains" >
-          <div class="field-label"><b>Policy Domains:</b></div>
-          <div class="field-content"><span ng-repeat="p in metric.policy_domains">{{ p.title }} </span></div>
-        </div>
-        <div class="form-group" ng-show="metric.unit" >
-          <div class="field-label"><b>Unit:</b></div>
-          <div class="field-content">{{ metric.unit.title }}</div>
-        </div>
-        <div class="form-group" ng-show="metric.spatial" >
-          <div class="field-label"><b>Spatial:</b></div>
-          <div class="field-content">{{ metric.spatial}}</div>
-        </div>
-        <div class="form-group" ng-show="metric.language" >
-          <div class="field-label"><b>Language:</b></div>
-          <div class="field-content">{{ metric.language.title }}</div>
-        </div>
-        <div class="form-group" ng-show="metric.issued" >
-          <div class="field-label"><b>Issued:</b></div>
-          <div class="field-content">{{ metric.issued | date:'longDate' }}</div>
-        </div>
-        <div class="form-group" ng-show="metric.modified" >
-          <div class="field-label"><b>Last Modified:</b></div>
-          <div class="field-content">{{ metric.modified | date:'longDate' }}</div>
-        </div>
-        <div class="form-group" ng-show="metric.version" >
-          <div class="field-label"><b>Version:</b></div>
-          <div class="field-content">{{ metric.version }}</div>
-        </div>
-  
-    </div></div>
-    <div class="col-lg-6">
-      <h3 class="legend-primary">Resource </h3>
-      
-        <div class="form-group" ng-show="metric.publisher" >
-         <div class="field-label">Publisher:</div>
-         <div class="field-content">{{ metric.publisher }}</div>
-        </div>
-        <div class="form-group" ng-show="metric.resource_url" >
-         <div class="field-label">Details URL:</div>
-         <div class="field-content"><a href="{{ metric.resource_url }}" target="_blank">{{ metric.resource_url }}</a></div>
-        </div>
-        <div class="form-group" ng-show="metric.resource_issued" >
-         <div class="field-label">Resource Issued:</div>
-         <div class="field-content">{{ metric.resource_issued | date:'longDate' }}</div>
-        </div>
-        <div class="form-group" ng-show="metric.external_resource" >
-         <div class="field-label">External Resource:</div>
-         <div class="field-content"><a href="{{ metric.external_resource.url }}" target="_blank">{{ metric.external_resource.title }}</a></div>
-        </div>
-        <div class="form-group" ng-show="metric.license" >
-         <div class="field-label">License:</div>
-         <div class="field-content">{{ metric.license }}</div>
-        </div>
-      
     </div>
-    <div class="col-lg-3">
-      <table class="table table-hover">
-        <tr ng-show="linked_metric_visualization.results">
-          <td><b>Linked Visualizations:</b></td>
-        </tr>
-      </table>
+    <div class="row" ng-if="gridvisible">
+        <div class="col-lg-12">
+            <legend class="legend-primary">Legend</legend>
+            <table class="table table-hover">
+                <tr>
+                    <td><b>A:</b></td>
+                    <td>From</td>
+                </tr>
+                <tr>
+                    <td><b>B:</b></td>
+                    <td>To</td>
+                </tr>
+                <tr>
+                    <td><b>C:</b></td>
+                    <td>Value in {{ metric.unit.title }}</td>
+                </tr>
+                <tr ng-repeat="e in extralegend">
+                    <td><b>{{ e.column }}:</b></td>
+                    <td>{{ e.value }}</td>
+                </tr>
+            </table>
+        </div>
     </div>
-    <div class="col-lg-3">
-      <table class="table table-hover">
-        <tr ng-repeat="linked in linked_metric_visualization.results">
-          <td><a href="/app/#/visualizations/{{ linked.visualization }}" target="_blank">{{ linked.title }}</a></td>
-        </tr>
-      </table>
+
+    <div class="row" ng-if="!gridvisible">
+        <div class="col-lg-12">
+            <table class="table table-hover">
+                <tr ng-show="metric.title">
+                    <td><b>Title:</b></td>
+                    <td>{{ metric.title }}</td>
+                </tr>
+                <tr ng-show="metric.description">
+                    <td><b>Description:</b></td>
+                    <td>{{ metric.description }}</td>
+                </tr>
+            </table>
+        </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-lg-12">
-      <h3 class="legend-primary">Discussion</h3>
-      <show-discussion ng-if="metric.id" data-key="metric_{{ metric.id }}"></show-discussion>
+    <div class="row" ng-if="!gridvisible">
+
+        <div class="col-lg-6">
+            <legend class="legend-primary">Details</legend>
+            <table class="table table-hover">
+
+                <tr ng-show="metric.keywords">
+                    <td><b>Keywords:</b></td>
+                    <td>{{ metric.keywords }}</td>
+                </tr>
+                <tr ng-show="metric.policy_domains">
+                    <td><b>Policy Domains:</b></td>
+                    <td><span ng-repeat="p in metric.policy_domains">{{ p.title }} </span></td>
+                </tr>
+
+                <tr ng-if="metric.unit">
+                    <td><b>Unit:</b></td>
+                    <td><span resolve-unit id="metric.unit.id"></span></td>
+                </tr>
+                <tr ng-show="metric.spatial">
+                    <td><b>Spatial:</b></td>
+                    <td>{{ metric.spatial}}</td>
+                </tr>
+
+                <tr ng-show="metric.language">
+                    <td><b>Language:</b></td>
+                    <td>{{ metric.language.title }}</td>
+                </tr>
+
+                <tr ng-show="metric.issued">
+                    <td><b>Issued:</b></td>
+                    <td>{{ metric.issued | date:'longDate' }}</td>
+                </tr>
+
+                <tr ng-show="metric.modified">
+                    <td><b>Last Modified:</b></td>
+                    <td>{{ metric.modified | date:'longDate' }}</td>
+                </tr>
+
+                <tr ng-show="metric.version">
+                    <td><b>Version:</b></td>
+                    <td>{{ metric.version }}</td>
+                </tr>
+
+
+
+            </table>
+        </div>
+
+        <div class="col-lg-6">
+            <legend class="legend-primary">Resource </legend>
+            <table class="table table-hover">
+
+                <tr ng-show="metric.publisher">
+                    <td><b>Publisher:</b></td>
+                    <td>{{ metric.publisher }}</td>
+                </tr>
+                <tr ng-show="metric.resource_url">
+                    <td><b>Details URL:</b></td>
+                    <td><a href="{{ metric.resource_url }}" target="_blank">{{ metric.resource_url }}</a></td>
+                </tr>
+
+                <tr ng-show="metric.resource_issued">
+                    <td><b>Resource Issued:</b></td>
+                    <td>{{ metric.resource_issued | date:'longDate' }}</td>
+                </tr>
+
+                <tr ng-show="metric.external_resource">
+                    <td><b>External Resource:</b></td>
+                    <td><a href="{{ metric.external_resource.url }}" target="_blank">{{ metric.external_resource.title }}</a></td>
+                </tr>
+
+                <tr ng-show="metric.license">
+                    <td><b>License:</b></td>
+                    <td>{{ metric.license }}</td>
+                </tr>
+
+            </table>
+        </div>
+        <div class="col-lg-3">
+            <table class="table table-hover">
+                <tr ng-show="linked_metric_visualization.results">
+                    <td><b>Linked Visualizations:</b></td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-lg-3">
+            <table class="table table-hover">
+                <tr ng-repeat="linked in linked_metric_visualization.results">
+                    <td><a href="/app/#/visualizations/{{ linked.visualization }}" target="_blank">{{ linked.title }}</a></td>
+                </tr>
+            </table>
+        </div>
     </div>
-  </div>
+
+
+
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <legend class="legend-primary">Discussion</legend>
+            <show-discussion ng-if="metric.id" data-key="metric_{{ metric.id }}"></show-discussion>
+        </div>
+    </div>
 </div>
 </div>
