@@ -53,4 +53,18 @@ var pcApp = angular.module('pcApp', pcAppDependencies)
             $log.error(cause);
             $log.error(exception);
         };
-    }]);
+    }])
+    
+    
+.controller('loadController', function($scope)
+{
+	$scope.loadPage = function () 
+	{      
+		$('.loadingHome').animate({'opacity': 0}, 250, function() 
+		{
+   			$('.loadingHome').remove();
+  		});
+   }
+});
+    
+;
