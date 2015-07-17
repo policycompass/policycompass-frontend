@@ -352,16 +352,6 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
         },
 
         template: '' +
-        '<div ng-hide="small" class="showFilter">' +
-        '<label class="checkbox-inline"><input ng-model="showLegend" type="checkbox" name="showLegend" class="checkbox filterCheckBox"> Show Legend</label>' +
-        '<label class="checkbox-inline"><input ng-model="showLines"  type="checkbox" name="showLines"  class="checkbox filterCheckBox"> Show Lines</label>' +
-        '<label class="checkbox-inline"><input ng-model="showAreas"  type="checkbox" name="showAreas"  class="checkbox filterCheckBox"> Show Areas</label>' +
-        '<label class="checkbox-inline"><input ng-model="showPoints" type="checkbox" name="showPoints" class="checkbox filterCheckBox"> Show Points</label>' +
-        '<label class="checkbox-inline"><input ng-model="showLabels" type="checkbox" name="showLabels" class="checkbox filterCheckBox"> Show Labels</label>' +
-		'<label class="checkbox-inline"><input ng-model="showGrid"   type="checkbox" name="showGrid"   class="checkbox filterCheckBox"> Show Grid</label>' +
-		'<label class="checkbox-inline"><input ng-model="showTogether"  type="checkbox" name="showTogether"  class="checkbox filterCheckBox"> Show only one Y axe</label>' +
-        '<label class="checkbox-inline"><input ng-model="showPercentatge" type="checkbox" name="showPercentatge" class="checkbox filterCheckBox"> Show as %</label>' +
-        '</div>' +
         '<div id="directive_container_lineschart_{{chartid}}" class="{{xaxeformat}} pcchart container_graph directive_container_chart directive_container_chart_{{chartid}}">' +        
         '<div class="loading-container">'+
 			'<div ng-hide="small">'+
@@ -373,8 +363,17 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
 				'<div id="loading-small-text">loading</div>'+
 			'</div>'+
 		'</div>'+		
-        '</div>'
-        
+        '</div>'+
+        '<div ng-hide="small" class="showFilter">' +
+        '<label class="checkbox-inline"><input ng-model="showLegend" type="checkbox" name="showLegend" class="checkbox filterCheckBox"> Show Legend</label>' +
+        '<label class="checkbox-inline"><input ng-model="showLines"  type="checkbox" name="showLines"  class="checkbox filterCheckBox"> Show Lines</label>' +
+        '<label class="checkbox-inline"><input ng-model="showAreas"  type="checkbox" name="showAreas"  class="checkbox filterCheckBox"> Show Areas</label>' +
+        '<label class="checkbox-inline"><input ng-model="showPoints" type="checkbox" name="showPoints" class="checkbox filterCheckBox"> Show Points</label>' +
+        '<label class="checkbox-inline"><input ng-model="showLabels" type="checkbox" name="showLabels" class="checkbox filterCheckBox"> Show Labels</label>' +
+		'<label class="checkbox-inline"><input ng-model="showGrid"   type="checkbox" name="showGrid"   class="checkbox filterCheckBox"> Show Grid</label>' +
+		'<label class="checkbox-inline"><input ng-model="showTogether"  type="checkbox" name="showTogether"  class="checkbox filterCheckBox"> Show only one Y axe</label>' +
+        '<label class="checkbox-inline"><input ng-model="showPercentatge" type="checkbox" name="showPercentatge" class="checkbox filterCheckBox"> Show as %</label>' +
+        '</div>'        
     };
 }])
 

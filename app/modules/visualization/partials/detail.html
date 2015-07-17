@@ -1,309 +1,123 @@
 <div class="container">
-
-<h1><span class="glyphicon glyphicon-list-alt"></span> {{ visualization.title }}</h1>
-<br />
-<div class="visualisation-dat right-column">
-	<div ng-controller="VisualizationsEditController" ng-include='"modules/visualization/partials/graph.html"' ></div>
-</div>
-
-<br />
-
-<div class="row">
-    <div class="col-lg-12">
-    <table class="table table-hover">
-        <tr ng-show="metric.title">
-            <td><b>Title:</b></td>
-            <td>{{ visualization.title }}</td>
-        </tr>
-        <tr ng-show="visualization.description">
-            <td><b>Description:</b></td>
-            <td>{{ visualization.description }}</td>
-        </tr>
-     </table>
-    </div>
-</div>
-
-
-
-<div class="row">
-
-        <div class="col-lg-12">
-            <legend class="legend-primary">Details</legend>
-        <table class="table table-hover">
-
-        <tr ng-show="visualization.user_id">
-            <td><b>Author:</b></td>
-            <td>{{ visualization.user_id }}</td>
-        </tr>
-        
-
-
-        <tr ng-show="visualization.language">
-            <td><b>Language:</b></td>
-            <td>{{ visualization.language.title }}</td>
-        </tr>
-
-        <tr ng-show="visualization.created_at">
-            <td><b>Date added:</b></td>
-            <td>{{ visualization.created_at | date:'longDate' }}</td>
-        </tr>
-        <tr ng-show="visualization.updated_at">
-            <td><b>Updated:</b></td>
-            <td>{{ visualization.updated_at | date:'longDate' }}</td>
-        </tr>
-
-        <tr ng-show="visualization.views_count">
-            <td><b>Views:</b></td>
-            <td>{{ visualization.views_count }}</td>
-        </tr>
-
-        <tr ng-show="visualization.keywords">
-            <td><b>Keywords:</b></td>          
-            <td>{{ visualization.keywords }}</td>  
-            <!--
-            <td>            	
-            	<div class="field-content  field-content-editable">
-               	<ul>
-                	<li ng-repeat="kw in visualization.keywords.split(' ')" > {{kw}}</li>
-               	</ul>               
-            	</div>
-            </td>
+	<div class="content-header">
+		<h1><span class="glyphicon glyphicon-list-alt"></span> {{ visualization.title }}</h1>
+		<div class="pc-visualization-formcontrols">
+			<div class="button-group">
+				<a type="button" class="btn btn-primary  btn-create" href="#/visualizations/{{ visualization.id }}/edit">Edit</a>
+				<a type="button" class="btn btn-danger  btn-clear" ng-click="deleteVisualization(visualization)">Delete</a>
+			</div>
+		</div>
+	</div>
+  	<div class="visualisation-dat right-column">
+    	<div ng-controller="VisualizationsEditController" ng-include='"modules/visualization/partials/graph.html"' ></div>
+ 	</div>
+  	<br />
+  	<div class="row"> 
+    	<!--
+		div.form-group[ng-show=""]>div.field-label+div.field-content
+		-->
+		<div class="display-fields">
+			<div class="form-group"  ng-show="metric.title">
+				<div class="field-label">Title: </div>
+				<div class="field-content"> {{ visualization.title }} </div>
+			</div>
+			<div class="form-group" ng-show="visualization.description">
+				<div class="field-label">Description: </div>
+				<div class="field-content"> {{ visualization.description }} </div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<h3 class="legend-primary">Details</h3>
+		<div class="display-fields">
+			<div class="form-group" ng-show="visualization.user_id">
+				<div class="field-label">Author: </div>
+        		<div class="field-content"> {{ visualization.user_id }}</div>
+      		</div>
+      		<div class="form-group" ng-show="visualization.language">
+        		<div class="field-label">Language: </div>
+        		<div class="field-content"> {{ visualization.language.title }} </div>
+      		</div>
+      		<div class="form-group" ng-show="visualization.created_at">
+        		<div class="field-label">Date added: </div>
+        		<div class="field-content">{{ visualization.created_at | date:'longDate' }} </div>
+      		</div>
+      		<div class="form-group" ng-show="visualization.updated_at">
+        		<div class="field-label">Updated: </div>
+        		<div class="field-content">{{ visualization.updated_at | date:'longDate' }} </div>
+      		</div>
+      		<div class="form-group" ng-show="visualization.views_count">
+        		<div class="field-label">Views: </div>
+        		<div class="field-content">{{ visualization.views_count }} </div>
+      		</div>
+      		<div class="form-group" ng-show="visualization.keywords">
+        		<div class="field-label">Keywords: </div>
+        		<div clas="field-content">{{ visualization.keywords }} </div>
+  			</div>
+  
+			<!--
+           	<div class="field-content  field-content-editable">
+				<ul>
+					<li ng-repeat="kw in visualization.keywords.split(' ')" > {{kw}}</li>
+				</ul>               
+			</div>
             -->
-        </tr>
-
-        <tr ng-show="visualization.metrics_in_visualization">
-            <td><b>Linked to Metrics:</b></td>            
-            <td>            	
-            	<div class="field-content  field-content-editable">
-            		<ul>
-						<li	ng-repeat="metric in meticsRelated">
-							<a target="_blank" ng-href="/app/#/metrics/{{metric.id}}">{{metric.title}}</a>
-						</li>
-					</ul>
-            	</div>
-            </td>
-        </tr>        
-
-        <tr ng-show="visualization.historical_events_in_visualization">
-            <td><b>Linked to Historical Events:</b></td>
-            <td>
-            	<div class="field-content  field-content-editable">
-            		<ul>
-					<li ng-repeat="her in historicalEventsRelated">
-						<div class='square-box'>
-							<div class='square-content' style="background:{{her.color}};"><div><span>&nbsp;</span></div></div>
-						</div>
-						<a target="_blank" ng-href="/app/#/events/{{her.event_id}}">{{her.title}}</a>										
-					</li>
-					</ul>        
-            	</div>
-            </td>
-        </tr>  
-
-       
-        
-        </table>
-    </div>
-
-    
-
-</div>
-
-
-<div class="row" ng-show="relatedVisualizations.length>0">
-    <div class="col-lg-12">
-        <legend class="legend-primary">Related Visualisations</legend>
-
-
-		<div class="col-lg-3 pc-tile" ng-repeat="rv in relatedVisualizations" >
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">{{ rv.title | limitTo: 25}}</h3>
-                    </div>
-                    <div class="panel-body">
-
-						<div class="visualization-graph-page-content">	
-							<div ng-controller="VisualizationsEditController" ng-repeat="idvisulist in [rv.visualization_id]" ng-include='"modules/visualization/partials/graph.html"' ></div>	
-						</div>
-						<br />
-                        <a href="#/visualizations/{{ rv.visualization_id }}" type="button" class="btn btn-primary">Details</a>
-                    </div>
-                </div>
-            </div>
-
-	
-					
-
-    </div>
-</div>
-
-
-<div class="row">
-    <div class="col-lg-12">
-        <legend class="legend-primary">Options</legend>
-		<a type="button" class="btn btn-primary" href="#/visualizations/{{ visualization.id }}/edit">Edit</a>
-		<button type="button" class="btn btn-danger" ng-click="deleteVisualization(visualization)">Delete</button>
-    </div>
-</div>
-
-<!--
-<div class="panel panel-default">
-  <div class="panel-body">
-  	
-  	
-  	<div class="fields visualisations-fields">
-	
-	<div ng-show="visualization.description" class="field field-description">
-		<div class="field-label">Description</div>
-			<div class="field-item">
-				<div class="field-content field-content-editable">
-					{{ visualization.description }}
-				</div>
+  
+  			<div class="display-fields">
+    			<div class="form-group"   ng-show="visualization.metrics_in_visualization">
+      				<div class="field-label">Linked to Datasets: </div>
+      				<div class="field-content"> 
+        				<ul>
+          					<li ng-repeat="metric in meticsRelated"> <a target="_blank" ng-href="/app/#/datasets/{{metric.id}}">{{metric.title}}</a> </li>
+        				</ul>
+      				</div>
+      				<div class="form-group" ng-show="visualization.historical_events_in_visualization">
+        				<div class="field-label"> Linked to Historical Events: </div>
+        				<div class="field-content">
+          					<li ng-repeat="her in historicalEventsRelated">
+            					<div class='square-box'>
+              						<div class='square-content' style="background:{{her.color}};">
+                						<div><span>&nbsp;</span></div>
+              						</div>
+            					</div>
+            					<a target="_blank" ng-href="/app/#/events/{{her.event_id}}">{{her.title}}</a> 
+            				</li>
+        				</div>
+      				</div>
+    			</div>
+  			</div>
+  			
+  			<div class="row" ng-show="relatedVisualizations.length>0">
+    			<div class="col-lg-12">
+      				<h3 class="legend-primary">Related Visualisations: </h3>
+  					<div class="col-lg-3 pc-tile" ng-repeat="rv in relatedVisualizations" >
+        				<div class="panel panel-default">
+          					<div class="panel-heading">
+            					<a href="#/visualizations/{{ rv.visualization_id }}"><h3 class="panel-title">{{ rv.title | limitTo: 25}}  </h3></a>
+          					</div>
+          					<div class="panel-body">
+            					<div class="visualization-graph-page-content">
+            						<!--
+              						<div ng-controller="VisualizationsEditController" ng-repeat="idvisulist in [rv.visualization_id]" ng-include='"modules/visualization/partials/graph.html"' ></div>
+									-->				
+									<div  ng-repeat="idvisulist in [rv.visualization_id]" ng-include='"modules/visualization/partials/graph.html"' ></div>
+				
+									<!--
+									<div class="loadpcimage" id="rv.visualization_id" imgtype="'visualization'" imgalt="rv.title" imgtitle="rv.title"></div>
+									-->
+            					</div>
+        					</div>
+      					</div>
+					</div>
+  				</div>
 			</div>
+		</div>
 	</div>
-
-	<div ng-show="visualization.created_at" class="field field-date">
-		<div class="field-label">Date Added</div>
-			<div class="field-item">
-				<div class="field-content field-content-editable">
-					{{ visualization.created_at | date:'longDate' }}
-				</div>
-			</div>
-	</div>
-
-	<div class="field field-views">
-		<div class="field-label">Views</div>
-			<div class="field-item">
-				<div class="field-content field-content-editable">
-					{{ visualization.views_count }}
-				</div>
-			</div>
-	</div>
-
-	<div ng-show="visualization.user_id" class="field field-author">
-		<div class="field-label">Author</div>
-			<div class="field-item">
-				<div class="field-content field-content-editable">
-					{{ visualization.user_id }}
-				</div>
-			</div>
-	</div>
-	
-
-	<div ng-show="visualization.language.id" class="field field-language">
-		<div class="field-label">Language</div>
-			<div class="field-item">
-				<div class="field-content field-content-editable">
-					{{ visualization.language.title }}
-				</div>
-			</div>
-	</div>
-        		
-	<div ng-show="visualization.keywords" class="field field-keywords">
-		<div class="field-label">Keywords</div>
-		<div class="field-item">
-			<div class="field-content  field-content-editable">
-               <ul>
-                 <li ng-repeat="kw in visualization.keywords.split(' ')" > {{kw}}</li>
-               </ul>
-               
-            </div>
+			
+	<div class="row">
+    	<div class="col-lg-12">
+      		<h3 class="legend-primary">Discussion</h3>
+      		<show-discussion ng-if="visualization.id" data-key="visualization_{{ visualization.id }}"></show-discussion>
     	</div>
-	</div>
-	
-	
-	<div ng-show="visualization.metrics_in_visualization" class="field field-metrics">
-		<div class="field-label">Linked to Metrics</div>
-			<div class="field-item">
-				<div class="field-content field-content-editable">
-					<ul>					
-						<li 
-						ng-repeat="metric in meticsRelated"
-							
-						>
-							<a target="_blank" ng-href="/app/#/metrics/{{metric.metric_id}}">{{metric.title}}</a>
-						</li>
-
-					</ul>
-				</div>
-			</div>
-	</div>
-	
-	<div ng-show="visualization.historical_events_in_visualization" class="field field-metrics">
-		<div class="field-label">Linked to Historical Events</div>
-			<div class="field-item">
-				<div class="field-content field-content-editable">
-					<ul>
-
-						<li 
-						ng-repeat="her in historicalEventsRelated"
-							
-						>
-							<a target="_blank" ng-href="/app/#/events/{{her.event_id}}">{{her.title}}</a>
-						</li>
-
-					</ul>
-				</div>
-			</div>
-	</div>
-	
-	
-
-						
-</div>
--->
- 
- 	
-<!--
-      <table class="table table-hover">
-          <tr ng-show="visualization.description">
-              <td><b>Description:</b></td>
-              <td>{{ visualization.description }}</td>
-          </tr>
-
-          <tr ng-show="visualization.created_at">
-              <td><b>Created:</b></td>
-              <td>{{ visualization.created_at | date:'longDate' }}</td>
-          </tr>
-                              
-
-                ---------- {{visualization.keywords}}---------                        
-          <tr ng-show="visualization.keywords">
-              <td><b>Keywords:</b></td>
-              {{visualization.keywords}}
-        		<ul>
-            		<li ng-repeat="kw in visualization.keywords.split(' ')" > {{kw}}</li>
-        		</ul>              	
-              	
-              	</td>
-          </tr>
-
-          
-
-          <tr ng-show="visualization.updated_at">
-              <td><b>Updated:</b></td>
-              <td>{{ visualization.updated_at | date:'longDate' }}</td>
-          </tr>
-
-          
-          <tr ng-show="visualization.language_id">
-              <td><b>Language:</b></td>
-              <td>{{ visualization.language_id }}</td>
-          </tr>
-                    
-
-      </table>
--->
-		
-      <br/>		
-		
-      <div class="row">
-          <div class="col-lg-12">
-              <legend class="legend-primary">Discussion</legend>
-              <show-discussion ng-if="visualization.id" data-key="visualization_{{ visualization.id }}"></show-discussion>
-          </div>
-      </div>
-
-  </div>
-</div>
+  	</div>
 </div>

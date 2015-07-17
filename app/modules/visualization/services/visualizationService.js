@@ -25,6 +25,26 @@ angular.module('pcApp.visualization.services.visualization',[
 }])
 */
 
+.factory('Dataset',  ['$resource', 'API_CONF', function($resource, API_CONF) {
+    // Get the base URL from the configuration
+	var url = "/api/v1/datasetmanager/datasets/:id";
+	var Dataset = $resource(url,
+		{
+			id: "@id"
+		},
+        {
+            // Add support for update
+            'update': { method:'PUT' },
+            // Array is false due to additional pagination data
+            'query': { method: 'GET', isArray:false}
+
+        }
+	);
+
+
+	return Dataset;
+}])
+	
 .factory('Visualization',  ['$resource', 'API_CONF', function($resource, API_CONF) {
 	var url = API_CONF.VISUALIZATIONS_MANAGER_URL + "/visualizations/:id";
 	var Visualization = $resource(url,

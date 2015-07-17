@@ -1,21 +1,22 @@
-<div class="container">
-<legend>
-    <h3 ng-if="mode == 'create'"><span class="glyphicon glyphicon-pencil"></span> Create a New Visualization</h3>
-    <h3 ng-if="mode == 'edit'"><span class="glyphicon glyphicon-pencil"></span> Edit Visualization</h3>
-</legend>
 
-<div class="row">
-    <div class="col-lg-12 pc-visualization-formcontrols">
+
+<div class="container">
+<div class="content-header">
+
+      <h3 ng-if="mode == 'create'"><span class="glyphicon glyphicon-pencil"></span> Create a New Visualization</h3>
+      <h3 ng-if="mode == 'edit'"><span class="glyphicon glyphicon-pencil"></span> Edit Visualization</h3>
+
+      <div class="pc-visualization-formcontrols">
         <div class="form-group pull-left">
 				<canvas ng-show="false" id="canvas" width="800" height="400"></canvas>
 				<div id="png-container"></div>
-				<span class="helpbutton"></span>
-				<button type="submit" data-intro="Save data" data-position="top" ng-disabled="visualizationForm.$invalid" class="btn btn-default" ng-click="createVisualization(ListMetricsFilter)"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>				
-				<button type="submit" data-intro="Revert data" data-position="top" class="btn btn-default" ng-click="revertVisualization()">Revert</button>
 				
-				<!--				
-				<button ng-disabled="false" type="button" ng-class="{'btn btn-default':!isSelectedParent(1),'btn btn-info':isSelectedParent(1)}" ng-click="selectTabParent(1); selectTabSon('mercator');rePlotGraph();">Map</button>
-				-->		
+				<button type="submit" data-intro="Save data" data-position="top" ng-disabled="visualizationForm.$invalid" class="btn btn-default" ng-click="createVisualization(ListMetricsFilter)"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>				
+				<button type="submit" data-intro="Revert data" data-position="top" class="btn btn-default btn-revert" ng-click="revertVisualization()">Revert</button>
+				
+								
+				<button ng-disabled="false" type="button" data-intro="Plot data in a map" data-position="top" ng-class="{'btn btn-default btn-map':!isSelectedParent(1),'btn btn-info btn-map':isSelectedParent(1)}" ng-click="selectTabParent(1); selectTabSon('mercator');rePlotGraph();">Map</button>
+					
 				<!--
 				<button type="button" ng-hide="!isSelectedParent(1)" ng-disabled="!isSelectedParent(1)" ng-class="{'btn btn-default':!isSelectedSon('mercator'),'btn btn-info':isSelectedSon('mercator')}" ng-click="selectTabParent(1);selectTabSon('mercator');rePlotGraph();">Mercator</button>
 				<button type="button" ng-hide="!isSelectedParent(1)" ng-disabled="!isSelectedParent(1)" ng-class="{'btn btn-default':!isSelectedSon('conicConformal'),'btn btn-info':isSelectedSon('conicConformal')}" ng-click="selectTabParent(1);selectTabSon('conicConformal');rePlotGraph();">ConicConformal</button>
@@ -23,65 +24,86 @@
 				<button type="button" ng-hide="!isSelectedParent(1)" ng-disabled="!isSelectedParent(1)" ng-class="{'btn btn-default':!isSelectedSon('orthographic'),'btn btn-info':isSelectedSon('orthographic')}" ng-click="selectTabParent(1);selectTabSon('orthographic');rePlotGraph();">Orthographic</button>
 				<button type="button" ng-hide="!isSelectedParent(1)" ng-disabled="!isSelectedParent(1)" ng-class="{'btn btn-default':!isSelectedSon('azimuthalEqualArea'),'btn btn-info':isSelectedSon('azimuthalEqualArea')}" ng-click="selectTabParent(1);selectTabSon('azimuthalEqualArea');rePlotGraph();">Azimuthal Equal Area</button>
 				-->
-											
-				<button type="button" data-intro="To plot data as Line, Pie or Bars chart" data-position="top" ng-class="{'btn btn-default btn':!isSelectedParent(2),'btn btn-info':isSelectedParent(2)}" ng-click="selectTabParent(2);selectTabSon('graph_line');rePlotGraph();">Graph</button>
+				<div class="button-group">		
+				<button type="button" data-intro="Plot data as Line, Pie or Bars chart" data-position="top" ng-class="{'btn btn-default btn':!isSelectedParent(2),'btn btn-info':isSelectedParent(2)}" ng-click="selectTabParent(2);selectTabSon('graph_line');rePlotGraph();" class="btn-parent">Graph</button>
 										
 				<!--
 				<button ng-hide="!isSelectedParent(2)" type="submit" ng-disabled="!isSelectedParent(2)" class="btn btn-default" ng-click="selectTabParent(2);selectTabSon('graph_line');rePlotGraph();">Line</button>
 				<button ng-hide="!isSelectedParent(2)" type="submit" ng-disabled="!isSelectedParent(2)" class="btn btn-default" ng-click="selectTabParent(2);selectTabSon('graph_pie');rePlotGraph();">Pie</button>
 				<button ng-hide="!isSelectedParent(2)" type="submit" ng-disabled="!isSelectedParent(2)" class="btn btn-default" ng-click="selectTabParent(2);selectTabSon('graph_bars');rePlotGraph();">Bars</button>
-				-->				
-				<button type="button" data-intro="Plot data as line chart" data-position="bottom" ng-hide="!isSelectedParent(2)" ng-disabled="!isSelectedParent(2)" ng-class="{'btn btn-default':!isSelectedSon('graph_line'),'btn btn-info':isSelectedSon('graph_line')}" ng-click="selectTabParent(2);selectTabSon('graph_line');rePlotGraph();">Line</button>
-				<button type="button" data-intro="Plot data as pie chart" data-position="bottom" ng-hide="!isSelectedParent(2)" ng-disabled="!isSelectedParent(2)" ng-class="{'btn btn-default':!isSelectedSon('graph_pie'),'btn btn-info':isSelectedSon('graph_pie')}" ng-click="selectTabParent(2);selectTabSon('graph_pie');rePlotGraph();">Pie</button>
-				<button type="button" data-intro="Plot data as bars chart" data-position="bottom" ng-hide="!isSelectedParent(2)" ng-disabled="!isSelectedParent(2)" ng-class="{'btn btn-default':!isSelectedSon('graph_bars'),'btn btn-info':isSelectedSon('graph_bars')}" ng-click="selectTabParent(2);selectTabSon('graph_bars');rePlotGraph();">Bars</button>
-	            		
+				-->
+ 
+				<button type="button" data-intro="Plot data as line chart" data-position="top" ng-hide="!isSelectedParent(2)" ng-disabled="!isSelectedParent(2)" ng-class="{'btn btn-default':!isSelectedSon('graph_line'),'btn btn-info':isSelectedSon('graph_line')}" ng-click="selectTabParent(2);selectTabSon('graph_line');rePlotGraph();" class="btn-line">Line</button>
+        
+				<button type="button" data-intro="Plot data as pie chart" data-position="top" ng-hide="!isSelectedParent(2)" ng-disabled="!isSelectedParent(2)" ng-class="{'btn btn-default':!isSelectedSon('graph_pie'),'btn btn-info':isSelectedSon('graph_pie')}" ng-click="selectTabParent(2);selectTabSon('graph_pie');rePlotGraph();"  class="btn-pie">Pie</button>
+        
+				<button type="button" data-intro="Plot data as bars chart" data-position="top" ng-hide="!isSelectedParent(2)" ng-disabled="!isSelectedParent(2)" ng-class="{'btn btn-default':!isSelectedSon('graph_bars'),'btn btn-info':isSelectedSon('graph_bars')}" ng-click="selectTabParent(2);selectTabSon('graph_bars');rePlotGraph();"  class="btn-bars">Bars</button>
+        </div>
+        <!--
+        <button type="submit" class="btn btn-default btn-map">Map</button>
+        -->
+	            <span class="helpbutton" ></span>		
         </div>
     </div>
+
 </div>
+
+
 
 <form name="visualizationForm" role="form" novalidate >
 <div class="row createvisualization">
+
 <!--
     <div class="col-lg-4">
             <h4>Main Details</h4>
     </div>
 -->
-    <div class="col-lg-10">
-        <div ng-switch="step">
+    <div>
+        <div ng-switch="step"  >
 
-            <div >
-            	<div ng-show="canPlotGarph">          	
+
+            	<div ng-show="canPlotGarph" >          	
 	            	<div ng-show="((1==1)  || isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')) && (ListMetricsFilter.length>0)" class="graphContainerdiv">
 						<input type="hidden" id="startDatePosX" name="startDatePosX" value="">
+						<input type="hidden" id="endDatePosX" name="endDatePosX" value="">
+ 
 <!--
 <div id="maplegend" class="maplegend"></div>
 -->
 
 						<div ng-click="isSelectedSon('graph_line') ? showModal() : void(0)">
 
-<div ng-show="isSelectedSon('graph_pie')">
-<span>
-	<label class="checkbox-inline" for="selectedAll">
-		<input type="checkbox" ng-model="selectedAll" ng-change="checkAll();angularpiechartdisplaybycheckbox();" /> Check All
-	</label>
-</span>
-<br/>
-<span ng-repeat="option in numbers2">
-      <label class="checkbox-inline" for="{{option.Key}}">
-        <input id="dateselectorcheckbox" class="dateselectorcheckbox" ng-change="angularpiechartdisplaybycheckbox();" type="checkbox" ng-model="selection.Keys[option.Key]" name="dateselectorcheckbox"  />
-        {{option.Key}}
-      </label>
-</span>	
-</div>
+
+							<div ng-show="isSelectedSon('map_1') || isSelectedSon('mercator') || isSelectedSon('conicConformal') || isSelectedSon('equirectangular') || isSelectedSon('orthographic') || isSelectedSon('azimuthalEqualArea')">
+								aaaaaa
+								--->{{numbers2.length}}<---
+								<div ng-show="numbers2.length>0">
+									<rzslider
+									 rz-slider-model="rangeDatesSliderMin"
+									 rz-slider-floor="0"
+									 rz-slider-ceil="numbers2.length-1"
+									 rz-slider-translate="translateCountrySlider"
+									 ></rzslider>
+								</div>	
+							</div>
+
+							<div ng-show="isSelectedSon('graph_pie')">	
+								<div ng-show="numbers2.length>0">
+									<rzslider
+									 rz-slider-model="rangeDatesSliderMin"
+									 rz-slider-floor="0"
+									 rz-slider-ceil="numbers2.length-1"
+									 rz-slider-translate="translate"
+									 ></rzslider>
+								</div>	
+							</div>
 <!--
 	<div ng-show="isSelectedSon('graph_pie')">
 		<div class="pcPieChart" dataset="dataset" chartid="visualization.id" show-Legend="showLegend" small="list" mode="mode" show-Labels="showLabels"></div>
 	</div>
-
 	<div ng-show="isSelectedSon('graph_bars')">
 		<div class="pcBarsChart" dataset="datasetToSend" chartid="visualization.id" small="list"  mode="mode" show-Legend="showLegend" show-Labels="showLabels"></div>
 	</div>
-
 	<div ng-show="isSelectedSon('graph_line')">
 		<div class="pcLinesChart" dataset="numbers1" events="eventsToPlot" 
 		labels="labelYAxe" small="list"  mode="mode" chartid="visualization.id" 
@@ -106,12 +128,15 @@
 						</div>
 					</div>
 				</div>
+        
+
+        
 				
 				<!--
 				<accordion close-others="oneAtATime">
         			<accordion-group heading="Graph properties" is-open="isFirstOpen">
             		-->
-            			
+
 						<div id="showFilterContainer" class="showFilterContainer">
 							<div id="showFilter" ng-show="isSelectedParent(1) || isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')" class="showFilter on_check">
 								<div id="div_showLegend" ng-show="isSelectedParent(1) || isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')" class="on_check">
@@ -155,23 +180,32 @@
 										<input ng-model="showAsPercentatge" type="checkbox" ng-click="rePlotGraph();" name="showAsPercentatge"  id="showAsPercentatge" class="checkbox filterCheckBox"> Show as %
 									</label>
 								</div>
-								<!--
+
 								<div id="div_showAsPercentatge" ng-show="isSelectedSon('graph_line')" class="on_check">
 									<label class="checkbox-inline">
 										Resolution <select id="resolution" ng-change="rePlotGraph();" ng-model="resolution" ng-options="opt as opt.label for opt in resolutionoptions"></select>
 									</label>
 								</div>								
-								-->
+								
 								<div id="div_showZoom" ng-show="isSelectedParent(1) && !isSelectedSon('orthographic') && !isSelectedSon('azimuthalEqualArea')" class="on_check">
 									<label class="checkbox-inline">
 										<input ng-model="showZoom" type="checkbox" ng-click="rePlotGraph();" name="showZoom"  id="showZoom" class="checkbox filterCheckBox"> Enable Zoom
 									</label>
-								</div>								
+								</div>
+
+								<div id="div_showBubbles" ng-show="isSelectedParent(1)" class="on_check">
+									<label class="checkbox-inline">
+										<input ng-model="showBubbles" type="checkbox" ng-click="rePlotGraph();" name="showBubbles"  id="showBubbles" class="checkbox filterCheckBox"> View as bubble marker
+									</label>
+								</div>
+																
+								<!--								
 								<div id="div_showMovement" ng-show="isSelectedParent(1)" class="on_check">
 									<label class="checkbox-inline">
 										<input ng-model="showMovement" type="checkbox" ng-click="rePlotGraph();" name="showMovement"  id="showMovement" class="checkbox filterCheckBox"> Enable Movement
 									</label>
 								</div>
+								-->
 								<!--
 								<div id="granularity" class="on_check">
 									<label class="checkbox-inline">Granularity
@@ -200,9 +234,12 @@
 							
 						</div>
 						<br />	
-
+						<!--
 						<div id="filterMetrics" style="display: none;" class="selectorMetrics" metrics-list="ListMetricsFilter" number-Max-Metrics="50" functionformetric="rePlotGraph()"></div>
-
+						-->
+						
+						<div id="filterDatasets"  class="selectorDatasets" datasets-list="ListMetricsFilter" number-Max-Datasets="99" functionfordataset="rePlotGraph()" disable-Row="FilterResolution"></div>
+						
 						<div ng-show="metric.title" ng-controller="LoadCombosMetric" class="designer-metrics active" class="designer-metrics" id="designer-metrics-num-{{metric.id}}" ng-repeat="metric in ListMetricsFilter track by $index" >
 							<h4>{{metric.title}} -- {{metric.issued | date:'longDate' }}</h4>							
 							<input type="hidden" ng-model="MetricSelectediId_[metric.id]" id="MetricSelectediId_{{metric.id}}" name="MetricSelectedId[]" value="">
@@ -213,9 +250,54 @@
 							<div class="metric-buttons">
 								<a type="button" data-intro="Edit dataset view properties" data-position="top" class="btn btn-primary" ng-click="displaycontentMetric(metric.id);" id="edit-metric-button-{{metric.id}}">Edit</a>			    	
 						    	<button type="button" data-intro="Delete dataset fomr the visualisation" data-position="top" class="btn btn-danger" ng-click="deleteMetricFromList(metric.id, metric.title, ListMetricsFilter, $index);" id="delete-metric-button-{{metric.id}}">Delete</button>
-						    	<a type="button" data-intro="Access to the dataset data" data-position="right" class="btn btn-info" href="#/metrics/{{metric.id}}" target="_blank" id="view-metric-button-{{metric.id}}">View Dataset in detaill</a>						    	
+						    	<a type="button" data-intro="Access to the dataset data" data-position="right" class="btn btn-info" href="#/datasets/{{metric.id}}" target="_blank" id="view-metric-button-{{metric.id}}">View Dataset in detaill</a>						    	
 						  	</div>
 
+								<div class="metric-forms" style="display: none;">
+										<!--
+										<div class="metric-form-item">
+											<label for="">Unit</label>
+											<select ng-change="rePlotGraph();" 
+											ng-model="UnitSelectorLabelColumn_[metric.id]" 
+											id="UnitSelectorLabelColumn_{{metric.id}}" 
+											name="UnitSelectorLabelColumn[]" class="form-select"
+											ng-options="option.title for option in unitsCombo_value_[metric.id] track by option.id">
+											</select>
+										</div>
+										-->
+
+										<div class="metric-form-item">
+											<br>
+											<table>
+												<thead>
+													<th><label for="color">Individual</label></th>
+													<th ng-show="isSelectedSon('graph_line')"><label for="color">Color</label></th>
+												</thead>
+												<body>
+													<tr ng-repeat="option in individualCombo_value_[metric.id]">
+														<td>
+															<label ng-click="validateCheckboxes(metric.id);">
+															<input type="checkbox" 
+															checklist-model="IndividualDatasetCheckboxes_[metric.id]" 
+															checklist-value="option.id"
+															> {{option.title}}
+															</label>
+														</td>
+														<td ng-show="isSelectedSon('graph_line') || isSelectedSon('graph_pie')">
+															<input type='color' name='color'
+															ng-init=" dataset_color_palete_[metric.id][option.id] = dataset_color_palete_[metric.id][option.id] == null ? colorScale(option.title) : dataset_color_palete_[metric.id][option.id] "
+															ng-model="dataset_color_palete_[metric.id][option.id]" 
+															ng-model-onblur ng-change="rePlotGraph()" />
+														</td>
+													</tr>
+												</body>
+											</table>
+	
+
+										</div>
+									</div>
+																
+							<!--
 							<div class="metric-forms" style="display: none;">
 								<div class="metric-form-item">
 									<label for="">Date</label>
@@ -258,7 +340,7 @@
 									
 								</div>
 					   		</div>
-
+							-->
 						</div>
                     </tab>
                     <!-- end tab metrics -->
@@ -276,20 +358,42 @@
 								<input type="hidden" ng-model="titleHE[$index+1]" id="titleHE{{$index+1}}" name="titleHE[]" value="{{event.title}}">
 								<input type="hidden" ng-model="startDateHE[$index+1]" id="startDateHE{{$index+1}}" name="startDateHE[]" value="{{event.startDate}}">
 								<input type="hidden" ng-model="endDateHE[$index+1]" id="endDateHE{{$index+1}}" name="endDateHE[]" value="{{event.endDate}}">					    	
+								<!--
 								<input type="hidden" ng-model="descHE[$index+1]" id="descHE{{$index+1}}" name="descHE[]" value="{{event.desc}}">
 								<input type="hidden" ng-model="colorHE[$index+1]" id="colorHE{{$index+1}}" name="colorHE[]" value="{{event.color}}">
-								
+								-->
+								<!--
 								<div class="contentHE">
 									<div ng-if="event.startDate"><label for="">From:</label> {{event.startDate | date:'longDate'}} </div>
 									<div ng-if="event.endDate"><label for="">To:</label> {{event.endDate | date:'longDate'}} </div>
 									<div ng-if="event.desc"><label for="">Description:</label> {{event.desc}} </div>
 								</div>
+								-->
+								
+								<div ng-show="vieweditHE[$index+1]" class="contentHE">
+									<div><br/></div>
+									<div ng-if="event.color"><label for="">Color:</label> <input type='color' name="colorHE[]" ng-model="colorHE[$index+1]" ng-model-onblur ng-change="updatecolorEvent($index);rePlotGraph()" /></div> 
+									<div ng-if="event.startDate"><label for="">From:</label> {{event.startDate | date:'longDate'}} </div>
+									<div ng-if="event.endDate"><label for="">To:</label> {{event.endDate | date:'longDate'}} </div>
+									<div ng-if="event.desc"><label for="">Description:</label> 
+										<!--
+										{{event.desc}} 
+										-->
+										<textarea ng-blur="updateDescriptionEvent($index);rePlotGraph()" rows="2" cols="50" ng-model="descHE[$index+1]" ng-trim="false" maxlength="150" name="descriptionHEToAdd" id="descriptionHEToAdd">{descHE[$index+1]}}</textarea>
+    									<span>{{150 - descHE[$index+1].length}} left</span>
+										
+										</div>
+								</div>			
+								
 								<div class="historicalevent-buttons active">
 									<!--		    	
 				    				<div class="metric-button metric-delete-button" ng-click="deleteContainerHistoricalEvent('row_config_',$index+1)" id="delete-metric-button-{{metric.id}}"></div>
 				    				-->
 				    				<button type="button" class="btn btn-danger" ng-click="deleteContainerHistoricalEvent('row_config_',$index+1, event.title)" id="delete-he-button-{{event.id}}">Delete</button>
 				    				
+				    				<a type="button" class="btn btn-primary" ng-click="vieweditHE[$index+1]=!vieweditHE[$index+1]">
+									<span ng-show="vieweditHE[$index+1]">Collapse</span> Edit</a>
+									
 				  				</div>
 							</div>
 						</div>                    
