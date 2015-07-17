@@ -2,7 +2,7 @@ angular.module('pcApp.common.directives.linescharts', [
 
 ])		
 //esemple of use:
-//<div class="pcLinesChart" dataset="dataset" labels="labels" small="list"  mode="mode" chartid="2" show-Legend="showLegend" show-Labels="showLabels"	show-Lines="showLines" show-Areas="showAreas" show-Points="showPoints" show-Grid="showGrid"	show-Together="showYAxes" show-Percentatge="showAsPercentatge" xaxeformat="xaxeformat"></div>
+//<div class="pcLinesChart" dataset="dataset" labels="labels" small="list"  mode="mode" chartid="2" show-Legend="showLegend" show-Labels="showLabels"	show-Lines="showLines" show-Areas="showAreas" show-Points="showPoints" show-Grid="showGrid"	show-Together="showYAxes" show-Percentatge="showAsPercentatge" xaxeformat="xaxeformat" hideyaxeunits="hideyaxeunits"></div>
 //dataset -> array. Content expected
 //array contetn like
 /*
@@ -15,6 +15,7 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
 /*small (mandatory) = boolean, true or false to plot image size */
 /*xaxeformat => 'sequence' to plot sequencial x axe 'time' to plot xaxe time */ 
 /*showLegend, showLabels, showLines, showAreas, showPoints, showGrid, showTogether, showPercentatge boolean to configure the template */
+/*hideyaxeunits => used to plot units or not into the y axe. Example if hideyaxeunits=true 0.4 = 0.4 if hideyaxeunits=false 0.4 = 0.4m*/
 //if mode = 'view' the legends can be clickable to hide/show lines
 /*
  in your controller:
@@ -39,6 +40,7 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
 	$scope.xaxeformat = 'sequence'
 	$scope.mode= 'view';
 	$scope.chartid= '2'; 	
+	$scope.hideyaxeunits=true;
  */
 .directive('pcLinesChart', ['$log', 'API_CONF', function ($log,  API_CONF) {
 	
@@ -60,6 +62,7 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
         	showTogether: '=showTogether',
         	showPercentatge: '=showPercentatge',
         	xaxeformat: '=xaxeformat',
+        	hideyaxeunits: '=hideyaxeunits',        	
         }, 
 		compile: function(element, attributes){ 
          return {
@@ -97,6 +100,15 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
 										
 			};
 
+
+			$scope.$watch('viewyaxeunits', function(xaxeformat) {
+				if (($scope.numbers1) && ($scope.chartid))
+				{
+					//$scope.directivePlotLineChart();	
+					$timeout($scope.directivePlotLineChart, 0);
+				}				
+            });
+            
 			$scope.$watch('xaxeformat', function(xaxeformat) {
 				if (($scope.numbers1) && ($scope.chartid))
 				{
@@ -323,7 +335,8 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
 							'showGrid': $scope.showGrid,
 							'legendsColumn': legendsColumn,
 							'showAsPercentatge': $scope.showPercentatge,
-							'xaxeformat': $scope.xaxeformat
+							'xaxeformat': $scope.xaxeformat,
+							'hideyaxeunits': $scope.hideyaxeunits,
 						});
 	                
 	                if ($scope.dataset.length>0)
