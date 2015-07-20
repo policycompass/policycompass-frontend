@@ -48,7 +48,7 @@ a:before {
   line-height: 1em;
 }
 
-/* line 77, ../sass/_base.scss */
+/* line 78, ../sass/_base.scss */
 .clearfix-min:after,
 .clearfix:after {
   content: ".";
@@ -59,12 +59,12 @@ a:before {
   height: 0;
 }
 
-/* line 87, ../sass/_base.scss */
+/* line 88, ../sass/_base.scss */
 .clearfix {
   display: inline-block;
 }
 
-/* line 94, ../sass/_base.scss */
+/* line 95, ../sass/_base.scss */
 .cf:before,
 .cf:after {
   content: " ";
@@ -73,17 +73,17 @@ a:before {
   /* 2 */
 }
 
-/* line 99, ../sass/_base.scss */
+/* line 100, ../sass/_base.scss */
 .cf:after {
   clear: both;
 }
 
-/* line 104, ../sass/_base.scss */
+/* line 105, ../sass/_base.scss */
 html[xmlns] .clearfix {
   display: block;
 }
 
-/* line 108, ../sass/_base.scss */
+/* line 109, ../sass/_base.scss */
 * html .clearfix {
   height: 1%;
 }
@@ -347,10 +347,11 @@ a:hover h3:before {
 /* line 89, ../sass/components/_pages.scss */
 .content-body {
   clear: both;
-  padding-top: 2em;
+  padding-top: 1.5em;
+  padding-bottom: 1.5em;
 }
 
-/* line 96, ../sass/components/_pages.scss */
+/* line 97, ../sass/components/_pages.scss */
 .block {
   background: rgba(229, 229, 229, 0.5);
   padding: 10px;
@@ -360,77 +361,93 @@ a:hover h3:before {
   overflow: hidden;
 }
 
-/* line 105, ../sass/components/_pages.scss */
+/* line 106, ../sass/components/_pages.scss */
 .block-button-bar input {
   float: left;
   margin: 5px;
 }
 
-/* line 112, ../sass/components/_pages.scss */
+/* line 113, ../sass/components/_pages.scss */
 .block-tag select {
   margin-bottom: 15px;
 }
 
-/* line 119, ../sass/components/_pages.scss */
+/* line 120, ../sass/components/_pages.scss */
 .content-column {
   position: relative;
 }
-/* line 126, ../sass/components/_pages.scss */
+/* line 127, ../sass/components/_pages.scss */
 .content-column.content-column-expanded .fonticon-validate {
   display: none;
 }
-/* line 131, ../sass/components/_pages.scss */
+/* line 132, ../sass/components/_pages.scss */
 .content-column.closed .fonticon-validate {
   display: block;
 }
-/* line 134, ../sass/components/_pages.scss */
+/* line 135, ../sass/components/_pages.scss */
 .content-column.closed .content-column-wrap {
   display: none;
 }
-/* line 139, ../sass/components/_pages.scss */
+/* line 140, ../sass/components/_pages.scss */
 .content-column .fonticon-close {
   color: #4d4d4d;
   top: 10px;
   right: 5px;
 }
-/* line 145, ../sass/components/_pages.scss */
+/* line 146, ../sass/components/_pages.scss */
 .content-column .fonticon-validate {
   position: absolute;
   display: block;
   top: 5px;
   right: 0;
 }
-/* line 151, ../sass/components/_pages.scss */
+/* line 152, ../sass/components/_pages.scss */
 .content-column .fonticon-validate:before {
   content: "\e605";
   font-size: 30px;
 }
 
-/* line 157, ../sass/components/_pages.scss */
+/* line 158, ../sass/components/_pages.scss */
 .panel {
   border-color: #72a9d8;
 }
-/* line 159, ../sass/components/_pages.scss */
+/* line 160, ../sass/components/_pages.scss */
 .panel .panel-heading {
   background: linear-gradient(to top, #f7941e, #edc13a);
   padding: 0;
   color: white;
 }
-/* line 163, ../sass/components/_pages.scss */
+/* line 164, ../sass/components/_pages.scss */
 .panel .panel-heading a {
   background: linear-gradient(to top, #72a9d8, #9ac1e3);
   color: white;
   display: block;
   padding: 5px 15px;
 }
-/* line 168, ../sass/components/_pages.scss */
+/* line 169, ../sass/components/_pages.scss */
 .panel .panel-heading a:hover {
   color: white;
   background: linear-gradient(to top, #2e4da4, #72a9d8);
 }
-/* line 171, ../sass/components/_pages.scss */
+/* line 172, ../sass/components/_pages.scss */
 .panel .panel-heading a:hover h3 {
   color: white;
+}
+
+/* line 182, ../sass/components/_pages.scss */
+.fonticon-formula:before {
+  content: "\e61e";
+}
+
+/* line 185, ../sass/components/_pages.scss */
+.content-header {
+  position: relative;
+}
+
+/* line 190, ../sass/components/_pages.scss */
+.row-block {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
 }
 
 /* line 1, ../sass/components/_pages-detail.scss */
@@ -925,6 +942,11 @@ header .container {
 }
 
 /* line 1, ../sass/components/_main-buttons.scss */
+.btn.disabled, .btn[disabled], fieldset[disabled] .btn {
+  opacity: .45;
+}
+
+/* line 6, ../sass/components/_main-buttons.scss */
 .btn-warning.disabled, .btn-warning[disabled], fieldset[disabled] .btn-warning, .btn-warning.disabled:hover, .btn-warning[disabled]:hover, fieldset[disabled] .btn-warning:hover, .btn-warning.disabled:focus, .btn-warning[disabled]:focus, fieldset[disabled] .btn-warning:focus, .btn-warning.disabled.focus, .btn-warning[disabled].focus, fieldset[disabled] .btn-warning.focus, .btn-warning.disabled:active, .btn-warning[disabled]:active, fieldset[disabled] .btn-warning:active, .btn-warning.disabled.active, .btn-warning[disabled].active, fieldset[disabled] .btn-warning.active {
   background: #e5e5e5;
   background: transparent;
@@ -932,12 +954,12 @@ header .container {
   color: #b3b3b3;
 }
 
-/* line 10, ../sass/components/_main-buttons.scss */
+/* line 15, ../sass/components/_main-buttons.scss */
 .btn-primary {
   color: #4d4d4d;
 }
 
-/* line 14, ../sass/components/_main-buttons.scss */
+/* line 19, ../sass/components/_main-buttons.scss */
 .btn {
   border: 1px solid #999999;
   outline: none;
@@ -948,13 +970,13 @@ header .container {
   padding: 5px 10px 3px;
   color: #4d4d4d;
 }
-/* line 38, ../sass/components/_main-buttons.scss */
+/* line 43, ../sass/components/_main-buttons.scss */
 .btn.active, .btn:hover, .btn:focus {
   background: #f7941e;
   border-color: gray;
   color: white;
 }
-/* line 44, ../sass/components/_main-buttons.scss */
+/* line 49, ../sass/components/_main-buttons.scss */
 .btn.disabled {
   background: #e5e5e5;
   text-shadow: none;
@@ -962,34 +984,34 @@ header .container {
   background: transparent;
   border-color: #cccccc;
 }
-/* line 62, ../sass/components/_main-buttons.scss */
+/* line 67, ../sass/components/_main-buttons.scss */
 .btn:focus {
   outline: none;
 }
 
-/* line 69, ../sass/components/_main-buttons.scss */
+/* line 74, ../sass/components/_main-buttons.scss */
 .btn-danger {
   background: #9d5858;
 }
 
-/* line 73, ../sass/components/_main-buttons.scss */
+/* line 78, ../sass/components/_main-buttons.scss */
 .btn-warning {
   background: #b88569;
 }
 
-/* line 79, ../sass/components/_main-buttons.scss */
+/* line 84, ../sass/components/_main-buttons.scss */
 .btn-danger,
 .btn-warning {
   background: linear-gradient(to bottom, #d9bdae, #b88569);
   color: white;
 }
 
-/* line 85, ../sass/components/_main-buttons.scss */
+/* line 90, ../sass/components/_main-buttons.scss */
 .btn-danger {
   background: linear-gradient(to bottom, #d9bdae, #9d5858);
 }
 
-/* line 92, ../sass/components/_main-buttons.scss */
+/* line 97, ../sass/components/_main-buttons.scss */
 .btn-info {
   background: linear-gradient(to bottom, #e5e5e5 0%, #cccccc 100%);
   border-color: #3177b3;
@@ -1000,123 +1022,143 @@ header .container {
   color: white;
 }
 
-/* line 112, ../sass/components/_main-buttons.scss */
+/* line 117, ../sass/components/_main-buttons.scss */
 .helpbutton {
   float: left;
 }
 
-/* line 118, ../sass/components/_main-buttons.scss */
+/* line 123, ../sass/components/_main-buttons.scss */
 .btn-revert:before {
   content: "\e984";
 }
 
-/* line 122, ../sass/components/_main-buttons.scss */
+/* line 127, ../sass/components/_main-buttons.scss */
 .btn-line:before {
   content: "\e99b";
 }
 
-/* line 126, ../sass/components/_main-buttons.scss */
+/* line 131, ../sass/components/_main-buttons.scss */
 .btn-pie:before {
   content: "\e99a";
 }
 
-/* line 130, ../sass/components/_main-buttons.scss */
+/* line 135, ../sass/components/_main-buttons.scss */
 .btn-bars:before {
   content: "\e99c";
 }
 
-/* line 134, ../sass/components/_main-buttons.scss */
+/* line 139, ../sass/components/_main-buttons.scss */
 .btn-parent:after {
   content: "\ea1c";
   opacity: .5;
 }
 
-/* line 139, ../sass/components/_main-buttons.scss */
+/* line 144, ../sass/components/_main-buttons.scss */
 .helpbutton .btn:before {
   content: "\e617";
 }
 
-/* line 142, ../sass/components/_main-buttons.scss */
+/* line 147, ../sass/components/_main-buttons.scss */
 .btn-rotate:before {
   content: "\e984";
 }
 
-/* line 145, ../sass/components/_main-buttons.scss */
+/* line 150, ../sass/components/_main-buttons.scss */
 .btn-clear:before {
   content: "\e60d";
 }
 
-/* line 149, ../sass/components/_main-buttons.scss */
+/* line 154, ../sass/components/_main-buttons.scss */
 .btn-xy:before {
   content: "\ea45";
 }
 
-/* line 152, ../sass/components/_main-buttons.scss */
+/* line 157, ../sass/components/_main-buttons.scss */
 .btn-file:before {
   content: "\e92f";
 }
 
-/* line 155, ../sass/components/_main-buttons.scss */
+/* line 160, ../sass/components/_main-buttons.scss */
 .btn-prev:before {
   content: "\e601";
 }
 
-/* line 158, ../sass/components/_main-buttons.scss */
+/* line 163, ../sass/components/_main-buttons.scss */
 .btn-validate:before {
   content: "\e604";
 }
 
-/* line 162, ../sass/components/_main-buttons.scss */
+/* line 167, ../sass/components/_main-buttons.scss */
 .btn-add:before {
   content: "\e608";
 }
 
-/* line 165, ../sass/components/_main-buttons.scss */
+/* line 170, ../sass/components/_main-buttons.scss */
 .btn-request:before {
   content: "\e618";
 }
 
-/* line 168, ../sass/components/_main-buttons.scss */
+/* line 173, ../sass/components/_main-buttons.scss */
 .btn-tree:before {
   content: "\e9bc";
 }
 
-/* line 171, ../sass/components/_main-buttons.scss */
+/* line 176, ../sass/components/_main-buttons.scss */
 .btn-create:before {
   content: "\e60f";
 }
 
-/* line 174, ../sass/components/_main-buttons.scss */
+/* line 179, ../sass/components/_main-buttons.scss */
 .btn-map:before {
   content: "\e9ca";
 }
 
-/* line 180, ../sass/components/_main-buttons.scss */
+/* line 182, ../sass/components/_main-buttons.scss */
+.btn-keyboard:before {
+  content: "\f11c";
+}
+
+/* line 185, ../sass/components/_main-buttons.scss */
+.btn-function:before {
+  content: "\f12b";
+}
+
+/* line 188, ../sass/components/_main-buttons.scss */
+.btn-save:before {
+  content: "\f0c7";
+}
+
+/* line 191, ../sass/components/_main-buttons.scss */
+.btn-dataset:before {
+  content: "\e611";
+}
+
+/* line 198, ../sass/components/_main-buttons.scss */
 .btn-details:before {
   content: "\e611";
 }
-/* line 183, ../sass/components/_main-buttons.scss */
+/* line 201, ../sass/components/_main-buttons.scss */
 .btn-details.data:before {
   content: "\f05a";
   content: "\e616";
 }
 
 /* after icons */
-/* line 194, ../sass/components/_main-buttons.scss */
+/* line 212, ../sass/components/_main-buttons.scss */
 .btn-next:after {
   content: "\e602";
 }
 
-/* line 201, ../sass/components/_main-buttons.scss */
+/* line 219, ../sass/components/_main-buttons.scss */
 .btn:before {
   opacity: .7;
 }
-/* line 203, ../sass/components/_main-buttons.scss */
+/* line 221, ../sass/components/_main-buttons.scss */
 .btn:before:hover {
   opacity: 1;
 }
 
-/* line 209, ../sass/components/_main-buttons.scss */
+/* line 227, ../sass/components/_main-buttons.scss */
 .pc-visualization-formcontrols {
   margin: 10px 0;
 }
@@ -1128,7 +1170,7 @@ header .container {
   clear: both;
 }
 
-/* line 214, ../sass/components/_main-buttons.scss */
+/* line 232, ../sass/components/_main-buttons.scss */
 .button-group {
   margin-right: 10px;
   display: inline-block;
@@ -1136,26 +1178,26 @@ header .container {
   overflow: hidden;
   float: left;
 }
-/* line 221, ../sass/components/_main-buttons.scss */
+/* line 239, ../sass/components/_main-buttons.scss */
 .button-group .btn {
   border-radius: 0;
   float: left;
   margin: 0;
 }
-/* line 228, ../sass/components/_main-buttons.scss */
+/* line 246, ../sass/components/_main-buttons.scss */
 .button-group .btn:first-of-type {
   border-radius: 6px 0 0 6px;
 }
-/* line 231, ../sass/components/_main-buttons.scss */
+/* line 249, ../sass/components/_main-buttons.scss */
 .button-group .btn:last-of-type {
   border-radius: 0 6px 6px 0;
 }
-/* line 234, ../sass/components/_main-buttons.scss */
+/* line 252, ../sass/components/_main-buttons.scss */
 .button-group .btn:not(:last-of-type) {
   border-right: none;
 }
 
-/* line 241, ../sass/components/_main-buttons.scss */
+/* line 259, ../sass/components/_main-buttons.scss */
 .navigation-steps {
   list-style-type: none;
   list-style-image: none;
@@ -1165,39 +1207,39 @@ header .container {
   top: 30px;
   right: 20px;
 }
-/* line 246, ../sass/components/_main-buttons.scss */
+/* line 264, ../sass/components/_main-buttons.scss */
 .navigation-steps li {
   float: left;
 }
-/* line 248, ../sass/components/_main-buttons.scss */
+/* line 266, ../sass/components/_main-buttons.scss */
 .navigation-steps li a {
   float: left;
   margin: 0;
   border-radius: 0;
 }
-/* line 253, ../sass/components/_main-buttons.scss */
+/* line 271, ../sass/components/_main-buttons.scss */
 .navigation-steps li:first-of-type a {
   border-radius: 6px 0 0 6px;
 }
-/* line 256, ../sass/components/_main-buttons.scss */
+/* line 274, ../sass/components/_main-buttons.scss */
 .navigation-steps li:last-of-type a {
   border-radius: 0 6px 6px 0;
 }
-/* line 259, ../sass/components/_main-buttons.scss */
+/* line 277, ../sass/components/_main-buttons.scss */
 .navigation-steps li:not(:last-of-type) a {
   border-right: none;
 }
 
-/* line 265, ../sass/components/_main-buttons.scss */
+/* line 283, ../sass/components/_main-buttons.scss */
 .multiSelect {
   padding: 0;
 }
-/* line 267, ../sass/components/_main-buttons.scss */
+/* line 285, ../sass/components/_main-buttons.scss */
 .multiSelect .buttonLabel {
   padding: 0 0 0 5px;
 }
 
-/* line 272, ../sass/components/_main-buttons.scss */
+/* line 290, ../sass/components/_main-buttons.scss */
 .multiSelect > button {
   padding: 5px 10px 3px;
   background: linear-gradient(to bottom, #9ac1e3, #72a9d8);
@@ -1206,9 +1248,30 @@ header .container {
   min-height: inherit !important;
   font-size: 1em;
 }
-/* line 282, ../sass/components/_main-buttons.scss */
+/* line 300, ../sass/components/_main-buttons.scss */
 .multiSelect > button:hover {
   background: linear-gradient(to bottom, #72a9d8, #9ac1e3);
+}
+
+/* line 309, ../sass/components/_main-buttons.scss */
+.dataset-filter-metrics .multiSelect > button {
+  background: linear-gradient(to bottom, #9dcf87, #47985c);
+  border-color: #1a6948;
+}
+/* line 313, ../sass/components/_main-buttons.scss */
+.dataset-filter-metrics .multiSelect > button:hover {
+  background: linear-gradient(to bottom, #47985c, #9dcf87);
+}
+
+/* line 319, ../sass/components/_main-buttons.scss */
+.metadata .multiSelect > button {
+  background: linear-gradient(to bottom, #fafafa, #e5e5e5);
+  border-color: #cccccc;
+  color: #4d4d4d;
+}
+/* line 324, ../sass/components/_main-buttons.scss */
+.metadata .multiSelect > button:hover {
+  background: linear-gradient(to bottom, #cccccc, #fafafa);
 }
 
 /* line 2, ../sass/components/_myPolicyCompass.scss */
@@ -1764,42 +1827,49 @@ header .container {
   float: left;
 }
 
-/* line 3, ../sass/components/_pages-visualization.scss */
+/* line 4, ../sass/components/_pages-visualization.scss */
+.apply-datasets .metrics-list,
 .createvisualization .metrics-list {
   list-style-type: none;
   list-style-image: none;
   margin: 0;
   padding: 0;
 }
-/* line 5, ../sass/components/_pages-visualization.scss */
+/* line 6, ../sass/components/_pages-visualization.scss */
+.apply-datasets .metrics-list li,
 .createvisualization .metrics-list li {
   width: 100%;
   padding: 0 10px;
   margin-top: 5px;
   margin-bottom: 5px;
 }
-/* line 11, ../sass/components/_pages-visualization.scss */
+/* line 12, ../sass/components/_pages-visualization.scss */
+.apply-datasets .metrics-list li.active a,
 .createvisualization .metrics-list li.active a {
   background: #72a9d8;
   color: white;
 }
-/* line 14, ../sass/components/_pages-visualization.scss */
+/* line 15, ../sass/components/_pages-visualization.scss */
+.apply-datasets .metrics-list li.active a:before,
 .createvisualization .metrics-list li.active a:before {
   content: "\e607";
 }
-/* line 19, ../sass/components/_pages-visualization.scss */
+/* line 20, ../sass/components/_pages-visualization.scss */
+.apply-datasets .metrics-list li a,
 .createvisualization .metrics-list li a {
   background: #fafafa;
   display: block;
   padding: 10px;
   width: 100%;
 }
-/* line 24, ../sass/components/_pages-visualization.scss */
+/* line 25, ../sass/components/_pages-visualization.scss */
+.apply-datasets .metrics-list li a:before,
 .createvisualization .metrics-list li a:before {
   content: "\e608";
 }
 @media (min-width: 992px) {
-  /* line 3, ../sass/components/_pages-visualization.scss */
+  /* line 4, ../sass/components/_pages-visualization.scss */
+  .apply-datasets .metrics-list,
   .createvisualization .metrics-list {
     display: flex;
     display: -webkit-flex;
@@ -1807,31 +1877,36 @@ header .container {
     -webkit-flex-flow: row wrap;
   }
   /* line 97, ../sass/_custom.scss */
+  .apply-datasets .metrics-list > div,
   .createvisualization .metrics-list > div {
     padding-right: 10px;
     padding-left: 10px;
   }
-  /* line 31, ../sass/components/_pages-visualization.scss */
+  /* line 32, ../sass/components/_pages-visualization.scss */
+  .apply-datasets .metrics-list li,
   .createvisualization .metrics-list li {
     width: 50%;
   }
 }
-/* line 36, ../sass/components/_pages-visualization.scss */
+/* line 37, ../sass/components/_pages-visualization.scss */
+.apply-datasets .designer-metrics,
 .createvisualization .designer-metrics {
   background: #fafafa;
   padding: 10px;
   margin: 5px 0;
 }
-/* line 40, ../sass/components/_pages-visualization.scss */
+/* line 41, ../sass/components/_pages-visualization.scss */
+.apply-datasets .designer-metrics h4:before,
 .createvisualization .designer-metrics h4:before {
   content: "\e993";
 }
-/* line 44, ../sass/components/_pages-visualization.scss */
+/* line 45, ../sass/components/_pages-visualization.scss */
+.apply-datasets .filterMetricsPagination,
 .createvisualization .filterMetricsPagination {
   float: right;
 }
 
-/* line 57, ../sass/components/_pages-visualization.scss */
+/* line 58, ../sass/components/_pages-visualization.scss */
 rzslider {
   position: relative;
   display: inline-block;
@@ -1841,21 +1916,21 @@ rzslider {
   vertical-align: middle;
 }
 
-/* line 66, ../sass/components/_pages-visualization.scss */
+/* line 67, ../sass/components/_pages-visualization.scss */
 rzslider span {
   position: absolute;
   display: inline-block;
   white-space: nowrap;
 }
 
-/* line 72, ../sass/components/_pages-visualization.scss */
+/* line 73, ../sass/components/_pages-visualization.scss */
 rzslider span.base {
   width: 100%;
   height: 100%;
   padding: 0;
 }
 
-/* line 78, ../sass/components/_pages-visualization.scss */
+/* line 79, ../sass/components/_pages-visualization.scss */
 rzslider span.bar {
   z-index: 0;
   width: 100%;
@@ -1863,14 +1938,14 @@ rzslider span.bar {
   background: #58595b;
 }
 
-/* line 85, ../sass/components/_pages-visualization.scss */
+/* line 86, ../sass/components/_pages-visualization.scss */
 rzslider span.bar.selection {
   z-index: 1;
   width: 0;
   background: #f7941e;
 }
 
-/* line 91, ../sass/components/_pages-visualization.scss */
+/* line 92, ../sass/components/_pages-visualization.scss */
 rzslider span.pointer {
   top: -15px;
   z-index: 2;
@@ -1883,7 +1958,7 @@ rzslider span.pointer {
   border-radius: 16px;
 }
 
-/* line 103, ../sass/components/_pages-visualization.scss */
+/* line 104, ../sass/components/_pages-visualization.scss */
 rzslider span.pointer:after {
   position: absolute;
   top: 12px;
@@ -1897,17 +1972,17 @@ rzslider span.pointer:after {
   content: '';
 }
 
-/* line 116, ../sass/components/_pages-visualization.scss */
+/* line 117, ../sass/components/_pages-visualization.scss */
 rzslider span.pointer:hover:after {
   background-color: #f7941e;
 }
 
-/* line 120, ../sass/components/_pages-visualization.scss */
+/* line 121, ../sass/components/_pages-visualization.scss */
 rzslider span.pointer.active:after {
   background-color: #f7941e;
 }
 
-/* line 124, ../sass/components/_pages-visualization.scss */
+/* line 125, ../sass/components/_pages-visualization.scss */
 rzslider span.bubble {
   top: -32px;
   padding: 1px 3px 1px 3px;
@@ -1915,18 +1990,18 @@ rzslider span.bubble {
   cursor: default;
 }
 
-/* line 131, ../sass/components/_pages-visualization.scss */
+/* line 132, ../sass/components/_pages-visualization.scss */
 rzslider span.bubble.selection {
   top: 15px;
 }
 
-/* line 141, ../sass/components/_pages-visualization.scss */
+/* line 142, ../sass/components/_pages-visualization.scss */
 .square-box {
   width: 20px;
   display: inline-table;
 }
 
-/* line 147, ../sass/components/_pages-visualization.scss */
+/* line 148, ../sass/components/_pages-visualization.scss */
 .visualization-graph-page-content {
   padding-left: 0px;
   padding-right: 0px;
@@ -1934,66 +2009,66 @@ rzslider span.bubble.selection {
   padding-bottom: 5px;
 }
 
-/* line 154, ../sass/components/_pages-visualization.scss */
+/* line 155, ../sass/components/_pages-visualization.scss */
 .stroke {
   fill: none;
   stroke: #000;
   stroke-width: 3px;
 }
 
-/* line 160, ../sass/components/_pages-visualization.scss */
+/* line 161, ../sass/components/_pages-visualization.scss */
 .fill {
   fill: #fff;
 }
 
-/* line 164, ../sass/components/_pages-visualization.scss */
+/* line 165, ../sass/components/_pages-visualization.scss */
 .graticule {
   stroke: #777;
   stroke-width: .5px;
   stroke-opacity: .5;
 }
 
-/* line 171, ../sass/components/_pages-visualization.scss */
+/* line 172, ../sass/components/_pages-visualization.scss */
 .land {
   fill: #222;
 }
 
-/* line 175, ../sass/components/_pages-visualization.scss */
+/* line 176, ../sass/components/_pages-visualization.scss */
 .boundary {
   fill: none;
   stroke: #fff;
   stroke-width: .5px;
 }
 
-/* line 182, ../sass/components/_pages-visualization.scss */
+/* line 183, ../sass/components/_pages-visualization.scss */
 .grid .tick {
   stroke: lightblue;
   opacity: 0.2;
 }
 
-/* line 186, ../sass/components/_pages-visualization.scss */
+/* line 187, ../sass/components/_pages-visualization.scss */
 .grid path {
   stroke-width: 0;
 }
 
-/* line 190, ../sass/components/_pages-visualization.scss */
+/* line 191, ../sass/components/_pages-visualization.scss */
 .nodatatoplot {
   font-size: 20px;
 }
 
-/* line 194, ../sass/components/_pages-visualization.scss */
+/* line 195, ../sass/components/_pages-visualization.scss */
 .axis path, .axis line {
   fill: none;
   stroke: #000;
   shape-rendering: crispEdges;
 }
 
-/* line 200, ../sass/components/_pages-visualization.scss */
+/* line 201, ../sass/components/_pages-visualization.scss */
 .line {
   stroke-width: 1.5px;
 }
 
-/* line 205, ../sass/components/_pages-visualization.scss */
+/* line 206, ../sass/components/_pages-visualization.scss */
 .tooltip {
   position: absolute;
   width: 200px;
@@ -2008,7 +2083,7 @@ rzslider span.bubble.selection {
   text-align: center;
 }
 
-/* line 220, ../sass/components/_pages-visualization.scss */
+/* line 221, ../sass/components/_pages-visualization.scss */
 .tooltipdd {
   position: absolute;
   display: block;
@@ -2020,7 +2095,7 @@ rzslider span.bubble.selection {
   opacity: 0.95;
 }
 
-/* line 232, ../sass/components/_pages-visualization.scss */
+/* line 233, ../sass/components/_pages-visualization.scss */
 .tooltipLegend {
   position: absolute;
   width: 200px;
@@ -2035,7 +2110,7 @@ rzslider span.bubble.selection {
   text-align: left;
 }
 
-/* line 246, ../sass/components/_pages-visualization.scss */
+/* line 247, ../sass/components/_pages-visualization.scss */
 .showFilter {
   background: #f2f2f2;
   padding: 10px 20px;
@@ -2045,7 +2120,7 @@ rzslider span.bubble.selection {
   width: 100%;
 }
 
-/* line 256, ../sass/components/_pages-visualization.scss */
+/* line 257, ../sass/components/_pages-visualization.scss */
 .on_check {
   display: block;
   float: left;
@@ -2054,14 +2129,14 @@ rzslider span.bubble.selection {
   color: #000000;
 }
 
-/* line 264, ../sass/components/_pages-visualization.scss */
+/* line 265, ../sass/components/_pages-visualization.scss */
 .graphContainerdiv {
   display: block;
   margin-left: auto;
   margin-right: auto;
 }
 
-/* line 270, ../sass/components/_pages-visualization.scss */
+/* line 271, ../sass/components/_pages-visualization.scss */
 .tabsCreateMetric {
   float: left;
   display: block;
@@ -2070,7 +2145,7 @@ rzslider span.bubble.selection {
   width: 100%;
 }
 
-/* line 278, ../sass/components/_pages-visualization.scss */
+/* line 279, ../sass/components/_pages-visualization.scss */
 .contentHE {
   font-weight: normal;
   padding: 0 40px;
@@ -2599,6 +2674,84 @@ ul.toc .active {
 .help-nav-close {
   left: auto;
   right: 1%;
+}
+
+/* line 8, ../sass/components/_pages-formula.scss */
+.calculation-formula {
+  background: #fff2ca;
+  padding: 1em;
+  box-shadow: inset 5px 5px 10px rgba(184, 133, 105, 0.1);
+  border: 1px solid #b88569;
+  border-radius: 6px;
+  line-height: 2em;
+  font-size: 1.26666em;
+  color: #b75c6f;
+  font-family: consolas, curier;
+}
+
+/* line 20, ../sass/components/_pages-formula.scss */
+.calculation-formula-3,
+.calculation-formula-2 {
+  background: #f7f7f7;
+  border-color: #cccccc;
+  box-shadow: none;
+}
+
+/* line 30, ../sass/components/_pages-formula.scss */
+.indicator-formula,
+.metrics-formula {
+  font-weight: bold;
+  padding: 0 5px;
+  border: 1px solid #3177b3;
+  border: 1px solid #ffd964;
+  min-height: inherit !important;
+  font-size: 1em;
+  border-radius: 6px;
+}
+/* line 42, ../sass/components/_pages-formula.scss */
+.indicator-formula:hover,
+.metrics-formula:hover {
+  background: linear-gradient(to bottom, #72a9d8, #9ac1e3);
+  background: linear-gradient(to bottom, #9ac1e3, #72a9d8);
+  color: white;
+  border-color: #3177b3;
+}
+
+/* line 51, ../sass/components/_pages-formula.scss */
+.metrics-formula:hover {
+  background: linear-gradient(to bottom, #9dcf87, #47985c);
+  border-color: #1a6948;
+}
+
+/* line 61, ../sass/components/_pages-formula.scss */
+.metadata {
+  background: #f2f2f2;
+  padding: 15px;
+  border-radius: 6px;
+  border: 1px solid #e5e5e5;
+}
+/* line 66, ../sass/components/_pages-formula.scss */
+.metadata .form-group {
+  overflow: hidden;
+}
+/* line 69, ../sass/components/_pages-formula.scss */
+.metadata .field-label {
+  width: 16.66667%;
+  float: left;
+  margin-right: -16.66667%;
+  text-align: right;
+  padding-right: 10px;
+  line-height: 2em;
+}
+/* line 78, ../sass/components/_pages-formula.scss */
+.metadata .field-content {
+  margin-left: 16.66667%;
+  padding-left: 10px;
+}
+/* line 82, ../sass/components/_pages-formula.scss */
+.metadata .dataset-select {
+  float: left;
+  margin-right: 20px;
 }
 
 /* line 1, ../sass/components/_pages-footer.scss */

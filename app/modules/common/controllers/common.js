@@ -130,7 +130,80 @@ $scope.gendermultiselect = [
 
 }])	
 
+.controller('CreateFormulaController', ['$scope', '$modal', function($scope, $modal) {
+	console.log("CreateFormulaController");
 
+$scope.classtypedata = [
+    { icon: "",   name: "Child Mortality",    maker: "",        ticked: true  },
+    { icon: "",   name: "Drug Consumption",  maker: "",        ticked: false },
+    { icon: "",   name: "Life Expectancy",     maker: "",    	ticked: true  },
+    { icon: "",   name: "Unemployment",     maker: "",    	ticked: false  },
+    { icon: "",   name: "CO2 Emissions",     maker: "",    	ticked: false  },
+    { icon: "",   name: "Traffic Deatchs",     maker: "",    	ticked: false  }
+    
+]; 
+$scope.classtypedata2 = [
+    { icon: "",   name: " ~ GDP",    maker: "",        ticked: true  },
+    { icon: "",   name: " ~ Happy Planet Index",  maker: "",        ticked: false },
+    { icon: "",   name: "~ Social Progress Index",     maker: "",    	ticked: false  },
+    { icon: "",   name: "~ Better life Index",     maker: "",    	ticked: false  },
+    { icon: "",   name: "u my_happyness_index",     maker: "",    	ticked: false  },
+    { icon: "",   name: "u my_health_metric",     maker: "",    	ticked: false  }
+]; 
+
+
+
+
+}])
+
+.controller('CreateFormula2Controller', ['$scope', '$modal', function($scope, $modal) {
+	console.log("CreateFormula2Controller");
+
+$scope.classtypedata = [
+    { icon: "",   name: "Education",    maker: "",        ticked: false  },
+    { icon: "",   name: "Economy",  maker: "",        ticked: false },
+    { icon: "",   name: "Justice",     maker: "",    	ticked: false  }
+    
+]; 
+
+$scope.classtypedata2 = [
+    { icon: "",   name: "Education",    maker: "",        ticked: false  },
+    { icon: "",   name: "Economy",  maker: "",        ticked: false },
+    { icon: "",   name: "Justice",     maker: "",    	ticked: false  }
+    
+]; 
+
+
+
+
+}])	
+.controller('CreateFormula3Controller', ['$scope', '$modal', function($scope, $modal) {
+	console.log("CreateFormula3Controller");
+
+$scope.classtypedata = [
+    { icon: "",   name: "2002",    maker: "",        ticked: true  },
+    { icon: "",   name: "2003",  maker: "",        ticked: false },
+    { icon: "",   name: "2004",     maker: "",    	ticked: false  }
+    
+]; 
+
+$scope.classtypedata2 = [
+    { icon: "",   name: "United Kindom",    maker: "",        ticked: true },
+    { icon: "",   name: "Hungary",  maker: "",        ticked: false },
+    { icon: "",   name: "Brussels",     maker: "",    	ticked: false  }
+    
+]; 
+$scope.classtypedata3 = [
+    { icon: "",   name: "Age group",    maker: "",        ticked: true },
+    { icon: "",   name: "Economy",  maker: "",        ticked: false },
+    { icon: "",   name: "Justice",     maker: "",    	ticked: false  }
+    
+]; 
+
+
+
+
+}])	
 
 /**
  * Controller for setting the UI Bootstrap date selection.
