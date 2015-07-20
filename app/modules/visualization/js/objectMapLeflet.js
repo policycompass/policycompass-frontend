@@ -17,7 +17,7 @@ policycompass.viz.mapLeaflet = function(options)
     }
     
     
-    console.log(self.data);
+    //console.log(self.data);
     
     //console.log("self.showBubbles");
 	//console.log(self.showBubbles);
@@ -189,13 +189,12 @@ policycompass.viz.mapLeaflet = function(options)
   		$.each( data.features, function( key, val ) 
   		{
     		//console.log(val);
-    		if ((data.features[key].id=='ESP') || (data.features[key].id=='ITA'))
-    		
-    		//if (data.features[key].id == self.data[di].Title)
-    		
+    		//if ((data.features[key].id=='ESP') || (data.features[key].id=='ITA'))    		
+    		//if (data.features[key].id == self.data[id].Title)
+    		if (1==2)    		
     		{
-    			console.log(data.features[key].properties);
-    			console.log(key);
+    			//console.log(data.features[key].properties);
+    			//console.log(key);
     			var valueCalc = "";
     			if (key>60)
     			{
@@ -290,11 +289,11 @@ policycompass.viz.mapLeaflet = function(options)
 		
 		self.difMaxMinScale = Math.round((Math.round(self.maxValueScale) - Math.round(self.minValueScale))/8); 
 		
-		console.log("max="+self.maxValueScale)
-		console.log("min="+self.minValueScale)
+		//console.log("max="+self.maxValueScale)
+		//console.log("min="+self.minValueScale)
 
-		console.log("max="+self.maxValueScale)
-		console.log("min="+self.minValueScale)
+		//console.log("max="+self.maxValueScale)
+		//console.log("min="+self.minValueScale)
 		
 		var color = d3.scale.linear().domain([self.minValueScale, self.maxValueScale]).range(['red', 'blue']);
 
@@ -427,7 +426,7 @@ policycompass.viz.mapLeaflet = function(options)
 	}
 	
 
-	console.log(countriesDataCircle);
+	//console.log(countriesDataCircle);
 	self.maxRadious = 30;
 	//console.log("self.maxDensityValue");
 	//console.log(self.maxDensityValue);

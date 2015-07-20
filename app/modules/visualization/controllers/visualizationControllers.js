@@ -1715,7 +1715,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						//resIdMetric = cntMetrics+1;
 
 						//jsonFile = "/app/modules/visualization/json/dataset"+resIdMetric+"_"+timeresolution+".json?time_resolution="+timeresolution+strIdentities;
-						console.log("jsonFile="+jsonFile);
+						//console.log("jsonFile="+jsonFile);
 						
 						if (jsonFile)
 						{
@@ -1862,7 +1862,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
   					pathToJson =pathToJson+'?resolution='+$scope.resolution.value;	
   				}
   				*/
-  				console.log("pathToJson="+pathToJson);  				
+  				//console.log("pathToJson="+pathToJson);  				
   				//q = q.defer(d3.json, d);
   				q = q.defer(d3.json, pathToJson);
   				q2 = q2.defer(d3.json, pathToJson);
@@ -2006,7 +2006,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 								)
 						{
 							
-							//console.log("plot map")
+							console.log("plot map")
 							console.log(arguments[i]);
 							
 							
@@ -2014,9 +2014,13 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							{
 								console.log("spatial exists!!!");
 								for (var j=0; j<arguments[i]['spatial'].length; j++)
+								//if (1==1)
 								{
 									var countryDatasetTitle = arguments[i]['spatial'][j]['title'];
+									//var countryDatasetTitle = 'Spain';
 									var countryDatasetId = arguments[i]['spatial'][j]['identifier'];
+									//var countryDatasetId = 'ESP';
+									
 									//console.log(arguments[i]['spatial'][j]);
 									//console.log(countryDatasetTitle+"---"+countryDatasetId);
 									var arrayDataPerDate = [];
@@ -2812,7 +2816,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualization, VisualizationByMetric, VisualizationByEvent, $location, helper, dialogs, $log, API_CONF) {
 	
 	//this.message = "Hello VisualizationsDetailController";
-	console.log("Hello VisualizationsDetailController");
+	//console.log("Hello VisualizationsDetailController");
 	//alert($routeParams.visualizationId);
     //$scope.test = "hallo---";
     
@@ -2820,7 +2824,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
     			
     $scope.imageVisu = '/media/visualization_'+$routeParams.visualizationId+'.png';
     
-    console.log($routeParams.visualizationId);
+    //console.log($routeParams.visualizationId);
 	$scope.visualization = Visualization.get({id: $routeParams.visualizationId},
 			function(visualizationList) {		
 				var id_visu = $routeParams.visualizationId;
@@ -3039,7 +3043,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	function($filter, $scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualization, $location, helper, $log, API_CONF, Individual, Unit) {
 
 		
-	console.log("controller VisualizationsEditController");
+	//console.log("controller VisualizationsEditController");
 
 	//console.log("-----------");
 	//console.log($scope.idvisulist);
@@ -3075,7 +3079,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	helper.baseVisualizationsCreateController($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualization, $location, helper, $log, API_CONF, Individual, Unit);
 	
 	$scope.ListMetricsFilter = [];
-	console.log($routeParams.visualizationId)
+	//console.log($routeParams.visualizationId)
 	$scope.visualization = Visualization.get({id: $routeParams.visualizationId},
         function(visualization) {
         	//console.log("---Visualization.get----");
