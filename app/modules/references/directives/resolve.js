@@ -2,6 +2,22 @@ angular.module('pcApp.references.directives.resolve', [
     'pcApp.references.services.reference'
 ])
 
+.directive('resolveLanguage', ['$log', 'Language', function ($log, Language) {
+    return {
+        scope: {
+            id: '='
+        },
+        link: function(scope, element, attrs, ctrls) {
+            scope.language = Language.get(
+                {id: scope.id},
+                function() {
+                }
+            );
+        },
+        template: '<span>{{ language.title }}</span>'
+    };
+}])
+
 
 .directive('resolveUnit', ['$log', 'Unit', function ($log, Unit) {
     return {

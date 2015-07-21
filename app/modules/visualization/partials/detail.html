@@ -34,9 +34,12 @@
 				<div class="field-label">Author: </div>
         		<div class="field-content"> {{ visualization.user_id }}</div>
       		</div>
-      		<div class="form-group" ng-show="visualization.language">
+      		<div class="form-group" ng-show="visualization.language_id">
         		<div class="field-label">Language: </div>
-        		<div class="field-content"> {{ visualization.language.title }} </div>
+        		
+        		
+        		
+        		<div class="field-content">  <span ng-if="visualization.language_id" resolve-language id="visualization.language_id"></span> </div>
       		</div>
       		<div class="form-group" ng-show="visualization.created_at">
         		<div class="field-label">Date added: </div>
@@ -52,7 +55,7 @@
       		</div>
       		<div class="form-group" ng-show="visualization.keywords">
         		<div class="field-label">Keywords: </div>
-        		<div clas="field-content">{{ visualization.keywords }} </div>
+        		<div class="field-content">{{ visualization.keywords }} </div>
   			</div>
   
 			<!--
@@ -64,7 +67,7 @@
             -->
   
   			<div class="display-fields">
-    			<div class="form-group"   ng-show="visualization.metrics_in_visualization">
+    			<div class="form-group"   ng-show="visualization.datasets_in_visualization">
       				<div class="field-label">Linked to Datasets: </div>
       				<div class="field-content"> 
         				<ul>

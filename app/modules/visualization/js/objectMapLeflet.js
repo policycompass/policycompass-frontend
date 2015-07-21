@@ -16,8 +16,15 @@ policycompass.viz.mapLeaflet = function(options)
         self[key] = options[key];
     }
     
-    
+    //console.log("color rec");
+    //console.log(self.scaleColor);
+    if (!self.scaleColor)
+    {
+    	self.scaleColor = "#ff0000"
+    }
+    //console.log(self.scaleColor);
     //console.log(self.data);
+    
     
     //console.log("self.showBubbles");
 	//console.log(self.showBubbles);
@@ -189,9 +196,9 @@ policycompass.viz.mapLeaflet = function(options)
   		$.each( data.features, function( key, val ) 
   		{
     		//console.log(val);
-    		//if ((data.features[key].id=='ESP') || (data.features[key].id=='ITA'))    		
+    		if ((data.features[key].id=='ESP') || (data.features[key].id=='ITA'))    		
     		//if (data.features[key].id == self.data[id].Title)
-    		if (1==2)    		
+    		//if (1==2)    		
     		{
     			//console.log(data.features[key].properties);
     			//console.log(key);
@@ -272,7 +279,7 @@ policycompass.viz.mapLeaflet = function(options)
 			this.update();
 			return this._div;
 		};
-
+/*
 		if (self.legend)
 		{
 			info.update = function (props) {
@@ -283,7 +290,7 @@ policycompass.viz.mapLeaflet = function(options)
 	
 			info.addTo(map);
 		}
-
+*/
 		self.maxValueScale = Math.round(self.maxDensityValue);
 		self.minValueScale = Math.round(self.minDensityValue);
 		
@@ -295,8 +302,30 @@ policycompass.viz.mapLeaflet = function(options)
 		//console.log("max="+self.maxValueScale)
 		//console.log("min="+self.minValueScale)
 		
-		var color = d3.scale.linear().domain([self.minValueScale, self.maxValueScale]).range(['red', 'blue']);
+		//var color = d3.scale.linear().domain([self.minValueScale, self.maxValueScale]).range(['red', 'blue']);
 
+		function ColorLuminance(hex, lum) {
+			// validate hex string
+			hex = String(hex).replace(/[^0-9a-f]/gi, '');
+			if (hex.length < 6) {
+				hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+			}
+			lum = lum || 0;
+			// convert to decimal and change luminosity
+			var rgb = "#", c, i;
+			for (i = 0; i < 3; i++) {
+				c = parseInt(hex.substr(i*2,2), 16);
+				c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
+				rgb += ("00"+c).substr(c.length);
+			}
+
+			return rgb;
+		}
+
+		var lighterColor =	ColorLuminance(self.scaleColor.replace('#',''), 0.8);	// "#7ab8f5" - 20% lighter
+		var darkerColor =	ColorLuminance(self.scaleColor.replace('#',''), -0.8);	// "#334d66" - 50% darker
+
+		var color = d3.scale.linear().domain([self.minValueScale, self.maxValueScale]).range([lighterColor, darkerColor]);
 		
 		// get color depending on population density value
 		function getColor(d) {

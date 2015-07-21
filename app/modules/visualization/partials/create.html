@@ -70,7 +70,7 @@
 <!--
 <div id="maplegend" class="maplegend"></div>
 -->
-						<center>
+						
 							<div ng-click="isSelectedSon('graph_line') ? showModal() : void(0)">
 								<div ng-show="isSelectedSon('map_1') || isSelectedSon('mercator') || isSelectedSon('conicConformal') || isSelectedSon('equirectangular') || isSelectedSon('orthographic') || isSelectedSon('azimuthalEqualArea')">
 									<div ng-show="numbers2.length>0">
@@ -113,16 +113,16 @@
 			></div>
 		</div>
 		-->
-							
+							<center>
 								<div id="container_graph_{{visualization.id}}" class="container_graph">
 									<div class="loading-container">
 										<div class="loading"></div>
 										<div id="loading-text">loading</div>
 									</div>								
 								</div>
-							
+							</center>
 							</div>
-						</center>						
+					
 					</div>
 				</div>
         
@@ -178,7 +178,7 @@
 									</label>
 								</div>
 
-								<div id="div_showAsPercentatge" ng-show="isSelectedSon('graph_line')" class="on_check">
+								<div id="div_resolution"  class="on_check">
 									<label class="checkbox-inline">
 										Resolution <select id="resolution" ng-change="rePlotGraph();" ng-model="resolution" ng-options="opt as opt.label for opt in resolutionoptions"></select>
 									</label>
@@ -195,7 +195,15 @@
 										<input ng-model="showBubbles" type="checkbox" ng-click="rePlotGraph();" name="showBubbles"  id="showBubbles" class="checkbox filterCheckBox"> View as bubble marker
 									</label>
 								</div>
-																
+								
+								<div id="div_showscaleColor" ng-show="isSelectedParent(1)" class="on_check">
+									<label ng-show="showLegend" class="checkbox-inline">
+										<input type='color' name='color'
+											ng-model="scaleColor" 
+										ng-model-onblur ng-change="rePlotGraph()" /> Scale Color
+									</label>
+								</div>
+													
 								<!--								
 								<div id="div_showMovement" ng-show="isSelectedParent(1)" class="on_check">
 									<label class="checkbox-inline">

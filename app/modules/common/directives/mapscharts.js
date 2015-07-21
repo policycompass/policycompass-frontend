@@ -18,8 +18,8 @@ angular.module('pcApp.common.directives.mapscharts', [
         	showBubbles: '=showBubbles',
         	projection: '=projection',
         	fromcountry: '=fromcountry',
-        	tocountry: '=tocountry'
-        	
+        	tocountry: '=tocountry',
+        	scaleColor: '=scaleColor'        	
         }, 
 		compile: function(element, attributes){ 
          return {
@@ -60,6 +60,14 @@ angular.module('pcApp.common.directives.mapscharts', [
             });
 
             $scope.$watch('showBubbles', function(showBubbles) {
+				if ($scope.numbers1)
+				{
+					$scope.directivePlotMapChart();	
+				}				
+            });
+                   
+
+            $scope.$watch('scaleColor', function(scaleColor) {
 				if ($scope.numbers1)
 				{
 					$scope.directivePlotMapChart();	
@@ -160,6 +168,7 @@ angular.module('pcApp.common.directives.mapscharts', [
 						'font_size': font_size,
 						'small': $scope.small,
 						'legend': $scope.showLegend,
+						'scaleColor' : $scope.scaleColor,
 						'projection': $scope.projection,
 						'showZoom': $scope.showZoom,
 						'showBubbles': $scope.showBubbles,
@@ -193,7 +202,8 @@ angular.module('pcApp.common.directives.mapscharts', [
         '<div ng-hide="small" class="showFilter">' +
         '<label class="checkbox-inline"><input ng-model="showLegend" type="checkbox" name="showLegend" class="checkbox filterCheckBox"> Show Legend</label>' +
         '<label class="checkbox-inline"><input ng-model="showZoom" type="checkbox" name="showZoom" class="checkbox filterCheckBox"> Enable Zoom</label>' +
-        '<label class="checkbox-inline"><input ng-model="showBubbles" type="checkbox" name="showBubbles" class="checkbox filterCheckBox"> View as bubble marker</label>' +
+        '<label class="checkbox-inline"><input ng-model="showBubbles" type="checkbox" name="showBubbles" class="checkbox filterCheckBox"> View as bubble marker</label>' +        
+        '<label ng-show="showLegend" class="checkbox-inline"><input type="color" name="color" ng-model="scaleColor"  /> Scale Color </label>' +
         '</div>'
     };
 }])

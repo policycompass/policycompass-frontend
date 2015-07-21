@@ -6,13 +6,12 @@
 		<div class="row">
             <div class="col-lg-3 pc-tile" ng-show="visualizations" ng-repeat="visualization in visualizations.results" >
                 <div class="panel panel-default">
+          					
                     <div class="panel-heading">
-                        <h3 class="panel-title">
                         <a href="#/visualizations/{{ visualization.id }}">
-                        {{ visualization.title | limitTo: 25}}
+                        <h3 class="panel-title">{{ visualization.title | limitTo: 25}}</h3>
                         </a>
-                        
-                        </h3>
+
                     </div>
                     <div class="panel-body">
                         {{ visualization.created_at | date:'longDate' }}    
