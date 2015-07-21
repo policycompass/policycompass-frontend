@@ -88,7 +88,8 @@ body > header {
 
 .content-body {
   clear:both;
-  padding-top:2em;
+  padding-top:1.5em;
+  padding-bottom:1.5em;
 }
 
 
@@ -175,4 +176,18 @@ body > header {
     }
 
   }
+}
+
+
+.fonticon-formula:before {
+  content: "\e61e";
+}
+.content-header {
+  position:relative;
+}
+
+
+.row-block {
+  margin-top:1.5em;
+  margin-bottom:1.5em;
 }

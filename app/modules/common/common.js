@@ -58,6 +58,20 @@ commonmanager.config(function($routeProvider) {
             controller: 'StaticController',
             templateUrl: 'modules/common/partials/create-data.html'
         })
+        
+        .when('/create-formula', {
+            controller: 'CreateFormulaController',
+            templateUrl: 'modules/common/partials/create-formula.html'
+        })
+        
+        .when('/create-formula-2', {
+            controller: 'CreateFormula2Controller',
+            templateUrl: 'modules/common/partials/create-formula-2.html'
+        })
+       .when('/create-formula-3', {
+            controller: 'CreateFormula3Controller',
+            templateUrl: 'modules/common/partials/create-formula-3.html'
+        })
         .otherwise({ redirectTo: '/' });
 })
 

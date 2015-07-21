@@ -1,3 +1,8 @@
+.btn.disabled, .btn[disabled], fieldset[disabled] .btn {
+  
+  opacity: .45;
+}
+
 .btn-warning.disabled, .btn-warning[disabled], fieldset[disabled] .btn-warning, .btn-warning.disabled:hover, .btn-warning[disabled]:hover, fieldset[disabled] .btn-warning:hover, .btn-warning.disabled:focus, .btn-warning[disabled]:focus, fieldset[disabled] .btn-warning:focus, .btn-warning.disabled.focus, .btn-warning[disabled].focus, fieldset[disabled] .btn-warning.focus, .btn-warning.disabled:active, .btn-warning[disabled]:active, fieldset[disabled] .btn-warning:active, .btn-warning.disabled.active, .btn-warning[disabled].active, fieldset[disabled] .btn-warning.active {
   // background-color: inherit;
   // border-color:  inherit;
@@ -174,6 +179,19 @@ opacity:.5;
 .btn-map:before {
 content: "\e9ca";
 }
+.btn-keyboard:before {
+  content: "\f11c";
+}
+.btn-function:before {
+    content: "\f12b";
+}
+.btn-save:before {
+content: "\f0c7";
+}
+.btn-dataset:before {
+content: "\e611";
+}
+  
 
 .btn-details {
 
@@ -287,4 +305,24 @@ content: "\e9ca";
  
   // padding:0;
   // line-height:1em;
+}
+.dataset-filter-metrics .multiSelect > button {
+  
+   background:linear-gradient(to bottom,$bk_2_2, $bk_2);
+   border-color:$bk_2_1;
+   &:hover {
+     background:linear-gradient(to bottom,$bk_2, $bk_2_2);
+    
+  }
+}
+
+.metadata .multiSelect > button {
+  
+   background:linear-gradient(to bottom,$gris_98, $gris_90);
+   border-color:$gris_80;
+   color:$general;
+   &:hover {
+     background:linear-gradient(to bottom,$gris_80, $gris_98);
+    
+  }
 }
