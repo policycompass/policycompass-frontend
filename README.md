@@ -54,4 +54,8 @@ compass watch
 * for modify certain styles inspect the element in Chrome and click the .css file at the right panel, the comment has the exact .scss line in which the style is defined.
 
 
+## Policy Compass is Free Software
 
+This project (i.e. all files in this repository if not declared otherwise) is
+licensed under the GNU Affero General Public License (AGPLv3), see
+LICENSE.txt.
