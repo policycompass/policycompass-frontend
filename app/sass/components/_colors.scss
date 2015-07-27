@@ -1,17 +1,17 @@
-$main:$bk_4_1;
-$main_2:#aee0f0;
-$main_3:$gris_95;
-$main_bk:$gris_98;
-$main_bk_2:$gris_90;
+// $main:$bk_4_1;
+// $main_2:#aee0f0;
+// $main_3:$gris_95;
+// $main_bk:$gris_98;
+// $main_bk_2:$gris_90;
 
-$main:$bk_2;
-$main_2:#d2de9c;
-$main_3:#f5f3e3;
-$main_bk:#fffdf2;
-$main_bk_2:#dee8d9;
+// $main:$bk_2;
+// $main_2:#d2de9c;
+// $main_3:#f5f3e3;
+// $main_bk:#fffdf2;
+// $main_bk_2:#dee8d9;
 
 
-$main:$bk;
+$main:black;
 
 $main_2:$bk_1_2;
 
@@ -19,16 +19,24 @@ $main_3:$gris_95;
 $main_bk:$gris_98;
 $main_bk_2:$gris_90;
 
+$main_4:$gris_50;
+
 
 .pagination > li > a, .pagination > li > span,
 // #main-menu a,
 a,
-.row-view-create .view-item-wrap:before,
+
 h1, h2, h3, h4 {
   color:$main;
+ 
+}
+.glyphicon,
+.row-view-create .view-item-wrap:before,
+.searchItemIcon a:before {
+  color:$main_4;
 }
 .row-view-main h3.fonticon:before {
-  background:$main;
+  background:$main_4;
 }
 #main-menu a:focus, #main-menu a:hover {
   // background:$main;
@@ -38,6 +46,9 @@ h1, h2, h3, h4 {
   
 }
 
+.subtitle {
+  color: $main_2;
+}
 .result-wrapper {
   background:$main_3;
 }

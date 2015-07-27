@@ -191,8 +191,24 @@ content: "\f0c7";
 .btn-dataset:before {
 content: "\e611";
 }
-  
 
+.btn-concept:before {
+content: "\e157";
+}
+.btn-association:before {
+    content: "\e110";
+}
+.btn-concept,
+.btn-association {
+  &:before {
+    font-family:'Glyphicons Halflings';
+  }
+}
+
+  
+  
+   
+    
 .btn-details {
 
   &:before {
