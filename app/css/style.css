@@ -2555,7 +2555,7 @@ rzslider span.bubble.selection {
   display: block;
 }
 /* line 38, ../sass/components/_pages-share.scss */
-#share-window .share-submenu input {
+#share-window .share-submenu .share-input {
   width: 32em;
   border-radius: 6px;
   padding: 2px 10px;
