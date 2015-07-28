@@ -41,6 +41,7 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
 	$scope.mode= 'view';
 	$scope.chartid= '2'; 	
 	$scope.hideyaxeunits=true;
+	$scope.resolution = day,month, year
  */
 .directive('pcLinesChart', ['$log', 'API_CONF', function ($log,  API_CONF) {
 	
@@ -62,7 +63,8 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
         	showTogether: '=showTogether',
         	showPercentatge: '=showPercentatge',
         	xaxeformat: '=xaxeformat',
-        	hideyaxeunits: '=hideyaxeunits',        	
+        	hideyaxeunits: '=hideyaxeunits',  
+        	resolution: '=resolution',
         }, 
 		compile: function(element, attributes){ 
          return {
@@ -101,6 +103,15 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
 			};
 
 
+			$scope.$watch('resolution', function(resolution) {
+				if (($scope.numbers1) && ($scope.chartid))
+				{
+					//$scope.directivePlotLineChart();	
+					$timeout($scope.directivePlotLineChart, 0);
+				}				
+            });
+            
+            
 			$scope.$watch('viewyaxeunits', function(xaxeformat) {
 				if (($scope.numbers1) && ($scope.chartid))
 				{
@@ -337,13 +348,31 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
 							'showAsPercentatge': $scope.showPercentatge,
 							'xaxeformat': $scope.xaxeformat,
 							'hideyaxeunits': $scope.hideyaxeunits,
+							'resolution': $scope.resolution,
 						});
 	                
 	                if ($scope.dataset.length>0)
 	                {
 	                	var dataToSend2 = []
 	                	dataToSend2 = $scope.dataset;
-	                	barLine.render(dataToSend2, $scope.events, $scope.mode);
+	                	plotChart=false;
+	                	
+	                	if ($scope.xaxeformat=='sequence')
+	                	{
+	                		plotChart=true;
+	                	}
+	                	else
+	                	{
+	                		if (isNaN($scope.events[$scope.events.length-1]))
+	                		{
+	                			plotChart=true;
+	                		}
+	                	}
+	                	
+	                	if (plotChart)
+	                	{
+	                		barLine.render(dataToSend2, $scope.events, $scope.mode);
+	                	}
 	                }
 					
 				}
@@ -364,7 +393,8 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
 			'</div>'+
 		'</div>'+		
         '</div>'+
-        '<div ng-hide="small" class="showFilter">' +
+        '<div ng-hide="small" id="showFilterContainer" class="showFilterContainer">' +
+        '<div id="showFilter" class="showFilter on_check">' +
         '<label class="checkbox-inline"><input ng-model="showLegend" type="checkbox" name="showLegend" class="checkbox filterCheckBox"> Show Legend</label>' +
         '<label class="checkbox-inline"><input ng-model="showLines"  type="checkbox" name="showLines"  class="checkbox filterCheckBox"> Show Lines</label>' +
         '<label class="checkbox-inline"><input ng-model="showAreas"  type="checkbox" name="showAreas"  class="checkbox filterCheckBox"> Show Areas</label>' +
@@ -373,6 +403,7 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
 		'<label class="checkbox-inline"><input ng-model="showGrid"   type="checkbox" name="showGrid"   class="checkbox filterCheckBox"> Show Grid</label>' +
 		'<label class="checkbox-inline"><input ng-model="showTogether"  type="checkbox" name="showTogether"  class="checkbox filterCheckBox"> Show only one Y axe</label>' +
         '<label class="checkbox-inline"><input ng-model="showPercentatge" type="checkbox" name="showPercentatge" class="checkbox filterCheckBox"> Show as %</label>' +
+        '</div>' +
         '</div>'        
     };
 }])

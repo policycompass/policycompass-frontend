@@ -540,13 +540,17 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			var arrayValuesDataPie = [];
 			var arrayUnitsDataPie = [];
 			
-			if (($scope.numbers2) && (parseInt(value)>=0))
+			//if (($scope.numbers2) && (parseInt(value)>=0))
+			if (($scope.mapTimeSlider) && (parseInt(value)>=0))
+			
 			{   
 				//console.log(value);
 				//console.log($scope.numbers2);
-				if ($scope.numbers2[value])
+				//if ($scope.numbers2[value])
+				if ($scope.mapTimeSlider[value])
 				{
-					returnValue = $scope.numbers2[value]['Key'];
+					//returnValue = $scope.numbers2[value]['Key'];
+					returnValue = $scope.mapTimeSlider[value];
 					//console.log("$scope.rangeDatesSliderMin="+$scope.rangeDatesSliderMin);
     				//console.log("$scope.rangeDatesSliderMax="+$scope.rangeDatesSliderMax);
     				var icnt = $scope.rangeDatesSliderMin;	
@@ -631,6 +635,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			var arrayColorsDataPie = [];
 			
 			var plotChart = false;
+			//console.log($scope.numbers2);
+			//console.log(value);
 			
 			if (($scope.numbers2) && (parseInt(value)>=0))
 			{   
@@ -671,43 +677,52 @@ angular.module('pcApp.visualization.controllers.visualization', [
     				{
     					icnt=0;
     				}
-    				Key = Key + $scope.numbers2[icnt]['Key'];
-    				//console.log("Key="+Key);
     				
-    				l = icnt;
-    				for (var label in $scope.numbers2[l].Labels) 
-					{
-						//console.log($scope.numbers2[l].Labels[label]);
-						var labelName = $scope.numbers2[l].Labels[label];
-						var valueName = $scope.numbers2[l].Values[label];
-						var unitsName = $scope.numbers2[l].Units[label];
-						var colorName = $scope.numbers2[l].Colors[label];
-						
-						var a = arrayLabelsDataPie.indexOf(labelName);
-										
-						if (a>=0)
+    				//console.log($scope.numbers2);
+    				//console.log(icnt);
+    				
+    				if( $scope.numbers2[icnt] === undefined ) {
+    					 //console.log("not exist!!!");
+					}
+    				else
+    				{
+	    				Key = Key + $scope.numbers2[icnt]['Key'];
+	    				//console.log("Key="+Key);
+	    				
+	    				l = icnt;
+	    				for (var label in $scope.numbers2[l].Labels) 
 						{
-							arrayValuesDataPie[a]=parseInt(arrayValuesDataPie[a])+parseInt(valueName);						
-							var b = arrayUnitsDataPie.indexOf(unitsName);
-							if (b>=0)
+							//console.log($scope.numbers2[l].Labels[label]);
+							var labelName = $scope.numbers2[l].Labels[label];
+							var valueName = $scope.numbers2[l].Values[label];
+							var unitsName = $scope.numbers2[l].Units[label];
+							var colorName = $scope.numbers2[l].Colors[label];
+							
+							var a = arrayLabelsDataPie.indexOf(labelName);
+											
+							if (a>=0)
 							{
-								
+								arrayValuesDataPie[a]=parseInt(arrayValuesDataPie[a])+parseInt(valueName);						
+								var b = arrayUnitsDataPie.indexOf(unitsName);
+								if (b>=0)
+								{
+									
+								}
+								else
+								{
+									arrayUnitsDataPie.push(unitsName);
+								}
 							}
 							else
 							{
+								arrayLabelsDataPie.push(labelName);
+								arrayValuesDataPie.push(valueName);
 								arrayUnitsDataPie.push(unitsName);
+								arrayColorsDataPie.push(colorName);
+								
 							}
 						}
-						else
-						{
-							arrayLabelsDataPie.push(labelName);
-							arrayValuesDataPie.push(valueName);
-							arrayUnitsDataPie.push(unitsName);
-							arrayColorsDataPie.push(colorName);
-							
-						}
-					}
-    				
+    				}
     				icnt = icnt +1;
     				//console.log("icnt="+icnt);
     			}	
@@ -867,6 +882,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							//to_country = $scope.translateCountryValue($scope.rangeDatesSliderMax);
 							to_country = $scope.translateCountryValue($scope.rangeDatesSliderMin);
 						}
+						
+						//console.log($scope.datasetToSendMap);
 						//console.log("-----------------------------");
 						//console.log($scope.rangeDatesSliderMin);						
 						//console.log($scope.translateCountryValue($scope.rangeDatesSliderMin));
@@ -1737,11 +1754,18 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						
 						if (($scope.mode=='create') || ($scope.mode=='edit'))
 						{
-//							console.log($scope.IndividualDatasetCheckboxes_[i]);
-//							console.log($scope.individualCombo_value_);
-							
-							identities =  $scope.IndividualDatasetCheckboxes_[i];
-							identityColors =  $scope.dataset_color_palete_[i];
+							//console.log($scope.IndividualDatasetCheckboxes_[i]);
+							//console.log($scope.individualCombo_value_);
+							if ($scope.IndividualDatasetCheckboxes_[i])
+							{
+								identities =  $scope.IndividualDatasetCheckboxes_[i];
+								identityColors =  $scope.dataset_color_palete_[i];
+							}
+							else
+							{
+								identities = elems[j]['identities'];
+								identityColors = elems[j]['identitiescolors'];
+							}
 							//console.log("i="+i);
 							//console.log("identities");
 							//console.log(identities);
@@ -1782,11 +1806,29 @@ angular.module('pcApp.visualization.controllers.visualization', [
 												
 						//jsonFile = API_CONF.METRICS_MANAGER_URL + "/metrics/"+resIdMetric+'?time_resolution='+timeresolution+strIdentities;
 
-
+						//console.log("timeStart="+$scope.timeStart);
+						//console.log("timeEnd="+$scope.timeEnd);
+						
+						
 						jsonFile = API_CONF.DATASETS_MANAGER_URL + "/datasets/"+resIdMetric+'?time_resolution='+timeresolution+strIdentities;
 						//jsonFile = "/api/v1/datasetmanager/datasets/"+resIdMetric+'?time_resolution='+timeresolution+strIdentities;
 						
-						
+						//console.log("scope.timeStart="+$scope.timeStart);
+						//console.log("scope.timeEnd="+$scope.timeEnd);
+						if  ($scope.timeStart)
+						{
+							if ($scope.timeStart!='----')
+							{
+								jsonFile = jsonFile+"&time_start="+$scope.timeStart;
+							}
+						}
+						if  ($scope.timeEnd)
+						{
+							if ($scope.timeEnd!='----')
+							{
+								jsonFile = jsonFile+"&time_end="+$scope.timeEnd;
+							}
+						}
 						
 						//resIdMetric = cntMetrics+1;
 
@@ -1938,7 +1980,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
   					pathToJson =pathToJson+'?resolution='+$scope.resolution.value;	
   				}
   				*/
-  				//console.log("pathToJson="+pathToJson);  				
+  				//console.log("pathToJson="+pathToJson);  
+				
   				//q = q.defer(d3.json, d);
   				q = q.defer(d3.json, pathToJson);
   				q2 = q2.defer(d3.json, pathToJson);
@@ -1971,6 +2014,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			$dataIndividualPromises = [];
 			
 			$dataUnit = [];
+			$scope.TimeSelector = [];
 			for (var i=1; i<arguments.length; i++)
 			{
 				//console.log($scope.TitleUnits[arguments[i]['unit_id']]);
@@ -1995,6 +2039,29 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				for (var j=0; j<arguments[i]['data']['table'].length; j++)
 				{
 					
+
+
+					for (var keyTimeData in arguments[i]['data']['table'][j].values) 
+					{
+						//console.log(keyTimeData);
+						if (keyTimeData)
+						{
+							//console.log("keyTimeData="+keyTimeData);
+							
+							123456
+							var a = $scope.TimeSelector.indexOf(keyTimeData);
+							if (a<0)
+							{
+								$scope.TimeSelector.push(keyTimeData);	
+								//$scope.TimeSelector.sort();
+							}	
+												
+						}
+					}
+
+					//console.log($scope.TimeSelector);
+
+					
 					if ($scope.TitleIndividuals[arguments[i]['data']['table'][j].individual])
 					{}
 					else
@@ -2011,6 +2078,84 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				}	
 				
 			}
+			
+
+			
+									
+			//console.log($scope.TimeSelector);	
+			$scope.TimeSelector.sort(function(a, b) 
+			{
+				var amod=a;
+				var bmod=b;
+				$scope.resolution='Month';
+				
+				if ($scope.resolution=='Day')
+				{
+					var amod=a;
+					var bmod=b;
+				}
+				else if ($scope.resolution=='Month')
+				{
+					var amod='01/'+a;
+					var bmod='01/'+b;					
+				}
+				else if ($scope.resolution=='Year')
+				{
+					var amod='01/01/'+a;
+					var bmod='01/01/'+b;					
+				}				
+				//console.log(a);
+				//console.log(amod);
+				//console.log(bmod);
+				var dateA=new Date(amod), dateB=new Date(bmod);
+				
+				return dateA-dateB //sort by date ascending
+			}); 
+  
+			//console.log($scope.TimeSelector);
+  						
+
+																
+			$scope.TimeSelector.unshift('----');
+
+			if (!$scope.timeStart)
+			{
+				$scope.timeStart=$scope.TimeSelector[0];	
+			}
+			else
+			{
+				var cntD=0;
+				$scope.TimeSelector.forEach(function(entry) {
+				    if (entry==$scope.timeStart)
+				    {
+				    	$scope.timeStart=$scope.TimeSelector[cntD];
+				    }
+				    cntD = cntD+1;
+				});
+
+				
+							
+			}			
+			
+			
+			if (!$scope.timeEnd)
+			{
+				$scope.timeEnd=$scope.TimeSelector[0];	
+			}
+			else
+			{
+				var cntD=0;
+				$scope.TimeSelector.forEach(function(entry) {
+				    if (entry==$scope.timeEnd)
+				    {
+				    	$scope.timeEnd=$scope.TimeSelector[cntD];
+				    }
+				    cntD = cntD+1;
+				});
+
+				
+							
+			}			
 			
 		}
 		
@@ -2040,12 +2185,16 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				$scope.arrayDataByCounty = [];
 				
 				var arrayDatesInDataCountry = [];
+				
+				$scope.arrayDatesInDataCountry = [];
+				
 				var arrayDatesInDataCountryEval = [];
 				$scope.arrayDatesInDataCountryEval = [];
 				
 				$scope.arrayLabels =[];
 				$scope.arrayUnits =[];
-				
+				$scope.InitialArguments = [];
+				$scope.cntCountriesToPlot = 0;
 				for (var i=1; i<arguments.length; i++)
 				{	
 					//console.log("i="+i);
@@ -2085,52 +2234,138 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							//console.log("plot map")
 							//console.log(arguments[i]);
 							
+							$scope.semCountries = 0;
+							
+							$scope.mapTimeSlider = [];
+							
+							
 							
 							if (arguments[i]['spatial'])
 							{
-								console.log("spatial exists!!!");
-								console.log(arguments[i]['spatial']);
-								console.log(arguments[i]['spatial'].length);
-								for (var j=0; j<arguments[i]['spatial'].length; j++)
-								//if (1==1)
+								//console.log("spatial exists!!!");
+								//console.log(arguments[i]['spatial']);
+								//console.log(arguments[i]['spatial'].length);
+								
+								
+								
+								$scope.InitialArguments[arguments[i]['spatial']]=arguments[i];
+								
+								//for (var j=0; j<arguments[i]['spatial'].length; j++)
+								if (1==1)
 								{
-									var countryDatasetTitle = arguments[i]['spatial'][j]['title'];
-									//var countryDatasetTitle = 'Spain';
-									var countryDatasetId = arguments[i]['spatial'][j]['identifier'];
-									//var countryDatasetId = 'ESP';
 									
-									//console.log(arguments[i]['spatial'][j]);
-									//console.log(countryDatasetTitle+"---"+countryDatasetId);
-									var arrayDataPerDate = [];
-									
-									for (var jj=0; jj<arguments[i]['data']['table'].length; jj++)
+									$idIndiv = arguments[i]['spatial'];
+									//console.log("........idIndiv="+$idIndiv);
+									$dataCountry = Individual.getById($idIndiv);
+	    						    
+									$dataCountry.$promise.then(function(countryData)
 									{
-										var obj = arguments[i]['data']['table'][jj].values;
-										//console.log(obj);
-										for (ii in obj)
+										
+										//console.log("countryDatarec---------");
+										//console.log(countryData);
+										
+									
+										//var countryDatasetTitle = arguments[i]['spatial'][j]['title'];
+										var countryDatasetTitle = countryData.title;
+										//var countryDatasetId = arguments[i]['spatial'][j]['identifier'];
+										var countryDatasetId = countryData.code;
+									
+										//console.log(arguments[i]['spatial'][j]);
+										//console.log(countryDatasetTitle+"---"+countryDatasetId);
+										var arrayDataPerDate = [];
+										$scope.arrayDataPerDate = [];
+										
+										//console.log("countryData.id="+countryData.id);
+										//console.log("scope.InitialArguments");
+										//console.log($scope.InitialArguments);
+										arguments2 = $scope.InitialArguments[countryData.id];
+									    //console.log("arguments2 for "+countryData.id);
+									    //console.log(arguments2);
+									    
+										for (var jj=0; jj<arguments2['data']['table'].length; jj++)
 										{
-											//console.log("ii="+ii);
-											//console.log("obj[ii]="+obj[ii]);
-											if (isNaN(arrayDataPerDate[ii]))
+											var obj = arguments2['data']['table'][jj].values;
+											//console.log(obj);
+											for (ii in obj)
 											{
-												arrayDataPerDate[ii]=0;
-												arrayDatesInDataCountryEval[ii]=ii;
-												$scope.arrayDatesInDataCountryEval[ii]=ii;
+												//console.log("------->ii="+ii);
+												//console.log("obj[ii]="+obj[ii]);
+												//console.log(arrayDataPerDate[ii]);
+												//console.log($scope.arrayDataPerDate[ii]);
+												
+												//if (isNaN(arrayDataPerDate[ii]))	
+												
+												//console.log("ii="+ii);
+												//console.log($scope.arrayDataPerDate[ii]);
+																							
+												if (isNaN($scope.arrayDataPerDate[ii]))
+												{
+													//console.log("Dins!!!");
+													arrayDataPerDate[ii]=0;
+													$scope.arrayDataPerDate[ii]=0;
+													arrayDatesInDataCountryEval[ii]=ii;
+													$scope.arrayDatesInDataCountryEval[ii]=ii;
+												}
+												//console.log($scope.arrayDatesInDataCountryEval[ii]);
+												
+												arrayDataPerDate[ii]=arrayDataPerDate[ii]+obj[ii];
+												$scope.arrayDataPerDate[ii]=$scope.arrayDataPerDate[ii]+obj[ii];
+	
+												//console.log("arrayDataPerDate");
+												//console.log(arrayDataPerDate);
+												
+												var a = $scope.mapTimeSlider.indexOf(ii);
+												if (a<0)
+												{
+													$scope.mapTimeSlider.push(ii);	
+													//$scope.mapTimeSlider.sort();
+													
+													$scope.mapTimeSlider.sort(function(a, b) 
+													{
+														var amod=a;
+														var bmod=b;
+														$scope.resolution='Month';
+														
+														if ($scope.resolution=='Day')
+														{
+															var amod=a;
+															var bmod=b;
+														}
+														else if ($scope.resolution=='Month')
+														{
+															var amod='01/'+a;
+															var bmod='01/'+b;					
+														}
+														else if ($scope.resolution=='Year')
+														{
+															var amod='01/01/'+a;
+															var bmod='01/01/'+b;					
+														}				
+														//console.log(a);
+														//console.log(amod);
+														//console.log(bmod);
+														var dateA=new Date(amod), dateB=new Date(bmod);
+														
+														return dateA-dateB //sort by date ascending
+													}); 													
+													
+												}					        
+										        
 											}
 	
-											arrayDataPerDate[ii]=arrayDataPerDate[ii]+obj[ii];
-	
-											//console.log("arrayDataPerDate");
-											//console.log(arrayDataPerDate);
 										}
-	
-									}
 									
-									//console.log(arrayDataPerDate);
+
 									
-									//arrayDataByCounty.push({'Id':countryDatasetId, 'Data':arguments[i]['data']['table']});
-									arrayDataByCounty.push({'Id':countryDatasetId, 'Title':countryDatasetTitle, 'Data': arrayDataPerDate});
-									$scope.arrayDataByCounty.push({'Id':countryDatasetId, 'Title':countryDatasetTitle, 'Data': arrayDataPerDate});
+										//arrayDataByCounty.push({'Id':countryDatasetId, 'Data':arguments[i]['data']['table']});
+										arrayDataByCounty.push({'Id':countryDatasetId, 'Title':countryDatasetTitle, 'Data': $scope.arrayDataPerDate});
+										$scope.arrayDataByCounty.push({'Id':countryDatasetId, 'Title':countryDatasetTitle, 'Data': $scope.arrayDataPerDate});
+										
+										///console.log($scope.arrayDataByCounty);
+										
+										$scope.semCountries = $scope.semCountries + 1;
+										$scope.cntCountriesToPlot = $scope.cntCountriesToPlot +1;
+									});
 								}
 							}
 							//console.log(arrayDataByCounty);
@@ -2194,13 +2429,27 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							var arrayValues = [];
 							var arrayUnits = [];
 							var arrayColors = [];
-														
+							var obj_ = [];						
 							for (var j=0; j<arguments[i]['data']['table'].length; j++)
 							{
-								//console.log(arguments[i]);
+								//console.log(arguments[i]);								
+								//console.log("j="+j);
+								//console.log(arguments[i]['data']['table'][j].values);
 								var obj = arguments[i]['data']['table'][j].values;
 								
+								obj_[j] = arguments[i]['data']['table'][j].values;
+								//console.log('---------obj--------');
 								//console.log(obj);
+								//console.log(obj_[j]);
+								
+								//console.log(obj);
+								
+								const ordered = {};
+								Object.keys(obj_[j]).sort().forEach(function(key) {
+  									ordered[key] = obj_[j][key];
+								});
+								//console.log(ordered);
+								obj_[j] = ordered;
 								
 								labelYAxe.push(labelTemporalYAxes);
 													
@@ -2239,12 +2488,12 @@ angular.module('pcApp.visualization.controllers.visualization', [
 									var arrayValuesX = [];
 									var arrayValuesY = [];
 									
-									for (value in obj) {
+									for (value in obj_[j]) {
 	    								//console.log("value="+value);
 	    								//console.log(obj[value]);
 	    								arrayLabels.push(value);
 	    								arrayValuesX.push(value);
-	    								arrayValuesY.push(obj[value]);
+	    								arrayValuesY.push(obj_[j][value]);
 	    								
 									}
 									
@@ -2313,10 +2562,13 @@ angular.module('pcApp.visualization.controllers.visualization', [
 									$sem = 0;
 									while (label=="")
 									{
-
+										//console.log("j="+j);
 										if ($scope.TitleIndividuals[arguments[i]['data']['table'][j].individual])
 										{
-											var label = $scope.TitleIndividuals[arguments[i]['data']['table'][j].individual];	
+											var label = $scope.TitleIndividuals[arguments[i]['data']['table'][j].individual];
+											//console.log("label="+label+"----value=");
+											//console.log(obj);	
+											//console.log(obj_[j]);
 										}
 										$sem = $sem +1;
 										
@@ -2331,7 +2583,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
 									
 									
 									//console.log(label);
-									for (value in obj) {
+									//console.log(obj);
+									//for (value in obj) {
+									for (value in obj_[j]) {
 										
 										
 										var pieColor = '#000000';
@@ -2396,13 +2650,16 @@ angular.module('pcApp.visualization.controllers.visualization', [
 										}	
 										*/									
 										//pieColor = '';
+										//console.log("obj---");
+										//console.log(obj);
 										var arrayPieTmp = {
 										'Key': value,
 										'Label': label,
-										'Value': obj[value],
+										'Value': obj_[j][value],
 										'Unit': labelTemporalYAxes,
 										'Color': pieColor,
 										};
+										//console.log(arrayPieTmp);
 										arrayDataset.push(arrayPieTmp);
 										$scope.arrayDataset.push(arrayPieTmp);
 										
@@ -2446,18 +2703,18 @@ angular.module('pcApp.visualization.controllers.visualization', [
 									}										
 									
 									
-									for (value in obj) {
+									for (value in obj_[j]) {
 									
 										
 										arrayDatasetTmp = {
 											'Category': 1,
-											'From': obj[value],
+											'From': obj_[j][value],
 											'Key': key,
 											'To': value,
-											'Value': obj[value],
+											'Value': obj_[j][value],
 											'ValueX': value,
-											'ValueY': obj[value],
-											'XY': value+"|"+obj[value],
+											'ValueY': obj_[j][value],
+											'XY': value+"|"+obj_[j][value],
 											'labelY': labelTemporalYAxes
 										};
 										
@@ -2491,21 +2748,31 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				{		
 					//console.log("map");
 					//console.log(arrayDatesInDataCountryEval);
+					//console.log($scope.arrayDatesInDataCountryEval);
 					
-					for (i in arrayDatesInDataCountryEval)
+					//for (i in arrayDatesInDataCountryEval)
+					for (i in $scope.arrayDatesInDataCountryEval)
 					{
+						//console.log("i="+$i);
 						//console.log(arrayDatesInDataCountryEval[i]);
 						arrayDatesInDataCountry.push({'Key':arrayDatesInDataCountryEval[i]});
+						$scope.arrayDatesInDataCountry.push({'Key':$scope.arrayDatesInDataCountryEval[i]});
 					}
 					//console.log(arrayDatesInDataCountry);
 					
 					//arrayDatesInDataCountry.push({'Key':'2001'})
 					//arrayDatesInDataCountry.push({'Key':'2014'})					
 					//arrayDatesInDataCountry.push({'Key':'2015'})
-					$scope.numbers2=arrayDatesInDataCountry;
+					//$scope.numbers2=arrayDatesInDataCountry;
+					
+					//$scope.numbers2=$scope.arrayDatesInDataCountry;
 					
 					//console.log($scope.numbers2);
 					
+					
+					//console.log(arrayDataset);
+					
+					/*
 					if (arrayDataByCounty.length>0)
 					{
 						$scope.datasetToSendMap = arrayDataByCounty;
@@ -2514,16 +2781,91 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					{
 						$scope.datasetToSendMap = [{id:"",data:""}];
 					}
+					*/
 					
+/*
+						var numbers2 =[];
+						
+						for (value in arrayLabels) {
+						
+							var dataRowTmpPie = {
+								'Key': value,
+								'Labels': arrayLabels[value],
+								'Values': arrayValues[value],
+								'Units': arrayUnits[value],
+								'Colors': arrayColors[value]
+							};
+							
+							numbers2.push(dataRowTmpPie);
+						}
+						
+						console.log(numbers2);
+					*/
 					
-					
+
+
+
+						//console.log("scope.arrayDataset="+$scope.arrayDataset);
+						//console.log("scope.numbers2.length="+$scope.numbers2.length);
+											
 					//$scope.showZoom = true;
 					
 					if (($scope.mode=='create') || ($scope.mode=='edit'))
 					//if (1==1)
 					{						
 						//console.log("before plotMapChart");
-						$scope.plotMapChart();
+						//console.log("$scope.semCountries");
+						//console.log($scope.semCountries);
+						$scope.$watch('semCountries', function(semCountries) {
+							
+							//if ($scope.semCountries==$scope.visualization.spatial.length)
+							if ($scope.semCountries==$scope.cntCountriesToPlot)
+							{
+								//console.log(arrayDataByCounty.length);
+								//console.log(arrayDataByCounty);
+								if (arrayDataByCounty.length>0)
+								{
+									$scope.datasetToSendMap = arrayDataByCounty;
+								}
+								else
+								{
+									$scope.datasetToSendMap = [{id:"",data:""}];
+								}
+								
+								//console.log($scope.datasetToSendMap);
+								//$scope.numbers2 = '[{"Key":"1996","Labels":["France","Italy","Germany","Spain"],"Values":[187022,65705,65705,65705],"Units":["Unitless","Unitless","People","People"],"Colors":["#aec7e8","#ff7f0e","#1f77b4","#aec7e8"]},{"Key":"1997","Labels":["France","Italy","Germany","Spain"],"Values":[205099,78846,78846,78846],"Units":["Unitless","Unitless","People","People"],"Colors":["#aec7e8","#ff7f0e","#1f77b4","#aec7e8"]},{"Key":"1998","Labels":["France","Italy","Germany","Spain"],"Values":[216682,81599,81599,81599],"Units":["Unitless","Unitless","People","People"],"Colors":["#aec7e8","#ff7f0e","#1f77b4","#aec7e8"]},{"Key":"1999","Labels":["France","Italy","Germany","Spain"],"Values":[226563,89994,89994,89994],"Units":["Unitless","Unitless","People","People"],"Colors":["#aec7e8","#ff7f0e","#1f77b4","#aec7e8"]},{"Key":"2000","Labels":["France","Italy","Germany","Spain"],"Values":[244336,98369,98369,98369],"Units":["Unitless","Unitless","People","People"],"Colors":["#aec7e8","#ff7f0e","#1f77b4","#aec7e8"]},{"Key":"2001","Labels":["France","Italy","Germany","Spain"],"Values":[246518,12965,744,39],"Units":["Unitless","Unitless","People","People"],"Colors":["#aec7e8","#ff7f0e","#1f77b4","#aec7e8"]},{"Key":"2002","Labels":["France","Italy","Germany","Spain"],"Values":[250969,139264,662,127],"Units":["Unitless","Unitless","People","People"],"Colors":["#aec7e8","#ff7f0e","#1f77b4","#aec7e8"]},{"Key":"2003","Labels":["France","Italy","Germany","Spain"],"Values":[255575,135352,702,158],"Units":["Unitless","Unitless","People","People"],"Colors":["#aec7e8","#ff7f0e","#1f77b4","#aec7e8"]},{"Key":"2004","Labels":["France","Italy","Germany","Spain"],"Values":[283708,164492,632,181],"Units":["Unitless","Unitless","People","People"],"Colors":["#aec7e8","#ff7f0e","#1f77b4","#aec7e8"]},{"Key":"2005","Labels":["France","Italy","Germany","Spain"],"Values":[276740,189395,756,124],"Units":["Unitless","Unitless","People","People"],"Colors":["#aec7e8","#ff7f0e","#1f77b4","#aec7e8"]},{"Key":"2006","Labels":["France","Italy","Germany","Spain"],"Values":[255019,235422,680,82],"Units":["Unitless","Unitless","People","People"],"Colors":["#aec7e8","#ff7f0e","#1f77b4","#aec7e8"]},{"Key":"2007","Labels":["France","Italy","Germany","Spain"],"Values":[248355,278797,716,45],"Units":["Unitless","Unitless","People","People"],"Colors":["#aec7e8","#ff7f0e","#1f77b4","#aec7e8"]},{"Key":"2008","Labels":["France","Italy","Germany","Spain"],"Values":[239951,329296,865,76],"Units":["Unitless","Unitless","People","People"],"Colors":["#aec7e8","#ff7f0e","#1f77b4","#aec7e8"]},{"Key":"2009","Labels":["France","Italy","Germany","Spain"],"Values":[235842,397620,827,50],"Units":["Unitless","Unitless","People","People"],"Colors":["#aec7e8","#ff7f0e","#1f77b4","#aec7e8"]},{"Key":"2010","Labels":["Germany","Spain"],"Values":[774,48],"Units":["People","People"],"Colors":["#1f77b4","#aec7e8"]}]';
+								//$scope.numbers2=arrayDatesInDataCountry;
+								//$scope.numbers2=$scope.arrayDatesInDataCountry;
+								//console.log($scope.numbers2);
+								//console.log($scope.numbers2);
+								//console.log('semCountries');
+								$scope.plotMapChart();
+							}
+							
+							
+						});
+						//
+					}
+					else
+					{
+						
+						$scope.$watch('semCountries', function(semCountries) {
+							
+							if ($scope.semCountries==$scope.cntCountriesToPlot)
+							{
+								if (arrayDataByCounty.length>0)
+								{
+									$scope.datasetToSendMap = arrayDataByCounty;
+								}
+								else
+								{
+									$scope.datasetToSendMap = [{id:"",data:""}];
+								}
+								//$scope.numbers2=$scope.arrayDatesInDataCountry;
+								//console.log($scope.numbers2);
+								//$scope.numbers2=$scope.arrayDatesInDataCountry;
+							}
+						});
 					}
 					
 				}
@@ -2623,7 +2965,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 								'showLabels': $scope.showLabels,							
 								'showGrid': $scope.showGrid,
 								'showAsPercentatge': $scope.showAsPercentatge,
-								'legendsColumn': legendsColumn
+								'legendsColumn': legendsColumn,
+								'resolution': $scope.resolution.value
 							});
 						
 						
@@ -2647,9 +2990,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	                				{
 	                					//console.log("PINTAMOS!!!");
 	                					//console.log($scope.eventsToPlot);
-	                					barLine.render(numbers1, $scope.eventsToPlot, $scope.mode);	
+                						barLine.render(numbers1, $scope.eventsToPlot, $scope.mode);	
 	                				}
-	                				
 									
             						});
             					}
@@ -2718,27 +3060,58 @@ angular.module('pcApp.visualization.controllers.visualization', [
 								'Colors': arrayColors[value]
 							};
 							
+							//console.log(dataRowTmpPie);
 							numbers2.push(dataRowTmpPie);
 						}
 						
 						//console.log(numbers2);
-						
+						/*
 						numbers2.sort(function(a, b) {
 								
+								console.log("a="+a);
 								
 									var dateA=new Date(a.Key), dateB=new Date(b.Key)
 								
  								
  								return dateA-dateB //sort by date ascending
 							}); 
-  
+  						*/
+  						
+  						numbers2.sort(function(a, b) 
+						{
+							var amod=a.Key;
+							var bmod=b.Key;
+							//$scope.resolution='Month';
+				
+							if ($scope.resolution=='Day')
+							{
+								var amod=a.Key;
+								var bmod=b.Key;
+							}
+							else if ($scope.resolution=='Month')
+							{
+								var amod='01/'+a.Key;
+								var bmod='01/'+b.Key;					
+							}
+							else if ($scope.resolution=='Year')
+							{
+								var amod='01/01/'+a.Key;
+								var bmod='01/01/'+b.Key;					
+							}				
+							//console.log(a);
+							var dateA=new Date(amod), dateB=new Date(bmod);
+				
+							return dateA-dateB //sort by date ascending
+						}); 
+			
   						//console.log(numbers2);
   						
   						
 						$scope.dataset= numbers2;
 						$scope.numbers2=numbers2;
 						
-						//console.log("$scope.numbers2.length="+$scope.numbers2.length);
+						//console.log("scope.numbers2.length="+$scope.numbers2.length);
+						
 						$scope.rangeDatesSliderMax=$scope.numbers2.length-1;
 						
 						
@@ -2854,7 +3227,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						'showPoints': $scope.showPoints,
 						'showLabels': $scope.showLabels,
 						'showGrid': $scope.showGrid,
-						'legendsColumn': legendsColumn
+						'legendsColumn': legendsColumn,
+						'resolution': $scope.resolution.value
 		            	});
 						//console.log(datasetToSend);
 						barObj.render(datasetToSend, eventsArray);
@@ -3126,6 +3500,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	function($filter, $scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualization, $location, helper, $log, API_CONF, Individual, Unit) {
 
 	$scope.DatasetsLoaded = [];
+	$scope.TimeSelector = [];
 	$scope.scaleColor='';
 	
 	//console.log("controller VisualizationsEditController");
@@ -3187,7 +3562,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
             $scope.visualization.language = $scope.visualization.language_id;
 			
 			
-            
+			//console.log("-------------");
+			//console.log($scope.visualization.filter_configuration);
+			//console.log("-------------");
 			
     		var configurationFilter = $scope.visualization.filter_configuration;
     		var arrayConfigFilter = configurationFilter.split(",");
@@ -3247,7 +3624,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
     			else
     			{
     				eval("$scope."+dataFilter[0]+"="+dataFilter[1]);
-    				//console.log(dataFilter[0]);
+    				//console.log(dataFilter[0]);    				
     			}
     		}
     		
@@ -3599,7 +3976,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			 
     
 	$scope.createVisualization = function(metricListIn) {
-		//console.log("createVisualization Edit controller")
+		//console.log("...createVisualization Edit controller")
 		//alert("ssssssssssssssssss");
         $scope.visualization.user_id = 1;        				     
         $scope.visualization.views_count = 0;
@@ -3640,6 +4017,16 @@ angular.module('pcApp.visualization.controllers.visualization', [
         
         dataConfig['showAsPercentatge'] = $scope.showAsPercentatge;       
         dataConfig['resolution'] = $scope.resolution['value'];
+
+		if ($scope.timeStart!='----')
+        {
+        	dataConfig['timeStart'] = $scope.timeStart;	
+        }
+        if ($scope.timeEnd!='----')
+        {
+        	dataConfig['timeEnd'] = $scope.timeEnd;	
+        }
+
         
         var dataMetrics = [];
         //console.log(metricListIn);
@@ -3961,6 +4348,7 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualization, $location, helper, $log, API_CONF, Individual, Unit) {
 	
 	$scope.DatasetsLoaded = [];
+	$scope.TimeSelector = [];
 	$scope.scaleColor='';
 	//console.log('VisualizationsCreateController');
 	
@@ -4137,7 +4525,7 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualiza
 	
 	$scope.createVisualization = function(metricListIn) {
 		//console.log("$scope.createVisualization create controller")
-		console.log("createVisualization AA");
+		//console.log("createVisualization AA");
 		
 		//console.log(metricListIn);
 		
@@ -4185,6 +4573,16 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualiza
         }
         dataConfig['showAsPercentatge'] = $scope.showAsPercentatge;
         dataConfig['resolution'] = $scope.resolution['value'];
+
+        if ($scope.timeStart!='----')
+        {
+        	dataConfig['timeStart'] = $scope.timeStart;	
+        }
+        if ($scope.timeEnd!='----')
+        {
+        	dataConfig['timeEnd'] = $scope.timeEnd;	
+        }
+
         
         var dataMetrics = [];
 
@@ -4467,7 +4865,7 @@ angular.module('pcApp.visualization').filter('pagination', function()
 				
 				//console.log(visualizationByMetricList.results[i]);
 				var idVisu = visualizationByMetricList.results[i]['visualization'];
-				console.log(idVisu);
+				//console.log(idVisu);
 				
 				$scope.visualizationRec = Visualization.get({id: idVisu},
 				function(visualizationList) {

@@ -73,11 +73,11 @@
 						
 							<div ng-click="isSelectedSon('graph_line') ? showModal() : void(0)">
 								<div ng-show="isSelectedSon('map_1') || isSelectedSon('mercator') || isSelectedSon('conicConformal') || isSelectedSon('equirectangular') || isSelectedSon('orthographic') || isSelectedSon('azimuthalEqualArea')">
-									<div ng-show="numbers2.length>0">
+									<div ng-show="mapTimeSlider.length>0">
 										<rzslider
 										 rz-slider-model="rangeDatesSliderMin"
 										 rz-slider-floor="0"
-										 rz-slider-ceil="numbers2.length-1"
+										 rz-slider-ceil="mapTimeSlider.length-1"
 										 rz-slider-translate="translateCountrySlider"
 										 ></rzslider>
 									</div>	
@@ -178,12 +178,6 @@
 									</label>
 								</div>
 
-								<div id="div_resolution"  class="on_check">
-									<label class="checkbox-inline">
-										Resolution <select id="resolution" ng-change="rePlotGraph();" ng-model="resolution" ng-options="opt as opt.label for opt in resolutionoptions"></select>
-									</label>
-								</div>								
-								
 								<div id="div_showZoom" ng-show="isSelectedParent(1) && !isSelectedSon('orthographic') && !isSelectedSon('azimuthalEqualArea')" class="on_check">
 									<label class="checkbox-inline">
 										<input ng-model="showZoom" type="checkbox" ng-click="rePlotGraph();" name="showZoom"  id="showZoom" class="checkbox filterCheckBox"> Enable Zoom
@@ -197,12 +191,33 @@
 								</div>
 								
 								<div id="div_showscaleColor" ng-show="isSelectedParent(1)" class="on_check">
-									<label ng-show="showLegend" class="checkbox-inline">
+									<label class="checkbox-inline">
 										<input type='color' name='color'
 											ng-model="scaleColor" 
-										ng-model-onblur ng-change="rePlotGraph()" /> Scale Color
+										ng-model-onblur ng-change="rePlotGraph()" /> Scale Colour
 									</label>
 								</div>
+								
+								<div id="div_resolution" ng-show="TimeSelector.length>1" class="on_check">
+									<label class="checkbox-inline">
+										Resolution <select id="resolution" ng-change="rePlotGraph();" ng-model="resolution" ng-options="opt as opt.label for opt in resolutionoptions"></select>
+									</label>
+								</div>								
+								
+								<div id="div_fromdate" ng-show="TimeSelector.length>1" class="on_check">
+									<label class="checkbox-inline">
+										From <select id="fromDate" ng-change="rePlotGraph();" ng-model="timeStart" ng-options="opt for opt in TimeSelector"></select>
+									</label>
+								</div>
+
+								<div id="div_todate" ng-show="TimeSelector.length>1" class="on_check">
+									<label class="checkbox-inline">
+										To <select id="toDate" ng-change="rePlotGraph();" ng-model="timeEnd" ng-options="opt for opt in TimeSelector"></select>
+									</label>
+								</div>
+																
+																
+								
 													
 								<!--								
 								<div id="div_showMovement" ng-show="isSelectedParent(1)" class="on_check">
@@ -234,8 +249,9 @@
                     <tab heading="Datasets">                    
     								
 						<div class="buttonline clearfix-min">	
-							<input ng-controller="controllercorrectmetriclist" type="hidden" ng-required="true" class="form-control" id="correctmetrics"  ng-model="correctmetrics" ng-repeat="numberrows in [ListMetricsFilter.length]">					
-							<button data-intro="To find datasets" data-position="left" type="submit" class="btn btn-info button-metrics" id="addmetricsbutton" ng-click="addMetrictoList();findMetricsByFilter();">Add dataset</button>
+							<input ng-controller="controllercorrectmetriclist" type="hidden" ng-required="true" class="form-control" id="correctmetrics"  ng-model="correctmetrics" ng-repeat="numberrows in [ListMetricsFilter.length]">	
+											
+							<button data-intro="Helps you to find datasets" data-position="right" type="submit" class="btn btn-info button-metrics" id="addmetricsbutton" ng-click="addMetrictoList();findMetricsByFilter();collapsetFilter=!collapsetFilter"><span ng-hide="collapsetFilter">Collapse</span><span ng-show="collapsetFilter">Open</span> dataset filter</button>
 							
 						</div>
 						<br />	
@@ -254,7 +270,7 @@
 
 							<div class="metric-buttons">
 								<a type="button" data-intro="Edit dataset view properties" data-position="top" class="btn btn-primary" ng-click="displaycontentMetric(metric.id);" id="edit-metric-button-{{metric.id}}">Edit</a>			    	
-						    	<button type="button" data-intro="Delete dataset fomr the visualisation" data-position="top" class="btn btn-danger" ng-click="deleteMetricFromList(metric.id, metric.title, ListMetricsFilter, $index);" id="delete-metric-button-{{metric.id}}">Delete</button>
+						    	<button type="button" data-intro="Delete dataset from the visualisation" data-position="top" class="btn btn-danger" ng-click="deleteMetricFromList(metric.id, metric.title, ListMetricsFilter, $index);" id="delete-metric-button-{{metric.id}}">Delete</button>
 						    	<a type="button" data-intro="Access to the dataset data" data-position="right" class="btn btn-info" href="#/datasets/{{metric.id}}" target="_blank" id="view-metric-button-{{metric.id}}">View Dataset in detaill</a>						    	
 						  	</div>
 
@@ -276,7 +292,7 @@
 											<table>
 												<thead>
 													<th><label for="color">Individual</label></th>
-													<th ng-show="isSelectedSon('graph_line')"><label for="color">Color</label></th>
+													<th ng-show="isSelectedSon('graph_line')"><label for="color">Colour</label></th>
 												</thead>
 												<body>
 													<tr ng-repeat="option in individualCombo_value_[metric.id]">
@@ -353,7 +369,7 @@
                     <!-- ini tab historical events -->
                     <tab ng-show="isSelectedSon('graph_line')" heading="Historical Events">
 						<div class="buttonline clearfix-min">
-							<button type="submit" class="btn btn-primary button-metrics" id="addHEbutton" ng-click="showModal()">Add Historical Event</button>
+							<button data-intro="Helps you to link this visualisation with events" data-position="right"  type="submit" class="btn btn-primary button-metrics" id="addHEbutton" ng-click="showModal()">Add Historical Event</button>
 						</div>
 						<br />
 						<div ng-if="eventsToPlot.length > 0 " id="listHistoricalEventsToPlot">						
@@ -375,9 +391,20 @@
 								</div>
 								-->
 								
+								<div class="historicalevent-buttons active">
+									<!--		    	
+				    				<div class="metric-button metric-delete-button" ng-click="deleteContainerHistoricalEvent('row_config_',$index+1)" id="delete-metric-button-{{metric.id}}"></div>
+				    				-->
+				    				<button data-intro="Delete event from the list of related events" data-position="bottom" type="button" class="btn btn-danger" ng-click="deleteContainerHistoricalEvent('row_config_',$index+1, event.title)" id="delete-he-button-{{event.id}}">Delete</button>
+				    				
+				    				<a type="button" data-intro="Edit event main data" data-position="right" class="btn btn-primary" ng-click="vieweditHE[$index+1]=!vieweditHE[$index+1]">
+									<span ng-show="vieweditHE[$index+1]">Collapse</span> Edit</a>
+									
+				  				</div>
+				  				
 								<div ng-show="vieweditHE[$index+1]" class="contentHE">
 									<div><br/></div>
-									<div ng-if="event.color"><label for="">Color:</label> <input type='color' name="colorHE[]" ng-model="colorHE[$index+1]" ng-model-onblur ng-change="updatecolorEvent($index);rePlotGraph()" /></div> 
+									<div ng-if="event.color"><label for="">Colour:</label> <input type='color' name="colorHE[]" ng-model="colorHE[$index+1]" ng-model-onblur ng-change="updatecolorEvent($index);rePlotGraph()" /></div> 
 									<div ng-if="event.startDate"><label for="">From:</label> {{event.startDate | date:'longDate'}} </div>
 									<div ng-if="event.endDate"><label for="">To:</label> {{event.endDate | date:'longDate'}} </div>
 									<div ng-if="event.desc"><label for="">Description:</label> 
@@ -390,16 +417,7 @@
 										</div>
 								</div>			
 								
-								<div class="historicalevent-buttons active">
-									<!--		    	
-				    				<div class="metric-button metric-delete-button" ng-click="deleteContainerHistoricalEvent('row_config_',$index+1)" id="delete-metric-button-{{metric.id}}"></div>
-				    				-->
-				    				<button type="button" class="btn btn-danger" ng-click="deleteContainerHistoricalEvent('row_config_',$index+1, event.title)" id="delete-he-button-{{event.id}}">Delete</button>
-				    				
-				    				<a type="button" class="btn btn-primary" ng-click="vieweditHE[$index+1]=!vieweditHE[$index+1]">
-									<span ng-show="vieweditHE[$index+1]">Collapse</span> Edit</a>
-									
-				  				</div>
+								
 							</div>
 						</div>                    
                     </tab>

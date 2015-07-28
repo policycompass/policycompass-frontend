@@ -32,6 +32,14 @@ policycompass.viz.line = function(options)
 	self.cntResizes = 0;
 	d3.select(window).on('resize', resize);
 	
+	//self.resolution='month'
+	//console.log(self.resolution);
+	if (!self.resolution)
+	{
+		self.resolution = 'day';	
+	}
+	//console.log(self.resolution);
+	
 	function resize() {		
 		self.cntResizes = self.cntResizes+1;
 		if (self.cntResizes>1)
@@ -123,7 +131,9 @@ policycompass.viz.line = function(options)
 			.y(function(d) {return d.y;})
 			.interpolate("linear")
 			;
-
+		
+		self.lineFunction = lineFunction;
+		
 		//The SVG Container
 		var svgContainer = self.svg;
 
@@ -215,6 +225,9 @@ policycompass.viz.line = function(options)
 		var parseDate = d3.time.format("%Y-%m-%d").parse;
 
 		var valuesX = [];
+		
+		var valuesX_day = [];
+		
 		var valuesY = [];
 		//console.log("--------------");
 		self.arrayMaxVy = [];
@@ -304,6 +317,25 @@ policycompass.viz.line = function(options)
    				   //console.log(result);
    				   //valuesX.push(parseInt(obj[i]));
    				   valuesX.push((obj[i]));
+ 
+					//if (obj[i].length==4)
+					if (self.resolution=='year')
+					{
+						//resolution = 'year';
+						valuesX_day.push(("01/01/"+obj[i]));
+					}
+					//else if (obj[i].length==7)
+					else if (self.resolution=='month')
+					{
+						//resolution = 'month';
+						valuesX_day.push(("01/"+obj[i]));
+					}
+					//else if (obj[i].length==9)
+					else if (self.resolution=='day')
+					{
+						//resolution = 'day';
+						valuesX_day.push((obj[i]));
+					}
    				   //valuesX[i]=obj[i];
    			}  
    			
@@ -346,9 +378,11 @@ policycompass.viz.line = function(options)
 		
 		//self.minVy = 0;
 		//console.log(valuesY);
-		self.minVx = d3.min(d3.values(valuesX));;
+		self.minVx = d3.min(d3.values(valuesX_day));;
 		//self.minVx = 0;
-		self.maxVx = d3.max(d3.values(valuesX));
+		self.maxVx = d3.max(d3.values(valuesX_day));
+
+
 
 		function getDate(d) {
     		return new Date(d);
@@ -384,7 +418,7 @@ if (a>b) return -1;
 if (a <b) return 1;
 return 0;}
 		
-		var resolution = 'day';
+		//var resolution = 'day';
 		var formatXaxe = "%d-%m-%Y";
 		//valuesX.sort(dmyOrdA);
 		//console.log(self.xaxeformat);
@@ -395,24 +429,36 @@ return 0;}
 		else
 		{
 			//console.log(valuesX[0].length);
-			if (valuesX[0].length==4)
+			//if (valuesX[0].length==4)
+			if (self.resolution=='year')
 			{
-				resolution = 'year';
+				//resolution = 'year';
 				formatXaxe = "%Y";
 			}
-			else if (valuesX[0].length==7)
+			//else if (valuesX[0].length==7)
+			else if (self.resolution=='month')
 			{
-				resolution = 'month';
+				//resolution = 'month';
 				formatXaxe = "%m-%Y";
 			}
-			else if (valuesX[0].length==9)
+			//else if (valuesX[0].length==9)
+			else if (self.resolution=='day')
 			{
-				resolution = 'day';
+				//resolution = 'day';
 				formatXaxe = "%d-%m-%Y";
 			}
-			valuesX.sort(mdyOrdA);
-			self.minDate = getDate(valuesX[0]),
-			self.maxDate = getDate(valuesX[valuesX.length-1]);
+			
+			//console.log("resolution="+resolution);
+			valuesX_day.sort(mdyOrdA);
+
+			self.minDate = getDate(valuesX_day[0]);
+			self.maxDate = getDate(valuesX_day[valuesX_day.length-1]);
+			
+			//console.log(self.minDate);
+			//console.log(self.maxDate);
+			
+			//console.log(self.minDate);		
+			//console.log(self.maxDate);
 		}
 		
        	
@@ -588,6 +634,7 @@ return 0;}
 	    		.tickFormat(d3.time.format(formatXaxe));
 	    				
 		}
+		self.xAxis = xAxis;
 		
 		if (self.hideyaxeunits==true)
 		{
@@ -629,6 +676,23 @@ return 0;}
                 }
                 else
                 {
+                	//console.log(resX);
+					//if (resX.length==4)
+					if (self.resolution=='year')
+					{
+						resX="01/01/"+resX;
+					}
+					//else if (resX.length==7)
+					else if (self.resolution=='month')
+					{
+						resX="01/"+resX;
+					}
+					//else if (resX.length==9)
+					else if (self.resolution=='day')
+					{
+						resX=resX;
+					}
+			        //console.log(resX);   	
                 	return (self.xScale(getDate(resX)));	
                 }
     			
@@ -646,7 +710,8 @@ return 0;}
     		
     			;
 
-
+		self.lineFunction = lineFunction;
+		
 		/** Start to plot mouse pointer */
 		/* x line */
 		self.hoverLineX = self.svg.append("line")
@@ -1192,12 +1257,32 @@ return 0;}
     				
     				
 						var resX =d.xOriginal;
+						
 	    				if (self.xaxeformat=='sequence')
 	                	{
 	                		return (self.xScale((resX)));
 	                	}
 	                	else
 	                	{
+	                		
+	                		//console.log(resX);
+							//if (resX.length==4)
+							if (self.resolution=='year')
+							{
+								resX="01/01/"+resX;
+							}
+							//else if (resX.length==7)
+							else if (self.resolution=='month')
+							{
+								resX="01/"+resX;
+							}
+							//else if (resX.length==9)
+							else if (self.resolution=='day')
+							{
+								resX=resX;
+							}
+			        		//console.log(resX); 
+	                		
 	                		return (self.xScale(getDate(resX)));	
 	                	}
     				})
@@ -1725,6 +1810,7 @@ return 0;}
 				}
 				
 				var myCircles = self.svg.selectAll("circles").data(datosCircle);
+				//self.myCircles = myCircles;
 				
 				var units = "";
 				units = "";
@@ -1756,6 +1842,24 @@ return 0;}
                     		}
                     		else
                     		{
+
+								//console.log(resX);
+								//if (resX.length==4)
+								if (self.resolution=='year')
+								{
+									resX="01/01/"+resX;
+								}
+								//else if (resX.length==7)
+								else if (self.resolution=='month')
+								{
+									resX="01/"+resX;
+								}
+								//else if (resX.length==9)
+								else if (self.resolution=='day')
+								{
+									resX=resX;
+								}
+						        //console.log(resX);                     			
                     			return (self.xScale(getDate(resX)));	
                     		}
                     		
@@ -1822,10 +1926,30 @@ return 0;}
 		    				var res = d.split("|");
                     		var resX=res[0];
                     		var resY=res[1];
-		    			
+		    				
+		    				if (self.resolution=='year')
+								{
+									resX="01/01/"+resX;
+								}
+								//else if (resX.length==7)
+								else if (self.resolution=='month')
+								{
+									resX="01/"+resX;
+								}
+								//else if (resX.length==9)
+								else if (self.resolution=='day')
+								{
+									resX=resX;
+								}
+								
 		    				//console.log("posX="+posX);
 		    				//console.log("posY="+posY);		    	
 		    				//tooltip.style("opacity",1.0).html("key="+keyCircle+"<br/>pos x="+resX+"<br/>pos y="+resY); 
+		    				
+		    				resX = resX.replace("/", "-");
+		    				resX = resX.replace("/", "-");
+		    				resX = resX.replace("/", "-");
+		    				
 		    				var resSplit = resX.split("-");
 		    				var monthNames = [ "", "January", "February", "March", "April", "May", "June",
     						"July", "August", "September", "October", "November", "December" ];
@@ -1837,19 +1961,22 @@ return 0;}
 		    				}
 		    				else
 		    				{
-		    					if (resolution=='day')
+		    					//console.log(resX);
+		    					//console.log(resSplit);
+		    					//console.log(self.resolution)
+		    					if (self.resolution=='day')
 		    					{
 		    						endDateToPlot = monthNames[parseInt(resSplit[1])]+" "+parseInt(resSplit[2])+", "+resSplit[0];
 		    					}
-		    					else if (resolution=='month')
+		    					else if (self.resolution=='month')
 		    					{
-		    						endDateToPlot = monthNames[parseInt(resSplit[1])]+" "+parseInt(resSplit[0]);
+		    						endDateToPlot = monthNames[parseInt(resSplit[1])]+", "+parseInt(resSplit[2]);
 		    					}
-		    					else if (resolution=='year')
+		    					else if (self.resolution=='year')
 		    					{
-		    						endDateToPlot = +parseInt(resSplit[0]);
+		    						endDateToPlot = +parseInt(resSplit[2]);
 		    					}
-		    					
+		    					//console.log(endDateToPlot);
 		    						
 		    				}
 		    				
@@ -2197,6 +2324,12 @@ return 0;}
 			//console.log("newScale="+newScale);
 			self.margin = {'top': self.maxMargin.top * newScale, 'right': self.maxMargin.right * newScale, 'bottom': self.maxMargin.bottom * newScale, 'left': self.maxMargin.left * newScale};			
 			self.height = self.maxHeight * newScale;
+			
+			if (self.height>self.maxHeight)
+			{
+				self.height = self.maxHeight;
+			}
+			
 			self.font_size = self.maxFont_size * newScale;
 			self.radius = self.maxRadius * newScale;
 			self.dymarging = self.maxDymarging * newScale;
@@ -2206,7 +2339,15 @@ return 0;}
 		}
 		
 		//console.log(self.parentSelect);
-	
+
+
+//************************************************************
+// Zoom specific updates
+//************************************************************
+
+    
+   
+
 		self.svg = d3.select(self.parentSelect).append("svg")
 		    .attr("class","pc_chart")
 			.attr("width", self.width + self.margin.left + self.margin.right)
@@ -2296,6 +2437,7 @@ return 0;}
 
 		//console.log(self);						
 		//console.log(eventsData);
+		//console.log(dataToPlot);
 		if (Object.keys(dataToPlot).length === 0)
 		{
 			//console.log("No data");			

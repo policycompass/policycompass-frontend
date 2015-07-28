@@ -14,8 +14,9 @@ var visu = angular.module('pcApp.visualization', [
 visu.config(function($routeProvider) {
     $routeProvider
         .when('/visualizations/', {
-            controller: 'VisualizationsController',
-            templateUrl: 'modules/visualization/partials/list.html'
+            //controller: 'VisualizationsController',
+            //templateUrl: 'modules/visualization/partials/list.html'
+            redirectTo: '/browse/visualization'
         })        
         .when('/visualizations/test', {
             controller: 'viewVisualizationCtrl',

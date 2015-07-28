@@ -125,7 +125,7 @@ angular.module('pcApp.common.directives.mapscharts', [
 
 					var margin = {top: 20, right: 20, bottom: 55, left: 44},
 					width = 980,
-					height = 326,
+					height = 426,
 					font_size = 11;
 					
 					var from_country = '';
@@ -143,7 +143,8 @@ angular.module('pcApp.common.directives.mapscharts', [
 							$scope.showLegend = false;	
 							$scope.showZoom = false;
 							$scope.showBubbles = false;
-							$scope.showMovement = false;					
+							$scope.showMovement = false;	
+							from_country = $scope.fromcountry;				
 					}
 					else
 					{
@@ -199,11 +200,13 @@ angular.module('pcApp.common.directives.mapscharts', [
 			'</div>'+
 		'</div>'+		
         '</div>'+
-        '<div ng-hide="small" class="showFilter">' +
+        '<div ng-hide="small" id="showFilterContainer" class="showFilterContainer">' +
+        '<div id="showFilter" class="showFilter on_check">' +  
         '<label class="checkbox-inline"><input ng-model="showLegend" type="checkbox" name="showLegend" class="checkbox filterCheckBox"> Show Legend</label>' +
         '<label class="checkbox-inline"><input ng-model="showZoom" type="checkbox" name="showZoom" class="checkbox filterCheckBox"> Enable Zoom</label>' +
         '<label class="checkbox-inline"><input ng-model="showBubbles" type="checkbox" name="showBubbles" class="checkbox filterCheckBox"> View as bubble marker</label>' +        
-        '<label ng-show="showLegend" class="checkbox-inline"><input type="color" name="color" ng-model="scaleColor"  /> Scale Color </label>' +
+        '<label ng-show="showLegend" class="checkbox-inline"><input type="color" name="color" ng-model="scaleColor"  /> Scale Colour </label>' +
+        '</div>' +
         '</div>'
     };
 }])

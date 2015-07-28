@@ -16,11 +16,23 @@ policycompass.viz.mapLeaflet = function(options)
         self[key] = options[key];
     }
     
+    //console.log(self);
+    //console.log("data");
+    //console.log(self.data);
+    
+    
+    //console.log("self.from_country");
+    //console.log(self.from_country);
+    
+    //console.log("self.to_country");
+    //console.log(self.to_country);
+
+    
     //console.log("color rec");
     //console.log(self.scaleColor);
     if (!self.scaleColor)
     {
-    	self.scaleColor = "#ff0000"
+    	self.scaleColor = "#000000"
     }
     //console.log(self.scaleColor);
     //console.log(self.data);
@@ -196,57 +208,115 @@ policycompass.viz.mapLeaflet = function(options)
   		$.each( data.features, function( key, val ) 
   		{
     		//console.log(val);
-    		if ((data.features[key].id=='ESP') || (data.features[key].id=='ITA'))    		
-    		//if (data.features[key].id == self.data[id].Title)
-    		//if (1==2)    		
-    		{
-    			//console.log(data.features[key].properties);
-    			//console.log(key);
-    			var valueCalc = "";
-    			if (key>60)
-    			{
-    				valueCalc = 800
-    			}
-    			else
-    			{
-    				var valueCalc = key;
-    			}
-    		 
-	    		data.features[key].properties.density = valueCalc;
+    		//if ((data.features[key].id=='ESP') || (data.features[key].id=='ITA'))    
+    		//console.log(self.data);
+			//console.log(self.data.length);
+    		for (id = 0; id < self.data.length; id++) { 
+    				//console.log(self.data[id]);
+    				//console.log(self.data[id].Title);	
+    				//console.log(self.data[id].Id);
+					//console.log("key="+key);
+					//console.log(data.features[key].id);
+
+    			
+	    		if (data.features[key].id == self.data[id].Id)
+	    		//if (1==2)    		
+	    		{
+	    			//console.log(data.features[key].properties);
+	    			//console.log(key);
+	    			var valueCalc = "";
+	    			/*
+	    			if (key>60)
+	    			{
+	    				valueCalc = 800
+	    			}
+	    			else
+	    			{
+	    				var valueCalc = key;
+	    			}
+	    			*/
+	    			//console.log(id);
+	    			//console.log(self.data[id].Data)
+	    			
+	    			//console.log(self.data[id].Data);
+	    			//console.log(self.from_country);
+	    			//var a = self.data[id].Data.indexOf("'"+self.from_country+"'");
+	    			
+	    			//console.log(self.data[id].Data.length);
+	    			
+	    			for (var iData = 0; iData < self.data[id].Data.length; iData++) {
+	    				
+	    				if (iData==self.from_country)
+	    				{
+	    					valueCalc = self.data[id].Data[iData];
+	    					iData = self.data[id].Data.length;
+	    				}
+	    			}
+	    			
+	    			
+	    			/*
+					if (a>=0)
+					{
+						alert(a);
+						//valueCalc = self.data[id].Data["'"+self.from_country+"'"];	
+						valueCalc = self.data[id].Data['1996'];
+					}
+					
+						
+	    			valueCalc = self.data[id].Data['1996'];
+	    			*/
+	    		    //console.log("valueCalc="+valueCalc);
+		    		
+	    		
+	    			//data.features[key].properties.popupContent = data.features[key].id;    		
+	    			//console.log(data.features[key].id);
+	    			if (!valueCalc)
+	    			{
+	    				//console.log("aaaaaaaaaaaaa");
+	    			}
+	    			else
+	    			{
+	    				data.features[key].properties.density = valueCalc;
+		    			var latlng = d3.geo.centroid(data.features[key]);
+		    			//console.log(latlng); 
+		    		    		
+		    			data.features[key].latlng = latlng;
+		    		   
+		    			if (valueCalc>self.maxDensityValue)
+		    			{
+		    				self.maxDensityValue = valueCalc;
+		    			}
+		    			
+		    			if (valueCalc<self.minDensityValue)
+		    			{
+		    				self.minDensityValue = valueCalc;
+		    			}
+		    			
+		    			
+		    			
+		    			
+		    			if (self.showBubbles)
+		    			{
+		    				//console.log(latlng);
+		    				//console.log(data.features[key]);
+			    			countriesDataCircle["features"].push({'density':valueCalc,'geometry':{'type':'Point', "coordinates":latlng}, "type": "Feature",
+			            	"properties": {
+			                "popupContent": data.features[key].properties.name+" ("+data.features[key].id+"): "+valueCalc
+				            }});
+				            
+			            }
+			            else
+			            {
+			            	countriesData["features"].push(data.features[key]);
+			            }
+		           }
+	    		}
     		
-    			//data.features[key].properties.popupContent = data.features[key].id;    		
-    			//console.log(data.features[key].id);
+    		    				
+			}
+
+
     		
-    			var latlng = d3.geo.centroid(data.features[key]);
-    			//console.log(latlng); 
-    		    		
-    			data.features[key].latlng = latlng;
-    		   
-    			if (valueCalc>self.maxDensityValue)
-    			{
-    				self.maxDensityValue = valueCalc;
-    			}
-    			
-    			if (valueCalc<self.minDensityValue)
-    			{
-    				self.minDensityValue = valueCalc;
-    			}
-    			
-    			
-    			
-    			
-    			if (self.showBubbles)
-    			{
-	    			countriesDataCircle["features"].push({'density':valueCalc,'geometry':{'type':'Point', "coordinates":latlng}, "type": "Feature",
-	            	"properties": {
-	                "popupContent": "Data for "+data.features[key].id+"---value="+valueCalc
-		            }});
-	            }
-	            else
-	            {
-	            	countriesData["features"].push(data.features[key]);
-	            }
-    		}
   		});
 
 
@@ -279,18 +349,22 @@ policycompass.viz.mapLeaflet = function(options)
 			this.update();
 			return this._div;
 		};
-/*
+
 		if (self.legend)
 		{
 			info.update = function (props) {
-				this._div.innerHTML = '<h4>Policy Compass map chart</h4>' +  (props ?
+				/*
+				this._div.innerHTML = '<h4>Policy Compass </h4>' +  (props ?
 					'<b>' + props.name + '</b><br />' + props.density + ' people / mi<sup>2</sup>'
-					: 'Hover over a country');
+					: 'Hover over a country');					
+					*/
+				this._div.innerHTML = 'Data for: '+self.from_country ;
+					
 			};
 	
 			info.addTo(map);
 		}
-*/
+
 		self.maxValueScale = Math.round(self.maxDensityValue);
 		self.minValueScale = Math.round(self.minDensityValue);
 		
@@ -457,6 +531,7 @@ policycompass.viz.mapLeaflet = function(options)
 
 	//console.log(countriesDataCircle);
 	self.maxRadious = 30;
+	self.minRadious = 3;
 	//console.log("self.maxDensityValue");
 	//console.log(self.maxDensityValue);
 	//if (self.showBubbles)
@@ -470,9 +545,16 @@ policycompass.viz.mapLeaflet = function(options)
 			onEachFeature: onEachFeature,
 	
 			pointToLayer: function (feature, latlng) {
+				
+				//console.log(Math.round((feature.density *self.maxRadious ) / self.maxDensityValue));
+				var radiumCircle = Math.round((feature.density *self.maxRadious ) / self.maxDensityValue);
+				if (radiumCircle<self.minRadious)
+				{
+					radiumCircle = self.minRadious;
+				}
 				return L.circleMarker(latlng, {
 					//radius: 8,
-					radius: Math.round((feature.density *self.maxRadious ) / self.maxDensityValue),
+					radius: radiumCircle,
 					//radius: feature.density,
 					fillColor: "#ff7800",
 					fillColor: color(feature.density),					

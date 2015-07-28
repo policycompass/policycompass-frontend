@@ -77,6 +77,11 @@ http.createServer(function(request, response) {
         response.writeHead(302, {"location": "/app/"});
         response.end();
     }
+	else if (/^\/media/.exec(request.url)) {
+	    proxy.web(request, response, {
+	      target: pcServicesUrl
+	    });
+	}     
     else {
 
 		fs.exists(filename, function(exists) {

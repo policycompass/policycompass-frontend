@@ -67,26 +67,30 @@
             -->
   
   			<div class="display-fields">
-    			<div class="form-group"   ng-show="visualization.datasets_in_visualization">
+    			<div class="form-group" ng-show="visualization.datasets_in_visualization">
       				<div class="field-label">Linked to Datasets: </div>
       				<div class="field-content"> 
         				<ul>
           					<li ng-repeat="metric in meticsRelated"> <a target="_blank" ng-href="/app/#/datasets/{{metric.id}}">{{metric.title}}</a> </li>
         				</ul>
       				</div>
+      				
       				<div class="form-group" ng-show="visualization.historical_events_in_visualization">
         				<div class="field-label"> Linked to Historical Events: </div>
         				<div class="field-content">
-          					<li ng-repeat="her in historicalEventsRelated">
-            					<div class='square-box'>
-              						<div class='square-content' style="background:{{her.color}};">
-                						<div><span>&nbsp;</span></div>
-              						</div>
-            					</div>
-            					<a target="_blank" ng-href="/app/#/events/{{her.event_id}}">{{her.title}}</a> 
-            				</li>
+        					<ul>
+	          					<li ng-repeat="her in historicalEventsRelated">
+	            					<div class='square-box'>
+	              						<div class='square-content' style="background:{{her.color}};">
+	                						<div><span>&nbsp;</span></div>
+	              						</div>
+	            					</div>
+	            					<a target="_blank" ng-href="/app/#/events/{{her.event_id}}">{{her.title}}</a> 
+	            				</li>
+            				</ul>
         				</div>
       				</div>
+      				
     			</div>
   			</div>
   			

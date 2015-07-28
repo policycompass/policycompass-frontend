@@ -23,7 +23,8 @@ $scope.dataset  (mandatory) = [{"Category":"1","From":20950114,"Key":"Air pollut
         	small: '=small',
         	showLabels: '=showLabels',
         	showLegend: '=showLegend',
-        	showGrid: '=showGrid'
+        	showGrid: '=showGrid',
+        	resolution: '=resolution'
         }, 
 		compile: function(element, attributes){ 
          return {
@@ -60,7 +61,13 @@ $scope.dataset  (mandatory) = [{"Category":"1","From":20950114,"Key":"Air pollut
 										
 			};
 
-
+			$scope.$watch('resolution', function(resolution) {
+				if (($scope.dataset) && ($scope.chartid))
+				{
+					$scope.directivePlotBarChart();
+				}				
+            });
+            
 			$scope.$watch('showLabels', function(showLabels) {
 				if (($scope.dataset) && ($scope.chartid))
 				{
@@ -125,13 +132,18 @@ $scope.dataset  (mandatory) = [{"Category":"1","From":20950114,"Key":"Air pollut
 					$scope.iddiv="directive_container_barschart_";
 				}
 				
-				var datasetToSend = $scope.numbers1;
-
+				//var datasetToSend = $scope.numbers1;
+				var datasetToSend = $scope.dataset;
+				//console.log("----numbers1----");
 				//console.log(numbers1);
 				var legendsColumn = 0;
+				
+				//console.log($scope.dataset);
+				
 				if ($scope.showLegend)
 				{
-					legendsColumn = Math.ceil($scope.numbers1.length/9);
+					//legendsColumn = Math.ceil($scope.numbers1.length/9);
+					legendsColumn = Math.ceil($scope.dataset.length/9);
 				}
 				else
 				{
@@ -179,7 +191,8 @@ $scope.dataset  (mandatory) = [{"Category":"1","From":20950114,"Key":"Air pollut
 	            	'showLegend': $scope.showLegend,
 					'showLabels': $scope.showLabels,
 					'showGrid': $scope.showGrid,
-					'legendsColumn': legendsColumn
+					'legendsColumn': legendsColumn,
+					'resolution': $scope.resolution
 	            });
 				
 				if(datasetToSend)
@@ -209,10 +222,12 @@ $scope.dataset  (mandatory) = [{"Category":"1","From":20950114,"Key":"Air pollut
 			'</div>'+
 		'</div>'+	        
         '</div>'+
-        '<div ng-hide="small" class="showFilter">' +
+        '<div ng-hide="small" id="showFilterContainer" class="showFilterContainer">' +
+        '<div id="showFilter" class="showFilter on_check">' +        
         '<label class="checkbox-inline"><input ng-model="showLegend" type="checkbox" name="showLegend" class="checkbox filterCheckBox"> Show Legend</label>' +
         '<label class="checkbox-inline"><input ng-model="showLabels" type="checkbox" name="showLabels" class="checkbox filterCheckBox"> Show Labels</label>' +
         '<label class="checkbox-inline"><input ng-model="showGrid"   type="checkbox" name="showGrid"   class="checkbox filterCheckBox"> Show Grid</label>' +
+        '</div>' +
         '</div>'
     };
 }])

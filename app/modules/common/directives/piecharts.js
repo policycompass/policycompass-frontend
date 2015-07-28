@@ -319,9 +319,11 @@ $scope.dataset (mandatory) = [{"Key":"2003-01-01","Labels":["Hungary","European 
 			'</div>'+
 		'</div>'+	        
         '</div>'+
-        '<div ng-hide="small" class="showFilter">' +
+        '<div ng-hide="small" id="showFilterContainer" class="showFilterContainer">' +
+        '<div id="showFilter" class="showFilter on_check">' +
         '<label class="checkbox-inline"><input ng-model="showLegend" type="checkbox" name="showLegend" class="checkbox filterCheckBox"> Show Legend</label>' +
         '<label class="checkbox-inline"><input ng-model="showLabels" type="checkbox" name="showLabels" class="checkbox filterCheckBox"> Show Labels</label>' +
+        '</div>' +
         '</div>'
     };
 }])
