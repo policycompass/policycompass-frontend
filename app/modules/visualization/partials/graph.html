@@ -37,7 +37,9 @@
 	</div>
 
 	<div ng-show="isSelectedSon('graph_bars')">
-		<div class="pcBarsChart" dataset="datasetToSend" chartid="visualization.id" small="list"  mode="mode" show-Legend="showLegend" show-Labels="showLabels" show-Grid="showGrid" resolution="resolution.value"></div>
+		<div class="pcBarsChart" dataset="datasetToSend" chartid="visualization.id" small="list"  mode="mode" show-Legend="showLegend" show-Labels="showLabels" show-Grid="showGrid" 
+		resolution="resolution.value" 
+		labelyaxe="labelYAxe"></div>
 	</div>
 	<div ng-show="isSelectedSon('graph_line')">		
 		<div class="pcLinesChart" dataset="numbers1" events="eventsToPlot" 

@@ -4,8 +4,7 @@ var policycompass = policycompass || {'version':0.1, 'controller':{}, 'viz': {} 
 policycompass.viz.barsMultiple = function(options) {
 
     // Object
-
-	
+    //console.log('Dins barsMultiple');	
 
     var self = {};
 
@@ -111,14 +110,14 @@ policycompass.viz.barsMultiple = function(options) {
 		    	return d3.svg.axis()
 		        	.scale(x0)
 		         	.orient("bottom")
-		         	.ticks(10)		         	
+		         	.ticks(20)		         	
 			}
 		
 			function make_y_axis() {
 		    	return d3.svg.axis()
 			        .scale(y)
 			        .orient("left")
-			        .ticks(10)
+			        .ticks(20)
 			}
 
 

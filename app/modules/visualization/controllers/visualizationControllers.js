@@ -1165,7 +1165,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						
             					
 			$scope.getMetricData = function(posI, metricId, column, value, group) {
-				console.log("getMetricData metricId="+metricId);
+				//console.log("getMetricData metricId="+metricId);
 				
 				
 				//$scope.metric = Metric.get({id: metricId},
@@ -1384,7 +1384,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			var myText = "from";
 			$scope.MetricSelectorLabelColumn_[containerIndex]=myText;
 			
-			console.log("AAAAAAAAAA");
+			//console.log("AAAAAAAAAA");
 			$scope.loadDataCombos(idMetric, "", "");
 						
 			selectedText = "---";
@@ -1423,6 +1423,11 @@ angular.module('pcApp.visualization.controllers.visualization', [
         		//console.log(metriclistIn);
         		//console.log("indexIn="+indexIn);
         		metriclistIn.splice(indexIn, 1);
+        		
+        		//console.log(idMetric)
+        		//console.log($scope.individualCombo_value_);
+        		//console.log($scope.individualCombo_value_[idMetric]);
+        		$scope.individualCombo_value_[idMetric]='';
         		
         		//console.log(metriclistIn.length);
         		if (metriclistIn.length==0)
@@ -1692,10 +1697,11 @@ angular.module('pcApp.visualization.controllers.visualization', [
 		$scope.updatecolorEvent = function(index) {
 			$scope.eventsToPlot[index].color = $scope.colorHE[index+1];
 		}
-
+		
+		
 		$scope.rePlotGraph = function() {
 									
-//			console.log("--rePlotGraph--");		
+			//console.log("--rePlotGraph--");		
 			//console.log($scope.dataset_color_palete_)
 			
 			var arrayJsonFiles = [];
@@ -1727,6 +1733,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
     		
 			//console.log(elems);
 			$scope.canPlotGarph = true;
+
 			for (j in elems) 
 			{	
 				//console.log(j);		
@@ -1970,7 +1977,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			var q2 = queue();
   			arrayJsonFiles.forEach(function(d,i) 
   			{
-//  				console.log("-- arrayJsonFiles.forEach -- i="+i+".d="+d);
+  				//console.log("-- arrayJsonFiles.forEach -- i="+i+".d="+d);
   				
   				var pathToJson = d;
   				/*
@@ -1988,18 +1995,28 @@ angular.module('pcApp.visualization.controllers.visualization', [
   				  		
 	  		});
 			
-				
+				//$scope.recoverDataEnds=false;
   				q.await($scope.recoverRelatedData);	
 
 				//q2.await($scope.plotGraphDatasets);
-
+/*
 				setTimeout(function() {
     				// rest of code here
     				//console.log($scope.TitleUnits);
     				q2.await($scope.plotGraphDatasets);
 				}, 500);
-				
- 			
+
+*/
+
+
+				$scope.$watch('recoverDataEnds', function(recoverDataEnds) {
+						//console.log($scope.recoverDataEnds);
+						if ($scope.recoverDataEnds)
+						{
+							q2.await($scope.plotGraphDatasets);
+						}
+				});
+             			
 		
 			//q.await($scope.plotGraph);
 		};
@@ -2007,14 +2024,18 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
 			$scope.TitleUnits = [];
 			$scope.TitleIndividuals = [];
-
+		
+		
 		$scope.recoverRelatedData = function() {
 			//console.log("recoverRelatedData");
-			
+			$scope.recoverDataEnds=false;
+				
 			$dataIndividualPromises = [];
 			
 			$dataUnit = [];
 			$scope.TimeSelector = [];
+			$scope.cntIndividuals = 0;
+			$scope.TitleIndividuals =[];
 			for (var i=1; i<arguments.length; i++)
 			{
 				//console.log($scope.TitleUnits[arguments[i]['unit_id']]);
@@ -2023,9 +2044,10 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				}
 				else
 				{
+					//console.log("-------------->"+arguments[i]['unit_id']);
 					
 					$dataUnit[i] = Unit.getById(arguments[i]['unit_id']);
-						
+					
 					$dataUnit[i].$promise.then(function(unit) 
 					{
 						$scope.TitleUnits[unit.id] = unit.title;
@@ -2036,19 +2058,18 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					
 				}
 				
+				$scope.cntTitleIndividual = 0;
+				//console.log(arguments[i]['data']['table'].length);
+				
 				for (var j=0; j<arguments[i]['data']['table'].length; j++)
 				{
 					
-
-
 					for (var keyTimeData in arguments[i]['data']['table'][j].values) 
 					{
 						//console.log(keyTimeData);
 						if (keyTimeData)
 						{
 							//console.log("keyTimeData="+keyTimeData);
-							
-							123456
 							var a = $scope.TimeSelector.indexOf(keyTimeData);
 							if (a<0)
 							{
@@ -2061,21 +2082,56 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
 					//console.log($scope.TimeSelector);
 
-					
+					//$scope.cntIndividuals = $scope.cntIndividuals +1;
 					if ($scope.TitleIndividuals[arguments[i]['data']['table'][j].individual])
-					{}
+					{
+						/*
+						$scope.cntTitleIndividual = $scope.cntTitleIndividual +1; 
+							//console.log("cntTitleIndividual="+$scope.cntTitleIndividual);
+							
+							//console.log($scope.TitleIndividuals);
+							if ($scope.cntTitleIndividual>=$scope.cntIndividuals)
+							{
+								$scope.recoverDataEnds=true;
+								//console.log("End recover indiv.");
+							}*/
+					}
 					else
 					{
+						$scope.cntIndividuals = $scope.cntIndividuals +1;
+						//console.log("cntIndividuals="+$scope.cntIndividuals);
+						
 						//console.log("indiv="+arguments[i]['data']['table'][j].individual);
+						//console.log("j="+j);
 						$dataIndividualPromises[j] = Individual.getById(arguments[i]['data']['table'][j].individual);
 						
+						//$scope.TitleIndividuals[arguments[i]['data']['table'][j].individual] = "-----";
+						
 						$dataIndividualPromises[j].$promise.then(function(indivudual) {
+						//$dataIndividualPromises[j].then(function(indivudual) {
+							
+							
+							//console.log(indivudual.id);
+							//console.log(indivudual.title);
 							$scope.TitleIndividuals[indivudual.id] = indivudual.title;
+							
+							$scope.cntTitleIndividual = $scope.cntTitleIndividual +1; 
+							//console.log("cntTitleIndividual="+$scope.cntTitleIndividual);
+							
+							//console.log($scope.TitleIndividuals);
+							if ($scope.cntTitleIndividual>=$scope.cntIndividuals)
+							{
+								$scope.recoverDataEnds=true;
+								//console.log("End recover indiv.");
+							}
+							
 						});
 						
 					}
 						
 				}	
+				
+
 				
 			}
 			
@@ -2180,6 +2236,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				var arrayDataset = [];
 				$scope.arrayDataset = [];
 				var labelYAxe = [];
+				$scope.labelYAxe = [];
 				
 				var arrayDataByCounty = [];
 				$scope.arrayDataByCounty = [];
@@ -2195,6 +2252,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				$scope.arrayUnits =[];
 				$scope.InitialArguments = [];
 				$scope.cntCountriesToPlot = 0;
+				
+				
 				for (var i=1; i<arguments.length; i++)
 				{	
 					//console.log("i="+i);
@@ -2379,7 +2438,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							var arrayValuesXY  = [];
 							var arrayProcessedDates = [];
 							var arrayColors = [];
-							
+							//console.log(arguments[i].title);
 							var numbers1T = {"Key":arguments[i].title};
 							var cntPosArray=0;
 							//console.log(arguments[i]);
@@ -2438,21 +2497,21 @@ angular.module('pcApp.visualization.controllers.visualization', [
 								var obj = arguments[i]['data']['table'][j].values;
 								
 								obj_[j] = arguments[i]['data']['table'][j].values;
-								//console.log('---------obj--------');
-								//console.log(obj);
-								//console.log(obj_[j]);
 								
 								//console.log(obj);
 								
-								const ordered = {};
+								//const ordered = {};
+								var ordered = {};
+								
 								Object.keys(obj_[j]).sort().forEach(function(key) {
+									
   									ordered[key] = obj_[j][key];
 								});
-								//console.log(ordered);
 								obj_[j] = ordered;
 								
 								labelYAxe.push(labelTemporalYAxes);
-													
+								$scope.labelYAxe.push(labelTemporalYAxes);
+								
 								if ($scope.typeToPlot==='graph_line')
 								{
 
@@ -2462,24 +2521,34 @@ angular.module('pcApp.visualization.controllers.visualization', [
 									//key = $scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]+"_"+j;
 
 									$sem = 0;
+	//								console.log(arguments[i]['data']['table'][j].individual);
 									while (key=="")
 									{
-
+//console.log(arguments[i]['data']['table'][j].individual);
 										if ($scope.TitleIndividuals[arguments[i]['data']['table'][j].individual])
 										{
-											var key = $scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]+"_"+j;	
+											if ($scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]!=arguments[i]['data']['table'][j].individual)
+											{
+												//console.log($scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]);
+												//console.log(arguments[i]['data']['table'][j].individual);
+												var key = $scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]+"_"+j;
+												//console.log(key);
+											}	
 										}
 										$sem = $sem +1;
 										
 										if ($sem>100000)
 										{
+											//console.log(arguments[i]['data']['table'][j].individual);
 											var key = arguments[i]['data']['table'][j].individual+"_"+j;
+											//var key = " ";
 											//console.log("key fora error!!!");
 											//console.log($scope.TitleIndividuals);
 										}
 										
 									
-									}									
+									}		
+									//console.log("key="+key);							
 									//key = "Germany_"+j;
 									
 									var type = "metric";
@@ -2539,7 +2608,6 @@ angular.module('pcApp.visualization.controllers.visualization', [
 									}
 									//console.log("lineColor="+lineColor);
 									
-																				
 									var arrayDatasetTmp = {
 									'Key': key,
 									'Labels': arrayLabels,
@@ -2549,9 +2617,11 @@ angular.module('pcApp.visualization.controllers.visualization', [
 									'Type': type
 									}
 									//console.log(arrayDatasetTmp);
-									
+									//console.log("push dataset");
 									arrayDataset.push(arrayDatasetTmp);
 									$scope.arrayDataset.push(arrayDatasetTmp);
+									
+									
 								}
 								else if ($scope.typeToPlot==='graph_pie')
 								{
@@ -2871,6 +2941,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				}
 				else if ($scope.typeToPlot==='graph_line')
 				{
+					//console.log("graph_line");
 					var numbers1 = arrayDataset;
 					$scope.numbers1 = $scope.arrayDataset;
 					

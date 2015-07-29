@@ -24,7 +24,8 @@ $scope.dataset  (mandatory) = [{"Category":"1","From":20950114,"Key":"Air pollut
         	showLabels: '=showLabels',
         	showLegend: '=showLegend',
         	showGrid: '=showGrid',
-        	resolution: '=resolution'
+        	resolution: '=resolution',
+        	labelyaxe: '=labelyaxe',
         }, 
 		compile: function(element, attributes){ 
          return {
@@ -37,7 +38,9 @@ $scope.dataset  (mandatory) = [{"Category":"1","From":20950114,"Key":"Air pollut
          }
      	},             
         controller: function($scope, $element, $attrs, $location, dialogs){
-
+			
+			//$scope.cntloading = 0;
+			
 			tooltip =  d3.select("body").append("div")
     		.attr("id","tooltip")
     		.html("")
@@ -61,41 +64,63 @@ $scope.dataset  (mandatory) = [{"Category":"1","From":20950114,"Key":"Air pollut
 										
 			};
 
+			/*
+			$scope.$watch('labelyaxe', function(labelyaxe) {
+				if (($scope.dataset) && ($scope.chartid))
+				{
+					$scope.directivePlotBarChart('labelyaxe');
+				}				
+            });
+			*/
+			/*
 			$scope.$watch('resolution', function(resolution) {
 				if (($scope.dataset) && ($scope.chartid))
 				{
-					$scope.directivePlotBarChart();
+					$scope.directivePlotBarChart('resolution');
+				}				
+            });
+            */
+           
+            $scope.watcherLabel = false;
+			$scope.$watch('showLabels', function(showLabels) {
+				//console.log("whatch showLabels");
+				$scope.watcherLabel = true;
+				if (($scope.dataset) && ($scope.chartid))
+				{
+					$scope.directivePlotBarChart('showLabels');
+				}				
+            });
+			
+			$scope.watcherLegend = false;
+			$scope.$watch('showLegend', function(showLegend) {
+				//console.log("whatch showLegend");
+				$scope.watcherLegend = true;
+				if (($scope.dataset) && ($scope.chartid))
+				{
+					$scope.directivePlotBarChart('showLegend');
+				}				
+            });
+			
+			$scope.watcherGrid = false;
+			$scope.$watch('showGrid', function(showGrid) {
+				//console.log("whatch showGrid");
+				$scope.watcherGrid = true;
+				if (($scope.dataset) && ($scope.chartid))
+				{
+					$scope.directivePlotBarChart('showGrid');
 				}				
             });
             
-			$scope.$watch('showLabels', function(showLabels) {
-				if (($scope.dataset) && ($scope.chartid))
-				{
-					$scope.directivePlotBarChart();
-				}				
-            });
-
-			$scope.$watch('showLegend', function(showLegend) {
-				if (($scope.dataset) && ($scope.chartid))
-				{
-					$scope.directivePlotBarChart();
-				}				
-            });
-
-			$scope.$watch('showGrid', function(showGrid) {
-				if (($scope.dataset) && ($scope.chartid))
-				{
-					$scope.directivePlotBarChart();
-				}				
-            });
-                        			
+            $scope.watcherDataset = false;
 			$scope.$watch('dataset', function(dataset) {
-               
+                //console.log("whatch dataset");
+                $scope.watcherDataset = true;
+                
 				numbers1=dataset;
 				$scope.numbers1=dataset;
 				if ($scope.numbers1)
 				{
-					$scope.directivePlotBarChart();
+					$scope.directivePlotBarChart('dataset');
 				}
 				
             }); 
@@ -114,7 +139,8 @@ $scope.dataset  (mandatory) = [{"Category":"1","From":20950114,"Key":"Air pollut
             */
             //console.log($scope.chartid);
             
-			$scope.directivePlotBarChart = function () {
+			$scope.directivePlotBarChart = function (origin) {
+				
 				
 				$scope.iddiv="";
 				if (document.getElementById("directive_container_barschart_"+$scope.chartid) !=null)
@@ -178,33 +204,46 @@ $scope.dataset  (mandatory) = [{"Category":"1","From":20950114,"Key":"Air pollut
 						$scope.showLegend = false;					
 				}
 				
-				var barObj = policycompass.viz.barsMultiple(
-				{
-	                'idName': $scope.iddiv,
-	            	'width': width,
-	            	'height':height,
-	            	'margin': margin,
-	            	'labelX': "",
-	            	//'labelY': labelYAxe,
-	            	//'radius': 4,
-	            	'font_size': font_size,
-	            	'showLegend': $scope.showLegend,
-					'showLabels': $scope.showLabels,
-					'showGrid': $scope.showGrid,
-					'legendsColumn': legendsColumn,
-					'resolution': $scope.resolution
-	            });
+				
 				
 				if(datasetToSend)
 				{
 					if (datasetToSend.length>0)
 					{
-						var eventsArray = [];
-						//barObj.render(datasetToSend, $scope.eventsToPlot);
-						barObj.render(datasetToSend, eventsArray);
+						//console.log("origin="+origin);
+						//console.log("scope.cntloading="+$scope.cntloading);
+
+						if (($scope.watcherDataset) && ($scope.watcherLabel) && ($scope.watcherLegend) && ($scope.watcherGrid) && ($scope.watcherDataset))
+						 {
+						var barObj = policycompass.viz.barsMultiple(
+						{
+	                		'idName': $scope.iddiv,
+	            			'width': width,
+	            			'height':height,
+	            			'margin': margin,
+	            			'labelX': "",
+	            			//'labelY': labelYAxe,
+	            			//'radius': 4,
+	            			'font_size': font_size,
+	            			'showLegend': $scope.showLegend,
+							'showLabels': $scope.showLabels,
+							'showGrid': $scope.showGrid,
+							'legendsColumn': legendsColumn,
+							'resolution': $scope.resolution,
+							'labelY': $scope.labelyaxe,					
+	            		});
+	            						
+							var eventsArray = [];
+							//barObj.render(datasetToSend, $scope.eventsToPlot);
+							barObj.render(datasetToSend, eventsArray);
+							
+							//$scope.cntloading = $scope.cntloading+1;
+						}
+
 					}
 				}
         	
+        		$scope.loading=false;
         	}
         	
         },

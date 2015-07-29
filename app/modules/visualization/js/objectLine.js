@@ -6,7 +6,7 @@ var policycompass = policycompass || {'version':0.1, 'controller':{}, 'viz': {} 
 policycompass.viz.line = function(options)
 {
     // Object
-
+    //console.log("Dins line!!!");
 
     var self = {};
 
@@ -62,16 +62,16 @@ policycompass.viz.line = function(options)
 	function make_x_axis() {
 		//console.log("self.x="+self.x);        
     	return d3.svg.axis()
-        	.scale(self.x)
+        	.scale(self.xScale)
          	.orient("bottom")
-         	.ticks(10)
+         	.ticks(20)
 	}
 
 	function make_y_axis() {
     	return d3.svg.axis()
 	        .scale(self.y)
     	    .orient("left")
-        	.ticks(10)
+        	.ticks(20)
 	}
 
 	function mouseover() {
