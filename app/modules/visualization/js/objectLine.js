@@ -32,8 +32,10 @@ policycompass.viz.line = function(options)
 	self.cntResizes = 0;
 	d3.select(window).on('resize', resize);
 	
-	//self.resolution='month'
 	//console.log(self.resolution);
+	//self.resolution='month'
+	//self.resolution='day'
+	
 	if (!self.resolution)
 	{
 		self.resolution = 'day';	
@@ -316,25 +318,44 @@ policycompass.viz.line = function(options)
    				   //result = "." + i + " = " + obj[i] + "\n"; 
    				   //console.log(result);
    				   //valuesX.push(parseInt(obj[i]));
+   				   //console.log(obj[i]);
    				   valuesX.push((obj[i]));
  
 					//if (obj[i].length==4)
 					if (self.resolution=='year')
 					{
 						//resolution = 'year';
-						valuesX_day.push(("01/01/"+obj[i]));
+						valuesX_day.push(("01-01-"+obj[i]));
+						
+						//var dt = new Date(obj[i],'01','01');
+						//console.log(dt);
+						//valuesX_day.push(dt);
+						//valuesX_day.push(("01/01/"+obj[i]));
 					}
 					//else if (obj[i].length==7)
 					else if (self.resolution=='month')
 					{
 						//resolution = 'month';
-						valuesX_day.push(("01/"+obj[i]));
+						console.log(obj[i]);
+						var arrayObjDate = obj[i].split("-");
+						//valuesX_day.push(("01/"+obj[i]));
+						//valuesX_day.push((arrayObjDate[0]+"-01-"+arrayObjDate[1]));
+						valuesX_day.push((obj[i])+"-01");
+						//valuesX_day.push((obj[i])+"/01");
+						
 					}
 					//else if (obj[i].length==9)
 					else if (self.resolution=='day')
 					{
 						//resolution = 'day';
-						valuesX_day.push((obj[i]));
+						//var arrayObjDate = obj[i].split("-");
+						var strDatTmp=obj[i];
+						//strDatTmp = strDatTmp.replace("-","/");
+						//strDatTmp = strDatTmp.replace("-","/");
+						valuesX_day.push(strDatTmp);
+						
+						//valuesX_day.push(arrayObjDate[2]+"/"+arrayObjDate[1]+"/"+arrayObjDate[0]);
+						
 					}
    				   //valuesX[i]=obj[i];
    			}  
@@ -450,12 +471,48 @@ return 0;}
 			
 			//console.log("resolution="+resolution);
 			valuesX_day.sort(mdyOrdA);
-
-			self.minDate = getDate(valuesX_day[0]);
-			self.maxDate = getDate(valuesX_day[valuesX_day.length-1]);
+		
+		
+			//console.log("--date in 0-");
+			//console.log(valuesX_day[0]);
+			//console.log(getDate(valuesX_day[0]));
+			//console.log("---");
 			
-			//console.log(self.minDate);
-			//console.log(self.maxDate);
+			//console.log(valuesX_day[0]);;
+			if (getDate(valuesX_day[0])=="Invalid Date")
+			{
+				var value = valuesX_day[0];
+				value=value.replace("-","/");
+				value=value.replace("-","/");
+				value=value.replace("-","/");
+				self.minDate = getDate(value);
+					
+			}
+			else
+			{
+				self.minDate = getDate(valuesX_day[0]);
+			}
+			
+			//self.minDate = getDate("01/01/1996");
+			if (getDate(valuesX_day[valuesX_day.length-1])=="Invalid Date")
+			{
+				var value = valuesX_day[valuesX_day.length-1];
+				value=value.replace("-","/");
+				value=value.replace("-","/");
+				value=value.replace("-","/");
+				self.maxDate = getDate(value);
+					
+			}
+			else
+			{
+				self.maxDate = getDate(valuesX_day[valuesX_day.length-1]);
+			}			
+			//self.maxDate = getDate(valuesX_day[valuesX_day.length-1]);
+			
+			//console.log(valuesX_day[valuesX_day.length-1]);
+			
+			//console.log("minDate="+self.minDate);
+			//console.log("maxDate="+self.maxDate);
 			
 			//console.log(self.minDate);		
 			//console.log(self.maxDate);
@@ -669,7 +726,7 @@ return 0;}
     			 //console.log(d.xOriginal);
     			//return self.x(d.posX);
     			//return self.xScale(getDate(d.xOriginal));
-    			var resX =d.xOriginal;
+    			var resX = d.xOriginal;
     			if (self.xaxeformat=='sequence')
                 {
                 	return (self.xScale((resX)));
@@ -685,14 +742,19 @@ return 0;}
 					//else if (resX.length==7)
 					else if (self.resolution=='month')
 					{
-						resX="01/"+resX;
+						
+						//resX=resX.replace("-","-01-");
+						//resX=resX.replace("/","/01/");
+						//resX="01/"+resX;
+						resX=resX+"/01";
 					}
 					//else if (resX.length==9)
 					else if (self.resolution=='day')
 					{
 						resX=resX;
 					}
-			        //console.log(resX);   	
+			        //console.log(resX);
+			          	
                 	return (self.xScale(getDate(resX)));	
                 }
     			
@@ -1274,7 +1336,10 @@ return 0;}
 							//else if (resX.length==7)
 							else if (self.resolution=='month')
 							{
-								resX="01/"+resX;
+								//resX="01/"+resX;
+								resX=resX+"/01";
+								//resX=resX.replace("-","-01-");
+								//resX=resX.replace("/","/01/");
 							}
 							//else if (resX.length==9)
 							else if (self.resolution=='day')
@@ -1852,7 +1917,10 @@ return 0;}
 								//else if (resX.length==7)
 								else if (self.resolution=='month')
 								{
-									resX="01/"+resX;
+									//resX="01/"+resX;
+									resX=resX+"/01";
+									//resX=resX.replace("-","-01-");
+									//resX=resX.replace("/","/01/");
 								}
 								//else if (resX.length==9)
 								else if (self.resolution=='day')
@@ -1934,7 +2002,10 @@ return 0;}
 								//else if (resX.length==7)
 								else if (self.resolution=='month')
 								{
-									resX="01/"+resX;
+									//resX="01/"+resX;
+									resX=resX+"/01";
+									//resX=resX.replace("-","-01-");
+									//resX=resX.replace("/","/01/");
 								}
 								//else if (resX.length==9)
 								else if (self.resolution=='day')
@@ -1970,7 +2041,7 @@ return 0;}
 		    					}
 		    					else if (self.resolution=='month')
 		    					{
-		    						endDateToPlot = monthNames[parseInt(resSplit[1])]+", "+parseInt(resSplit[2]);
+		    						endDateToPlot = monthNames[parseInt(resSplit[1])]+", "+parseInt(resSplit[0]);
 		    					}
 		    					else if (self.resolution=='year')
 		    					{

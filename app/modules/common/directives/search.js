@@ -229,6 +229,15 @@ angular.module('pcApp.common.directives.search', [
 
         template: '<div ng-show="metricsList.length<numberMaxMetrics">'+
         	'<label for="">Search metric by title</label> ' +
+			'<div class="filterMetricsPagination" id="filterMetricsPaginationDirective">' +
+           	'<div class="button-group">'+
+					'<button ng-show="metricsFilter.hits.total>1" ng-disabled="pagToSearch==1"  class="btn btn-warning" ng-click="findMetricsByFilter(\'prev\')">' +
+						'<span class="glyphicon glyphicon-chevron-left"></span>  Previous' +
+					'</button>' +
+					'<button ng-show="metricsFilter.hits.total>1" ng-disabled="metricsFilter.hits.total<=pagToSearch*itemsperpagesize" class="btn btn-warning pull-right" ng-click="findMetricsByFilter(\'next\')">' +	
+						'Next <span class="glyphicon glyphicon-chevron-right"></span>' +
+					'</button>' +
+				'</div></div>' +        	
 			'<input placeholder="--all metrics--" ng-model="searchtext" ng-change="findMetricsByFilter(\'1\')" type="text" id="filterMetricDirective" >' +
 			'<div class="filterMetricsPaginationHeader" id="filterMetricsPaginationHeaderDirective">' +
 				'<div>' +
@@ -241,14 +250,14 @@ angular.module('pcApp.common.directives.search', [
 				'<ul class="metrics-list">' +
         			'<li ng-class="{\'metrics-list active\':MetricSelectediId_[metric._source.id]>0,\'metrics-list\':MetricSelectediId_[metric.id]}" name="designer-metrics-num-{{metric.id}}" ng-repeat="metric in metricsFilter.hits.hits track by $index" ><a href="" x-ng-click="clickMetric(metric._source.id, metric._source.title, metric._source.issued);"  title="{{ !MetricSelectediId_[metric._source.id]>0 && \'Add \' || \'Delete \' }} \'{{metric._source.title}}\'">{{metric._source.title}} - {{ metric._source.issued | date:\'longDate\' }}</a></li>' +
         		'</ul>' +        		
-				'<div class="filterMetricsPagination" id="filterMetricsPaginationDirective">' +
-					'<button ng-show="metricsFilter.hits.total>1" ng-disabled="pagToSearch==1"  class="btn btn-warning" ng-click="findMetricsByFilter(\'prev\')">' +
-						'<span class="glyphicon glyphicon-chevron-left"></span>  Previous' +
-					'</button>' +
-					'<button ng-show="metricsFilter.hits.total>1" ng-disabled="metricsFilter.hits.total<=pagToSearch*itemsperpagesize" class="btn btn-warning pull-right" ng-click="findMetricsByFilter(\'next\')">' +	
-						'Next <span class="glyphicon glyphicon-chevron-right"></span>' +
-					'</button>' +
-				'</div>' +		
+				//'<div class="filterMetricsPagination" id="filterMetricsPaginationDirective">' +
+				//	'<button ng-show="metricsFilter.hits.total>1" ng-disabled="pagToSearch==1"  class="btn btn-warning" ng-click="findMetricsByFilter(\'prev\')">' +
+				//		'<span class="glyphicon glyphicon-chevron-left"></span>  Previous' +
+				//	'</button>' +
+				//	'<button ng-show="metricsFilter.hits.total>1" ng-disabled="metricsFilter.hits.total<=pagToSearch*itemsperpagesize" class="btn btn-warning pull-right" ng-click="findMetricsByFilter(\'next\')">' +	
+				//		'Next <span class="glyphicon glyphicon-chevron-right"></span>' +
+				//	'</button>' +
+				//'</div>' +		
 			'</div>' +
         '</div>' +
         '</div>' +
@@ -492,8 +501,8 @@ angular.module('pcApp.common.directives.search', [
 			'</div>' +
 			
 			'<div class="filterDatasetPaginationBody createvisualization" id="filterDatasetsPaginationBodyDirective">' +
-				'<ul class="datasets-list">' +
-        			'<li ng-class="{\'dataset-list active\':DatasetSelectediId_[dataset._source.id]>0,\'dataset-list\':DatasetSelectediId_[dataset.id]}" name="designer-dataset-num-{{dataset.id}}" ng-repeat="dataset in datasetsFilter.hits.hits track by $index" >'+
+				'<ul class="datasets-list metrics-list ">' +
+        			'<li ng-class="{\'metrics-list dataset-list active\':DatasetSelectediId_[dataset._source.id]>0,\'metrics-list dataset-list\':DatasetSelectediId_[dataset.id]}" name="designer-dataset-num-{{dataset.id}}" ng-repeat="dataset in datasetsFilter.hits.hits track by $index" >'+
         			    //'<a href="" x-ng-click="clickDataset(dataset._source.id, dataset._source.title, dataset._source.issued);"  title="{{ !DatasetSelectediId_[dataset._source.id]>0 && \'Add \' || \'Delete \' }} \'{{dataset._source.title}}\'">--> TO DELETE <-- {{dataset._source.title}} - {{ dataset._source.issued | date:\'longDate\' }} --> TO DELETE <--</a></br>'+
         				'<a ng-show="arrayGranularitiesAvailable.indexOf(dataset._source.time.resolution)!=-1 || DatasetSelectediId_[dataset._source.id]>0" href="" x-ng-click="clickDataset(dataset._source.id, dataset._source.title, dataset._source.issued);"  title="{{ !DatasetSelectediId_[dataset._source.id]>0 && \'Add \' || \'Delete \' }} \'{{dataset._source.title}}\'">{{dataset._source.title}} - {{ dataset._source.issued | date:\'longDate\' }}</a>'+
         				'<span ng-hide="arrayGranularitiesAvailable.indexOf(dataset._source.time.resolution)!=-1  || DatasetSelectediId_[dataset._source.id]>0">{{dataset._source.title}} - {{ dataset._source.issued | date:\'longDate\' }}</span>'+

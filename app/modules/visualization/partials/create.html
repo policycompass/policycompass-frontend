@@ -199,8 +199,7 @@
 								</div>
 								
 								<div id="div_resolution" ng-show="TimeSelector.length>1" class="on_check">
-									<label class="checkbox-inline">
-										
+									<label class="checkbox-inline">										
 										Resolution <select id="resolution" ng-change="rePlotGraph();" ng-model="resolution" ng-options="opt as opt.label for opt in resolutionoptions"></select>
 									</label>
 								</div>								
@@ -216,9 +215,6 @@
 										To <select id="toDate" ng-change="rePlotGraph();" ng-model="timeEnd" ng-options="opt for opt in TimeSelector"></select>
 									</label>
 								</div>
-																
-																
-								
 													
 								<!--								
 								<div id="div_showMovement" ng-show="isSelectedParent(1)" class="on_check">
