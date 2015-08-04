@@ -41,7 +41,6 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			}; 
 			
 			
-			
 			$scope.getHistoricalEventcData = function(eventId, colorevent) {
 				//console.log("getHistoricalEventcData metricId="+eventId);
 				//console.log("getHistoricalEventcData colorevent="+colorevent);

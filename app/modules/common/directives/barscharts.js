@@ -204,8 +204,6 @@ $scope.dataset  (mandatory) = [{"Category":"1","From":20950114,"Key":"Air pollut
 						$scope.showLegend = false;					
 				}
 				
-				
-				
 				if(datasetToSend)
 				{
 					if (datasetToSend.length>0)

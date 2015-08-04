@@ -81,7 +81,7 @@ http.createServer(function(request, response) {
 	    proxy.web(request, response, {
 	      target: pcServicesUrl
 	    });
-	}     
+	}
     else {
 
 		fs.exists(filename, function(exists) {

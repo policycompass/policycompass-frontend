@@ -8,7 +8,6 @@ angular.module('pcApp.common.directives.search', [
 ])
 
 
-
 /***** How to use this directive
  Example:
  <div id="filterMetrics" class="selectorMetrics" metrics-list="ListMetricsFilter" number-Max-Metrics="2" functionformetric="rePlotGraph()"></div>

@@ -4,6 +4,7 @@ angular.module('pcApp.common.directives.loadpcimage', [
 //exemple of use:
 //<div class="loadpcimage" id="visualization.id" imgtype="'visualization'" imgalt="visualization.title" imgtitle="visualization.title"></div>
 
+
 .directive('loadpcimage', ['$log', 'API_CONF', function ($log,  API_CONF) {
 	
     return {

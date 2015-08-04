@@ -4,13 +4,6 @@ var visu = angular.module('pcApp.visualization', [
 ]);
 
 
-/*
-var visu = angular.module('pcApp.visualization', [
-    'ngResource',
-    'pcApp.config'
-    'pcApp.metrics'    
-]);
-*/
 visu.config(function($routeProvider) {
     $routeProvider
         .when('/visualizations/', {

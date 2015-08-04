@@ -1,7 +1,5 @@
 var policycompass = policycompass || {'version':0.1, 'controller':{}, 'viz': {} ,'extras': {} };
-
-
-   
+ 
 
 policycompass.viz.mapW_datamaps = function(options)
 {

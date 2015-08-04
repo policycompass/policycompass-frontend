@@ -294,15 +294,12 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
 					//{
 						$timeout($scope.directivePlotLineChart, 0, false);
 					//}
-					
-					
+										
 					//$scope.directivePlotLineChart();
 					//$scope.directivePlotLineChart();
 				}
 				
             });
-			  
-                                	
             //console.log($scope.chartid);
             
 			$scope.directivePlotLineChart = function () {				

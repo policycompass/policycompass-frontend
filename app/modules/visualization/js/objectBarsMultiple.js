@@ -48,9 +48,7 @@ policycompass.viz.barsMultiple = function(options) {
 	}
     
     self.drawBarsMultiple = function (bars, eventsData) {
-//    	console.log(bars);
-    	
-    	
+		//console.log(bars);
 		/*
 		var showLegend = document.getElementById("showLegend").checked;	
 		var showLabels = document.getElementById("showLabels").checked;

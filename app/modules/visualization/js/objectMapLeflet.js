@@ -1,8 +1,6 @@
 var policycompass = policycompass || {'version':0.1, 'controller':{}, 'viz': {} ,'extras': {} };
 
 
-
-
 policycompass.viz.mapLeaflet = function(options)
 {
 	
@@ -16,17 +14,13 @@ policycompass.viz.mapLeaflet = function(options)
         self[key] = options[key];
     }
     
-    console.log(self);
-    console.log("data");
-    console.log(self.data);
-    
-    
-    console.log("self.from_country");
-    console.log(self.from_country);
-    
-    console.log("self.to_country");
-    console.log(self.to_country);
-
+    //console.log(self);
+    //console.log("data");
+    //console.log(self.data);
+    //console.log("self.from_country");
+    //console.log(self.from_country);
+    //console.log("self.to_country");
+    //console.log(self.to_country);
     
     //console.log("color rec");
     //console.log(self.scaleColor);

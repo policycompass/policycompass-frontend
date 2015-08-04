@@ -18,7 +18,24 @@ angular.module('pcApp.references.directives.resolve', [
     };
 }])
 
-
+.directive('resourceTitle', ['$log', '$injector', function ($log, $injector) {
+    return {
+        scope: {
+            id: '=',
+            resource: '@'
+        },
+        link: function (scope, element, attrs, ctrls) {
+            var service = $injector.get(scope.resource);
+            scope.model = service.get(
+                {id: scope.id},
+                function() {
+                }
+            );
+        },
+        template: '<span>{{ model.title }}</span>'
+    };
+}])
+    
 .directive('resolveUnit', ['$log', 'Unit', function ($log, Unit) {
     return {
         scope: {

@@ -51,7 +51,6 @@ commonmanager.config(function($routeProvider) {
         .otherwise({ redirectTo: '/' });
 })
 
-
 commonmanager.run(function(Progress, $rootScope) {
 	 $rootScope.$on('$locationChangeSuccess', function () {
             Progress.start();

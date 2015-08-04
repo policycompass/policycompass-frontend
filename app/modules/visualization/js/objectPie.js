@@ -13,8 +13,7 @@ function piechartdisplay()
 		$('#pie_'+self.visualizationid+'_'+selectedValue).show();
 		
 	}
-	
-	
+		
 }
 				
 var policycompass = policycompass || {'version':0.1, 'controller':{}, 'viz': {} ,'extras': {}};
@@ -24,7 +23,6 @@ var policycompass = policycompass || {'version':0.1, 'controller':{}, 'viz': {} 
       var a = (d.startAngle + d.endAngle) * 90 / Math.PI - 90;
       return a > 90 ? a - 180 : a;
     }
-
 
 
   

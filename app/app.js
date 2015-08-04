@@ -19,6 +19,7 @@ var pcAppDependencies = [
     'angularSpectrumColorpicker',
     'skrollrDirectives',
     'ngProgress',
+    'isteven-multi-select',
     'rzModule',
     'checklist-model'
     //'nvd3ChartDirectives'

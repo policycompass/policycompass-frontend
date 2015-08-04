@@ -41,7 +41,6 @@ angular.module('pcApp.visualization.services.visualization',[
         }
 	);
 
-
 	return Dataset;
 }])
 	

@@ -193,7 +193,6 @@ $scope.dataset (mandatory) = [{"Key":"2003-01-01","Labels":["Hungary","European 
 */
 
 			$scope.directivePlotPieChart = function () {
-
 				
 				var margin = {top: 20, right: 20, bottom: 40, left: 20};
 				var width = 980,

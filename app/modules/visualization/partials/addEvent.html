@@ -29,9 +29,9 @@
 			        	<div>        		
 			        		<label ng-show="recomendationevents.length>1" for="">{{recomendationevents.length}} events found</label> 
 							<label ng-show="recomendationevents.length==1" for="">{{recomendationevents.length}} event found</label>
-			        		<label ng-show="recomendationevents.lengthl==0" for="">no events found</label> 
+			        		<label ng-show="recomendationevents.length==0" for="">No events found</label> 
 			        	</div>
-
+						
 						<div class="createvisualization " >
 							<div class="filterMetricsPagination" id="filterMetricsPaginationDirective">
 	           					<div class="button-group">
@@ -44,26 +44,26 @@
 								</div>
 							</div>
 						</div>
-						
-			        	<ul class="metrics-list" id="metrics-list">
-			        		<!--
-							<li ng-repeat="event in recomendationevents | orderBy:'title' | pagination: curPage * pageSize | limitTo: pageSize " ><a href ng-click="selectHE(event,'recomendation')">{{event.title}}</a></li>				
-							-->
-							<li ng-repeat="event in recomendationevents | orderBy:'title' | pagination: curPage * pageSize | limitTo: pageSize " >
-								<!--
-								<a href ng-click="selectHE(event,'recomendation')">{{event.title}}</a>
+						<div class="row">
+				        	<ul class="metrics-list" id="metrics-list">
+				        		<!--
+								<li ng-repeat="event in recomendationevents | orderBy:'title' | pagination: curPage * pageSize | limitTo: pageSize " ><a href ng-click="selectHE(event,'recomendation')">{{event.title}}</a></li>				
 								-->
-								<span ng-show="idsEventsToPlot[event.id]">
-									{{event.title}} (It's assigned)
-								</span>
-								<span ng-hide="idsEventsToPlot[event.id]">
+								<li ng-repeat="event in recomendationevents | orderBy:'title' | pagination: curPage * pageSize | limitTo: pageSize " >
+									<!--
 									<a href ng-click="selectHE(event,'recomendation')">{{event.title}}</a>
-								</span>								
-								
-								</li>
-								
-						</ul>
-    						
+									-->
+									<span ng-show="idsEventsToPlot[event.id]">
+										{{event.title}} (It's assigned)
+									</span>
+									<span ng-hide="idsEventsToPlot[event.id]">
+										<a href ng-click="selectHE(event,'recomendation')">{{event.title}}</a>
+									</span>								
+									
+									</li>
+									
+							</ul>
+    					</div>
 						<!--
 						<div>
 							<button ng-show="recomendationevents.length>1" ng-disabled="curPage == 0"  class="btn" ng-click="curPage=curPage-1">
@@ -185,21 +185,22 @@
 								</div>
 							</div>
 						</div>
-						
-			        	<ul class="metrics-list" id="metrics-list">			
-			        		<!--
-							<li ng-repeat="event in events.hits.hits track by $index" ><a href ng-click="selectHE(event,'search')">{{event._source.title}}</a></li>
-							-->
-							<li ng-repeat="event in events.hits.hits track by $index" >
-								<span ng-show="idsEventsToPlot[event._id]">
-									{{event._source.title}} (It's assigned)
-								</span>
-								<span ng-hide="idsEventsToPlot[event._id]">
-									<a href ng-click="selectHE(event,'search')">{{event._source.title}}</a>
-								</span>
-							</li>
-							
-						</ul>
+						<div class="row">
+				        	<ul class="metrics-list" id="metrics-list">			
+				        		<!--
+								<li ng-repeat="event in events.hits.hits track by $index" ><a href ng-click="selectHE(event,'search')">{{event._source.title}}</a></li>
+								-->
+								<li ng-repeat="event in events.hits.hits track by $index" >
+									<span ng-show="idsEventsToPlot[event._id]">
+										{{event._source.title}} (It's assigned)
+									</span>
+									<span ng-hide="idsEventsToPlot[event._id]">
+										<a href ng-click="selectHE(event,'search')">{{event._source.title}}</a>
+									</span>
+								</li>
+								
+							</ul>
+						</div>
 						<!--
 						<div>
 							<button ng-show="events.hits.total>1" ng-disabled="pagToSearch==1"  class="btn" ng-click="findEventsByFilter('prev', filterEvent)">

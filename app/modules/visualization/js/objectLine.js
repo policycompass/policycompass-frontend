@@ -47,7 +47,6 @@ policycompass.viz.line = function(options)
 	//console.log(self.resolution);
 	//console.log(self.dataToPlot);
 	
-	
 	function resize() {		
 		self.cntResizes = self.cntResizes+1;
 		if (self.cntResizes>1)
