@@ -270,8 +270,13 @@ policycompass.viz.barsMultiple = function(options) {
 					var resolution = 'day';
 					var formatXaxe = "%d-%m-%Y";
 					//console.log(valuesX[0].length);
-					//if (d.ValueX.length==4)					
-					if (self.resolution=='year')
+					//if (d.ValueX.length==4)
+					if (self.resolution=='quarter')
+					{
+						//resolution = 'quarter';
+						formatXaxe = "%Y";
+					}					
+					else if (self.resolution=='year')
 					{
 						//resolution = 'year';
 						formatXaxe = "%Y";
@@ -287,7 +292,11 @@ policycompass.viz.barsMultiple = function(options) {
 					{
 						//resolution = 'day';
 						formatXaxe = "%d-%m-%Y";
-					}    	
+					}  
+					else
+					{
+						formatXaxe = "%Y";
+					}	  	
     	
 	      			var resX = d.ValueX.replace("/", "-");
 	      			resX = resX.replace("/", "-");
@@ -312,6 +321,14 @@ policycompass.viz.barsMultiple = function(options) {
 		    					else if (self.resolution=='year')
 		    					{
 		    						startDateToPlot = +parseInt(resSplit[0]);
+		    					}
+		    					else if (self.resolution=='quarter')
+		    					{
+		    						startDateToPlot = resX;
+		    					}
+		    					else 
+		    					{
+		    						startDateToPlot = resX;
 		    					}
 	      			
     	  			//tooltip.style("opacity",1.0).html(d.Key+"<br />Date="+d.ValueX+"<br />Value="+d.ValueY);

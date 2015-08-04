@@ -780,7 +780,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			$scope.resolutionoptions = [
     			{ label: 'Day', value: 'day' },
     			{ label: 'Month', value: 'month' },
-    			{ label: 'Year', value: 'year' }
+    			{ label: 'Quarter', value: 'quarter' },
+    			{ label: 'Year', value: 'year' }    			
   			];
   			
   			$scope.arrayResolutions = [];
@@ -788,21 +789,28 @@ angular.module('pcApp.visualization.controllers.visualization', [
   			$scope.arrayResolutions['day'] = [
     			{ label: 'Day', value: 'day' },
     			{ label: 'Month', value: 'month' },
+    			{ label: 'Quarter', value: 'quarter' },
     			{ label: 'Year', value: 'year' }
   			];
   			
   			$scope.arrayResolutions['month'] = [
     			{ label: 'Month', value: 'month' },
+    			{ label: 'Quarter', value: 'quarter' },
     			{ label: 'Year', value: 'year' }
   			];
+
+			$scope.arrayResolutions['quarter'] = [
+    			{ label: 'Quarter', value: 'quarter' },
+    			{ label: 'Year', value: 'year' }
+  			];  			  			
   			
   			$scope.arrayResolutions['year'] = [
-    			{ label: 'Year', value: 'year' }
+    			{ label: 'Year', value: 'year' }    			
   			];
   			  			
+
   			  			
-  			  			
-			$scope.resolution = $scope.resolutionoptions[$scope.resolutionoptions.length-1];
+//			$scope.resolution = $scope.resolutionoptions[$scope.resolutionoptions.length-1];
 			
 			$scope.FilterResolution = $scope.arrayResolutions['year'];
 			
@@ -1704,6 +1712,13 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			//console.log("--rePlotGraph--");		
 			//console.log($scope.dataset_color_palete_)
 			
+			//console.log($scope.ListMetricsFilter);
+			//console.log($scope.ListMetricsFilter.length)
+			if ($scope.ListMetricsFilter.length==0)
+			{
+				$scope.resolution="";
+			}
+			
 			var arrayJsonFiles = [];
 			var datosTemporales = new Object();
 			//var elems = $scope.MetricSelectediId_;
@@ -1716,7 +1731,14 @@ angular.module('pcApp.visualization.controllers.visualization', [
 //			console.log($scope.resolution);
 //			console.log($scope.resolution.value);
 //			console.log($scope.arrayResolutions);
-			$scope.FilterResolution=$scope.arrayResolutions[$scope.resolution.value];
+
+			//console.log($scope.resolution);
+			
+			if ($scope.resolution)
+			{
+				$scope.FilterResolution=$scope.arrayResolutions[$scope.resolution.value];	
+			}
+			
 //			console.log($scope.FilterResolution);
 			
     		var cntMetrics = 0;
@@ -1751,7 +1773,11 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						//var resIdMetric = elems[i];
 						var resIdMetric = i;
 						
-						var timeresolution = $scope.resolution.value;
+						var timeresolution = '';
+						if ($scope.resolution)
+						{
+							timeresolution = $scope.resolution.value;
+						}
 //						console.log(timeresolution);
 						
 						//var identities = $scope.IndividualSelectorLabelColumn_[i];
@@ -2064,6 +2090,13 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				for (var j=0; j<arguments[i]['data']['table'].length; j++)
 				{
 					
+					//console.log($scope.resolution);
+					if (!$scope.resolution)
+					{
+						$scope.resolution = $scope.arrayResolutions[arguments[i].time.resolution][0];	
+					}
+					
+					
 					for (var keyTimeData in arguments[i]['data']['table'][j].values) 
 					{
 						//console.log(keyTimeData);
@@ -2135,7 +2168,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				
 			}
 			
-
+			
 			
 									
 			//console.log($scope.TimeSelector);	
@@ -2143,23 +2176,76 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			{
 				var amod=a;
 				var bmod=b;
-				$scope.resolution='Month';
-				
-				if ($scope.resolution=='Day')
+				//$scope.resolution='Month';
+				//console.log($scope.resolution.value);
+				if ($scope.resolution.value=='day')
 				{
 					var amod=a;
 					var bmod=b;
 				}
-				else if ($scope.resolution=='Month')
+				else if ($scope.resolution.value=='month')
 				{
-					var amod='01/'+a;
-					var bmod='01/'+b;					
+					var arrayDateMonthA = a.split("-");
+					var arrayDateMonthB = b.split("-");
+					var mEndDateA='01/'+arrayDateMonthA[1]+'/'+arrayDateMonthA[0];
+					var mEndDateB='01/'+arrayDateMonthB[1]+'/'+arrayDateMonthB[0];
+					var amod=mEndDateA;
+					var bmod=mEndDateB;
+						
 				}
-				else if ($scope.resolution=='Year')
+				else if ($scope.resolution.value=='year')
 				{
 					var amod='01/01/'+a;
 					var bmod='01/01/'+b;					
-				}				
+				}
+				else if ($scope.resolution.value=='quarter')
+				{
+					//console.log(a);
+					
+					var arrayDateQuarterA = a.split("-");
+					var arrayDateQuarterB = b.split("-");
+
+
+					if (arrayDateQuarterA[1]=='Q1')
+					{
+						qmonthA = '01';
+					}
+					else if (arrayDateQuarterA[1]=='Q2')
+					{
+						qmonthA = '04';
+					}
+					else if (arrayDateQuarterA[1]=='Q3')
+					{
+						qmonthA = '07';
+					}					
+					else if (arrayDateQuarterA[1]=='Q4')
+					{
+						qmonthA = '10';
+					}
+
+					if (arrayDateQuarterB[1]=='Q1')
+					{
+						qmonthB = '01';
+					}
+					else if (arrayDateQuarterB[1]=='Q2')
+					{
+						qmonthB = '04';
+					}
+					else if (arrayDateQuarterB[1]=='Q3')
+					{
+						qmonthB = '07';
+					}					
+					else if (arrayDateQuarterB[1]=='Q4')
+					{
+						qmonthB = '10';
+					}					
+					var mEndDateA='01/'+qmonthA+'/'+arrayDateQuarterA[0];		
+					var amod=mEndDateA;
+					
+					var mEndDateB='01/'+qmonthB+'/'+arrayDateQuarterB[0];					
+					var bmod=mEndDateB;
+
+				}
 				//console.log(a);
 				//console.log(amod);
 				//console.log(bmod);
@@ -2263,7 +2349,19 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						//console.log(arguments[i].time.resolution);
 						//we fix de resolution combo with the values that the visualisation accepts
 						$scope.resolutionoptions = $scope.arrayResolutions[arguments[i].time.resolution];
-						$scope.resolution = $scope.resolutionoptions[$scope.resolutionoptions.length-1];
+						//console.log("scope.resolution=");
+						//console.log($scope.resolution);
+						//console.log(arguments[i].time.resolution);
+						
+						if (!$scope.resolution)
+						{
+							//$scope.resolution = arguments[i].time.resolution;
+							$scope.resolution = $scope.arrayResolutions[arguments[i].time.resolution][0];
+						}
+
+
+						
+						//$scope.resolution = $scope.resolutionoptions[$scope.resolutionoptions.length-1];
 												
 					 	var ejeX = "";
 					 	var ejeY = "";
@@ -2383,7 +2481,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 													{
 														var amod=a;
 														var bmod=b;
-														$scope.resolution='Month';
+														//$scope.resolution='Month';
 														
 														if ($scope.resolution=='Day')
 														{
@@ -3615,9 +3713,6 @@ angular.module('pcApp.visualization.controllers.visualization', [
         function(visualization) {
         	//console.log("---Visualization.get----");
 			
-			
-
-							        	
         },
         function(error) {
             //alert(error.data.message);
@@ -3683,7 +3778,10 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							endPos=i;
 					  	}
 					};    				
-					$scope.resolution = $scope.resolutionoptions[endPos];
+					
+					//console.log(endPos);
+					//console.log($scope.resolutionoptions[endPos]);
+					$scope.resolution = $scope.resolutionoptions[endPos][0];
 					
 					$scope.FilterResolution = $scope.arrayResolutions[endPos];
 

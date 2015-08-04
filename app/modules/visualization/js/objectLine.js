@@ -33,14 +33,20 @@ policycompass.viz.line = function(options)
 	d3.select(window).on('resize', resize);
 	
 	//console.log(self.resolution);
-	//self.resolution='month'
-	//self.resolution='day'
+	//self.resolution='quarter';
+	//self.resolution='year';
+	//self.resolution='month';
+	//self.resolution='day';
 	
 	if (!self.resolution)
 	{
 		self.resolution = 'day';	
 	}
+	
+	//console.log("resolution");
 	//console.log(self.resolution);
+	//console.log(self.dataToPlot);
+	
 	
 	function resize() {		
 		self.cntResizes = self.cntResizes+1;
@@ -322,7 +328,37 @@ policycompass.viz.line = function(options)
    				   valuesX.push((obj[i]));
  
 					//if (obj[i].length==4)
-					if (self.resolution=='year')
+					if (self.resolution=='quarter')
+					{
+						//resolution = 'quarter';
+						//console.log(obj[i]);
+						
+						var arrayObjDate = obj[i].split("-");
+						
+						var newMonth = 1;
+						
+						//console.log(arrayObjDate[1]);
+						if ((arrayObjDate[1]=='Q1') || (arrayObjDate[1]=='Q2') || (arrayObjDate[1]=='Q3') || (arrayObjDate[1]=='Q4'))
+						{
+							var Q = arrayObjDate[1].replace("Q","");
+							newMonth = parseInt((Q*3)-2);
+							if (newMonth<10)
+							{
+								newMonth="0"+newMonth;
+							}
+							
+							var dateToPush = arrayObjDate[0]+"-"+newMonth+"-01";
+							//console.log(dateToPush);
+							
+							valuesX_day.push(dateToPush);
+						}
+						
+						//var dt = new Date(obj[i],'01','01');
+						//console.log(dt);
+						//valuesX_day.push(dt);
+						//valuesX_day.push(("01/01/"+obj[i]));
+					}
+					else if (self.resolution=='year')
 					{
 						//resolution = 'year';
 						valuesX_day.push(("01-01-"+obj[i]));
@@ -336,7 +372,7 @@ policycompass.viz.line = function(options)
 					else if (self.resolution=='month')
 					{
 						//resolution = 'month';
-						console.log(obj[i]);
+						//console.log(obj[i]);
 						var arrayObjDate = obj[i].split("-");
 						//valuesX_day.push(("01/"+obj[i]));
 						//valuesX_day.push((arrayObjDate[0]+"-01-"+arrayObjDate[1]));
@@ -403,7 +439,8 @@ policycompass.viz.line = function(options)
 		//self.minVx = 0;
 		self.maxVx = d3.max(d3.values(valuesX_day));
 
-
+		//console.log(valuesX_day);
+		//console.log("maxVx="+self.maxVx);
 
 		function getDate(d) {
     		return new Date(d);
@@ -451,7 +488,13 @@ return 0;}
 		{
 			//console.log(valuesX[0].length);
 			//if (valuesX[0].length==4)
-			if (self.resolution=='year')
+			if (self.resolution=='quarter')
+			{
+				//resolution = 'quarter';
+				formatXaxe = "%Y";
+				formatXaxe = "%d-%m-%Y";
+			}				
+			else if (self.resolution=='year')
 			{
 				//resolution = 'year';
 				formatXaxe = "%Y";
@@ -482,11 +525,14 @@ return 0;}
 			if (getDate(valuesX_day[0])=="Invalid Date")
 			{
 				var value = valuesX_day[0];
-				value=value.replace("-","/");
-				value=value.replace("-","/");
-				value=value.replace("-","/");
-				self.minDate = getDate(value);
-					
+				console.log(value);
+				if (value)
+				{
+					value=value.replace("-","/");
+					value=value.replace("-","/");
+					value=value.replace("-","/");
+					self.minDate = getDate(value);
+				}	
 			}
 			else
 			{
@@ -497,11 +543,13 @@ return 0;}
 			if (getDate(valuesX_day[valuesX_day.length-1])=="Invalid Date")
 			{
 				var value = valuesX_day[valuesX_day.length-1];
-				value=value.replace("-","/");
-				value=value.replace("-","/");
-				value=value.replace("-","/");
-				self.maxDate = getDate(value);
-					
+				if (value)
+				{
+					value=value.replace("-","/");
+					value=value.replace("-","/");
+					value=value.replace("-","/");
+					self.maxDate = getDate(value);
+				}	
 			}
 			else
 			{
@@ -679,16 +727,59 @@ return 0;}
 		}
 		else
 		{
-			//console.log(self.lengthArrayXaxesLabel);
-			var xAxis = d3.svg.axis()
+			
+			if (self.resolution=='quarter')
+			{
+
+				//console.log(self.lengthArrayXaxesLabel);
+				var xAxis = d3.svg.axis()
 	    		.scale(self.xScale)
 	    		.orient("bottom")
-	    		//.ticks(d3.time.months, 1)
-	    		//.ticks(d3.time.weeks, 2)
-	    		//.tickFormat(d3.time.format("%d-%m-%Y"));
-	    		//.ticks(10)       
+	    		//.ticks(d3.time.month, 3)	    				
+	    		.ticks(d3.time.month, 2)
+	    		//.tickFormat(d3.time.format(formatXaxe));
+	    		.tickFormat(function ( x ) 
+	    		{
+	    			//console.log(x);
+							//var milli = (x.getTime() - 10000);							
+							var milli = (x.getTime());
+							//return d3.time.format(formatXaxe);
+							var vanilli = new Date(milli);
+							var mon = vanilli.getMonth();
+                            var yr = vanilli.getFullYear();
+                            //console.log(mon);
+                             // return appropriate quarter for that month
+                             if ( mon <= 2 ) {
+                                 return  "Q1 " + yr;
+                             } else if ( mon <= 5 ) {
+                                 return  "Q2 " + yr;
+                             } else if ( mon <= 8 ) {
+                                 return  "Q3 " + yr;
+                             } else {
+                                 return "Q4 " + yr;
+                             }							
+								    					
+	    				
+	    			}
+				);
+								
+			}
+			else
+			{
+				//console.log(self.lengthArrayXaxesLabel);
+				var xAxis = d3.svg.axis()
+	    		.scale(self.xScale)
+	    		.orient("bottom")
+	    		//.ticks(d3.time.month, 3)
 	    		.ticks(self.lengthArrayXaxesLabel) 		
 	    		.tickFormat(d3.time.format(formatXaxe));
+	    		;
+								
+			}
+			
+			
+	    		
+	    		
 	    				
 		}
 		self.xAxis = xAxis;
@@ -735,7 +826,28 @@ return 0;}
                 {
                 	//console.log(resX);
 					//if (resX.length==4)
-					if (self.resolution=='year')
+					if (self.resolution=='quarter')
+					{
+						//console.log(resX);
+						var arrayObjDate = resX.split("-");
+						
+						var newMonth = 1;
+						if ((arrayObjDate[1]=='Q1') || (arrayObjDate[1]=='Q2') || (arrayObjDate[1]=='Q3') || (arrayObjDate[1]=='Q4'))
+						{
+							var Q = arrayObjDate[1].replace("Q","");
+							
+							newMonth = parseInt((Q*3)-2);
+							if (newMonth<10)
+							{
+								newMonth="0"+newMonth;
+							}
+							
+							var dateToPush = arrayObjDate[0]+"-"+newMonth+"-01";
+							
+							resX = dateToPush;
+						}
+					}					
+					else if (self.resolution=='year')
 					{
 						resX="01/01/"+resX;
 					}
@@ -1329,7 +1441,25 @@ return 0;}
 	                		
 	                		//console.log(resX);
 							//if (resX.length==4)
-							if (self.resolution=='year')
+							if (self.resolution=='quarter')
+							{
+								var arrayObjDate = resX.split("-");
+								
+								var newMonth = 1;
+								if ((arrayObjDate[1]=='Q1') || (arrayObjDate[1]=='Q2') || (arrayObjDate[1]=='Q3') || (arrayObjDate[1]=='Q4'))
+								{
+									var Q = arrayObjDate[1].replace("Q","");
+									newMonth = parseInt((Q*3)-2);
+									if (newMonth<10)
+									{
+										newMonth="0"+newMonth;
+									}
+	
+									var dateToPush = arrayObjDate[0]+"-"+newMonth+"-01";
+									resX = dateToPush;
+								}
+							}							
+							else if (self.resolution=='year')
 							{
 								resX="01/01/"+resX;
 							}
@@ -1910,7 +2040,30 @@ return 0;}
 
 								//console.log(resX);
 								//if (resX.length==4)
-								if (self.resolution=='year')
+								if (self.resolution=='quarter')
+								{
+									//console.log(resX);
+									var arrayObjDate = resX.split("-");
+									
+									var newMonth = 1;
+									
+									if ((arrayObjDate[1]=='Q1') || (arrayObjDate[1]=='Q2') || (arrayObjDate[1]=='Q3') || (arrayObjDate[1]=='Q4'))
+									{
+										var Q = arrayObjDate[1].replace("Q","");
+										newMonth = parseInt((Q*3)-2);
+										if (newMonth<10)
+										{
+											newMonth="0"+newMonth;
+										}
+	
+										var dateToPush = arrayObjDate[0]+"-"+newMonth+"-01";
+										//console.log(dateToPush);
+										resX=dateToPush;
+										//console.log("resX="+resX);
+									}
+									
+								}
+								else if (self.resolution=='year')
 								{
 									resX="01/01/"+resX;
 								}
@@ -1994,8 +2147,28 @@ return 0;}
 		    				var res = d.split("|");
                     		var resX=res[0];
                     		var resY=res[1];
-		    				
-		    				if (self.resolution=='year')
+                    		
+		    					if (self.resolution=='quarter')
+								{
+									var arrayObjDate = resX.split("-");
+									
+									var newMonth = 1;
+									
+									if ((arrayObjDate[1]=='Q1') || (arrayObjDate[1]=='Q2') || (arrayObjDate[1]=='Q3') || (arrayObjDate[1]=='Q4'))
+									{
+										var Q = arrayObjDate[1].replace("Q","");
+										newMonth = parseInt((Q*3)-2);
+										if (newMonth<10)
+										{
+											newMonth="0"+newMonth;
+										}
+	
+										var dateToPush = arrayObjDate[0]+"-"+newMonth+"-01";
+										//console.log(dateToPush);
+										resX = dateToPush;
+									}
+								}
+		    					else if (self.resolution=='year')
 								{
 									resX="01/01/"+resX;
 								}
@@ -2047,6 +2220,29 @@ return 0;}
 		    					{
 		    						endDateToPlot = +parseInt(resSplit[2]);
 		    					}
+		    					
+		    					else if (self.resolution=='quarter')
+		    					{
+		    						var Q = "Q1";
+		    						if (resSplit[1]<=3)
+		    						{
+		    							Q = "Q1";
+		    						}
+		    						else if (resSplit[1]<=6)
+ 		    						{
+ 		    							Q = "Q2";
+ 		    						}
+ 		    						else if (resSplit[1]<=9)
+ 		    						{
+ 		    							Q = "Q3";
+ 		    						}
+ 		    						else
+ 		    						{
+ 		    							Q = "Q4";
+ 		    						}
+		    						endDateToPlot = Q+"-"+resSplit[0];
+		    					}
+		    					
 		    					//console.log(endDateToPlot);
 		    						
 		    				}
@@ -2506,6 +2702,7 @@ return 0;}
 		self.eventsData = eventsData;
 		self.modeGraph = modeGraph;
 
+		
 		//console.log(self);						
 		//console.log(eventsData);
 		//console.log(dataToPlot);
@@ -2517,7 +2714,7 @@ return 0;}
               .attr("class", "nodatatoplot")
               .attr("x", self.margin.left)
               .attr("y", self.margin.top)
-		}
+		}		
 		else
 		{
 			//self.legendsColumn = Math.ceil(Object.keys(dataToPlot).length/9);

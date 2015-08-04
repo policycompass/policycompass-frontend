@@ -16,16 +16,16 @@ policycompass.viz.mapLeaflet = function(options)
         self[key] = options[key];
     }
     
-    //console.log(self);
-    //console.log("data");
-    //console.log(self.data);
+    console.log(self);
+    console.log("data");
+    console.log(self.data);
     
     
-    //console.log("self.from_country");
-    //console.log(self.from_country);
+    console.log("self.from_country");
+    console.log(self.from_country);
     
-    //console.log("self.to_country");
-    //console.log(self.to_country);
+    console.log("self.to_country");
+    console.log(self.to_country);
 
     
     //console.log("color rec");
@@ -241,9 +241,17 @@ policycompass.viz.mapLeaflet = function(options)
 	    			//console.log(self.data[id].Data);
 	    			//console.log(self.from_country);
 	    			//var a = self.data[id].Data.indexOf("'"+self.from_country+"'");
-	    			
+	    			//console.log(self.data[id].Data);
 	    			//console.log(self.data[id].Data.length);
-	    			
+	    			for (variable in self.data[id].Data) 
+	    			{
+	    				//console.log(variable)
+	    				if (variable==self.from_country)
+	    				{
+	    					valueCalc = self.data[id].Data[variable];	    					
+	    				}
+					}
+/*
 	    			for (var iData = 0; iData < self.data[id].Data.length; iData++) {
 	    				
 	    				if (iData==self.from_country)
@@ -252,7 +260,7 @@ policycompass.viz.mapLeaflet = function(options)
 	    					iData = self.data[id].Data.length;
 	    				}
 	    			}
-	    			
+*/	    			
 	    			
 	    			/*
 					if (a>=0)
