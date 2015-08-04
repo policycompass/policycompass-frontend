@@ -1,8 +1,41 @@
+
 <div class="container">
-<legend>
-    <h3 ng-if="mode == 'create'"><span class="glyphicon glyphicon-pencil"></span> Create a New FCM Model</h3>
+<div class="content-header">
+<h3 ng-if="mode == 'create'"><span class="glyphicon glyphicon-pencil"></span> Create a New FCM Model</h3>
     <h3 ng-if="mode == 'edit'"><span class="glyphicon glyphicon-pencil"></span> Edit FCM Model</h3>
-</legend>
+    
+        <div class="pc-visualization-formcontrols">
+      <div class="button-group">
+
+
+      
+      
+                              <a type="button" class="btn btn-primary btn-concept" ng-click="addObj()">
+                            
+                            Add Concept
+                        </a>
+                        <a type="button" class="btn btn-primary btn-association" ng-click="addEdge()">
+                            
+                            Create Association
+                        </a>
+			<a ng-if="mode == 'create'" type="button" class="btn btn-primary btn-save" ng-click="saveModel()">
+                            
+			    Save Model
+			</a>
+			<a ng-if="mode == 'edit'" type="button" class="btn btn-primary btn-save" ng-click="updateModel()">
+                            
+			    Save Model
+			</a>
+			<a type="button" class="btn btn-primary btn-save" ng-click="saveModel()">
+                            
+			    Save As Model
+			</a>
+      
+      
+      </div>
+    </div>
+</div>
+
 
     <div class="row">
         <div class="col-lg-12">
@@ -10,32 +43,7 @@
 			<cytoscape cy-data="mapData" cy-edges="edgeData" cy-click="doClick(value)" cy-mouseup="doMouseUp(value,x,y)"></cytoscape>
             </div><!-- /.row  -->
         </div><!-- /.col-lg-12  -->
-        <div class="col-lg-12">
-                <div class="center-block">
-                    <div  class="fcm-editor-effect well-primary">
-                        <a type="button" class="btn btn-primary" ng-click="addObj()">
-                            <span class="glyphicon glyphicon-unchecked fcm-editor-icon"></span>
-                            <p>Add Concept</p>
-                        </a>
-                        <a type="button" class="btn btn-primary" ng-click="addEdge()">
-                            <span class="glyphicon glyphicon-random fcm-editor-icon"></span>
-                            <p>Create Association</p>
-                        </a>
-			<a ng-if="mode == 'create'" type="button" class="btn btn-primary" ng-click="saveModel()">
-                            <span class="glyphicon glyphicon-floppy-disk"></span>
-			    <p>Save Model</p>
-			</a>
-			<a ng-if="mode == 'edit'" type="button" class="btn btn-primary" ng-click="updateModel()">
-                            <span class="glyphicon glyphicon-floppy-disk"></span>
-			    <p>Save Model</p>
-			</a>
-			<a type="button" class="btn btn-primary" ng-click="saveModel()">
-                            <span class="glyphicon glyphicon-floppy-disk"></span>
-			    <p>Save As Model</p>
-			</a>
-                    </div>
-                </div><!-- /.col-lg-3 well-primary  -->
-        </div><!-- /.col-lg-12  -->
+
         <div class="col-lg-12">
          <hr> {{ md }}   
  <!--          <hr> curl -H "Content-Type: application/json" -i -X POST -d '{{ fcmSimulation }}' localhost:8080/api/v1/fcmmanager/simulation  -->
