@@ -12,16 +12,31 @@
 }
 #logo {
   margin:10px 0;
+  // margin:10px 0;
+  // margin-bottom:0em;
+  
+  
+  
   width:$unidad * 6;
+  
   float:left;
+  
+  
+  // padding-bottom:1em;
 }
-.content-header {
+body > header {
+ // @include clearfix();
+ // height:86px;
+ // background:$gris_98;
+ }
+ 
+ .content-header {
   padding-top:2em;
   padding-bottom:1em;
   // background:red;
   h3 {
   }
-}
+ }
  
  .subtitle {
   // font-size:22px;
@@ -61,33 +76,11 @@
 }
 @media (min-width:$device) {
   #logo {
-    width:30px;
-    // width:65px;
-    // margin-bottom:5px;
-    // margin-top:15px;
+    width:$unidad * 2;
+    margin-bottom:5px;
+    margin-top:15px;
     // z-index:2000;
-    position:absolute;
-    top:-2px;
-    left:40px;
-  
   }
-  header {
-    height:50px;
-  }
-  /*
-    #logo {
-    width:125px;
-    // width:65px;
-    // margin-bottom:5px;
-    // margin-top:15px;
-    // z-index:2000;
-    position:absolute;
-    top:-6px;
-    left:40px;
-  
-  }
-  */
-  
 }
 
 
