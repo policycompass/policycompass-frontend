@@ -1713,37 +1713,40 @@ header .container {
 /* line 131, ../sass/components/_pages-search.scss */
 .metricIcon a:before {
   content: "\e613";
+  content: "\e625";
 }
 
-/* line 134, ../sass/components/_pages-search.scss */
+/* line 135, ../sass/components/_pages-search.scss */
 .fuzzymapIcon a:before {
   content: "\e610";
+  content: "\e627";
 }
 
-/* line 137, ../sass/components/_pages-search.scss */
+/* line 139, ../sass/components/_pages-search.scss */
 .visualizationIcon a:before {
   content: "\e615";
+  content: "\e626";
 }
 
-/* line 146, ../sass/components/_pages-search.scss */
+/* line 149, ../sass/components/_pages-search.scss */
 .browse-filters-block {
   font-size: 13px;
   border: 1px solid #cccccc;
   border-radius: 6px;
 }
-/* line 148, ../sass/components/_pages-search.scss */
+/* line 151, ../sass/components/_pages-search.scss */
 .browse-filters-block ul {
   list-style-type: none;
   list-style-image: none;
   margin: 0;
   padding: 0;
 }
-/* line 151, ../sass/components/_pages-search.scss */
+/* line 154, ../sass/components/_pages-search.scss */
 .browse-filters-block ul li {
   line-height: 1.5em;
   margin: 0;
 }
-/* line 159, ../sass/components/_pages-search.scss */
+/* line 162, ../sass/components/_pages-search.scss */
 .browse-filters-block h4 {
   margin: 0;
   border-bottom: 1px solid #cccccc;
@@ -1751,26 +1754,26 @@ header .container {
   font-size: 16px;
   padding: 0 10px;
 }
-/* line 166, ../sass/components/_pages-search.scss */
+/* line 169, ../sass/components/_pages-search.scss */
 .browse-filters-block + .browse-filters-block {
   margin: 1em 0;
 }
-/* line 169, ../sass/components/_pages-search.scss */
+/* line 172, ../sass/components/_pages-search.scss */
 .browse-filters-block h3, .browse-filters-block ul {
   padding: 5px;
 }
 
-/* line 181, ../sass/components/_pages-search.scss */
+/* line 184, ../sass/components/_pages-search.scss */
 .browse-item-stars {
   opacity: 0.3;
 }
 
-/* line 192, ../sass/components/_pages-search.scss */
+/* line 195, ../sass/components/_pages-search.scss */
 .stars {
   overflow: hidden;
   margin-bottom: 10px;
 }
-/* line 196, ../sass/components/_pages-search.scss */
+/* line 199, ../sass/components/_pages-search.scss */
 .stars .star {
   font-size: 0.875em;
   width: 1.2em;
@@ -1779,14 +1782,14 @@ header .container {
   display: inline-block;
   position: relative;
 }
-/* line 205, ../sass/components/_pages-search.scss */
+/* line 208, ../sass/components/_pages-search.scss */
 .stars .star:before {
   content: "\e60b";
   position: absolute;
   top: 2px;
   left: 0px;
 }
-/* line 213, ../sass/components/_pages-search.scss */
+/* line 216, ../sass/components/_pages-search.scss */
 .stars .star-inactive:before {
   content: "\e60a";
 }
