@@ -98,7 +98,8 @@ angular.module('pcApp.common.directives.wizard', [
 			
 			$scope.help = false;
 			$scope.step = "";
-			
+
+			$log.info("hallo");
 			var locationURL = $location.url();
 			var searchObject = $location.search();
 			
@@ -171,7 +172,7 @@ angular.module('pcApp.common.directives.wizard', [
 				        	'<ul class="want-list" id="want-list-evaluate">'+				        	
 				        		'<li ng-repeat="stepData in textstep track by $index" class="want-item {{stepData[\'class\']}}">'+
 				        			'<h3 class="want-item-title">'+
-				        				'<a href="#!/{{stepData[\'link\']}}?help=true&pillar={{tabSelected}}&step={{$index}}" >{{$index+1}}. {{stepData[\'title\']}}</a>'+
+				        				'<a href="/#!/{{stepData[\'link\']}}?help=true&pillar={{tabSelected}}&step={{$index}}" >{{$index+1}}. {{stepData[\'title\']}}</a>'+
 				        			'</h3>'+
 				        		'</li>'+
 							'</ul>'+
