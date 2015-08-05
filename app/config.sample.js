@@ -14,6 +14,7 @@ var useRemoteServices = false;
 // Configuration for locally installed services
 var policyCompassConfig = {
     'URL': '/api/v1',
+    'DATASETS_MANAGER_URL': '/api/v1/datasetmanager',
     'METRICS_MANAGER_URL': '/api/v1/metricsmanager',
     'VISUALIZATIONS_MANAGER_URL': '/api/v1/visualizationsmanager',
     'EVENTS_MANAGER_URL': '/api/v1/eventsmanager',
@@ -32,6 +33,7 @@ var policyCompassConfig = {
 // Configuration for remote services
 var remotePolicyCompassConfig = {
     'URL': '/api/v1',
+    'DATASETS_MANAGER_URL': 'https://services-dev.policycompass.eu/api/v1/datasetmanager',
     'METRICS_MANAGER_URL': 'https://services-dev.policycompass.eu/api/v1/metricsmanager',
     'VISUALIZATIONS_MANAGER_URL': 'https://services-dev.policycompass.eu/api/v1/visualizationsmanager',
     'EVENTS_MANAGER_URL': 'https://services-dev.policycompass.eu/api/v1/eventsmanager',

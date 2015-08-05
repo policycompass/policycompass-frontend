@@ -19,7 +19,9 @@ var pcAppDependencies = [
     'angularSpectrumColorpicker',
     'skrollrDirectives',
     'ngProgress',
-    'isteven-multi-select'
+    'isteven-multi-select',
+    'rzModule',
+    'checklist-model'
     //'nvd3ChartDirectives'
 ];
 
@@ -66,6 +68,8 @@ var pcApp = angular.module('pcApp', pcAppDependencies)
    			$('.loadingHome').remove();
   		});
    }
-});
+})
     
-;
+.config(['$locationProvider', function ($locationProvider) {
+        $locationProvider.html5Mode(false).hashPrefix('!');
+    }]);

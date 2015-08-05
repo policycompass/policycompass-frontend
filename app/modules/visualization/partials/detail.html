@@ -1,137 +1,149 @@
-
 <div class="container">
-<div class="content-header">
-  <h1><span class="glyphicon glyphicon-list-alt"></span> {{ visualization.title }}</h1>
-  <div class="pc-visualization-formcontrols">
-    <div class="button-group"> <a type="button" class="btn btn-primary  btn-create" href="#/visualizations/{{ visualization.id }}/edit">Edit</a> <a type="button" class="btn btn-danger  btn-clear" ng-click="deleteVisualization(visualization)">Delete</a> </div>
-    <a type="button" class="btn btn-share" ng-click="share=!share" ng-class="{active: share}">Share</a> </div>
-  <div ng-class="{active: share}" class="share-window" id="share-window" ng-init="e=1">
-    <ul class="share-menu">
-      <div class="fonticon fonticon-close" ng-click="share=!share"></div>
-      <li><a href=""  ng-click="e=1" ng-class="{active: e==1}" >Share</a> </li>
-      <li><a href="" ng-click="e=2" ng-class="{active: e==2}">Embed</a></li>
-    </ul>
-    <div ng-class="{active: e==1}" class="share-submenu">
-      <div class="row-block">
-        <ul class="social-share">
-          <li class="facebook"><a href="" class="fonticon fonticon-facebook"></a></li>
-          <li class="twitter"><a href="" class="fonticon fonticon-twitter"></a></li>
-          <li class="google"><a href="" class="fonticon fonticon-google"></a></li>
-          <li class="mail"><a href="" class="fonticon fonticon-mail"></a></li>
-        </ul>
-        <input type="text" value="http://localhost:9000/app/#/visualizations/4" class="share-input">
-      </div>
-    </div>
-    <div ng-class="{active: e==2}" class="share-submenu">
-      <div class="row-block">
-        <input type="text" value='iframe width="100%" height="300" scrolling="no" frameborder="no" src="http://localhost:9000/app/#/visualizations/4"' class="share-input" >
-      </div>
-    </div>
-  </div>
-</div>
-<div class="visualisation-dat right-column">
-  <div ng-controller="VisualizationsEditController" ng-include='"modules/visualization/partials/graph.html"' ></div>
-</div>
-<br />
-<div class="row"> 
-  
-  <!--
-div.form-group[ng-show=""]>div.field-label+div.field-content
--->
-  
-  <div class="display-fields">
-    <div class="form-group"  ng-show="metric.title">
-      <div class="field-label">Title: </div>
-      <div class="field-content"> {{ visualization.title }} </div>
-    </div>
-    <div class="form-group" ng-show="visualization.description">
-      <div class="field-label">Description: </div>
-      <div class="field-content"> {{ visualization.description }} </div>
-    </div>
-  </div>
-</div>
-<div class="row">
-  <h3 class="legend-primary">Details</h3>
-  <div class="display-fields">
-    <div class="form-group" ng-show="visualization.user_id">
-      <div class="field-label"> Author</div>
-      <div class="field-content"> {{ visualization.user_id }}</div>
-    </div>
-    <div class="form-group" ng-show="visualization.language">
-      <div class="field-label">Language </div>
-      <div class="field-content"> {{ visualization.language.title }} </div>
-    </div>
-    <div class="form-group" ng-show="visualization.created_at">
-      <div class="field-label">Date added </div>
-      <div class="field-content">{{ visualization.created_at | date:'longDate' }} </div>
-    </div>
-    <div class="form-group" ng-show="visualization.updated_at">
-      <div class="field-label">Updated</div>
-      <div class="field-content">{{ visualization.updated_at | date:'longDate' }} </div>
-    </div>
-    <div class="form-group" ng-show="visualization.views_count">
-      <div class="field-label"> Views</div>
-      <div class="field-content">{{ visualization.views_count }} </div>
-    </div>
-    <div class="form-group" ng-show="visualization.keywords">
-      <div class="field-label">Keywords</div>
-      <div class="field-content">{{ visualization.keywords }} </div>
-    </div>
-    
-    <!--
-                         	
-            	<div class="field-content  field-content-editable">
-               	<ul>
-                	<li ng-repeat="kw in visualization.keywords.split(' ')" > {{kw}}</li>
-               	</ul>               
-            	</div>
-            div.display-fields>div.form-group*2>div.field-label+div.field-content 
-            -->
-    
-    <div class="display-fields">
-      <div class="form-group"   ng-show="visualization.metrics_in_visualization">
-        <div class="field-label">Linked to Metrics</div>
-        <div class="field-content">
-          <ul>
-            <li	ng-repeat="metric in meticsRelated"> <a target="_blank" ng-href="/app/#/metrics/{{metric.id}}">{{metric.title}}</a> </li>
+	<div class="content-header">
+		<h1><span class="glyphicon glyphicon-list-alt"></span> {{ visualization.title }}</h1>
+    <div class="pc-visualization-formcontrols">
+      <div class="button-group">
+      <a type="button" class="btn btn-primary  btn-create" href="#!/visualizations/{{ visualization.id }}/edit">Edit</a>
+      <a type="button" class="btn btn-danger  btn-clear" ng-click="deleteVisualization(visualization)">Delete</a>
+      <a type="button" class="btn btn-share" ng-click="share=!share" ng-class="{active: share}">Share</a> </div>
+    <div ng-class="{active: share}" class="share-window" id="share-window" ng-init="e=1">
+      <ul class="share-menu">
+        <div class="fonticon fonticon-close" ng-click="share=!share"></div>
+        <li><a href=""  ng-click="e=1" ng-class="{active: e==1}" >Share</a> </li>
+        <li><a href="" ng-click="e=2" ng-class="{active: e==2}">Embed</a></li>
+      </ul>
+      <div ng-class="{active: e==1}" class="share-submenu">
+        <div class="row-block">
+          <ul class="social-share">
+            <li class="facebook"><a href="" class="fonticon fonticon-facebook"></a></li>
+            <li class="twitter"><a href="" class="fonticon fonticon-twitter"></a></li>
+            <li class="google"><a href="" class="fonticon fonticon-google"></a></li>
+            <li class="mail"><a href="" class="fonticon fonticon-mail"></a></li>
           </ul>
+          <input type="text" value="http://localhost:9000/app/#/visualizations/4" class="share-input">
         </div>
-        <div class="form-group" ng-show="visualization.historical_events_in_visualization">
-          <div class="field-label"> Linked to Historical Events</div>
-          <div class="field-content">
-            <li ng-repeat="her in historicalEventsRelated">
-              <div class='square-box'>
-                <div class='square-content' style="background:{{her.color}};">
-                  <div><span>&nbsp;</span></div>
-                </div>
-              </div>
-              <a target="_blank" ng-href="/app/#/events/{{her.event_id}}">{{her.title}}</a> </li>
-          </div>
+      </div>
+      <div ng-class="{active: e==2}" class="share-submenu">
+        <div class="row-block">
+          <input type="text" value='iframe width="100%" height="300" scrolling="no" frameborder="no" src="http://localhost:9000/app/#/visualizations/4"' class="share-input" >
         </div>
       </div>
     </div>
-    <div class="row" ng-show="relatedVisualizations.length>0">
-      <div class="col-lg-12">
-        <h3 class="legend-primary">Related Visualisations</h3>
-        <div class="col-lg-3 pc-tile" ng-repeat="rv in relatedVisualizations" >
-          <div class="panel panel-default">
-            <div class="panel-heading"> <a href="#/visualizations/{{ rv.visualization_id }}">
-              <h3 class="panel-title"> {{ rv.title | limitTo: 25}} </h3>
-              </a> </div>
-            <div class="panel-body">
-              <div class="visualization-graph-page-content">
-                <div ng-controller="VisualizationsEditController" ng-repeat="idvisulist in [rv.visualization_id]" ng-include='"modules/visualization/partials/graph.html"' ></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-lg-12">
-      <h3 class="legend-primary">Discussion</h3>
-      <show-discussion ng-if="visualization.id" data-key="visualization_{{ visualization.id }}"></show-discussion>
-    </div>
-  </div>
+	</div>
+  	<div class="visualisation-dat right-column">
+    	<div ng-controller="VisualizationsEditController" ng-include='"modules/visualization/partials/graph.html"' ></div>
+ 	</div>
+  	<br />
+  	<div class="row"> 
+    	<!--
+		div.form-group[ng-show=""]>div.field-label+div.field-content
+		-->
+		<div class="display-fields">
+			<div class="form-group"  ng-show="metric.title">
+				<div class="field-label">Title: </div>
+				<div class="field-content"> {{ visualization.title }} </div>
+			</div>
+			<div class="form-group" ng-show="visualization.description">
+				<div class="field-label">Description: </div>
+				<div class="field-content"> {{ visualization.description }} </div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<h3 class="legend-primary">Details</h3>
+		<div class="display-fields">
+			<div class="form-group" ng-show="visualization.user_id">
+				<div class="field-label">Author: </div>
+        		<div class="field-content"> {{ visualization.user_id }}</div>
+      		</div>
+      		<div class="form-group" ng-show="visualization.language_id">
+        		<div class="field-label">Language: </div>
+        		<div class="field-content">  <span ng-if="visualization.language_id" resolve-language id="visualization.language_id"></span> </div>
+      		</div>
+      		<div class="form-group" ng-show="visualization.created_at">
+        		<div class="field-label">Date added: </div>
+        		<div class="field-content">{{ visualization.created_at | date:'longDate' }} </div>
+      		</div>
+      		<div class="form-group" ng-show="visualization.updated_at">
+        		<div class="field-label">Updated: </div>
+        		<div class="field-content">{{ visualization.updated_at | date:'longDate' }} </div>
+      		</div>
+      		<div class="form-group" ng-show="visualization.views_count">
+        		<div class="field-label">Views: </div>
+        		<div class="field-content">{{ visualization.views_count }} </div>
+      		</div>
+      		<div class="form-group" ng-show="visualization.keywords">
+        		<div class="field-label">Keywords: </div>
+        		<div class="field-content">{{ visualization.keywords }} </div>
+  			</div>
+  
+			<!--
+           	<div class="field-content  field-content-editable">
+				<ul>
+					<li ng-repeat="kw in visualization.keywords.split(' ')" > {{kw}}</li>
+				</ul>               
+			</div>
+            -->
+  
+  			<div class="display-fields">
+    			<div class="form-group" ng-show="visualization.datasets_in_visualization">
+      				<div class="field-label">Linked to Datasets: </div>
+      				<div class="field-content"> 
+        				<ul>
+          					<li ng-repeat="metric in meticsRelated"> <a target="_blank" ng-href="#!/datasets/{{metric.id}}">{{metric.title}}</a> </li>
+        				</ul>
+      				</div>
+      				
+      				<div class="form-group" ng-show="visualization.historical_events_in_visualization">
+        				<div class="field-label"> Linked to Historical Events: </div>
+        				<div class="field-content">
+        					<ul>
+	          					<li ng-repeat="her in historicalEventsRelated">
+	            					<div class='square-box'>
+	              						<div class='square-content' style="background:{{her.color}};">
+	                						<div><span>&nbsp;</span></div>
+	              						</div>
+	            					</div>
+	            					<a target="_blank" ng-href="#!/events/{{her.event_id}}">{{her.title}}</a> 
+	            				</li>
+            				</ul>
+        				</div>
+      				</div>
+      				
+    			</div>
+  			</div>
+  			
+  			<div class="row" ng-show="relatedVisualizations.length>0">
+    			<div class="col-lg-12">
+      				<h3 class="legend-primary">Related Visualisations: </h3>
+  					<div class="col-lg-3 pc-tile" ng-repeat="rv in relatedVisualizations" >
+        				<div class="panel panel-default">
+          					<div class="panel-heading">
+            					<a href="#/visualizations/{{ rv.visualization_id }}"><h3 class="panel-title">{{ rv.title | limitTo: 25}}  </h3></a>
+          					</div>
+          					<div class="panel-body">
+            					<div class="visualization-graph-page-content">
+            						<!--
+              						<div ng-controller="VisualizationsEditController" ng-repeat="idvisulist in [rv.visualization_id]" ng-include='"modules/visualization/partials/graph.html"' ></div>
+									-->				
+									<div  ng-repeat="idvisulist in [rv.visualization_id]" ng-include='"modules/visualization/partials/graph.html"' ></div>
+				
+									<!--
+									<div class="loadpcimage" id="rv.visualization_id" imgtype="'visualization'" imgalt="rv.title" imgtitle="rv.title"></div>
+									-->
+            					</div>
+        					</div>
+      					</div>
+					</div>
+  				</div>
+			</div>
+		</div>
+	</div>
+			
+	<div class="row">
+    	<div class="col-lg-12">
+      		<h3 class="legend-primary">Discussion</h3>
+      		<show-discussion ng-if="visualization.id" data-key="visualization_{{ visualization.id }}"></show-discussion>
+    	</div>
+  	</div>
 </div>

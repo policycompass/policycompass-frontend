@@ -7,10 +7,8 @@ angular.module('pcApp.common.directives.common', [
         angular.element($window).bind("scroll", function() {
             if (this.pageYOffset >= 1) {
                 scope.CreateMenu = true;
-                console.log('Scrolled below header.');
             } else {
                 scope.CreateMenu = false;
-                console.log('Header is in view.');
             }
             scope.$apply();
         });
