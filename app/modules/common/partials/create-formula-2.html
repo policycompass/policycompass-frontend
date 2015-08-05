@@ -1,0 +1,98 @@
+<div class="container container-create-formula" id="container-create-formula">
+  <div class="content-header">
+    <h3 class="fonticon fonticon-formula">Formula Builder</h3>
+    <div class="subtitle-help">
+      <h4>
+        <div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div>
+        Step 2 - Enter Metadata for your Metric</h4>
+      <div ng-class="{active: help}" class="help-text">
+        
+      </div>
+    </div>
+    <ul class="navigation-steps">
+      <li><a href="#!/create-formula" class="btn btn-prev">Previous Step</a></li>
+      <li><a href="#!/create-formula-3" class="btn btn-next">Next Step</a></li>
+    </ul>
+          <div class="pc-visualization-formcontrols">
+        <div class="button-group">
+        <a class="btn btn-save">Save</a>		
+          <a  class="btn btn-dataset">Save and Apply to Data sets</a>				
+          
+          </div>		
+      </div>
+  </div>
+  <div class="content-body">
+    <div class="calculation-formula calculation-formula-2">
+      0.6 * nle ( <span class="indicator-formula indicator-formula-selected">Life expectancy</span> ) + 0.4 * ncm ( <span class="indicator-formula indicator-formula-selected">Child Mortality</span> ) / <span class="metrics-formula metrics-formula-selected">GDP</span> 
+    </div>
+
+  </div>
+  <div class="metadata metadata-formula">
+    <div class="form-group">
+      <label for="title" class="field-label">Title</label>
+      <div class="field-content">
+        <input type="text" class="form-control" id="title">
+      </div>
+      
+    </div>
+        <div class="form-group">
+      <label for="property" class="field-label">Property</label>
+      <div class="field-content">
+        <input type="text" class="form-control" id="property">
+      </div>
+      
+    </div>
+            <div class="form-group">
+      <label for="property" class="field-label">Property</label>
+      <div class="field-content">
+            
+      
+      <div   class="dataset-select"  
+    isteven-multi-select
+    input-model="classtypedata"
+    output-model="outputClasstypedata"
+    button-label="icon name"
+    item-label="icon name maker"
+    tick-property="ticked"
+	> </div>
+
+      
+
+      </div>
+      
+    </div>
+            <div class="form-group">
+      <label for="property" class="field-label">Keywords</label>
+      <div class="field-content">
+            
+      
+      <div   class="dataset-select"  
+    isteven-multi-select
+    input-model="classtypedata2"
+    output-model="outputClasstypedata"
+    button-label="icon name"
+    item-label="icon name maker"
+    tick-property="ticked"
+	> </div>
+
+      
+<a class="btn btn-add btn-validate">Add</a>
+      </div>
+      
+    </div>
+            <div class="form-group">
+      <label for="publisher" class="field-label">Publisher</label>
+      <div class="field-content">
+          <input type="text" class="form-control" id="Publisher">
+      </div>
+      
+    </div>
+                <div class="form-group">
+      <label for="publisher" class="field-label">Description</label>
+      <div class="field-content">
+          <textarea rows="3" cols="100%" id="description"></textarea>
+      </div>
+      
+    </div>
+  </div>
+</div>

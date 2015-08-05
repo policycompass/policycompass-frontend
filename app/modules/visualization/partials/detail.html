@@ -3,7 +3,7 @@
 		<h1><span class="glyphicon glyphicon-list-alt"></span> {{ visualization.title }}</h1>
 		<div class="pc-visualization-formcontrols">
 			<div class="button-group">
-				<a type="button" class="btn btn-primary  btn-create" href="#/visualizations/{{ visualization.id }}/edit">Edit</a>
+				<a type="button" class="btn btn-primary  btn-create" href="#!/visualizations/{{ visualization.id }}/edit">Edit</a>
 				<a type="button" class="btn btn-danger  btn-clear" ng-click="deleteVisualization(visualization)">Delete</a>
 			</div>
 		</div>
@@ -68,7 +68,7 @@
       				<div class="field-label">Linked to Datasets: </div>
       				<div class="field-content"> 
         				<ul>
-          					<li ng-repeat="metric in meticsRelated"> <a target="_blank" ng-href="/app/#/datasets/{{metric.id}}">{{metric.title}}</a> </li>
+          					<li ng-repeat="metric in meticsRelated"> <a target="_blank" ng-href="#!/datasets/{{metric.id}}">{{metric.title}}</a> </li>
         				</ul>
       				</div>
       				
@@ -82,7 +82,7 @@
 	                						<div><span>&nbsp;</span></div>
 	              						</div>
 	            					</div>
-	            					<a target="_blank" ng-href="/app/#/events/{{her.event_id}}">{{her.title}}</a> 
+	            					<a target="_blank" ng-href="#!/events/{{her.event_id}}">{{her.title}}</a> 
 	            				</li>
             				</ul>
         				</div>

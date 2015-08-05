@@ -8,7 +8,7 @@
                 <div class="panel panel-default">
           					
                     <div class="panel-heading">
-                        <a href="#/visualizations/{{ visualization.id }}">
+                        <a href="#!/visualizations/{{ visualization.id }}">
                         <h3 class="panel-title">{{ visualization.title | limitTo: 25}}</h3>
                         </a>
 
@@ -27,10 +27,10 @@
         </div>
 
 		<div class="row">
-		    <a ng-disabled="!visualizations.previous"  class="btn btn-warning" href="#/visualizations{{ visualizations.previous }}">
+		    <a ng-disabled="!visualizations.previous"  class="btn btn-warning" href="#!/visualizations{{ visualizations.previous }}">
 		        <span class="glyphicon glyphicon-chevron-left"></span> Previous
 		    </a>
-		    <a ng-disabled="!visualizations.next" class="btn btn-warning pull-right" href="#/visualizations{{ visualizations.next }}">
+		    <a ng-disabled="!visualizations.next" class="btn btn-warning pull-right" href="#!/visualizations{{ visualizations.next }}">
 		        Next <span class="glyphicon glyphicon-chevron-right"></span>
 		    </a>
 		</div>
