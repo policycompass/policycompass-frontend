@@ -4,8 +4,8 @@
     <div class="pc-visualization-formcontrols">
       <div class="button-group">
       <a type="button" ng-disabled="!gridloaded" class="btn btn-primary btn-details"               ng-class="{data: gridvisible}" ng-click="showData()">                <span ng-show="!gridvisible">View Data</span> <span ng-show="gridvisible">View Metric Details</span> </a> 
-      <a type="button" class="btn btn-primary btn-create" href="#/metrics/{{ metric.id }}/edit">Edit</a>
-      <a type="button" class="btn btn-line" href="#/visualizations/create/?metrics={{metric.id}}">Visualise</a>
+      <a type="button" class="btn btn-primary btn-create" href="#!/metrics/{{ metric.id }}/edit">Edit</a>
+      <a type="button" class="btn btn-line" href="#!/visualizations/create/?metrics={{metric.id}}">Visualise</a>
       <a type="button" class="btn btn-tree" href="https://carneades-dev.policycompass.eu/carneades/#/projects/compass" target="_blank">Create Argument Map</a>
       <a type="button" class="btn btn-clear" ng-click="deleteMetric(metric)">Delete</a> </div>
     </div>
@@ -146,7 +146,7 @@
         <div class="col-lg-3">
             <table class="table table-hover">
                 <tr ng-repeat="linked in linked_metric_visualization.results">
-                    <td><a href="/app/#/visualizations/{{ linked.visualization }}" target="_blank">{{ linked.title }}</a></td>
+                    <td><a href="#!/visualizations/{{ linked.visualization }}" target="_blank">{{ linked.title }}</a></td>
                 </tr>
             </table>
         </div>

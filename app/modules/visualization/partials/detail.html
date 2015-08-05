@@ -4,7 +4,7 @@
     <h1><span class="glyphicon glyphicon-list-alt"></span> {{ visualization.title }}</h1>
     <div class="pc-visualization-formcontrols">
       <div class="button-group">
-      <a type="button" class="btn btn-primary  btn-create" href="#/visualizations/{{ visualization.id }}/edit">Edit</a>
+      <a type="button" class="btn btn-primary  btn-create" href="#!/visualizations/{{ visualization.id }}/edit">Edit</a>
       <a type="button" class="btn btn-danger  btn-clear" ng-click="deleteVisualization(visualization)">Delete</a>
       
       </div>
@@ -74,7 +74,7 @@ div.form-group[ng-show=""]>div.field-label+div.field-content
       <div class="field-label">Linked to Metrics</div>
       <div class="field-content">
         <ul>
-          <li	ng-repeat="metric in meticsRelated"> <a target="_blank" ng-href="/app/#/metrics/{{metric.id}}">{{metric.title}}</a> </li>
+          <li	ng-repeat="metric in meticsRelated"> <a target="_blank" ng-href="#!/metrics/{{metric.id}}">{{metric.title}}</a> </li>
         </ul>
       </div>
       <div class="form-group" ng-show="visualization.historical_events_in_visualization">
@@ -86,7 +86,7 @@ div.form-group[ng-show=""]>div.field-label+div.field-content
                 <div><span>&nbsp;</span></div>
               </div>
             </div>
-            <a target="_blank" ng-href="/app/#/events/{{her.event_id}}">{{her.title}}</a> </li>
+            <a target="_blank" ng-href="#!/events/{{her.event_id}}">{{her.title}}</a> </li>
         </div>
       </div>
     </div>
@@ -97,7 +97,7 @@ div.form-group[ng-show=""]>div.field-label+div.field-content
       <div class="col-lg-3 pc-tile" ng-repeat="rv in relatedVisualizations" >
         <div class="panel panel-default">
           <div class="panel-heading">
-            <a href="#/visualizations/{{ rv.visualization_id }}"><h3 class="panel-title">
+            <a href="#!/visualizations/{{ rv.visualization_id }}"><h3 class="panel-title">
             {{ rv.title | limitTo: 25}}  </h3></a>
           </div>
           <div class="panel-body">

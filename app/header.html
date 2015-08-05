@@ -8,7 +8,7 @@
 
 
  
-     <a href="#" ng-click="collapseCreateMenu()" id="logo"><img src="img/logo_small.svg" alt="Policy Compass's Logo"></a>
+     <a href="#!" ng-click="collapseCreateMenu()" id="logo"><img src="img/logo_small.svg" alt="Policy Compass's Logo"></a>
 
     <!--
      <a href="#" ng-click="collapseCreateMenu()" id="logo"><img src="img/logo.svg" alt="Policy Compass's Logo"></a>
@@ -21,11 +21,11 @@
     <li> <a id="createLink" href="" ng-click="i=1" data-hover="Create" class="fonticon fonticon-create">Create</a>
 
     </li>
-    <li><a href="#/browse"  data-hover="Browse" ng-click="i=0" class="fonticon fonticon-search">Browse</a></li>
-    <li><a href="#/i-want-to" data-hover="I want to" ng-click="i=0" class="fonticon fonticon-want">I want to</a></li>
+    <li><a href="#!/browse"  data-hover="Browse" ng-click="i=0" class="fonticon fonticon-search">Browse</a></li>
+    <li><a href="#!/i-want-to" data-hover="I want to" ng-click="i=0" class="fonticon fonticon-want">I want to</a></li>
 
-    <li><a href="#/request" data-hover="Request" ng-click="i=0" class="fonticon fonticon-request">Request</a></li>
-        <li><a href="#/how-it-works" data-hover="How It Works" ng-click="i=0" class="fonticon fonticon-how">How It Works </a></li>
+    <li><a href="#!/request" data-hover="Request" ng-click="i=0" class="fonticon fonticon-request">Request</a></li>
+        <li><a href="#!/how-it-works" data-hover="How It Works" ng-click="i=0" class="fonticon fonticon-how">How It Works </a></li>
     <li><a href="" data-hover="" class="fonticon fonticon-user" ng-click="i=6"> User </a></li>
   </ul>
 </div>
@@ -38,12 +38,12 @@
 <div class="submenu submenu-create" id="submenu-create" ng-class="{active: i==1}">
 <div class="fonticon fonticon-close" ng-click="i=0"></div>
 <ul>
-    <li> <a href="#/create-dataset" class="fonticon font-icon-datasets" ng-click="i=0">Upload Datasets</a> </li>
-    <li> <a href="#/indicators/create" class="fonticon font-icon-properties" ng-click="i=0">Define Indicators</a> </li>
-    <li> <a href="#/create-formula" class="fonticon font-icon-metrics" ng-click="i=0">Define Metrics</a> </li>
-    <li> <a href="#/events/create" class="fonticon font-icon-historical_events" ng-click="i=0">Register Historical Events</a> </li>
-    <li> <a href="#/visualizations/create" class="fonticon font-icon-visualisation" ng-click="i=0">Visualise Data</a> </li>
-    <li> <a href="#/models/create" class="fonticon font-icon-causal_models" ng-click="i=0">Create Causal Models</a> </li>
+    <li> <a href="#!/create-dataset" class="fonticon font-icon-datasets" ng-click="i=0">Upload Datasets</a> </li>
+    <li> <a href="#!/indicators/create" class="fonticon font-icon-properties" ng-click="i=0">Define Indicators</a> </li>
+    <li> <a href="#!/create-formula" class="fonticon font-icon-metrics" ng-click="i=0">Define Metrics</a> </li>
+    <li> <a href="#!/events/create" class="fonticon font-icon-historical_events" ng-click="i=0">Register Historical Events</a> </li>
+    <li> <a href="#!/visualizations/create" class="fonticon font-icon-visualisation" ng-click="i=0">Visualise Data</a> </li>
+    <li> <a href="#!/models/create" class="fonticon font-icon-causal_models" ng-click="i=0">Create Causal Models</a> </li>
   </ul>
 
 </div>
@@ -52,9 +52,9 @@
 <div class="fonticon fonticon-close" ng-click="i=0"></div>
 <ul data-ng-controller="UserState">
     
-    <li ng-if="authState.loggedIn===false" ng-cloak><a href="#/register" data-hover="Sign Up" class="fonticon font-icon-sign_up">Sign Up</a></li>
-     <li id="btn-login" ng-if="authState.loggedIn===false" ng-cloak><a href="#/login" class="fonticon font-icon-log_in">Log In</a></li>
-     <li ng-if="authState.loggedIn" ng-cloak><a href="#/logout" class="fonticon font-icon-log_out">Logout ({{ authState.userData.name }})</a></li>
+    <li ng-if="authState.loggedIn===false" ng-cloak><a href="#!/register" data-hover="Sign Up" class="fonticon font-icon-sign_up">Sign Up</a></li>
+     <li id="btn-login" ng-if="authState.loggedIn===false" ng-cloak><a href="#!/login" class="fonticon font-icon-log_in">Log In</a></li>
+     <li ng-if="authState.loggedIn" ng-cloak><a href="#!/logout" class="fonticon font-icon-log_out">Logout ({{ authState.userData.name }})</a></li>
     
   </ul>
 
