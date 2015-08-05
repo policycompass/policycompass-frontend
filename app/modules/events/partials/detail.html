@@ -88,13 +88,13 @@
       <div class="col-lg-6">
           <table class="table table-hover">
               <tr ng-repeat="linked in linked_event_visualization.results">
-                  <td><a href="#!/visualizations/{{ linked.visualization }}" target="_blank">{{ linked.title }}</a></td>
+                  <td><a href="/app/#/visualizations/{{ linked.visualization }}" target="_blank">{{ linked.title }}</a></td>
               </tr>
           </table>
       </div>
       <div class="col-lg-12">
           <legend class="legend-primary">Options</legend>
-          <a type="button" class="btn btn-primary" href="#!/events/{{ event.id }}/edit">Edit</a>
+          <a type="button" class="btn btn-primary" href="#/events/{{ event.id }}/edit">Edit</a>
           <button type="button" class="btn btn-danger" ng-click="deleteEvent(event)">Delete</button>
       </div>
   </div>

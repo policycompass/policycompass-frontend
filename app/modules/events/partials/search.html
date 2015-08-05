@@ -6,7 +6,7 @@
 
     <form name="eventForm" role="form" novalidate>
         <div class="row">
-            <div class="col-lg-4">
+            <div class="col-lg-5">
                 <div ng-switch="step">
                     <div ng-switch-when="one">
                         <h4></h4>
@@ -73,8 +73,9 @@
                         </div>
                     </div>
                     <div ng-switch-when="second">
-                        <select multiple class="form-control" ng-model="search.selectedEvent">
-                            <option ng-repeat="result in searchResults" value="{{$index}}">{{ result.title }}</option>
+                        <label>Results</label>
+                        <select multiple class="form-control" ng-model="search.selectedEvent" style="height: 200px">
+                            <option ng-repeat="result in searchResults" value="{{$index}}" ng-model="searchResults">{{ result.title }}</option>
                         </select><br>
                     </div>
                 </div>
@@ -87,11 +88,15 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-8">
-
+            <div class="col-lg-6">
+                <div ng-show="search.selectedEvent">
+                    <br>
+                    <label>Title:</label> {{ searchResults[search.selectedEvent[0]].title }}<br>
+                    <label>Description:</label> {{ searchResults[search.selectedEvent[0]].description }}<br>
+                    <label>Year:</label> {{ searchResults[search.selectedEvent[0]].date.substring(0,4) }}<br>
+                    <label>URL:</label> {{ searchResults[search.selectedEvent[0]].url }}<br>
+                </div>
             </div>
-
-        </div>
         <div class="row">
 
         </div>
