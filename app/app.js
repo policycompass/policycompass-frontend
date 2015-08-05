@@ -66,6 +66,8 @@ var pcApp = angular.module('pcApp', pcAppDependencies)
    			$('.loadingHome').remove();
   		});
    }
-});
+})
     
-;
+.config(['$locationProvider', function ($locationProvider) {
+        $locationProvider.html5Mode(false).hashPrefix('!');
+    }]);
