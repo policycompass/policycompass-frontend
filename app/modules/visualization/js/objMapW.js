@@ -108,8 +108,6 @@ policycompass.viz.mapW = function(options)
 				.precision(.1);
 				;				
 		}	
-
-
 					
         path = d3.geo.path().projection(projection);    	
 

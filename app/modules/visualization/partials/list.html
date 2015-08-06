@@ -1,19 +1,17 @@
-
 <div class="container">
 	<h1><span class="glyphicon glyphicon-search"></span> Browse Visualisations ({{ visualizations.count }})</h1>
 	<br />
-	
+
 	<div class="container">
 		<div class="row">
             <div class="col-lg-3 pc-tile" ng-show="visualizations" ng-repeat="visualization in visualizations.results" >
                 <div class="panel panel-default">
+          					
                     <div class="panel-heading">
-                        <h3 class="panel-title">
-                        <a href="#/visualizations/{{ visualization.id }}">
-                        {{ visualization.title | limitTo: 25}}
+                        <a href="#!/visualizations/{{ visualization.id }}">
+                        <h3 class="panel-title">{{ visualization.title | limitTo: 25}}</h3>
                         </a>
-                        
-                        </h3>
+
                     </div>
                     <div class="panel-body">
                         {{ visualization.created_at | date:'longDate' }}    
@@ -27,12 +25,12 @@
                 </div>
             </div>
         </div>
-        
+
 		<div class="row">
-		    <a ng-disabled="!visualizations.previous"  class="btn" href="#/visualizations{{ visualizations.previous }}">
+		    <a ng-disabled="!visualizations.previous"  class="btn btn-warning" href="#!/visualizations{{ visualizations.previous }}">
 		        <span class="glyphicon glyphicon-chevron-left"></span> Previous
 		    </a>
-		    <a ng-disabled="!visualizations.next" class="btn pull-right" href="#/visualizations{{ visualizations.next }}">
+		    <a ng-disabled="!visualizations.next" class="btn btn-warning pull-right" href="#!/visualizations{{ visualizations.next }}">
 		        Next <span class="glyphicon glyphicon-chevron-right"></span>
 		    </a>
 		</div>

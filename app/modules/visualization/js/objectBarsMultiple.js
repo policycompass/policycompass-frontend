@@ -4,8 +4,7 @@ var policycompass = policycompass || {'version':0.1, 'controller':{}, 'viz': {} 
 policycompass.viz.barsMultiple = function(options) {
 
     // Object
-
-	
+    //console.log('Dins barsMultiple');	
 
     var self = {};
 
@@ -15,6 +14,14 @@ policycompass.viz.barsMultiple = function(options) {
         self[key] = options[key];
 	}
 
+	//self.resolution='month'
+	//console.log(self.resolution);
+	if (!self.resolution)
+	{
+		self.resolution = 'day';	
+	}
+	//console.log(self.resolution);
+	
     self.parentSelect = "#"+self.idName;
 
 	self.maxMargin = self.margin;
@@ -41,9 +48,7 @@ policycompass.viz.barsMultiple = function(options) {
 	}
     
     self.drawBarsMultiple = function (bars, eventsData) {
-//    	console.log(bars);
-    	
-    	
+		//console.log(bars);
 		/*
 		var showLegend = document.getElementById("showLegend").checked;	
 		var showLabels = document.getElementById("showLabels").checked;
@@ -103,14 +108,14 @@ policycompass.viz.barsMultiple = function(options) {
 		    	return d3.svg.axis()
 		        	.scale(x0)
 		         	.orient("bottom")
-		         	.ticks(10)		         	
+		         	.ticks(20)		         	
 			}
 		
 			function make_y_axis() {
 		    	return d3.svg.axis()
 			        .scale(y)
 			        .orient("left")
-			        .ticks(10)
+			        .ticks(20)
 			}
 
 
@@ -263,41 +268,65 @@ policycompass.viz.barsMultiple = function(options) {
 					var resolution = 'day';
 					var formatXaxe = "%d-%m-%Y";
 					//console.log(valuesX[0].length);
-					if (d.ValueX.length==4)
+					//if (d.ValueX.length==4)
+					if (self.resolution=='quarter')
 					{
-						resolution = 'year';
+						//resolution = 'quarter';
+						formatXaxe = "%Y";
+					}					
+					else if (self.resolution=='year')
+					{
+						//resolution = 'year';
 						formatXaxe = "%Y";
 					}
-					else if (d.ValueX.length==7)
+					//else if (d.ValueX.length==7)
+					else if (self.resolution=='month')
 					{
-						resolution = 'month';
+						//resolution = 'month';
 						formatXaxe = "%m-%Y";
 					}
-					else if (d.ValueX.length==9)
+					//else if (d.ValueX.length==9)
+					else if (self.resolution=='day')
 					{
-						resolution = 'day';
+						//resolution = 'day';
 						formatXaxe = "%d-%m-%Y";
-					}    	
+					}  
+					else
+					{
+						formatXaxe = "%Y";
+					}	  	
     	
+	      			var resX = d.ValueX.replace("/", "-");
+	      			resX = resX.replace("/", "-");
+	      			resX = resX.replace("/", "-");
 	      			
-					var resSplit = d.ValueX.split("-");
+					//var resSplit = d.ValueX.split("-");
+					var resSplit = resX.split("-");
+					
 					var monthNames = [ "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 	    			var startDateToPlot = "";
 	    				
 					//var startDateToPlot = monthNames[parseInt(resSplit[1])]+" "+parseInt(resSplit[2])+", "+resSplit[0];
 
-
-								if (resolution=='day')
+								if (self.resolution=='day')
 		    					{
 		    						startDateToPlot = monthNames[parseInt(resSplit[1])]+" "+parseInt(resSplit[2])+", "+resSplit[0];
 		    					}
-		    					else if (resolution=='month')
+		    					else if (self.resolution=='month')
 		    					{
-		    						startDateToPlot = monthNames[parseInt(resSplit[1])]+" "+parseInt(resSplit[0]);
+		    						startDateToPlot = monthNames[parseInt(resSplit[0])]+", "+parseInt(resSplit[1]);
 		    					}
-		    					else if (resolution=='year')
+		    					else if (self.resolution=='year')
 		    					{
 		    						startDateToPlot = +parseInt(resSplit[0]);
+		    					}
+		    					else if (self.resolution=='quarter')
+		    					{
+		    						startDateToPlot = resX;
+		    					}
+		    					else 
+		    					{
+		    						startDateToPlot = resX;
 		    					}
 	      			
     	  			//tooltip.style("opacity",1.0).html(d.Key+"<br />Date="+d.ValueX+"<br />Value="+d.ValueY);

@@ -16,7 +16,6 @@ policycompass.viz.map = function(options)
     self.parentSelect = "#"+self.idName;
 
 
-
     self.init = function(){
 
 

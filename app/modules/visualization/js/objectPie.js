@@ -13,8 +13,7 @@ function piechartdisplay()
 		$('#pie_'+self.visualizationid+'_'+selectedValue).show();
 		
 	}
-	
-	
+		
 }
 				
 var policycompass = policycompass || {'version':0.1, 'controller':{}, 'viz': {} ,'extras': {}};
@@ -26,13 +25,13 @@ var policycompass = policycompass || {'version':0.1, 'controller':{}, 'viz': {} 
     }
 
 
-
   
 
 policycompass.viz.pie = function(options)
 {
 
     // Object
+    //console.log('Dins Pie!!!');
 
 	var self = {};
     // Get options data
@@ -41,6 +40,7 @@ policycompass.viz.pie = function(options)
         self[key] = options[key];
 	}
 
+	//console.log(self);
 	
 	self.clicToOpen = true;
 	
@@ -142,8 +142,11 @@ policycompass.viz.pie = function(options)
 				}
 			})			
 			.on("mouseover", function(d, i) {
-				
-				var resSplit = pieslabels[i].split("-");
+				//console.log(d);
+				//console.log(i);
+				//console.log(pieslabels[i]);
+				//var resSplit = pieslabels[i].split("-");
+				var resSplit = pieslabels[i];
 				var monthNames = [ "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 		    				
 				//var startDateToPlot = monthNames[parseInt(resSplit[1])]+" "+parseInt(resSplit[2])+", "+resSplit[0];
@@ -340,7 +343,8 @@ policycompass.viz.pie = function(options)
 						var labelY = "";
 						
 						var arrayLabelsToPlot=[];
-						for (var ij=0; ij<piesArray['Units'].length; ij++){
+						for (var ij=0; ij<piesArray['Units'].length; ij++)
+						{
 							//console.log(ij);
 							
 							var a = arrayLabelsToPlot.indexOf(piesArray['Units'][ij]);
@@ -366,7 +370,7 @@ policycompass.viz.pie = function(options)
 						 */
 						
 						//return resTRext[0]+" ("+labelY+" )";
-						return "("+labelY+" )";
+						return resTRext+" ("+labelY+" )";
 						})
 		    	
 		   	}
@@ -434,7 +438,38 @@ policycompass.viz.pie = function(options)
 		    		
 		    		})		    	
 		    	.text(function(d,i) {
-					var textToReturn = pieslabels[i];
+		    		
+					var sumatotal=0;
+		      		for (var ij=0; ij<pies.length; ij++){
+		      			sumatotal = parseInt(sumatotal) + parseInt(pies[ij]); 
+		      		}
+		      	
+		      		//console.log("sumatotal="+sumatotal);
+		      		var average = Math.round((pies[i]*100/sumatotal),2);
+		      		var number = pies[i];
+		      		//number =  Math.round(number, 2);		      	
+		      		number = (parseFloat(number * 100) / 100).toFixed(2);
+		      	
+		      		var formatdecimal = 0;
+
+        			formatdecimal = Math.round(number/100)+1;
+        
+        			if (formatdecimal<2)
+        			{
+        				formatdecimal =2;
+        			}
+        			else if (formatdecimal>4)
+        			{
+        				formatdecimal =4;
+        			} 
+		      	
+		      		var si = d3.format('.'+formatdecimal+'s');
+		      	
+		      		number = si(number);
+		      	
+		      		var textToReturn = pieslabels[i] + " ("+number + " - "+average+"%)";	
+		      	  		    				    		
+					//var textToReturn = pieslabels[i];
 					//textToReturn = textToReturn+": "+pies[i];
 					return textToReturn;
 				});
