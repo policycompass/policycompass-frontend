@@ -18,6 +18,7 @@
 .fonticon-login:before { content:"\e12c";}
 .fonticon-logout:before { content:"\e12d";}
 .fonticon-user:before { content:"\e619";}
+.fonticon-share:before { content: "\e61f";}
 
 
 .font-icon-historical_events:before {content:"\e612";}
@@ -148,7 +149,7 @@ header .container  {
         }
       }
     }
-
+    
   }
   &.active {
     height:auto;
@@ -156,6 +157,13 @@ header .container  {
     opacity:1;
     // top:auto;
   }
+  &.submenu-share {
+     ul li a:before {
+        font-size:30px;
+        left:20px;
+        top:10px;
+      }
+    }
 }
 
 .fonticon-close {
