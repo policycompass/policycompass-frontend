@@ -254,7 +254,7 @@
 						<div id="filterMetrics" style="display: none;" class="selectorMetrics" metrics-list="ListMetricsFilter" number-Max-Metrics="50" functionformetric="rePlotGraph()"></div>
 						-->
 						
-						<div id="filterDatasets"  class="selectorDatasets" datasets-list="ListMetricsFilter" number-Max-Datasets="99" functionfordataset="rePlotGraph()" disable-Row="FilterResolution"></div>
+						<div id="filterDatasets"  class="selectorDatasets" datasets-list="ListMetricsFilter" number-Max-Datasets="99" functionfordataset="rePlotGraph()" disable-Row="arrayResolutionsFilter[resolution.value]"></div>
 						
 						<div ng-show="metric.title" ng-controller="LoadCombosMetric" class="designer-metrics active" class="designer-metrics" id="designer-metrics-num-{{metric.id}}" ng-repeat="metric in ListMetricsFilter track by $index" >
 							<h4>{{metric.title}} -- {{metric.issued | date:'longDate' }}</h4>							
