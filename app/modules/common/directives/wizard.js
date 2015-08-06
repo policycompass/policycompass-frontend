@@ -98,7 +98,8 @@ angular.module('pcApp.common.directives.wizard', [
 			
 			$scope.help = false;
 			$scope.step = "";
-			
+
+			$log.info("hallo");
 			var locationURL = $location.url();
 			var searchObject = $location.search();
 			
@@ -127,14 +128,14 @@ angular.module('pcApp.common.directives.wizard', [
 
         template: ''+       
 		'<div ng-show="help" class="help-guide help-active" id="help-guide">'+
-		'<a class="help-nav-whant" href="#/i-want-to?pillar={{pillar}}" ng-click="help=false"></a>'+
+		'<a class="help-nav-whant" href="#!/i-want-to?pillar={{pillar}}" ng-click="help=false"></a>'+
 		'<a class="help-nav-close" href="" ng-click="help=false"></a><br/>'+
-  		'<a ng-hide="step==0" href="/#/{{textstep[(step - 0 )-1][\'link\']}}?help=true&pillar={{tabSelected}}&step={{(step - 0 )-1}}" class="help-nav help-nav-prev"></a>'+  		
+  		'<a ng-hide="step==0" href="#!/{{textstep[(step - 0 )-1][\'link\']}}?help=true&pillar={{tabSelected}}&step={{(step - 0 )-1}}" class="help-nav help-nav-prev"></a>'+
   		'<p>'+
   		'<strong>{{pillars[pillar][\'title\']}}. {{textstep[step][\'title\']}}:</strong><br/>'+
   		'{{textstep[step][\'text\']}}'+
   		'</p>'+
-  		'<a ng-hide="(textstep.length-1)==step" href="/#/{{textstep[(step - 0)+1][\'link\']}}?help=true&pillar={{tabSelected}}&step={{(step - 0)+1}}" class="help-nav help-nav-next"></a>'+
+  		'<a ng-hide="(textstep.length-1)==step" href="#!/{{textstep[(step - 0)+1][\'link\']}}?help=true&pillar={{tabSelected}}&step={{(step - 0)+1}}" class="help-nav help-nav-next"></a>'+
 		'</div>'		
     };
 }])
@@ -171,7 +172,7 @@ angular.module('pcApp.common.directives.wizard', [
 				        	'<ul class="want-list" id="want-list-evaluate">'+				        	
 				        		'<li ng-repeat="stepData in textstep track by $index" class="want-item {{stepData[\'class\']}}">'+
 				        			'<h3 class="want-item-title">'+
-				        				'<a href="/#/{{stepData[\'link\']}}?help=true&pillar={{tabSelected}}&step={{$index}}" >{{$index+1}}. {{stepData[\'title\']}}</a>'+
+				        				'<a href="/#!/{{stepData[\'link\']}}?help=true&pillar={{tabSelected}}&step={{$index}}" >{{$index+1}}. {{stepData[\'title\']}}</a>'+
 				        			'</h3>'+
 				        		'</li>'+
 							'</ul>'+

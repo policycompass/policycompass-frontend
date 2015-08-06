@@ -266,7 +266,7 @@
 							<div class="metric-buttons">
 								<a type="button" data-intro="Edit dataset view properties" data-position="top" class="btn btn-primary" ng-click="displaycontentMetric(metric.id);" id="edit-metric-button-{{metric.id}}">Edit</a>			    	
 						    	<button type="button" data-intro="Delete dataset from the visualisation" data-position="top" class="btn btn-danger" ng-click="deleteMetricFromList(metric.id, metric.title, ListMetricsFilter, $index);" id="delete-metric-button-{{metric.id}}">Delete</button>
-						    	<a type="button" data-intro="Access to the dataset data" data-position="right" class="btn btn-info" href="#/datasets/{{metric.id}}" target="_blank" id="view-metric-button-{{metric.id}}">View Dataset in detaill</a>						    	
+						    	<a type="button" data-intro="Access to the dataset data" data-position="right" class="btn btn-info" href="#!/datasets/{{metric.id}}" target="_blank" id="view-metric-button-{{metric.id}}">View Dataset in detaill</a>						    	
 						  	</div>
 
 								<div class="metric-forms" style="display: none;">
@@ -337,10 +337,7 @@
             						</select>								    
 								</div>
 								<div ng-show="(1==2 && (MetricSelectorDataColumn_[metric.id] || MetricSelectorGroupingData_[metric.id]))" class="metric-form-item">
-
-
 									<label for="">Grouping</label>
-
 									
 									<select 
 										ng-model="MetricSelectorGroupingData_[metric.id]" id="MetricSelectorGroupingData_{{metric.id}}"  

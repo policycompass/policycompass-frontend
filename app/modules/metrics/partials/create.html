@@ -1,9 +1,9 @@
 <div class="container">
 
-<legend>
+<div class="content-header">
     <h3 ng-if="mode == 'create'"><span class="glyphicon glyphicon-pencil"></span> Create a New Metric</h3>
     <h3 ng-if="mode == 'edit'"><span class="glyphicon glyphicon-pencil"></span> Edit Metric</h3>
-</legend>
+</div>
 
 
 <form name="metricForm" role="form" novalidate >
@@ -88,7 +88,7 @@
                                         </li>
                                     </ul>
                                 </nav>
-                                <div class="navbar navbar-default navbar-fixed-top">
+                                <div class="navbar navbar-default">
                                     <button type="button" class="navbar-toggle" data-toggle="offcanvas" data-target="#myNavmenu" data-canvas="#myNavmenuCanvas" data-placement="left">
                                         <span class="icon-bar"></span>
                                         <span class="icon-bar"></span>
@@ -231,7 +231,7 @@
 
         </div>
         <div class="form-group pull-right pc-metric-formcontrols">
-            <a type="button" class="btn btn-danger" href="#/metrics/{{ metric.id }}">Cancel</a>
+            <a type="button" class="btn btn-danger" href="#!/metrics/{{ metric.id }}">Cancel</a>
             <button type="submit" ng-show="step=='second'" class="btn btn-default" ng-click="prevStep()"><span class="glyphicon glyphicon-chevron-left"></span> Previous Step</button>
             <button type="submit" id="nextStepButton" ng-show="step=='one'" ng-disabled="metricForm.$invalid" class="btn btn-default" ng-click="nextStep()">Next Step <span class="glyphicon glyphicon-chevron-right"></span></button>
             <button type="submit" id="saveButton" ng-show="step=='second'" ng-disabled="metricForm.$invalid" class="btn btn-default" ng-click="createMetric()"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>

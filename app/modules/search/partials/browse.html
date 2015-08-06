@@ -13,11 +13,12 @@
             <button type="button" class="btn dropdown-toggle" dropdown-toggle ng-disabled="disabled">
                 {{searchItemTypeInfoDropDown}} <span class="caret"></span></button>
             <ul class="dropdown-menu" role="menu">
-                <li><a href="#/browse/metric">Metrics</a></li>
-                <li><a href="#/browse/fuzzymap">Fuzzy cognitive Maps</a></li>
-                <li><a href="#/browse/visualization">Visualisations</a></li>
-                <li><a href="#/browse/event">Events</a></li>
-                <li><a href="#/browse">All</a></li>
+                <li><a href="#!/browse/metric">Metrics</a></li>
+                <li><a href="#!/browse/fuzzymap">Fuzzy cognitive Maps</a></li>
+                <li><a href="#!/browse/visualization">Visualisations</a></li>
+                <li><a href="#!/browse/event">Events</a></li>
+                <li><a href="#!/browse/dataset">Datasets</a></li>
+                <li><a href="#!/browse">All</a></li>
             </ul>
         </div>
         <!-- /btn-group -->
@@ -54,7 +55,7 @@
 
                 <div ng-show="searchResult['_type']=='metric'" class="search-result">
                     <h5>
-                        <a href="/app/#/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}">{{
+                        <a href="#!/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}">{{
                             searchResult['_source']['title']}}</a>
                     </h5>
 
@@ -69,9 +70,22 @@
                     </div>
                 </div>
 
+                <div ng-show="searchResult['_type']=='dataset'" class="search-result">
+                    <h5>
+                        <a href="#!/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}">{{
+                            searchResult['_source']['title']}}</a>
+                    </h5>
+
+                    <div class="attributes">
+
+                        <p class="description">{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
+
+                    </div>
+                </div>
+
 
                 <div ng-show="searchResult['_type']=='event'" class="search-result">
-                    <h5><a href="/app/#/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}">
+                    <h5><a href="#!/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}">
                         {{ searchResult['_source']['title']}}</a>
 
                     </h5>
@@ -97,7 +111,7 @@
                 </div>
                 <div ng-show="searchResult['_type']=='visualization'" class="search-result">
                     <h5>
-                        <a href="/app/#/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}">{{
+                        <a href="#!/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}">{{
                             searchResult['_source']['title']}}</a>
                     </h5>
 
@@ -113,7 +127,7 @@
                 </div>
                 <div ng-show="searchResult['_type']=='fuzzymap'" class="search-result">
                     <h5>
-                        <a href="/app/#/models/{{ searchResult['_source']['id'] }}">{{
+                        <a href="#!/models/{{ searchResult['_source']['id'] }}">{{
                             searchResult['_source']['title']}}</a>
                     </h5>
 

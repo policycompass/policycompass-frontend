@@ -1,0 +1,58 @@
+<div class="container">
+
+    <h1><span class="glyphicon glyphicon-list-alt"></span> {{ indicator.acronym }}</h1>
+    <br />
+
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table table-hover">
+                <tr ng-show="indicator.name">
+                    <td><b>Title:</b></td>
+                    <td>{{ indicator.name }}</td>
+                </tr>
+                <tr ng-show="indicator.description">
+                    <td><b>Description:</b></td>
+                    <td>{{ indicator.description }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <legend class="legend-primary">Details</legend>
+                <table class="table table-hover">
+                    <tr ng-show="indicator.policy_domains">
+                        <td><b>Policy Domains:</b></td>
+                        <td><span ng-repeat="p in indicator.policy_domains">{{ p.title }}{{$last ? '' : ', '}}</span></td>
+                    </tr>
+                    <tr ng-if="indicator.unit_category">
+                        <td><b>Unit Category:</b></td>
+                        <td><span resource-title id="indicator.unit_category" resource="UnitCategory"></span></td>
+                    </tr>
+                    <tr ng-if="indicator.language">
+                        <td><b>Language:</b></td>
+                        <td><span resource-title id="indicator.language" resource="Language"></span></td>
+                    </tr>
+                    <tr ng-show="indicator.issued">
+                        <td><b>Issued:</b></td>
+                        <td>{{ indicator.issued | date:'longDate' }}</td>
+                    </tr>
+
+                    <tr ng-show="indicator.modified">
+                        <td><b>Last Modified:</b></td>
+                        <td>{{ indicator.modified | date:'longDate' }}</td>
+                    </tr>
+                </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <legend class="legend-primary">Options</legend>
+            <a type="button" class="btn btn-primary" href="#!/indicators/{{ indicator.id }}/edit">Edit</a>
+            <button type="button" class="btn btn-danger" ng-click="deleteIndicator(indicator)">Delete</button>
+        </div>
+    </div>
+
+    <br />
+</div>
