@@ -51,7 +51,17 @@
           // background:linear-gradient(to top,$gris_90,white);
         }
         
-        padding:15px 15px;
+        padding:15px 15px 14px;
+        &.fonticon-share {
+          color:$gris_70;
+          // background:transparentize($gris_80,.9);
+          
+          &:focus,
+          &:hover {
+            // background:linear-gradient( to top,$gris_50, $gris_70);
+            color:$texto_negativo;
+          }
+        }
         
       }
       li a {
