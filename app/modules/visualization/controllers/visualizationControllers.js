@@ -774,7 +774,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
     		
 			return returnValue;
   		}
-    
+    		
+    		//used while dataset not return resolutions
+			$scope.onlyTheirResolution=true;
 			
 			$scope.resolutionoptions = [
     			{ label: 'Day', value: 'day' },
@@ -786,54 +788,95 @@ angular.module('pcApp.visualization.controllers.visualization', [
   			$scope.arrayResolutions = [];
   			$scope.arrayResolutionsFilter = [];
   			
-  			$scope.arrayResolutions['day'] = [
-    			{ label: 'Day', value: 'day' },
-    			{ label: 'Month', value: 'month' },
-    			{ label: 'Quarter', value: 'quarter' },
-    			{ label: 'Year', value: 'year' }
-  			];
-  			
-  			$scope.arrayResolutionsFilter['day'] = [
-    			{ label: 'Day', value: 'day' }
-  			];
-  			
-  			$scope.arrayResolutions['month'] = [
-    			{ label: 'Month', value: 'month' },
-    			{ label: 'Quarter', value: 'quarter' },
-    			{ label: 'Year', value: 'year' }
-  			];
+  			if ($scope.onlyTheirResolution)
+  			{
+	  			$scope.arrayResolutions['day'] = [
+	    			{ label: 'Day', value: 'day' }
+	  			];
+	  			
+	  			$scope.arrayResolutionsFilter['day'] = [
+	    			{ label: 'Day', value: 'day' }
+	  			];
+	  			
+	  			$scope.arrayResolutions['month'] = [
+	    			{ label: 'Month', value: 'month' }
+	  			];
+	
+				$scope.arrayResolutionsFilter['month'] = [
+	    			{ label: 'Month', value: 'month' }
+	  			];
+	  			
+				$scope.arrayResolutions['quarter'] = [
+	    			{ label: 'Quarter', value: 'quarter' }
+	  			];  			  			
+	  			
+	  			$scope.arrayResolutionsFilter['quarter'] = [
+	    			{ label: 'Quarter', value: 'quarter' }
+	  			];
+	  			
+	  			$scope.arrayResolutions['year'] = [
+	    			{ label: 'Year', value: 'year' }    			
+	  			];
+	  			  			
+	  			$scope.arrayResolutionsFilter['year'] = [
+	    			{ label: 'Year', value: 'year' }
+	  			];
 
-			$scope.arrayResolutionsFilter['month'] = [
-    			{ label: 'Day', value: 'day' },
-    			{ label: 'Month', value: 'month' },
-  			];
+  				
+  			}
+  			else
+  			{
+  				  			
+	  			$scope.arrayResolutions['day'] = [
+	    			{ label: 'Day', value: 'day' },
+	    			{ label: 'Month', value: 'month' },
+	    			{ label: 'Quarter', value: 'quarter' },
+	    			{ label: 'Year', value: 'year' }
+	  			];
+	  			
+	  			$scope.arrayResolutionsFilter['day'] = [
+	    			{ label: 'Day', value: 'day' }
+	  			];
+	  			
+	  			$scope.arrayResolutions['month'] = [
+	    			{ label: 'Month', value: 'month' },
+	    			{ label: 'Quarter', value: 'quarter' },
+	    			{ label: 'Year', value: 'year' }
+	  			];
+	
+				$scope.arrayResolutionsFilter['month'] = [
+	    			{ label: 'Day', value: 'day' },
+	    			{ label: 'Month', value: 'month' }
+	  			];
+	  			
+				$scope.arrayResolutions['quarter'] = [
+	    			{ label: 'Quarter', value: 'quarter' },
+	    			{ label: 'Year', value: 'year' }
+	  			];  			  			
+	  			
+	  			$scope.arrayResolutionsFilter['quarter'] = [
+	    			{ label: 'Day', value: 'day' },
+	    			{ label: 'Month', value: 'month' },
+	    			{ label: 'Quarter', value: 'quarter' }
+	  			];
+	  			
+	  			$scope.arrayResolutions['year'] = [
+	    			{ label: 'Year', value: 'year' }    			
+	  			];
+	  			  			
+	  			$scope.arrayResolutionsFilter['year'] = [
+	    			{ label: 'Day', value: 'day' },
+	    			{ label: 'Month', value: 'month' },
+	    			{ label: 'Quarter', value: 'quarter' },
+	    			{ label: 'Year', value: 'year' }
+	  			];
   			
-			$scope.arrayResolutions['quarter'] = [
-    			{ label: 'Quarter', value: 'quarter' },
-    			{ label: 'Year', value: 'year' }
-  			];  			  			
-  			
-  			$scope.arrayResolutionsFilter['quarter'] = [
-    			{ label: 'Day', value: 'day' },
-    			{ label: 'Month', value: 'month' },
-    			{ label: 'Quarter', value: 'quarter' }
-  			];
-  			
-  			$scope.arrayResolutions['year'] = [
-    			{ label: 'Year', value: 'year' }    			
-  			];
-  			  			
-  			$scope.arrayResolutionsFilter['year'] = [
-    			{ label: 'Day', value: 'day' },
-    			{ label: 'Month', value: 'month' },
-    			{ label: 'Quarter', value: 'quarter' },
-    			{ label: 'Year', value: 'year' }
-  			];
-  			
-  			  			
+  				$scope.FilterResolution = $scope.arrayResolutions['year'];
+  				
+  			} 			
 //			$scope.resolution = $scope.resolutionoptions[$scope.resolutionoptions.length-1];
 			
-			$scope.FilterResolution = $scope.arrayResolutions['year'];
+			
 			
 			//console.log($scope.resolution);
 			
@@ -3263,14 +3306,16 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	                				{
 	                					//console.log("PINTAMOS!!!");
 	                					//console.log($scope.eventsToPlot);
-                						barLine.render(numbers1, $scope.eventsToPlot, $scope.mode);	
+                						barLine.render($scope.numbers1, $scope.eventsToPlot, $scope.mode);	
 	                				}
 									
             						});
             					}
             					else
             					{
-            						barLine.render(numbers1, $scope.eventsToPlot, $scope.mode);	
+            						$scope.$watch('sem', function(sem) {
+	            						barLine.render($scope.numbers1, $scope.eventsToPlot, $scope.mode);
+            						});
             					}
             					
             					
