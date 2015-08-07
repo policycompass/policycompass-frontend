@@ -5,8 +5,34 @@
 			<div class="button-group">
 				<a type="button" class="btn btn-primary  btn-create" href="#!/visualizations/{{ visualization.id }}/edit">Edit</a>
 				<a type="button" class="btn btn-danger  btn-clear" ng-click="deleteVisualization(visualization)">Delete</a>
-			</div>
-		</div>
+
+      </div>
+      <a type="button" class="btn btn-share" ng-click="share=!share" ng-class="{active: share}">Share</a>		</div>
+        <div ng-class="{active: share}" class="share-window" id="share-window" ng-init="e=1">
+    <ul class="share-menu">
+      <div class="fonticon fonticon-close" ng-click="share=!share"></div>
+      <li><a href=""  ng-click="e=1" ng-class="{active: e==1}" >Share</a> </li>
+      <li><a href="" ng-click="e=2" ng-class="{active: e==2}">Embed</a></li>
+    </ul>
+    <div ng-class="{active: e==1}" class="share-submenu">
+      <div class="row-block">
+        <ul class="social-share">
+          <li><a href="" class="fonticon fonticon-facebook"></a></li>
+          <li><a href="" class="fonticon fonticon-twitter"></a></li>
+          <li><a href="" class="fonticon fonticon-vk"></a></li>
+          <li><a href="" class="fonticon fonticon-linkedin"></a></li>
+          <li><a href="" class="fonticon fonticon-google"></a></li>
+        </ul>
+        <input type="text" value="http://localhost:9000/app/#/visualizations/4" >
+      </div>
+    </div>
+    <div ng-class="{active: e==2}" class="share-submenu">
+      <div class="row-block">
+        <input type="text" value='iframe width="100%" height="300" scrolling="no" frameborder="no" src="http://localhost:9000/app/#/visualizations/4"' >
+      </div>
+    </div>
+  </div>
+
 	</div>
   	<div class="visualisation-dat right-column">
     	<div ng-controller="VisualizationsEditController" ng-include='"modules/visualization/partials/graph.html"' ></div>
@@ -125,3 +151,4 @@
     	</div>
   	</div>
 </div>
+

@@ -28,8 +28,11 @@ a,
 
 h1, h2, h3, h4 {
   color:$main;
- 
 }
+ 
+.fonticon-help:before,
+h3:before,
+h4:before,
 .glyphicon,
 .row-view-create .view-item-wrap:before,
 .searchItemIcon a:before {
