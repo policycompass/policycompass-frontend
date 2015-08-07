@@ -524,7 +524,7 @@ return 0;}
 			if (getDate(valuesX_day[0])=="Invalid Date")
 			{
 				var value = valuesX_day[0];
-				console.log(value);
+				//console.log(value);
 				if (value)
 				{
 					value=value.replace("-","/");
