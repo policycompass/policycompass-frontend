@@ -21,16 +21,12 @@
     </div>
     <div class="pc-visualization-formcontrols">
         <div class="button-group">
-            <button type="submit" class="btn btn-rotate">Rotate Data</button>
-            <button type="submit" class="btn btn-clear">Clear Grid</button>
-            <button type="submit" class="btn btn-xy" ng-click="getSelection()">Option XY</button>
+            <button type="submit" class="btn btn-rotate" ng-click="rotateData()">Rotate Data</button>
+            <button type="submit" class="btn btn-clear" ng-click="clearGrid()">Clear Grid</button>
             <button type="button" class="btn btn-file" ng-click="dropzone.isCollapsed = !dropzone.isCollapsed">From File</button>
-
-
         </div>
     </div>
     <div class="content-body">
-
         <div id="pc-dropzone-container" collapse="dropzone.isCollapsed" class="well">
             <div class="ng-dropzone dropzone"
                  id="pc-dropzone"
@@ -41,11 +37,9 @@
         </div>
         <hot-table
                 settings="inputTable.settings"
-                datarows="db.items"
+                datarows="inputTable.items"
                 height="500">
-
-
         </hot-table>
-{{ db.items }}
+
     </div>
 </div>

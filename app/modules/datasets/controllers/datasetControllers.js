@@ -28,7 +28,8 @@ angular.module('pcApp.datasets.controllers.dataset', [
         '$scope',
         'DatasetsControllerHelper',
         '$log',
-        function ($scope, DatasetsControllerHelper, $log) {
+        'dialogs',
+        function ($scope, DatasetsControllerHelper, $log, dialogs) {
 
             $scope.inputTable = {};
             $scope.inputTable.settings = {
@@ -43,11 +44,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     $scope.inputTable.instance = this;
                 }
             };
-
-            $scope.db = {};
-            $scope.db.items = [
-                ["hallo"]
-            ];
+            $scope.inputTable.items = [[]];
 
             $scope.dropzone = {
                 config: {
@@ -67,9 +64,9 @@ angular.module('pcApp.datasets.controllers.dataset', [
                         this.removeAllFiles();
                         $scope.$apply();
                         // Load the data into the grid
-                        $scope.db.items = response['result'];
+                        $scope.inputTable.items = response['result'];
                         $scope.dropzone.isCollapsed = true;
-                        $scope.inputTable.instance.loadData($scope.db.items);
+                        $scope.inputTable.instance.loadData($scope.inputTable.items);
                     }
                 },
                 isCollapsed: true
@@ -80,6 +77,36 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 $log.info(selection);
             };
 
+
+            $scope.clearGrid = function () {
+                var dlg = dialogs.confirm(
+                    "Are you sure?",
+                    "Do you really want to clear the Dataset Content?");
+                dlg.result.then(function () {
+                    // Delete the metric via the API
+                    $scope.inputTable.items = [[]];
+                    $scope.inputTable.instance.loadData($scope.inputTable.items);
+                });
+            };
+
+            $scope.rotateData = function () {
+                var data =  $scope.inputTable.items;
+                var newData = [[]];
+                _.each(data, function(element, index, list){
+                    var colum_index = index;
+                    _.each(element, function(element, index, list){
+                        if(element != null){
+                            if(colum_index == 0) {
+                                newData[index] = [element];
+                            } else {
+                                newData[index].push(element);
+                            }
+                        }
+                    });
+                });
+                $scope.inputTable.items = newData;
+                $scope.inputTable.instance.loadData($scope.inputTable.items);
+            };
 
 
             //$scope.db.items = [
