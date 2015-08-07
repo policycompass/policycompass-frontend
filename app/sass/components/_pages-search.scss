@@ -130,12 +130,15 @@ $ancho:$unidad * 2;
 
 .metricIcon a:before {
   content:"\e613";
+  content: "\e625";
 }
 .fuzzymapIcon a:before {
   content:"\e610";
+      content: "\e627";
 }
 .visualizationIcon a:before {
   content:"\e615";
+      content: "\e626";
 }
 .browse-filters-block > ul {
  
