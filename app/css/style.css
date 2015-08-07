@@ -723,7 +723,7 @@ a:hover h3:before {
 /* line 39, ../sass/components/_navigation.scss */
 #main-menu a {
   color: #4d4d4d;
-  padding: 15px 15px;
+  padding: 15px 15px 14px;
 }
 /* line 44, ../sass/components/_navigation.scss */
 #main-menu a:focus, #main-menu a:hover {
@@ -733,28 +733,36 @@ a:hover h3:before {
   background: linear-gradient(to top, #808080, #b3b3b3);
   text-decoration: none;
 }
+/* line 55, ../sass/components/_navigation.scss */
+#main-menu a.fonticon-share {
+  color: #b3b3b3;
+}
 /* line 60, ../sass/components/_navigation.scss */
+#main-menu a.fonticon-share:focus, #main-menu a.fonticon-share:hover {
+  color: white;
+}
+/* line 70, ../sass/components/_navigation.scss */
 #main-menu li:last-of-type a {
   border-right: none;
 }
 
-/* line 71, ../sass/components/_navigation.scss */
+/* line 81, ../sass/components/_navigation.scss */
 .nav > li > a:hover, .nav > li > a:focus {
   background-color: rgba(255, 255, 255, 0.5);
 }
 
-/* line 76, ../sass/components/_navigation.scss */
+/* line 86, ../sass/components/_navigation.scss */
 .nav > li > a:focus {
   background: black;
   color: white;
 }
 
-/* line 81, ../sass/components/_navigation.scss */
+/* line 91, ../sass/components/_navigation.scss */
 header .container {
   position: relative;
 }
 
-/* line 96, ../sass/components/_navigation.scss */
+/* line 106, ../sass/components/_navigation.scss */
 .submenu {
   width: 100%;
   position: relative;
@@ -770,27 +778,27 @@ header .container {
   position: absolute;
   top: 0;
 }
-/* line 103, ../sass/components/_navigation.scss */
+/* line 113, ../sass/components/_navigation.scss */
 .submenu ul {
   list-style-type: none;
   list-style-image: none;
   margin: 0;
   padding: 0;
 }
-/* line 120, ../sass/components/_navigation.scss */
+/* line 130, ../sass/components/_navigation.scss */
 .submenu ul {
   width: 992px;
   overflow: hidden;
   margin: 0 auto;
   padding: 1em 0;
 }
-/* line 126, ../sass/components/_navigation.scss */
+/* line 136, ../sass/components/_navigation.scss */
 .submenu ul li {
   width: 16.66%;
   width: 33.33%;
   float: left;
 }
-/* line 131, ../sass/components/_navigation.scss */
+/* line 141, ../sass/components/_navigation.scss */
 .submenu ul li a {
   display: block;
   padding: 1em 0 1em 5em;
@@ -798,7 +806,7 @@ header .container {
   color: rgba(255, 255, 255, 0.8);
   position: relative;
 }
-/* line 139, ../sass/components/_navigation.scss */
+/* line 149, ../sass/components/_navigation.scss */
 .submenu ul li a:before {
   font-size: 40px;
   line-height: 1em;
@@ -806,24 +814,24 @@ header .container {
   top: 5px;
   left: 0em;
 }
-/* line 147, ../sass/components/_navigation.scss */
+/* line 157, ../sass/components/_navigation.scss */
 .submenu ul li a:hover, .submenu ul li a:focus {
   color: white;
 }
-/* line 154, ../sass/components/_navigation.scss */
+/* line 164, ../sass/components/_navigation.scss */
 .submenu.active {
   height: auto;
   position: relative;
   opacity: 1;
 }
-/* line 161, ../sass/components/_navigation.scss */
+/* line 171, ../sass/components/_navigation.scss */
 .submenu.submenu-share ul li a:before {
   font-size: 30px;
   left: 20px;
   top: 10px;
 }
 
-/* line 169, ../sass/components/_navigation.scss */
+/* line 179, ../sass/components/_navigation.scss */
 .fonticon-close {
   position: absolute;
   top: 20px;
@@ -833,62 +841,62 @@ header .container {
   color: rgba(255, 255, 255, 0.8);
   cursor: pointer;
 }
-/* line 180, ../sass/components/_navigation.scss */
+/* line 190, ../sass/components/_navigation.scss */
 .fonticon-close:before {
   content: "\e60d";
 }
 
-/* line 189, ../sass/components/_navigation.scss */
+/* line 199, ../sass/components/_navigation.scss */
 .main-menu-wrap {
   clear: both;
 }
 
-/* line 194, ../sass/components/_navigation.scss */
+/* line 204, ../sass/components/_navigation.scss */
 #main-menu {
   list-style-type: none;
   list-style-image: none;
   margin: 0;
   padding: 0;
 }
-/* line 197, ../sass/components/_navigation.scss */
+/* line 207, ../sass/components/_navigation.scss */
 #main-menu li,
 #main-menu a {
   display: block;
 }
 
 @media (min-width: 992px) {
-  /* line 205, ../sass/components/_navigation.scss */
+  /* line 215, ../sass/components/_navigation.scss */
   .navbar-header .navbar-toggle {
     display: none;
   }
 
-  /* line 209, ../sass/components/_navigation.scss */
+  /* line 219, ../sass/components/_navigation.scss */
   .main-menu-wrap {
     top: 0px;
     position: absolute;
     right: 0;
   }
-  /* line 213, ../sass/components/_navigation.scss */
+  /* line 223, ../sass/components/_navigation.scss */
   .main-menu-wrap.collapse {
     display: block;
     visibility: visible;
   }
 
-  /* line 220, ../sass/components/_navigation.scss */
+  /* line 230, ../sass/components/_navigation.scss */
   #main-menu li {
     display: inline;
   }
-  /* line 222, ../sass/components/_navigation.scss */
+  /* line 232, ../sass/components/_navigation.scss */
   #main-menu li a {
     float: left;
   }
 
-  /* line 229, ../sass/components/_navigation.scss */
+  /* line 239, ../sass/components/_navigation.scss */
   .submenu {
     position: absolute;
     top: 50px;
   }
-  /* line 232, ../sass/components/_navigation.scss */
+  /* line 242, ../sass/components/_navigation.scss */
   .submenu.active {
     z-index: 99;
   }
