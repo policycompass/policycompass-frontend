@@ -20,4 +20,8 @@ angular.module('pcApp.datasets', [
                 controller: 'DatasetCreateController',
                 templateUrl: 'modules/datasets/partials/create.html'
             })
+            .when('/datasets/create/:step', {
+                controller: 'DatasetCreateController',
+                templateUrl: 'modules/datasets/partials/create.html'
+            })
     });

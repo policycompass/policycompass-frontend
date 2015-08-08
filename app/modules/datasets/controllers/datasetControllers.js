@@ -7,7 +7,8 @@
 
 angular.module('pcApp.datasets.controllers.dataset', [
     'pcApp.references.services.reference',
-    'dialogs.main'
+    'dialogs.main',
+    'ngProgress'
 ])
 
 
@@ -29,7 +30,28 @@ angular.module('pcApp.datasets.controllers.dataset', [
         'DatasetsControllerHelper',
         '$log',
         'dialogs',
-        function ($scope, DatasetsControllerHelper, $log, dialogs) {
+        'ngProgress',
+        '$routeParams',
+        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams) {
+
+            if($routeParams.step) {
+                $scope.step = $routeParams.step;
+            } else {
+                $scope.step = 1;
+            }
+
+            $scope.selection =  {};
+            $scope.selection.input = [3,4];
+
+            $scope.test = function () {
+                $scope.selection.input = [5];
+            };
+
+            $scope.classtypedata = [
+             { icon: "",   name: "Country",    maker: "",        ticked: false  },
+             { icon: "",   name: "Age Class",  maker: "",        ticked: false },
+             { icon: "",   name: "Gender",     maker: "",    	ticked: false  }
+             ];
 
             $scope.inputTable = {};
             $scope.inputTable.settings = {
@@ -108,6 +130,15 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 $scope.inputTable.instance.loadData($scope.inputTable.items);
             };
 
+
+            // Display the next step
+            $scope.nextStep = function() {
+                $scope.step++;
+            };
+
+            $scope.prevStep = function() {
+                $scope.step--;
+            };
 
             //$scope.db.items = [
             //    {
