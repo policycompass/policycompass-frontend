@@ -6,7 +6,7 @@
  */
 
 angular.module('pcApp.datasets.controllers.dataset', [
-    'pcApp.references.services.reference',
+    'pcApp.datasets.services.dataset',
     'dialogs.main',
     'ngProgress'
 ])
@@ -25,14 +25,16 @@ angular.module('pcApp.datasets.controllers.dataset', [
         };
     }])
 
-    .controller('DatasetCreateController', [
+    .controller('DatasetStep1Controller', [
         '$scope',
         'DatasetsControllerHelper',
         '$log',
         'dialogs',
         'ngProgress',
         '$routeParams',
-        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams) {
+        'creationService',
+        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService) {
+
 
             if($routeParams.step) {
                 $scope.step = $routeParams.step;
@@ -41,19 +43,22 @@ angular.module('pcApp.datasets.controllers.dataset', [
             }
 
             $scope.selection =  {};
-            $scope.selection.input = [3,4];
+            $scope.selection.input = [];
 
             $scope.test = function () {
                 $scope.selection.input = [5];
             };
 
-            $scope.classtypedata = [
-             { icon: "",   name: "Country",    maker: "",        ticked: false  },
-             { icon: "",   name: "Age Class",  maker: "",        ticked: false },
-             { icon: "",   name: "Gender",     maker: "",    	ticked: false  }
-             ];
 
-            $scope.inputTable = {};
+
+            $scope.inputTable = {
+                self: this
+            };
+            $scope.inputTable.methods = {
+                getSelection: function (startRow, startCol, endRow, endCol) {
+                    $log.info(endCol)
+                }
+            };
             $scope.inputTable.settings = {
                 colHeaders: true,
                 rowHeaders: true,
@@ -67,6 +72,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 }
             };
             $scope.inputTable.items = [[]];
+
 
             $scope.dropzone = {
                 config: {
@@ -139,34 +145,75 @@ angular.module('pcApp.datasets.controllers.dataset', [
             $scope.prevStep = function() {
                 $scope.step--;
             };
+            
+    }])
 
-            //$scope.db.items = [
-            //    {
-            //        "id":1,
-            //        "name":{
-            //            "first":"John",
-            //            "last":"Schmidt"
-            //        },
-            //        "address":"45024 France",
-            //        "price":760.41,
-            //        "isActive":"Yes",
-            //        "product":{
-            //            "description":"Fried Potatoes",
-            //            "options":[
-            //                {
-            //                    "description":"Fried Potatoes",
-            //                    "image":"//a248.e.akamai.net/assets.github.com/images/icons/emoji/fries.png",
-            //                    "Pick$":null
-            //                },
-            //                {
-            //                    "description":"Fried Onions",
-            //                    "image":"//a248.e.akamai.net/assets.github.com/images/icons/emoji/fries.png",
-            //                    "Pick$":null
-            //                }
-            //            ]
-            //        }
-            //    }
-            //    //more items go here
-            //];
+    .controller('DatasetStep2Controller', [
+        '$scope',
+        'DatasetsControllerHelper',
+        '$log',
+        'dialogs',
+        'ngProgress',
+        '$routeParams',
+        'creationService',
+        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService) {
+
+
+            $log.info(creationService.step);
+
+    }])
+
+    .controller('DatasetStep3Controller', [
+        '$scope',
+        'DatasetsControllerHelper',
+        '$log',
+        'dialogs',
+        'ngProgress',
+        '$routeParams',
+        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams) {
+
+    }])
+
+    .controller('DatasetStep4Controller', [
+        '$scope',
+        'DatasetsControllerHelper',
+        '$log',
+        'dialogs',
+        'ngProgress',
+        '$routeParams',
+        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams) {
+
+    }])
+
+    .controller('DatasetStep5Controller', [
+        '$scope',
+        'DatasetsControllerHelper',
+        '$log',
+        'dialogs',
+        'ngProgress',
+        '$routeParams',
+        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams) {
+
+    }])
+
+    .controller('DatasetStep6Controller', [
+        '$scope',
+        'DatasetsControllerHelper',
+        '$log',
+        'dialogs',
+        'ngProgress',
+        '$routeParams',
+        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams) {
+
+    }])
+
+    .controller('DatasetStep7Controller', [
+        '$scope',
+        'DatasetsControllerHelper',
+        '$log',
+        'dialogs',
+        'ngProgress',
+        '$routeParams',
+        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams) {
 
     }]);

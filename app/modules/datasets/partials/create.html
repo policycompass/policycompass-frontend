@@ -1,25 +1,5 @@
 <div class="container container-create-dataset" id="container-create-dataset">
-    <div class="content-header">
-        <h3 class="fonticon fonticon-dataset">Create Dataset</h3>
-
-        <div class="subtitle-help">
-            <h4>
-                <div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div>
-                Step 1 - Provide Source Data
-            </h4>
-
-            <div ng-class="{active: help}" class="help-text">
-
-                <p>Provide your source data, either by typing or copying it into the data grid or by uploading a
-                    file(CSV, XLS, XLSX). You can easely pre-edit your data here.</p>
-            </div>
-        </div>
-        <ul class="navigation-steps">
-            <li><a href="" class="btn btn-prev" ng-hide="step == 1" ng-click="prevStep()">Previous Step</a></li>
-            <li><a href="" class="btn btn-next" ng-click="nextStep()">Next Step</a></li>
-        </ul>
-    </div>
-
+    <dataset-create-header step="1"></dataset-create-header>
 
     <div ng-switch="step">
         <div ng-switch-when="1">
@@ -54,20 +34,16 @@
 
                 <div class="reference-selection" resource="Class" selection-mode="single" output="selection.test" input="selection.input"></div>
 
-               <div class="dataset-select"
-                     isteven-multi-select
-                     input-model="selection.input"
-                     output-model="selection.test"
-                     selection-mode="single"
-                     button-label="icon name"
-                     item-label="icon name maker"
-                     tick-property="ticked">
-                </div>
-
                 <div class="dataset-select-buttonbar">
                     <a href="" class="btn btn-request">Not there yet? Make a Request</a>
                 </div>
             </div>
+
+            <hot-table
+                    settings="inputTable.settings"
+                    datarows="inputTable.items"
+                    height="300 ">
+            </hot-table>
 
             <button ng-click="test()">Hallo</button>
 

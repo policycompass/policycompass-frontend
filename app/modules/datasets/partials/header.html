@@ -1,0 +1,17 @@
+<div class="content-header">
+    <h3 class="fonticon fonticon-dataset">Create Dataset</h3>
+    <div class="subtitle-help">
+        <h4>
+            <div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div>
+            {{ stepData.title }}
+        </h4>
+        <div ng-class="{active: help}" class="help-text">
+
+            <p>{{ stepData.help }}</p>
+        </div>
+    </div>
+    <ul class="navigation-steps">
+        <li><a href="{{ stepData.prev }}" class="btn btn-prev" ng-show="stepData.prev" ng-click="prevStep()">Previous Step</a></li>
+        <li><a href="{{ stepData.next }}" class="btn btn-next" ng-show="stepData.next" ng-click="nextStep()">Next Step</a></li>
+    </ul>
+</div>
