@@ -1,5 +1,23 @@
 <dataset-create-wrapper>
     <dataset-create-header step="2"></dataset-create-header>
 
+    <div class="dataset-filter clearfix">
+        <h5>Class type</h5>
 
+        <div class="reference-selection" resource="Class" selection-mode="single" output="selection.output" input="selection.input"></div>
+
+        <div class="dataset-select-buttonbar">
+            <a href="" class="btn btn-request">Not there yet? Make a Request</a>
+        </div>
+    </div>
+
+    <hot-table
+            settings="inputTable.settings"
+            datarows="inputTable.items"
+            height="500 ">
+    </hot-table>
+
+    <button ng-click="test()">Hallo</button>
+
+    {{ individualSelection }}
 </dataset-create-wrapper>

@@ -6,7 +6,23 @@ angular.module('pcApp.datasets.services.dataset',[
 
 .factory('creationService', ['$log', function ($log) {
         var data = {
-            step: null
+            step: null,
+            inputTable: {
+                instance: null,
+                settings: {
+                    colHeaders: true,
+                    rowHeaders: true,
+                    minRows: 10,
+                    minCols: 10 ,
+                    contextMenu: true,
+                    stretchH: 'all',
+                    outsideClickDeselects: false,
+                    afterInit: function() {
+                        data.inputTable.instance = this;
+                    }
+                },
+                items: [[]]
+            }
         };
         return data;
     }]);

@@ -35,45 +35,9 @@ angular.module('pcApp.datasets.controllers.dataset', [
         'creationService',
         function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService) {
 
+            $scope.inputTable = creationService.inputTable;
 
-            if($routeParams.step) {
-                $scope.step = $routeParams.step;
-            } else {
-                $scope.step = 1;
-            }
-
-            $scope.selection =  {};
-            $scope.selection.input = [];
-
-            $scope.test = function () {
-                $scope.selection.input = [5];
-            };
-
-
-
-            $scope.inputTable = {
-                self: this
-            };
-            $scope.inputTable.methods = {
-                getSelection: function (startRow, startCol, endRow, endCol) {
-                    $log.info(endCol)
-                }
-            };
-            $scope.inputTable.settings = {
-                colHeaders: true,
-                rowHeaders: true,
-                minRows: 10,
-                minCols: 10 ,
-                contextMenu: true,
-                stretchH: 'all',
-                outsideClickDeselects: false,
-                afterInit: function() {
-                    $scope.inputTable.instance = this;
-                }
-            };
-            $scope.inputTable.items = [[]];
-
-
+            $log.info($scope.inputTable);
             $scope.dropzone = {
                 config: {
                     clickable: true,
@@ -98,11 +62,6 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     }
                 },
                 isCollapsed: true
-            };
-
-            $scope.getSelection = function () {
-                var selection = $scope.inputTable.instance.getSelected();
-                $log.info(selection);
             };
 
 
@@ -135,17 +94,6 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 $scope.inputTable.items = newData;
                 $scope.inputTable.instance.loadData($scope.inputTable.items);
             };
-
-
-            // Display the next step
-            $scope.nextStep = function() {
-                $scope.step++;
-            };
-
-            $scope.prevStep = function() {
-                $scope.step--;
-            };
-            
     }])
 
     .controller('DatasetStep2Controller', [
@@ -157,6 +105,61 @@ angular.module('pcApp.datasets.controllers.dataset', [
         '$routeParams',
         'creationService',
         function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService) {
+
+            $scope.inputTable = creationService.inputTable;
+            creationService.classSelection = [];
+            $scope.individualSelection = [];
+
+            $scope.$watch('inputTable.instance', function (newValue) {
+                if(newValue != null){
+                    $scope.inputTable.instance.addHook('afterSelectionEnd', function (startRow, startColumn, endRow, endColumn) {
+                        //$log.info('sR '+ startRow + ' sC ' + startColumn + ' eR ' + endRow + ' eC ' +   endColumn);
+                        var result = [];
+                        if(startRow == endRow && startColumn == endColumn) {
+                            result.push( $scope.inputTable.items[startRow][startColumn]);
+                        }
+                        else if(startRow == endRow) {
+                            if(endColumn >= startColumn) {
+                                result = $scope.inputTable.items[startRow].slice(startColumn, endColumn+1);
+                            } else {
+                                result = $scope.inputTable.items[startRow].slice(endColumn, startColumn+1);
+                            }
+                        }
+                        else if(startColumn == endColumn){
+                            var i;
+                            if(startRow <= endRow) {
+                                result = [];
+                                for(i=startRow; i<=endRow; i++){
+                                    result.push( $scope.inputTable.items[i][startColumn]);
+                                }
+                            }
+                            if(startRow > endRow) {
+                                result = [];
+                                for(i=endRow; i<=startRow; i++){
+                                    result.push( $scope.inputTable.items[i][startColumn]);
+                                }
+                            }
+                        }
+                        angular.forEach(result, function (r) {
+                            if((!_.contains($scope.individualSelection, r)) && r != null){
+                                $log.info(r);
+                                $scope.individualSelection.push(r);
+                                $scope.$apply();
+                            }
+                        });
+                    });
+                }
+            });
+
+
+            $scope.selection = {
+                input: [],
+                output: creationService.classSelection
+            };
+
+            $scope.test = function () {
+                $scope.selection.input = [5];
+            };
 
 
             $log.info(creationService.step);
