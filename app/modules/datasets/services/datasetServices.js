@@ -24,7 +24,12 @@ angular.module('pcApp.datasets.services.dataset',[
                 items: [[]]
             },
             classPreSelection: [],
-            individualSelection: []
+            individualSelection: [],
+            timeResolution: null,
+            time: {
+                start: null,
+                end: null
+            }
         };
         return data;
     }]);

@@ -210,8 +210,56 @@ angular.module('pcApp.datasets.controllers.dataset', [
         'dialogs',
         'ngProgress',
         '$routeParams',
-        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams) {
+        'creationService',
+        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService) {
 
+            var init = function () {
+                $scope.inputTable = creationService.inputTable;
+                $scope.inputTable.settings.contextMenu = false;
+
+                $scope.timeResolution = {
+                    input: [
+                        {name: 'Day', id: 'day', placeholder: '2001-01-01'},
+                        {name: 'Month', id: 'month', placeholder: '2001-01'},
+                        {name: 'Year', id: 'year', placeholder: '2001'},
+                        {name: 'Quarter', id: 'quarter', placeholder: '2001-Q1'}
+                    ],
+                    output: []
+                };
+
+                if(creationService.timeResolution) {
+                    angular.forEach($scope.timeResolution.input, function (t) {
+                        if(t.id == creationService.timeResolution) {
+                            t.ticked = true;
+                        }
+                    });
+                }
+
+                $scope.time = {
+                    start: creationService.time.start,
+                    end: creationService.time.end
+                };
+
+            };
+            init();
+            $scope.pickStart = function () {
+                var selection = $scope.inputTable.instance.getSelected();
+                if(selection != 'undefined' && selection[0]==selection[2] && selection[1]==selection[3]) {
+                    $scope.time.start = $scope.inputTable.items[selection[0]][selection[1]];
+                }
+            };
+            $scope.pickEnd = function () {
+                var selection = $scope.inputTable.instance.getSelected();
+                if(selection != 'undefined' && selection[0]==selection[2] && selection[1]==selection[3]) {
+                    $scope.time.end = $scope.inputTable.items[selection[0]][selection[1]];
+                }
+            };
+
+            $scope.nextStep = function () {
+                creationService.timeResolution = $scope.timeResolution.output[0].id;
+                creationService.time.start = $scope.time.start;
+                creationService.time.end = $scope.time.end;
+            };
     }])
 
     .controller('DatasetStep4Controller', [

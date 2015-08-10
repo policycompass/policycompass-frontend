@@ -152,6 +152,3 @@ angular.module('pcApp.references.services.reference',[
     return Individual;
 }]);
 
-
-
-
