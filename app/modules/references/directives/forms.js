@@ -167,28 +167,43 @@ angular.module('pcApp.references.directives.forms', [
             scope: {
                 resource: '@',
                 input: '=',
-                output: '='
+                output: '=',
+                parameters: '='
             },
-            controller: function ($scope, $element, $attrs) {
+            link: function ($scope, $element, $attrs) {
+                var params = {};
+                if($scope.parameters != undefined) {
+                    params = $scope.parameters;
+
+                    $scope.$watch('parameters', function (newValue) {
+                        params = newValue;
+                        getData();
+                    });
+
+                }
                 $scope.output = [];
                 $scope.selection = [];
                 var service = $injector.get($scope.resource);
-                var data = service.query(null, function (data) {
-                    var sel = [];
-                    angular.forEach(data, function (d) {
-                        var ticked = false;
-                        if(_.contains($scope.input, d.id)) {
-                            ticked = true;
-                        }
-                        sel.push({
-                            name: d.title,
-                            id: d.id,
-                            ticked: ticked
-                        });
-                    });
-                    $scope.selection = sel;
 
-                });
+                var getData = function () {
+                    service.query(params, function (data) {
+                        var sel = [];
+                        angular.forEach(data, function (d) {
+                            var ticked = false;
+                            if(_.contains($scope.input, d.id)) {
+                                ticked = true;
+                            }
+                            sel.push({
+                                name: d.title,
+                                id: d.id,
+                                ticked: ticked
+                            });
+                        });
+                        $scope.selection = sel;
+                    });
+                };
+
+                getData();
                 $scope.outputData = {};
 
                 if($attrs.selectionMode != 'undefined' && $attrs.selectionMode == 'single') {

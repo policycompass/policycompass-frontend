@@ -12,7 +12,7 @@ angular.module('pcApp.datasets.services.dataset',[
                 settings: {
                     colHeaders: true,
                     rowHeaders: true,
-                    minRows: 10,
+                    minRows: 20,
                     minCols: 10 ,
                     contextMenu: true,
                     stretchH: 'all',
@@ -22,7 +22,9 @@ angular.module('pcApp.datasets.services.dataset',[
                     }
                 },
                 items: [[]]
-            }
+            },
+            classPreSelection: [],
+            individualSelection: []
         };
         return data;
     }]);

@@ -106,63 +106,100 @@ angular.module('pcApp.datasets.controllers.dataset', [
         'creationService',
         function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService) {
 
-            $scope.inputTable = creationService.inputTable;
-            creationService.classSelection = [];
-            $scope.individualSelection = [];
-
-            $scope.$watch('inputTable.instance', function (newValue) {
-                if(newValue != null){
-                    $scope.inputTable.instance.addHook('afterSelectionEnd', function (startRow, startColumn, endRow, endColumn) {
-                        //$log.info('sR '+ startRow + ' sC ' + startColumn + ' eR ' + endRow + ' eC ' +   endColumn);
-                        var result = [];
-                        if(startRow == endRow && startColumn == endColumn) {
-                            result.push( $scope.inputTable.items[startRow][startColumn]);
-                        }
-                        else if(startRow == endRow) {
-                            if(endColumn >= startColumn) {
-                                result = $scope.inputTable.items[startRow].slice(startColumn, endColumn+1);
-                            } else {
-                                result = $scope.inputTable.items[startRow].slice(endColumn, startColumn+1);
-                            }
-                        }
-                        else if(startColumn == endColumn){
-                            var i;
-                            if(startRow <= endRow) {
-                                result = [];
-                                for(i=startRow; i<=endRow; i++){
-                                    result.push( $scope.inputTable.items[i][startColumn]);
-                                }
-                            }
-                            if(startRow > endRow) {
-                                result = [];
-                                for(i=endRow; i<=startRow; i++){
-                                    result.push( $scope.inputTable.items[i][startColumn]);
-                                }
-                            }
-                        }
-                        angular.forEach(result, function (r) {
-                            if((!_.contains($scope.individualSelection, r)) && r != null){
-                                $log.info(r);
-                                $scope.individualSelection.push(r);
-                                $scope.$apply();
-                            }
-                        });
-                    });
+            var getSelection = function (startRow, startColumn, endRow, endColumn) {
+                //$log.info('sR '+ startRow + ' sC ' + startColumn + ' eR ' + endRow + ' eC ' +   endColumn);
+                var result = [];
+                if(startRow == endRow && startColumn == endColumn) {
+                    result.push( $scope.inputTable.items[startRow][startColumn]);
                 }
-            });
-
-
-            $scope.selection = {
-                input: [],
-                output: creationService.classSelection
+                else if(startRow == endRow) {
+                    if(endColumn >= startColumn) {
+                        result = $scope.inputTable.items[startRow].slice(startColumn, endColumn+1);
+                    } else {
+                        result = $scope.inputTable.items[startRow].slice(endColumn, startColumn+1);
+                    }
+                }
+                else if(startColumn == endColumn){
+                    var i;
+                    if(startRow <= endRow) {
+                        result = [];
+                        for(i=startRow; i<=endRow; i++){
+                            result.push( $scope.inputTable.items[i][startColumn]);
+                        }
+                    }
+                    if(startRow > endRow) {
+                        result = [];
+                        for(i=endRow; i<=startRow; i++){
+                            result.push( $scope.inputTable.items[i][startColumn]);
+                        }
+                    }
+                }
+                angular.forEach(result, function (r) {
+                    if((!_.contains($scope.individualSelection, r)) && r != null){
+                        $log.info(r);
+                        $scope.individualSelection.push(r);
+                        $scope.$apply();
+                    }
+                });
             };
 
-            $scope.test = function () {
-                $scope.selection.input = [5];
+            var init = function () {
+                $scope.inputTable = creationService.inputTable;
+                $scope.inputTable.settings.contextMenu = false;
+                $scope.inputTable.settings.afterSelectionEnd = getSelection;
+
+                if(creationService.individualSelection) {
+                    $scope.individualSelection = creationService.individualSelection;
+                } else {
+                    $scope.individualSelection = [];
+                }
+
+                if(creationService.extraMetadata) {
+                    $scope.extraMetadata = [];
+                    angular.forEach(creationService.extraMetadata, function (em) {
+                        $scope.extraMetadata.push({
+                            classInput: em.classOutput,
+                            classOutput: [],
+                            indInput: em.indOutput,
+                            indOutput: []
+                        });
+                    })
+                } else {
+                    $scope.extraMetadata = [{
+                        classInput: [],
+                        classOutput: [],
+                        indInput: [],
+                        indOutput: []
+                    }];
+                }
+                creationService.classSelection = [];
+                $scope.selection = {
+                    input: creationService.classPreSelection,
+                    output: creationService.classSelection
+                };
             };
 
+            init();
 
-            $log.info(creationService.step);
+            $scope.removeIndividual = function (i) {
+                $scope.individualSelection = _.without($scope.individualSelection, i);
+            };
+
+            $scope.addExtraMetadata = function () {
+                $scope.extraMetadata.push({
+                    classInput: [],
+                    classOutput: [],
+                    indInput: [],
+                    indOutput: []
+                });
+            };
+
+            $scope.nextStep = function () {
+                creationService.classPreSelection = $scope.selection.output;
+                creationService.extraMetadata = $scope.extraMetadata;
+                creationService.individualSelection = $scope.individualSelection;
+                $log.info(creationService);
+            };
 
     }])
 

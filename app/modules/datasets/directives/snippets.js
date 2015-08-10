@@ -1,11 +1,13 @@
 
 angular.module('pcApp.datasets.directives.snippets', [])
 
-.directive('datasetCreateHeader', ['$log', function ($log) {
+.directive('datasetCreateHeader', ['$log', '$location', '$rootScope', function ($log, $location, $rootScope) {
         return {
             restrict: 'AEC',
             scope: {
-                step: '@'
+                step: '@',
+                beforeNextStep: '&',
+                beforePrevStep: '&'
             },
             templateUrl: 'modules/datasets/partials/header.html',
             controller: function ($scope, $element, $attrs) {
@@ -14,46 +16,57 @@ angular.module('pcApp.datasets.directives.snippets', [])
                         'title': 'Step 1 - Provide Source Data',
                         'help': 'Nothing',
                         'prev': null,
-                        'next': '#!/datasets/create/class'
+                        'next': '/datasets/create/class'
                     },
                     2: {
                         'title': 'Step 2 - Define the Individuals',
                         'help': 'Nothing',
-                        'prev': '#!/datasets/create',
-                        'next': '#!/datasets/create/time'
+                        'prev': '/datasets/create',
+                        'next': '/datasets/create/time'
                     },
                     3: {
                         'title': 'Step 3 - Set the Time',
                         'help': 'Nothing',
-                        'prev': '#!/datasets/create/class',
-                        'next': '#!/datasets/create/data'
+                        'prev': '/datasets/create/class',
+                        'next': '/datasets/create/data'
                     },
                     4: {
                         'title': 'Step 4 - Provide the Data',
                         'help': 'Nothing',
-                        'prev': '#!/datasets/create/time',
-                        'next': '#!/datasets/create/indicator'
+                        'prev': '/datasets/create/time',
+                        'next': '/datasets/create/indicator'
                     },
                     5: {
                         'title': 'Step 5 - Define the Indicator',
                         'help': 'Nothing',
-                        'prev': '#!/datasets/create/data',
-                        'next': '#!/datasets/create/preview'
+                        'prev': '/datasets/create/data',
+                        'next': '/datasets/create/preview'
                     },
                     6: {
                         'title': 'Step 6 - Preview',
                         'help': 'Nothing',
-                        'prev': '#!/datasets/create/indicator',
-                        'next': '#!/datasets/create/metadata'
+                        'prev': '/datasets/create/indicator',
+                        'next': '/datasets/create/metadata'
                     },
                     7: {
                         'title': 'Step 7 - Metadata',
                         'help': 'Nothing',
-                        'prev': '#!/datasets/create/preview',
+                        'prev': '/datasets/create/preview',
                         'next': null
                     }
                 };
-                $scope.stepData = steps[$scope.step]
+                $scope.stepData = steps[$scope.step];
+
+                $scope.nextStep = function () {
+                    $scope.beforeNextStep();
+                    $location.path(steps[$scope.step].next);
+                };
+
+                $scope.prevStep = function () {
+                    $scope.beforePrevStep();
+                    $location.path(steps[$scope.step].prev);
+                };
+
             }
         }
     }])
