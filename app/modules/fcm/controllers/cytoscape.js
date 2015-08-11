@@ -209,6 +209,17 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
 	    $scope.Associations.push(Association);
 	    $scope.SimulationAssociations.push(SimulationAssociation);
 	}
+
+	for (i=0; i<$scope.SimulationConcepts.length; i++)
+	{
+	    var fixedOutput='True';
+	    for (j=0; j<$scope.SimulationAssociations.length; j++)
+		if ($scope.SimulationAssociations[j].destinationID==$scope.SimulationConcepts[i].Id)
+		    fixedOutput='False';
+	    $scope.SimulationConcepts[i].fixedoutput=fixedOutput;
+	}
+	
+
 	// broadcasting the event
 	$rootScope.$broadcast('appChanged');
   var dlg = dialogs.notify("FCM Model", "Message here");
@@ -323,7 +334,8 @@ else
 
 // **-*-****
     $scope.runSimulation = function(){
-	var jsonSimulation = {model: FCMModelsDetail.getModels(), userID: "1",
+	var Activator=FCMActivatorDetail.getActivator();
+	var jsonSimulation = {model: FCMModelsDetail.getModels(), userID: "1", activatorId: Activator[0].id,
 		concepts: SimulationConceptsDetail.getConcepts(), connections: SimulationAssociationsDetail.getAssociations()};
 	var Concepts = ConceptsDetail.getConcepts();
 	var Associations =  SimulationAssociationsDetail.getAssociations();
@@ -338,6 +350,11 @@ else
 	$scope.md = $scope.fcmSimulation;
 
 	for (i=0; i<$scope.edgeData.length; i++)
+<<<<<<< HEAD
+	    for (j=0; j<Associations.length; j++)
+		if (($scope.edgeData[i].id==Associations[j].Id))
+		    $scope.edgeData[i].weighted=Associations[j].weighted;
+=======
 	{
 	    for (j=0; j<Associations.length; j++)
 	    {
@@ -347,6 +364,7 @@ else
 		}
 	    }
 	}
+>>>>>>> 560881b987e196673de5867e410c08afbd808c53
 
         FcmSimulation.save($scope.fcmSimulation, function (value) {
 	    for (i=0; i<value.result.length; i++)
@@ -379,7 +397,11 @@ else
 		$scope.labels.push("");
 	    }
 
+<<<<<<< HEAD
+//	$scope.md = $scope.dataset;
+=======
 	$scope.md = $scope.dataset;
+>>>>>>> 560881b987e196673de5867e410c08afbd808c53
         },
         function (err) {
             throw { message: err.data};
@@ -706,8 +728,14 @@ else
 	throw { message: JSON.stringify(err.data)};
     });
 
+<<<<<<< HEAD
+  $scope.activator1 = FCMActivatorDetail.getActivator();
+  $scope.activator = $scope.activator1[0];
+  $scope.user = $scope.activator1[0];
+=======
   $scope.activator = FCMActivatorDetail.getActivator();
   $scope.user = $scope.activator[0];
+>>>>>>> 560881b987e196673de5867e410c08afbd808c53
   
   $scope.cancel = function(){
     $modalInstance.dismiss('canceled');  
@@ -952,7 +980,11 @@ $scope.res=value;
 
   $templateCache.put('/dialogs/savemodel.html', '<div class="modal-header"><h4 class="modal-title">FCM Model</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="title">Policy Model Title *</label><input type="text" class="form-control" name="title" id="title" ng-model="user.title" text="Vale here" required><br /><label class="control-label" for="description">Description *</label><textarea class="form-control" rows="5" name="description" id="description" ng-model="user.description" required></textarea><br /><label class="control-label" for="keywords">Keywords : *</label><input type="text" class="form-control" name="keywords" id="keywords" ng-model="user.keywords" required><br /><label class="control-label" for="policyDomain">Policy Domain : *</label><select multiple class="form-control policydomain-options" id="policyDomain" name="policyDomain" ng-model="metric.policy_domains" required></select></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button></div>');
 
+<<<<<<< HEAD
+  $templateCache.put('/dialogs/advancesettings.html', '<div class="modal-header"><h4 class="modal-title">Advance Settings</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="title">Activator *</label><select class="form-control" name="activator" id="activator" value="user.title" ng-model="user" ng-options="activator.title for activator in Fcmactivators" required></select></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button></div>');
+=======
   $templateCache.put('/dialogs/advancesettings.html', '<div class="modal-header"><h4 class="modal-title">Advance Settings {{ activator }}</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="title">Activator *</label><select class="form-control" name="activator" id="activator" ng-model="user" ng-options="activator.title for activator in Fcmactivators" required></select></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button></div>');
+>>>>>>> 560881b987e196673de5867e410c08afbd808c53
 
   $templateCache.put('/dialogs/editmetrics.html', '<div class="modal-header"><h4 class="modal-title">Edit Metrics</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><div id="filterMetrics" class="selectorMetrics" metrics-list="ListMetricsFilter" number-Max-Metrics="1"></div></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button></div>');
 

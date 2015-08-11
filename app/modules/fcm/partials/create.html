@@ -43,10 +43,40 @@
 			<cytoscape cy-data="mapData" cy-edges="edgeData" cy-click="doClick(value)" cy-mouseup="doMouseUp(value,x,y)"></cytoscape>
             </div><!-- /.row  -->
         </div><!-- /.col-lg-12  -->
-
+<<<<<<< HEAD
         <div class="col-lg-12">
-         <hr> {{ md }}   
- <!--          <hr> curl -H "Content-Type: application/json" -i -X POST -d '{{ fcmSimulation }}' localhost:8080/api/v1/fcmmanager/simulation  -->
+                <div class="center-block">
+                    <div  class="fcm-editor-effect well-primary">
+                        <a type="button" class="btn btn-primary" ng-click="addObj()">
+                            <span class="glyphicon glyphicon-unchecked fcm-editor-icon"></span>
+                            <p>Add Concept</p>
+                        </a>
+                        <a type="button" class="btn btn-primary" ng-click="addEdge()">
+                            <span class="glyphicon glyphicon-random fcm-editor-icon"></span>
+                            <p>Create Association</p>
+                        </a>
+			<a ng-if="mode == 'create'" type="button" class="btn btn-primary" ng-click="saveModel()">
+                            <span class="glyphicon glyphicon-floppy-disk"></span>
+			    <p>Save Model</p>
+			</a>
+			<a ng-if="mode == 'edit'" type="button" class="btn btn-primary" ng-click="updateModel()">
+                            <span class="glyphicon glyphicon-floppy-disk"></span>
+			    <p>Save Model</p>
+			</a>
+			<a type="button" class="btn btn-primary" ng-click="saveModel()">
+                            <span class="glyphicon glyphicon-floppy-disk"></span>
+			    <p>Save As Model</p>
+			</a>
+                    </div>
+                </div><!-- /.col-lg-3 well-primary  -->
+        </div><!-- /.col-lg-12  -->
+=======
+
+>>>>>>> 560881b987e196673de5867e410c08afbd808c53
+        <div class="col-lg-12">
+         <hr>
+ <!-- {{ md }}   
+          <hr> curl -H "Content-Type: application/json" -i -X POST -d '{{ fcmSimulation }}' localhost:8080/api/v1/fcmmanager/simulation  -->
             <tabset justified="true">
                 <tab heading="Run Simulation">
 		    <button type="button" class="btn btn-danger pull-right" ng-click="advanceSettings()">Advance Settings</button>
@@ -140,7 +170,10 @@
 		</tab>
                 <tab heading="Graph"><div class="pcLinesChart" dataset="dataset" labels="labels" small="list"  mode="modeg" chartid="2" show-Legend="showLegend" show-Labels="showLabels" show-Lines="showLines" show-Areas="showAreas" show-Points="showPoints" show-Grid="showGrid"	show-Together="showYAxes" show-Percentatge="showAsPercentatge" xaxeformat="xaxeformat"></div></tab>
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> 560881b987e196673de5867e410c08afbd808c53
                 <tab heading="Model Detail">
 		    <table class="table table-hover">
 			<tr>
