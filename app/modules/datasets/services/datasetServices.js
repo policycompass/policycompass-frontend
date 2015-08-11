@@ -23,6 +23,19 @@ angular.module('pcApp.datasets.services.dataset',[
                 },
                 items: [[]]
             },
+            resultTable: {
+                instance: null,
+                settings: {
+                    autoColumnSize: true,
+                    contextMenu: true,
+                    stretchH: 'all',
+                    outsideClickDeselects: false,
+                    afterInit: function() {
+                        data.inputTable.instance = this;
+                    }
+                },
+                items: []
+            },
             classPreSelection: [],
             individualSelection: [],
             timeResolution: null,

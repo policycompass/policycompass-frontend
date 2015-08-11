@@ -21,7 +21,71 @@ angular.module('pcApp.datasets.controllers.dataset', [
              */
             baseCreateEditController: function ($scope) {
 
+            },
+            generateTimeSeries: function (resolution, start, end) {
+                var allowedResolutions = ['day', 'month', 'year', 'quarter'];
+                if(!_.contains(allowedResolutions, resolution)){
+                    return null
+                }
+
+                var result = [];
+                var quarterToMonth = {
+                    'Q1': '01',
+                    'Q2': '04',
+                    'Q3': '07',
+                    'Q4': '10'
+                };
+                var monthToQuarter = _.invert(quarterToMonth);
+
+                var quarterFormatToDate = function (dateString) {
+                    var dateArray = dateString.split('-');
+                    return dateArray[0] + '-' + quarterToMonth[dateArray[1]]
+                };
+
+                var getDateExtract = function (date, type) {
+                    var year = date.getFullYear();
+                    var month = ("0" + (date.getMonth()+1)).slice(-2);
+                    var day = ("0" + (date.getDate())).slice(-2);
+                    if(type == 'month') {
+                        return year + '-' + month;
+                    } else if(type == 'day') {
+                        return year + '-' + month + '-' + day;
+                    } else if(type == 'year') {
+                        return year;
+                    } else if(type == 'quarter') {
+                        return year + '-' + monthToQuarter[month];
+                    }
+                };
+
+                var getNextDate = function (date, type) {
+                    if(type == 'month'){
+                        return new Date(date.setMonth(date.getMonth()+1))
+                    } else if (type == 'day') {
+                        return new Date(date.setDate(date.getDate()+1))
+                    } else if (type == 'year') {
+                        return new Date(date.setFullYear(date.getFullYear()+1))
+                    } else if (type == 'quarter') {
+                        return new Date(date.setMonth(date.getMonth()+3))
+                    }
+                };
+
+                if(resolution == 'quarter') {
+                    end = quarterFormatToDate(end);
+                    start = quarterFormatToDate(start);
+                }
+
+                var end = new Date(Date.parse(end));
+                var start = new Date(Date.parse(start));
+
+                do {
+                    result.push(getDateExtract(new Date(start), resolution));
+                    start = getNextDate(start, resolution)
+                } while(start.getTime() <= end.getTime());
+
+                return result;
             }
+            
+            
         };
     }])
 
@@ -256,7 +320,9 @@ angular.module('pcApp.datasets.controllers.dataset', [
             };
 
             $scope.nextStep = function () {
-                creationService.timeResolution = $scope.timeResolution.output[0].id;
+                if($scope.timeResolution.output[0]) {
+                    creationService.timeResolution = $scope.timeResolution.output[0].id;
+                }
                 creationService.time.start = $scope.time.start;
                 creationService.time.end = $scope.time.end;
             };
@@ -269,8 +335,31 @@ angular.module('pcApp.datasets.controllers.dataset', [
         'dialogs',
         'ngProgress',
         '$routeParams',
-        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams) {
+        'creationService',
+        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService) {
 
+            var init = function () {
+                $scope.inputTable = creationService.inputTable;
+                $scope.resultTable = creationService.resultTable;
+                $scope.inputTable.settings.contextMenu = false;
+
+                $scope.timeSeries = DatasetsControllerHelper.generateTimeSeries(
+                    creationService.timeResolution,
+                    creationService.time.start,
+                    creationService.time.end);
+
+                $scope.resultTable.settings.minCols = $scope.timeSeries.length + 1;
+                //$scope.resultTable.settings.minRows = creationService.individualSelection.length + 1;
+                $scope.resultTable.settings.colHeaders = [creationService.classPreSelection].concat($scope.timeSeries);
+
+                if($scope.resultTable.items.length == 0) {
+                    angular.forEach(creationService.individualSelection, function (i) {
+                        $scope.resultTable.items.push([i]);
+                    });
+                }
+            };
+
+            init();
     }])
 
     .controller('DatasetStep5Controller', [

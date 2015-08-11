@@ -49,3 +49,7 @@
 .pc-individual-remove {
     float: right;
 }
+
+.pc-result-table col.rowHeader {
+    width: 180px;
+}
