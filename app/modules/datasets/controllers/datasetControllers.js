@@ -7,6 +7,7 @@
 
 angular.module('pcApp.datasets.controllers.dataset', [
     'pcApp.datasets.services.dataset',
+    'pcApp.references.services.reference',
     'dialogs.main',
     'ngProgress'
 ])
@@ -346,7 +347,8 @@ angular.module('pcApp.datasets.controllers.dataset', [
         'ngProgress',
         '$routeParams',
         'creationService',
-        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService) {
+        'Class',
+        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService, Class) {
 
             var init = function () {
                 $scope.inputTable = creationService.inputTable;
@@ -360,7 +362,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
                 $scope.resultTable.settings.minCols = $scope.timeSeries.length + 1;
                 //$scope.resultTable.settings.minRows = creationService.individualSelection.length + 1;
-                $scope.resultTable.settings.colHeaders = [creationService.classPreSelection].concat($scope.timeSeries);
+                $scope.resultTable.settings.colHeaders = [' '].concat($scope.timeSeries);
 
                 if($scope.resultTable.items.length == 0) {
                     angular.forEach(creationService.individualSelection, function (i) {
