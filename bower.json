@@ -34,7 +34,8 @@
     "ngprogress": "=1.0.7",
     "isteven-angular-multiselect":"=4.0.0",
     "angularjs-slider": "=0.1.6",
-    "checklist-model": "0.2.4" 
+    "checklist-model": "0.2.4",
+    "ngstorage": "=0.3.7"
   },
   "resolutions": {
     "angular-bootstrap": "=0.12.0",

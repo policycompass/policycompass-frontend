@@ -101,6 +101,11 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
             $scope.inputTable = creationService.inputTable;
 
+            $scope.inputTable.settings.afterInit = function() {
+                $scope.inputInstance = this;
+            };
+
+
             $log.info($scope.inputTable);
             $scope.dropzone = {
                 config: {
@@ -122,7 +127,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                         // Load the data into the grid
                         $scope.inputTable.items = response['result'];
                         $scope.dropzone.isCollapsed = true;
-                        $scope.inputTable.instance.loadData($scope.inputTable.items);
+                        $scope.inputInstance.loadData($scope.inputTable.items);
                     }
                 },
                 isCollapsed: true
@@ -136,7 +141,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 dlg.result.then(function () {
                     // Delete the metric via the API
                     $scope.inputTable.items = [[]];
-                    $scope.inputTable.instance.loadData($scope.inputTable.items);
+                    $scope.inputInstance.loadData($scope.inputTable.items);
                 });
             };
 
@@ -156,7 +161,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     });
                 });
                 $scope.inputTable.items = newData;
-                $scope.inputTable.instance.loadData($scope.inputTable.items);
+                $scope.inputInstance.loadData($scope.inputTable.items);
             };
     }])
 
@@ -281,6 +286,11 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 $scope.inputTable = creationService.inputTable;
                 $scope.inputTable.settings.contextMenu = false;
 
+                $scope.inputTable.settings.afterInit = function() {
+                    $scope.inputInstance = this;
+                };
+
+
                 $scope.timeResolution = {
                     input: [
                         {name: 'Day', id: 'day', placeholder: '2001-01-01'},
@@ -307,13 +317,13 @@ angular.module('pcApp.datasets.controllers.dataset', [
             };
             init();
             $scope.pickStart = function () {
-                var selection = $scope.inputTable.instance.getSelected();
+                var selection = $scope.inputInstance.getSelected();
                 if(selection != 'undefined' && selection[0]==selection[2] && selection[1]==selection[3]) {
                     $scope.time.start = $scope.inputTable.items[selection[0]][selection[1]];
                 }
             };
             $scope.pickEnd = function () {
-                var selection = $scope.inputTable.instance.getSelected();
+                var selection = $scope.inputInstance.getSelected();
                 if(selection != 'undefined' && selection[0]==selection[2] && selection[1]==selection[3]) {
                     $scope.time.end = $scope.inputTable.items[selection[0]][selection[1]];
                 }
