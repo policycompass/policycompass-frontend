@@ -42,7 +42,7 @@ color:$general;
     }
     &.active, &:hover , &:focus {
       background:$bk;
-      border-color:$gris_50;
+      border-color:$bk;
       color:white;
       
     }
@@ -86,6 +86,7 @@ color:$general;
   $info2:$bk_3_1;
   background:linear-gradient(to bottom,$info, $info2);
   color:white;
+  border-color:$bk_3_2;
 }
 .btn-danger {
   $info:lighten($bk_3_1,20);
@@ -192,12 +193,14 @@ content: "\f0c7";
 content: "\e611";
 }
 
-.btn-concept:before {
-content: "\e157";
+
+.btn-share {
+  
+  &:before {
+      content: "\e61f";
+  }
 }
-.btn-association:before {
-    content: "\e110";
-}
+
 .btn-concept,
 .btn-association {
   &:before {
@@ -205,7 +208,12 @@ content: "\e157";
   }
 }
 
-  
+.btn-concept:before {
+content: "\e157";
+}
+.btn-association:before {
+    content: "\e110";
+}
   
    
     

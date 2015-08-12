@@ -198,3 +198,25 @@
   margin-top:1.5em;
   margin-bottom:1.5em;
 }
+
+
+
+.help-text {
+    position:absolute;
+    top:100px;
+    left:10px;
+    width:650px;
+    background:white;
+    padding:20px;
+    border:1px solid $gris_70;
+    box-shadow:5px 5px 10px transparentize($gris_50,.5);
+    border-radius:$radius;
+    display:none;
+    
+    &.active {
+      // background:green;
+      display:block;
+      z-index:2;
+    }
+  }
+
