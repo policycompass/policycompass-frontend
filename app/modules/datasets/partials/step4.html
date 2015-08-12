@@ -7,7 +7,13 @@
     </hot-table>
 
     <div class="well">
-        fe
+        <strong>({{ selectionStep }}/{{ individualSelection.length }}) Data for {{ individualSelection[selectionStep-1] }}</strong>
+        <div class="button-group">
+            <a class="btn btn-prev" ng-click="prev()">Prev</a>
+            <a class="btn btn-next" ng-click="next()">Next</a>
+            <a class="btn btn-clear" ng-click="reset()">Reset</a>
+        </div>
+
     </div>
     <hot-table
             settings="resultTable.settings"
@@ -15,5 +21,4 @@
             height="300"
             class="pc-result-table">
     </hot-table>
-    {{ timeSeries }}
 </dataset-create-wrapper>

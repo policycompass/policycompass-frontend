@@ -25,7 +25,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
             },
             generateTimeSeries: function (resolution, start, end) {
                 var allowedResolutions = ['day', 'month', 'year', 'quarter'];
-                if(!_.contains(allowedResolutions, resolution)){
+                if (!_.contains(allowedResolutions, resolution)) {
                     return null
                 }
 
@@ -45,32 +45,32 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
                 var getDateExtract = function (date, type) {
                     var year = date.getFullYear();
-                    var month = ("0" + (date.getMonth()+1)).slice(-2);
+                    var month = ("0" + (date.getMonth() + 1)).slice(-2);
                     var day = ("0" + (date.getDate())).slice(-2);
-                    if(type == 'month') {
+                    if (type == 'month') {
                         return year + '-' + month;
-                    } else if(type == 'day') {
+                    } else if (type == 'day') {
                         return year + '-' + month + '-' + day;
-                    } else if(type == 'year') {
+                    } else if (type == 'year') {
                         return year;
-                    } else if(type == 'quarter') {
+                    } else if (type == 'quarter') {
                         return year + '-' + monthToQuarter[month];
                     }
                 };
 
                 var getNextDate = function (date, type) {
-                    if(type == 'month'){
-                        return new Date(date.setMonth(date.getMonth()+1))
+                    if (type == 'month') {
+                        return new Date(date.setMonth(date.getMonth() + 1))
                     } else if (type == 'day') {
-                        return new Date(date.setDate(date.getDate()+1))
+                        return new Date(date.setDate(date.getDate() + 1))
                     } else if (type == 'year') {
-                        return new Date(date.setFullYear(date.getFullYear()+1))
+                        return new Date(date.setFullYear(date.getFullYear() + 1))
                     } else if (type == 'quarter') {
-                        return new Date(date.setMonth(date.getMonth()+3))
+                        return new Date(date.setMonth(date.getMonth() + 3))
                     }
                 };
 
-                if(resolution == 'quarter') {
+                if (resolution == 'quarter') {
                     end = quarterFormatToDate(end);
                     start = quarterFormatToDate(start);
                 }
@@ -81,8 +81,38 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 do {
                     result.push(getDateExtract(new Date(start), resolution));
                     start = getNextDate(start, resolution)
-                } while(start.getTime() <= end.getTime());
+                } while (start.getTime() <= end.getTime());
 
+                return result;
+            },
+            getTableSelection: function (startRow, startColumn, endRow, endColumn, items) {
+                //$log.info('sR '+ startRow + ' sC ' + startColumn + ' eR ' + endRow + ' eC ' +   endColumn);
+                var result = [];
+                if(startRow == endRow && startColumn == endColumn) {
+                    result.push(items[startRow][startColumn]);
+                }
+                else if(startRow == endRow) {
+                    if(endColumn >= startColumn) {
+                        result = items[startRow].slice(startColumn, endColumn+1);
+                    } else {
+                        result = items[startRow].slice(endColumn, startColumn+1);
+                    }
+                }
+                else if(startColumn == endColumn){
+                    var i;
+                    if(startRow <= endRow) {
+                        result = [];
+                        for(i=startRow; i<=endRow; i++){
+                            result.push(items[i][startColumn]);
+                        }
+                    }
+                    if(startRow > endRow) {
+                        result = [];
+                        for(i=endRow; i<=startRow; i++){
+                            result.push(items[i][startColumn]);
+                        }
+                    }
+                }
                 return result;
             }
             
@@ -177,33 +207,13 @@ angular.module('pcApp.datasets.controllers.dataset', [
         function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService) {
 
             var getSelection = function (startRow, startColumn, endRow, endColumn) {
-                //$log.info('sR '+ startRow + ' sC ' + startColumn + ' eR ' + endRow + ' eC ' +   endColumn);
-                var result = [];
-                if(startRow == endRow && startColumn == endColumn) {
-                    result.push( $scope.inputTable.items[startRow][startColumn]);
-                }
-                else if(startRow == endRow) {
-                    if(endColumn >= startColumn) {
-                        result = $scope.inputTable.items[startRow].slice(startColumn, endColumn+1);
-                    } else {
-                        result = $scope.inputTable.items[startRow].slice(endColumn, startColumn+1);
-                    }
-                }
-                else if(startColumn == endColumn){
-                    var i;
-                    if(startRow <= endRow) {
-                        result = [];
-                        for(i=startRow; i<=endRow; i++){
-                            result.push( $scope.inputTable.items[i][startColumn]);
-                        }
-                    }
-                    if(startRow > endRow) {
-                        result = [];
-                        for(i=endRow; i<=startRow; i++){
-                            result.push( $scope.inputTable.items[i][startColumn]);
-                        }
-                    }
-                }
+                var result = DatasetsControllerHelper.getTableSelection(
+                    startRow,
+                    startColumn,
+                    endRow,
+                    endColumn,
+                    $scope.inputTable.items);
+
                 angular.forEach(result, function (r) {
                     if((!_.contains($scope.individualSelection, r)) && r != null){
                         $log.info(r);
@@ -350,11 +360,45 @@ angular.module('pcApp.datasets.controllers.dataset', [
         'Class',
         function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService, Class) {
 
+            var getSelection = function (startRow, startColumn, endRow, endColumn) {
+                var result = DatasetsControllerHelper.getTableSelection(
+                    startRow,
+                    startColumn,
+                    endRow,
+                    endColumn,
+                    $scope.inputTable.items);
+
+
+                var row = $scope.resultTable.items[$scope.selectionStep-1];
+                //row = result;
+                var i, start;
+                for(i=1; i<row.length; i++){
+                    if(row[i] == null || row[i] == '') {
+                        start = i;
+                        break;
+                    }
+                }
+
+                for(i=start; i<row.length; i++){
+                    row[i] = result[i-start];
+                }
+
+                $scope.resultTable.items[$scope.selectionStep-1] = row;
+                $scope.$apply();
+            };
+
+
             var init = function () {
                 $scope.inputTable = creationService.inputTable;
                 $scope.resultTable = creationService.resultTable;
-                $scope.inputTable.settings.contextMenu = false;
 
+                $scope.resultTable.settings.afterInit = function() {
+                    $scope.resultInstance = this;
+                };
+
+                $scope.inputTable.settings.contextMenu = false;
+                $scope.inputTable.settings.afterSelectionEnd = getSelection;
+                $scope.individualSelection = creationService.individualSelection;
                 $scope.timeSeries = DatasetsControllerHelper.generateTimeSeries(
                     creationService.timeResolution,
                     creationService.time.start,
@@ -364,14 +408,32 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 //$scope.resultTable.settings.minRows = creationService.individualSelection.length + 1;
                 $scope.resultTable.settings.colHeaders = [' '].concat($scope.timeSeries);
 
+                $scope.selectionStep = 1;
                 if($scope.resultTable.items.length == 0) {
                     angular.forEach(creationService.individualSelection, function (i) {
                         $scope.resultTable.items.push([i]);
                     });
+
                 }
             };
 
             init();
+
+            $scope.next = function () {
+                $scope.selectionStep++;
+            };
+
+            $scope.prev = function () {
+                $scope.selectionStep--;
+            };
+
+            $scope.reset = function () {
+                $scope.resultTable.items = [];
+                angular.forEach(creationService.individualSelection, function (i) {
+                    $scope.resultTable.items.push([i]);
+                });
+                $scope.resultInstance.loadData($scope.resultTable.items);
+            };
     }])
 
     .controller('DatasetStep5Controller', [
