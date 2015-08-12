@@ -124,8 +124,17 @@ angular.module('pcApp.references.services.reference',[
     var Class = $resource(url,
         {
             id: "@id"
+        },
+        {
+            get : {
+                method : 'GET',
+                cache : true
+            }
         }
     );
+    Class.getById = function (id) {
+        return this.get({id: id})
+    };
     return Class;
 }])
 
@@ -151,7 +160,4 @@ angular.module('pcApp.references.services.reference',[
     };
     return Individual;
 }]);
-
-
-
 

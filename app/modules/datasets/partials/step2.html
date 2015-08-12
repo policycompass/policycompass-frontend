@@ -1,0 +1,54 @@
+<dataset-create-wrapper>
+    <dataset-create-header step="2" before-next-step="nextStep()"></dataset-create-header>
+
+    <div class="dataset-filter clearfix">
+        <h5>Class type</h5>
+
+        <div class="reference-selection" resource="Class" selection-mode="single" output="selection.output" input="selection.input"></div>
+
+        <div class="dataset-select-buttonbar">
+            <a href="" class="btn btn-request">Not there yet? Make a Request</a>
+        </div>
+    </div>
+
+    <div class="content-body content-body-2 flex-container">
+        <div class="content-column content-column-main">
+            <hot-table
+                    settings="inputTable.settings"
+                    datarows="inputTable.items"
+                    height="500 ">
+            </hot-table>
+
+        </div>
+        <div class="content-column content-column-second content-column-validate content-column-expanded block">
+
+            <div class="content-column-wrap">
+                <h4>Result:</h4>
+                <table class="create-dataset-result">
+                    <tbody>
+                    <tr ng-repeat="i in individualSelection">
+                        <td>{{ i }}<a href="" ng-click="removeIndividual(i)"><span class="glyphicon glyphicon-remove pc-individual-remove" ></span></a></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <!--<p>-->
+                    <!--<a href="" class="btn btn-validate btn-info">Validate</a>-->
+                <!--</p>-->
+                <!--<p>-->
+                    <!--Validate and Add Individuals of the Class-->
+                <!--</p>-->
+            </div>
+        </div>
+    </div>
+
+    <div class="dataset-filters-bottom">
+        <div class="dataset-filter clearfix" ng-repeat="em in extraMetadata">
+            <h5>Metadata</h5>
+            <div class="reference-selection" resource="Class" selection-mode="single" output="em.classOutput" input="em.classInput"></div>
+            <div ng-if="em.classOutput" class="reference-selection" resource="Individual" selection-mode="single" output="em.indOutput" input="em.indInput" parameters="{ class: em.classOutput[0] }" ></div>
+            <a ng-if="em.indOutput" class="btn btn-add btn-validate" ng-click="addExtraMetadata()">Add</a>
+        </div>
+    </div>
+
+
+</dataset-create-wrapper>
