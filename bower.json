@@ -39,6 +39,7 @@
   },
   "resolutions": {
     "angular-bootstrap": "=0.12.0",
-    "angular": "=1.2.27"
+    "angular": "=1.2.27",
+    "handsontable": "=0.12.6"
   }
 }
