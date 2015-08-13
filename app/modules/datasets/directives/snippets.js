@@ -3,8 +3,8 @@ angular.module('pcApp.datasets.directives.snippets', [
     'ngStorage'
 ])
 
-.directive('datasetCreateHeader', ['$log', '$location', '$rootScope', '$localStorage',
-        function ($log, $location, $rootScope, $localStorage) {
+.directive('datasetCreateHeader', ['$log', '$location', '$rootScope', '$sessionStorage',
+        function ($log, $location, $rootScope, storage) {
         return {
             restrict: 'AEC',
             scope: {
@@ -71,7 +71,7 @@ angular.module('pcApp.datasets.directives.snippets', [
                 };
 
                 $scope.cancel = function () {
-                    delete $localStorage.newdataset;
+                    delete storage.newdataset;
                     $location.path('/datasets/create');
                 };
 

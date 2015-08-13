@@ -5,10 +5,10 @@ angular.module('pcApp.datasets.services.dataset',[
     'ngStorage'
 ])
 
-.factory('creationService', ['$log', '$localStorage', function ($log, $localStorage) {
+.factory('creationService', ['$log', '$sessionStorage', function ($log, storage) {
 
-        if($localStorage.newdataset) {
-            var data = $localStorage.newdataset;
+        if(storage.newdataset) {
+            var data = storage.newdataset;
         } else {
             var data = {
                 step: null,
@@ -43,7 +43,7 @@ angular.module('pcApp.datasets.services.dataset',[
                     end: null
                 }
             };
-            $localStorage.newdataset = data;
+            storage.newdataset = data;
         }
         return data;
     }]);
