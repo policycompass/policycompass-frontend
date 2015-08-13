@@ -79,8 +79,12 @@
                     $scope.searchItemTypeInfo = 'Search for datasets';
                     $scope.searchItemTypeInfoDropDown = 'Datasets';
                     break;
+                case 'indicator':
+                    $scope.searchItemTypeInfo = 'Search for indicators';
+                    $scope.searchItemTypeInfoDropDown = 'Indicators';
+                    break;
                 default:
-                    $scope.searchItemTypeInfo = 'Search for metrics, visualizations, FCM models, events, datasets';
+                    $scope.searchItemTypeInfo = 'Search for metrics, visualizations, FCM models, events, datasets, indicators';
             }
             //Perform search based on new Item Type
             //goSearch();
@@ -161,8 +165,8 @@
                 $scope.filterSearchType(type);
             } else {
                 //Default search item type
-                $scope.searchItemType = 'metric,visualization,event,fuzzymap,dataset';
-                $scope.searchItemTypeInfo = 'Search for metrics, visualizations, FCM models, events, datasets';
+                $scope.searchItemType = 'metric,visualization,event,fuzzymap,dataset,indicator';
+                $scope.searchItemTypeInfo = 'Search for metrics, visualizations, FCM models, events, datasets,indicators';
                 $scope.searchItemTypeInfoDropDown = 'All';
             }
 
