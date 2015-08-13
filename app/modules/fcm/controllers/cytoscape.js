@@ -128,6 +128,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
   $scope.SimulationConcepts = [];
   $scope.Associations = [];
   $scope.SimulationAssociations = [];
+  $scope.isDisabled = true;
   $scope.SimulationResults = [];
   $scope.dataset = [];
   $scope.labels = [];
@@ -143,7 +144,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
   $scope.xaxeformat = 'sequence';
   $scope.mode= 'view';
   $scope.chartid= '2';
-
+  $scope.hideyaxeunits=true;
   $scope.NodeID = 0;
 
   FCMModelsDetail.setModels($scope.Models);
@@ -183,7 +184,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
 	{
 	    var newNode = {id:$scope.modeldetail.concepts[i].id.toString(), name:$scope.modeldetail.concepts[i].title, posX:$scope.modeldetail.concepts[i].positionX, posY:$scope.modeldetail.concepts[i].positionY};
 	    var Concept = {Id: $scope.modeldetail.concepts[i].id.toString(), title: $scope.modeldetail.concepts[i].title, description: $scope.modeldetail.concepts[i].description, scale: $scope.modeldetail.concepts[i].scale, value: $scope.modeldetail.concepts[i].value, metric_id: $scope.modeldetail.concepts[i].metric_id, x: $scope.modeldetail.concepts[i].positionX, y: $scope.modeldetail.concepts[i].positionY, dateAddedtoPC:$scope.modeldetail.concepts[i].dateAddedtoPC, dateModified:$scope.modeldetail.concepts[i].dateModified};
-	    var SimulationConcept = {Id: $scope.modeldetail.concepts[i].id.toString(), title: $scope.modeldetail.concepts[i].title, scale: $scope.modeldetail.concepts[i].scale, value: $scope.modeldetail.concepts[i].value, fixedoutput: 'False'};
+	    var SimulationConcept = {Id: $scope.modeldetail.concepts[i].id.toString(), title: $scope.modeldetail.concepts[i].title, scale: $scope.modeldetail.concepts[i].scale, value: $scope.modeldetail.concepts[i].value, fixedoutput: 'False', metricId: $scope.modeldetail.concepts[i].metric_id, metricTitle: 'Add metric'};
 
 	    $scope.mapData.push(newNode);
 	    $scope.Concepts.push(Concept);
@@ -209,6 +210,21 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
 	    $scope.Associations.push(Association);
 	    $scope.SimulationAssociations.push(SimulationAssociation);
 	}
+
+	for (i=0; i<$scope.SimulationConcepts.length; i++)
+	{
+	    var fixedOutput='True';
+	    for (j=0; j<$scope.SimulationAssociations.length; j++)
+		if ($scope.SimulationAssociations[j].destinationID==$scope.SimulationConcepts[i].Id)
+		    fixedOutput='False';
+	    $scope.SimulationConcepts[i].fixedoutput=fixedOutput;
+	}
+	
+	if ($scope.Concepts.length>1)
+	  $scope.isDisabled = false;
+	else
+	  $scope.isDisabled = true;
+
 	// broadcasting the event
 	$rootScope.$broadcast('appChanged');
   var dlg = dialogs.notify("FCM Model", "Message here");
@@ -269,7 +285,7 @@ else
 
 		$scope.fcmModelUpdate = new FcmModel();
 		$scope.fcmModelUpdate.data = jsonModel;
-
+$scope.md = jsonModel;
                 FcmModel.update({id: $routeParams.fcmId}, $scope.fcmModelUpdate, function (value) {
 			FcmSearchUpdate.update({id: $routeParams.fcmId}, function () {			
 				var dlg = dialogs.notify("FCM Model", "'" + value.model.title + "' FCM Model has been saved!");
@@ -277,7 +293,7 @@ else
                     	function (err) {
                         	throw { message: err.data};
                     	});
-			$scope.md = value;
+//			$scope.md = value;
 			$window.location.reload();
                     },
                     function (err) {
@@ -296,11 +312,13 @@ else
         });
     };
 
-    $scope.editMetrics = function(){
+    $scope.editMetrics = function(index){
 	dlg = dialogs.create('/dialogs/editmetrics.html','EditMetricsController',{},{key: false,back: 'static'});
 	dlg.result.then(function(user){
+			$scope.SimulationConcepts[index].metricId=user.ListMetricsFilter[0].id;
+			$scope.SimulationConcepts[index].metricTitle=user.ListMetricsFilter[0].title;
         },function(){
-          $scope.name = 'You decided not to enter in your name, that makes me sad.';
+			$scope.name = 'You decided not to enter in your name, that makes me sad.';
         });
     };
 
@@ -323,7 +341,8 @@ else
 
 // **-*-****
     $scope.runSimulation = function(){
-	var jsonSimulation = {model: FCMModelsDetail.getModels(), userID: "1",
+	var Activator=FCMActivatorDetail.getActivator();
+	var jsonSimulation = {model: FCMModelsDetail.getModels(), userID: "1", activatorId: Activator[0].id,
 		concepts: SimulationConceptsDetail.getConcepts(), connections: SimulationAssociationsDetail.getAssociations()};
 	var Concepts = ConceptsDetail.getConcepts();
 	var Associations =  SimulationAssociationsDetail.getAssociations();
@@ -338,15 +357,9 @@ else
 	$scope.md = $scope.fcmSimulation;
 
 	for (i=0; i<$scope.edgeData.length; i++)
-	{
 	    for (j=0; j<Associations.length; j++)
-	    {
 		if (($scope.edgeData[i].id==Associations[j].Id))
-		{
 		    $scope.edgeData[i].weighted=Associations[j].weighted;
-		}
-	    }
-	}
 
         FcmSimulation.save($scope.fcmSimulation, function (value) {
 	    for (i=0; i<value.result.length; i++)
@@ -379,7 +392,7 @@ else
 		$scope.labels.push("");
 	    }
 
-	$scope.md = $scope.dataset;
+//	$scope.md = $scope.dataset;
         },
         function (err) {
             throw { message: err.data};
@@ -412,6 +425,7 @@ else
 		user.Id = 'n' + $scope.NodeID;
 		user.x = $scope.NodeID*30+200;
 		user.y = $scope.NodeID*30+100;
+		user.scale = 5;
 		// building the new Node object
 		// using the array length to generate an id for the sample (you can do it any other way)
 		var newNode = {id:'n' + ($scope.NodeID), name:newObj, posX:user.x, posY:user.y};
@@ -419,6 +433,11 @@ else
 		// adding the new Node to the nodes array
 		$scope.mapData.push(newNode);
 		$scope.Concepts.push(user);
+
+		if ($scope.Concepts.length>1)
+		  $scope.isDisabled = false;
+		else
+		  $scope.isDisabled = true;
 
 		// broadcasting the event
 		$rootScope.$broadcast('appChanged');
@@ -453,104 +472,110 @@ else
     // sample function to be called when clicking on an object in the chart
     $scope.doClick = function(value)
     {
-	var pos;
+		var pos;
         // sample just passes the object's ID then output it to the console and to an alert
         EditConcept.setEditMode($scope.mode);
-	EditAssociation.setEditMode($scope.mode);
-	if (value.substring(0, 1)=="n")
-	{
-	    for (i=0;i<$scope.Concepts.length;i++)
-	    {
-		    if ($scope.Concepts[i].Id==value.substring(1, value.length))
-		    {
-			EditConcept.setConcept($scope.Concepts[i]);
-			pos=i;   
-		    }
-	    }
-	    dlg = dialogs.create('/dialogs/editconcept.html','EditConceptController',{},{key: false,back: 'static'});
-	    dlg.result.then(function(user){
-	    if (user=="D")
-	    {
-	    	for (i=0;i<$scope.Associations.length;i++)
-	    	{
-		    if (($scope.Associations[i].sourceID == $scope.Concepts[pos].Id) || ($scope.Associations[i].destinationID == $scope.Concepts[pos].Id))
-		    {
-			for (j=i;j<$scope.Associations.length-1;j++)
-			{
-			    $scope.Associations[j] = $scope.Associations[j+1];
-			    $scope.edgeData[j] = $scope.edgeData[j+1];
-			}
-			$scope.Associations.pop();
-			$scope.edgeData.pop();
-			i--;
-		    }
-	    	}
-
-		for (i=pos;i<$scope.Concepts.length-1;i++)
+		EditAssociation.setEditMode($scope.mode);
+		if (value.substring(0, 1)=="n")
 		{
-		    $scope.Concepts[i] = $scope.Concepts[i+1];
-		    $scope.mapData[i] = $scope.mapData[i+1];
+			for (i=0;i<$scope.Concepts.length;i++)
+			{
+				if ($scope.Concepts[i].Id==value.substring(1, value.length))
+				{
+					EditConcept.setConcept($scope.Concepts[i]);
+					pos=i;   
+				}
+			}
+			dlg = dialogs.create('/dialogs/editconcept.html','EditConceptController',{},{key: false,back: 'static'});
+			dlg.result.then(function(user){
+			if (user=="D")
+			{
+				for (i=0;i<$scope.Associations.length;i++)
+				{
+					if (($scope.Associations[i].sourceID == $scope.Concepts[pos].Id) || ($scope.Associations[i].destinationID == $scope.Concepts[pos].Id))
+					{
+						for (j=i;j<$scope.Associations.length-1;j++)
+						{
+							$scope.Associations[j] = $scope.Associations[j+1];
+							$scope.edgeData[j] = $scope.edgeData[j+1];
+						}
+						$scope.Associations.pop();
+						$scope.edgeData.pop();
+						i--;
+					}
+				}
+
+				for (i=pos;i<$scope.Concepts.length-1;i++)
+				{
+					$scope.Concepts[i] = $scope.Concepts[i+1];
+					$scope.mapData[i] = $scope.mapData[i+1];
+				}
+				$scope.Concepts.pop();
+				$scope.mapData.pop();
+
+				if ($scope.Concepts.length>1)
+				  $scope.isDisabled = false;
+				else
+				  $scope.isDisabled = true;
+			}
+			else
+			{
+				// collecting data from the form
+				$scope.Concepts[pos].title=user.title;
+				$scope.Concepts[pos].description=user.description;
+				$scope.Concepts[pos].scale=user.scale;
+
+				$scope.mapData[pos].name=user.title;
+			}
+
+			// broadcasting the event
+			$rootScope.$broadcast('appChanged');
+			},function(){
+				$scope.name = 'You decided not to enter in your name, that makes me sad.';
+			});
 		}
-		$scope.Concepts.pop();
-		$scope.mapData.pop();
-	    }
-	    else
-	    {
-		// collecting data from the form
-		$scope.Concepts[pos].title=user.title;
-		$scope.Concepts[pos].description=user.description;
-		$scope.Concepts[pos].scale=user.scale;
+		else
+		{
+			for (i=0;i<$scope.Associations.length;i++)
+			{
+				if ($scope.Associations[i].Id==value.substring(1, value.length))
+				{
+					EditAssociation.setAssociation($scope.Associations[i]);
+					pos=i;   
+				}
+			}
+			dlg = dialogs.create('/dialogs/editassociation.html','EditAssociationController',{},{key: false,back: 'static'});
+			dlg.result.then(function(user){
+			if (user=="D")
+			{
+				for (i=pos;i<$scope.Associations.length-1;i++)
+				{
+					$scope.Associations[i] = $scope.Associations[i+1];
+					$scope.edgeData[i] = $scope.edgeData[i+1];
+				}
+				$scope.Associations.pop();
+				$scope.edgeData.pop();
+			}
+			else
+			{
+				// collecting data from the form
+				$scope.Associations[pos].sourceID=user.source.Id;
+				$scope.Associations[pos].source=user.source;
+				$scope.Associations[pos].destinationID=user.destination.Id;
+				$scope.Associations[pos].destination=user.destination;
 
-		$scope.mapData[pos].name=user.title;
-	    }
+				$scope.edgeData[pos].source=user.source.Id;
+				$scope.edgeData[pos].target=user.destination.Id;
+				$scope.edgeData[pos].weighted="?";
+			}
 
-		// broadcasting the event
-		$rootScope.$broadcast('appChanged');
-	    },function(){
-	    	$scope.name = 'You decided not to enter in your name, that makes me sad.';
+			// broadcasting the event
+			$rootScope.$broadcast('appChanged');
+			},function(){
+				$scope.name = 'You decided not to enter in your name, that makes me sad.';
 	    });
 	}
-	else
-	{
-	    for (i=0;i<$scope.Associations.length;i++)
-	    {
-		    if ($scope.Associations[i].Id==value.substring(1, value.length))
-		    {
-			EditAssociation.setAssociation($scope.Associations[i]);
-			pos=i;   
-		    }
-	    }
-	    dlg = dialogs.create('/dialogs/editassociation.html','EditAssociationController',{},{key: false,back: 'static'});
-	    dlg.result.then(function(user){
-	    if (user=="D")
-	    {
-	    	for (i=pos;i<$scope.Associations.length-1;i++)
-	    	{
-		    $scope.Associations[i] = $scope.Associations[i+1];
-		    $scope.edgeData[i] = $scope.edgeData[i+1];
-	    	}
-		$scope.Associations.pop();
-		$scope.edgeData.pop();
-	    }
-	    else
-	    {
-		// collecting data from the form
-		$scope.Associations[pos].sourceID=user.source.Id;
-		$scope.Associations[pos].source=user.source;
-		$scope.Associations[pos].destinationID=user.destination.Id;
-		$scope.Associations[pos].destination=user.destination;
 
-		$scope.edgeData[pos].source=user.source.Id;
-		$scope.edgeData[pos].target=user.destination.Id;
-		$scope.edgeData[pos].weighted="?";
-	    }
-
-		// broadcasting the event
-		$rootScope.$broadcast('appChanged');
-	    },function(){
-	    	$scope.name = 'You decided not to enter in your name, that makes me sad.';
-	    });
-	}
     };
 
     $scope.doMouseUp = function(value,posx,posy)
@@ -573,7 +598,7 @@ else
 })
 
 .controller('ConceptController',function($scope, $modalInstance, Metric, FcmActivator, $log, $routeParams, data){
-  $scope.user = {Id: -1, title: '', description: '', scale: '0', x: '300', y: '300'};
+  $scope.user = {Id: -1, title: '', description: '', x: '300', y: '300'};
 
   $scope.cancel = function(){
     $modalInstance.dismiss('canceled');  
@@ -706,8 +731,9 @@ else
 	throw { message: JSON.stringify(err.data)};
     });
 
-  $scope.activator = FCMActivatorDetail.getActivator();
-  $scope.user = $scope.activator[0];
+  $scope.activator1 = FCMActivatorDetail.getActivator();
+  $scope.activator = $scope.activator1[0];
+  $scope.user = $scope.activator1[0];
   
   $scope.cancel = function(){
     $modalInstance.dismiss('canceled');  
@@ -942,19 +968,19 @@ $scope.res=value;
 }) // end ImpactAnalysisController
 
 .run(['$templateCache',function($templateCache){
-  $templateCache.put('/dialogs/addconcept.html', '<div class="modal-header"><h4 class="modal-title">Add Concept</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="title">Title *</label><input type="text" class="form-control" name="title" id="title" ng-model="user.title" text="Vale here" required><br /><label class="control-label" for="description">Description *</label><textarea class="form-control" rows="5" name="description" id="description" ng-model="user.description" required></textarea><br /><label class="control-label" for="input">Scale *</label><input type="text" class="form-control" name="scale" id="scale" ng-model="user.scale" required></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Add</button></div>');
+  $templateCache.put('/dialogs/addconcept.html', '<div class="modal-header"><h4 class="modal-title">Add Concept</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="title">Title *</label><input type="text" class="form-control" name="title" id="title" ng-model="user.title" text="Vale here" required><br /><label class="control-label" for="description">Description *</label><textarea class="form-control" rows="5" name="description" id="description" ng-model="user.description" required></textarea><br /></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Add</button></div>');
 
-  $templateCache.put('/dialogs/editconcept.html', '<div class="modal-header"><h4 class="modal-title">Edit Concept</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="title">Title *</label><input type="text" class="form-control" name="title" id="title" ng-model="user.title" text="Vale here" required><br /><label class="control-label" for="description">Description *</label><textarea class="form-control" rows="5" name="description" id="description" ng-model="user.description" required></textarea><br /><label class="control-label" for="input">Scale *</label><input type="text" class="form-control" name="scale" id="scale" ng-model="user.scale" required></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button><button type="button" class="btn btn-danger" ng-click="delete()">Delete</button></div>');
+  $templateCache.put('/dialogs/editconcept.html', '<div class="modal-header"><h4 class="modal-title">Edit Concept</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="title">Title *</label><input type="text" class="form-control" name="title" id="title" ng-model="user.title" text="Vale here" required><br /><label class="control-label" for="description">Description *</label><textarea class="form-control" rows="5" name="description" id="description" ng-model="user.description" required></textarea><br /></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button><button type="button" class="btn btn-danger" ng-click="delete()">Delete</button></div>');
 
-  $templateCache.put('/dialogs/addassociation.html', '<div class="modal-header"><h4 class="modal-title">Association</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="source">Source Concept *</label><select class="form-control" name="source" id="source" ng-model="user.source" ng-options="concept.title for concept in Concepts" required></select><br /><label class="control-label" for="destination">Destination Concept *</label><select class="form-control" name="destination" id="destination" ng-model="user.destination" ng-options="concept.title for concept in Concepts" required></select></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Add</button></div>');
+  $templateCache.put('/dialogs/addassociation.html', '<div class="modal-header"><h4 class="modal-title">Create Association</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="source">Source Concept *</label><select class="form-control" name="source" id="source" ng-model="user.source" ng-options="concept.title for concept in Concepts" required></select><br /><label class="control-label" for="destination">Destination Concept *</label><select class="form-control" name="destination" id="destination" ng-model="user.destination" ng-options="concept.title for concept in Concepts" required></select></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Add</button></div>');
 
   $templateCache.put('/dialogs/editassociation.html', '<div class="modal-header"><h4 class="modal-title">Edit Association</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="source">Source Concept *</label><select class="form-control" name="source" id="source" ng-model="user.source" ng-options="concept.title for concept in Concepts" required></select><br /><label class="control-label" for="destination">Destination Concept *</label><select class="form-control" name="destination" id="destination" ng-model="user.destination" ng-options="concept.title for concept in Concepts" required></select></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button><button type="button" class="btn btn-danger" ng-click="delete()">Delete</button></div>');
 
-  $templateCache.put('/dialogs/savemodel.html', '<div class="modal-header"><h4 class="modal-title">FCM Model</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="title">Policy Model Title *</label><input type="text" class="form-control" name="title" id="title" ng-model="user.title" text="Vale here" required><br /><label class="control-label" for="description">Description *</label><textarea class="form-control" rows="5" name="description" id="description" ng-model="user.description" required></textarea><br /><label class="control-label" for="keywords">Keywords : *</label><input type="text" class="form-control" name="keywords" id="keywords" ng-model="user.keywords" required><br /><label class="control-label" for="policyDomain">Policy Domain : *</label><select multiple class="form-control policydomain-options" id="policyDomain" name="policyDomain" ng-model="metric.policy_domains" required></select></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button></div>');
+  $templateCache.put('/dialogs/savemodel.html', '<div class="modal-header"><h4 class="modal-title">Casual Model</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="title">Title *</label><input type="text" class="form-control" name="title" id="title" ng-model="user.title" text="Vale here" required><br /><label class="control-label" for="description">Description *</label><textarea class="form-control" rows="5" name="description" id="description" ng-model="user.description" required></textarea><br /><label class="control-label" for="keywords">Keywords : *</label><input type="text" class="form-control" name="keywords" id="keywords" ng-model="user.keywords" required><br /><label class="control-label" for="policyDomain">Policy Domain : *</label><select multiple class="form-control policydomain-options" id="policyDomain" name="policyDomain" ng-model="metric.policy_domains" required></select></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button></div></div></div></div>');
 
-  $templateCache.put('/dialogs/advancesettings.html', '<div class="modal-header"><h4 class="modal-title">Advance Settings {{ activator }}</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="title">Activator *</label><select class="form-control" name="activator" id="activator" ng-model="user" ng-options="activator.title for activator in Fcmactivators" required></select></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button></div>');
+  $templateCache.put('/dialogs/advancesettings.html', '<div class="modal-header"><h4 class="modal-title">Advance Settings</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="title">Activator *</label><select class="form-control" name="activator" id="activator" value="user.title" ng-model="user" ng-options="activator.title for activator in Fcmactivators" required></select><label class="control-label" for="title">Scale *</label><select class="form-control" name="scale" id="scale" ng-model="user.scale" required><option value="3">3</option><option value="5">5</option><option value="7">7</option><option value="9">9</option></select></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button></div>');
 
-  $templateCache.put('/dialogs/editmetrics.html', '<div class="modal-header"><h4 class="modal-title">Edit Metrics</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><div id="filterMetrics" class="selectorMetrics" metrics-list="ListMetricsFilter" number-Max-Metrics="1"></div></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button></div>');
+  $templateCache.put('/dialogs/editmetrics.html', '<div class="modal-header"><h4 class="modal-title">Edit Metrics</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><div id="filterMetrics" class="selectorMetrics" metrics-list="user.ListMetricsFilter" number-Max-Metrics="1" functionformetric="save()"></div></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button></div>');
 
  $templateCache.put('/dialogs/metricsmanager.html', '<div class="modal-header"><h4 class="modal-title">Metrics Manager</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><tabset justified="false"><tab heading="Source"><div id="filterMetrics" class="selectorMetrics" metrics-list="ListMetricsFilter" number-Max-Metrics="1"></div></tab><tab heading="Sink"><div id="filterMetrics" class="selectorMetrics" metrics-list="ListMetricsFilter" number-Max-Metrics="1"></div></tab></tabset></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button></div>');
 
