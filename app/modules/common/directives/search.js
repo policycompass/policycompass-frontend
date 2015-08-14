@@ -524,4 +524,127 @@ angular.module('pcApp.common.directives.search', [
     };
 }])
 
-;
+    .directive('selectorIndicators', ['$log', 'searchclient', 'API_CONF', function ($log, searchclient, API_CONF) {
+        return {
+            restrict: 'C',
+            scope: {
+                datasetsList: '=',
+                numberMaxDatasets: '@',
+                functionfordataset: "&"
+            },
+            controller: function ($scope, $element, $attrs, $location, dialogs) {
+                $scope.selection = [];
+
+                $scope.$watchCollection('datasetsList', function (datasetsList) {
+                    $scope.selection = [];
+                    if (isNaN($scope.numberMaxDatasets)) {
+                        $scope.numberMaxDatasets = 1;
+                    }
+                    if (!datasetsList) {
+                        $scope.datasetsList = [];
+                    }
+                    for (var k in $scope.datasetsList) {
+                        $scope.selection[$scope.datasetsList[k].id] = $scope.datasetsList[k].id;
+                    }
+                });
+
+                $scope.searchtext = '';
+                $scope.itemsperpagesize = 10;
+                $scope.itemssearchfrom = 0;
+                $scope.pagToSearch = 1;
+
+                $scope.clickDataset = function (idDataset, title, issued) {
+                    var addDataset = true;
+                    if(idDataset > 0) {
+                        addDataset = true;
+                    } else {
+                        addDataset = false;
+                    }
+
+                    if (!$scope.datasetsList) {
+                        $scope.datasetsList = [];
+                    }
+                    var k;
+
+                    for (k = 0; k < $scope.datasetsList.length; k++) {
+                        if ($scope.datasetsList[k].id == idDataset) {
+                            addDataset = false;
+                            $scope.datasetsList.splice(k, 1);
+                            $scope.selection[idDataset] = '';
+                            $scope.functionfordataset();
+                        }
+                    }
+
+                    if (addDataset && $scope.datasetsList.length < $scope.numberMaxDatasets ) {
+                        var myObject = {
+                            'id': idDataset,
+                            'title': title,
+                            'issued': issued
+                        };
+                        $scope.datasetsList.push(myObject);
+                        $scope.functionfordataset();
+                    }
+
+                    for(k in $scope.datasetsList) {
+                        $scope.selection[$scope.datasetsList[k].id] = $scope.datasetsList[k].id;
+                    }
+                };
+
+                $scope.findDatasetsByFilter = function (pagIn) {
+                    if (pagIn == 'next') {
+                        $scope.pagToSearch = $scope.pagToSearch + 1;
+                    }
+                    else if (pagIn == 'prev') {
+                        $scope.pagToSearch = $scope.pagToSearch - 1;
+                    }
+                    else {
+                        $scope.pagToSearch = 1;
+                    }
+
+                    $scope.itemssearchfrom = ($scope.pagToSearch - 1) * $scope.itemsperpagesize;
+                    $scope.showerrormessage = false;
+                    //var sort =    ["title"];
+                    //var sort =     [{"title" : {"order" : "asc"}}];
+                    var sort = ["title.lower_case_sort"];
+                    //var sort =     [{"id" : {"order" : "desc"}},"_score"];
+
+                    //Build query
+                    if ($scope.searchtext) {
+                        var query = {
+                            match: {
+                                _all: $scope.searchtext
+                            }
+                        };
+                    }
+                    else {
+                        var query = {
+                            match_all: {}
+                        }
+                    }
+
+                    //Perform search through client and get a search Promise
+                    searchclient.search({
+                        index: API_CONF.ELASTIC_INDEX_NAME,
+                        type: 'indicator',
+                        //type: 'metric',
+                        body: {
+                            size: $scope.itemsperpagesize,
+                            from: $scope.itemssearchfrom,
+                            sort: sort,
+                            query: query
+                        }
+                    }).then(function (resp) {
+                        //If search is successfull return results in searchResults objects
+                        $scope.datasetsFilter = resp;
+
+                    }, function (err) {
+                        console.trace(err.message);
+                        $scope.showerrormessage = true;
+                    });
+
+                };
+                $scope.findDatasetsByFilter(1);
+            },
+            templateUrl: 'modules/common/partials/searchIndicator.html'
+        };
+    }]);

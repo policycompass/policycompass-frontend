@@ -1,5 +1,7 @@
 <dataset-create-wrapper>
-    <dataset-create-header step="5"></dataset-create-header>
+    <dataset-create-header step="5" before-next-step="nextStep()"></dataset-create-header>
+    <div id="filterDatasets" class="selector-indicators"
+         datasets-list="ListDatasetsFilter" number-Max-Datasets="1" functionfordataset="rePlotGraph()"></div>
 
-
+    {{ ListDatasetsFilter }}
 </dataset-create-wrapper>

@@ -6,7 +6,8 @@ angular.module('pcApp.datasets', [
     'pcApp.datasets.controllers.dataset',
     'pcApp.references.directives.forms',
     'ngHandsontable',
-    'pcApp.datasets.directives.snippets'
+    'pcApp.datasets.directives.snippets',
+    'pcApp.common.directives.search'
 ])
 
     /**

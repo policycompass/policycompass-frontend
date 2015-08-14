@@ -1,0 +1,44 @@
+<div ng-show="showerrormessage"><label>There is a problem with the connection to the search service.</label></div>
+<div ng-show="!showerrormessage">
+
+    <label>Search for Indicators</label>
+
+    <div class="filterMetricsPagination" id="filterMetricsPaginationDirective">
+        <div class="button-group">
+            <button ng-show="datasetsFilter.hits.total>1" ng-disabled="pagToSearch==1" class="btn" ng-click="findDatasetsByFilter('prev')">
+                <span class="glyphicon glyphicon-chevron-left"></span> Previous
+            </button>
+            <button ng-show="datasetsFilter.hits.total>1"
+                    ng-disabled="datasetsFilter.hits.total<=pagToSearch*itemsperpagesize" class="btn"
+                    ng-click="findDatasetsByFilter('next')">
+                Next <span class="glyphicon glyphicon-chevron-right"></span>
+            </button>
+        </div>
+    </div>
+
+    <input placeholder="Keyword" ng-model="searchtext" ng-change="findDatasetsByFilter('1')" type="text"
+           id="filterDatasetDirective">
+
+    <div class="filterDatasetsPaginationHeader" id="filterDatasetsPaginationHeaderDirective">
+        <div>
+            <label ng-show="datasetsFilter.hits.total>1">{{datasetsFilter.hits.total}} Indicators found</label>
+            <label ng-show="datasetsFilter.hits.total==1">{{datasetsFilter.hits.total}} Indicator found</label>
+            <label ng-show="datasetsFilter.hits.total==0">No Indicator found</label>
+        </div>
+    </div>
+
+    <div class="filterDatasetPaginationBody createvisualization" id="filterDatasetsPaginationBodyDirective">
+        <ul class="datasets-list metrics-list ">
+            <li class="metrics-list dataset-list'" ng-class="{'active':selection[dataset._source.id]>0}"
+                name="designer-dataset-num-{{dataset.id}}"
+                ng-repeat="dataset in datasetsFilter.hits.hits track by $index">
+
+                <a href=""
+                   ng-click="clickDataset(dataset._source.id, dataset._source.name, dataset._source.issued);"
+                   title="{{ !selection[dataset._source.id]>0 && 'Add' || 'Delete' }} {{dataset._source.name}}">{{dataset._source.name}}
+                    - {{ dataset._source.issued | date:'longDate' }}</a>
+            </li>
+        </ul>
+    </div>
+</div>
+</div>

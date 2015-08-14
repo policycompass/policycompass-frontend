@@ -443,7 +443,18 @@ angular.module('pcApp.datasets.controllers.dataset', [
         'dialogs',
         'ngProgress',
         '$routeParams',
-        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams) {
+        'creationService',
+        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService) {
+
+            var init = function () {
+                $scope.ListDatasetsFilter = creationService.indicator;
+            };
+
+            init();
+
+            $scope.nextStep = function () {
+                creationService.indicator = $scope.ListDatasetsFilter;
+            };
 
     }])
 
