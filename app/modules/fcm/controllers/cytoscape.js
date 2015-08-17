@@ -227,7 +227,6 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
 
 	// broadcasting the event
 	$rootScope.$broadcast('appChanged');
-  var dlg = dialogs.notify("FCM Model", "Message here");
     },
     function (error) {
 	throw { message: JSON.stringify(err.data)};
@@ -262,7 +261,7 @@ else
 
                Fcm.save($scope.fcmModel, function (value) {
 			FcmSearchUpdate.create({id: value.model.id}, function () {			
-			var dlg = dialogs.notify("FCM Model", "'" + user.title + "' FCM Model has been saved!");
+			var dlg = dialogs.notify("Causal Model", "'" + user.title + "' Casual Model has been saved!");
                     	},
                     	function (err) {
                         	throw { message: err.data};
@@ -288,7 +287,7 @@ else
 $scope.md = jsonModel;
                 FcmModel.update({id: $routeParams.fcmId}, $scope.fcmModelUpdate, function (value) {
 			FcmSearchUpdate.update({id: $routeParams.fcmId}, function () {			
-				var dlg = dialogs.notify("FCM Model", "'" + value.model.title + "' FCM Model has been saved!");
+				var dlg = dialogs.notify("Causal Model", "'" + value.model.title + "' Casual Model has been saved!");
                     	},
                     	function (err) {
                         	throw { message: err.data};
