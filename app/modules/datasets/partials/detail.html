@@ -1,0 +1,15 @@
+<div class="container">
+    <div class="content-header">
+        <h1><span class="glyphicon glyphicon-list-alt"></span> {{ dataset.acronym }}</h1>
+        <div class="pc-visualization-formcontrols">
+            <div class="button-group">
+                <a type="button" ng-disabled="!gridloaded" class="btn btn-primary btn-details" ng-class="{data: gridvisible}" ng-click="showData()">
+                    <span ng-show="!gridvisible">View Data</span> <span ng-show="gridvisible">View Metric Details</span> </a>
+                <a type="button" class="btn btn-primary btn-create" href="#!/datasets/{{ dataset.id }}/edit">Edit</a>
+                <a type="button" class="btn btn-line" href="#!/visualizations/create/?datasets={{dataset.id}}">Visualise</a>
+                <a type="button" class="btn btn-tree" href="https://carneades-dev.policycompass.eu/carneades/#/projects/compass" target="_blank">Create Argument Map</a>
+                <a type="button" class="btn btn-danger" ng-click="deleteDataset(dataset)">Delete</a> </div>
+        </div>
+    </div>
+
+</div>

@@ -521,7 +521,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
             var buildData = function () {
                 var table = [];
-                var individuals = [82, 208];
+                var individuals = creationService.individualSelection;
 
                 var count_ind = 0;
                 angular.forEach(individuals, function (i) {
@@ -581,7 +581,6 @@ angular.module('pcApp.datasets.controllers.dataset', [
                         $log.info(err);
                     }
                 );
-
             };
 
 
@@ -589,4 +588,29 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 saveFinish: saveFinish
             };
 
-    }]);
+    }])
+
+    .controller('DatasetDetailController', [
+        '$scope',
+        'DatasetsControllerHelper',
+        '$log',
+        'dialogs',
+        'ngProgress',
+        '$routeParams',
+        'creationService',
+        '$filter',
+        'Dataset',
+        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService, $filter, Dataset) {
+
+
+            $scope.dataset = Dataset.get({id: $routeParams.datasetId},
+                function(dataset) {
+                },
+                function(err) {
+                    throw { message: JSON.stringify(err.data)};
+                }
+            );
+
+
+
+        }]);

@@ -46,4 +46,8 @@ angular.module('pcApp.datasets', [
                 controller: 'DatasetStep7Controller',
                 templateUrl: 'modules/datasets/partials/step7.html'
             })
+            .when('/datasets/:datasetId', {
+                controller: 'DatasetDetailController',
+                templateUrl: 'modules/datasets/partials/detail.html'
+            })
     });
