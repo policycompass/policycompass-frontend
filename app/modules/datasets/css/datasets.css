@@ -53,3 +53,12 @@
 .pc-result-table col.rowHeader {
     width: 180px;
 }
+
+.pc-reference-selection-full button {
+    width: 100%;
+}
+
+.multiSelect .checkboxLayer {
+    max-height: 300px;
+    overflow: auto;
+}

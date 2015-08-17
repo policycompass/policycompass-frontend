@@ -42,7 +42,9 @@ angular.module('pcApp.datasets.services.dataset',[
                     start: null,
                     end: null
                 },
-                indicator: []
+                indicator: [],
+                timeSeries: null,
+                dataset: {}
             };
             storage.newdataset = data;
         }

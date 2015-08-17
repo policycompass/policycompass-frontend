@@ -13,7 +13,9 @@
     <ul class="navigation-steps">
         <li><a href="" class="btn btn-prev" ng-show="stepData.prev" ng-click="prevStep()">Previous Step</a></li>
         <li><a href="" class="btn btn-next" ng-show="stepData.next" ng-click="nextStep()">Next Step</a></li>
-        <li><a href="" class="btn btn-danger" ng-show="stepData.next" ng-click="cancel()">Cancel</a></li>
+        <li><a href="" class="btn btn-save" ng-show="!stepData.next" ng-click="saveFinish()">Save & Finish</a></li>
+        <li><a href="" class="btn btn-save" ng-show="!stepData.next" ng-click="saveCopy()">Save & Copy</a></li>
+        <li><a href="" class="btn btn-danger"  ng-click="cancel()">Cancel</a></li>
     </ul>
 
 </div>

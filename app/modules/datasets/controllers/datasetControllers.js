@@ -404,6 +404,8 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     creationService.time.start,
                     creationService.time.end);
 
+                creationService.timeSeries = $scope.timeSeries;
+
                 $scope.resultTable.settings.minCols = $scope.timeSeries.length + 1;
                 //$scope.resultTable.settings.minRows = creationService.individualSelection.length + 1;
                 $scope.resultTable.settings.colHeaders = [' '].concat($scope.timeSeries);
@@ -465,8 +467,14 @@ angular.module('pcApp.datasets.controllers.dataset', [
         'dialogs',
         'ngProgress',
         '$routeParams',
-        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams) {
+        'creationService',
+        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService) {
 
+            var init = function () {
+                $scope.resultTable = creationService.resultTable;
+            };
+
+            init();
     }])
 
     .controller('DatasetStep7Controller', [
@@ -476,6 +484,109 @@ angular.module('pcApp.datasets.controllers.dataset', [
         'dialogs',
         'ngProgress',
         '$routeParams',
-        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams) {
+        'creationService',
+        '$filter',
+        'Dataset',
+        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService, $filter, Dataset) {
+
+            var init = function () {
+                $scope.dataset = creationService.dataset;
+                $scope.spatial = {
+                    input: creationService.dataset.spatial,
+                    output: []
+                };
+                $scope.language = {
+                    input: creationService.dataset.language,
+                    output: []
+                };
+                $scope.policy_domains = {
+                    input: creationService.dataset.policy_domains,
+                    output: []
+                };
+                $scope.external_resource = {
+                    input: creationService.dataset.external_resource,
+                    output: []
+                }
+            };
+
+            init();
+
+            $scope.prevStep = function () {
+                creationService.dataset.spatial = $scope.spatial.output;
+                creationService.dataset.language = $scope.language.output;
+                creationService.dataset.policy_domains = $scope.policy_domains.output;
+                creationService.dataset.external_resource = $scope.external_resource.output;
+                //creationService.dataset =   $scope.dataset;
+            };
+
+            var buildData = function () {
+                var table = [];
+                var individuals = [82, 208];
+
+                var count_ind = 0;
+                angular.forEach(individuals, function (i) {
+                    var values = {};
+                    for(var j=0; j < creationService.timeSeries.length; j++){
+                        values[creationService.timeSeries[j]] = parseFloat(creationService.resultTable.items[count_ind][j+1]);
+                    }
+                    table.push({
+                        row: count_ind+1,
+                        individual: i,
+                        values: values
+                    });
+                    count_ind++;
+                });
+
+                return {
+                    table: table
+                };
+            };
+
+
+            var saveFinish = function () {
+                var payload = {};
+                payload.time = {
+                    resolution: creationService.timeResolution,
+                    start: creationService.time.start,
+                    end: creationService.time.end
+                };
+                payload.resource = {
+                    url: creationService.dataset.resource.url,
+                    issued: $filter('date')(creationService.dataset.resource.issued, 'yyyy-MM-dd'),
+                    custom: creationService.dataset.resource.custom,
+                    external_resource: $scope.external_resource.output[0]
+                };
+                payload.policy_domains =   $scope.policy_domains.output;
+                payload.title = $scope.dataset.title;
+                payload.acronym = $scope.dataset.acronym;
+                payload.keywords = $scope.dataset.keywords;
+                payload.license = $scope.dataset.license;
+                payload.description = $scope.dataset.description;
+                payload.spatial = $scope.spatial.output[0];
+                payload.language_id = $scope.language.output[0];
+                payload.indicator_id = creationService.indicator[0].id;
+                payload.class_id = creationService.classPreSelection[0];
+                payload.user_id = 1;
+                payload.unit_id = 22;
+                payload.data = buildData();
+                $log.info(payload);
+                save(payload);
+            };
+
+            var save = function (payload) {
+                Dataset.save(payload, function(value, responseHeaders){
+                        $log.info("Saved");
+                    },
+                    function(err) {
+                        $log.info(err);
+                    }
+                );
+
+            };
+
+
+            $scope.saveObject = {
+                saveFinish: saveFinish
+            };
 
     }]);

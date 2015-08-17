@@ -10,7 +10,8 @@ angular.module('pcApp.datasets.directives.snippets', [
             scope: {
                 step: '@',
                 beforeNextStep: '&',
-                beforePrevStep: '&'
+                beforePrevStep: '&',
+                save: '='
             },
             templateUrl: 'modules/datasets/partials/header.html',
             controller: function ($scope, $element, $attrs) {
@@ -75,6 +76,13 @@ angular.module('pcApp.datasets.directives.snippets', [
                     $location.path('/datasets/create');
                 };
 
+                $scope.saveFinish = function () {
+                    $scope.save.saveFinish();
+                };
+
+                $scope.saveCopy = function () {
+                    $scope.save.saveCopy();
+                }
             }
         }
     }])
