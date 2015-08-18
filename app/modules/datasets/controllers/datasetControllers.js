@@ -8,6 +8,7 @@
 angular.module('pcApp.datasets.controllers.dataset', [
     'pcApp.datasets.services.dataset',
     'pcApp.references.services.reference',
+    'pcApp.indicators.services.indicator',
     'dialogs.main',
     'ngProgress'
 ])
@@ -602,7 +603,20 @@ angular.module('pcApp.datasets.controllers.dataset', [
         'Dataset',
         'Individual',
         '$q',
-        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService, $filter, Dataset, Individual, $q) {
+        'Indicator',
+        function (
+            $scope,
+            DatasetsControllerHelper,
+            $log,
+            dialogs,
+            ngProgress,
+            $routeParams,
+            creationService,
+            $filter,
+            Dataset,
+            Individual,
+            $q,
+            Indicator) {
 
             $scope.showTable = false;
             $scope.moreMetadata = {
@@ -655,6 +669,8 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
                     // Show the table
                     $scope.showTable = true;
+
+                    $scope.indicator = Indicator.get({id: dataset.indicator_id});
                 });
 
             };

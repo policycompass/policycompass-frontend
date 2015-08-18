@@ -146,6 +146,11 @@
                         <td>{{ dataset.keywords }}</td>
                     </tr>
 
+                    <tr ng-show="indicator">
+                        <td><b>Indicator:</b></td>
+                        <td>{{ indicator.name }}</td>
+                    </tr>
+
                 </table>
             </div>
 
@@ -170,21 +175,6 @@
                     <tr ng-if="dataset.class_id">
                         <td><b>Dimension Type:</b></td>
                         <td><resource-title resource="Class" id="dataset.class_id"></resource-title></td>
-                    </tr>
-
-                    <tr ng-show="metric.resource_issued">
-                        <td><b>Resource Issued:</b></td>
-                        <td>{{ metric.resource_issued | date:'longDate' }}</td>
-                    </tr>
-
-                    <tr ng-show="metric.external_resource">
-                        <td><b>External Resource:</b></td>
-                        <td><a href="{{ metric.external_resource.url }}" target="_blank">{{ metric.external_resource.title }}</a></td>
-                    </tr>
-
-                    <tr ng-show="metric.license">
-                        <td><b>License:</b></td>
-                        <td>{{ metric.license }}</td>
                     </tr>
 
                 </table>
