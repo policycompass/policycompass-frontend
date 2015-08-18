@@ -24,9 +24,9 @@ angular.module('pcApp.references.services.reference',[
                 cache : true
             },
             query : {
-                method : 'GET',
-                cache : true,
-                isArray:true
+                method: 'GET',
+                cache: true,
+                isArray: true
             }
         }
 	);

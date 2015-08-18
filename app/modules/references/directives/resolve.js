@@ -20,6 +20,7 @@ angular.module('pcApp.references.directives.resolve', [
 
     .directive('resourceTitle', ['$log', '$injector', function ($log, $injector) {
         return {
+            restrict: 'AEC',
             scope: {
                 id: '=',
                 resource: '@'

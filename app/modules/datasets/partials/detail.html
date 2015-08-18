@@ -1,15 +1,206 @@
 <div class="container">
     <div class="content-header">
         <h1><span class="glyphicon glyphicon-list-alt"></span> {{ dataset.acronym }}</h1>
+
         <div class="pc-visualization-formcontrols">
             <div class="button-group">
-                <a type="button" ng-disabled="!gridloaded" class="btn btn-primary btn-details" ng-class="{data: gridvisible}" ng-click="showData()">
-                    <span ng-show="!gridvisible">View Data</span> <span ng-show="gridvisible">View Metric Details</span> </a>
+                <a type="button" class="btn btn-primary btn-details data" ng-click="moreMetadata.isCollapsed = !moreMetadata.isCollapsed">
+                    <span ng-show="moreMetadata.isCollapsed">Show More Metadata</span>
+                    <span ng-show="!moreMetadata.isCollapsed">Hide More Metadata</span>
+                </a>
+
                 <a type="button" class="btn btn-primary btn-create" href="#!/datasets/{{ dataset.id }}/edit">Edit</a>
-                <a type="button" class="btn btn-line" href="#!/visualizations/create/?datasets={{dataset.id}}">Visualise</a>
-                <a type="button" class="btn btn-tree" href="https://carneades-dev.policycompass.eu/carneades/#/projects/compass" target="_blank">Create Argument Map</a>
-                <a type="button" class="btn btn-danger" ng-click="deleteDataset(dataset)">Delete</a> </div>
+                <a type="button" class="btn btn-line"
+                   href="#!/visualizations/create/?datasets={{dataset.id}}">Visualise</a>
+                <a type="button" class="btn btn-tree"
+                   href="https://carneades-dev.policycompass.eu/carneades/#/projects/compass" target="_blank">Create
+                    Argument Map</a>
+                <a type="button" class="btn btn-danger" ng-click="deleteDataset(dataset)">Delete</a></div>
+
+
+            <a type="button" class="btn btn-share" ng-click="share=!share" ng-class="{active: share}">Share</a></div>
+        <div ng-class="{active: share}" class="share-window" id="share-window" ng-init="e=1">
+            <ul class="share-menu">
+                <div class="fonticon fonticon-close" ng-click="share=!share"></div>
+                <li><a href="" ng-click="e=1" ng-class="{active: e==1}">Share</a></li>
+                <li><a href="" ng-click="e=2" ng-class="{active: e==2}">Embed</a></li>
+            </ul>
+            <div ng-class="{active: e==1}" class="share-submenu">
+                <div class="row-block">
+                    <ul class="social-share">
+                        <li><a href="" class="fonticon fonticon-facebook"></a></li>
+                        <li><a href="" class="fonticon fonticon-twitter"></a></li>
+                        <li><a href="" class="fonticon fonticon-vk"></a></li>
+                        <li><a href="" class="fonticon fonticon-linkedin"></a></li>
+                        <li><a href="" class="fonticon fonticon-google"></a></li>
+                    </ul>
+                    <input type="text" value="http://localhost:9000/app/#/visualizations/4">
+                </div>
+            </div>
+            <div ng-class="{active: e==2}" class="share-submenu">
+                <div class="row-block">
+                    <input type="text"
+                           value='iframe width="100%" height="300" scrolling="no" frameborder="no" src="http://localhost:9000/app/#/visualizations/4"'>
+                </div>
+            </div>
         </div>
     </div>
 
+
+    <div class="content-body">
+
+        <hot-table
+                ng-if="showTable"
+                settings="table.settings"
+                datarows="table.items">
+        </hot-table>
+        <br />
+        <div id="pc-more-container" collapse="moreMetadata.isCollapsed" class="well">
+            <div class="row">
+                <div class="col-lg-6">
+                    <table class="table table-hover">
+
+                        <tr ng-if="dataset.spatial">
+                            <td><b>Spatial:</b></td>
+                            <td><resource-title resource="Individual" id="dataset.spatial"></resource-title></td>
+                        </tr>
+
+                        <tr ng-if="dataset.language_id">
+                            <td><b>Language:</b></td>
+                            <td><resource-title resource="Language" id="dataset.language_id"></resource-title></td>
+                        </tr>
+
+                        <tr ng-show="dataset.issued">
+                            <td><b>Issued:</b></td>
+                            <td>{{ dataset.issued | date:'longDate' }}</td>
+                        </tr>
+
+                        <tr ng-show="dataset.modified">
+                            <td><b>Last Modified:</b></td>
+                            <td>{{ dataset.modified | date:'longDate' }}</td>
+                        </tr>
+
+                        <tr ng-show="dataset.version">
+                            <td><b>Version:</b></td>
+                            <td>{{ dataset.version }}</td>
+                        </tr>
+
+
+                    </table>
+                </div>
+
+                <div class="col-lg-6">
+                    <table class="table table-hover">
+
+                        <tr ng-show="dataset.resource.issued">
+                            <td><b>Resource Issued:</b></td>
+                            <td>{{ dataset.resource.issued | date:'longDate' }}</td>
+                        </tr>
+
+                        <tr ng-if="dataset.resource.external_resource">
+                            <td><b>External Resource:</b></td>
+                            <td>
+                                <a href="{{ dataset.resource.url }}" target="_blank">
+                                    <resource-title resource="ExternalResource" id="dataset.resource.external_resource"></resource-title>
+                                </a>
+                            </td>
+                        </tr>
+
+                        <tr ng-show="dataset.resource.custom">
+                            <td><b>Custom Resource:</b></td>
+                            <td>{{ dataset.resource.custom }}</td>
+                        </tr>
+
+                        <tr ng-if="dataset.policy_domains">
+                            <td><b>Policy Domains:</b></td>
+                            <td>
+                                <span ng-repeat="p in dataset.policy_domains">
+                                    <resource-title resource="PolicyDomain" id="p"></resource-title>
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+
+            <div class="col-lg-6">
+                <legend class="legend-primary">Details</legend>
+                <table class="table table-hover">
+
+                    <tr ng-show="dataset.title">
+                        <td><b>Title:</b></td>
+                        <td>{{ dataset.title }}</td>
+                    </tr>
+
+                    <tr ng-show="dataset.description">
+                        <td><b>Description:</b></td>
+                        <td>{{ dataset.description }}</td>
+                    </tr>
+
+                    <tr ng-show="dataset.keywords">
+                        <td><b>Keywords:</b></td>
+                        <td>{{ dataset.keywords }}</td>
+                    </tr>
+
+                </table>
+            </div>
+
+            <div class="col-lg-6">
+                <legend class="legend-primary">Properties</legend>
+                <table class="table table-hover">
+
+                    <tr ng-if="dataset.unit_id">
+                        <td><b>Unit:</b></td>
+                        <td><resource-title resource="Unit" id="dataset.unit_id"></resource-title></td>
+                    </tr>
+                    <tr ng-show="dataset.time">
+                        <td><b>Time Span:</b></td>
+                        <td>{{ dataset.time.start }} - {{ dataset.time.end }}</td>
+                    </tr>
+
+                    <tr ng-show="dataset.time">
+                        <td><b>Resolution:</b></td>
+                        <td>{{ dataset.time.resolution }}</td>
+                    </tr>
+
+                    <tr ng-if="dataset.class_id">
+                        <td><b>Dimension Type:</b></td>
+                        <td><resource-title resource="Class" id="dataset.class_id"></resource-title></td>
+                    </tr>
+
+                    <tr ng-show="metric.resource_issued">
+                        <td><b>Resource Issued:</b></td>
+                        <td>{{ metric.resource_issued | date:'longDate' }}</td>
+                    </tr>
+
+                    <tr ng-show="metric.external_resource">
+                        <td><b>External Resource:</b></td>
+                        <td><a href="{{ metric.external_resource.url }}" target="_blank">{{ metric.external_resource.title }}</a></td>
+                    </tr>
+
+                    <tr ng-show="metric.license">
+                        <td><b>License:</b></td>
+                        <td>{{ metric.license }}</td>
+                    </tr>
+
+                </table>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <legend class="legend-primary">Discussion</legend>
+                <show-discussion ng-if="dataset.id" data-key="dataset_{{ dataset.id }}"></show-discussion>
+            </div>
+        </div>
+
+    </div>
+
+
 </div>
+

@@ -600,17 +600,70 @@ angular.module('pcApp.datasets.controllers.dataset', [
         'creationService',
         '$filter',
         'Dataset',
-        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService, $filter, Dataset) {
+        'Individual',
+        '$q',
+        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService, $filter, Dataset, Individual, $q) {
 
+            $scope.showTable = false;
+            $scope.moreMetadata = {
+                isCollapsed: true
+            };
 
-            $scope.dataset = Dataset.get({id: $routeParams.datasetId},
-                function(dataset) {
+            $scope.table = {
+                settings: {
+                    autoColumnSize: true,
+                    contextMenu: false,
+                    stretchH: 'all',
+                    readOnly: true,
+                    outsideClickDeselects: false,
+                    afterInit: function() {
+                        $scope.table.instance = this;
+                    }
                 },
-                function(err) {
-                    throw { message: JSON.stringify(err.data)};
-                }
-            );
+                items: [],
+                instance: null
+            };
 
+            // ToDo This should be part of a directive
+            var getDatasetSuccess = function (dataset) {
+                var table = dataset.data.table;
+                var promises = [];
+
+                // Resolve all Individuals first
+                angular.forEach(table, function (row) {
+                    promises.push(Individual.getById(row.individual).$promise);
+                });
+
+                // All Promises have to be resolved
+                $q.all(promises).then(function (individuals) {
+
+                    // Build the rows
+                    for(var i=0; i<table.length; i++){
+                        var row = [individuals[i].title];
+                        angular.forEach(table[i].values, function (v) {
+                            row.push(v);
+                        });
+                        $scope.table.items.push(row);
+                    }
+
+                    // Set the Column Headers
+                    $scope.timeSeries = DatasetsControllerHelper.generateTimeSeries(
+                        dataset.time.resolution,
+                        dataset.time.start,
+                        dataset.time.end);
+                    $scope.table.settings.colHeaders = [' '].concat($scope.timeSeries);
+
+                    // Show the table
+                    $scope.showTable = true;
+                });
+
+            };
+
+            var getDatasetError = function (error) {
+                throw { message: JSON.stringify(error.data)};
+            };
+
+            $scope.dataset = Dataset.get({id: $routeParams.datasetId}, getDatasetSuccess, getDatasetError);
 
 
         }]);
