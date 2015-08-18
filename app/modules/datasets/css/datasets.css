@@ -62,3 +62,17 @@
     max-height: 300px;
     overflow: auto;
 }
+
+.help-text.active {
+    display: block;
+    z-index: 1000;
+}
+
+.help-switch:hover {
+    cursor: pointer;
+    cursor: hand;
+}
+
+.submenu.active {
+    z-index: 2000;
+}

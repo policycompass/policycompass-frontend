@@ -1,10 +1,16 @@
 
 angular.module('pcApp.datasets.directives.snippets', [
+    'pcApp.datasets.services.dataset',
     'ngStorage'
 ])
 
-.directive('datasetCreateHeader', ['$log', '$location', '$rootScope', '$sessionStorage',
-        function ($log, $location, $rootScope, storage) {
+.directive('datasetCreateHeader', [
+        '$log',
+        '$location',
+        '$rootScope',
+        'creationService',
+        '$route',
+        function ($log, $location, $rootScope, creationService, $route) {
         return {
             restrict: 'AEC',
             scope: {
@@ -30,7 +36,7 @@ angular.module('pcApp.datasets.directives.snippets', [
                     },
                     3: {
                         'title': 'Step 3 - Set the Time',
-                        'help': 'Nothing',
+                        'help': 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
                         'prev': '/datasets/create/class',
                         'next': '/datasets/create/data'
                     },
@@ -72,8 +78,9 @@ angular.module('pcApp.datasets.directives.snippets', [
                 };
 
                 $scope.cancel = function () {
-                    delete storage.newdataset;
+                    creationService.reset();
                     $location.path('/datasets/create');
+                    $route.reload();
                 };
 
                 $scope.saveFinish = function () {
