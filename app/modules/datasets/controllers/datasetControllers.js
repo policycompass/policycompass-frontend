@@ -133,10 +133,12 @@ angular.module('pcApp.datasets.controllers.dataset', [
             $log.info(creationService.data);
             $scope.inputTable = creationService.data.inputTable;
 
+            $scope.inputTable.settings.readOnly = false;
             $scope.inputTable.settings.afterInit = function() {
                 $scope.inputInstance = this;
             };
 
+            // ToDo Get URL from Config
             $scope.dropzone = {
                 config: {
                     clickable: true,
@@ -214,7 +216,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     $scope.inputTable.items);
 
                 angular.forEach(result, function (r) {
-                    if((!_.contains($scope.individualSelection, r)) && r != null){
+                    if((!_.contains($scope.individualSelection, r)) && r != null && r != ''){
                         $log.info(r);
                         $scope.individualSelection.push(r);
                         $scope.$apply();
@@ -226,6 +228,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 $scope.inputTable = creationService.data.inputTable;
                 $scope.inputTable.settings.contextMenu = false;
                 $scope.inputTable.settings.afterSelectionEnd = getSelection;
+                $scope.inputTable.settings.readOnly = true;
 
                 if(creationService.data.individualSelection) {
                     $scope.individualSelection = creationService.data.individualSelection;
@@ -273,6 +276,10 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 });
             };
 
+            $scope.clearAll = function () {
+                $scope.individualSelection = [];
+            };
+
             $scope.nextStep = function () {
                 creationService.data.classPreSelection = $scope.selection.output;
                 creationService.data.extraMetadata = $scope.extraMetadata;
@@ -292,14 +299,29 @@ angular.module('pcApp.datasets.controllers.dataset', [
         'creationService',
         function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService) {
 
+
+            var getSelection = function (startRow, startColumn, endRow, endColumn) {
+                var result = DatasetsControllerHelper.getTableSelection(
+                    startRow,
+                    startColumn,
+                    endRow,
+                    endColumn,
+                    $scope.inputTable.items);
+
+                $scope.time.start = result[0];
+                $scope.time.end = result[result.length - 1];
+                $scope.$apply();
+            };
+
+
+
             var init = function () {
                 $scope.inputTable = creationService.data.inputTable;
                 $scope.inputTable.settings.contextMenu = false;
-
+                $scope.inputTable.settings.afterSelectionEnd = getSelection;
                 $scope.inputTable.settings.afterInit = function() {
                     $scope.inputInstance = this;
                 };
-
 
                 $scope.timeResolution = {
                     input: [
@@ -360,72 +382,126 @@ angular.module('pcApp.datasets.controllers.dataset', [
         function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService, Class) {
 
             var getSelection = function (startRow, startColumn, endRow, endColumn) {
-                var result = DatasetsControllerHelper.getTableSelection(
-                    startRow,
-                    startColumn,
-                    endRow,
-                    endColumn,
-                    $scope.inputTable.items);
+
+                var i, j;
+                if($scope.mode == 'row') {
+                    var result = DatasetsControllerHelper.getTableSelection(
+                        startRow,
+                        startColumn,
+                        endRow,
+                        endColumn,
+                        $scope.inputTable.items);
 
 
-                var row = $scope.resultTable.items[$scope.selectionStep-1];
-                //row = result;
-                var i, start;
-                for(i=1; i<row.length; i++){
-                    if(row[i] == null || row[i] == '') {
-                        start = i;
-                        break;
+                    var row = $scope.resultTable.items[$scope.selectionStep-1];
+                    $log.info(result);
+                    //row = result;
+                    var start;
+                    for(i=1; i<row.length; i++){
+                        if(row[i] == null || row[i] == '') {
+                            start = i;
+                            break;
+                        }
                     }
+
+                    var nextRow = false;
+                    for(i=start; i<row.length; i++){
+                        if(!result[i-start]) {
+                            break;
+                        }
+                        row[i] = result[i-start];
+                        if(i == row.length-1){
+                            nextRow = true;
+                        }
+                    }
+
+                    $scope.resultTable.items[$scope.selectionStep-1] = row;
+                    if(nextRow){
+                        $scope.next();
+                    }
+                    $scope.$apply();
                 }
 
-                for(i=start; i<row.length; i++){
-                    row[i] = result[i-start];
+                if($scope.mode == 'all') {
+
+                    for(i=startRow; i<=endRow; i++){
+                        if(typeof $scope.resultTable.items[i-startRow] == 'undefined') {
+                            break;
+                        }
+                        for(j=startColumn; j<=endColumn; j++){
+                            //$log.info($scope.resultTable.items[i-startRow][j-startColumn+1]);
+                            if(typeof $scope.resultTable.items[i-startRow][j-startColumn+1] == 'undefined') {
+                                break;
+                            }
+                            $scope.resultTable.items[i-startRow][j-startColumn+1] = $scope.inputTable.items[i][j]
+                        }
+
+
+                    }
+
+                    $scope.$apply();
+                    $log.info($scope.resultTable.items);
+
                 }
 
-                $scope.resultTable.items[$scope.selectionStep-1] = row;
-                $scope.$apply();
             };
 
-
             var init = function () {
-                $scope.inputTable = creationService.data.inputTable;
-                $scope.resultTable = creationService.data.resultTable;
-
-                $scope.resultTable.settings.afterInit = function() {
-                    $scope.resultInstance = this;
-                };
-
-                $scope.inputTable.settings.contextMenu = false;
-                $scope.inputTable.settings.afterSelectionEnd = getSelection;
-                $scope.individualSelection = creationService.data.individualSelection;
+                $scope.mode = 'row';
                 $scope.timeSeries = DatasetsControllerHelper.generateTimeSeries(
                     creationService.data.timeResolution,
                     creationService.data.time.start,
                     creationService.data.time.end);
 
+                $scope.timeSeriesLength = $scope.timeSeries.length;
                 creationService.data.timeSeries = $scope.timeSeries;
+
+
+                $scope.inputTable = creationService.data.inputTable;
+                $scope.resultTable = creationService.data.resultTable;
+                $scope.resultTable.settings.afterInit = function() {
+                    $scope.resultInstance = this;
+                    $scope.resultInstance.selectCell(0,0,0,$scope.timeSeriesLength);
+                };
+
+                $scope.inputTable.settings.contextMenu = false;
+                $scope.inputTable.settings.afterSelectionEnd = getSelection;
+
+
+                $scope.individualSelection = creationService.data.individualSelection;
 
                 $scope.resultTable.settings.minCols = $scope.timeSeries.length + 1;
                 //$scope.resultTable.settings.minRows = creationService.data.individualSelection.length + 1;
                 $scope.resultTable.settings.colHeaders = [' '].concat($scope.timeSeries);
 
                 $scope.selectionStep = 1;
+                $scope.lastStep = $scope.individualSelection.length;
                 if($scope.resultTable.items.length == 0) {
                     angular.forEach(creationService.data.individualSelection, function (i) {
                         $scope.resultTable.items.push([i]);
                     });
+                }
 
+                if($scope.resultTable.items[0].length > ($scope.timeSeries.length + 1)) {
+                    $scope.resultTable.items = [];
+                    angular.forEach(creationService.data.individualSelection, function (i) {
+                        $scope.resultTable.items.push([i]);
+                    });
                 }
             };
 
             init();
 
             $scope.next = function () {
+                $scope.resultInstance.selectCell($scope.selectionStep,0,$scope.selectionStep,$scope.timeSeriesLength);
                 $scope.selectionStep++;
+
             };
 
             $scope.prev = function () {
                 $scope.selectionStep--;
+                $scope.resultInstance.selectCell($scope.selectionStep-1,0,$scope.selectionStep-1,$scope.timeSeriesLength);
+
             };
 
             $scope.reset = function () {
@@ -435,6 +511,24 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 });
                 $scope.resultInstance.loadData($scope.resultTable.items);
             };
+
+            $scope.resetRow = function () {
+                for(var i=1; i<$scope.timeSeriesLength+1; i++){
+                    $scope.resultTable.items[$scope.selectionStep - 1][i] = '';
+                }
+            };
+
+            $scope.toggleMode = function () {
+                if($scope.mode == 'row'){
+                    $scope.mode = 'all';
+                    $scope.resultInstance.selectCell(0,0,$scope.individualSelection.length-1,$scope.timeSeriesLength);
+
+                } else {
+                    $scope.mode = 'row';
+                    $scope.resultInstance.selectCell($scope.selectionStep-1,0,$scope.selectionStep-1,$scope.timeSeriesLength);
+                }
+            }
+
     }])
 
     .controller('DatasetStep5Controller', [
@@ -448,13 +542,31 @@ angular.module('pcApp.datasets.controllers.dataset', [
         function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService) {
 
             var init = function () {
+                $scope.unitSelector = false;
                 $scope.ListDatasetsFilter = creationService.data.indicator;
+                $scope.unit = {
+                    input:  creationService.data.dataset.unit,
+                    output: []
+                }
+                if($scope.ListDatasetsFilter.length > 0){
+                    $scope.unitSelector = true;
+                }
             };
 
             init();
 
             $scope.nextStep = function () {
                 creationService.data.indicator = $scope.ListDatasetsFilter;
+                creationService.data.dataset.unit = $scope.unit.output;
+            };
+
+
+            $scope.indicatorSelected = function () {
+                if($scope.ListDatasetsFilter.length > 0 ){
+                    $scope.unitSelector = true;
+                } else {
+                    $scope.unitSelector = false;
+                }
             };
 
     }])
@@ -471,6 +583,11 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
             var init = function () {
                 $scope.resultTable = creationService.data.resultTable;
+                $scope.resultTable.settings.readOnly = false;
+                $scope.resultTable.settings.afterInit = function() {
+                    $scope.resultInstance = this;
+                    $scope.resultInstance.selectCell();
+                };
             };
 
             init();
@@ -486,7 +603,8 @@ angular.module('pcApp.datasets.controllers.dataset', [
         'creationService',
         '$filter',
         'Dataset',
-        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService, $filter, Dataset) {
+        '$location',
+        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService, $filter, Dataset, $location) {
 
             var init = function () {
                 $scope.dataset = creationService.data.dataset;
@@ -544,17 +662,32 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
             var saveFinish = function () {
                 var payload = {};
+
                 payload.time = {
                     resolution: creationService.data.timeResolution,
                     start: creationService.data.time.start,
                     end: creationService.data.time.end
                 };
-                payload.resource = {
-                    url: creationService.data.dataset.resource.url,
-                    issued: $filter('date')(creationService.data.dataset.resource.issued, 'yyyy-MM-dd'),
-                    custom: creationService.data.dataset.resource.custom,
-                    external_resource: $scope.external_resource.output[0]
-                };
+
+                payload.resource = {};
+
+                if(creationService.data.dataset.resource) {
+                    if(creationService.data.dataset.resource.url)
+                        payload.resource.url = creationService.data.dataset.resource.url;
+
+                    if(creationService.data.dataset.resource.issued)
+                        payload.resource.issued = $filter('date')(creationService.data.dataset.resource.issued, 'yyyy-MM-dd');
+
+                    if(creationService.data.dataset.resource.custom)
+                        payload.resource.custom = creationService.data.dataset.resource.custom;
+
+                    if($scope.external_resource.output[0])
+                        payload.resource.external_resource = $scope.external_resource.output[0];
+                }
+
+
+
+
                 payload.policy_domains =   $scope.policy_domains.output;
                 payload.title = $scope.dataset.title;
                 payload.acronym = $scope.dataset.acronym;
@@ -566,7 +699,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 payload.indicator_id = creationService.data.indicator[0].id;
                 payload.class_id = creationService.data.classPreSelection[0];
                 payload.user_id = 1;
-                payload.unit_id = 22;
+                payload.unit_id = $scope.dataset.unit[0];
                 payload.data = buildData();
                 $log.info(payload);
                 save(payload);
@@ -574,14 +707,14 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
             var save = function (payload) {
                 Dataset.save(payload, function(value, responseHeaders){
-                        $log.info("Saved");
+                        creationService.reset();
+                        $location.path('/datasets/' + value.id);
                     },
                     function(err) {
                         $log.info(err);
                     }
                 );
             };
-
 
             $scope.saveObject = {
                 saveFinish: saveFinish
@@ -596,7 +729,6 @@ angular.module('pcApp.datasets.controllers.dataset', [
         'dialogs',
         'ngProgress',
         '$routeParams',
-        'creationService',
         '$filter',
         'Dataset',
         'Individual',
@@ -609,7 +741,6 @@ angular.module('pcApp.datasets.controllers.dataset', [
             dialogs,
             ngProgress,
             $routeParams,
-            creationService,
             $filter,
             Dataset,
             Individual,

@@ -76,3 +76,22 @@
 .submenu.active {
     z-index: 2000;
 }
+.dataset-filter h5 {
+    width: auto;
+    margin-left: 10px;
+}
+
+.pc-dataset-individuals {
+    margin-top: 10px;
+    max-height: 420px;
+    overflow: auto;
+}
+
+.pc-dataset-button-mode {
+    float: left;
+    margin-right: 20px;
+}
+
+.pc-dataset-toolbar {
+    min-height: 65px;
+}

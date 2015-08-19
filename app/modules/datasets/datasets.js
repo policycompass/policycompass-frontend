@@ -23,7 +23,7 @@ angular.module('pcApp.datasets', [
                 controller: 'DatasetStep1Controller',
                 templateUrl: 'modules/datasets/partials/step1.html'
             })
-            .when('/datasets/create/class', {
+            .when('/datasets/create/dimension', {
                 controller: 'DatasetStep2Controller',
                 templateUrl: 'modules/datasets/partials/step2.html'
             })

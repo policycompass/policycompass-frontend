@@ -553,7 +553,7 @@ angular.module('pcApp.common.directives.search', [
                 $scope.itemssearchfrom = 0;
                 $scope.pagToSearch = 1;
 
-                $scope.clickDataset = function (idDataset, title, issued) {
+                $scope.clickDataset = function (idDataset, title, issued, unit_category) {
                     var addDataset = true;
                     if(idDataset > 0) {
                         addDataset = true;
@@ -579,7 +579,8 @@ angular.module('pcApp.common.directives.search', [
                         var myObject = {
                             'id': idDataset,
                             'title': title,
-                            'issued': issued
+                            'issued': issued,
+                            'unit_category': unit_category
                         };
                         $scope.datasetsList.push(myObject);
                         $scope.functionfordataset();

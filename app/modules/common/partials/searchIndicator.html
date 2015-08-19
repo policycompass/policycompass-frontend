@@ -1,8 +1,6 @@
 <div ng-show="showerrormessage"><label>There is a problem with the connection to the search service.</label></div>
 <div ng-show="!showerrormessage">
 
-    <label>Search for Indicators</label>
-
     <div class="filterMetricsPagination" id="filterMetricsPaginationDirective">
         <div class="button-group">
             <button ng-show="datasetsFilter.hits.total>1" ng-disabled="pagToSearch==1" class="btn" ng-click="findDatasetsByFilter('prev')">
@@ -34,7 +32,7 @@
                 ng-repeat="dataset in datasetsFilter.hits.hits track by $index">
 
                 <a href=""
-                   ng-click="clickDataset(dataset._source.id, dataset._source.name, dataset._source.issued);"
+                   ng-click="clickDataset(dataset._source.id, dataset._source.name, dataset._source.issued, dataset._source.unit_category);"
                    title="{{ !selection[dataset._source.id]>0 && 'Add' || 'Delete' }} {{dataset._source.name}}">{{dataset._source.name}}
                     - {{ dataset._source.issued | date:'longDate' }}</a>
             </li>

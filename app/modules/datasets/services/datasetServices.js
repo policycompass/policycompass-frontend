@@ -28,9 +28,10 @@ angular.module('pcApp.datasets.services.dataset',[
                 instance: null,
                 settings: {
                     autoColumnSize: true,
-                    contextMenu: true,
+                    contextMenu: false,
                     stretchH: 'all',
-                    outsideClickDeselects: false
+                    outsideClickDeselects: false,
+                    readOnly: true
                 },
                 items: []
             },
@@ -52,7 +53,7 @@ angular.module('pcApp.datasets.services.dataset',[
             result.data = storage.newdataset;
         } else {
             result.data = angular.copy(initData);
-            storage.newdataset = data;
+            storage.newdataset = result.data;
         }
 
         result.reset = function () {
