@@ -734,6 +734,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
         'Individual',
         '$q',
         'Indicator',
+        '$location',
         function (
             $scope,
             DatasetsControllerHelper,
@@ -745,7 +746,8 @@ angular.module('pcApp.datasets.controllers.dataset', [
             Dataset,
             Individual,
             $q,
-            Indicator) {
+            Indicator,
+            $location) {
 
             $scope.showTable = false;
             $scope.moreMetadata = {
@@ -805,10 +807,25 @@ angular.module('pcApp.datasets.controllers.dataset', [
             };
 
             var getDatasetError = function (error) {
-                throw { message: JSON.stringify(error.data)};
+                $location.path('/datasets');
             };
 
             $scope.dataset = Dataset.get({id: $routeParams.datasetId}, getDatasetSuccess, getDatasetError);
-
+            
+            $scope.deleteDataset = function(dataset) {
+                // Open a confirmation dialog
+                var dlg = dialogs.confirm(
+                    "Are you sure?",
+                    "Do you want to delete the Dataset " + dataset.acronym + " permanently?");
+                dlg.result.then(function () {
+                    // Delete the dataset via the API
+                    dataset.$delete(
+                        {},
+                        function(){
+                            $location.path('/datasets');
+                        }
+                    );
+                });
+            };
 
         }]);
