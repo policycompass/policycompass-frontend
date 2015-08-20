@@ -130,7 +130,6 @@ angular.module('pcApp.datasets.controllers.dataset', [
         '$routeParams',
         'creationService',
         function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService) {
-            $log.info(creationService.data);
             $scope.inputTable = creationService.data.inputTable;
 
             $scope.inputTable.settings.readOnly = false;
@@ -217,7 +216,6 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
                 angular.forEach(result, function (r) {
                     if((!_.contains($scope.individualSelection, r)) && r != null && r != ''){
-                        $log.info(r);
                         $scope.individualSelection.push(r);
                         $scope.$apply();
                     }
@@ -284,7 +282,6 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 creationService.data.classPreSelection = $scope.selection.output;
                 creationService.data.extraMetadata = $scope.extraMetadata;
                 creationService.data.individualSelection = $scope.individualSelection;
-                $log.info(creationService);
             };
 
     }])
@@ -394,7 +391,6 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
 
                     var row = $scope.resultTable.items[$scope.selectionStep-1];
-                    $log.info(result);
                     //row = result;
                     var start;
                     for(i=1; i<row.length; i++){
@@ -440,8 +436,6 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     }
 
                     $scope.$apply();
-                    $log.info($scope.resultTable.items);
-
                 }
 
             };
@@ -660,7 +654,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
             };
 
 
-            var saveFinish = function () {
+            var preSave = function () {
                 var payload = {};
 
                 payload.time = {
@@ -685,9 +679,6 @@ angular.module('pcApp.datasets.controllers.dataset', [
                         payload.resource.external_resource = $scope.external_resource.output[0];
                 }
 
-
-
-
                 payload.policy_domains =   $scope.policy_domains.output;
                 payload.title = $scope.dataset.title;
                 payload.acronym = $scope.dataset.acronym;
@@ -701,23 +692,49 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 payload.user_id = 1;
                 payload.unit_id = $scope.dataset.unit[0];
                 payload.data = buildData();
-                $log.info(payload);
-                save(payload);
+                return payload;
             };
 
-            var save = function (payload) {
+            var saveErrorCallback = function (err) {
+                var headers = err.headers();
+                if(headers['content-type'] == 'text/html') {
+                    dialogs.error(
+                        "Internal Server Error",
+                        "Please contact the Policy Compass Administrators.");
+                }
+                if(headers['content-type'] == 'application/json') {
+                    var data = err.data;
+                    var message = '';
+
+                    for(var key in data) {
+                        message += '<b>' + key + '</b>' + ': ' + data[key] + '<br />';
+                    }
+                    dialogs.error(
+                        "Error",
+                        message);
+                }
+            };
+
+            var saveFinish = function () {
+                var payload = preSave();
                 Dataset.save(payload, function(value, responseHeaders){
                         creationService.reset();
                         $location.path('/datasets/' + value.id);
-                    },
-                    function(err) {
-                        $log.info(err);
-                    }
+                    }, saveErrorCallback
+                );
+            };
+
+            var saveCopy = function () {
+                var payload = preSave();
+                Dataset.save(payload, function(value, responseHeaders){
+                        $location.path('/datasets/create');
+                    }, saveErrorCallback
                 );
             };
 
             $scope.saveObject = {
-                saveFinish: saveFinish
+                saveFinish: saveFinish,
+                saveCopy: saveCopy
             };
 
     }])
@@ -811,7 +828,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
             };
 
             $scope.dataset = Dataset.get({id: $routeParams.datasetId}, getDatasetSuccess, getDatasetError);
-            
+
             $scope.deleteDataset = function(dataset) {
                 // Open a confirmation dialog
                 var dlg = dialogs.confirm(
