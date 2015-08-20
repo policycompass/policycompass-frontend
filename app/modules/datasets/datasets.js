@@ -6,7 +6,9 @@ angular.module('pcApp.datasets', [
     'pcApp.datasets.controllers.dataset',
     'pcApp.references.directives.forms',
     'ngHandsontable',
-    'pcApp.datasets.directives.snippets'
+    'pcApp.datasets.directives.snippets',
+    'pcApp.common.directives.search',
+    'pcApp.references.directives.resolve'
 ])
 
     /**
@@ -21,7 +23,7 @@ angular.module('pcApp.datasets', [
                 controller: 'DatasetStep1Controller',
                 templateUrl: 'modules/datasets/partials/step1.html'
             })
-            .when('/datasets/create/class', {
+            .when('/datasets/create/dimension', {
                 controller: 'DatasetStep2Controller',
                 templateUrl: 'modules/datasets/partials/step2.html'
             })
@@ -44,5 +46,9 @@ angular.module('pcApp.datasets', [
             .when('/datasets/create/metadata', {
                 controller: 'DatasetStep7Controller',
                 templateUrl: 'modules/datasets/partials/step7.html'
+            })
+            .when('/datasets/:datasetId', {
+                controller: 'DatasetDetailController',
+                templateUrl: 'modules/datasets/partials/detail.html'
             })
     });

@@ -53,3 +53,52 @@
 .pc-result-table col.rowHeader {
     width: 180px;
 }
+
+.pc-reference-selection-full button {
+    width: 100%;
+    background: white;
+    color: black;
+    border: 1px solid #ccc;
+}
+
+.pc-reference-selection-full button:hover {
+    background: rgba(0, 0, 0, 0) linear-gradient(to bottom, #fff, #ccc) repeat;
+}
+
+.multiSelect .checkboxLayer {
+    max-height: 300px;
+    overflow: auto;
+}
+
+.help-text.active {
+    display: block;
+    z-index: 1000;
+}
+
+.help-switch:hover {
+    cursor: pointer;
+    cursor: hand;
+}
+
+.submenu.active {
+    z-index: 2000;
+}
+.dataset-filter h5 {
+    width: auto;
+    margin-left: 10px;
+}
+
+.pc-dataset-individuals {
+    margin-top: 10px;
+    max-height: 420px;
+    overflow: auto;
+}
+
+.pc-dataset-button-mode {
+    float: left;
+    margin-right: 20px;
+}
+
+.pc-dataset-toolbar {
+    min-height: 65px;
+}
