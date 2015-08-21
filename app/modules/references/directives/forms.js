@@ -173,9 +173,9 @@ angular.module('pcApp.references.directives.forms', [
             link: function ($scope, $element, $attrs) {
                 var params = {};
                 if($scope.parameters != undefined) {
-                    params = $scope.parameters;
 
-                    $scope.$watch('parameters', function (newValue) {
+                    params = $scope.parameters;
+                    $scope.$watch('parameters', function (newValue) {;
                         params = newValue;
                         getData();
                     });
@@ -205,21 +205,20 @@ angular.module('pcApp.references.directives.forms', [
 
                 getData();
                 $scope.outputData = {};
-
                 if($attrs.selectionMode != 'undefined' && $attrs.selectionMode == 'single') {
                     $scope.selectionMode = 'single';
                 } else {
                     $scope.selectionMode = 'multiple';
                 }
                 
-                $scope.$watch('outputData', function (newValue, oldValue) {
+                $scope.$watchCollection('outputData', function (newValue, oldValue) {
                     $scope.output = [];
                     angular.forEach(newValue, function (value) {
                         $scope.output.push(value.id);
                     })
                 });
 
-                $scope.$watch('input', function (newValue) {
+                $scope.$watchCollection('input', function (newValue) {
                      angular.forEach($scope.selection, function (s) {
                          if(_.contains(newValue, s.id)){
                              s.ticked = true;
@@ -228,6 +227,7 @@ angular.module('pcApp.references.directives.forms', [
                          }
                      })
                 });
+
             },
             template: '<div class="dataset-select" ' +
             'isteven-multi-select ' +

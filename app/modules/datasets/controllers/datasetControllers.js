@@ -233,15 +233,17 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 } else {
                     $scope.individualSelection = [];
                 }
-
                 if(creationService.data.extraMetadata) {
                     $scope.extraMetadata = [];
                     angular.forEach(creationService.data.extraMetadata, function (em) {
+
                         $scope.extraMetadata.push({
-                            classInput: em.classOutput,
+                            classInput: angular.copy(em.classOutput),
                             classOutput: [],
-                            indInput: em.indOutput,
-                            indOutput: []
+                            indInput: angular.copy(em.indOutput),
+                            indOutput: [],
+                            sub: true,
+                            class_id: em.classOutput[0]
                         });
                     })
                 } else {
@@ -249,7 +251,9 @@ angular.module('pcApp.datasets.controllers.dataset', [
                         classInput: [],
                         classOutput: [],
                         indInput: [],
-                        indOutput: []
+                        indOutput: [],
+                        sub: false,
+                        class_id: null
                     }];
                 }
                 creationService.data.classSelection = [];
@@ -270,9 +274,32 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     classInput: [],
                     classOutput: [],
                     indInput: [],
-                    indOutput: []
+                    indOutput: [],
+                    sub: false,
+                    class_id: null
                 });
             };
+
+            $scope.removeExtraMetadata = function (em) {
+                $scope.extraMetadata = _.without($scope.extraMetadata, em)
+
+
+            };
+            
+            $scope.$watch('extraMetadata', function (newValue) {
+
+                angular.forEach($scope.extraMetadata, function (em) {
+                    if(em.classOutput[0]) {
+                        em.sub = true;
+                        em.class_id = em.classOutput[0];
+                    } else {
+                        em.sub = false;
+                        em.indOutput = [];
+                    }
+
+                });
+
+            }, true);
 
             $scope.clearAll = function () {
                 $scope.individualSelection = [];
