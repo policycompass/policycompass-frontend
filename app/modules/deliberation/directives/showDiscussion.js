@@ -12,7 +12,8 @@ angular.module('pcApp.deliberation.directives.showDiscussion', [
             Adhocracy.then(function (adh) {
                 element.append(adh.getIframe('create-or-show-comment-listing', {
                     "pool-path": API_CONF.ADHOCRACY_BACKEND_URL + '/adhocracy/',
-                    key: scope.key
+                    key: scope.key,
+                    locale: 'en'
                 }))
             });
         }
