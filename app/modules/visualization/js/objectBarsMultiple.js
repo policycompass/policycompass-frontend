@@ -49,6 +49,57 @@ policycompass.viz.barsMultiple = function(options) {
     
     self.drawBarsMultiple = function (bars, eventsData) {
 		//console.log(bars);
+
+		var showAsPercentatge = self.showAsPercentatge;
+		
+		self.arrayFirstValuesKey = [];
+		self.arrayFirstValuesValue = [];
+		if (showAsPercentatge)
+		{
+			//var iniValue = bars[0].ValueY;
+			
+			bars.forEach(function(d,i) {
+				//console.log(i);
+				
+				
+				var a = self.arrayFirstValuesKey.indexOf(bars[i].Key);
+				
+				if (a<0)
+				{
+					var iniValue = bars[i].ValueY;
+					self.arrayFirstValuesKey.push(bars[i].Key);
+					self.arrayFirstValuesValue.push(bars[i].ValueY);
+					
+				}
+				else
+				{
+					var iniValue = self.arrayFirstValuesValue[a];
+				}
+				//console.log("iniValue="+iniValue);
+				if (iniValue!=0)
+				{
+					
+						//console.log("----------");
+						//console.log(bars[i]);
+						//console.log("valor inicial="+iniValue);
+						//console.log("valor recuperat="+bars[i].ValueY);
+						
+						var valueTMP = ((bars[i].ValueY - iniValue) / iniValue)*100;
+						
+						//console.log("valor temporal="+valueTMP);
+						//console.log("||||||||");
+						
+						bars[i].From = valueTMP;
+						bars[i].Value = valueTMP;
+						bars[i].ValueY = valueTMP;
+						bars[i].XY = bars[i].To+"|"+valueTMP;
+						//console.log(valueTMP);
+											
+					
+				}		
+			});			
+		}
+							
 		/*
 		var showLegend = document.getElementById("showLegend").checked;	
 		var showLabels = document.getElementById("showLabels").checked;
@@ -330,11 +381,40 @@ policycompass.viz.barsMultiple = function(options) {
 		    					}
 	      			
     	  			//tooltip.style("opacity",1.0).html(d.Key+"<br />Date="+d.ValueX+"<br />Value="+d.ValueY);
-    	  			
-    	  			
+    	  						
+    	  						var valueString=d.ValueY;
+    	  						if (showAsPercentatge)
+    	  						{
+    	  							
+    	  							//console.log(valueString);
+    	  							var formatdecimal = 0;
+    	  							if (valueString!=0)
+    	  							{
+										valueString = (parseFloat(valueString * 100) / 100).toFixed(2);
+										formatdecimal = Math.round(valueString/100)+1;
+		      						}
+		      						else
+		      						{
+		      							formatdecimal = 2;
+		      						}
+		      						
+    	  							
+    	  							if (formatdecimal<2)
+        							{
+        								formatdecimal =2;
+        							}
+        							else if (formatdecimal>4)
+        							{ 
+        								formatdecimal=4;
+        							}
+    	  							var si = d3.format('.'+formatdecimal+'s');					      	
+					      			valueString = si(valueString);
+					      		
+    	  							valueString=valueString+"%";
+    	  						}
     	  			//tooltip.style("opacity",1.0).html(d.Key+"<br />"+startDateToPlot+"<br />"+d.ValueY);
     	  			var resTRext = d.Key.split("_");
-    	  			tooltip.style("opacity",1.0).html(resTRext[0]+"<br />"+startDateToPlot+"<br />"+d.ValueY);
+    	  			tooltip.style("opacity",1.0).html(resTRext[0]+"<br />"+startDateToPlot+"<br />"+valueString);
     	  			
     	  			
       			})
@@ -597,6 +677,20 @@ policycompass.viz.barsMultiple = function(options) {
     		.attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
 	}
 
+	//function to clone an object
+	self.clone = function ( obj ) {
+    			if ( obj === null || typeof obj  !== 'object' ) {
+        			return obj;
+    			}
+ 
+    			var temp = obj.constructor();
+    			for ( var key in obj ) {
+        			temp[ key ] = self.clone( obj[ key ] );
+    			}
+ 
+    			return temp;
+	}
+	
     self.render = function(dataIn, eventsData){
 		
 		self.dataIn = dataIn;
@@ -614,7 +708,11 @@ policycompass.viz.barsMultiple = function(options) {
 		else
 		{
 			//console.log(dataIn);
-			self.drawBarsMultiple(dataIn, eventsData);
+			
+			var dataToPlotUpdate = self.clone( dataIn );
+			
+			//self.drawBarsMultiple(dataIn, eventsData);
+			self.drawBarsMultiple(dataToPlotUpdate, eventsData);
 		}		
 		
 	}

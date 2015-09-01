@@ -170,7 +170,7 @@
 									</label>
 								</div>
 								
-								<div id="div_showAsPercentatge" ng-show="isSelectedSon('graph_line')" class="on_check">
+								<div id="div_showAsPercentatge" ng-show="isSelectedSon('graph_line') || isSelectedSon('graph_bars')" class="on_check">
 									<label class="checkbox-inline">
 										<input ng-model="showAsPercentatge" type="checkbox" ng-click="rePlotGraph();" name="showAsPercentatge"  id="showAsPercentatge" class="checkbox filterCheckBox"> Show as %
 									</label>
