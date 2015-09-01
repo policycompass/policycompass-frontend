@@ -85,7 +85,7 @@ $scope.dataset  (mandatory) = [{"Category":"1","From":20950114,"Key":"Air pollut
            
            	$scope.watcherPercentatge = false;
 			$scope.$watch('showPercentatge', function(showPercentatge) {
-				console.log("whatch showPercentatge");
+				//console.log("whatch showPercentatge");
 				$scope.watcherPercentatge = true;
 				if (($scope.dataset) && ($scope.chartid))
 				{
