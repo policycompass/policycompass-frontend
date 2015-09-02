@@ -26,6 +26,7 @@ $scope.dataset  (mandatory) = [{"Category":"1","From":20950114,"Key":"Air pollut
         	showGrid: '=showGrid',
         	resolution: '=resolution',
         	labelyaxe: '=labelyaxe',
+        	showPercentatge: '=showPercentatge',
         }, 
 		compile: function(element, attributes){ 
          return {
@@ -81,6 +82,17 @@ $scope.dataset  (mandatory) = [{"Category":"1","From":20950114,"Key":"Air pollut
             });
             */
            
+           
+           	$scope.watcherPercentatge = false;
+			$scope.$watch('showPercentatge', function(showPercentatge) {
+				//console.log("whatch showPercentatge");
+				$scope.watcherPercentatge = true;
+				if (($scope.dataset) && ($scope.chartid))
+				{
+					$scope.directivePlotBarChart('showPercentatge');
+				}				
+            });
+            
             $scope.watcherLabel = false;
 			$scope.$watch('showLabels', function(showLabels) {
 				//console.log("whatch showLabels");
@@ -211,7 +223,7 @@ $scope.dataset  (mandatory) = [{"Category":"1","From":20950114,"Key":"Air pollut
 						//console.log("origin="+origin);
 						//console.log("scope.cntloading="+$scope.cntloading);
 
-						if (($scope.watcherDataset) && ($scope.watcherLabel) && ($scope.watcherLegend) && ($scope.watcherGrid) && ($scope.watcherDataset))
+						if (($scope.watcherDataset) && ($scope.watcherLabel) && ($scope.watcherLegend) && ($scope.watcherGrid) && ($scope.watcherDataset) && ($scope.watcherPercentatge))
 						 {
 						var barObj = policycompass.viz.barsMultiple(
 						{
@@ -228,7 +240,8 @@ $scope.dataset  (mandatory) = [{"Category":"1","From":20950114,"Key":"Air pollut
 							'showGrid': $scope.showGrid,
 							'legendsColumn': legendsColumn,
 							'resolution': $scope.resolution,
-							'labelY': $scope.labelyaxe,					
+							'labelY': $scope.labelyaxe,
+							'showAsPercentatge': $scope.showPercentatge,					
 	            		});
 	            						
 							var eventsArray = [];
@@ -264,6 +277,7 @@ $scope.dataset  (mandatory) = [{"Category":"1","From":20950114,"Key":"Air pollut
         '<label class="checkbox-inline"><input ng-model="showLegend" type="checkbox" name="showLegend" class="checkbox filterCheckBox"> Show Legend</label>' +
         '<label class="checkbox-inline"><input ng-model="showLabels" type="checkbox" name="showLabels" class="checkbox filterCheckBox"> Show Labels</label>' +
         '<label class="checkbox-inline"><input ng-model="showGrid"   type="checkbox" name="showGrid"   class="checkbox filterCheckBox"> Show Grid</label>' +
+        '<label class="checkbox-inline"><input ng-model="showPercentatge" type="checkbox" name="showPercentatge" class="checkbox filterCheckBox"> Show as %</label>' +
         '</div>' +
         '</div>'
     };

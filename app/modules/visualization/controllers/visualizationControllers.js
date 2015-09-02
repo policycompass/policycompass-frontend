@@ -1323,6 +1323,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						
 						var posValue=-1;
 						var posGroup=-1;
+						/*
 						for (x=0;x<arrayExtraColumnsMetric.length; x++) {
 							//console.log("x="+arrayExtraColumnsMetric[x]);
 							
@@ -1344,6 +1345,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							}
 							
 						}
+						*/
     					//console.log("posValue="+posValue);
     					//console.log("posGroup="+posGroup);
     					
@@ -3546,7 +3548,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						'showLabels': $scope.showLabels,
 						'showGrid': $scope.showGrid,
 						'legendsColumn': legendsColumn,
-						'resolution': $scope.resolution.value
+						'resolution': $scope.resolution.value,
+						'showAsPercentatge': $scope.showAsPercentatge,
 		            	});
 						//console.log(datasetToSend);
 						barObj.render(datasetToSend, eventsArray);
