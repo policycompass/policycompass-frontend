@@ -172,23 +172,14 @@ policycompass.viz.mapLeaflet = function(options)
 			$(".leaflet-control-zoom").css("visibility", "hidden");		
 			map.scrollWheelZoom.disable();
 		}   
-		
-		
-	$.getJSON( "/app/modules/visualization/json/countries.json", function( data ) {
 
-		//console.log("data");
-    	//console.log(data);
+plotChartMap = function() {
+	
 
-		//countryData = data;
-		//if (map != undefined) { map.remove(); }
-		
-		
-		
-		//map = L.map("mapPC_"+self.idName).setView([40, 0], initialZoom);
-		
-		
-		
-		countriesData["type"] = "FeatureCollection";
+	data=arguments[1];
+	countriesDataCollection=arguments[2];
+
+	countriesData["type"] = "FeatureCollection";
 		countriesData["features"] = [];
 	
 		countriesDataCircle["type"] = "FeatureCollection";
@@ -279,7 +270,34 @@ policycompass.viz.mapLeaflet = function(options)
 	    			else
 	    			{
 	    				data.features[key].properties.density = valueCalc;
-		    			var latlng = d3.geo.centroid(data.features[key]);
+	    				
+	    				var latlng = [];
+	    				
+	    				//console.log(data.features[key].id)
+	    				var getCenter = true;
+	    				
+	    				if (self.showBubbles)
+	    				{
+		    				for (var country_j=0; country_j<countriesDataCollection.length; country_j++)
+		    				{
+		    					//console.log(countriesData[country_j]['alpha3Code']);
+		    					if (data.features[key].id==countriesDataCollection[country_j]['alpha3Code'])
+		    					{
+		    						//console.log("DINS!!!");	
+		    						var latlngTmp = [];
+		    						latlngTmp = countriesDataCollection[country_j]['latlng'];
+		    						latlng[1]=latlngTmp[0];
+		    						latlng[0]=latlngTmp[1];
+		    						
+		    						getCenter=false;
+		    					}
+	    					}
+	    				}
+	    				
+	    				if (getCenter)
+	    				{
+		    				latlng = d3.geo.centroid(data.features[key]);
+		    			}
 		    			//console.log(latlng); 
 		    		    		
 		    			data.features[key].latlng = latlng;
@@ -567,10 +585,22 @@ policycompass.viz.mapLeaflet = function(options)
 				});
 			}
 		}).addTo(map);
-	//}	
+		
+}
 
-	
-});
+var q = queue();
+var pathToJson="/app/modules/visualization/json/countries.json";
+q = q.defer(d3.json, pathToJson);
+
+var pathToJson="/app/modules/visualization/json/countriesData.json";
+q = q.defer(d3.json, pathToJson);
+
+q.await(plotChartMap);
+
+
+
+
+//});
 
     self.init = function(){
 

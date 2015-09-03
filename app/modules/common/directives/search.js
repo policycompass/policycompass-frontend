@@ -116,7 +116,7 @@ angular.module('pcApp.common.directives.search', [
 						addmetric = false;
 						var dlg = dialogs.confirm(
             			"Are you sure?",
-            			"Do you want to delete '"+title+"' from the list of metrics?");
+            			"Do you want to remove '"+title+"' from the list of metrics?");
         				dlg.result.then(function (k) {
         		            //console.log(k);
         		            
@@ -247,7 +247,7 @@ angular.module('pcApp.common.directives.search', [
 			'</div>' +
 			'<div class="filterMetricsPaginationBody createvisualization" id="filterMetricsPaginationBodyDirective">' +
 				'<ul class="metrics-list">' +
-        			'<li ng-class="{\'metrics-list active\':MetricSelectediId_[metric._source.id]>0,\'metrics-list\':MetricSelectediId_[metric.id]}" name="designer-metrics-num-{{metric.id}}" ng-repeat="metric in metricsFilter.hits.hits track by $index" ><a href="" x-ng-click="clickMetric(metric._source.id, metric._source.title, metric._source.issued);"  title="{{ !MetricSelectediId_[metric._source.id]>0 && \'Add \' || \'Delete \' }} \'{{metric._source.title}}\'">{{metric._source.title}} - {{ metric._source.issued | date:\'longDate\' }}</a></li>' +
+        			'<li ng-class="{\'metrics-list active\':MetricSelectediId_[metric._source.id]>0,\'metrics-list\':MetricSelectediId_[metric.id]}" name="designer-metrics-num-{{metric.id}}" ng-repeat="metric in metricsFilter.hits.hits track by $index" ><a href="" x-ng-click="clickMetric(metric._source.id, metric._source.title, metric._source.issued);"  title="{{ !MetricSelectediId_[metric._source.id]>0 && \'Add \' || \'Remove \' }} \'{{metric._source.title}}\'">{{metric._source.title}} - {{ metric._source.issued | date:\'longDate\' }}</a></li>' +
         		'</ul>' +        		
 				//'<div class="filterMetricsPagination" id="filterMetricsPaginationDirective">' +
 				//	'<button ng-show="metricsFilter.hits.total>1" ng-disabled="pagToSearch==1"  class="btn btn-warning" ng-click="findMetricsByFilter(\'prev\')">' +
@@ -289,7 +289,8 @@ angular.module('pcApp.common.directives.search', [
             datasetsList: '=datasetsList',
             numberMaxDatasets: '@numberMaxDatasets',
             functionfordataset: "&functionfordataset",
-            disableRow : '=disableRow'
+            disableRow : '=disableRow',
+            indexdataset: "=indexdataset"
         }, 
 		compile: function(element, attributes){ 
          return {
@@ -305,7 +306,7 @@ angular.module('pcApp.common.directives.search', [
         	        	
         	$scope.DatasetSelectediId_ = [];
         	
-      	
+      		
         	
         	$scope.arrayGranularitiesAvailable=[];
         	
@@ -384,12 +385,13 @@ angular.module('pcApp.common.directives.search', [
 						addDataset = false;
 						var dlg = dialogs.confirm(
             			"Are you sure?",
-            			"Do you want to delete '"+title+"' from the list of datasets?");
+            			"Do you want to remove '"+title+"' from the list of datasets?");
         				dlg.result.then(function (answer) {
         		            //console.log($scope.datasetsList);
         		            //console.log("idDataset="+idDataset);
+        		            $scope.indexdataset=kT;
 							$scope.datasetsList.splice(kT, 1);
-							$scope.DatasetSelectediId_[idDataset]='';							
+							$scope.DatasetSelectediId_[idDataset]='';					
 							$scope.functionfordataset();					            
         				});
 
@@ -507,7 +509,7 @@ angular.module('pcApp.common.directives.search', [
 				'<ul class="datasets-list metrics-list ">' +
         			'<li ng-class="{\'metrics-list dataset-list active\':DatasetSelectediId_[dataset._source.id]>0,\'metrics-list dataset-list\':DatasetSelectediId_[dataset.id]}" name="designer-dataset-num-{{dataset.id}}" ng-repeat="dataset in datasetsFilter.hits.hits track by $index" >'+
         			    //'<a href="" x-ng-click="clickDataset(dataset._source.id, dataset._source.title, dataset._source.issued);"  title="{{ !DatasetSelectediId_[dataset._source.id]>0 && \'Add \' || \'Delete \' }} \'{{dataset._source.title}}\'">--> TO DELETE <-- {{dataset._source.title}} - {{ dataset._source.issued | date:\'longDate\' }} --> TO DELETE <--</a></br>'+
-        				'<a ng-show="viewAll || arrayGranularitiesAvailable.indexOf(dataset._source.time.resolution)!=-1 || DatasetSelectediId_[dataset._source.id]>0" href="" x-ng-click="clickDataset(dataset._source.id, dataset._source.title, dataset._source.issued);"  title="{{ !DatasetSelectediId_[dataset._source.id]>0 && \'Add \' || \'Delete \' }} \'{{dataset._source.title}}\'">{{dataset._source.title}} - {{ dataset._source.issued | date:\'longDate\' }}</a>'+
+        				'<a ng-show="viewAll || arrayGranularitiesAvailable.indexOf(dataset._source.time.resolution)!=-1 || DatasetSelectediId_[dataset._source.id]>0" href="" x-ng-click="clickDataset(dataset._source.id, dataset._source.title, dataset._source.issued);"  title="{{ !DatasetSelectediId_[dataset._source.id]>0 && \'Add \' || \'Remove \' }} \'{{dataset._source.title}}\'">{{dataset._source.title}} - {{ dataset._source.issued | date:\'longDate\' }}</a>'+
         				'<span ng-hide="viewAll || arrayGranularitiesAvailable.indexOf(dataset._source.time.resolution)!=-1  || DatasetSelectediId_[dataset._source.id]>0">{{dataset._source.title}} - {{ dataset._source.issued | date:\'longDate\' }}</span>'+
         			'</li>' +
         		'</ul>' +        							

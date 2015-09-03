@@ -1294,7 +1294,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 		
 			$scope.loadDataCombos = function(idMetric, valueColumTemp, valueGroupTemp) {
     		
-    		console.log("--loadDataCombos--idMetric="+idMetric+"---valueColumTemp="+valueColumTemp+"----valueGroupTemp="+valueGroupTemp+"-----");
+    		//console.log("--loadDataCombos--idMetric="+idMetric+"---valueColumTemp="+valueColumTemp+"----valueGroupTemp="+valueGroupTemp+"-----");
 			id = idMetric;
 			//$scope.metricSelectedArray[idMetric] = []; 
 			//var tmp = Metric.get({id: idMetric},
@@ -1491,12 +1491,19 @@ angular.module('pcApp.visualization.controllers.visualization', [
         	// Open a confirmation dialog
         	var dlg = dialogs.confirm(
             	"Are you sure?",
-            	"Do you want to delete '"+metrictitle+"' from the list of datasets?");
+            	"Do you want to remove '"+metrictitle+"' from the list of datasets?");
         	dlg.result.then(function () {
         		
+        		//$scope.indexdataset=indexIn;
+        		//console.log("idMetric="+idMetric);
+				
+				//$scope.ListMetricsFilter.splice(indexIn, 1);
+				
+				        		       		
         		//console.log(metriclistIn);
         		//console.log("indexIn="+indexIn);
         		metriclistIn.splice(indexIn, 1);
+        		
         		
         		//console.log(idMetric)
         		//console.log($scope.individualCombo_value_);
@@ -1510,6 +1517,10 @@ angular.module('pcApp.visualization.controllers.visualization', [
         		}
         		
 					$scope.rePlotGraph();
+			   
+					
+				//$scope.rePlotGraphFromSearch();
+					            
 					            
         	});
     	};	
@@ -1519,7 +1530,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
        		// Open a confirmation dialog
        		var dlg = dialogs.confirm(
 	           	"Are you sure?",
-            	"Do you want to delete the event '"+historicaleventtitle+"' from the list of events to plot in this visualization?");
+            	"Do you want to remove the event '"+historicaleventtitle+"' from the list of events to plot in this visualization?");
         		dlg.result.then(function () {
 
 					$scope.idHE.splice((index), 1);
@@ -1772,6 +1783,17 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			$scope.eventsToPlot[index].color = $scope.colorHE[index+1];
 		}
 		
+		$scope.indexdataset=-1;
+		$scope.rePlotGraphFromSearch = function() {
+			//console.log($scope.indexdataset)
+			if ($scope.indexdataset>=0)
+			{
+				$scope.IndividualDatasetCheckboxes_.splice($scope.indexdataset, 1);
+			}
+			$scope.indexdataset=-1;
+			
+			$scope.rePlotGraph();
+		}
 		
 		$scope.rePlotGraph = function() {
 									
@@ -1910,7 +1932,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						//console.log("timeEnd="+$scope.timeEnd);
 						
 						
-						jsonFile = API_CONF.DATASETS_MANAGER_URL + "/datasets/"+resIdMetric+'?time_resolution='+timeresolution+strIdentities;
+						jsonFile = API_CONF.DATASETS_MANAGER_URL + "/datasets/"+resIdMetric+'?time_resolution='+timeresolution;
+						//jsonFile = API_CONF.DATASETS_MANAGER_URL + "/datasets/"+resIdMetric+'?time_resolution='+timeresolution+strIdentities;
+						
 						//jsonFile = "/api/v1/datasetmanager/datasets/"+resIdMetric+'?time_resolution='+timeresolution+strIdentities;
 						
 						//console.log("scope.timeStart="+$scope.timeStart);
@@ -2546,132 +2570,202 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							
 							
 							
-							if (arguments[i]['spatial'])
+							//if (arguments[i]['spatial'])
+							if (1==1)
 							{
 								//console.log("spatial exists!!!");
 								//console.log(arguments[i]['spatial']);
 								//console.log(arguments[i]['spatial'].length);
 								
+								//console.log("to delete");
+								//console.log(arguments[i]);
+								//console.log(arguments[i]['spatial']);
+								//console.log(arguments[i]['data']['table'].length);
 								
+								//$scope.InitialArguments[arguments[i]['spatial']]=arguments[i];
 								
-								$scope.InitialArguments[arguments[i]['spatial']]=arguments[i];
-								
+								for (var j=0; j<arguments[i]['data']['table'].length; j++)
 								//for (var j=0; j<arguments[i]['spatial'].length; j++)
-								if (1==1)
+								//if (1==1)
 								{
 									
-									$idIndiv = arguments[i]['spatial'];
+									
+									//console.log(arguments[i]['data']['table'][j]);
+									//$idIndiv = arguments[i]['spatial'];
+									//console.log(arguments[i]['data']['table'][j]['individual']);
+									$idIndiv = arguments[i]['data']['table'][j]['individual'];
+									$scope.InitialArguments[$idIndiv]=arguments[i];
+									
+									//$idIndiv = arguments[i]['data']['table'][j]['individual'];
 									//console.log("........idIndiv="+$idIndiv);
-									$dataCountry = Individual.getById($idIndiv);
-	    						    
-									$dataCountry.$promise.then(function(countryData)
-									{
-										
-										//console.log("countryDatarec---------");
-										//console.log(countryData);
-										
-									
-										//var countryDatasetTitle = arguments[i]['spatial'][j]['title'];
-										var countryDatasetTitle = countryData.title;
-										//var countryDatasetId = arguments[i]['spatial'][j]['identifier'];
-										var countryDatasetId = countryData.code;
-									
-										//console.log(arguments[i]['spatial'][j]);
-										//console.log(countryDatasetTitle+"---"+countryDatasetId);
-										var arrayDataPerDate = [];
-										$scope.arrayDataPerDate = [];
-										
-										//console.log("countryData.id="+countryData.id);
-										//console.log("scope.InitialArguments");
-										//console.log($scope.InitialArguments);
-										arguments2 = $scope.InitialArguments[countryData.id];
-									    //console.log("arguments2 for "+countryData.id);
-									    //console.log(arguments2);
-									    
-										for (var jj=0; jj<arguments2['data']['table'].length; jj++)
-										{
-											var obj = arguments2['data']['table'][jj].values;
-											//console.log(obj);
-											for (ii in obj)
-											{
-												//console.log("------->ii="+ii);
-												//console.log("obj[ii]="+obj[ii]);
-												//console.log(arrayDataPerDate[ii]);
-												//console.log($scope.arrayDataPerDate[ii]);
-												
-												//if (isNaN(arrayDataPerDate[ii]))	
-												
-												//console.log("ii="+ii);
-												//console.log($scope.arrayDataPerDate[ii]);
-																							
-												if (isNaN($scope.arrayDataPerDate[ii]))
-												{
-													//console.log("Dins!!!");
-													arrayDataPerDate[ii]=0;
-													$scope.arrayDataPerDate[ii]=0;
-													arrayDatesInDataCountryEval[ii]=ii;
-													$scope.arrayDatesInDataCountryEval[ii]=ii;
-												}
-												//console.log($scope.arrayDatesInDataCountryEval[ii]);
-												
-												arrayDataPerDate[ii]=arrayDataPerDate[ii]+obj[ii];
-												$scope.arrayDataPerDate[ii]=$scope.arrayDataPerDate[ii]+obj[ii];
-	
-												//console.log("arrayDataPerDate");
-												//console.log(arrayDataPerDate);
-												
-												var a = $scope.mapTimeSlider.indexOf(ii);
-												if (a<0)
-												{
-													$scope.mapTimeSlider.push(ii);	
-													//$scope.mapTimeSlider.sort();
-													
-													$scope.mapTimeSlider.sort(function(a, b) 
-													{
-														var amod=a;
-														var bmod=b;
-														//$scope.resolution='Month';
-														
-														if ($scope.resolution=='Day')
-														{
-															var amod=a;
-															var bmod=b;
-														}
-														else if ($scope.resolution=='Month')
-														{
-															var amod='01/'+a;
-															var bmod='01/'+b;					
-														}
-														else if ($scope.resolution=='Year')
-														{
-															var amod='01/01/'+a;
-															var bmod='01/01/'+b;					
-														}				
-														//console.log(a);
-														//console.log(amod);
-														//console.log(bmod);
-														var dateA=new Date(amod), dateB=new Date(bmod);
-														
-														return dateA-dateB //sort by date ascending
-													}); 													
-													
-												}					        
-										        
-											}
-	
-										}
 									
 
+									var plotindividual=true;
+								
+									//console.log("$scope.mode");
+									//console.log($scope.mode);
+									if ($scope.mode=='view')								
+									{
+										//console.log("Dins View!!!");
+										//console.log("id dataset ="+arguments[i]['id']);
+										//console.log($scope.ListIndividualDatasetCheckboxes_);
+										//console.log($scope.ListIndividualDatasetCheckboxes_[arguments[i]['id']]);
+										//console.log("idIndiv="+$idIndiv);
+										if ($scope.ListIndividualDatasetCheckboxes_[arguments[i]['id']])
+										{
+											var indexIndividual = $scope.ListIndividualDatasetCheckboxes_[arguments[i]['id']].indexOf(String($idIndiv));
+											
+											//console.log(indexIndividual);
+										
+											if (indexIndividual<0) {
+												plotindividual=false;
+											}
+										}
+									}
+									else
+									{
+										//console.log("Dins else!!");									
+										plotindividual=false;
 									
-										//arrayDataByCounty.push({'Id':countryDatasetId, 'Data':arguments[i]['data']['table']});
-										arrayDataByCounty.push({'Id':countryDatasetId, 'Title':countryDatasetTitle, 'Data': $scope.arrayDataPerDate});
-										$scope.arrayDataByCounty.push({'Id':countryDatasetId, 'Title':countryDatasetTitle, 'Data': $scope.arrayDataPerDate});
+									
+										for (var individual_checked_position in $scope.IndividualDatasetCheckboxes_[arguments[i].id]) 
+										{
+											if (arguments[i]['data']['table'][j].individual==$scope.IndividualDatasetCheckboxes_[arguments[i].id][individual_checked_position])
+											{
+												//console.log("Plot individ")
+												plotindividual=true;
+											}
+										}
+									}
+									
+									if (plotindividual)
+									{
 										
-										///console.log($scope.arrayDataByCounty);
+										$dataCountry = Individual.getById($idIndiv);
+	    						    
+										$dataCountry.$promise.then(function(countryData)
+										{
 										
-										$scope.semCountries = $scope.semCountries + 1;
-										$scope.cntCountriesToPlot = $scope.cntCountriesToPlot +1;
-									});
+											//console.log("countryDatarec---------");
+											//console.log(countryData);
+											//only is individual is a counry will be processed
+										
+											if (countryData['data_class']=='Country')
+											{
+												//console.log("is a country");
+												//var countryDatasetTitle = arguments[i]['spatial'][j]['title'];
+												var countryDatasetTitle = countryData.title;
+												//var countryDatasetId = arguments[i]['spatial'][j]['identifier'];
+												var countryDatasetId = countryData.code;
+											
+												//console.log(arguments[i]['spatial'][j]);
+												//console.log(countryDatasetTitle+"---"+countryDatasetId);
+												var arrayDataPerDate = [];
+												$scope.arrayDataPerDate = [];
+												
+												//console.log("countryData.id="+countryData.id);
+												//console.log("scope.InitialArguments");
+												//console.log($scope.InitialArguments);
+												arguments2 = $scope.InitialArguments[countryData.id];
+											    //console.log("arguments2 for "+countryData.id);
+											   // console.log(arguments2);
+										    
+											    if (arguments2)
+											    {
+													for (var jj=0; jj<arguments2['data']['table'].length; jj++)
+													{
+														
+														//console.log(arguments2['data']['table'][jj].individual);
+														if (arguments2['data']['table'][jj].individual==countryData.id)
+														{
+															var obj = arguments2['data']['table'][jj].values;
+															//console.log(obj);
+															for (ii in obj)
+															{
+																//console.log("------->ii="+ii);
+																//console.log("obj[ii]="+obj[ii]);
+																//console.log(arrayDataPerDate[ii]);
+																//console.log($scope.arrayDataPerDate[ii]);
+																
+																//if (isNaN(arrayDataPerDate[ii]))	
+																
+																//console.log("ii="+ii);
+																//console.log($scope.arrayDataPerDate[ii]);
+																											
+																if (isNaN($scope.arrayDataPerDate[ii]))
+																{
+																	//console.log("Dins!!!");
+																	arrayDataPerDate[ii]=0;
+																	$scope.arrayDataPerDate[ii]=0;
+																	arrayDatesInDataCountryEval[ii]=ii;
+																	$scope.arrayDatesInDataCountryEval[ii]=ii;
+																}
+																//console.log($scope.arrayDatesInDataCountryEval[ii]);
+																
+																arrayDataPerDate[ii]=arrayDataPerDate[ii]+obj[ii];
+																$scope.arrayDataPerDate[ii]=$scope.arrayDataPerDate[ii]+obj[ii];
+					
+																//console.log("arrayDataPerDate");
+																//console.log(arrayDataPerDate);
+																
+																var a = $scope.mapTimeSlider.indexOf(ii);
+																if (a<0)
+																{
+																	$scope.mapTimeSlider.push(ii);	
+																	//$scope.mapTimeSlider.sort();
+																	
+																	$scope.mapTimeSlider.sort(function(a, b) 
+																	{
+																		var amod=a;
+																		var bmod=b;
+																		//$scope.resolution='Month';
+																		
+																		if ($scope.resolution=='Day')
+																		{
+																			var amod=a;
+																			var bmod=b;
+																		}
+																		else if ($scope.resolution=='Month')
+																		{
+																			var amod='01/'+a;
+																			var bmod='01/'+b;					
+																		}
+																		else if ($scope.resolution=='Year')
+																		{
+																			var amod='01/01/'+a;
+																			var bmod='01/01/'+b;					
+																		}				
+																		//console.log(a);
+																		//console.log(amod);
+																		//console.log(bmod);
+																		var dateA=new Date(amod), dateB=new Date(bmod);
+																		
+																		return dateA-dateB //sort by date ascending
+																	}); 													
+																	
+																}					        
+														        
+															}
+														}
+													}
+												}
+
+											
+												//console.log("$scope.arrayDataPerDate");
+												//console.log($scope.arrayDataPerDate);
+											
+												//arrayDataByCounty.push({'Id':countryDatasetId, 'Data':arguments[i]['data']['table']});
+												arrayDataByCounty.push({'Id':countryDatasetId, 'Title':countryDatasetTitle, 'Data': $scope.arrayDataPerDate});
+												$scope.arrayDataByCounty.push({'Id':countryDatasetId, 'Title':countryDatasetTitle, 'Data': $scope.arrayDataPerDate});
+											
+												///console.log($scope.arrayDataByCounty);
+											
+												$scope.semCountries = $scope.semCountries + 1;
+												$scope.cntCountriesToPlot = $scope.cntCountriesToPlot +1;
+											}
+										});
+									
+									}
 								}
 							}
 							//console.log(arrayDataByCounty);
@@ -2731,6 +2825,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							
 							//console.log("arguments[i]['data']['table']");
 							//console.log(arguments[i]['data']['table']);
+							//console.log("IndividualDatasetCheckboxes_=");
+							//console.log($scope.IndividualDatasetCheckboxes_);
+							
 							var arrayLabels = [];
 							var arrayValues = [];
 							var arrayUnits = [];
@@ -2740,12 +2837,65 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							{
 								//console.log(arguments[i]);								
 								//console.log("j="+j);
+								//console.log($scope);
 								//console.log(arguments[i]['data']['table'][j].values);
-								var obj = arguments[i]['data']['table'][j].values;
 								
-								obj_[j] = arguments[i]['data']['table'][j].values;
+								//console.log($scope.IndividualDatasetCheckboxes_[i]);
+								//console.log($scope.ListIndividualDatasetCheckboxes_[i]);
+								//console.log("......");
+								//console.log(arguments[i]['data']['table'][j].individual);
+								$idIndiv = arguments[i]['data']['table'][j]['individual'];
+								var plotindividual=true;
 								
-								//console.log(obj);
+								//console.log("$scope.mode");
+								//console.log($scope.mode);
+								if ($scope.mode=='view')								
+								{
+									//console.log("Dins View!!!");
+									//console.log("id dataset ="+arguments[i]['id']);
+									//console.log($scope.ListIndividualDatasetCheckboxes_);
+									//console.log($scope.ListIndividualDatasetCheckboxes_[arguments[i]['id']]);
+									//console.log("idIndiv="+$idIndiv);
+									if ($scope.ListIndividualDatasetCheckboxes_[arguments[i]['id']])
+									{
+										var indexIndividual = $scope.ListIndividualDatasetCheckboxes_[arguments[i]['id']].indexOf(String($idIndiv));
+										
+										//console.log(indexIndividual);
+									
+										if (indexIndividual<0) {
+											plotindividual=false;
+										}
+									}
+								}
+								else
+								{
+									//console.log("Dins else!!");
+									
+									plotindividual=false;
+									
+									
+									for (var individual_checked_position in $scope.IndividualDatasetCheckboxes_[arguments[i].id]) {
+										
+										
+										if (arguments[i]['data']['table'][j].individual==$scope.IndividualDatasetCheckboxes_[arguments[i].id][individual_checked_position])
+										{
+											//console.log("Plot individ")
+											plotindividual=true;
+										}
+										
+									}
+								}
+								
+								
+								//plotindividual=true;
+								if (plotindividual) 
+								{
+									
+									var obj = arguments[i]['data']['table'][j].values;
+								
+									obj_[j] = arguments[i]['data']['table'][j].values;
+								
+									//console.log(obj);
 								
 								//const ordered = {};
 								var ordered = {};
@@ -2772,6 +2922,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 									while (key=="")
 									{
 //console.log(arguments[i]['data']['table'][j].individual);
+
 										if ($scope.TitleIndividuals[arguments[i]['data']['table'][j].individual])
 										{
 											if ($scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]!=arguments[i]['data']['table'][j].individual)
@@ -2868,8 +3019,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 									arrayDataset.push(arrayDatasetTmp);
 									$scope.arrayDataset.push(arrayDatasetTmp);
 									
-									
 								}
+								
 								else if ($scope.typeToPlot==='graph_pie')
 								{
 									//var label = arguments[i]['data']['table'][j].individual.title+"_"+j;
@@ -3042,7 +3193,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 									//console.log(arrayDataset);
 									
 								}
-								
+								}
 
 							}
 						}
@@ -3189,6 +3340,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				else if ($scope.typeToPlot==='graph_line')
 				{
 					//console.log("graph_line");
+					//console.log("arrayDataset");
+					//console.log(arrayDataset);
 					var numbers1 = arrayDataset;
 					$scope.numbers1 = $scope.arrayDataset;
 					
@@ -4137,6 +4290,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						//var re = new RegExp(find, ',');
 
 						//$scope.ListIndividualDatasetCheckboxes_[id] = dataFilter[1].replace(/;/gi, ",");
+						//console.log("individual id="+id);
 						$scope.ListIndividualDatasetCheckboxes_[id] = dataFilter[1].split(";");	    			
 	    			}
 	    			else if (dataFilter[0]=='Colors')

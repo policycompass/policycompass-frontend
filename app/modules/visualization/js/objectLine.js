@@ -2707,7 +2707,7 @@ return 0;}
 		//console.log(dataToPlot);
 		if (Object.keys(dataToPlot).length === 0)
 		{
-			//console.log("No data");			
+						
 			self.svg.append("text")
               .text("No data to plot. Add metrics")
               .attr("class", "nodatatoplot")
