@@ -9,6 +9,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
     'pcApp.datasets.services.dataset',
     'pcApp.references.services.reference',
     'pcApp.indicators.services.indicator',
+    'pcApp.config',
     'dialogs.main',
     'ngProgress'
 ])
@@ -129,7 +130,8 @@ angular.module('pcApp.datasets.controllers.dataset', [
         'ngProgress',
         '$routeParams',
         'creationService',
-        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService) {
+        'API_CONF',
+        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService, API_CONF) {
             $scope.inputTable = creationService.data.inputTable;
 
             $scope.inputTable.settings.readOnly = false;
@@ -141,7 +143,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
             $scope.dropzone = {
                 config: {
                     clickable: true,
-                    url: '/api/v1/metricsmanager/converter',
+                    url: API_CONF.DATASETS_MANAGER_URL + '/converter',
                     acceptedFiles: '.csv,.xls,.xlsx'
                 },
                 dropzone: {},
