@@ -303,7 +303,8 @@ policycompass.viz.barsMultiple = function(options) {
 	      			
 	      			})
     	  		//.attr("y", function(d) {return y(d.ValueY);})
-    	  		.attr("y", function(d) {return self.height;})
+    	  		.attr("y", function(d) {
+    	  			return self.height;})
       			//.attr("height", function(d) {return self.height - y(+d.ValueY);})
       			.attr("height", function(d) {return 0;})
 	      		.style("fill", function(d) {
@@ -439,8 +440,19 @@ policycompass.viz.barsMultiple = function(options) {
       			})     
       			.transition().duration(3000) 	
       				//.attr("height",function(d) {return 0;})		
-      				.attr("y", function(d) {return y(d.ValueY);})
-      				.attr("height", function(d) {return self.height - y(+d.ValueY);})
+      				.attr("y", function(d) {
+      					return y(d.ValueY);
+      					})
+      				.attr("height", function(d) {
+      					
+      					var returnValue = self.height - y(+d.ValueY);
+      					if (returnValue<0)
+      					{
+      						returnValue=0;
+      					}
+      					//return self.height - y(+d.ValueY);
+      					return returnValue;
+      					})
       				//.attr("height", function(d) {return y(d.ValueY);})
       			;
 

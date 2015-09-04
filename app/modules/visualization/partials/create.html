@@ -254,7 +254,7 @@
 						<div id="filterMetrics" style="display: none;" class="selectorMetrics" metrics-list="ListMetricsFilter" number-Max-Metrics="50" functionformetric="rePlotGraph()"></div>
 						-->
 						
-						<div id="filterDatasets"  class="selectorDatasets" datasets-list="ListMetricsFilter" number-Max-Datasets="99" functionfordataset="rePlotGraph()" disable-Row="arrayResolutionsFilter[resolution.value]"></div>
+						<div indexdataset="indexdataset" id="filterDatasets"  class="selectorDatasets" datasets-list="ListMetricsFilter" number-Max-Datasets="99" functionfordataset="rePlotGraphFromSearch(actionDone,position)" disable-Row="arrayResolutionsFilter[resolution.value]"></div>
 						
 						<div ng-show="metric.title" ng-controller="LoadCombosMetric" class="designer-metrics active" class="designer-metrics" id="designer-metrics-num-{{metric.id}}" ng-repeat="metric in ListMetricsFilter track by $index" >
 							<h4>{{metric.title}} -- {{metric.issued | date:'longDate' }}</h4>							
@@ -264,8 +264,8 @@
 							
 
 							<div class="metric-buttons">
-								<a type="button" data-intro="Edit dataset view properties" data-position="top" class="btn btn-primary" ng-click="displaycontentMetric(metric.id);" id="edit-metric-button-{{metric.id}}">Edit</a>			    	
-						    	<button type="button" data-intro="Delete dataset from the visualisation" data-position="top" class="btn btn-danger" ng-click="deleteMetricFromList(metric.id, metric.title, ListMetricsFilter, $index);" id="delete-metric-button-{{metric.id}}">Delete</button>
+								<a type="button" data-intro="Edit dataset view properties" data-position="top" class="btn btn-primary" ng-click="displaycontentMetric(metric.id);" id="edit-metric-button-{{metric.id}}">Edit</a>											    	
+						    	<button type="button" data-intro="Remove dataset from the visualisation" data-position="top" class="btn btn-danger" ng-click="deleteMetricFromList(metric.id, metric.title, ListMetricsFilter, $index);" id="delete-metric-button-{{metric.id}}">Remove</button>						    	
 						    	<a type="button" data-intro="Access to the dataset data" data-position="right" class="btn btn-info" href="#!/datasets/{{metric.id}}" target="_blank" id="view-metric-button-{{metric.id}}">View Dataset in detaill</a>						    	
 						  	</div>
 
@@ -387,7 +387,7 @@
 									<!--		    	
 				    				<div class="metric-button metric-delete-button" ng-click="deleteContainerHistoricalEvent('row_config_',$index+1)" id="delete-metric-button-{{metric.id}}"></div>
 				    				-->
-				    				<button data-intro="Delete event from the list of related events" data-position="bottom" type="button" class="btn btn-danger" ng-click="deleteContainerHistoricalEvent('row_config_',$index+1, event.title)" id="delete-he-button-{{event.id}}">Delete</button>
+				    				<button data-intro="Remove event from the list of related events" data-position="left" type="button" class="btn btn-danger" ng-click="deleteContainerHistoricalEvent('row_config_',$index+1, event.title)" id="delete-he-button-{{event.id}}">Remove</button>
 				    				
 				    				<a type="button" data-intro="Edit event main data" data-position="right" class="btn btn-primary" ng-click="vieweditHE[$index+1]=!vieweditHE[$index+1]">
 									<span ng-show="vieweditHE[$index+1]">Collapse</span> Edit</a>
