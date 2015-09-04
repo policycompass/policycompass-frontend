@@ -1,5 +1,7 @@
 node_modules/
+app/css/
 app/fonts/icomoon/
+.sass-cache
 app/.sass-cache/
 bower_components
 development.json
