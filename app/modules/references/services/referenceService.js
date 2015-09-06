@@ -22,6 +22,11 @@ angular.module('pcApp.references.services.reference',[
             get : {
                 method : 'GET',
                 cache : true
+            },
+            query : {
+                method: 'GET',
+                cache: true,
+                isArray: true
             }
         }
 	);
@@ -42,9 +47,14 @@ angular.module('pcApp.references.services.reference',[
         },
         {
             get : {
-            method : 'GET',
+                method : 'GET',
                 cache : true
-        }
+            },
+            query : {
+                method : 'GET',
+                cache : true,
+                isArray:true
+            }
         }
     );
     UnitCategory.getById = function (id) {
@@ -66,6 +76,11 @@ angular.module('pcApp.references.services.reference',[
             get : {
                 method : 'GET',
                 cache : true
+            },
+            query : {
+                method : 'GET',
+                cache : true,
+                isArray:true
             }
         }
     );
@@ -83,6 +98,17 @@ angular.module('pcApp.references.services.reference',[
     var Language = $resource(url,
         {
             id: "@id"
+        },
+        {
+            get : {
+                method : 'GET',
+                cache : true
+            },
+            query : {
+                method : 'GET',
+                cache : true,
+                isArray:true
+            }
         }
     );
     return Language;
@@ -96,6 +122,17 @@ angular.module('pcApp.references.services.reference',[
     var ExternalResource = $resource(url,
         {
             id: "@id"
+        },
+        {
+            get : {
+                method : 'GET',
+                cache : true
+            },
+            query : {
+                method : 'GET',
+                cache : true,
+                isArray:true
+            }
         }
     );
     return ExternalResource;
@@ -110,6 +147,17 @@ angular.module('pcApp.references.services.reference',[
     var DateFormat = $resource(url,
         {
             id: "@id"
+        },
+        {
+            get : {
+                method : 'GET',
+                cache : true
+            },
+            query : {
+                method : 'GET',
+                cache : true,
+                isArray:true
+            }
         }
     );
     return DateFormat;
@@ -124,8 +172,22 @@ angular.module('pcApp.references.services.reference',[
     var Class = $resource(url,
         {
             id: "@id"
+        },
+        {
+            get : {
+                method : 'GET',
+                cache : true
+            },
+            query : {
+                method : 'GET',
+                cache : true,
+                isArray:true
+            }
         }
     );
+    Class.getById = function (id) {
+        return this.get({id: id})
+    };
     return Class;
 }])
 
@@ -143,6 +205,11 @@ angular.module('pcApp.references.services.reference',[
             get : {
                 method : 'GET',
                 cache : true
+            },
+            query : {
+                method : 'GET',
+                cache : true,
+                isArray:true
             }
         }
     );
@@ -151,8 +218,4 @@ angular.module('pcApp.references.services.reference',[
     };
     return Individual;
 }]);
-
-
-
-
 

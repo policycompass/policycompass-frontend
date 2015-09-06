@@ -1,0 +1,31 @@
+<dataset-create-wrapper>
+    <dataset-create-header step="4"></dataset-create-header>
+    <hot-table
+            settings="inputTable.settings"
+            datarows="inputTable.items"
+            height="500">
+    </hot-table>
+
+    <div class="well pc-dataset-toolbar">
+        <strong ng-show="mode=='row'">({{ selectionStep }}/{{ individualSelection.length }}) Data for {{ individualSelection[selectionStep-1] }}</strong>
+        <button class="btn btn-create pc-dataset-button-mode" ng-show="mode=='all'" ng-click="toggleMode()">Single Row Mode</button>
+        <button class="btn btn-create pc-dataset-button-mode" ng-show="mode=='row'" ng-click="toggleMode()">Table Mode</button>
+        <div class="button-group" ng-show="mode=='row'">
+            <a class="btn btn-prev" ng-disabled="selectionStep==1" ng-click="prev()">Prev</a>
+            <a class="btn btn-next" ng-disabled="selectionStep==lastStep" ng-click="next()">Next</a>
+            <a class="btn btn-clear" ng-click="resetRow()">Clear Row</a>
+            <a class="btn btn-clear" ng-click="reset()">Clear All</a>
+        </div>
+
+        <div class="button-group" ng-show="mode=='all'">
+            <a class="btn btn-clear" ng-click="reset()">Clear All</a>
+        </div>
+
+    </div>
+    <hot-table ng-disabled="true"
+            settings="resultTable.settings"
+            datarows="resultTable.items"
+            height="300"
+            class="pc-result-table">
+    </hot-table>
+</dataset-create-wrapper>

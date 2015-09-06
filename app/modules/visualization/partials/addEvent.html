@@ -29,14 +29,42 @@
 			        	<div>        		
 			        		<label ng-show="recomendationevents.length>1" for="">{{recomendationevents.length}} events found</label> 
 							<label ng-show="recomendationevents.length==1" for="">{{recomendationevents.length}} event found</label>
-			        		<label ng-show="recomendationevents.lengthl==0" for="">no events found</label> 
+			        		<label ng-show="recomendationevents.length==0" for="">No events found</label> 
 			        	</div>
-
-			        	<ul class="metrics-list" id="metrics-list">			
-							<li ng-repeat="event in recomendationevents | orderBy:'title' | pagination: curPage * pageSize | limitTo: pageSize " ><a href ng-click="selectHE(event,'recomendation')">{{event.title}}</a></li>				
-						</ul>
-    						
-
+						
+						<div class="createvisualization " >
+							<div class="filterMetricsPagination" id="filterMetricsPaginationDirective">
+	           					<div class="button-group">
+									<button ng-show="recomendationevents.length>1" ng-disabled="curPage == 0"  class="btn" ng-click="curPage=curPage-1">
+										<span class="glyphicon glyphicon-chevron-left"></span>  Previous
+									</button>
+									<button ng-show="recomendationevents.length>1" ng-disabled="curPage >= recomendationevents.length/pageSize - 1" class="btn pull-right" ng-click="curPage = curPage+1">	
+										Next <span class="glyphicon glyphicon-chevron-right"></span>
+									</button>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+				        	<ul class="metrics-list" id="metrics-list">
+				        		<!--
+								<li ng-repeat="event in recomendationevents | orderBy:'title' | pagination: curPage * pageSize | limitTo: pageSize " ><a href ng-click="selectHE(event,'recomendation')">{{event.title}}</a></li>				
+								-->
+								<li ng-repeat="event in recomendationevents | orderBy:'title' | pagination: curPage * pageSize | limitTo: pageSize " >
+									<!--
+									<a href ng-click="selectHE(event,'recomendation')">{{event.title}}</a>
+									-->
+									<span ng-show="idsEventsToPlot[event.id]">
+										{{event.title}} (It's assigned)
+									</span>
+									<span ng-hide="idsEventsToPlot[event.id]">
+										<a href ng-click="selectHE(event,'recomendation')">{{event.title}}</a>
+									</span>								
+									
+									</li>
+									
+							</ul>
+    					</div>
+						<!--
 						<div>
 							<button ng-show="recomendationevents.length>1" ng-disabled="curPage == 0"  class="btn" ng-click="curPage=curPage-1">
 							 <span class="glyphicon glyphicon-chevron-left"></span>  Previous
@@ -45,7 +73,7 @@
 							Next <span class="glyphicon glyphicon-chevron-right"></span>
 							</button>
 						</div>
-					
+						-->
 					</div>
 
 		</tab>
@@ -145,10 +173,35 @@
 			        		<label ng-show="events.hits.total==0" for="">no events found</label> 
 			        	</div>
 
-			        	<ul class="metrics-list" id="metrics-list">			
-							<li ng-repeat="event in events.hits.hits track by $index" ><a href ng-click="selectHE(event,'search')">{{event._source.title}}</a></li>				
-						</ul>
-
+						<div class="createvisualization " >
+							<div class="filterMetricsPagination" id="filterMetricsPaginationDirective">
+	           					<div class="button-group">
+									<button ng-show="events.hits.total>1" ng-disabled="pagToSearch==1"  class="btn" ng-click="findEventsByFilter('prev', filterEvent)" >
+										<span class="glyphicon glyphicon-chevron-left"></span>  Previous
+									</button>
+									<button ng-show="events.hits.total>1" ng-disabled="events.hits.total<=pagToSearch*itemsperpagesize" class="btn" ng-click="findEventsByFilter('next', filterEvent)" >	
+										Next <span class="glyphicon glyphicon-chevron-right"></span>
+									</button>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+				        	<ul class="metrics-list" id="metrics-list">			
+				        		<!--
+								<li ng-repeat="event in events.hits.hits track by $index" ><a href ng-click="selectHE(event,'search')">{{event._source.title}}</a></li>
+								-->
+								<li ng-repeat="event in events.hits.hits track by $index" >
+									<span ng-show="idsEventsToPlot[event._id]">
+										{{event._source.title}} (It's assigned)
+									</span>
+									<span ng-hide="idsEventsToPlot[event._id]">
+										<a href ng-click="selectHE(event,'search')">{{event._source.title}}</a>
+									</span>
+								</li>
+								
+							</ul>
+						</div>
+						<!--
 						<div>
 							<button ng-show="events.hits.total>1" ng-disabled="pagToSearch==1"  class="btn" ng-click="findEventsByFilter('prev', filterEvent)">
 							 <span class="glyphicon glyphicon-chevron-left"></span>  Previous
@@ -157,6 +210,7 @@
 							Next <span class="glyphicon glyphicon-chevron-right"></span>
 							</button>
 						</div>
+						-->
 					</div>
 
 
@@ -259,6 +313,9 @@
 				<label for="Description" class="field-label">Color:</label>
         
 				<div class="field-content">
+					
+					<input type='color' name='color' ng-model="historicalevent_color_palete"  />
+<!--				
 					<spectrum-colorpicker
   						ng-model="historicalevent_color_palete"
   							options="{
@@ -268,14 +325,14 @@
   								preferredFormat: 'hex'
   							}">
 					</spectrum-colorpicker>					
-
-					<input type="hidden"
+-->
+				<input type="hidden"
                            id="historicalevent_color"
                            name="historicalevent_color"
                            class="form-control"
                            ng-required="false"
                            value="{{historicalevent_color_palete}}"
-					 />					
+					 />						 					
 				
     			</div>
     		</div>            

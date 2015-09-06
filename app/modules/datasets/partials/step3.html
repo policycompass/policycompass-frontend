@@ -1,0 +1,40 @@
+<dataset-create-wrapper>
+    <dataset-create-header step="3" before-next-step="nextStep()"></dataset-create-header>
+
+    <hot-table
+            settings="inputTable.settings"
+            datarows="inputTable.items"
+            height="500">
+    </hot-table>
+
+    <div class="dataset-filters-bottom">
+        <div class="dataset-filter clearfix">
+            <h5>Time Resolution</h5>
+            <div class="dataset-select"
+                 isteven-multi-select
+            input-model="timeResolution.input"
+            output-model="timeResolution.output"
+            selection-mode="single"
+            button-label="name"
+            item-label="name"
+            tick-property="ticked"></div>
+        </div>
+    </div>
+
+    <div class="dataset-filters-bottom" ng-if="timeResolution.output">
+        <div class="dataset-filter clearfix">
+            <div class="row">
+                <div class="col-lg-6">
+                    <label>Start Date: </label>
+                    <input type="text" placeholder="{{ timeResolution.output[0].placeholder }}" ng-model="time.start">
+
+                </div>
+                <div class="col-lg-6">
+                    <label>End Date: </label>
+                    <input type="text" placeholder="{{ timeResolution.output[0].placeholder }}" ng-model="time.end">
+                </div>
+            </div>
+        </div>
+    </div>
+
+</dataset-create-wrapper>

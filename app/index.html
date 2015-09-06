@@ -7,7 +7,7 @@
 <!--  Vendor Styles -->
 <link href="../bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet" media="screen" />
 
-<link href="../bower_components/handsontable/dist/jquery.handsontable.css" rel="stylesheet" media="screen" />
+<link href="../bower_components/handsontable/dist/handsontable.full.css" rel="stylesheet" media="screen" />
 <link href="../bower_components/dropzone/downloads/css/dropzone.css" rel="stylesheet" media="screen" />
 <link href="../bower_components/angular-dialog-service/dist/dialogs.min.css" rel="stylesheet" media="screen" />
 <link href="../bower_components/spectrum/spectrum.css" rel="stylesheet" media="screen" />
@@ -26,7 +26,7 @@
 <link href="modules/common/css/offcanvas-filter.css" rel="stylesheet" media="screen" />
 <link href="modules/common/css/navLargeStyle.css" rel="stylesheet" media="screen" />
 <link href="modules/metrics/css/metrics.css" rel="stylesheet" media="screen" />
-<link href="modules/fcm/css/fcm.css" rel="stylesheet" media="screen" />
+<link href="modules/datasets/css/datasets.css" rel="stylesheet" media="screen" />
 <link href="modules/fcm/css/cytoscape.js-panzoom.css" rel="stylesheet" media="screen" />
 <link href="modules/fcm/css/font-awesome.css" rel="stylesheet" media="screen" />
 
@@ -51,7 +51,7 @@
 -->
 
 <div ng-view="" id="main-content"></div>
-<div class="wizardbar"></div>
+<div class="wizardbar" show-Wizard="wizard_help"></div>
 <div ng-include="'footer.html'"></div>
 
 
@@ -64,7 +64,8 @@
 <script type="text/javascript" src="../bower_components/angular-resource/angular-resource.js"></script> 
 <script type="text/javascript" src="../bower_components/angular-animate/angular-animate.js"></script> 
 <script type="text/javascript" src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script> 
-<script type="text/javascript" src="../bower_components/handsontable/dist/jquery.handsontable.full.js"></script> 
+<script type="text/javascript" src="../bower_components/handsontable/dist/handsontable.full.js"></script>
+<script type="text/javascript" src="../bower_components/ngHandsontable/dist/ngHandsontable.js"></script>
 <script type="text/javascript" src="../bower_components/jqueryui/jquery-ui.js"></script> 
 <script type="text/javascript" src="../bower_components/dropzone/downloads/dropzone.js"></script> 
 <script type="text/javascript" src="../bower_components/modernizr/modernizr.js"></script> 
@@ -82,10 +83,13 @@
 <script type="text/javascript" src="../bower_components/elasticsearch/elasticsearch.angular.js"></script> 
 <script src="../bower_components/topojson/topojson.js"></script>
 <script type="text/javascript" src="../bower_components/chardin.js/chardinjs.min.js"></script> 
+<script type="text/javascript" src="../bower_components/checklist-model/checklist-model.js"></script>
 <script type="text/javascript" src="../bower_components/ngprogress/build/ngProgress.js"></script>
 <script type="text/javascript" src="../bower_components/isteven-angular-multiselect/isteven-multi-select.js"></script>
+<script type="text/javascript" src="../bower_components/angularjs-slider/rzslider.js"></script>
+<script type="text/javascript" src="../bower_components/ngstorage/ngStorage.js"></script>
 
-<!--  App Libs --> 
+<!--  App Libs -->
 <script type="text/javascript" src="config.js"></script> 
 <script type="text/javascript" src="app.js"></script> 
 <script type="text/javascript" src="modules/developer/developer.js"></script> 
@@ -99,6 +103,8 @@
 <script type="text/javascript" src="modules/common/directives/barscharts.js"></script> 
 <script type="text/javascript" src="modules/common/directives/linescharts.js"></script> 
 <script type="text/javascript" src="modules/common/directives/helpbutton.js"></script>
+<script type="text/javascript" src="modules/common/directives/loadpcimage.js"></script>
+<script type="text/javascript" src="modules/common/directives/mapscharts.js"></script>
 <script type="text/javascript" src="modules/common/directives/wizard.js"></script>
 <script type="text/javascript" src="modules/references/services/referenceService.js"></script> 
 <script type="text/javascript" src="modules/references/directives/forms.js"></script>
@@ -134,25 +140,37 @@
 <script type="text/javascript" src="modules/visualization/js/objectBarsMultiple.js"></script> 
 <script type="text/javascript" src="modules/visualization/js/objectLine.js"></script> 
 <script type="text/javascript" src="modules/visualization/js/objectPie.js"></script> 
+<!--
 <script type="text/javascript" src="modules/visualization/js/objectMap.js"></script> 
-<script type="text/javascript" src="modules/visualization/js/objMapW.js"></script> 
+<script type="text/javascript" src="modules/visualization/js/objMapW.js"></script>
+-->
+<script type="text/javascript" src="modules/visualization/js/objectMapLeflet.js"></script>
+<script type="text/javascript" src="modules/visualization/js/leaflet.js"></script>
+
 <script type="text/javascript" src="modules/visualization/js/objToPlotMap.js"></script> 
-<script type="text/javascript" src="modules/visualization/js/datamaps.world.min.js"></script> 
+<script type="text/javascript" src="modules/visualization/js/datamaps.world.min.js"></script>
 <script type="text/javascript" src="modules/fcm/fcm.js"></script> 
 <script type="text/javascript" src="modules/fcm/controllers/fcmControllers.js"></script> 
 <script type="text/javascript" src="modules/fcm/services/fcmService.js"></script> 
 <script type="text/javascript" src="modules/fcm/controllers/cytoscape.js-panzoom.js"></script> 
 <script type="text/javascript" src="modules/fcm/controllers/cytoscape.js"></script> 
-<script type="text/javascript" src="modules/fcm/directives/cytoscape.js"></script> 
+<script type="text/javascript" src="modules/fcm/directives/cytoscape.js"></script>
 
+<script type="text/javascript" src="modules/datasets/datasets.js"></script>
+<script type="text/javascript" src="modules/datasets/controllers/datasetControllers.js"></script>
+<script type="text/javascript" src="modules/datasets/directives/ngDropzone.js"></script>
+<script type="text/javascript" src="modules/datasets/directives/snippets.js"></script>
+<script type="text/javascript" src="modules/datasets/services/datasetServices.js"></script>
 
-
+<!--
+<link href="modules/visualization/css/leaflet.css" rel="stylesheet" media="screen" />
+<link href="modules/visualization/css/visualization.css" rel="stylesheet" media="screen" />
+-->
 <!--Multiple inclusions of jquery caused errors with handsontable, so I commented it out (Alan)
 <script type="text/javascript" src="modules/visualization/js/jquery.js"></script>
 <script type="text/javascript" src="modules/visualization/js/jquery-ui.js"></script>-->
 <!--
 <link href="modules/visualization/css/visualization.css" rel="stylesheet" media="screen" />
-
 -->
 <!--
  <link href="modules/visualization/css/style.css" rel="stylesheet" media="screen" />

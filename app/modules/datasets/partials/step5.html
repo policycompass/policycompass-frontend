@@ -1,0 +1,17 @@
+<dataset-create-wrapper>
+    <dataset-create-header step="5" before-next-step="nextStep()"></dataset-create-header>
+    <div class="well">
+    <h5>Select an Indicator</h5>
+    <div id="filterDatasets" class="selector-indicators"
+         datasets-list="ListDatasetsFilter" number-Max-Datasets="1" functionfordataset="indicatorSelected()"></div>
+    </div>
+    <div class="well" ng-show="unitSelector">
+        <h5>Select an Unit</h5>
+        <div class="reference-selection"
+             resource="Unit"
+             selection-mode="single"
+             output="unit.output"
+             input="unit.input"
+             parameters="{ category: ListDatasetsFilter[0].unit_category }"></div>
+    </div>
+</dataset-create-wrapper>

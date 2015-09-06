@@ -4,16 +4,11 @@ var visu = angular.module('pcApp.visualization', [
 ]);
 
 
-/*
-var visu = angular.module('pcApp.visualization', [
-    'ngResource',
-    'pcApp.config'
-    'pcApp.metrics'    
-]);
-*/
 visu.config(function($routeProvider) {
     $routeProvider
-        .when('/visualizations', {
+        .when('/visualizations/', {
+            //controller: 'VisualizationsController',
+            //templateUrl: 'modules/visualization/partials/list.html'
             redirectTo: '/browse/visualization'
         })        
         .when('/visualizations/test', {
@@ -35,7 +30,7 @@ visu.config(function($routeProvider) {
         })
 		.when('/visualizations/graph/:visualizationId', {
             //controller: 'VisualizationsGraphController',
-            controller: 'VisualizationsEditController',          
+            controller: 'viewVisualizationCtrl',          
             templateUrl: 'modules/visualization/partials/graph.html'
         })
         .when('/visualizations/:visualizationId', {

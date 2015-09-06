@@ -4,8 +4,7 @@ var policycompass = policycompass || {'version':0.1, 'controller':{}, 'viz': {} 
 policycompass.viz.barsMultiple = function(options) {
 
     // Object
-
-	
+    //console.log('Dins barsMultiple');	
 
     var self = {};
 
@@ -15,6 +14,14 @@ policycompass.viz.barsMultiple = function(options) {
         self[key] = options[key];
 	}
 
+	//self.resolution='month'
+	//console.log(self.resolution);
+	if (!self.resolution)
+	{
+		self.resolution = 'day';	
+	}
+	//console.log(self.resolution);
+	
     self.parentSelect = "#"+self.idName;
 
 	self.maxMargin = self.margin;
@@ -41,9 +48,58 @@ policycompass.viz.barsMultiple = function(options) {
 	}
     
     self.drawBarsMultiple = function (bars, eventsData) {
-//    	console.log(bars);
-    	
-    	
+		//console.log(bars);
+
+		var showAsPercentatge = self.showAsPercentatge;
+		
+		self.arrayFirstValuesKey = [];
+		self.arrayFirstValuesValue = [];
+		if (showAsPercentatge)
+		{
+			//var iniValue = bars[0].ValueY;
+			
+			bars.forEach(function(d,i) {
+				//console.log(i);
+				
+				
+				var a = self.arrayFirstValuesKey.indexOf(bars[i].Key);
+				
+				if (a<0)
+				{
+					var iniValue = bars[i].ValueY;
+					self.arrayFirstValuesKey.push(bars[i].Key);
+					self.arrayFirstValuesValue.push(bars[i].ValueY);
+					
+				}
+				else
+				{
+					var iniValue = self.arrayFirstValuesValue[a];
+				}
+				//console.log("iniValue="+iniValue);
+				if (iniValue!=0)
+				{
+					
+						//console.log("----------");
+						//console.log(bars[i]);
+						//console.log("valor inicial="+iniValue);
+						//console.log("valor recuperat="+bars[i].ValueY);
+						
+						var valueTMP = ((bars[i].ValueY - iniValue) / iniValue)*100;
+						
+						//console.log("valor temporal="+valueTMP);
+						//console.log("||||||||");
+						
+						bars[i].From = valueTMP;
+						bars[i].Value = valueTMP;
+						bars[i].ValueY = valueTMP;
+						bars[i].XY = bars[i].To+"|"+valueTMP;
+						//console.log(valueTMP);
+											
+					
+				}		
+			});			
+		}
+							
 		/*
 		var showLegend = document.getElementById("showLegend").checked;	
 		var showLabels = document.getElementById("showLabels").checked;
@@ -103,14 +159,14 @@ policycompass.viz.barsMultiple = function(options) {
 		    	return d3.svg.axis()
 		        	.scale(x0)
 		         	.orient("bottom")
-		         	.ticks(10)		         	
+		         	.ticks(20)		         	
 			}
 		
 			function make_y_axis() {
 		    	return d3.svg.axis()
 			        .scale(y)
 			        .orient("left")
-			        .ticks(10)
+			        .ticks(20)
 			}
 
 
@@ -247,7 +303,8 @@ policycompass.viz.barsMultiple = function(options) {
 	      			
 	      			})
     	  		//.attr("y", function(d) {return y(d.ValueY);})
-    	  		.attr("y", function(d) {return self.height;})
+    	  		.attr("y", function(d) {
+    	  			return self.height;})
       			//.attr("height", function(d) {return self.height - y(+d.ValueY);})
       			.attr("height", function(d) {return 0;})
 	      		.style("fill", function(d) {
@@ -263,49 +320,102 @@ policycompass.viz.barsMultiple = function(options) {
 					var resolution = 'day';
 					var formatXaxe = "%d-%m-%Y";
 					//console.log(valuesX[0].length);
-					if (d.ValueX.length==4)
+					//if (d.ValueX.length==4)
+					if (self.resolution=='quarter')
 					{
-						resolution = 'year';
+						//resolution = 'quarter';
+						formatXaxe = "%Y";
+					}					
+					else if (self.resolution=='year')
+					{
+						//resolution = 'year';
 						formatXaxe = "%Y";
 					}
-					else if (d.ValueX.length==7)
+					//else if (d.ValueX.length==7)
+					else if (self.resolution=='month')
 					{
-						resolution = 'month';
+						//resolution = 'month';
 						formatXaxe = "%m-%Y";
 					}
-					else if (d.ValueX.length==9)
+					//else if (d.ValueX.length==9)
+					else if (self.resolution=='day')
 					{
-						resolution = 'day';
+						//resolution = 'day';
 						formatXaxe = "%d-%m-%Y";
-					}    	
+					}  
+					else
+					{
+						formatXaxe = "%Y";
+					}	  	
     	
+	      			var resX = d.ValueX.replace("/", "-");
+	      			resX = resX.replace("/", "-");
+	      			resX = resX.replace("/", "-");
 	      			
-					var resSplit = d.ValueX.split("-");
+					//var resSplit = d.ValueX.split("-");
+					var resSplit = resX.split("-");
+					
 					var monthNames = [ "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 	    			var startDateToPlot = "";
 	    				
 					//var startDateToPlot = monthNames[parseInt(resSplit[1])]+" "+parseInt(resSplit[2])+", "+resSplit[0];
 
-
-								if (resolution=='day')
+								if (self.resolution=='day')
 		    					{
 		    						startDateToPlot = monthNames[parseInt(resSplit[1])]+" "+parseInt(resSplit[2])+", "+resSplit[0];
 		    					}
-		    					else if (resolution=='month')
+		    					else if (self.resolution=='month')
 		    					{
-		    						startDateToPlot = monthNames[parseInt(resSplit[1])]+" "+parseInt(resSplit[0]);
+		    						startDateToPlot = monthNames[parseInt(resSplit[0])]+", "+parseInt(resSplit[1]);
 		    					}
-		    					else if (resolution=='year')
+		    					else if (self.resolution=='year')
 		    					{
 		    						startDateToPlot = +parseInt(resSplit[0]);
 		    					}
+		    					else if (self.resolution=='quarter')
+		    					{
+		    						startDateToPlot = resX;
+		    					}
+		    					else 
+		    					{
+		    						startDateToPlot = resX;
+		    					}
 	      			
     	  			//tooltip.style("opacity",1.0).html(d.Key+"<br />Date="+d.ValueX+"<br />Value="+d.ValueY);
-    	  			
-    	  			
+    	  						
+    	  						var valueString=d.ValueY;
+    	  						if (showAsPercentatge)
+    	  						{
+    	  							
+    	  							//console.log(valueString);
+    	  							var formatdecimal = 0;
+    	  							if (valueString!=0)
+    	  							{
+										valueString = (parseFloat(valueString * 100) / 100).toFixed(2);
+										formatdecimal = Math.round(valueString/100)+1;
+		      						}
+		      						else
+		      						{
+		      							formatdecimal = 2;
+		      						}
+		      						
+    	  							
+    	  							if (formatdecimal<2)
+        							{
+        								formatdecimal =2;
+        							}
+        							else if (formatdecimal>4)
+        							{ 
+        								formatdecimal=4;
+        							}
+    	  							var si = d3.format('.'+formatdecimal+'s');					      	
+					      			valueString = si(valueString);
+					      		
+    	  							valueString=valueString+"%";
+    	  						}
     	  			//tooltip.style("opacity",1.0).html(d.Key+"<br />"+startDateToPlot+"<br />"+d.ValueY);
     	  			var resTRext = d.Key.split("_");
-    	  			tooltip.style("opacity",1.0).html(resTRext[0]+"<br />"+startDateToPlot+"<br />"+d.ValueY);
+    	  			tooltip.style("opacity",1.0).html(resTRext[0]+"<br />"+startDateToPlot+"<br />"+valueString);
     	  			
     	  			
       			})
@@ -330,8 +440,19 @@ policycompass.viz.barsMultiple = function(options) {
       			})     
       			.transition().duration(3000) 	
       				//.attr("height",function(d) {return 0;})		
-      				.attr("y", function(d) {return y(d.ValueY);})
-      				.attr("height", function(d) {return self.height - y(+d.ValueY);})
+      				.attr("y", function(d) {
+      					return y(d.ValueY);
+      					})
+      				.attr("height", function(d) {
+      					
+      					var returnValue = self.height - y(+d.ValueY);
+      					if (returnValue<0)
+      					{
+      						returnValue=0;
+      					}
+      					//return self.height - y(+d.ValueY);
+      					return returnValue;
+      					})
       				//.attr("height", function(d) {return y(d.ValueY);})
       			;
 
@@ -568,6 +689,20 @@ policycompass.viz.barsMultiple = function(options) {
     		.attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
 	}
 
+	//function to clone an object
+	self.clone = function ( obj ) {
+    			if ( obj === null || typeof obj  !== 'object' ) {
+        			return obj;
+    			}
+ 
+    			var temp = obj.constructor();
+    			for ( var key in obj ) {
+        			temp[ key ] = self.clone( obj[ key ] );
+    			}
+ 
+    			return temp;
+	}
+	
     self.render = function(dataIn, eventsData){
 		
 		self.dataIn = dataIn;
@@ -585,7 +720,11 @@ policycompass.viz.barsMultiple = function(options) {
 		else
 		{
 			//console.log(dataIn);
-			self.drawBarsMultiple(dataIn, eventsData);
+			
+			var dataToPlotUpdate = self.clone( dataIn );
+			
+			//self.drawBarsMultiple(dataIn, eventsData);
+			self.drawBarsMultiple(dataToPlotUpdate, eventsData);
 		}		
 		
 	}

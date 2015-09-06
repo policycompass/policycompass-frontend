@@ -41,6 +41,7 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
 	$scope.mode= 'view';
 	$scope.chartid= '2'; 	
 	$scope.hideyaxeunits=true;
+	$scope.resolution = day,month, year
  */
 .directive('pcLinesChart', ['$log', 'API_CONF', function ($log,  API_CONF) {
 	
@@ -62,7 +63,8 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
         	showTogether: '=showTogether',
         	showPercentatge: '=showPercentatge',
         	xaxeformat: '=xaxeformat',
-        	hideyaxeunits: '=hideyaxeunits',        	
+        	hideyaxeunits: '=hideyaxeunits',  
+        	resolution: '=resolution',
         }, 
 		compile: function(element, attributes){ 
          return {
@@ -75,7 +77,8 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
          }
      	},             
         controller: function($scope, $element, $attrs, $location, dialogs, $timeout){
-                                    
+            
+       		$scope.sem = [];
 
 			tooltip =  d3.select("body").append("div")
     		.attr("id","tooltip")
@@ -100,7 +103,16 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
 										
 			};
 
-
+/*
+			$scope.$watch('resolution', function(resolution) {
+				if (($scope.numbers1) && ($scope.chartid))
+				{
+					//$scope.directivePlotLineChart();	
+					$timeout($scope.directivePlotLineChart, 0);
+				}				
+            });
+*/
+/*            
 			$scope.$watch('viewyaxeunits', function(xaxeformat) {
 				if (($scope.numbers1) && ($scope.chartid))
 				{
@@ -108,7 +120,8 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
 					$timeout($scope.directivePlotLineChart, 0);
 				}				
             });
-            
+*/
+/*            
 			$scope.$watch('xaxeformat', function(xaxeformat) {
 				if (($scope.numbers1) && ($scope.chartid))
 				{
@@ -116,122 +129,182 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
 					$timeout($scope.directivePlotLineChart, 0);
 				}				
             });
-
-
+*/
+			
+			$scope.sem['labels']=false;
 			$scope.$watch('labels', function(labels) {
+				$scope.sem['labels']=true;
 				if (($scope.numbers1) && ($scope.chartid))
-				{
-					//$scope.directivePlotLineChart();	
-					$timeout($scope.directivePlotLineChart, 0);
+				{					
+					//$scope.directivePlotLineChart();					
+					//$timeout($scope.directivePlotLineChart, 0);
+					$scope.origin = 'labels';	
+					$timeout($scope.directivePlotLineChart, 0, false);
+					//$scope.directivePlotLineChart();
 				}				
             });
-                                                
+            
+            $scope.sem['showLegend']=false;
 			$scope.$watch('showLegend', function(showLegend) {
+				$scope.sem['showLegend']=true;
 				if (($scope.numbers1) && ($scope.chartid))
 				{
 					//$scope.directivePlotLineChart();
-					$timeout($scope.directivePlotLineChart, 0);	
+					//$timeout($scope.directivePlotLineChart, 0);
+					$scope.origin = 'showLegend';	
+					$timeout($scope.directivePlotLineChart, 0, false);
+					//$scope.directivePlotLineChart();
 				}				
             });
 
+			$scope.sem['showLabels']=false;
 			$scope.$watch('showLabels', function(showLabels) {
+				$scope.sem['showLabels']=true;
 				if (($scope.numbers1) && ($scope.chartid))
 				{
 					//$scope.directivePlotLineChart();
-					$timeout($scope.directivePlotLineChart, 0);
+					//$timeout($scope.directivePlotLineChart, 0);
+					$scope.origin = 'showLabels';
+					$timeout($scope.directivePlotLineChart, 0, false);
+					//$scope.directivePlotLineChart();
 				}				
             });            
-
+			
+			$scope.sem['showLines']=false;
 			$scope.$watch('showLines', function(showLabels) {
+				$scope.sem['showLines']=true;
 				if (($scope.numbers1) && ($scope.chartid))
 				{
 					//$scope.directivePlotLineChart();
-					$timeout($scope.directivePlotLineChart, 0);
+					//$timeout($scope.directivePlotLineChart, 0);
+					$scope.origin = 'showLines';
+					$timeout($scope.directivePlotLineChart, 0, false);
+					//$scope.directivePlotLineChart();
 				}				
             });  
-
+			
+			$scope.sem['showAreas']=false;
 			$scope.$watch('showAreas', function(showAreas) {
+				$scope.sem['showAreas']=true;
 				if (($scope.numbers1) && ($scope.chartid))
 				{
 					//$scope.directivePlotLineChart();
-					$timeout($scope.directivePlotLineChart, 0);
+					//$timeout($scope.directivePlotLineChart, 0);
+					$scope.origin = 'showAreas';
+					$timeout($scope.directivePlotLineChart, 0, false);
+					//$scope.directivePlotLineChart();
 				}				
             }); 
-                    	
+            
+            $scope.sem['showPoints']=false;
 			$scope.$watch('showPoints', function(showPoints) {
+				$scope.sem['showPoints']=true;
 				if (($scope.numbers1) && ($scope.chartid))
 				{
 					//$scope.directivePlotLineChart();
-					$timeout($scope.directivePlotLineChart, 0);
+					//$timeout($scope.directivePlotLineChart, 0);
+					$scope.origin = 'showPoints';
+					$timeout($scope.directivePlotLineChart, 0, false);
+					//$scope.directivePlotLineChart();
 				}				
             });         	
-
+			
+			$scope.sem['showGrid']=false;
 			$scope.$watch('showGrid', function(showGrid) {
+				$scope.sem['showGrid']=true;
 				if (($scope.numbers1) && ($scope.chartid))
 				{
 					//$scope.directivePlotLineChart();
-					$timeout($scope.directivePlotLineChart, 0);
+					//$timeout($scope.directivePlotLineChart, 0);
+					$scope.origin = 'showGrid';
+					$timeout($scope.directivePlotLineChart, 0, false);
+					//$scope.directivePlotLineChart();
 				}				
             });
-                    	            
+                    
+            $scope.sem['showTogether']=false;	            
 			$scope.$watch('showTogether', function(showTogether) {
+				$scope.sem['showTogether']=true;
 				if (($scope.numbers1) && ($scope.chartid))
 				{
 					//$scope.directivePlotLineChart();
-					$timeout($scope.directivePlotLineChart, 0);
+					//$timeout($scope.directivePlotLineChart, 0);
+					$scope.origin = 'showTogether';
+					$timeout($scope.directivePlotLineChart, 0, false);
+					//$scope.directivePlotLineChart();
 				}
 				
             });
                         
+            $scope.sem['showPercentatge']=false;	
             $scope.$watch('showPercentatge', function(showPercentatge) {
+            	$scope.sem['showPercentatge']=true;
 				if (($scope.numbers1) && ($scope.chartid))
 				{
 					//$scope.directivePlotLineChart();
-					$timeout($scope.directivePlotLineChart, 0);
+					//$timeout($scope.directivePlotLineChart, 0);
+					$scope.origin = 'showPercentatge';
+					$timeout($scope.directivePlotLineChart, 0, false);
+					//$scope.directivePlotLineChart();
 				}
 				
             });
 			
-			$scope.$watch('chartid', function(chartid) {
+			$scope.sem['chartid']=false;
+			$scope.$watch('chartid', function(chartid) {				
 				$scope.chartid=chartid;
-				
+				$scope.sem['chartid']=true;
 				if (($scope.numbers1) && ($scope.chartid))
-				{
+				{					
 					//$scope.directivePlotLineChart();
-					$timeout($scope.directivePlotLineChart, 0);
+					//$timeout($scope.directivePlotLineChart, 0);
+					$scope.origin = 'chartid';
+					$timeout($scope.directivePlotLineChart, 0, false);
+					//$scope.directivePlotLineChart();
 				}
 				
             });
 			
-
+			$scope.sem['events']=false;
         	$scope.$watchCollection('events', function(events) {
-        		
+        		$scope.sem['events']=true;
 				if (($scope.numbers1) && ($scope.chartid))
 				{
 					//$scope.directivePlotLineChart();
-					$timeout($scope.directivePlotLineChart, 0);
+					//$timeout($scope.directivePlotLineChart, 0);
+					$scope.origin = 'events';
+					$timeout($scope.directivePlotLineChart, 0, false);
+					//$scope.directivePlotLineChart();
 				}
 
         	});
         	            
-                                	            
+            $scope.sem['dataset']=false;         	            
 			$scope.$watchCollection('dataset', function(dataset) {
+				
 				numbers1=dataset;
 				$scope.numbers1=dataset;
 				if (($scope.numbers1) && ($scope.chartid))
 				{
-					$timeout($scope.directivePlotLineChart, 0);
+					$scope.sem['dataset']=true;
+					$scope.origin = 'dataset';
+					//console.log(dataset);
+					//$timeout($scope.directivePlotLineChart, 0);
+					//if (($scope.xaxeformat=='sequence') || ($scope.small==true))
+					//{
+						$timeout($scope.directivePlotLineChart, 0, false);
+					//}
+										
+					//$scope.directivePlotLineChart();
 					//$scope.directivePlotLineChart();
 				}
 				
             });
-			  
-                                	
             //console.log($scope.chartid);
             
 			$scope.directivePlotLineChart = function () {				
 				//console.log("directivePlotLineChart");
-           				
+           		//console.log("origin="+$scope.origin);
 				//console.log("$scope.chartid="+$scope.chartid);
 				$scope.iddiv="";
 				/*
@@ -312,8 +385,49 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
 					}
 					//console.log("height="+height);
 					
-					var barLine = policycompass.viz.line(
+					
+	                
+	                if ($scope.dataset.length>0)
+	                {
+	                	var dataToSend2 = []
+	                	dataToSend2 = $scope.dataset;
+	                	plotChart=false;
+	                	
+	                	if ($scope.xaxeformat=='sequence')
+	                	{
+	                		plotChart=true;
+	                	}
+	                	else
+	                	{
+	                		if (isNaN($scope.events[$scope.events.length-1]))
+	                		{
+	                			plotChart=true;
+	                		}
+	                	}
+	                	
+	                	if (($scope.xaxeformat!='sequence') && (!$scope.resolution))
+	                	{
+	                		plotChart=false;
+	                	}
+	                	
+	                	
+	                	
+						for (k in $scope.sem)
 						{
+							//console.log($scope.sem[k]);
+							if ($scope.sem[k]==false)
+							{
+								plotChart=false;
+							}
+						}	                	
+	                	
+	                	if (plotChart)
+	                	{
+
+							//console.log("Plot chart!!!");
+							
+							var barLine = policycompass.viz.line(
+							{
 	                		'idName': $scope.iddiv,
 	                		'width': width,
 	                		'height': height,
@@ -337,13 +451,12 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
 							'showAsPercentatge': $scope.showPercentatge,
 							'xaxeformat': $scope.xaxeformat,
 							'hideyaxeunits': $scope.hideyaxeunits,
-						});
-	                
-	                if ($scope.dataset.length>0)
-	                {
-	                	var dataToSend2 = []
-	                	dataToSend2 = $scope.dataset;
-	                	barLine.render(dataToSend2, $scope.events, $scope.mode);
+							'resolution': $scope.resolution,
+							});
+							
+							         		
+	                		barLine.render(dataToSend2, $scope.events, $scope.mode);
+	                	}
 	                }
 					
 				}
@@ -352,16 +465,6 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
         },
 
         template: '' +
-        '<div ng-hide="small" class="showFilter">' +
-        '<label class="checkbox-inline"><input ng-model="showLegend" type="checkbox" name="showLegend" class="checkbox filterCheckBox"> Show Legend</label>' +
-        '<label class="checkbox-inline"><input ng-model="showLines"  type="checkbox" name="showLines"  class="checkbox filterCheckBox"> Show Lines</label>' +
-        '<label class="checkbox-inline"><input ng-model="showAreas"  type="checkbox" name="showAreas"  class="checkbox filterCheckBox"> Show Areas</label>' +
-        '<label class="checkbox-inline"><input ng-model="showPoints" type="checkbox" name="showPoints" class="checkbox filterCheckBox"> Show Points</label>' +
-        '<label class="checkbox-inline"><input ng-model="showLabels" type="checkbox" name="showLabels" class="checkbox filterCheckBox"> Show Labels</label>' +
-		'<label class="checkbox-inline"><input ng-model="showGrid"   type="checkbox" name="showGrid"   class="checkbox filterCheckBox"> Show Grid</label>' +
-		'<label class="checkbox-inline"><input ng-model="showTogether"  type="checkbox" name="showTogether"  class="checkbox filterCheckBox"> Show only one Y axe</label>' +
-        '<label class="checkbox-inline"><input ng-model="showPercentatge" type="checkbox" name="showPercentatge" class="checkbox filterCheckBox"> Show as %</label>' +
-        '</div>' +
         '<div id="directive_container_lineschart_{{chartid}}" class="{{xaxeformat}} pcchart container_graph directive_container_chart directive_container_chart_{{chartid}}">' +        
         '<div class="loading-container">'+
 			'<div ng-hide="small">'+
@@ -373,8 +476,19 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
 				'<div id="loading-small-text">loading</div>'+
 			'</div>'+
 		'</div>'+		
-        '</div>'
-        
+        '</div>'+
+        '<div ng-hide="small" id="showFilterContainer" class="showFilterContainer">' +
+        '<div id="showFilter" class="showFilter on_check">' +
+        '<label class="checkbox-inline"><input ng-model="showLegend" type="checkbox" name="showLegend" class="checkbox filterCheckBox"> Show Legend</label>' +
+        '<label class="checkbox-inline"><input ng-model="showLines"  type="checkbox" name="showLines"  class="checkbox filterCheckBox"> Show Lines</label>' +
+        '<label class="checkbox-inline"><input ng-model="showAreas"  type="checkbox" name="showAreas"  class="checkbox filterCheckBox"> Show Areas</label>' +
+        '<label class="checkbox-inline"><input ng-model="showPoints" type="checkbox" name="showPoints" class="checkbox filterCheckBox"> Show Points</label>' +
+        '<label class="checkbox-inline"><input ng-model="showLabels" type="checkbox" name="showLabels" class="checkbox filterCheckBox"> Show Labels</label>' +
+		'<label class="checkbox-inline"><input ng-model="showGrid"   type="checkbox" name="showGrid"   class="checkbox filterCheckBox"> Show Grid</label>' +
+		'<label class="checkbox-inline"><input ng-model="showTogether"  type="checkbox" name="showTogether"  class="checkbox filterCheckBox"> Show only one Y axe</label>' +
+        '<label class="checkbox-inline"><input ng-model="showPercentatge" type="checkbox" name="showPercentatge" class="checkbox filterCheckBox"> Show as %</label>' +
+        '</div>' +
+        '</div>'        
     };
 }])
 

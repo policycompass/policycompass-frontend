@@ -1,0 +1,64 @@
+<dataset-create-wrapper>
+    <dataset-create-header step="2" before-next-step="nextStep()"></dataset-create-header>
+
+    <div class="dataset-filter clearfix">
+        <h5>Dimension Type:</h5>
+        <div class="reference-selection" resource="Class" selection-mode="single" output="selection.output" input="selection.input"></div>
+        <div class="dataset-select-buttonbar">
+            <a href="" class="btn btn-request" ng-disabled="true">Not there yet? Make a Request</a>
+        </div>
+    </div>
+
+    <div class="content-body content-body-2 flex-container">
+        <div class="content-column content-column-main">
+            <hot-table
+                    settings="inputTable.settings"
+                    datarows="inputTable.items"
+                    height="500 ">
+            </hot-table>
+
+        </div>
+        <div class="content-column content-column-second content-column-validate content-column-expanded block">
+
+            <div class="content-column-wrap">
+                <button class="btn btn-clear" ng-disabled="individualSelection.length == 0" ng-click="clearAll()">Clear All</button>
+                <div class="pc-dataset-individuals">
+                <table class="create-dataset-result" >
+                    <tr ng-repeat="i in individualSelection">
+                        <td>{{ i }}<a href="" ng-click="removeIndividual(i)"><span class="glyphicon glyphicon-remove pc-individual-remove" ></span></a></td>
+                    </tr>
+                </table>
+                <!--<p>-->
+                    <!--<a href="" class="btn btn-validate btn-info">Validate</a>-->
+                <!--</p>-->
+                <!--<p>-->
+                    <!--Validate and Add Individuals of the Class-->
+                <!--</p>-->
+                </div>
+            </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="well">
+        <h4>Further Dimension Restrictions</h4><a class="btn btn-add btn-validate" ng-click="addExtraMetadata()">Add a Dimension</a>
+        <div class="dataset-filters-bottom">
+            <div class="dataset-filter clearfix" ng-repeat="em in extraMetadata">
+                <h5>Dimension {{$index+1}} </h5>
+                <div class="reference-selection" resource="Class" selection-mode="single" output="em.classOutput" input="em.classInput"></div>
+                <div ng-show="em.sub"
+                        class="reference-selection"
+                        resource="Individual"
+                        selection-mode="single"
+                        output="em.indOutput"
+                        input="em.indInput"
+                        parameters="{ class: em.class_id }">
+                </div>
+                <a class="btn btn-clear" ng-click="removeExtraMetadata(em)">Remove</a>
+            </div>
+
+        </div>
+
+    </div>
+</dataset-create-wrapper>

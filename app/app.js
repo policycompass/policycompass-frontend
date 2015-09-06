@@ -13,13 +13,16 @@ var pcAppDependencies = [
     'pcApp.developer',
     'pcApp.search',
     'pcApp.indicators',
+    'pcApp.datasets',
     'pcApp.references.directives.resolve',
     'dialogs.main',
     'dialogs.default-translations',
     'angularSpectrumColorpicker',
     'skrollrDirectives',
     'ngProgress',
-    'isteven-multi-select'
+    'isteven-multi-select',
+    'rzModule',
+    'checklist-model'
     //'nvd3ChartDirectives'
 ];
 

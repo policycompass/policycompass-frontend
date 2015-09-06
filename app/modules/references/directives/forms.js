@@ -156,4 +156,86 @@ angular.module('pcApp.references.directives.forms', [
         template: '<option value="0"  ng-selected="model == 0">None</option>' +
             '<option value="{{ e.id }}" ng-repeat="e in externalResources" ng-selected="e.id == model">{{ e.title }}</option>'
     };
-}]);
+}])
+
+    .directive('referenceSelection', [
+        '$log',
+        '$injector',
+        function ($log, $injector) {
+        return {
+            restrict: 'C',
+            scope: {
+                resource: '@',
+                input: '=',
+                output: '=',
+                parameters: '='
+            },
+            link: function ($scope, $element, $attrs) {
+                var params = {};
+                if($scope.parameters != undefined) {
+
+                    params = $scope.parameters;
+                    $scope.$watch('parameters', function (newValue) {;
+                        params = newValue;
+                        getData();
+                    });
+
+                }
+                $scope.output = [];
+                $scope.selection = [];
+                var service = $injector.get($scope.resource);
+
+                var getData = function () {
+                    service.query(params, function (data) {
+                        var sel = [];
+                        angular.forEach(data, function (d) {
+                            var ticked = false;
+                            if(_.contains($scope.input, d.id)) {
+                                ticked = true;
+                            }
+                            sel.push({
+                                name: d.title,
+                                id: d.id,
+                                ticked: ticked
+                            });
+                        });
+                        $scope.selection = sel;
+                    });
+                };
+
+                getData();
+                $scope.outputData = {};
+                if($attrs.selectionMode != 'undefined' && $attrs.selectionMode == 'single') {
+                    $scope.selectionMode = 'single';
+                } else {
+                    $scope.selectionMode = 'multiple';
+                }
+                
+                $scope.$watchCollection('outputData', function (newValue, oldValue) {
+                    $scope.output = [];
+                    angular.forEach(newValue, function (value) {
+                        $scope.output.push(value.id);
+                    })
+                });
+
+                $scope.$watchCollection('input', function (newValue) {
+                     angular.forEach($scope.selection, function (s) {
+                         if(_.contains(newValue, s.id)){
+                             s.ticked = true;
+                         } else {
+                             s.ticked = false;
+                         }
+                     })
+                });
+
+            },
+            template: '<div class="dataset-select" ' +
+            'isteven-multi-select ' +
+            'input-model="selection" ' +
+            'output-model="outputData" ' +
+            'selection-mode="{{ selectionMode }}" ' +
+            'button-label="name" ' +
+            'item-label="name" ' +
+            'tick-property="ticked"></div>'
+        }
+    }]);

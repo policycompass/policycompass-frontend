@@ -6,8 +6,10 @@
      'pcApp.common.directives.piecharts',
      'pcApp.common.directives.barscharts',
      'pcApp.common.directives.linescharts',
+     'pcApp.common.directives.mapscharts',
      'pcApp.common.directives.wizard',
-     'pcApp.common.directives.helpbutton'
+     'pcApp.common.directives.helpbutton',
+     'pcApp.common.directives.loadpcimage'
 ])
 
 commonmanager.config(function($routeProvider) {
@@ -74,7 +76,6 @@ commonmanager.config(function($routeProvider) {
         })
         .otherwise({ redirectTo: '/' });
 })
-
 
 commonmanager.run(function(Progress, $rootScope) {
 	 $rootScope.$on('$locationChangeSuccess', function () {

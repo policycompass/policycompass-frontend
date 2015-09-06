@@ -23,7 +23,10 @@ $scope.dataset  (mandatory) = [{"Category":"1","From":20950114,"Key":"Air pollut
         	small: '=small',
         	showLabels: '=showLabels',
         	showLegend: '=showLegend',
-        	showGrid: '=showGrid'
+        	showGrid: '=showGrid',
+        	resolution: '=resolution',
+        	labelyaxe: '=labelyaxe',
+        	showPercentatge: '=showPercentatge',
         }, 
 		compile: function(element, attributes){ 
          return {
@@ -36,7 +39,9 @@ $scope.dataset  (mandatory) = [{"Category":"1","From":20950114,"Key":"Air pollut
          }
      	},             
         controller: function($scope, $element, $attrs, $location, dialogs){
-
+			
+			//$scope.cntloading = 0;
+			
 			tooltip =  d3.select("body").append("div")
     		.attr("id","tooltip")
     		.html("")
@@ -60,35 +65,74 @@ $scope.dataset  (mandatory) = [{"Category":"1","From":20950114,"Key":"Air pollut
 										
 			};
 
-
+			/*
+			$scope.$watch('labelyaxe', function(labelyaxe) {
+				if (($scope.dataset) && ($scope.chartid))
+				{
+					$scope.directivePlotBarChart('labelyaxe');
+				}				
+            });
+			*/
+			/*
+			$scope.$watch('resolution', function(resolution) {
+				if (($scope.dataset) && ($scope.chartid))
+				{
+					$scope.directivePlotBarChart('resolution');
+				}				
+            });
+            */
+           
+           
+           	$scope.watcherPercentatge = false;
+			$scope.$watch('showPercentatge', function(showPercentatge) {
+				//console.log("whatch showPercentatge");
+				$scope.watcherPercentatge = true;
+				if (($scope.dataset) && ($scope.chartid))
+				{
+					$scope.directivePlotBarChart('showPercentatge');
+				}				
+            });
+            
+            $scope.watcherLabel = false;
 			$scope.$watch('showLabels', function(showLabels) {
+				//console.log("whatch showLabels");
+				$scope.watcherLabel = true;
 				if (($scope.dataset) && ($scope.chartid))
 				{
-					$scope.directivePlotBarChart();
+					$scope.directivePlotBarChart('showLabels');
 				}				
             });
-
+			
+			$scope.watcherLegend = false;
 			$scope.$watch('showLegend', function(showLegend) {
+				//console.log("whatch showLegend");
+				$scope.watcherLegend = true;
 				if (($scope.dataset) && ($scope.chartid))
 				{
-					$scope.directivePlotBarChart();
+					$scope.directivePlotBarChart('showLegend');
 				}				
             });
-
+			
+			$scope.watcherGrid = false;
 			$scope.$watch('showGrid', function(showGrid) {
+				//console.log("whatch showGrid");
+				$scope.watcherGrid = true;
 				if (($scope.dataset) && ($scope.chartid))
 				{
-					$scope.directivePlotBarChart();
+					$scope.directivePlotBarChart('showGrid');
 				}				
             });
-                        			
+            
+            $scope.watcherDataset = false;
 			$scope.$watch('dataset', function(dataset) {
-               
+                //console.log("whatch dataset");
+                $scope.watcherDataset = true;
+                
 				numbers1=dataset;
 				$scope.numbers1=dataset;
 				if ($scope.numbers1)
 				{
-					$scope.directivePlotBarChart();
+					$scope.directivePlotBarChart('dataset');
 				}
 				
             }); 
@@ -107,7 +151,8 @@ $scope.dataset  (mandatory) = [{"Category":"1","From":20950114,"Key":"Air pollut
             */
             //console.log($scope.chartid);
             
-			$scope.directivePlotBarChart = function () {
+			$scope.directivePlotBarChart = function (origin) {
+				
 				
 				$scope.iddiv="";
 				if (document.getElementById("directive_container_barschart_"+$scope.chartid) !=null)
@@ -125,13 +170,18 @@ $scope.dataset  (mandatory) = [{"Category":"1","From":20950114,"Key":"Air pollut
 					$scope.iddiv="directive_container_barschart_";
 				}
 				
-				var datasetToSend = $scope.numbers1;
-
+				//var datasetToSend = $scope.numbers1;
+				var datasetToSend = $scope.dataset;
+				//console.log("----numbers1----");
 				//console.log(numbers1);
 				var legendsColumn = 0;
+				
+				//console.log($scope.dataset);
+				
 				if ($scope.showLegend)
 				{
-					legendsColumn = Math.ceil($scope.numbers1.length/9);
+					//legendsColumn = Math.ceil($scope.numbers1.length/9);
+					legendsColumn = Math.ceil($scope.dataset.length/9);
 				}
 				else
 				{
@@ -166,42 +216,50 @@ $scope.dataset  (mandatory) = [{"Category":"1","From":20950114,"Key":"Air pollut
 						$scope.showLegend = false;					
 				}
 				
-				var barObj = policycompass.viz.barsMultiple(
-				{
-	                'idName': $scope.iddiv,
-	            	'width': width,
-	            	'height':height,
-	            	'margin': margin,
-	            	'labelX': "",
-	            	//'labelY': labelYAxe,
-	            	//'radius': 4,
-	            	'font_size': font_size,
-	            	'showLegend': $scope.showLegend,
-					'showLabels': $scope.showLabels,
-					'showGrid': $scope.showGrid,
-					'legendsColumn': legendsColumn
-	            });
-				
 				if(datasetToSend)
 				{
 					if (datasetToSend.length>0)
 					{
-						var eventsArray = [];
-						//barObj.render(datasetToSend, $scope.eventsToPlot);
-						barObj.render(datasetToSend, eventsArray);
+						//console.log("origin="+origin);
+						//console.log("scope.cntloading="+$scope.cntloading);
+
+						if (($scope.watcherDataset) && ($scope.watcherLabel) && ($scope.watcherLegend) && ($scope.watcherGrid) && ($scope.watcherDataset) && ($scope.watcherPercentatge))
+						 {
+						var barObj = policycompass.viz.barsMultiple(
+						{
+	                		'idName': $scope.iddiv,
+	            			'width': width,
+	            			'height':height,
+	            			'margin': margin,
+	            			'labelX': "",
+	            			//'labelY': labelYAxe,
+	            			//'radius': 4,
+	            			'font_size': font_size,
+	            			'showLegend': $scope.showLegend,
+							'showLabels': $scope.showLabels,
+							'showGrid': $scope.showGrid,
+							'legendsColumn': legendsColumn,
+							'resolution': $scope.resolution,
+							'labelY': $scope.labelyaxe,
+							'showAsPercentatge': $scope.showPercentatge,					
+	            		});
+	            						
+							var eventsArray = [];
+							//barObj.render(datasetToSend, $scope.eventsToPlot);
+							barObj.render(datasetToSend, eventsArray);
+							
+							//$scope.cntloading = $scope.cntloading+1;
+						}
+
 					}
 				}
         	
+        		$scope.loading=false;
         	}
         	
         },
 
         template: ''+
-        '<div ng-hide="small" class="showFilter">' +
-        '<label class="checkbox-inline"><input ng-model="showLegend" type="checkbox" name="showLegend" class="checkbox filterCheckBox"> Show Legend</label>' +
-        '<label class="checkbox-inline"><input ng-model="showLabels" type="checkbox" name="showLabels" class="checkbox filterCheckBox"> Show Labels</label>' +
-        '<label class="checkbox-inline"><input ng-model="showGrid"   type="checkbox" name="showGrid"   class="checkbox filterCheckBox"> Show Grid</label>' +
-        '</div>' + 
         '<div id="directive_container_barschart_{{chartid}}" class="container_graph directive_container_chart_{{chartid}}">'+
         '<div class="loading-container">'+
 			'<div ng-hide="small">'+
@@ -213,8 +271,15 @@ $scope.dataset  (mandatory) = [{"Category":"1","From":20950114,"Key":"Air pollut
 				'<div id="loading-small-text">loading</div>'+
 			'</div>'+
 		'</div>'+	        
+        '</div>'+
+        '<div ng-hide="small" id="showFilterContainer" class="showFilterContainer">' +
+        '<div id="showFilter" class="showFilter on_check">' +        
+        '<label class="checkbox-inline"><input ng-model="showLegend" type="checkbox" name="showLegend" class="checkbox filterCheckBox"> Show Legend</label>' +
+        '<label class="checkbox-inline"><input ng-model="showLabels" type="checkbox" name="showLabels" class="checkbox filterCheckBox"> Show Labels</label>' +
+        '<label class="checkbox-inline"><input ng-model="showGrid"   type="checkbox" name="showGrid"   class="checkbox filterCheckBox"> Show Grid</label>' +
+        '<label class="checkbox-inline"><input ng-model="showPercentatge" type="checkbox" name="showPercentatge" class="checkbox filterCheckBox"> Show as %</label>' +
+        '</div>' +
         '</div>'
-        
     };
 }])
 
