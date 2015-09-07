@@ -118,7 +118,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
     };
 })
 
-.controller('CytoscapeCtrl', function($scope, $rootScope,  $window, $routeParams, $location, $translate, Fcm, FcmModel, FcmSimulation, FcmActivator, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, SimulationConceptsDetail, AssociationsDetail, SimulationAssociationsDetail, EditConcept, EditAssociation, FCMActivatorDetail){
+.controller('CytoscapeCtrl', function($scope, $rootScope,  $window, $routeParams, $location, $translate, Fcm, FcmModel, FcmSimulation, FcmActivator, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, SimulationConceptsDetail, AssociationsDetail, SimulationAssociationsDetail, EditConcept, EditAssociation, FCMActivatorDetail, Metric){
   // container objects
   $scope.Models = [];
   $scope.mapData = [];
@@ -219,7 +219,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
 		    fixedOutput='False';
 	    $scope.SimulationConcepts[i].fixedoutput=fixedOutput;
 	}
-	
+
 	if ($scope.Concepts.length>1)
 	  $scope.isDisabled = false;
 	else
@@ -232,6 +232,25 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
 	throw { message: JSON.stringify(err.data)};
     }
   );
+
+  $scope.Metrics = Metric.query({}, function(metricList) 
+  {
+	for (i=0; i<$scope.SimulationConcepts.length; i++)
+	{
+		for (j=0; j<metricList.count; j++)
+		{
+			if (metricList.results[j].id==$scope.SimulationConcepts[i].metricId)
+			{
+				$scope.SimulationConcepts[i].metricTitle = metricList.results[j].title;
+			}
+		}
+	}
+
+  },
+  function(error) {
+    throw { message: JSON.stringify(err.data)};
+  });
+
 }
 else
 {
@@ -241,11 +260,11 @@ else
 
 
     $scope.range = function(min,max,step) {
-	step = step || 1;
-	var input = [];
-	for (var i=min;i<=max;i+=step)
-	    input.push(i);
-	return input;
+		step = step || 1;
+		var input = [];
+		for (var i=min;i<=max;i+=step)
+			input.push(i);
+		return input;
     };
 
     $scope.saveModel = function(){
