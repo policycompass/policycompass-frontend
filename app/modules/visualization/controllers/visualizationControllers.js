@@ -1593,13 +1593,28 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			//console.log("$scope.endDate="+$scope.endDate);
 			
 			var arrayIdsMetricsSelected = [];
-			
+			$scope.individualsSelected = [];
 			for (var i=0; i < $scope.ListMetricsFilter.length; i++) 
 			{			
 				arrayIdsMetricsSelected[i]=$scope.ListMetricsFilter[i].id;
+				
+				//console.log($scope.IndividualDatasetCheckboxes_[$scope.ListMetricsFilter[i].id]);
+				
+				for (var i_identity=0; i_identity < $scope.IndividualDatasetCheckboxes_[$scope.ListMetricsFilter[i].id].length; i_identity++)
+				{
+					//console.log($scope.IndividualDatasetCheckboxes_[$scope.ListMetricsFilter[i].id][i_identity]);	
+					var idindividual=$scope.IndividualDatasetCheckboxes_[$scope.ListMetricsFilter[i].id][i_identity];
+						
+					var a = $scope.individualsSelected.indexOf(idindividual);
+					if (a<0)
+					{
+						$scope.individualsSelected.push(idindividual);
+					}
+				}
 			};
 			
-			
+			//console.log("$scope.individualsSelected");
+			//console.log($scope.individualsSelected);
 			//$scope.startDate = '01-01-2011';
 			//$scope.startDate = s.value;
 			//$scope.startDateToFilter = '2014-09-17';
@@ -1618,7 +1633,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	  		};
 	
 	        $scope.opts.resolve.item = function() {
-	    		return angular.copy({name:$scope.name, startDate:$scope.startDate, endDate:$scope.endDate, metricsArray: arrayIdsMetricsSelected}); // pass name to Dialog
+	    		return angular.copy({name:$scope.name, startDate:$scope.startDate, endDate:$scope.endDate, metricsArray: arrayIdsMetricsSelected, arrayIndividuals: $scope.individualsSelected}); // pass name to Dialog
 			}
 	        
 	  		var modalInstance = $modal.open($scope.opts);
@@ -5300,6 +5315,7 @@ angular.module('pcApp.visualization').filter('pagination', function()
 	
 	$scope.historicalevent_color_palete='#f7941e';
 	
+	
 	$scope.metricslist=item.metricsArray;
 	$scope.recomendationevents = [];
 	$scope.curPage = 0;
@@ -5326,11 +5342,12 @@ angular.module('pcApp.visualization').filter('pagination', function()
 	//$scope.startDateToFilter = "";
 	$scope.paginationEvents = "";
 	
+	$scope.arrayHE = [];
 	for (var i=0; i < $scope.metricslist.length; i++) {
 		//console.log($scope.metricslist[i]);
 		var metricId =$scope.metricslist[i]
 
-		var arrayHE=[];
+		//var arrayHE=[];
 		//$scope.visualizationByMetricList = VisualizationByMetric.get({id: metricId},
 		$scope.visualizationByMetricList = VisualizationByDataset.get({id: metricId},
 		function(visualizationByMetricList) {
@@ -5355,10 +5372,10 @@ angular.module('pcApp.visualization').filter('pagination', function()
 							    //console.log(visualizationList.historical_events_in_visualization[i]);
 							    //console.log(visualizationList.historical_events_in_visualization[i].historical_event_id);
 							    //console.log(arrayHE);
-								if(arrayHE.indexOf(visualizationList.historical_events_in_visualization[i].historical_event_id)==-1)
+								if($scope.arrayHE.indexOf(visualizationList.historical_events_in_visualization[i].historical_event_id)==-1)
 								{
   									//console.log("element doesn't exist");
-  									arrayHE[visualizationList.historical_events_in_visualization[i].historical_event_id]=visualizationList.historical_events_in_visualization[i].historical_event_id;
+  									//$scope.arrayHE[visualizationList.historical_events_in_visualization[i].historical_event_id]=visualizationList.historical_events_in_visualization[i].historical_event_id;
   									
   									var eventId =visualizationList.historical_events_in_visualization[i].historical_event_id;
 
@@ -5369,7 +5386,13 @@ angular.module('pcApp.visualization').filter('pagination', function()
             							var arrayDatos =[]
             							arrayDatos['_source']=herec;
             							//$scope.recomendationevents.push(arrayDatos);
-            							$scope.recomendationevents.push(herec);
+            							//console.log($scope.arrayHE);
+            							
+            							if($scope.arrayHE.indexOf(herec.id)==-1)
+            							{
+            								$scope.arrayHE[herec.id]=herec.id;
+            								$scope.recomendationevents.push(herec);               								         								
+            							}
             							//$scope.showLoading = false;
             		
 					            	},
@@ -5408,7 +5431,81 @@ angular.module('pcApp.visualization').filter('pagination', function()
 	  $scope.showLoading = false;
 	}
 	
+	/**************/
+	$scope.recommendedEvents = function(arrayIndividuals) {
+		console.log("recommendedEvents");
+		
+		$scope.pagToSearch = 1;
+		$scope.itemsperpagesize = 1000;
+		$scope.itemssearchfrom = 0;
+		
+		//Build Sort
+		//var sort = ["title"];
+		var sort = ["title.lower_case_sort"];
+
+		query = {};
+
+		query = 
+		{
+			"filtered" : {
+            	"filter" : {
+                	"terms" : {
+	                    "geoLocation" : item.arrayIndividuals
+    	            }
+        	    }
+        	}	
+		};	
+
+
+    	//Perform search through client and get a search Promise
+      	searchclient.search({
+        	index: API_CONF.ELASTIC_INDEX_NAME,
+        	type: 'event',
+      			body: {
+			        from: $scope.itemssearchfrom,
+        			sort:  sort,
+        			query: query
+      			}
+      		}).then(function(resp) 
+      		{      		
+				//If search is successfull return results in searchResults objects
+        		//$scope.searchResults = resp.hits.hits;
+        		//$scope.searchResultsCount = resp.hits.total;
+        		//$scope.totalItems = $scope.searchResultsCount;
+        
+        		//$scope.events = resp;
+        		//console.log(resp)
+        		
+        		for (var i=0; i < resp.hits.hits.length; i++) 
+        		{
+        			//console.log(resp.hits.hits[i]._id);
+        			
+        			if($scope.arrayHE.indexOf(resp.hits.hits[i]._id)==-1)
+            		{
+            			$scope.arrayHE[resp.hits.hits[i]._source.id]=resp.hits.hits[i]._source.id;
+            			$scope.recomendationevents.push(resp.hits.hits[i]._source);            			
+            		}
+            		
+        			
+        		}
+        		
+        		
+        
+      }, function(err) {
+        console.trace(err.message);
+      });
+
+    
+		
+	};		
 	
+	if (item.arrayIndividuals.length>0)
+	{
+		$scope.recommendedEvents(item.arrayIndividuals);
+	}
+	
+	
+	/**************/
 	
 	$scope.findEventsByFilter = function(pagIn, textIn, text_startDateToFilter, text_endDateToFilter) {
 		//console.log("findEventsByFilter");
