@@ -15,29 +15,15 @@ angular.module('pcApp.auth.services.auth', [
         // the AdhocracySDK.
 
         _login: function (userData, token, userPath) {
-            // FIXME: Due to liqd/adhocracy3#1635, we cannot use userData, but
-            // need to fetch the user object manually again here. This can be
-            // removed once that is fixed.
-            $q.all([
-                $http.get(userPath),
-                $http.get(API_CONF.ADHOCRACY_BACKEND_URL + "/principals/groups/gods/")
-            ]).then(function (responses) {
-                var user = responses[0].data;
-                var username = user.data["adhocracy_core.sheets.principal.IUserBasic"].name;
-                var godsGroup = responses[1].data;
+            $http.get(API_CONF.ADHOCRACY_BACKEND_URL + "/principals/groups/gods/").then(function (response) {
+                var godsGroup = response.data;
                 var godsGroupSheet = godsGroup.data["adhocracy_core.sheets.principal.IGroup"];
                 var isAdmin = (_.contains(godsGroupSheet.roles, "god") && _.contains(godsGroupSheet.users, userPath));
 
                 _.defer(function () {
                     $rootScope.$apply(function () {
                         Auth.state.loggedIn = true;
-                        if (typeof userData !== "undefined") {
-                            Auth.state.userData = userData;
-                        } else {
-                            Auth.state.userData = {
-                                name: username
-                            };
-                        }
+                        Auth.state.userData = userData;
                         Auth.state.isAdmin = isAdmin;
 
                         $http.defaults.headers.common["X-User-Token"] = token;
