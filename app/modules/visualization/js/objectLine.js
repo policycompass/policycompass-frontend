@@ -2705,26 +2705,29 @@ return 0;}
 		//console.log(self);						
 		//console.log(eventsData);
 		//console.log(dataToPlot);
-		if (Object.keys(dataToPlot).length === 0)
+		if (dataToPlot)
 		{
-						
-			self.svg.append("text")
-              .text("No data to plot. Add metrics")
-              .attr("class", "nodatatoplot")
-              .attr("x", self.margin.left)
-              .attr("y", self.margin.top)
-		}		
-		else
-		{
-			//self.legendsColumn = Math.ceil(Object.keys(dataToPlot).length/9);
-			//self.legendsColumn = Math.ceil(3/9);
-			//console.log(self.legendsColumn);
-
-			var dataToPlotUpdate = self.clone( dataToPlot );
-			
-			//var dataToPlotUpdate = dataToPlot;
-			self.drawLines(dataToPlotUpdate, eventsData);
-			
+			if (Object.keys(dataToPlot).length === 0)
+			{
+							
+				self.svg.append("text")
+	              .text("No data to plot. Add metrics")
+	              .attr("class", "nodatatoplot")
+	              .attr("x", self.margin.left)
+	              .attr("y", self.margin.top)
+			}		
+			else
+			{
+				//self.legendsColumn = Math.ceil(Object.keys(dataToPlot).length/9);
+				//self.legendsColumn = Math.ceil(3/9);
+				//console.log(self.legendsColumn);
+	
+				var dataToPlotUpdate = self.clone( dataToPlot );
+				
+				//var dataToPlotUpdate = dataToPlot;
+				self.drawLines(dataToPlotUpdate, eventsData);
+				
+			}
 		}
 	}
 
