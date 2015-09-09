@@ -42,8 +42,8 @@
     <div class="submenu submenu-user" id="submenu-user" ng-class="{active: i==6}">
         <div class="fonticon fonticon-close" ng-click="i=0"></div>
         <ul ng-click="i=0">
-            <li ng-if="authState.loggedIn===false" ng-cloak><a href="#!/register" data-hover="Sign Up" class="fonticon font-icon-sign_up" ng-click="i=0">Sign Up</a></li>
-            <li id="btn-login" ng-if="authState.loggedIn===false" ng-cloak><a href="#!/login" class="fonticon font-icon-log_in" ng-click="i=0">Log In</a></li>
+            <li ng-if="!authState.loggedIn" ng-cloak><a href="#!/register" data-hover="Sign Up" class="fonticon font-icon-sign_up" ng-click="i=0">Sign Up</a></li>
+            <li id="btn-login" ng-if="!authState.loggedIn" ng-cloak><a href="#!/login" class="fonticon font-icon-log_in" ng-click="i=0">Log In</a></li>
             <li ng-if="authState.loggedIn" ng-cloak><a href="#!/logout" class="fonticon font-icon-log_out" ng-click="i=0">Logout ({{ authState.userData.name }})</a></li>
         </ul>
 
