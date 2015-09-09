@@ -56,7 +56,7 @@
             $scope.searchItemType = searchItemType;
             switch (searchItemType) {
                 case 'metric,visualization,event,fuzzymap':
-                    $scope.searchItemTypeInfo = 'Search for metrics, visualizations,FCM models, events';
+                    $scope.searchItemTypeInfo = 'Search for metrics, visualizations, causal models, events, datasets, indicators';
                     $scope.searchItemTypeInfoDropDown = 'All';
                     break;
                 case 'metric':
@@ -72,8 +72,8 @@
                     $scope.searchItemTypeInfoDropDown = 'Events';
                     break;
                 case 'fuzzymap':
-                    $scope.searchItemTypeInfo = 'Search for fuzzy maps';
-                    $scope.searchItemTypeInfoDropDown = 'Fuzzy Maps';
+                    $scope.searchItemTypeInfo = 'Search for causal models';
+                    $scope.searchItemTypeInfoDropDown = 'Causal Models';
                     break;
                 case 'dataset':
                     $scope.searchItemTypeInfo = 'Search for datasets';
@@ -84,7 +84,7 @@
                     $scope.searchItemTypeInfoDropDown = 'Indicators';
                     break;
                 default:
-                    $scope.searchItemTypeInfo = 'Search for metrics, visualizations, FCM models, events, datasets, indicators';
+                    $scope.searchItemTypeInfo = 'Search for metrics, visualizations, causal models, events, datasets, indicators';
             }
             //Perform search based on new Item Type
             //goSearch();
@@ -166,7 +166,7 @@
             } else {
                 //Default search item type
                 $scope.searchItemType = 'metric,visualization,event,fuzzymap,dataset,indicator';
-                $scope.searchItemTypeInfo = 'Search for metrics, visualizations, FCM models, events, datasets,indicators';
+                $scope.searchItemTypeInfo = 'Search for metrics, visualizations, causal models, events, datasets, indicators';
                 $scope.searchItemTypeInfoDropDown = 'All';
             }
 
