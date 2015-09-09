@@ -14,6 +14,7 @@ angular.module('pcApp.deliberation.directives.showDiscussion', [
                     "pool-path": API_CONF.ADHOCRACY_BACKEND_URL + '/adhocracy/',
                     key: scope.key,
                     nocenter: true,
+                    noheader: true,
                     locale: 'en'
                 }))
             });

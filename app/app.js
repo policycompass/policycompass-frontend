@@ -36,14 +36,8 @@ if (policyCompassConfig.ENABLE_ADHOCRACY) {
 
 var pcApp = angular.module('pcApp', pcAppDependencies)
 
-/**
- * Setting the Token always to 1
- * Just for development!
- */
-.run(function($http, $rootScope, $location, $translate) {
-    $http.defaults.headers.common.Authorization = 'Token 1';
+.run(function($rootScope, $location) {
     $rootScope.location = $location;
-
 })
 
 /**
