@@ -240,7 +240,7 @@ header .container  {
     position:absolute;
     top:50px;
     &.active {
-      z-index:99;
+      z-index:3000;
     }
   }
   

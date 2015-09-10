@@ -136,55 +136,55 @@
 							<div id="showFilter" ng-show="isSelectedParent(1) || isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')" class="showFilter on_check">
 								<div id="div_showLegend" ng-show="isSelectedParent(1) || isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')" class="on_check">
 									<label class="checkbox-inline">
-										<input ng-model="showLegend" type="checkbox" ng-click="rePlotGraph();" name="showLegend"  id="showLegend" class="checkbox filterCheckBox"> Show Legend
+										<input ng-model="showLegend" type="checkbox" ng-click="manualClick('showLegend');rePlotGraph();" name="showLegend"  id="showLegend" class="checkbox filterCheckBox"> Legend
 									</label>
 								</div>
 								<div id="div_showLines" ng-show="isSelectedSon('graph_line')" class="on_check">
 									<label class="checkbox-inline">
-										<input ng-model="showLines" type="checkbox" ng-click="rePlotGraph();" name="showLines"  id="showLines" class="checkbox filterCheckBox"> Show Lines
+										<input ng-model="showLines" type="checkbox" ng-click="manualClick('showLines');rePlotGraph();" name="showLines"  id="showLines" class="checkbox filterCheckBox"> Lines
 									</label>
 								</div>
 								<div id="div_showLines" ng-show="isSelectedSon('graph_line')" class="on_check">
 									<label class="checkbox-inline">
-										<input ng-model="showAreas" type="checkbox" ng-click="rePlotGraph();" name="showAreas"  id="showAreas" class="checkbox filterCheckBox"> Show Areas
+										<input ng-model="showAreas" type="checkbox" ng-click="manualClick('showAreas');rePlotGraph();" name="showAreas"  id="showAreas" class="checkbox filterCheckBox"> Areas
 									</label>
 								</div>
 								<div id="div_showPoints" ng-show="isSelectedSon('graph_line')" class="on_check">
 									<label class="checkbox-inline">
-										<input ng-model="showPoints" type="checkbox" ng-click="rePlotGraph();" name="showPoints"  id="showPoints" class="checkbox filterCheckBox"> Show Points
+										<input ng-model="showPoints" type="checkbox" ng-click="manualClick('showPoints');rePlotGraph();" name="showPoints"  id="showPoints" class="checkbox filterCheckBox"> Points
 									</label>
 								</div>
 								<div id="div_showLabels" ng-show="isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')" class="on_check">
 									<label class="checkbox-inline">
-										<input ng-model="showLabels" type="checkbox" ng-click="rePlotGraph();" name="showLabels"  id="showLabels" class="checkbox filterCheckBox"> Show Labels
+										<input ng-model="showLabels" type="checkbox" ng-click="manualClick('showLabels');rePlotGraph();" name="showLabels"  id="showLabels" class="checkbox filterCheckBox"> Labels
 									</label>		
 								</div>
 								<div id="div_showGrid" ng-show="isSelectedSon('graph_line') || isSelectedSon('graph_bars')" class="on_check">
 									<label class="checkbox-inline">
-										<input ng-model="showGrid" type="checkbox" ng-click="rePlotGraph();" name="showGrid" id="showGrid" class="checkbox filterCheckBox"> Show Grid
+										<input ng-model="showGrid" type="checkbox" ng-click="manualClick('showGrid');rePlotGraph();" name="showGrid" id="showGrid" class="checkbox filterCheckBox"> Grid
 									</label>
 								</div>
 								<div id="div_showYaxes" ng-show="isSelectedSon('graph_line')" class="on_check">
 									<label class="checkbox-inline">
-										<input ng-model="showYAxes" type="checkbox" ng-click="rePlotGraph();" name="showYAxes"  id="showYAxes" class="checkbox filterCheckBox"> Show only one Y axe
+										<input ng-model="showYAxes" type="checkbox" ng-click="manualClick('showYAxes');rePlotGraph();" name="showYAxes"  id="showYAxes" class="checkbox filterCheckBox"> Only one Y axe
 									</label>
 								</div>
 								
 								<div id="div_showAsPercentatge" ng-show="isSelectedSon('graph_line') || isSelectedSon('graph_bars')" class="on_check">
 									<label class="checkbox-inline">
-										<input ng-model="showAsPercentatge" type="checkbox" ng-click="rePlotGraph();" name="showAsPercentatge"  id="showAsPercentatge" class="checkbox filterCheckBox"> Show as %
+										<input ng-model="showAsPercentatge" type="checkbox" ng-click="manualClick('showAsPercentatge');rePlotGraph();" name="showAsPercentatge"  id="showAsPercentatge" class="checkbox filterCheckBox"> As %
 									</label>
 								</div>
 
 								<div id="div_showZoom" ng-show="isSelectedParent(1) && !isSelectedSon('orthographic') && !isSelectedSon('azimuthalEqualArea')" class="on_check">
 									<label class="checkbox-inline">
-										<input ng-model="showZoom" type="checkbox" ng-click="rePlotGraph();" name="showZoom"  id="showZoom" class="checkbox filterCheckBox"> Enable Zoom
+										<input ng-model="showZoom" type="checkbox" ng-click="manualClick('showZoom');rePlotGraph();" name="showZoom"  id="showZoom" class="checkbox filterCheckBox"> Zoom
 									</label>
 								</div>
 
 								<div id="div_showBubbles" ng-show="isSelectedParent(1)" class="on_check">
 									<label class="checkbox-inline">
-										<input ng-model="showBubbles" type="checkbox" ng-click="rePlotGraph();" name="showBubbles"  id="showBubbles" class="checkbox filterCheckBox"> View as bubble marker
+										<input ng-model="showBubbles" type="checkbox" ng-click="manualClick('showBubbles');rePlotGraph();" name="showBubbles"  id="showBubbles" class="checkbox filterCheckBox"> Bubble marker
 									</label>
 								</div>
 								
@@ -388,11 +388,14 @@
                     
                     <!-- ini tab historical events -->
                     <tab ng-show="isSelectedSon('graph_line')" heading="Historical Events">
-						<div class="buttonline clearfix-min">
+						<div ng-show="ListMetricsFilter.length>0" class="buttonline clearfix-min">
 							<button data-intro="Helps you to link this visualisation with events" data-position="right"  type="submit" class="btn btn-primary button-metrics" id="addHEbutton" ng-click="showModal()">Add Historical Event</button>
 						</div>
 						<br />
+						<div ng-show="eventsToPlot.length==0">No events selected</div>
 						<div ng-if="eventsToPlot.length > 0 " id="listHistoricalEventsToPlot">						
+							
+							
 							<div class="designer-metrics ng-scope active" id="designer-metrics-he-num-{{$index+1}}" ng-repeat="event in eventsToPlot track by $index">
 								<h4>{{event.title}}</h4>
 								<input type="hidden" ng-model="idHE[$index+1]" id="idHE{{$index+1}}" name="idHE[]" value="{{event.id}}">

@@ -253,7 +253,21 @@ policycompass.viz.barsMultiple = function(options) {
 	      					.attr("dy", "15px")
 	      					.style("text-anchor", "end")
 	      					//.text(self.labelY[0]);
-	      					.text(self.labelY[keyIndex]);    	
+	      					
+	      					.text(function() {
+				      				var returnValue="";
+				      				if (self.showAsPercentatge)
+				      				{
+				      					returnValue = "As % ("+self.labelY[keyIndex]+")";
+				      				}
+				      				else
+				      				{
+				      					returnValue = self.labelY[keyIndex];
+				      				}
+				      				return returnValue;
+				      			} )
+	      					//.text(self.labelY[keyIndex])    	
+	      					;
 	      					
 	      					cnt_keyIndex = cnt_keyIndex+1;				
 					}
