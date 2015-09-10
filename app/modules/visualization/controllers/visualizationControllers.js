@@ -3358,7 +3358,17 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					//console.log("arrayDataset");
 					//console.log(arrayDataset);
 					var numbers1 = arrayDataset;
+					
+					//console.log($scope.arrayDataset);
 					$scope.numbers1 = $scope.arrayDataset;
+					
+					if ($scope.arrayDataset.length==0)
+					{
+						$scope.rePlotGraph();
+					}
+					else
+					{
+						//console.log("else..");
 					
 					var legendsColumn = 0;
 					if ($scope.showLegend)
@@ -3483,9 +3493,18 @@ angular.module('pcApp.visualization.controllers.visualization', [
             					}
             					else
             					{
-            						$scope.$watch('sem', function(sem) {
+            						
+            						//console.log("$scope.visualization.historical_events_in_visualization");
+            						//console.log($scope.visualization.historical_events_in_visualization);
+            						barLine.render($scope.numbers1, $scope.eventsToPlot, $scope.mode);
+            						
+            						/*
+            							$scope.$watch('sem', function(sem) {
 	            						barLine.render($scope.numbers1, $scope.eventsToPlot, $scope.mode);
-            						});
+            							});
+            						*/
+            						
+            						
             					}
             					
             					
@@ -3493,6 +3512,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	                		}
 						}
 						
+					}
 					}
 				}
 				else if ($scope.typeToPlot==='graph_pie')
