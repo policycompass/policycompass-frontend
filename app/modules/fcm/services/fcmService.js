@@ -111,6 +111,21 @@ angular.module('pcApp.fcm.services.fcm',[
         });
 
 
+}])
+
+/**
+ * Factory for the Resource for metrics
+ */
+.factory('Metric',  ['$resource', 'API_CONF', function($resource, API_CONF) {
+    // Get the base URL from the configuration
+	var url = API_CONF.METRICS_MANAGER_URL + "/metrics";
+	var Metric = $resource(url, {},
+        {
+            // Array is false due to additional pagination data
+            'query': { method: 'GET', isArray:false}
+        }
+	)
+	return Metric;
 }]);
 
 
