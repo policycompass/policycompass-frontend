@@ -231,6 +231,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
            				//console.log(arrayIndividualListDataset);
     					$arrayComboValues_Individuals = [];    
     					$arrayComboValuesChecked = [];
+    					
+    					
+    					$scope.individualCombo_value_[idMetric]=[];
     					for (x=0;x<arrayIndividualListDataset.length; x++) {
     						//console.log("x="+x);
     						if (arrayIndividualListDataset[x].individual)
@@ -2067,8 +2070,14 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						//console.log("timeStart="+$scope.timeStart);
 						//console.log("timeEnd="+$scope.timeEnd);
 						
-						
-						jsonFile = API_CONF.DATASETS_MANAGER_URL + "/datasets/"+resIdMetric+'?time_resolution='+timeresolution;
+						if (timeresolution)
+						{
+							jsonFile = API_CONF.DATASETS_MANAGER_URL + "/datasets/"+resIdMetric+'?time_resolution='+timeresolution;
+						}
+						else
+						{
+							jsonFile = API_CONF.DATASETS_MANAGER_URL + "/datasets/"+resIdMetric;
+						}
 						//jsonFile = API_CONF.DATASETS_MANAGER_URL + "/datasets/"+resIdMetric+'?time_resolution='+timeresolution+strIdentities;
 						
 						//jsonFile = "/api/v1/datasetmanager/datasets/"+resIdMetric+'?time_resolution='+timeresolution+strIdentities;
@@ -2159,6 +2168,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 								
 								//console.log("valueIdentityColor");
 								//console.log(valueIdentityColor);
+								
 								arrayColorsDatasets.push(valueIdentityColor);
 
 
@@ -2391,6 +2401,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						
 						//console.log("indiv="+arguments[i]['data']['table'][j].individual);
 						//console.log("j="+j);
+						
+						
 						$dataIndividualPromises[j] = Individual.getById(arguments[i]['data']['table'][j].individual);
 						
 						//$scope.TitleIndividuals[arguments[i]['data']['table'][j].individual] = "-----";
@@ -2972,6 +2984,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						}
 						else if (($scope.typeToPlot==='graph_line') || ($scope.typeToPlot==='graph_pie') || ($scope.typeToPlot==='graph_bars'))
 						{
+							//console.log("$scope.typeToPlot="+$scope.typeToPlot);
+							
 							var arrayValues = [];
 							var arrayLabels  = [];
 							var arrayValuesXY  = [];
@@ -3166,9 +3180,27 @@ angular.module('pcApp.visualization.controllers.visualization', [
 									var lineColor = '#000000';
 									
 									//console.log(colorsIdentities);
+									
+									//console.log($scope.optionToPlot[arguments[i].id]);
+									//console.log($scope.optionToPlot[arguments[i].id].identitiescolors);
+									//console.log(arguments[i]['data']['table'][j].individual);
+									
+									if (colorsIdentities)									
+									{
+										lineColor = $scope.optionToPlot[arguments[i].id].identitiescolors[arguments[i]['data']['table'][j].individual];
+									}
+									else
+									{
+										//console.log("to do comment line");										
+										//lineColor = $scope.colorScale(arguments[i]['data']['table'][j].individual.title);
+										//lineColor = $scope.colorScale("todoo!!!"+arguments[i]['data']['table'][j].individual);										
+										lineColor = $scope.colorScale($scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]);
+									}
+									/*
 									if (colorsIdentities)
 									{
-										//console.log(colorsIdentities.length);
+										console.log($scope.optionToPlot[arguments[i].id].identitiescolors[arguments[i]['data']['table'][j].individual]);
+										console.log(colorsIdentities);
 										//if (colorsIdentities.length>=(j+1))
 										
 										var cntObject=0;
@@ -3187,12 +3219,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
       										
       										cntObject=cntObject+1;
  										}
-										/*
-										if (colorsIdentities[j+1])
-										{											
-											lineColor = colorsIdentities[j+1];
-										}
-										*/
+
 									}
 									else
 									{
@@ -3202,6 +3229,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 										
 										lineColor = $scope.colorScale($scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]);
 									}
+									*/
 									//console.log("lineColor="+lineColor);
 									
 									var arrayDatasetTmp = {
@@ -3550,8 +3578,11 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					if ($scope.arrayDataset.length==0)
 					{
 						//console.log("$scope.rePlotGraph() 2-");
-						//$scope.rePlotGraph();
 						$scope.numbers1 = [];
+						if ($scope.mode=="create")
+						{
+							$scope.rePlotGraph();						
+						}
 					}
 					else
 					{
@@ -3566,6 +3597,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						{
 							legendsColumn = 0;
 						}	
+					 	
+					 	//console.log("$scope.numbers1")
+					 	//console.log($scope.numbers1)
 					 	
 						if ($scope.numbers1)
 						{					
@@ -3605,7 +3639,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 												
 							}
 	
-						
+						   
 							if (numbers1.length>0)
 			                {
 			                	$scope.numbers1=numbers1;
@@ -3649,7 +3683,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 									'resolution': $scope.resolution.value
 								});
 							
-							
+								//console.log("numbers1.length="+numbers1.length);
 								if (numbers1.length>0)							
 		                		{
 		                			
@@ -4779,7 +4813,22 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				};
 								
 				var selectorIndividualData = value;				
-
+				
+				value = '';
+				for (var i in arrayValuesInString) 
+				{
+					console.log(arrayValuesInString[i]);
+					
+					if (value)
+					{
+						value=value+';';
+					}
+					value = value+$scope.dataset_color_palete_[metricListIn[j].id][arrayValuesInString[i]];
+					
+					console.log($scope.dataset_color_palete_[metricListIn[j].id][arrayValuesInString[i]]);
+				}
+				
+				/*
 				value = '';
 				//for (var i=0; i < $scope.dataset_color_palete_[myindex].length; i++)
 				for (var i in $scope.dataset_color_palete_[myindex]) 
@@ -4798,7 +4847,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							//value = value+i;
 					}
 				};
-								
+				*/			
 				var selectorIndividualColorData = value;					
 				
 				//console.log("selectorIndividualData");
@@ -5317,6 +5366,8 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualiza
 					}
 				}	
 				*/
+				
+				arrayValuesInString=[];
 				if ($scope.IndividualDatasetCheckboxes_.length>0)
 				{				
 					for (var i=0; i < $scope.IndividualDatasetCheckboxes_[myindex].length; i++) 
@@ -5330,6 +5381,9 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualiza
 									value=value+';';
 								}
 								value = value+$scope.IndividualDatasetCheckboxes_[myindex][i];
+								
+								arrayValuesInString.push($scope.IndividualDatasetCheckboxes_[myindex][i]);
+								
 								//value = value+i;
 							}
 					  	}
@@ -5344,7 +5398,23 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualiza
 				//console.log($scope.dataset_color_palete_);
 				//console.log($scope.dataset_color_palete_[myindex]);
 				//console.log($scope.dataset_color_palete_[myindex].length);
+
+
+				value = '';
+				for (var i in arrayValuesInString) 
+				{
+					//console.log(arrayValuesInString[i]);
+					
+					if (value)
+					{
+						value=value+';';
+					}
+					value = value+$scope.dataset_color_palete_[metricListIn[j].id][arrayValuesInString[i]];
+					
+					//console.log($scope.dataset_color_palete_[metricListIn[j].id][arrayValuesInString[i]]);
+				}
 				
+				/*
 				//for (var i=0; i < $scope.dataset_color_palete_[myindex].length; i++) 
 				for (var i in $scope.dataset_color_palete_[myindex])
 				{
@@ -5362,12 +5432,12 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualiza
 							//value = value+i;
 					}
 				};
-								
+						*/		
 				var selectorIndividualColorData = value;					
 				
 				//console.log("selectorIndividualColorData");
 				//console.log(selectorIndividualColorData);
-																						
+																					
 				//var visualization_query_data = 'Label:'+selectorLabel+',Column:'+selectorDataColumn+',Grouping:'+selectorGroupingData;
 				var visualization_query_data = 'Individual:'+selectorIndividualData+',Colors:'+selectorIndividualColorData;
 				
