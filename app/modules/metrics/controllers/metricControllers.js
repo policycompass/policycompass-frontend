@@ -13,11 +13,9 @@ angular.module('pcApp.metrics.controllers.metric', [
         creator: 1,
         title: "",
         indicator: 0,
-        unit: 0,
         formula: "",
         variables: {}
     };
-
 })
 
 
@@ -323,32 +321,12 @@ angular.module('pcApp.metrics.controllers.metric', [
             console.log(response);
     });
 
-    $scope.getUnit = function (indicator) {
-
-        console.log(indicator)
-
-
-
-        /*$scope.data.unit = $scope.data.indicator.unit_category;
-
-        var url = API_CONF.REFERENCE_POOL_URL + "/unitcategories/" + $scope.data.unit;
-
-        $http.get(url).
-            then(function(unit) {
-                $scope.unitname = unit.data.title
-
-            }, function(response) {
-                console.log(response);
-            });*/
-    };
-
-
     $scope.submit = function () {
         var url = API_CONF.METRICS_MANAGER_URL + "/metrics";
 
         $http.post(url, $scope.data).
             then(function(response) {
-                $location.path("/metricsmanager/" + response.data.id)
+                $location.path("/metrics/" + response.data.id)
             }, function(response) {
                 console.log('error');
                 console.log(response);
