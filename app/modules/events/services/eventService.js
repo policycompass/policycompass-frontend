@@ -47,6 +47,15 @@ angular.module('pcApp.events.services.event', [
         return Language;
     }])
 
+/*    .factroy('searchEvent', function($resource){
+      return $resource(API_CONF.EVENTS_MANAGER_URL + '/harvestevents',{
+          keyword: '@keyword',
+          extractors: '@extractors', isArray:true,
+          start: '@start',
+          end: '@end'
+      });
+    })*/
+
     .service('eventService', function () {
         var eventList = [];
         var isSet = false;

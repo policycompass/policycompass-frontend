@@ -1,0 +1,23 @@
+<div class="container main-content">
+    <legend>
+        <h3><span class="glyphicon"></span> Config Extractor</h3>
+    </legend>
+
+
+
+        <div class="row">
+            <div class="col-lg-5">
+                <h1>Select text file</h1>
+                <input type="file" on-read-file="showContent($fileContent)" />
+                <div ng-if="content">
+                    <h2>File content is:</h2>
+                    <pre>{{ content }}</pre>
+                </div>
+                <input type="text" ng-model="modul.name">
+                <a class="btn" ng-click="post()">Hallo</a>
+            </div>
+        </div>
+
+
+
+</div>

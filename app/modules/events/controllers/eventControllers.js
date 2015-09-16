@@ -163,8 +163,53 @@ angular.module('pcApp.events.controllers.event', [
 
             $scope.search = {};
             $scope.searchResults = [];
+            $scope.availableExtractors = [];
+            $scope.init = function(){
+                $http.get(API_CONF.EVENTS_MANAGER_URL + '/configextractor').
+
+                    success(function (data, status, headers, config) {
+                        //console.log(angular.toJson(data));
+                        $scope.availableExtractors = data;
+                    }).
+                    error(function (data, status, headers, config) {
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                    });
+            };
+            $scope.init();
+            $scope.selectedExtractors = [];
+            $scope.isChecked = function(name){
+                var match = false;
+                for(var i=0 ; i < $scope.selectedExtractors.length; i++) {
+                    if($scope.selectedExtractors[i] == name){
+                        match = true;
+                    }
+                }
+                return match;
+            };
+
+            $scope.sync = function(bool, item){
+                if(bool){
+                    // add item
+                    $scope.selectedExtractors.push(item);
+                } else {
+                    // remove item
+                    for(var i=0 ; i < $scope.selectedExtractors.length; i++) {
+                        if($scope.selectedExtractors[i] == item){
+                            $scope.selectedExtractors.splice(i,1);
+                        }
+                    }
+                }
+            };
+
+            //Löschen
+            $scope.search.title = "war";
+            $scope.search.startEventDate = "1947-05-05";
+            $scope.search.endEventDate = "2010-05-05";
+
             $scope.searchEvent = function () {
-                $http.get(API_CONF.EVENTS_MANAGER_URL + '/harvestevents?keyword=' + $scope.search.title + '&start=' +
+                $http.get(API_CONF.EVENTS_MANAGER_URL + '/harvestevents?keyword=' + $scope.search.title +
+                    '&extractors=' + $scope.selectedExtractors + '&start=' +
                     $filter('date')($scope.search.startEventDate, "yyyy-MM-dd") + '&end=' +
                     $filter('date')($scope.search.endEventDate, "yyyy-MM-dd")).
 
@@ -189,4 +234,49 @@ angular.module('pcApp.events.controllers.event', [
                 //console.log("addEvent:" + angular.toJson(eventService.getEvent()));
                 $location.path('/events/create');
             };
-        }]);
+        }])
+
+    .controller('EventConfigController', [
+        '$scope',
+        '$log',
+        '$http',
+        'API_CONF',
+        function($scope, $log, $http, API_CONF) {
+        $scope.showContent = function($fileContent){
+            $scope.content = $fileContent;
+        };
+        $scope.post = function(){
+            //$log.info($scope.modul.name);
+            //$log.info($scope.content);
+            $http.post(API_CONF.EVENTS_MANAGER_URL + '/configupload', {name: $scope.modul.name, script: $scope.content}).
+                then(function(response) {
+                    // this callback will be called asynchronously
+                    // when the response is available
+                }, function(response) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                });
+        }
+    }])
+
+    .directive('onReadFile', function ($parse) {
+        return {
+            restrict: 'A',
+            scope: false,
+            link: function(scope, element, attrs) {
+                var fn = $parse(attrs.onReadFile);
+
+                element.on('change', function(onChangeEvent) {
+                    var reader = new FileReader();
+
+                    reader.onload = function(onLoadEvent) {
+                        scope.$apply(function() {
+                            fn(scope, {$fileContent:onLoadEvent.target.result});
+                        });
+                    };
+
+                    reader.readAsText((onChangeEvent.srcElement || onChangeEvent.target).files[0]);
+                });
+            }
+        };
+    });

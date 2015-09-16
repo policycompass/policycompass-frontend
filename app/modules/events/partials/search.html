@@ -67,7 +67,11 @@
                         </p>
                     </div>
                 </div>
-
+                <label>Select Source(s):</label>
+                <div ng-repeat="result in availableExtractors">
+                    <input type="checkbox" ng-model="bool" ng-change="sync(bool, result)" ng-checked="isChecked(result)"> {{result}}
+                </div>
+                <div>{{ selectedExtractors }}</div>
 
                 <div class="pc-event-formcontrols">
                     <div class="form-group pull-right">
