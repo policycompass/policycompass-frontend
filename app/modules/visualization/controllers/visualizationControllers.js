@@ -783,7 +783,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
   		}
     		
     		//used while dataset not return resolutions
-			$scope.onlyTheirResolution=true;
+			$scope.onlyTheirResolution=false;
 			
 			$scope.resolutionoptions = [
     			{ label: 'Day', value: 'day' },
@@ -1936,7 +1936,22 @@ angular.module('pcApp.visualization.controllers.visualization', [
 		}
 		
 		$scope.rePlotGraph = function() {								
-			//console.log("--rePlotGraph--");		
+			//console.log("--rePlotGraph--");	
+									
+			//clear container chart div
+			var divContent='';
+			divContent='<div class="loading-container"><div class="loading"></div><div id="loading-text">loading</div></div>';
+			if ($scope.mode!='view')
+			{
+					if (document.getElementById("container_graph_"+$scope.visualization.id) !=null)
+					{
+							document.getElementById("container_graph_"+$scope.visualization.id).innerHTML = divContent;	
+					} 
+					else
+					{	
+						document.getElementById("container_graph_").innerHTML = divContent;
+					}
+			}	
 			//console.log($scope.dataset_color_palete_)
 			//console.log($scope.IndividualDatasetCheckboxes_);
 			//console.log($scope.ListMetricsFilter);
@@ -3581,7 +3596,11 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						$scope.numbers1 = [];
 						if ($scope.mode=="create")
 						{
-							$scope.rePlotGraph();						
+							if ($scope.autoreplot!=1)
+							{
+								$scope.rePlotGraph();
+							}
+							$scope.autoreplot=1;						
 						}
 					}
 					else
