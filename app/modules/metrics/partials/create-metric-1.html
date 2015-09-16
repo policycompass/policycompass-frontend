@@ -1,0 +1,88 @@
+<div class="container container-create-formula" id="container-create-formula">
+  <div class="content-header">
+    <h3 class="fonticon fonticon-formula">Formula Builder</h3>
+    <div class="subtitle-help">
+      <h4>
+        <div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div>
+        Step 1 - Create Formula</h4>
+        <div ng-class="{active: help}" class="help-text">
+      </div>
+    </div>
+    <ul class="navigation-steps">
+      <li><a href="#!/create-formula" class="btn btn-prev">Previous Step</a></li>
+      <li><a href="#!/create-metric-2" class="btn btn-next">Next Step</a></li>
+    </ul>
+    <div class="pc-visualization-formcontrols">
+      <div class="button-group">
+        <a class="btn btn-keyboard">Extended Keyboard</a>
+        <a  class="btn btn-function">Functions (e.g. normalisation)</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-body">
+    <!--<div class="calculation-formula">-->
+    <formula ng-if="data.formula && data.variables" data-formula="data.formula" data-variables="data.variables"></formula>
+    <!-- </div> -->
+  </div>
+
+  <div class="dataset-filters-bottom">
+
+    <div class="row">
+      <div class="col-md-8">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Formula</label>
+          <input ng-model="data.formula" class="form-control" ng-keyup="getCursorPosition($event)" ng-click="getCursorPosition($event)">
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <ul class="list-group">
+          <li ng-repeat="indicator in indicators" class="list-group-item">
+            {{ indicator.name }} <a href="" ng-click="addIndicator(indicator)">add</a>
+          </li>
+        </ul>
+      </div>
+    <d/div>
+
+    <!--<div class="dataset-filter clearfix">
+      <h5>Indicators</h5>
+      <div class="dataset-select"
+      isteven-multi-select
+      input-model="classtypedata"
+      output-model="outputClasstypedata"
+      button-label="icon name"
+      item-label="icon name maker"
+      tick-property="ticked"
+      > </div>-->
+      <!--
+      <select multiple>
+      <option value="country">Country</option>
+      <option value="age">Age Class</option>
+      <option value="gender">Gender</option>
+      </select>
+      -->
+    <!--</div>-->
+
+    <!--<div class="dataset-filter dataset-filter-metrics clearfix">
+      <h5>Pre-defined Metrics</h5>
+      <div   class="dataset-select"
+      isteven-multi-select
+      input-model="classtypedata2"
+      output-model="outputClasstypedata2"
+      button-label="icon name"
+      item-label="icon name maker"
+      tick-property="ticked"
+      > </div>-->
+      <!--
+      <select>
+      <option value="country">Country</option>
+      <option value="age">Age Class</option>
+      <option value="gender">Death Rate</option>
+
+      </select>
+      -->
+    <!--</div>-->
+
+  </div>
+</div>

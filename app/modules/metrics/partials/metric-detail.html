@@ -1,0 +1,8 @@
+<div class="container">
+  <div class="content-header">
+  	<h1><span class="glyphicon glyphicon-list-alt"></span> {{data.title}}</h1>
+  </div>
+  {{ indicator.name }}
+  <!--<div class="calculation-formula calculation-formula-2">{{data.formula}}</div>-->
+  <formula ng-if="data.formula && data.variables" data-formula="data.formula" data-variables="data.variables"></formula>
+</div>
