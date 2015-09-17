@@ -11,7 +11,7 @@
     </div>
     <ul class="navigation-steps">
       <li><a href="#!/metrics/create-1" class="btn btn-prev">Previous Step</a></li>
-      <li><a href="" class="btn btn-next" ng-click="submit();">Next Step</a></li>
+      <li><a href="" class="btn btn-next" ng-click="submit();" ng-class="{'disabled' : !metadataForm.$valid }">Next Step</a></li>
     </ul>
     <div class="pc-visualization-formcontrols">
       <div class="button-group">
