@@ -26,3 +26,33 @@
   }
 
 }
+
+.table-detail-main-data .table-detail-title,
+.table-detail .table-detail-title {
+    width: 25%;
+    margin-right: -25%;
+    text-align: right;
+    font-weight: bold;
+}
+
+.table-detail-main-data .table-detail-content,
+.table-detail .table-detail-content {
+      
+}
+
+.table-detail-main-data tr:first-child td,
+.table-detail tr:first-child td {
+  border-top: none;
+}
+
+
+.table-detail-main-data .table-detail-content ul,
+.table-detail .table-detail-content ul{
+  margin: 0px;
+  padding:0px;
+}
+
+.table-detail-main-data .table-detail-content li,
+.table-detail .table-detail-content li{
+       list-style-type: none;
+}
