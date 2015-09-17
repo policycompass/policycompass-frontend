@@ -12,7 +12,7 @@ angular.module('pcApp.metrics.directives.formula', [
         	variables: '=variables',
         },
         template: function(scope) {
-        	return '<div class="calculation-formula calculation-formula-2"></div>';
+        	return '<div style="min-height: 77px;" class="calculation-formula calculation-formula-2"></div>';
         },
         link: function(scope, element, attrs) {
 
