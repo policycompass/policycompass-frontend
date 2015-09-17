@@ -1,7 +1,7 @@
 <div class="container container-create-formula" id="container-create-formula">
 
   <div class="content-header">
-    <h3 class="fonticon fonticon-formula">Formula Builder</h3>
+    <h3 class="fonticon fonticon-formula">Metric Builder</h3>
     <div class="subtitle-help">
       <h4>
         <div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div>
@@ -10,7 +10,7 @@
         </div>
     </div>
     <ul class="navigation-steps">
-      <li><a href="#!/create-metric-1" class="btn btn-prev">Previous Step</a></li>
+      <li><a href="#!/metrics/create-1" class="btn btn-prev">Previous Step</a></li>
       <li><a href="" class="btn btn-next" ng-click="submit();">Next Step</a></li>
     </ul>
     <div class="pc-visualization-formcontrols">
@@ -26,84 +26,30 @@
   </div>
 
   <div class="metadata metadata-formula">
-    <div class="form-group">
-      <label for="title" class="field-label">Title</label>
-      <div class="field-content">
-        <input ng-model="data.title" type="text" class="form-control" id="title">
+
+    <form name="metadataForm" class="simple-form" novalidate>
+      <div class="form-group" ng-class="{ 'has-error': (metadataForm.title.$invalid && !metadataForm.title.$pristine) || servererror.title }">
+        <label for="title" class="field-label">Title</label>
+        <div class="field-content">
+          <input ng-model="data.title" type="text" name="title" class="form-control" required placeholder="Formula">
+          <p ng-show="metadataForm.title.$error.required && !metadataForm.title.$pristine" class="help-block">This field is required</p>
+          <p ng-show="servererror.title" class="help-block">{{ servererror.title[0] }}</p>
+        </div>
       </div>
-    </div>
 
-    <div class="form-group">
-      <label for="indicator" class="field-label">Indicator</label>
-      <div class="field-content">
-        <select
-          class="form-control"
-          ng-options="i.id as i.name for i in indicators"
-          ng-model="data.indicator"
-          ng-change="getUnit();">
-        </select>
+      <div class="form-group" ng-class="{ 'has-error': (metadataForm.indicator.$invalid && !metadataForm.indicator.$pristine) || servererror.indicator }">
+        <label for="indicator" class="field-label">Indicator</label>
+        <div class="field-content">
+          <select
+            name="indicator"
+            class="form-control"
+            ng-options="i.id as i.name for i in indicators"
+            ng-model="data.indicator" >
+          </select>
+          <p ng-show="metadataForm.indicator.$error.required && !metadataForm.indicator.$pristine" class="help-block">This field is required</p>
+          <p ng-show="servererror.indicator" class="help-block">{{ servererror.indicator[0] }}</p>
+        </div>
       </div>
-    </div>
+    </form>
 
-    {{ data.indicator }}
-
-    <div ng-if="unitname">
-      <label class="field-label">Unit</label>
-      <div class="field-content">
-      {{ unitname }}
-    </div>
-    </div>
-
-
-
-    <!--<div class="form-group">
-      <label for="property" class="field-label">Property</label>
-      <div class="field-content">
-        <input type="text" class="form-control" id="property">
-      </div>
-    </div>-->
-
-  <!-- <div class="form-group">
-    <label for="property" class="field-label">Property</label>
-    <div class="field-content">
-      <div   class="dataset-select"
-      isteven-multi-select
-      input-model="classtypedata"
-      output-model="outputClasstypedata"
-      button-label="icon name"
-      item-label="icon name maker"
-      tick-property="ticked"
-      > </div>
-    </div>
-  </div> -->
-
-  <!--<div class="form-group">
-    <label for="property" class="field-label">Keywords</label>
-    <div class="field-content">
-      <div   class="dataset-select"
-      isteven-multi-select
-      input-model="classtypedata2"
-      output-model="outputClasstypedata"
-      button-label="icon name"
-      item-label="icon name maker"
-      tick-property="ticked"
-      > </div>
-    <a class="btn btn-add btn-validate">Add</a>
-    </div>
-  </div>-->
-
-  <!--<div class="form-group">
-    <label for="publisher" class="field-label">Publisher</label>
-    <div class="field-content">
-      <input type="text" class="form-control" id="Publisher">
-    </div>
-  </div>-->
-
-  <!--<div class="form-group">
-    <label for="publisher" class="field-label">Description</label>
-    <div class="field-content">
-      <textarea rows="3" cols="100%" id="description"></textarea>
-    </div>
-  </div>-->
-
-</div>
+  </div>

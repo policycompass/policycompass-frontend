@@ -12,7 +12,6 @@ angular.module('pcApp.metrics.controllers.metric', [
     return {
         creator: 1,
         title: "",
-        indicator: 0,
         formula: "",
         variables: {}
     };
@@ -208,13 +207,12 @@ angular.module('pcApp.metrics.controllers.metric', [
     };
 }])
 
-.controller('CreateMetric1Controller', ['$scope', '$modal', 'API_CONF', '$http', 'Data', function($scope, $modal, API_CONF, $http, Data) {
+.controller('CreateMetric1Controller', ['$scope', '$modal', 'API_CONF', '$http', 'Data', '$location', function($scope, $modal, API_CONF, $http, Data, $location) {
 
     $scope.data = Data;
+    $scope.variableIndex = 1;
 
     var url = API_CONF.INDICATOR_SERVICE_URL + "/indicators";
-
-    $scope.variableIndex = 1;
 
     $http.get(url).
         then(function(indicators) {
@@ -297,6 +295,24 @@ angular.module('pcApp.metrics.controllers.metric', [
         $scope.cursorPosVal = iCaretPos;
     };
 
+    $scope.submit = function () {
+
+        /* replace request with API Call to validate formula when implemented */
+
+        //var url = API_CONF.METRICS_MANAGER_URL + "/metrics";
+
+        if ($scope.formulaForm.$valid) {
+            $location.path("/metrics/create-2")
+            /*$http.post(url, $scope.data).
+            then(function(response) {
+                $location.path("/metrics/" + response.data.id)
+            }, function(response) {
+                console.log(response);
+                $scope.servererror = response.data;
+            });*/
+        }
+    };
+
 
 }])
 
@@ -324,14 +340,15 @@ angular.module('pcApp.metrics.controllers.metric', [
     $scope.submit = function () {
         var url = API_CONF.METRICS_MANAGER_URL + "/metrics";
 
-        $http.post(url, $scope.data).
+        if ($scope.metadataForm.$valid) {
+            $http.post(url, $scope.data).
             then(function(response) {
                 $location.path("/metrics/" + response.data.id)
             }, function(response) {
-                console.log('error');
                 console.log(response);
+                $scope.servererror = response.data;
             });
-
+        }
     };
 
 }])
