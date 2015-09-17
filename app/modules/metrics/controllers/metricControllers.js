@@ -345,7 +345,6 @@ angular.module('pcApp.metrics.controllers.metric', [
             then(function(response) {
                 $location.path("/metrics/" + response.data.id)
             }, function(response) {
-                console.log(response);
                 $scope.servererror = response.data;
             });
         }
