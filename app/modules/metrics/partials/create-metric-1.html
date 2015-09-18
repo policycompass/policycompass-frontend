@@ -10,7 +10,7 @@
     </div>
     <ul class="navigation-steps">
       <li><a href="#!/create-formula" class="btn btn-prev">Previous Step</a></li>
-      <li><a href="" class="btn btn-next" ng-click="submit();" ng-class="{'disabled' : !formulaForm.$valid }">Next Step</a></li>
+      <li><a href="" class="btn btn-next" ng-click="submit();" ng-class="{'disabled' : !formulaForm.$valid || servererror.formula }">Next Step</a></li>
     </ul>
     <div class="pc-visualization-formcontrols">
       <div class="button-group">
@@ -31,11 +31,11 @@
     <div class="row">
       <div class="col-md-8">
         <form name="formulaForm" class="simple-form" novalidate>
-          <div class="form-group" ng-class="{ 'has-error': formulaForm.formula.$invalid && !formulaForm.formula.$pristine }">
+          <div class="form-group" ng-class="{ 'has-error': (formulaForm.formula.$invalid && !formulaForm.formula.$pristine) || servererror.formula }">
             <label for="exampleInputEmail1">Formula</label>
-            <input ng-model="data.formula" name="formula" class="form-control" ng-keyup="getCursorPosition($event)" ng-click="getCursorPosition($event)" required>
+            <input ng-model="data.formula" name="formula" class="form-control" ng-keyup="getCursorPosition($event)" ng-click="getCursorPosition($event)" ng-change="clearErrors();" required>
             <p ng-show="formulaForm.formula.$error.required && !formulaForm.formula.$pristine" class="help-block">This field is required</p>
-            <!--<p ng-show="servererror.formula" class="help-block">{{ servererror.fomula[0] }}</p>-->
+            <p ng-show="servererror.formula" class="help-block">{{ servererror.formula }}</p>
           </div>
         </form>
       </div>

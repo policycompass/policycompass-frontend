@@ -297,22 +297,20 @@ angular.module('pcApp.metrics.controllers.metric', [
 
     $scope.submit = function () {
 
-        /* replace request with API Call to validate formula when implemented */
-
-        //var url = API_CONF.METRICS_MANAGER_URL + "/metrics";
+        var url = API_CONF.FORMULA_VALIDATION_URL;
 
         if ($scope.formulaForm.$valid) {
-            $location.path("/metrics/create-2")
-            /*$http.post(url, $scope.data).
+            $http({
+                url: url,
+                method: 'get',
+                params: {formula: $scope.data.formula}}).
             then(function(response) {
-                $location.path("/metrics/" + response.data.id)
+                $location.path("/metrics/create-2")
             }, function(response) {
-                console.log(response);
                 $scope.servererror = response.data;
-            });*/
+            });
         }
     };
-
 
 }])
 
@@ -345,10 +343,15 @@ angular.module('pcApp.metrics.controllers.metric', [
             then(function(response) {
                 $location.path("/metrics/" + response.data.id)
             }, function(response) {
+                console.log(response);
                 $scope.servererror = response.data;
             });
         }
     };
+
+    $scope.clearErrors = function() {
+        $scope.servererror = undefined;
+    }
 
 }])
 
