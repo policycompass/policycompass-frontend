@@ -1,74 +1,43 @@
-<div class="container">
-<div class="content-header">
+<div class="container container-create-visualisation" id="container-create-visualisation">
+	<div class="content-header">
+    	<h3 ng-if="mode == 'create'" class="fonticon fonticon-visualisation">Create a New Visualization</h3>
+    	<h3 ng-if="mode == 'edit'" class="fonticon fonticon-visualisation">Edit Visualization</h3>
+    	<div class="subtitle-help">
+    		<h4><div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div>Visualise Data</h4>    
+    		<div ng-class="{active: help}" class="help-text"><p>You can display datasets as a chart using this form.</p></div>
+    	</div>
+	</div>
 
-      <h3 ng-if="mode == 'create'"><span class="glyphicon glyphicon-pencil"></span> Create a New Visualization</h3>
-      <h3 ng-if="mode == 'edit'"><span class="glyphicon glyphicon-pencil"></span> Edit Visualization</h3>
-
-      <div class="pc-visualization-formcontrols">
+	<div class="pc-visualization-formcontrols">
         <div class="form-group pull-left">
 				<canvas ng-show="false" id="canvas" width="800" height="400"></canvas>
-				<div id="png-container"></div>
-				
+				<div id="png-container"></div>			
 				<button type="submit" data-intro="Save data" data-position="top" ng-disabled="visualizationForm.$invalid" class="btn btn-default" ng-click="createVisualization(ListMetricsFilter)"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>				
 				<button type="submit" data-intro="Revert data" data-position="top" class="btn btn-default btn-revert" ng-click="revertVisualization()">Revert</button>
-				
-								
-				<button ng-disabled="false" type="button" data-intro="Plot data in a map" data-position="top" ng-class="{'btn btn-default btn-map':!isSelectedParent(1),'btn btn-info btn-map':isSelectedParent(1)}" ng-click="selectTabParent(1); selectTabSon('mercator');rePlotGraph();">Map</button>
-					
-				<!--
-				<button type="button" ng-hide="!isSelectedParent(1)" ng-disabled="!isSelectedParent(1)" ng-class="{'btn btn-default':!isSelectedSon('mercator'),'btn btn-info':isSelectedSon('mercator')}" ng-click="selectTabParent(1);selectTabSon('mercator');rePlotGraph();">Mercator</button>
-				<button type="button" ng-hide="!isSelectedParent(1)" ng-disabled="!isSelectedParent(1)" ng-class="{'btn btn-default':!isSelectedSon('conicConformal'),'btn btn-info':isSelectedSon('conicConformal')}" ng-click="selectTabParent(1);selectTabSon('conicConformal');rePlotGraph();">ConicConformal</button>
-				<button type="button" ng-hide="!isSelectedParent(1)" ng-disabled="!isSelectedParent(1)" ng-class="{'btn btn-default':!isSelectedSon('equirectangular'),'btn btn-info':isSelectedSon('equirectangular')}" ng-click="selectTabParent(1);selectTabSon('equirectangular');rePlotGraph();">Equirectangular</button>
-				<button type="button" ng-hide="!isSelectedParent(1)" ng-disabled="!isSelectedParent(1)" ng-class="{'btn btn-default':!isSelectedSon('orthographic'),'btn btn-info':isSelectedSon('orthographic')}" ng-click="selectTabParent(1);selectTabSon('orthographic');rePlotGraph();">Orthographic</button>
-				<button type="button" ng-hide="!isSelectedParent(1)" ng-disabled="!isSelectedParent(1)" ng-class="{'btn btn-default':!isSelectedSon('azimuthalEqualArea'),'btn btn-info':isSelectedSon('azimuthalEqualArea')}" ng-click="selectTabParent(1);selectTabSon('azimuthalEqualArea');rePlotGraph();">Azimuthal Equal Area</button>
-				-->
+				<button ng-disabled="false" type="button" data-intro="Plot data in a map" data-position="top" ng-class="{'btn btn-default btn-map':!isSelectedParent(1),'btn btn-info btn-map':isSelectedParent(1)}" ng-click="selectTabParent(1); selectTabSon('mercator');rePlotGraph();">Map</button>					
 				<div class="button-group">		
-				<button type="button" data-intro="Plot data as Line, Pie or Bars chart" data-position="top" ng-class="{'btn btn-default btn':!isSelectedParent(2),'btn btn-info':isSelectedParent(2)}" ng-click="selectTabParent(2);selectTabSon('graph_line');rePlotGraph();" class="btn-parent">Graph</button>
-										
-				<!--
-				<button ng-hide="!isSelectedParent(2)" type="submit" ng-disabled="!isSelectedParent(2)" class="btn btn-default" ng-click="selectTabParent(2);selectTabSon('graph_line');rePlotGraph();">Line</button>
-				<button ng-hide="!isSelectedParent(2)" type="submit" ng-disabled="!isSelectedParent(2)" class="btn btn-default" ng-click="selectTabParent(2);selectTabSon('graph_pie');rePlotGraph();">Pie</button>
-				<button ng-hide="!isSelectedParent(2)" type="submit" ng-disabled="!isSelectedParent(2)" class="btn btn-default" ng-click="selectTabParent(2);selectTabSon('graph_bars');rePlotGraph();">Bars</button>
-				-->
- 
-				<button type="button" data-intro="Plot data as line chart" data-position="top" ng-hide="!isSelectedParent(2)" ng-disabled="!isSelectedParent(2)" ng-class="{'btn btn-default':!isSelectedSon('graph_line'),'btn btn-info':isSelectedSon('graph_line')}" ng-click="selectTabParent(2);selectTabSon('graph_line');rePlotGraph();" class="btn-line">Line</button>
-        
-				<button type="button" data-intro="Plot data as pie chart" data-position="top" ng-hide="!isSelectedParent(2)" ng-disabled="!isSelectedParent(2)" ng-class="{'btn btn-default':!isSelectedSon('graph_pie'),'btn btn-info':isSelectedSon('graph_pie')}" ng-click="selectTabParent(2);selectTabSon('graph_pie');rePlotGraph();"  class="btn-pie">Pie</button>
-        
-				<button type="button" data-intro="Plot data as bars chart" data-position="top" ng-hide="!isSelectedParent(2)" ng-disabled="!isSelectedParent(2)" ng-class="{'btn btn-default':!isSelectedSon('graph_bars'),'btn btn-info':isSelectedSon('graph_bars')}" ng-click="selectTabParent(2);selectTabSon('graph_bars');rePlotGraph();"  class="btn-bars">Bars</button>
-        </div>
-        <!--
-        <button type="submit" class="btn btn-default btn-map">Map</button>
-        -->
+					<button type="button" data-intro="Plot data as Line, Pie or Bars chart" data-position="top" ng-class="{'btn btn-default btn':!isSelectedParent(2),'btn btn-info':isSelectedParent(2)}" ng-click="selectTabParent(2);selectTabSon('graph_line');rePlotGraph();" class="btn-parent">Graph</button>
+					<button type="button" data-intro="Plot data as line chart" data-position="top" ng-hide="!isSelectedParent(2)" ng-disabled="!isSelectedParent(2)" ng-class="{'btn btn-default':!isSelectedSon('graph_line'),'btn btn-info':isSelectedSon('graph_line')}" ng-click="selectTabParent(2);selectTabSon('graph_line');rePlotGraph();" class="btn-line">Line</button>
+					<button type="button" data-intro="Plot data as pie chart" data-position="top" ng-hide="!isSelectedParent(2)" ng-disabled="!isSelectedParent(2)" ng-class="{'btn btn-default':!isSelectedSon('graph_pie'),'btn btn-info':isSelectedSon('graph_pie')}" ng-click="selectTabParent(2);selectTabSon('graph_pie');rePlotGraph();"  class="btn-pie">Pie</button>
+					<button type="button" data-intro="Plot data as bars chart" data-position="top" ng-hide="!isSelectedParent(2)" ng-disabled="!isSelectedParent(2)" ng-class="{'btn btn-default':!isSelectedSon('graph_bars'),'btn btn-info':isSelectedSon('graph_bars')}" ng-click="selectTabParent(2);selectTabSon('graph_bars');rePlotGraph();"  class="btn-bars">Bars</button>
+		        </div>
 	            <span class="helpbutton" ></span>		
         </div>
     </div>
 
-</div>
+	<div class="content-body">
 
-
-
-<form name="visualizationForm" role="form" novalidate >
-<div class="row createvisualization">
-
-<!--
-    <div class="col-lg-4">
-            <h4>Main Details</h4>
-    </div>
--->
-    <div>
-        <div ng-switch="step"  >
+	<form name="visualizationForm" role="form" novalidate >
+		<div class="row createvisualization">
+		    <div>
+        		<div ng-switch="step"  >
 
 
             	<div ng-show="canPlotGarph" >          	
 	            	<div ng-show="((1==1)  || isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')) && (ListMetricsFilter.length>0)" class="graphContainerdiv">
 						<input type="hidden" id="startDatePosX" name="startDatePosX" value="">
 						<input type="hidden" id="endDatePosX" name="endDatePosX" value="">
- 
-<!--
-<div id="maplegend" class="maplegend"></div>
--->
-						
+ 		
 							<div ng-click="isSelectedSon('graph_line') ? showModal() : void(0)">
 								<div ng-show="isSelectedSon('map_1') || isSelectedSon('mercator') || isSelectedSon('conicConformal') || isSelectedSon('equirectangular') || isSelectedSon('orthographic') || isSelectedSon('azimuthalEqualArea')">
 									<div ng-show="mapTimeSlider.length>0">
@@ -341,166 +310,106 @@
 										</div>
 									</div>
 																
-							<!--
-							<div class="metric-forms" style="display: none;">
-								<div class="metric-form-item">
-									<label for="">Date</label>
-									<select ng-change="rePlotGraph();" ng-model="MetricSelectorLabelColumn_[metric.id]" id="MetricSelectorLabelColumn_{{metric.id}}" name="MetricSelectorLabelColumn[]" class="form-select">
-										<option value="from">From</option>
-										<option value="to">To</option>
-										
-									</select>
+							
 								</div>
-								<div class="metric-form-item">
-									<label for="">Grouping</label>
-								    <select 								        
-										ng-model="MetricSelectorDataColumn_[metric.id]" id="MetricSelectorDataColumn_{{metric.id}}" 
-                						name="MetricSelectorDataColumn_[]" class="form-select"
-                						ng-change="rePlotGraph();"
-                						class="form-control"                 						
-                						ng-options="option.title for option in optionsCombo_value_[metric.id] track by option.id"
-                						>
-                						<option value=""  >No grouping</option>                						
-                						
-            						</select>								    
-								</div>
-								<div ng-show="(1==2 && (MetricSelectorDataColumn_[metric.id] || MetricSelectorGroupingData_[metric.id]))" class="metric-form-item">
-									<label for="">Grouping</label>
-									
-									<select 
-										ng-model="MetricSelectorGroupingData_[metric.id]" id="MetricSelectorGroupingData_{{metric.id}}"  
-                						name="MetricSelectorGroupingData_[]" class="form-select"
-                						ng-change="rePlotGraph();"
-                						class="form-control" 
-                						ng-options="option.title for option in optionsCombo_[metric.id] track by option.id"                						
-                						>
-                						<option value="" >No grouping</option>
-                						
-            						</select>	
-            										
-									
-								</div>
-					   		</div>
-							-->
-						</div>
-                    </tab>
-                    <!-- end tab metrics -->
+                    		</tab>
+                    		<!-- end tab metrics -->
                     
-                    <!-- ini tab historical events -->
-                    <tab ng-show="isSelectedSon('graph_line')" heading="Historical Events">
-						<div ng-show="ListMetricsFilter.length>0" class="buttonline clearfix-min">
-							<button data-intro="Helps you to link this visualisation with events" data-position="right"  type="submit" class="btn btn-primary button-metrics" id="addHEbutton" ng-click="showModal()">Add Historical Event</button>
-						</div>
-						<br />
-						<div ng-show="eventsToPlot.length==0">No events selected</div>
-						<div ng-if="eventsToPlot.length > 0 " id="listHistoricalEventsToPlot">						
-							
-							
-							<div class="designer-metrics ng-scope active" id="designer-metrics-he-num-{{$index+1}}" ng-repeat="event in eventsToPlot track by $index">
-								<h4>{{event.title}}</h4>
-								<input type="hidden" ng-model="idHE[$index+1]" id="idHE{{$index+1}}" name="idHE[]" value="{{event.id}}">
-								<input type="hidden" ng-model="titleHE[$index+1]" id="titleHE{{$index+1}}" name="titleHE[]" value="{{event.title}}">
-								<input type="hidden" ng-model="startDateHE[$index+1]" id="startDateHE{{$index+1}}" name="startDateHE[]" value="{{event.startDate}}">
-								<input type="hidden" ng-model="endDateHE[$index+1]" id="endDateHE{{$index+1}}" name="endDateHE[]" value="{{event.endDate}}">					    	
-								<!--
-								<input type="hidden" ng-model="descHE[$index+1]" id="descHE{{$index+1}}" name="descHE[]" value="{{event.desc}}">
-								<input type="hidden" ng-model="colorHE[$index+1]" id="colorHE{{$index+1}}" name="colorHE[]" value="{{event.color}}">
-								-->
-								<!--
-								<div class="contentHE">
-									<div ng-if="event.startDate"><label for="">From:</label> {{event.startDate | date:'longDate'}} </div>
-									<div ng-if="event.endDate"><label for="">To:</label> {{event.endDate | date:'longDate'}} </div>
-									<div ng-if="event.desc"><label for="">Description:</label> {{event.desc}} </div>
+                    		<!-- ini tab historical events -->
+                    		<tab ng-show="isSelectedSon('graph_line')" heading="Historical Events">
+								<div ng-show="ListMetricsFilter.length>0" class="buttonline clearfix-min">
+									<button data-intro="Helps you to link this visualisation with events" data-position="right"  type="submit" class="btn btn-primary button-metrics" id="addHEbutton" ng-click="showModal()">Add Historical Event</button>
 								</div>
-								-->
-								
-								<div class="historicalevent-buttons active">
-									<!--		    	
-				    				<div class="metric-button metric-delete-button" ng-click="deleteContainerHistoricalEvent('row_config_',$index+1)" id="delete-metric-button-{{metric.id}}"></div>
-				    				-->
-				    				<button data-intro="Remove event from the list of related events" data-position="left" type="button" class="btn btn-danger" ng-click="deleteContainerHistoricalEvent('row_config_',$index+1, event.title)" id="delete-he-button-{{event.id}}">Remove</button>
-				    				
-				    				<a type="button" data-intro="Edit event main data" data-position="right" class="btn btn-primary" ng-click="vieweditHE[$index+1]=!vieweditHE[$index+1]">
-									<span ng-show="vieweditHE[$index+1]">Collapse</span> Edit</a>
-									
-				  				</div>
-				  				
-								<div ng-show="vieweditHE[$index+1]" class="contentHE">
-									<div><br/></div>
-									<div ng-if="event.color"><label for="">Colour:</label> 
-										
-										<spectrum-colorpicker
-											name="colorHE[]" ng-model="colorHE[$index+1]" ng-model-onblur ng-change="updatecolorEvent($index);rePlotGraph()"
-											options="{
-												showInput: true, 
-												showAlpha: false,
-												allowEmpty: false,
-												preferredFormat: 'hex'
-											}">
-										</spectrum-colorpicker>
-									<!--
-										<input type='color' name="colorHE[]" ng-model="colorHE[$index+1]" ng-model-onblur ng-change="updatecolorEvent($index);rePlotGraph()" />
-									-->
-										</div>
-										 
-									<div ng-if="event.startDate"><label for="">From:</label> {{event.startDate | date:'longDate'}} </div>
-									<div ng-if="event.endDate"><label for="">To:</label> {{event.endDate | date:'longDate'}} </div>
-									<div ng-if="event.desc"><label for="">Description:</label> 
+								<br />
+								<div ng-show="eventsToPlot.length==0">No events selected</div>
+								<div ng-if="eventsToPlot.length > 0 " id="listHistoricalEventsToPlot">						
+									<div class="designer-metrics ng-scope active" id="designer-metrics-he-num-{{$index+1}}" ng-repeat="event in eventsToPlot track by $index">
+										<h4>{{event.title}}</h4>
+										<input type="hidden" ng-model="idHE[$index+1]" id="idHE{{$index+1}}" name="idHE[]" value="{{event.id}}">
+										<input type="hidden" ng-model="titleHE[$index+1]" id="titleHE{{$index+1}}" name="titleHE[]" value="{{event.title}}">
+										<input type="hidden" ng-model="startDateHE[$index+1]" id="startDateHE{{$index+1}}" name="startDateHE[]" value="{{event.startDate}}">
+										<input type="hidden" ng-model="endDateHE[$index+1]" id="endDateHE{{$index+1}}" name="endDateHE[]" value="{{event.endDate}}">					    	
 										<!--
-										{{event.desc}} 
+										<input type="hidden" ng-model="descHE[$index+1]" id="descHE{{$index+1}}" name="descHE[]" value="{{event.desc}}">
+										<input type="hidden" ng-model="colorHE[$index+1]" id="colorHE{{$index+1}}" name="colorHE[]" value="{{event.color}}">
 										-->
-										<textarea ng-blur="updateDescriptionEvent($index);rePlotGraph()" rows="2" cols="50" ng-model="descHE[$index+1]" ng-trim="false" maxlength="150" name="descriptionHEToAdd" id="descriptionHEToAdd">{descHE[$index+1]}}</textarea>
-    									<span>{{150 - descHE[$index+1].length}} left</span>
-										
+										<!--
+										<div class="contentHE">
+											<div ng-if="event.startDate"><label for="">From:</label> {{event.startDate | date:'longDate'}} </div>
+											<div ng-if="event.endDate"><label for="">To:</label> {{event.endDate | date:'longDate'}} </div>
+											<div ng-if="event.desc"><label for="">Description:</label> {{event.desc}} </div>
 										</div>
-								</div>			
-								
-								
-							</div>
-						</div>                    
-                    </tab>
-					<!-- end tab historical events -->
+										-->
+										<div class="historicalevent-buttons active">
+											<!--		    	
+							    			<div class="metric-button metric-delete-button" ng-click="deleteContainerHistoricalEvent('row_config_',$index+1)" id="delete-metric-button-{{metric.id}}"></div>
+							    			-->
+							    			<button data-intro="Remove event from the list of related events" data-position="left" type="button" class="btn btn-danger" ng-click="deleteContainerHistoricalEvent('row_config_',$index+1, event.title)" id="delete-he-button-{{event.id}}">Remove</button>				    				
+					    					<a type="button" data-intro="Edit event main data" data-position="right" class="btn btn-primary" ng-click="vieweditHE[$index+1]=!vieweditHE[$index+1]">
+											<span ng-show="vieweditHE[$index+1]">Collapse</span> Edit</a>
+										</div>
+					  				
+										<div ng-show="vieweditHE[$index+1]" class="contentHE">
+											<div><br/></div>
+											<div ng-if="event.color"><label for="">Colour:</label> 
+												<spectrum-colorpicker
+													name="colorHE[]" ng-model="colorHE[$index+1]" ng-model-onblur ng-change="updatecolorEvent($index);rePlotGraph()"
+													options="{
+														showInput: true, 
+														showAlpha: false,
+														allowEmpty: false,
+														preferredFormat: 'hex'
+													}">
+												</spectrum-colorpicker>
+												<!--
+												<input type='color' name="colorHE[]" ng-model="colorHE[$index+1]" ng-model-onblur ng-change="updatecolorEvent($index);rePlotGraph()" />
+												-->
+											</div>
+											 
+											<div ng-if="event.startDate"><label for="">From:</label> {{event.startDate | date:'longDate'}} </div>
+											<div ng-if="event.endDate"><label for="">To:</label> {{event.endDate | date:'longDate'}} </div>
+											<div ng-if="event.desc"><label for="">Description:</label> 
+											<!--
+												{{event.desc}} 
+											-->
+											<textarea ng-blur="updateDescriptionEvent($index);rePlotGraph()" rows="2" cols="50" ng-model="descHE[$index+1]" ng-trim="false" maxlength="150" name="descriptionHEToAdd" id="descriptionHEToAdd">{descHE[$index+1]}}</textarea>
+		    								<span>{{150 - descHE[$index+1].length}} left</span>
+											
+										</div>
+										</div>
+									</div>
+								</div>
+                    		</tab>
+							<!-- end tab historical events -->
                     
-                    <tab heading="Metadata Editor">
+		                    <tab heading="Metadata Editor">
 
-	
-	            			<div class="form-group" ng-class="{'has-error': metricForm.title.$dirty && metricForm.title.$invalid}">
-	                			<label for="title">Title *</label>
-	                			<input type="text" class="form-control" id="title" name="title" placeholder="Title" ng-model="visualization.title" ng-minlength="3" required>
-	            			</div>
-	            			
-	            			
-	            			
+		            			<div class="form-group" ng-class="{'has-error': metricForm.title.$dirty && metricForm.title.$invalid}">
+		                			<label for="title">Title *</label>
+		                			<input type="text" class="form-control" id="title" name="title" placeholder="Title" ng-model="visualization.title" ng-minlength="3" required>
+		            			</div>
 
-	            			
-				            <div class="form-group" ng-class="{'has-error': visualizationForm.description.$dirty && visualizationForm.description.$invalid}">
-	            			    <label for="metricdescription" class="">Description *</label>
-	                			<textarea class="form-control" rows="10" id="description" name="description" ng-model="visualization.description" required></textarea>
-	            			</div>                    
-	            			<div class="form-group">
-	                			<label for="keywords">Keywords</label>
-	                			<input type="text" class="form-control" id="keywords" placeholder="Keywords" ng-model="visualization.keywords">
-	            			</div>
-	            			<div class="form-group" ng-class="{'has-error': visualizationForm.language.$dirty && visualizationForm.language.$invalid}">
-	                			<label for="language" class="">Language *</label>
-	                			<select class="form-control language-options" model="visualization.language" ng-model="visualization.language" id="language" name="language" required>
-				                </select>
-	            			</div>
-	            			                    	
-                    </tab>
+					            <div class="form-group" ng-class="{'has-error': visualizationForm.description.$dirty && visualizationForm.description.$invalid}">
+		            			    <label for="metricdescription" class="">Description *</label>
+		                			<textarea class="form-control" rows="10" id="description" name="description" ng-model="visualization.description" required></textarea>
+		            			</div>                    
+		            			<div class="form-group">
+		                			<label for="keywords">Keywords</label>
+		                			<input type="text" class="form-control" id="keywords" placeholder="Keywords" ng-model="visualization.keywords">
+		            			</div>
+		            			<div class="form-group" ng-class="{'has-error': visualizationForm.language.$dirty && visualizationForm.language.$invalid}">
+		                			<label for="language" class="">Language *</label>
+		                			<select class="form-control language-options" model="visualization.language" ng-model="visualization.language" id="language" name="language" required>
+					                </select>
+		            			</div>
+
+                		    </tab>
                     
-                </tabset>
-            </div>
+        		        </tabset>
+		            </div>
 
-            
-
-        </div>
-
-    </div>
-
-</div>
-
-
-
-</form>
+        		</div>
+    		</div>
+		</div>
+	</form>
 </div>
