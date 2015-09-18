@@ -201,6 +201,10 @@ angular.module('pcApp.visualization.controllers.visualization', [
     					{
     						arrayIndividualListDataset = $scope.metricSelectedArray[idMetric].data['table'];	
     					}
+    					else
+    					{
+    						arrayIndividualListDataset = []; 	
+    					}
     					
     					
     					//console.log("idMetric="+idMetric);
@@ -1555,213 +1559,248 @@ angular.module('pcApp.visualization.controllers.visualization', [
 		$scope.name = 'Link an event';
       	
       	
-   		$scope.showModal = function() {        
-			//console.log("show modal");
-			$scope.historicalevent_id ='';
-	   		var s= document.getElementById("startDatePosX");
-	   		var e= document.getElementById("endDatePosX");
-	   		
-	   		//console.log("s.value="+s.value);        
-	   		dateRec = s.value;
-	   		dateRecEnd = e.value;
-			//console.log("dateRec="+dateRec+"--now="+Date.now());
-			if (dateRec)
-			{
-				//dateRec = '2014-01-01';
-				//console.log("dateRec="+dateRec);
-				dateRec = dateRec.replace(/-/g,"/");
-				var res = dateRec.split("/");
-				var newDate = res[2]+"-"+res[0]+"-"+res[1];
-				//console.log("newDate="+newDate);
-				$scope.startDate = (newDate);
-			}
-			else
-			{
-				//$scope.startDate = $filter("date")(Date.now(), 'yyyy-MM-dd');	
-				$scope.startDate = "";
-			}
-
-			if (dateRecEnd)
-			{
-				//dateRec = '2014-01-01';
-				//console.log("dateRec="+dateRec);
-				dateRecEnd = dateRecEnd.replace(/-/g,"/");
-				var res = dateRecEnd.split("/");
-				var newDate = res[2]+"-"+res[0]+"-"+res[1];
-				//console.log("newDate="+newDate);
-				$scope.endDate = (newDate);
-			}
-			else
-			{
-				//$scope.startDate = $filter("date")(Date.now(), 'yyyy-MM-dd');	
-				$scope.endDate = "";
-			}
+   		$scope.showModal = function(action) {        
 			
-			//console.log("$scope.endDate="+$scope.endDate);
-
-			//console.log("resolution");
-			//console.log($scope.resolution);
-			$scope.minDateToSearch ='';
-			$scope.maxDateToSearch ='';
-			//console.log("$scope.timeStart");
-			//console.log($scope.timeStart);
-			
-			if ($scope.timeStart==='----')
+			if (action=='datasets')
 			{
-				if ($scope.TimeSelector.length>0)
-				{
-					$scope.minDateToSearch=$scope.TimeSelector[1];
+				$scope.name = 'Link datasets';
+				$scope.opts = {
+					backdrop: true,
+					backdropClick: false,
+					dialogFade: true,
+					keyboard: true,        
+					templateUrl : 'modules/visualization/partials/addDataset.html',
+			        controller : 'ModalInstanceCtrlDataset',
+					resolve: {}, // empty storage
+					scope: $scope
+		  		};
+		
+		        $scope.opts.resolve.item = function() {
+		    		return angular.copy({name:$scope.name}); // pass name to Dialog
 				}
-			}
-			else
-			{
-				$scope.minDateToSearch=$scope.timeStart;
-			}
-			//console.log("$scope.minDateToSearch");
-			//console.log($scope.minDateToSearch);			
-			//console.log("$scope.timeEnd");
-			//console.log($scope.timeEnd);
-			
-			if ($scope.timeEnd==='----')
-			{
-				if ($scope.TimeSelector.length>0)
-				{
-					$scope.maxDateToSearch=$scope.TimeSelector[($scope.TimeSelector.length-1)];
-				}
-			}
-			else
-			{
-				$scope.maxDateToSearch=$scope.timeEnd;
-			}			
-			//console.log("$scope.maxDateToSearch");
-			//console.log($scope.maxDateToSearch);
-			
-			if ($scope.resolution)
-			{
-				//console.log($scope.resolution.value);
-				if ($scope.resolution.value=='year')
-				{
-					$scope.minDateToSearch = $scope.minDateToSearch+"-01-01";
-					$scope.maxDateToSearch = $scope.maxDateToSearch+"-12-31";
-				}
-				else if ($scope.resolution.value=='quarter')
-				{
-					var arrayDateQuarterA = $scope.minDateToSearch.split("-");
-					var arrayDateQuarterB = $scope.maxDateToSearch.split("-");
-
-					var qmonthA = '01'
-					if (arrayDateQuarterA[1]=='Q1')
-					{
-						qmonthA = '01';
-					}
-					else if (arrayDateQuarterA[1]=='Q2')
-					{
-						qmonthA = '04';
-					}
-					else if (arrayDateQuarterA[1]=='Q3')
-					{
-						qmonthA = '07';
-					}					
-					else if (arrayDateQuarterA[1]=='Q4')
-					{
-						qmonthA = '10';
-					}	
-					
-					var qmonthB = '01'
-					if (arrayDateQuarterB[1]=='Q1')
-					{
-						qmonthB = '01';
-					}
-					else if (arrayDateQuarterB[1]=='Q2')
-					{
-						qmonthB = '04';
-					}
-					else if (arrayDateQuarterB[1]=='Q3')
-					{
-						qmonthB = '07';
-					}					
-					else if (arrayDateQuarterB[1]=='Q4')
-					{
-						qmonthB = '10';
-					}
-					
-					$scope.minDateToSearch = arrayDateQuarterA[0]+"-"+qmonthA+"-01";
-					$scope.maxDateToSearch = arrayDateQuarterB[0]+"-"+(qmonthB+1)+"-01";
-				}			
-				else if ($scope.resolution.value=='month')
-				{
-					$scope.minDateToSearch = $scope.minDateToSearch+"-01";
-					$scope.maxDateToSearch = $scope.maxDateToSearch+"-01";								
-				}
-				else if ($scope.resolution.value=='day')
-				{
-					$scope.minDateToSearch = $scope.minDateToSearch;
-					$scope.maxDateToSearch = $scope.maxDateToSearch;					
-				}				
-			}
-			
-			//$scope.minDateToSearch = $scope.minDateToSearch+"T00:00:00.000Z"
-			//$scope.maxDateToSearch = $scope.maxDateToSearch+"T23:59:00.000Z"
-			
-			//console.log($scope.minDateToSearch);
-			//console.log($scope.maxDateToSearch);
-
-			
-			var arrayIdsMetricsSelected = [];
-			$scope.individualsSelected = [];
-			for (var i=0; i < $scope.ListMetricsFilter.length; i++) 
-			{			
-				arrayIdsMetricsSelected[i]=$scope.ListMetricsFilter[i].id;
+		        
+		  		var modalInstance = $modal.open($scope.opts);
+		  
+		  		modalInstance.result.then(function(){
+		        	//on ok button press
+		        	//console.log('on ok button press');
+			    	//console.log($scope.eventsToPlot);
+		    		//console.log(modalInstance);
+		  			},function(){
+		    		//on cancel button press
+		    		//console.log("Modal Closed");
+		  			});
 				
-				//console.log($scope.IndividualDatasetCheckboxes_[$scope.ListMetricsFilter[i].id]);
-				
-				for (var i_identity=0; i_identity < $scope.IndividualDatasetCheckboxes_[$scope.ListMetricsFilter[i].id].length; i_identity++)
+			}
+			else
+			{
+				$scope.name = 'Link an event';
+				$scope.historicalevent_id ='';
+		   		var s= document.getElementById("startDatePosX");
+		   		var e= document.getElementById("endDatePosX");
+		   		
+		   		//console.log("s.value="+s.value);        
+		   		dateRec = s.value;
+		   		dateRecEnd = e.value;
+				//console.log("dateRec="+dateRec+"--now="+Date.now());
+				if (dateRec)
 				{
-					//console.log($scope.IndividualDatasetCheckboxes_[$scope.ListMetricsFilter[i].id][i_identity]);	
-					var idindividual=$scope.IndividualDatasetCheckboxes_[$scope.ListMetricsFilter[i].id][i_identity];
-						
-					var a = $scope.individualsSelected.indexOf(idindividual);
-					if (a<0)
-					{
-						$scope.individualsSelected.push(idindividual);
-					}
+					//dateRec = '2014-01-01';
+					//console.log("dateRec="+dateRec);
+					dateRec = dateRec.replace(/-/g,"/");
+					var res = dateRec.split("/");
+					var newDate = res[2]+"-"+res[0]+"-"+res[1];
+					//console.log("newDate="+newDate);
+					$scope.startDate = (newDate);
 				}
-			};
-			
-			//console.log("$scope.individualsSelected");
-			//console.log($scope.individualsSelected);
-			//$scope.startDate = '01-01-2011';
-			//$scope.startDate = s.value;
-			//$scope.startDateToFilter = '2014-09-17';
-			//$scope.startDateToFilter = $scope.startDate ;
-			//$scope.startDateToFilter = "Mon Sep 15 2014 00:00:00 GMT+0200 (Romance Daylight Time)";
-					
-	        $scope.opts = {
-				backdrop: true,
-				backdropClick: false,
-				dialogFade: true,
-				keyboard: true,        
-				templateUrl : 'modules/visualization/partials/addEvent.html',
-		        controller : 'ModalInstanceCtrl',
-				resolve: {}, // empty storage
-				scope: $scope
-	  		};
+				else
+				{
+					//$scope.startDate = $filter("date")(Date.now(), 'yyyy-MM-dd');	
+					$scope.startDate = "";
+				}
 	
-	        $scope.opts.resolve.item = function() {
-	    		return angular.copy({name:$scope.name, startDate:$scope.startDate, endDate:$scope.endDate, minDateToSearch:$scope.minDateToSearch, maxDateToSearch:$scope.maxDateToSearch, metricsArray: arrayIdsMetricsSelected, arrayIndividuals: $scope.individualsSelected}); // pass name to Dialog
-			}
-	        
-	  		var modalInstance = $modal.open($scope.opts);
-	  
-	  		modalInstance.result.then(function(){
-	        	//on ok button press
-	        	//console.log('on ok button press');
-		    	//console.log($scope.eventsToPlot);
-	    		//console.log(modalInstance);
-	  			},function(){
-	    		//on cancel button press
-	    		//console.log("Modal Closed");
-	  			});
+				if (dateRecEnd)
+				{
+					//dateRec = '2014-01-01';
+					//console.log("dateRec="+dateRec);
+					dateRecEnd = dateRecEnd.replace(/-/g,"/");
+					var res = dateRecEnd.split("/");
+					var newDate = res[2]+"-"+res[0]+"-"+res[1];
+					//console.log("newDate="+newDate);
+					$scope.endDate = (newDate);
+				}
+				else
+				{
+					//$scope.startDate = $filter("date")(Date.now(), 'yyyy-MM-dd');	
+					$scope.endDate = "";
+				}
+				
+				//console.log("$scope.endDate="+$scope.endDate);
+	
+				//console.log("resolution");
+				//console.log($scope.resolution);
+				$scope.minDateToSearch ='';
+				$scope.maxDateToSearch ='';
+				//console.log("$scope.timeStart");
+				//console.log($scope.timeStart);
+				
+				if ($scope.timeStart==='----')
+				{
+					if ($scope.TimeSelector.length>0)
+					{
+						$scope.minDateToSearch=$scope.TimeSelector[1];
+					}
+				}
+				else
+				{
+					$scope.minDateToSearch=$scope.timeStart;
+				}
+				//console.log("$scope.minDateToSearch");
+				//console.log($scope.minDateToSearch);			
+				//console.log("$scope.timeEnd");
+				//console.log($scope.timeEnd);
+				
+				if ($scope.timeEnd==='----')
+				{
+					if ($scope.TimeSelector.length>0)
+					{
+						$scope.maxDateToSearch=$scope.TimeSelector[($scope.TimeSelector.length-1)];
+					}
+				}
+				else
+				{
+					$scope.maxDateToSearch=$scope.timeEnd;
+				}			
+				//console.log("$scope.maxDateToSearch");
+				//console.log($scope.maxDateToSearch);
+				
+				if ($scope.resolution)
+				{
+					//console.log($scope.resolution.value);
+					if ($scope.resolution.value=='year')
+					{
+						$scope.minDateToSearch = $scope.minDateToSearch+"-01-01";
+						$scope.maxDateToSearch = $scope.maxDateToSearch+"-12-31";
+					}
+					else if ($scope.resolution.value=='quarter')
+					{
+						var arrayDateQuarterA = $scope.minDateToSearch.split("-");
+						var arrayDateQuarterB = $scope.maxDateToSearch.split("-");
+	
+						var qmonthA = '01'
+						if (arrayDateQuarterA[1]=='Q1')
+						{
+							qmonthA = '01';
+						}
+						else if (arrayDateQuarterA[1]=='Q2')
+						{
+							qmonthA = '04';
+						}
+						else if (arrayDateQuarterA[1]=='Q3')
+						{
+							qmonthA = '07';
+						}					
+						else if (arrayDateQuarterA[1]=='Q4')
+						{
+							qmonthA = '10';
+						}	
+						
+						var qmonthB = '01'
+						if (arrayDateQuarterB[1]=='Q1')
+						{
+							qmonthB = '01';
+						}
+						else if (arrayDateQuarterB[1]=='Q2')
+						{
+							qmonthB = '04';
+						}
+						else if (arrayDateQuarterB[1]=='Q3')
+						{
+							qmonthB = '07';
+						}					
+						else if (arrayDateQuarterB[1]=='Q4')
+						{
+							qmonthB = '10';
+						}
+						
+						$scope.minDateToSearch = arrayDateQuarterA[0]+"-"+qmonthA+"-01";
+						$scope.maxDateToSearch = arrayDateQuarterB[0]+"-"+(qmonthB+1)+"-01";
+					}			
+					else if ($scope.resolution.value=='month')
+					{
+						$scope.minDateToSearch = $scope.minDateToSearch+"-01";
+						$scope.maxDateToSearch = $scope.maxDateToSearch+"-01";								
+					}
+					else if ($scope.resolution.value=='day')
+					{
+						$scope.minDateToSearch = $scope.minDateToSearch;
+						$scope.maxDateToSearch = $scope.maxDateToSearch;					
+					}				
+				}
+				
+				//$scope.minDateToSearch = $scope.minDateToSearch+"T00:00:00.000Z"
+				//$scope.maxDateToSearch = $scope.maxDateToSearch+"T23:59:00.000Z"
+				
+				//console.log($scope.minDateToSearch);
+				//console.log($scope.maxDateToSearch);
+	
+				
+				var arrayIdsMetricsSelected = [];
+				$scope.individualsSelected = [];
+				for (var i=0; i < $scope.ListMetricsFilter.length; i++) 
+				{			
+					arrayIdsMetricsSelected[i]=$scope.ListMetricsFilter[i].id;
+					
+					//console.log($scope.IndividualDatasetCheckboxes_[$scope.ListMetricsFilter[i].id]);
+					
+					for (var i_identity=0; i_identity < $scope.IndividualDatasetCheckboxes_[$scope.ListMetricsFilter[i].id].length; i_identity++)
+					{
+						//console.log($scope.IndividualDatasetCheckboxes_[$scope.ListMetricsFilter[i].id][i_identity]);	
+						var idindividual=$scope.IndividualDatasetCheckboxes_[$scope.ListMetricsFilter[i].id][i_identity];
+							
+						var a = $scope.individualsSelected.indexOf(idindividual);
+						if (a<0)
+						{
+							$scope.individualsSelected.push(idindividual);
+						}
+					}
+				};
+				
+				//console.log("$scope.individualsSelected");
+				//console.log($scope.individualsSelected);
+				//$scope.startDate = '01-01-2011';
+				//$scope.startDate = s.value;
+				//$scope.startDateToFilter = '2014-09-17';
+				//$scope.startDateToFilter = $scope.startDate ;
+				//$scope.startDateToFilter = "Mon Sep 15 2014 00:00:00 GMT+0200 (Romance Daylight Time)";
+						
+		        $scope.opts = {
+					backdrop: true,
+					backdropClick: false,
+					dialogFade: true,
+					keyboard: true,        
+					templateUrl : 'modules/visualization/partials/addEvent.html',
+			        controller : 'ModalInstanceCtrl',
+					resolve: {}, // empty storage
+					scope: $scope
+		  		};
+		
+		        $scope.opts.resolve.item = function() {
+		    		return angular.copy({name:$scope.name, startDate:$scope.startDate, endDate:$scope.endDate, minDateToSearch:$scope.minDateToSearch, maxDateToSearch:$scope.maxDateToSearch, metricsArray: arrayIdsMetricsSelected, arrayIndividuals: $scope.individualsSelected}); // pass name to Dialog
+				}
+		        
+		  		var modalInstance = $modal.open($scope.opts);
+		  
+		  		modalInstance.result.then(function(){
+		        	//on ok button press
+		        	//console.log('on ok button press');
+			    	//console.log($scope.eventsToPlot);
+		    		//console.log(modalInstance);
+		  			},function(){
+		    		//on cancel button press
+		    		//console.log("Modal Closed");
+		  			});
+	  		}
 		};  
       
 
@@ -1940,7 +1979,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 									
 			//clear container chart div
 			var divContent='';
-			divContent='<div class="loading-container"><div class="loading"></div><div id="loading-text">loading</div></div>';
+			divContent='<div class="loading-container"><div class="loading" ></div><div id="loading-text">loading</div></div>';
 			if ($scope.mode!='view')
 			{
 					if (document.getElementById("container_graph_"+$scope.visualization.id) !=null)
@@ -1952,6 +1991,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						document.getElementById("container_graph_").innerHTML = divContent;
 					}
 			}	
+			
 			//console.log($scope.dataset_color_palete_)
 			//console.log($scope.IndividualDatasetCheckboxes_);
 			//console.log($scope.ListMetricsFilter);
@@ -5577,6 +5617,40 @@ angular.module('pcApp.visualization').filter('pagination', function()
  };
 })
 
+.controller('ModalInstanceCtrlDataset', [
+	'$scope', 
+	'VisualizationByDataset',
+	'Visualization',
+	'Event',
+	'$filter',
+	'$route',
+	'$routeParams',	
+	'$modalInstance', 
+	'$modal', 
+	'item',
+	'searchclient',
+	'$location', 
+	'$log',
+	'API_CONF',
+	function($scope, VisualizationByDataset, Visualization, Event, $filter, $route, $routeParams, $modalInstance, $modal, item, searchclient, $location, $log, API_CONF) 
+	{
+		
+		//console.log("aaaaaaa");
+		
+		$scope.displaycontentMetricModal = function(idMetric) {
+			var containerLink = document.getElementById("modal-edit-metric-button-"+idMetric);
+			$(containerLink).parent().next().toggle(200);	 
+		};
+		
+		$scope.okModalDataset = function () {
+			$modalInstance.close();		
+		};
+      
+		$scope.cancelModalDataset = function () {
+			$modalInstance.dismiss('cancel');
+		};
+	
+}])
 
 .controller('ModalInstanceCtrl', [
 	'$scope', 
