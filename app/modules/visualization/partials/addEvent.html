@@ -118,8 +118,10 @@
 					                           datepicker-popup=""
 					                           ng-model="startDateToFilter"
 					                           is-open="opened"
-					                           min-date="minDate"
-					                           max-date="maxDate"
+					                           min-date-old="minDate"
+					                           max-date-old="maxDate"
+					                           min-date="startDateToFilter"
+					                           max-date="endDateToFilter"					                           
 					                           datepicker-options="dateOptions"
 					                           show-button-bar="false"
 					                           ng-required="false"
@@ -144,8 +146,10 @@
 					                           datepicker-popup=""
 					                           ng-model="endDateToFilter"
 					                           is-open="opened"
-					                           min-date="minDate"
-					                           max-date="maxDate"
+					                           min-date-old="minDate"
+					                           max-date-old="maxDate"
+					                           min-date="startDateToFilter"
+					                           max-date="endDateToFilter"
 					                           datepicker-options="dateOptions"
 					                           show-button-bar="false"
 					                           ng-required="false"
@@ -243,7 +247,7 @@
       				</div>
 			</div>
 -->			
-      <div class="events-display-fields">
+      <div ng-if="historicalevent_id>0" class="events-display-fields">
       
 			<div class="form-group" ng-class="{ 'has-error' : neweventForm.title.$invalid && !neweventForm.title.$pristine }">
             	<label for="titleHE" class="mandatory field-label">Title:</label>
@@ -340,7 +344,7 @@
           </div>
 
             
-			<div class="form-group">
+			<div ng-if="historicalevent_id>0" class="form-group">
 				<label for="Description">Description:</label>
 				<div>				
 					<textarea rows="2" cols="50" ng-model="historicalevent_description" ng-trim="false" maxlength="150" name="descriptionHEToAdd" id="descriptionHEToAdd">{{historicalevent_description}}</textarea>
