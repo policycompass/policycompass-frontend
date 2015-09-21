@@ -248,8 +248,11 @@ angular.module('pcApp.events.controllers.event', [
         $scope.post = function(){
             //$log.info($scope.modul.name);
             //$log.info($scope.content);
-            $http.post(API_CONF.EVENTS_MANAGER_URL + '/configupload', {name: $scope.modul.name, script: $scope.content}).
+            $http.post(API_CONF.EVENTS_MANAGER_URL + '/configextractor', {name: $scope.modul.name, script: $scope.content}).
                 then(function(response) {
+                    if (response) {
+                        $scope.ex_added = "Script added!";
+                    }
                     // this callback will be called asynchronously
                     // when the response is available
                 }, function(response) {

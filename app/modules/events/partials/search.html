@@ -69,7 +69,9 @@
                 </div>
                 <label>Select Source(s):</label>
                 <div ng-repeat="result in availableExtractors">
-                    <input type="checkbox" ng-model="bool" ng-change="sync(bool, result.name)" ng-checked="isChecked(result.name)"> {{result.name}}
+                    <div ng-if="result.valid && result.active">
+                        <input type="checkbox" ng-model="bool" ng-change="sync(bool, result.name)" ng-checked="isChecked(result.name)"> {{result.name}}
+                    </div>
                 </div>
                 <div>{{ selectedExtractors }}</div>
 
