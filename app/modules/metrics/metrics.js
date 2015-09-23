@@ -9,7 +9,9 @@ var metrics = angular.module('pcApp.metrics', [
     'pcApp.metrics.directives.forms',
     'pcApp.references.directives.forms',
     'pcApp.metrics.directives.contenteditable',
-    'pcApp.metrics.directives.formula'
+    'pcApp.metrics.directives.formula',
+    'pcApp.metrics.directives.indicator',
+    'pcApp.metrics.directives.datasetSelect'
 ]);
 
 /**
@@ -31,6 +33,10 @@ metrics.config(function($routeProvider) {
        .when('/metrics/:metricId', {
             controller: 'MetricsmanagerDetailController',
             templateUrl: 'modules/metrics/partials/metric-detail.html'
+        })
+       .when('/metrics/:metricId/apply', {
+            controller: 'ApplyMetricController',
+            templateUrl: 'modules/metrics/partials/apply-metric.html'
         })
         .otherwise({ redirectTo: '/' });
 });

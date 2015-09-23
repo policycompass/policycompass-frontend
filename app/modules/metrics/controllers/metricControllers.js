@@ -379,6 +379,26 @@ angular.module('pcApp.metrics.controllers.metric', [
 
 }])
 
+.controller('ApplyMetricController', ['$scope', '$routeParams', 'API_CONF', '$http', function($scope, $routeParams, API_CONF, $http) {
+
+    $scope.postdata = {};
+    $scope.postdata['dataset'] = [];
+
+    $scope.metricId = $routeParams.metricId;
+
+    var metric_url = API_CONF.METRICS_MANAGER_URL + "/metrics/" + $scope.metricId;
+
+    $http.get(metric_url).
+            then(function(response) {
+                $scope.data = response.data;
+                $scope.data.variablesJson = JSON.parse($scope.data.variables.replace(/'/g, '"'));
+            }, function(response) {
+                console.log('error');
+                console.log(response);
+            });
+
+}])
+
 /**
  * Controller for the list of metrics
  */

@@ -4,5 +4,16 @@
   </div>
   {{ indicator.name }}
   <!--<div class="calculation-formula calculation-formula-2">{{data.formula}}</div>-->
-  <formula ng-if="data.formula && data.variables" data-formula="data.formula" data-variables="data.variables"></formula>
+
+  <div class="row">
+  	<div class="col-md-12">
+  		<formula ng-if="data.formula && data.variables" data-formula="data.formula" data-variables="data.variables"></formula>
+  	</div>
+  </div>
+
+  <div class="row">
+  	<div class="col-md-12">
+  		<a href="#!/metrics/{{ data.id }}/apply" class="btn pull-right">operationalize</a>
+  	</div>
+  </di>
 </div>
