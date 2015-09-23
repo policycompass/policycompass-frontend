@@ -28,6 +28,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
             		var data =  {
 					id : metricId,
 					title : metric.title,
+					acronym : metric.acronym,
 					issued : metric.issued,
 					};
 				
@@ -1261,6 +1262,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
             		var data =  {
 					id : metric.id,
 					title : metric.title,
+					acronym : metric.acronym,
 					issued : metric.issued,
 					};
 				
@@ -1758,7 +1760,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						//console.log($scope.IndividualDatasetCheckboxes_[$scope.ListMetricsFilter[i].id][i_identity]);	
 						var idindividual=$scope.IndividualDatasetCheckboxes_[$scope.ListMetricsFilter[i].id][i_identity];
 							
-						var a = $scope.individualsSelected.indexOf(idindividual);
+						var a = $scope.individualsSelected.indexOf(idindividual);						
 						if (a<0)
 						{
 							$scope.individualsSelected.push(idindividual);
@@ -2363,16 +2365,32 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			$scope.cntTitleIndividual = 0;
 			$scope.cntYLabels=0;
 			
+			
+			//console.log("arguments");
+			//console.log(arguments);
+			//console.log(arguments.length);
+			//console.log("...............");
+			//var sizeArg = arguments.length;
 			for (var i=1; i<arguments.length; i++)
 			{
 				//console.log("----------------->"+$scope.TitleUnits[arguments[i]['unit_id']]);
 				if ($scope.TitleUnits[arguments[i]['unit_id']])
 				{
 					$scope.cntYLabels = $scope.cntYLabels +1;
-					if ((arguments.length<=$scope.cntYLabels) && ($scope.cntTitleIndividual>=$scope.cntIndividuals))
+					
+					//console.log("scope.cntYLabels="+$scope.cntYLabels);
+					
+					if (($scope.cntYLabels>=(arguments.length-1)) && ($scope.cntTitleIndividual>=$scope.cntIndividuals))
+					//if (($scope.cntTitleIndividual>=$scope.cntIndividuals))
 					{
 							$scope.recoverDataEnds=true;
-							console.log("Exit A!!!!");
+							//console.log("Exit C!!!!");
+							
+							//console.log("arguments.length="+arguments.length);							
+							//console.log("scope.cntYLabels="+$scope.cntYLabels);
+							//console.log("scope.cntTitleIndividual="+$scope.cntTitleIndividual);
+							//console.log("scope.cntIndividuals="+$scope.cntIndividuals);
+							
 							//console.log("End recover indiv.");
 					}					
 				}
@@ -2384,16 +2402,28 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					
 					$dataUnit[i].$promise.then(function(unit) 
 					{
+						
+						
 						$scope.TitleUnits[unit.id] = unit.title;
-						//console.log("----->");
+						//console.log("TitleUnits ----->");
 						//console.log($scope.TitleUnits);
 						//console.log("<-----");
 						$scope.cntYLabels = $scope.cntYLabels +1;
+						//console.log("arguments");
 
-						if ((arguments.length<=$scope.cntYLabels) && ($scope.cntTitleIndividual>=$scope.cntIndividuals))
+
+						//if ((arguments.length<=$scope.cntYLabels) && ($scope.cntTitleIndividual>=$scope.cntIndividuals))
+						//if (($scope.cntTitleIndividual>=$scope.cntIndividuals))
+						if (($scope.cntYLabels>=(arguments.length-1)) && ($scope.cntTitleIndividual>=$scope.cntIndividuals))
 						{
 							$scope.recoverDataEnds=true;
 							//console.log("Exit A!!!!");
+							//console.log("sizeArg="+sizeArg);
+							//console.log("arguments.length="+arguments.length);
+							//console.log("scope.cntYLabels="+$scope.cntYLabels);
+							//console.log("scope.cntTitleIndividual="+$scope.cntTitleIndividual);
+							//console.log("scope.cntIndividuals="+$scope.cntIndividuals);
+							//console.log($scope.TitleUnits);
 							//console.log("End recover indiv.");
 						}
 						
@@ -2434,8 +2464,14 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					//console.log($scope.TimeSelector);
 
 					//$scope.cntIndividuals = $scope.cntIndividuals +1;
+					
+					//console.log(arguments[i].acronym);
+					//console.log(arguments[i]['data']['table'][j].individual);
+					//console.log($scope.TitleIndividuals);
+					
 					if ($scope.TitleIndividuals[arguments[i]['data']['table'][j].individual])
 					{
+						//console.log("aaaaaaaa");
 						/*
 						$scope.cntTitleIndividual = $scope.cntTitleIndividual +1; 
 							//console.log("cntTitleIndividual="+$scope.cntTitleIndividual);
@@ -2447,7 +2483,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 								//console.log("End recover indiv.");
 							}*/
 							
-							
+							$scope.cntIndividuals = $scope.cntIndividuals +1;
 					}
 					else
 					{
@@ -2460,14 +2496,15 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						
 						$dataIndividualPromises[j] = Individual.getById(arguments[i]['data']['table'][j].individual);
 						
-						//$scope.TitleIndividuals[arguments[i]['data']['table'][j].individual] = "-----";
+						//console.log(arguments[i].acronym);
 						
+						//$scope.TitleIndividuals[arguments[i]['data']['table'][j].individual] = "-----";
+						//console.log("j="+j);
 						$dataIndividualPromises[j].$promise.then(function(indivudual) {
 						//$dataIndividualPromises[j].then(function(indivudual) {
 							
-							
-							//console.log(indivudual.id);
-							//console.log(indivudual.title);
+							//console.log("individual id="+indivudual.id);
+							//console.log("individual title="+indivudual.title);
 							$scope.TitleIndividuals[indivudual.id] = indivudual.title;
 							
 							$scope.cntTitleIndividual = $scope.cntTitleIndividual +1; 
@@ -2482,10 +2519,23 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							}
 							*/
 							
-							if ((arguments.length<=$scope.cntYLabels) && ($scope.cntTitleIndividual>=$scope.cntIndividuals))
+							//console.log("indivudual.title ----->");
+							//console.log(indivudual.title);
+							//console.log("<-----");
+						
+							//if ((arguments.length<=$scope.cntYLabels) && ($scope.cntTitleIndividual>=$scope.cntIndividuals))
+							//if (($scope.cntTitleIndividual>=$scope.cntIndividuals))
+							if (($scope.cntYLabels>=(arguments.length-1)) && ($scope.cntTitleIndividual>=$scope.cntIndividuals))
 							{
 								$scope.recoverDataEnds=true;
+								
 								//console.log("Exit B!!!!");
+								//console.log("arguments.length="+arguments.length);
+								//console.log("scope.cntYLabels="+$scope.cntYLabels);
+								//console.log("scope.cntTitleIndividual="+$scope.cntTitleIndividual);
+								//console.log("scope.cntIndividuals="+$scope.cntIndividuals);
+								
+								
 								//console.log("End recover indiv.");
 							}
 
@@ -3196,7 +3246,14 @@ angular.module('pcApp.visualization.controllers.visualization', [
 											{
 												//console.log($scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]);
 												//console.log(arguments[i]['data']['table'][j].individual);
-												var key = $scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]+"_"+j;
+												
+												var str = arguments[i].acronym;
+												//console.log("str="+str); 
+    											//var str = str.replace(/ /gi, "&");
+												//console.log("str="+str);
+												
+												//var key = $scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]+"_"+j;
+												var key = $scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]+" ["+str+"] _"+j;
 												//console.log(key);
 											}	
 										}
@@ -3205,7 +3262,12 @@ angular.module('pcApp.visualization.controllers.visualization', [
 										if ($sem>100000)
 										{
 											//console.log(arguments[i]['data']['table'][j].individual);
-											var key = arguments[i]['data']['table'][j].individual+"_"+j;
+											var str = arguments[i].acronym;
+											
+											//var key = arguments[i]['data']['table'][j].individual+"_"+j;
+											
+											var key = arguments[i]['data']['table'][j].individual+" ["+str+"] _"+j;
+											
 											//var key = " ";
 											//console.log("key fora error!!!");
 											//console.log($scope.TitleIndividuals);
@@ -3314,7 +3376,10 @@ angular.module('pcApp.visualization.controllers.visualization', [
 										//console.log("j="+j);
 										if ($scope.TitleIndividuals[arguments[i]['data']['table'][j].individual])
 										{
-											var label = $scope.TitleIndividuals[arguments[i]['data']['table'][j].individual];
+											var str = arguments[i].acronym;
+											
+											//var label = $scope.TitleIndividuals[arguments[i]['data']['table'][j].individual];
+											var label = $scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]+" ["+str+"]";
 											//console.log("label="+label+"----value=");
 											//console.log(obj);	
 											//console.log(obj_[j]);
@@ -3323,8 +3388,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
 										
 										if ($sem>100000)
 										{
-											var label = arguments[i]['data']['table'][j].individual;
-											
+											var str = arguments[i].acronym;
+											//var label = arguments[i]['data']['table'][j].individual;
+											var label = arguments[i]['data']['table'][j].individual+" ["+str+"]";
 										}
 										
 									
@@ -3437,13 +3503,20 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
 										if ($scope.TitleIndividuals[arguments[i]['data']['table'][j].individual])
 										{
-											var key = $scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]+"_"+j;	
+											var str = arguments[i].acronym;
+											
+											//var key = $scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]+"_"+j;
+																					
+											var key = $scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]+" ["+str+"]_"+j;
 										}
 										$sem = $sem +1;
 										
 										if ($sem>100000)
 										{
-											var key = arguments[i]['data']['table'][j].individual+"_"+j;
+											var str = arguments[i].acronym;
+											
+											//var key = arguments[i]['data']['table'][j].individual+"_"+j;
+											var key = arguments[i]['data']['table'][j].individual+" ["+str+"]_"+j;
 											//console.log("key fora error!!!");
 											//console.log($scope.TitleIndividuals);
 										}
@@ -5735,6 +5808,7 @@ angular.module('pcApp.visualization').filter('pagination', function()
 	$scope.paginationEvents = "";
 	
 	$scope.arrayHE = [];
+	$scope.recomendationevents = [];
 	for (var i=0; i < $scope.metricslist.length; i++) {
 		//console.log($scope.metricslist[i]);
 		var metricId =$scope.metricslist[i]
@@ -5779,6 +5853,10 @@ angular.module('pcApp.visualization').filter('pagination', function()
             							arrayDatos['_source']=herec;
             							//$scope.recomendationevents.push(arrayDatos);
             							//console.log($scope.arrayHE);
+            							
+            							//console.log("idindividual="+herec.id);
+										//console.log($scope.arrayHE);
+            							//console.log($scope.arrayHE.indexOf(herec.id));
             							
             							if($scope.arrayHE.indexOf(herec.id)==-1)
             							{

@@ -1,58 +1,65 @@
 <div class="container">
+	<div class="content-header">
+		<h1><span class="glyphicon glyphicon-list-alt"></span> {{ indicator.acronym }}</h1>
+		<div class="pc-visualization-formcontrols">
+			<div class="button-group">				
+ 				<a type="button" class="btn btn-primary" href="#!/indicators/{{ indicator.id }}/edit">Edit</a>
+            	<a type="button" class="btn btn-danger" ng-click="deleteIndicator(indicator)">Delete</a>
+      		</div>      			
+      	</div>
 
-    <h1><span class="glyphicon glyphicon-list-alt"></span> {{ indicator.acronym }}</h1>
-    <br />
+	</div>
+	
+  	<div class="row"> 
+  		
+  		<table class="table table-detail-main-data table-hover">
+			<tbody>
+				<tr ng-show="indicator.name" class="">
+					<td class="table-detail-title">Title:</td>
+					<td class="table-detail-content">{{indicator.name}}</td>
+				</tr>
 
-    <div class="row">
-        <div class="col-lg-12">
-            <table class="table table-hover">
-                <tr ng-show="indicator.name">
-                    <td><b>Title:</b></td>
-                    <td>{{ indicator.name }}</td>
-                </tr>
-                <tr ng-show="indicator.description">
-                    <td><b>Description:</b></td>
-                    <td>{{ indicator.description }}</td>
-                </tr>
-            </table>
-        </div>
-    </div>
+				<tr ng-show="indicator.description" class="">
+					<td class="table-detail-title">Description:</td>
+					<td class="table-detail-content">{{indicator.description}}</td>
+				</tr>
+			</tbody>
+		</table>
 
-    <div class="row">
-        <div class="col-lg-12">
-            <legend class="legend-primary">Details</legend>
-                <table class="table table-hover">
-                    <tr ng-show="indicator.policy_domains">
-                        <td><b>Policy Domains:</b></td>
-                        <td><span ng-repeat="p in indicator.policy_domains">{{ p.title }}{{$last ? '' : ', '}}</span></td>
-                    </tr>
-                    <tr ng-if="indicator.unit_category">
-                        <td><b>Unit Category:</b></td>
-                        <td><span resource-title id="indicator.unit_category" resource="UnitCategory"></span></td>
-                    </tr>
-                    <tr ng-if="indicator.language">
-                        <td><b>Language:</b></td>
-                        <td><span resource-title id="indicator.language" resource="Language"></span></td>
-                    </tr>
-                    <tr ng-show="indicator.issued">
-                        <td><b>Issued:</b></td>
-                        <td>{{ indicator.issued | date:'longDate' }}</td>
-                    </tr>
+	</div>
+	<div class="row">
+		<h3 class="legend-primary">Details</h3>
+		
+		<table class="table table-detail table-hover">
+			<tbody>           	
+				<tr ng-show="indicator.policy_domains" class="">
+					<td class="table-detail-title">Policy Domains:</td>
+					<td class="table-detail-content"><span ng-repeat="p in indicator.policy_domains">{{ p.title }}{{$last ? '' : ', '}}</span></td>
+				</tr>
+				
+				 <tr ng-if="indicator.unit_category">
+					<td class="table-detail-title">Unit Category:</td>
+					<td class="table-detail-content"><span resource-title id="indicator.unit_category" resource="UnitCategory"></span></td>
+				</tr>
+				
+ 				<tr ng-if="indicator.language">
+					<td class="table-detail-title">Language:</td>
+					<td class="table-detail-content"><span resource-title id="indicator.language" resource="Language"></span></td>
+				</tr>
 
-                    <tr ng-show="indicator.modified">
-                        <td><b>Last Modified:</b></td>
-                        <td>{{ indicator.modified | date:'longDate' }}</td>
-                    </tr>
-                </table>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <legend class="legend-primary">Options</legend>
-            <a type="button" class="btn btn-primary" href="#!/indicators/{{ indicator.id }}/edit">Edit</a>
-            <button type="button" class="btn btn-danger" ng-click="deleteIndicator(indicator)">Delete</button>
-        </div>
-    </div>
+				<tr ng-show="indicator.issued">
+					<td class="table-detail-title">Issued:</td>
+					<td class="table-detail-content">{{ indicator.issued | date:'longDate' }}</td>
+				</tr>
 
-    <br />
+				<tr ng-show="indicator.modified">
+					<td class="table-detail-title">Last Modified:</td>
+					<td class="table-detail-content">{{ indicator.modified | date:'longDate' }}</td>
+				</tr>
+				
+			</tbody>
+		</table>
+	</div>
+	
+
 </div>

@@ -18,7 +18,7 @@
 				<button data-intro="Helps you to link datasets with this visualisation" data-position="top" type="submit" class="btn btn-default btn-adddataset" id="modaladddataset" ng-click="showModal('datasets')">Link Datasets</button>
 				
 				
-				<button ng-show="isSelectedSon('graph_line') && ListMetricsFilter.length>0" data-intro="Helps you to link this visualisation with events" data-position="top"  type="submit" class="btn btn-primary btn-adddevent" id="addHEbutton" ng-click="showModal()">Link Events</button>
+				<button ng-show="isSelectedSon('graph_line') && ListMetricsFilter.length>0" data-intro="Helps you to link this visualisation with events" data-position="top"  type="submit" class="btn btn-primary btn-adddevent" id="addHEbutton" ng-click="showModal('events')">Link Events</button>
 				
 				
 				<button ng-disabled="false" type="button" data-intro="Plot data in a map" data-position="top" ng-class="{'btn btn-default btn-map':!isSelectedParent(1),'btn btn-info btn-map':isSelectedParent(1)}" ng-click="selectTabParent(1); selectTabSon('mercator');rePlotGraph();">Map</button>					
@@ -45,7 +45,7 @@
 						<input type="hidden" id="startDatePosX" name="startDatePosX" value="">
 						<input type="hidden" id="endDatePosX" name="endDatePosX" value="">
  		
-							<div ng-click="isSelectedSon('graph_line') ? showModal() : void(0)">
+							<div ng-click="isSelectedSon('graph_line') ? showModal('events') : void(0)">
 								<div ng-show="isSelectedSon('map_1') || isSelectedSon('mercator') || isSelectedSon('conicConformal') || isSelectedSon('equirectangular') || isSelectedSon('orthographic') || isSelectedSon('azimuthalEqualArea')">
 									<div ng-show="mapTimeSlider.length>0">
 										<rzslider
@@ -88,7 +88,7 @@
 		</div>
 		-->
 							<center>
-								<div style="height:450px; possition:absolute">									
+								<div style="min-height:450px; possition:absolute">									
 									<div id="container_graph_{{visualization.id}}" class="container_graph">
 										<div class="loading-container">
 											<div class="loading"></div>
@@ -337,7 +337,7 @@
             		-->
             		<tab ng-show="1==2" heading="Historical Events">
 						<div ng-show="ListMetricsFilter.length>0" class="buttonline clearfix-min">
-							<button data-intro="Helps you to link this visualisation with events" data-position="right"  type="submit" class="btn btn-primary button-metrics" id="addHEbutton" ng-click="showModal()">Add Historical Event</button>
+							<button data-intro="Helps you to link this visualisation with events" data-position="right"  type="submit" class="btn btn-primary button-metrics" id="addHEbutton" ng-click="showModal('events')">Add Historical Event</button>
 						</div>
 						<br />
 						<div ng-show="eventsToPlot.length==0">No events selected</div>
