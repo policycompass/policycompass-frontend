@@ -2391,6 +2391,13 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			//console.log(arguments.length);
 			//console.log("...............");
 			//var sizeArg = arguments.length;
+			
+			var cntIndividualsVisualisation = 0;
+			for (var i=1; i<arguments.length; i++)
+			{				
+				cntIndividualsVisualisation = cntIndividualsVisualisation + arguments[i]['data']['table'].length;
+			}
+			
 			for (var i=1; i<arguments.length; i++)
 			{
 				//console.log("----------------->"+$scope.TitleUnits[arguments[i]['unit_id']]);
@@ -2400,11 +2407,12 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					
 					//console.log("scope.cntYLabels="+$scope.cntYLabels);
 					
-					if (($scope.cntYLabels>=(arguments.length-1)) && ($scope.cntTitleIndividual>=$scope.cntIndividuals))
+					//if (($scope.cntYLabels>=(arguments.length-1)) && ($scope.cntTitleIndividual>=$scope.cntIndividuals))
 					//if (($scope.cntTitleIndividual>=$scope.cntIndividuals))
+					if (($scope.cntYLabels>=(arguments.length-1)) && ($scope.cntTitleIndividual>=cntIndividualsVisualisation))
 					{
 							$scope.recoverDataEnds=true;
-							//console.log("Exit C!!!!");
+							console.log("Exit C!!!!");
 							
 							//console.log("arguments.length="+arguments.length);							
 							//console.log("scope.cntYLabels="+$scope.cntYLabels);
@@ -2437,7 +2445,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						if (($scope.cntYLabels>=(arguments.length-1)) && ($scope.cntTitleIndividual>=$scope.cntIndividuals))
 						{
 							$scope.recoverDataEnds=true;
-							//console.log("Exit A!!!!");
+							console.log("Exit A!!!!");
 							//console.log("sizeArg="+sizeArg);
 							//console.log("arguments.length="+arguments.length);
 							//console.log("scope.cntYLabels="+$scope.cntYLabels);
@@ -2545,11 +2553,12 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						
 							//if ((arguments.length<=$scope.cntYLabels) && ($scope.cntTitleIndividual>=$scope.cntIndividuals))
 							//if (($scope.cntTitleIndividual>=$scope.cntIndividuals))
-							if (($scope.cntYLabels>=(arguments.length-1)) && ($scope.cntTitleIndividual>=$scope.cntIndividuals))
+							//if (($scope.cntYLabels>=(arguments.length-1)) && ($scope.cntTitleIndividual>=$scope.cntIndividuals))
+							if (($scope.cntYLabels>=(arguments.length-1)) && ($scope.cntTitleIndividual>=cntIndividualsVisualisation))
 							{
 								$scope.recoverDataEnds=true;
 								
-								//console.log("Exit B!!!!");
+								console.log("Exit B!!!!");
 								//console.log("arguments.length="+arguments.length);
 								//console.log("scope.cntYLabels="+$scope.cntYLabels);
 								//console.log("scope.cntTitleIndividual="+$scope.cntTitleIndividual);
@@ -2570,7 +2579,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				
 			}
 			
-			
+			console.log("cntIndividualsVisualisation="+cntIndividualsVisualisation);
 			
 									
 			//console.log($scope.TimeSelector);	
@@ -5991,6 +6000,7 @@ if  (startDateToSearch || endDateToSearch)
         			if($scope.arrayHE.indexOf(resp.hits.hits[i]._id)==-1)
             		{
             			$scope.arrayHE[resp.hits.hits[i]._source.id]=resp.hits.hits[i]._source.id;
+            			//console.log($scope.recomendationevents);
             			$scope.recomendationevents.push(resp.hits.hits[i]._source);            			
             		}
             		

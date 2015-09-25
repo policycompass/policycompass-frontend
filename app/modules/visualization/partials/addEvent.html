@@ -280,6 +280,16 @@
 					<label for="Description" class="field-label">Colour:</label>        
 					<div class="field-content">
 				
+						<spectrum
+	  						ng-model="historicalevent_color_palete"
+	  							options="{
+	  								showInput: true, 
+	  								showAlpha: false,
+	  								allowEmpty: false,
+	  								preferredFormat: 'hex'
+	  							}">
+						</spectrum>	
+						<!--
 						<spectrum-colorpicker
 	  						ng-model="historicalevent_color_palete"
 	  							options="{
@@ -289,7 +299,7 @@
 	  								preferredFormat: 'hex'
 	  							}">
 						</spectrum-colorpicker>					
-
+						-->
 						<input type="hidden"
 		                           id="historicalevent_color"
 		                           name="historicalevent_color"
