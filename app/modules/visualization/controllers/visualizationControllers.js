@@ -1926,15 +1926,21 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
 		$scope.optionToPlot = [];
 		
+		$scope.enableApply = false;
+		$scope.enableApplyFunction = function() {
+			$scope.enableApply = true;
+		}
 		
-		$scope.validateCheckboxes = function(idIn) {
+		$scope.validateCheckboxes = function(idIn, source) {
 			
-//			console.log("idIn="+idIn);
-//			console.log($scope.individualCombo_value_[idIn]);
-			
+			//console.log("idIn="+idIn);
+			//console.log("source="+source);
+			//console.log($scope.individualCombo_value_[idIn]);
+			//console.log($scope.IndividualDatasetCheckboxes_[idIn]);
 			//console.log($scope.IndividualDatasetCheckboxes_[idIn].length);
 			if ($scope.IndividualDatasetCheckboxes_[idIn].length==0)
 			{
+				//console.log("j="+j);
 				for (j in $scope.individualCombo_value_[idIn]) 
 				{
 					//console.log("j=");
@@ -1943,7 +1949,24 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				}
 			}
 			
-			$scope.rePlotGraph();
+			if (source=='modal')
+			{
+				if ($scope.IndividualDatasetCheckboxes_[idIn].length==1)
+				{
+					//console.log("j="+j);
+					for (j in $scope.individualCombo_value_[idIn]) 
+					{
+						//console.log("j=");
+						//console.log($scope.individualCombo_value_[idIn][j].id);
+						$scope.IndividualDatasetCheckboxes_[idIn].push($scope.individualCombo_value_[idIn][j].id);
+					}
+				}
+			}
+			else
+			{
+				$scope.rePlotGraph();	
+			}
+			
 		}
 		
 		$scope.updateDescriptionEvent = function(index) {

@@ -111,3 +111,20 @@ $top:0px;
 .fonticon-indicator:before {
     content: "\e612";
 }
+
+
+.form-instructions {
+    background: white;
+    padding: 20px;
+    border: 1px solid #b3b3b3;
+    box-shadow: 5px 5px 10px rgba(128, 128, 128, 0.5);
+    border-radius: 6px;
+}
+
+.form-instructions .help-switch {
+  float: none;
+}
+
+.help-text .btn {
+  font-size: 10px;
+}

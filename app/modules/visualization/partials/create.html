@@ -4,15 +4,45 @@
     	<h3 ng-if="mode == 'edit'" class="fonticon fonticon-visualisation">Edit Visualisation</h3>
     	<div class="subtitle-help">
     		<h4><div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div>Visualise Data</h4>    
-    		<div ng-class="{active: help}" class="help-text"><p>You can display datasets as a chart using this form.</p></div>
+    		<div ng-class="{active: help}" class="help-text">
+    			
+    			<p>You can display datasets as a chart using this form.</p>
+    			<p>
+    				To create a visualisation you need to:
+					<ul>
+						<li>Select witch dataset (one or more) do you wish to use. Use <span class="btn btn-adddataset">Link Datasets</span> button to do it.</li>
+						<li>Select the type of chart you want using the appropiate button:
+							<ul>
+								<li><span class="btn btn-map">Map</span> To plot as a map chart.</li>								
+								<li><span class="btn btn-line">Line chart</span> To plot as a line chart.</li>
+								<li><span class="btn btn-pie">Pie chart</span> To plot as pie chart.</li>
+								<li><span class="btn btn-bars">Bars chart</span> To plot as a bar chart.</li>
+							</ul>
+						</li>
+						<li>In case you select a <span class="btn btn-line">Line chart</span>, then you can related historical events with the chart using the <span class="btn btn-adddevent">Link Events</span> button.</li>
+						<li>Fulfil the mandatory fields that are marked with an asterisk.</li>
+						<li>Click over the button <span class="btn btn-save">Save</span> to save the visualisation.</li>
+					</ul>
+				</p>
+				<p>
+					If you need, you can click over the button <span class="btn btn-revert">Revert</span> to revert all your changes.
+    			</p>
+    		</div>
     	</div>
 	</div>
-
+	
+	<div ng-hide="ListMetricsFilter.length>0" >
+		<div class="form-instructions">
+			<p>In this form you can create your own datasets visualisations.</p>
+			<p>If you need help about how to use this form, please click over the question tag (<span class="fonticon fonticon-help help-switch" ng-click="help=!help"> </span>) or the "View help" button.</p>						
+		</div>
+	</div>
+				
 	<div class="pc-visualization-formcontrols">
         <div class="form-group pull-left">
 				<canvas ng-show="false" id="canvas" width="800" height="400"></canvas>
 				<div id="png-container"></div>			
-				<button type="submit" data-intro="Save data" data-position="top" ng-disabled="visualizationForm.$invalid" class="btn btn-default" ng-click="createVisualization(ListMetricsFilter)"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>				
+				<button type="submit" data-intro="Save data" data-position="top" ng-disabled="visualizationForm.$invalid" class="btn btn-default btn-save" ng-click="createVisualization(ListMetricsFilter)">Save</button>				
 				<button type="submit" data-intro="Revert data" data-position="top" class="btn btn-default btn-revert" ng-click="revertVisualization()">Revert</button>
 									
 				<button data-intro="Helps you to link datasets with this visualisation" data-position="top" type="submit" class="btn btn-default btn-adddataset" id="modaladddataset" ng-click="showModal('datasets')">Link Datasets</button>
@@ -21,8 +51,8 @@
 				<button ng-show="isSelectedSon('graph_line') && ListMetricsFilter.length>0" data-intro="Helps you to link this visualisation with events" data-position="top"  type="submit" class="btn btn-primary btn-adddevent" id="addHEbutton" ng-click="showModal('events')">Link Events</button>
 				
 				
-				<button ng-disabled="false" type="button" data-intro="Plot data in a map" data-position="top" ng-class="{'btn btn-default btn-map':!isSelectedParent(1),'btn btn-info btn-map':isSelectedParent(1)}" ng-click="selectTabParent(1); selectTabSon('mercator');rePlotGraph();">Map</button>					
-				<div class="button-group">		
+				<button ng-hide="ListMetricsFilter.length==0" type="button" data-intro="Plot data in a map" data-position="top" ng-class="{'btn btn-default btn-map':!isSelectedParent(1),'btn btn-info btn-map':isSelectedParent(1)}" ng-click="selectTabParent(1); selectTabSon('mercator');rePlotGraph();">Map</button>					
+				<div ng-hide="ListMetricsFilter.length==0" class="button-group">		
 					<button type="button" data-intro="Plot data as Line, Pie or Bars chart" data-position="top" ng-class="{'btn btn-default btn':!isSelectedParent(2),'btn btn-info':isSelectedParent(2)}" ng-click="selectTabParent(2);selectTabSon('graph_line');rePlotGraph();" class="btn-parent">Graph</button>
 					<button type="button" data-intro="Plot data as line chart" data-position="top" ng-hide="!isSelectedParent(2)" ng-disabled="!isSelectedParent(2)" ng-class="{'btn btn-default':!isSelectedSon('graph_line'),'btn btn-info':isSelectedSon('graph_line')}" ng-click="selectTabParent(2);selectTabSon('graph_line');rePlotGraph();" class="btn-line">Line</button>
 					<button type="button" data-intro="Plot data as pie chart" data-position="top" ng-hide="!isSelectedParent(2)" ng-disabled="!isSelectedParent(2)" ng-class="{'btn btn-default':!isSelectedSon('graph_pie'),'btn btn-info':isSelectedSon('graph_pie')}" ng-click="selectTabParent(2);selectTabSon('graph_pie');rePlotGraph();"  class="btn-pie">Pie</button>
@@ -38,7 +68,6 @@
 		<div class="row createvisualization">
 		    <div>
         		<div ng-switch="step"  >
-
 
             	<div ng-show="canPlotGarph" >          	
 	            	<div ng-show="((1==1)  || isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')) && (ListMetricsFilter.length>0)" class="graphContainerdiv">
@@ -110,7 +139,7 @@
         			<accordion-group heading="Graph properties" is-open="isFirstOpen">
             		-->
 
-						<div id="showFilterContainer" class="showFilterContainer">
+						<div ng-show="ListMetricsFilter.length>0" id="showFilterContainer" class="showFilterContainer">
 							<div id="showFilter" ng-show="isSelectedParent(1) || isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')" class="showFilter on_check">
 								<div id="div_showLegend" ng-show="isSelectedParent(1) || isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')" class="on_check">
 									<label class="checkbox-inline">
@@ -230,10 +259,10 @@
 				</accordion>
 				-->
 				
-                <tabset>     
+                <tabset ng-hide="ListMetricsFilter.length==0">     
                 	
 
-                    <tab heading="Metadata Editor">
+                    <tab heading="Metadata Editor" >
 
             			<div class="form-group" ng-class="{'has-error': metricForm.title.$dirty && metricForm.title.$invalid}">
                 			<label for="title">Title *</label>
