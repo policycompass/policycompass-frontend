@@ -117,7 +117,7 @@
 		</div>
 		-->
 							<center>
-								<div style="min-height:450px; possition:absolute">									
+								<div >									
 									<div id="container_graph_{{visualization.id}}" class="container_graph">
 										<div class="loading-container">
 											<div class="loading"></div>
@@ -198,6 +198,17 @@
 								<div id="div_showscaleColor" ng-show="isSelectedParent(1)" class="on_check">
 									<label class="checkbox-inline">
 										
+										<spectrum
+											name='color' ng-model="scaleColor" ng-model-onblur ng-change="rePlotGraph()"
+											options="{
+												showInput: true, 
+												showAlpha: false,
+												allowEmpty: false,
+												preferredFormat: 'hex'
+											}">
+										</spectrum>
+										
+										<!--
 										<spectrum-colorpicker
 											name='color' ng-model="scaleColor" ng-model-onblur ng-change="rePlotGraph()"
 											options="{
@@ -207,6 +218,7 @@
 												preferredFormat: 'hex'
 											}">
 										</spectrum-colorpicker>
+										-->
 										<!--																				
 										<input type='color' name='color'
 											ng-model="scaleColor" 
@@ -334,6 +346,19 @@
 														</td>
 														<td ng-show="isSelectedSon('graph_line') || isSelectedSon('graph_pie')">
 															
+															<spectrum
+																ng-init=" dataset_color_palete_[metric.id][option.id] = dataset_color_palete_[metric.id][option.id] == null ? colorScale(option.title) : dataset_color_palete_[metric.id][option.id] "
+																ng-model="dataset_color_palete_[metric.id][option.id]" 
+																ng-model-onblur ng-change="rePlotGraph()" 						
+  																options="{
+  																	showInput: true, 
+  																	showAlpha: false,
+  																	allowEmpty: false,
+  																	preferredFormat: 'hex'
+  																}">
+																</spectrum>
+																
+															<!--
 															<spectrum-colorpicker
 																ng-init=" dataset_color_palete_[metric.id][option.id] = dataset_color_palete_[metric.id][option.id] == null ? colorScale(option.title) : dataset_color_palete_[metric.id][option.id] "
 																ng-model="dataset_color_palete_[metric.id][option.id]" 
@@ -345,7 +370,7 @@
   																	preferredFormat: 'hex'
   																}">
 																</spectrum-colorpicker>	
-															
+														-->
 														</td>
 													</tr>
 												</body>
@@ -401,7 +426,18 @@
 			  				
 								<div ng-show="vieweditHE[$index+1]" class="contentHE">
 									<div><br/></div>
-									<div ng-if="event.color"><label for="">Colour:</label> 
+									<div ng-if="event.color"><label for="">Colour:</label>
+										
+										<spectrum
+											name="colorHE[]" ng-model="colorHE[$index+1]" ng-model-onblur ng-change="updatecolorEvent($index);rePlotGraph()"
+											options="{
+												showInput: true, 
+												showAlpha: false,
+												allowEmpty: false,
+												preferredFormat: 'hex'
+											}">
+										</spectrum>
+										 <!--
 										<spectrum-colorpicker
 											name="colorHE[]" ng-model="colorHE[$index+1]" ng-model-onblur ng-change="updatecolorEvent($index);rePlotGraph()"
 											options="{
@@ -411,6 +447,7 @@
 												preferredFormat: 'hex'
 											}">
 										</spectrum-colorpicker>
+									-->
 										<!--
 										<input type='color' name="colorHE[]" ng-model="colorHE[$index+1]" ng-model-onblur ng-change="updatecolorEvent($index);rePlotGraph()" />
 										-->

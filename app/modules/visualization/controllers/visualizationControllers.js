@@ -1926,10 +1926,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
 		$scope.optionToPlot = [];
 		
-		$scope.enableApply = false;
-		$scope.enableApplyFunction = function() {
-			$scope.enableApply = true;
-		}
+
 		
 		$scope.validateCheckboxes = function(idIn, source) {
 			

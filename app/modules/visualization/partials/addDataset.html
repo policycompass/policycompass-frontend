@@ -37,21 +37,30 @@
 									<body>
 										<tr ng-repeat="option in individualCombo_value_[metric.id]">
 											<td>
-												<!--
-													ng-click="validateCheckboxes(metric.id);"
-												-->
 												<label >
 													<input type="checkbox"
-													ng-click="validateCheckboxes(metric.id,'modal');enableApplyFunction();" 
+													ng-click="validateCheckboxes(metric.id,'modal');" 
 													checklist-model="IndividualDatasetCheckboxes_[metric.id]" 
 													checklist-value="option.id"
+													ng-click="validateCheckboxes(metric.id);"
 													> {{option.title}}
 												</label>
 											</td>
 											<td ng-show="isSelectedSon('graph_line') || isSelectedSon('graph_pie')">
-												<!--
+												<spectrum 
+													ng-init=" dataset_color_palete_[metric.id][option.id] = dataset_color_palete_[metric.id][option.id] == null ? colorScale(option.title) : dataset_color_palete_[metric.id][option.id] "
+													ng-model="dataset_color_palete_[metric.id][option.id]"
+													ng-model-onblur 
 													ng-change="rePlotGraph()"
-												-->
+													options="{
+														showInput: true, 
+														showAlpha: false,
+														allowEmpty: false,
+														preferredFormat: 'hex'
+													}"
+												></spectrum> 
+												
+												<!--
 												<spectrum-colorpicker
 													ng-init=" dataset_color_palete_[metric.id][option.id] = dataset_color_palete_[metric.id][option.id] == null ? colorScale(option.title) : dataset_color_palete_[metric.id][option.id] "
 													ng-model="dataset_color_palete_[metric.id][option.id]"
@@ -63,7 +72,8 @@
 														allowEmpty: false,
 														preferredFormat: 'hex'
 													}">
-												</spectrum-colorpicker>	
+												</spectrum-colorpicker>
+												-->	
 											</td>
 										</tr>
 									</body>
@@ -78,8 +88,6 @@
 	</div>   
 
 	<div class="modal-footer">
-		
-		<button ng-show="enableApply" class="btn btn-primary btn-apply" ng-click="rePlotGraph()">Apply datasets configuration</button> 
 		<button class="btn btn-primary btn-close" ng-click="cancelModalDataset()">Close</button>
 		<a href="#!/datasets/create"  target="_blank" class="btn btn-default btn-create" id="adddataset">Create a new dataset</a>
 	</div>
