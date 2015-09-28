@@ -2153,7 +2153,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						}
 						else
 						{
-							jsonFile = API_CONF.DATASETS_MANAGER_URL + "/datasets/"+resIdMetric;
+							jsonFile = API_CONF.DATASETS_MANAGER_URL + "/datasets/"+resIdMetric+'?';
 						}
 						//jsonFile = API_CONF.DATASETS_MANAGER_URL + "/datasets/"+resIdMetric+'?time_resolution='+timeresolution+strIdentities;
 						
@@ -2161,6 +2161,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						
 						//console.log("scope.timeStart="+$scope.timeStart);
 						//console.log("scope.timeEnd="+$scope.timeEnd);
+						
+						
+						
 						if  ($scope.timeStart)
 						{
 							if ($scope.timeStart!='----')
@@ -4978,7 +4981,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				value = '';
 				for (var i in arrayValuesInString) 
 				{
-					console.log(arrayValuesInString[i]);
+					//console.log(arrayValuesInString[i]);
 					
 					if (value)
 					{
@@ -4986,7 +4989,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					}
 					value = value+$scope.dataset_color_palete_[metricListIn[j].id][arrayValuesInString[i]];
 					
-					console.log($scope.dataset_color_palete_[metricListIn[j].id][arrayValuesInString[i]]);
+					//console.log($scope.dataset_color_palete_[metricListIn[j].id][arrayValuesInString[i]]);
 				}
 				
 				/*
