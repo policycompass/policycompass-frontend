@@ -37,13 +37,11 @@
 									<body>
 										<tr ng-repeat="option in individualCombo_value_[metric.id]">
 											<td>
-												<label >
-													<input type="checkbox"
-													ng-click="validateCheckboxes(metric.id,'modal');" 
-													checklist-model="IndividualDatasetCheckboxes_[metric.id]" 
-													checklist-value="option.id"
-													ng-click="validateCheckboxes(metric.id);"
-													> {{option.title}}
+												<label ng-click="validateCheckboxes(metric.id);">
+															<input type="checkbox" 
+															checklist-model="IndividualDatasetCheckboxes_[metric.id]" 
+															checklist-value="option.id"
+															> {{option.title}}
 												</label>
 											</td>
 											<td ng-show="isSelectedSon('graph_line') || isSelectedSon('graph_pie')">
