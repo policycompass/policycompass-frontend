@@ -2412,7 +2412,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					if (($scope.cntYLabels>=(arguments.length-1)) && ($scope.cntTitleIndividual>=cntIndividualsVisualisation))
 					{
 							$scope.recoverDataEnds=true;
-							console.log("Exit C!!!!");
+							//console.log("Exit C!!!!");
 							
 							//console.log("arguments.length="+arguments.length);							
 							//console.log("scope.cntYLabels="+$scope.cntYLabels);
@@ -2445,7 +2445,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						if (($scope.cntYLabels>=(arguments.length-1)) && ($scope.cntTitleIndividual>=$scope.cntIndividuals))
 						{
 							$scope.recoverDataEnds=true;
-							console.log("Exit A!!!!");
+							//console.log("Exit A!!!!");
 							//console.log("sizeArg="+sizeArg);
 							//console.log("arguments.length="+arguments.length);
 							//console.log("scope.cntYLabels="+$scope.cntYLabels);
@@ -2558,7 +2558,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							{
 								$scope.recoverDataEnds=true;
 								
-								console.log("Exit B!!!!");
+								//console.log("Exit B!!!!");
 								//console.log("arguments.length="+arguments.length);
 								//console.log("scope.cntYLabels="+$scope.cntYLabels);
 								//console.log("scope.cntTitleIndividual="+$scope.cntTitleIndividual);
@@ -2579,7 +2579,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				
 			}
 			
-			console.log("cntIndividualsVisualisation="+cntIndividualsVisualisation);
+			//console.log("cntIndividualsVisualisation="+cntIndividualsVisualisation);
 			
 									
 			//console.log($scope.TimeSelector);	
