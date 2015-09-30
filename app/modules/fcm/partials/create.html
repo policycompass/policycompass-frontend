@@ -7,8 +7,8 @@
 		<div class="pc-visualization-formcontrols">
 			<div class="button-group">
 				<a type="button" class="btn btn-primary btn-concept" ng-click="addObj()">Add Concept</a>
-				<a ng-if="isDisabled == true" type="button" class="btn btn-primary btn-association" ng-click="addEdge()" disabled>Create Association</a>
-				<a ng-if="isDisabled == false" type="button" class="btn btn-primary btn-association" ng-click="addEdge()">Create Association</a>
+				<a ng-if="isDisabled == true" type="button" class="btn btn-primary btn-association" ng-click="addEdge()" disabled>Create Relationship</a>
+				<a ng-if="isDisabled == false" type="button" class="btn btn-primary btn-association" ng-click="addEdge()">Create Relationship</a>
 				<a ng-if="mode == 'create' && isDisabled == true" type="button" class="btn btn-primary btn-save" ng-click="saveModel()" disabled>Save Model</a>
 				<a ng-if="mode == 'edit' && isDisabled == true" type="button" class="btn btn-primary btn-save" ng-click="updateModel()" disabled>Save Model</a>
 				<a ng-if="mode == 'create' && isDisabled == false" type="button" class="btn btn-primary btn-save" ng-click="saveModel()">Save Model</a>
