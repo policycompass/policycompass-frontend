@@ -1,0 +1,42 @@
+<div class="container">
+  <div class="content-header">
+    <h1><span class="glyphicon glyphicon-list-alt"></span> {{data.title}}</h1>
+  </div>
+  {{ indicator.name }}
+
+  <div class="row">
+    <div class="col-md-12">
+      <formula ng-if="data.formula && data.variables" data-formula="data.formula" data-variables="data.variables"></formula>
+    </div>
+  </div>
+
+  <form name="datasetForm" novalidate>
+
+    <div class="form-group" ng-class="{ 'has-error': (datasetForm.title.$invalid && !datasetForm.title.$pristine) || servererror.title }">
+      <label for="title" class="field-label">Title</label>
+      <div class="field-content">
+        <input ng-model="postdata.title" type="text" name="title" class="form-control" required>
+        <p ng-show="datasetForm.title.$error.required && !datasetForm.title.$pristine" class="help-block">This field is required</p>
+        <p ng-show="servererror.title" class="help-block">{{ servererror.title[0] }}</p>
+      </div>
+    </div>
+
+    <div class="form-group" ng-class="{ 'has-error': (datasetForm.acronym.$invalid && !datasetForm.title.$pristine) || servererror.title }">
+      <label for="title" class="field-label">Acronym</label>
+      <div class="field-content">
+        <input ng-model="postdata.acronym" type="text" name="acronym" class="form-control" required>
+        <p ng-show="datasetForm.acronym.$error.required && !datasetForm.acronym.$pristine" class="help-block">This field is required</p>
+        <p ng-show="servererror.title" class="help-block">{{ servererror.title[0] }}</p>
+      </div>
+    </div>
+  </form>
+
+  {{ postdata }}
+
+  <div class="row">
+    <div class="col-md-12">
+      <a href="" ng-click="submit();" class="btn pull-right">Submit</a>
+    </div>
+  </di>
+
+</div>

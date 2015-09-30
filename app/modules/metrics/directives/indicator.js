@@ -8,7 +8,7 @@ angular.module('pcApp.metrics.directives.indicator', [
         restrict: 'E',
         replace: true,
         scope: {
-        	indicator: '=indicator',
+        	indicator: '=',
         },
         template: function(scope) {
         	return '<span class="indicator-formula indicator-formula-selected">{{ name }}</span>';

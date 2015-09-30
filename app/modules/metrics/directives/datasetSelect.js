@@ -2,17 +2,21 @@ angular.module('pcApp.metrics.directives.datasetSelect', [
 
 ])
 
-.directive('datasetSelect', ['$http', 'API_CONF', '$q', function ($http,  API_CONF, $q) {
+.directive('datasetSelect', ['$http', 'API_CONF', '$q','$compile', function ($http,  API_CONF, $q, $compile) {
 
     return {
         restrict: 'E',
         replace: true,
         scope: {
-        	indicator: '=indicator',
-            model: '='
+        	indicator: '=',
+            dataset: '=',
+            variable: '='
+
         },
         template: function(scope) {
-        	return '<select name="dataset" class="form-control" ng-model="model" ng-options="d.id as d.title for d in datasets"></select>';
+                return '<select class="form-control" data-name="{variable}" data-ng-model="dataset" data-ng-options="d.id as d.title for d in datasets" required>' +
+                       '<option value="" selected>Choose Dataset</option>' +
+                       '</select>';
         },
         link: function(scope, element, attrs) {
 
@@ -20,15 +24,10 @@ angular.module('pcApp.metrics.directives.datasetSelect', [
 
             $http.get(url).
             then(function(response) {
-                /*scope.datasets = response.data.results;
-                console.log(scope.datasets);*/
-
+                scope.datasets = response.data.results;
             }, function(response) {
-                console.log('error');
                 console.log(response);
             });
-
-
         }
     };
 }]);

@@ -1,0 +1,51 @@
+<div class="container">
+  <div class="content-header">
+    <h3 class="fonticon fonticon-formula">Operationalize Metric</h3>
+    <div class="subtitle-help">
+      <h4>
+        <div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div>
+        Step 1 - Choose Datasets for Indicators</h4>
+        <div ng-class="{active: help}" class="help-text">
+      </div>
+    </div>
+    <ul class="navigation-steps">
+      <li><a href="#!/create-formula" class="btn btn-prev disabled">Previous Step</a></li>
+      <li><a href="" class="btn btn-next" ng-click="submit();" ng-class="{'disabled' : !datasetForm.$valid || servererror.formula }">Next Step</a></li>
+    </ul>
+
+  </div>
+  <div class="content-header">
+  	<h1><span class="glyphicon glyphicon-list-alt"></span> {{data.title}}</h1>
+  </div>
+  <div class="row">
+  	<div class="col-md-12">
+      <legend class="legend-primary">{{data.title}}</legend>
+  		<formula ng-if="data.formula && data.variables" data-formula="data.formula" data-variables="data.variables"></formula>
+  	</div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <form name="datasetForm" novalidate>
+    </div>
+  </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <legend class="legend-primary">Please select a dataset for each indicator in your metric </legend>
+        Hover over the indicator to see where it is represented in the metric.
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Indicator</th>
+              <th>Dataset</th>
+            <tr>
+          </thead>
+          <tbody>
+              <tr indicator-to-dataset data-datarow="indicator" ng-repeat="indicator in postdata.datasets"></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </form>
+</div>
