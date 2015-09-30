@@ -87,8 +87,11 @@ angular.module('pcApp.datasets.directives.snippets', [
                 $scope.stepData = steps[$scope.step];
 
                 $scope.nextStep = function () {
-                    $scope.beforeNextStep();
-                    $location.path(steps[$scope.step].next);
+                    var result = $scope.beforeNextStep();
+                    if(result != false) {
+                        $location.path(steps[$scope.step].next);
+                    }
+
                 };
 
                 $scope.prevStep = function () {
