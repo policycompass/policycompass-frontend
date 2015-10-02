@@ -259,6 +259,18 @@ else
 }
 
 
+    $scope.showHelp = function(helpId){
+		if (helpId==1)
+		{
+			$scope.helpContents = "First, add appropriate concepts for you causal model (click \"Add Concept\"),<br>Second, create relationship (causal relationship) among concepts you added (click \"Create Relationship\"),<br>Then save your model (click \"Save Model\").<br>After saving you model, you can run simulation for your model!";
+		}
+		dlg = dialogs.create('/dialogs/help.html','helpController',{},{key: false,back: 'static'});
+		dlg.result.then(function(user){
+		    },function(){
+		      $scope.name = 'You decided not to enter in your name, that makes me sad.';
+		    });
+    };
+
     $scope.range = function(min,max,step) {
 		step = step || 1;
 		var input = [];
@@ -421,8 +433,8 @@ $scope.md = jsonModel;
         },function(){
           $scope.name = 'You decided not to enter in your name, that makes me sad.';
         });
-	// broadcasting the event
-	$rootScope.$broadcast('appChanged');
+		// broadcasting the event
+		$rootScope.$broadcast('appChanged');
     };
 
     $scope.impactAnalysis = function(){
@@ -614,6 +626,19 @@ $scope.md = jsonModel;
         $rootScope.$broadcast('appChanged');
     };
 })
+
+.controller('helpController',function($scope, $modalInstance, $log, $routeParams, data){
+			$scope.helpContents = "First, add appropriate concepts for you causal model (click \"Add Concept\"),\nSecond, create relationship (causal relationship) among concepts you added (click \"Create Relationship\"),\nThen save your model (click \"Save Model\").\nAfter saving you model, you can run simulation for your model!";
+
+  $scope.cancel = function(){
+    $modalInstance.dismiss('canceled');  
+  }; // end cancel
+  
+  $scope.save = function(){
+    $modalInstance.close($scope.user);
+  }; // end save
+  
+}) // end helpController
 
 .controller('ConceptController',function($scope, $modalInstance, Metric, FcmActivator, $log, $routeParams, data){
   $scope.user = {Id: -1, title: '', description: '', x: '300', y: '300'};
@@ -1005,6 +1030,8 @@ $scope.res=value;
  $templateCache.put('/dialogs/correlationmatrix.html', '<div class="modal-header"><h4 class="modal-title">Correlation Matrix between Concepts</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><p>Matrix below shows the correlation between selected concepts.<br>This can be the reference data for determining the weights between concepts if you want to insert the weight value manaully.</p></div><table class="table table-hover"><tr><td></td><td  align="center" ng-repeat="concept in Concepts">{{ concept.title }}</td></tr><tr ng-repeat="concept in Concepts"><td>{{ concept.title }}</td align="center"><td ng-repeat="val in concept.values">{{ val.Id }}</td></tr></table><div class="modal-footer"><button type="button" class="btn btn-primary" ng-click="save()">Use the Correlations for Weight</button><button type="button" class="btn btn-default" ng-click="cancel()">Close</button></div>');
 
  $templateCache.put('/dialogs/runsimulation.html', '<div class="modal-header"><h4 class="modal-title">Simulation job has submitted successfully.</h4></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Close</button></div>');
+
+ $templateCache.put('/dialogs/help.html', '<div class="modal-header"><p class="modal-title">{{ helpContents }}</p></div>');
 
  $templateCache.put('/dialogs/impactanalysis.html', '<div class="modal-header"><h4 class="modal-title">Impact Analysis</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><tabset justified="false"><tab heading="Impact of Single Concept"><label class="control-label" for="impactanalysis">Impact of Change in</label><select class="form-control" name="source" id="source" ng-model="user.selectConcept" ng-options="concept.title for concept in Concepts"></select>(initial concept value)<br /><div class="modal-footer"><button type="button" class="btn btn-primary" ng-click="single()">Calculate</button></div><table class="table table-hover"><tr><td width="20%"><b>Initial Value of {{ user.selectConcept.title }}</b></td><td align="center" ng-repeat="result in ImpactAnalysisResults" ng-if="result.conceptID == user.selectConcept.Id"><b>{{ result.input }}</b></td></tr><tr ng-show="Concepts" ng-repeat="concept in Concepts"><td>{{ concept.title }}</td><td align="center" ng-repeat="result in ImpactAnalysisResults" ng-if="concept.Id == result.conceptID">{{ result.output }}</td></tr></table>* Value of each cell indicate the final value of simulation with given initial value of <b>{{ user.selectConcept.title }}</b>.</tab><tab heading="Impact of Two Concepts"><label class="control-label" for="impactanalysis">Impact of Change in</label><select class="form-control" name="source" id="source" ng-model="user.selectConcept1" ng-options="concept.title for concept in Concepts" required></select><label class="control-label" for="impactanalysis">and</label><select class="form-control" name="source" id="source" ng-model="user.selectConcept2" ng-options="concept.title for concept in Concepts" required></select>(initial concept value)<br /><label class="control-label" for="impactanalysis">on</label><select class="form-control" name="source" id="source" ng-model="user.selectConcept3" ng-options="concept.title for concept in Concepts" required></select><br /><div class="modal-footer"><button type="button" class="btn btn-primary" ng-click="two()">Calculate</button></div><table class="table table-hover"><tr><td width="20%"></td><td width="10%"></td><td align="center" colspan=5><b>{{ user.selectConcept1.title }}</b></td></tr><tr><td></td><td></td><td align="center" ng-repeat="input in selectedConcept1Input"><b>{{ input }}</b></td></tr><tr ng-repeat="input in selectedConcept2Input"><td rowspan="5" align="center" valign="middle" ng-if="input == 0.2"><b>{{ user.selectConcept2.title }}</b></td><td align="center"><b>{{ input }}</b></td><td align="center" ng-repeat="output in selectedConceptOutput" ng-if="output.concept2Input == input">{{ output.conceptOutput }}</td></tr></table>* Value of each cell indicate the final value of <b>{{ user.selectConcept3.title }}</b> with regards to the change of <b>{{ user.selectConcept1.title }}</b> & <b>{{ user.selectConcept2.title }}</b>.</tab></tabset></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Close</button></div>');
 
