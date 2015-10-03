@@ -20,7 +20,7 @@ $main_bk:$gris_98;
 $main_bk_2:$gris_90;
 
 $main_4:$gris_50;
-
+$help_icon:$bk_1_2;
 
 .pagination > li > a, .pagination > li > span,
 // #main-menu a,
@@ -30,7 +30,10 @@ h1, h2, h3, h4 {
   color:$main;
 }
  
-.fonticon-help:before,
+.fonticon-help:before{
+  color:$help_icon;
+}
+
 h3:before,
 h4:before,
 .glyphicon,

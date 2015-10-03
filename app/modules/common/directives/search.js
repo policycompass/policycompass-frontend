@@ -608,7 +608,7 @@ angular.module('pcApp.common.directives.search', [
                     $scope.showerrormessage = false;
                     //var sort =    ["title"];
                     //var sort =     [{"title" : {"order" : "asc"}}];
-                    var sort = ["title.lower_case_sort"];
+                    var sort = [{"issued" : {"order" : "desc"}}];
                     //var sort =     [{"id" : {"order" : "desc"}},"_score"];
 
                     //Build query

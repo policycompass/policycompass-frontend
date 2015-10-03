@@ -1,112 +1,133 @@
 <div class="container">
+	<div class="content-header">
+		<h1><span class="glyphicon glyphicon-list-alt"></span> {{ event.title }}</h1>
+		<div class="pc-visualization-formcontrols">
+			<div class="button-group">
+				<a type="button" class="btn btn-primary  btn-create" href="#!/events/{{ event.id }}/edit">Edit</a>
+          		<a type="button" class="btn btn-danger  btn-clear" ng-click="deleteEvent(event)">Delete</a>
+      		</div>
+      	</div>
+	</div>
 
-<h1><span class="glyphicon glyphicon-list-alt"></span> {{ event.title }}</h1>
 
-<div class="row">
-  <div>
-      <div class="pc-datagrid" data="datagrid" read-only="true" ng-if="gridvisible"></div>
-      <div class="col-lg-12">
-      <table class="table table-hover">
-          <tr ng-show="event.title">
-              <td><b>Title:</b></td>
-              <td>{{ event.title }}</td>
-          </tr>
-          <tr ng-show="event.description">
-              <td><b>Description:</b></td>
-              <td>{{ event.description }}</td>
-          </tr>
-      </table>
-      </div>
-      <div class="col-lg-12">
-          <legend class="legend-primary">Details</legend>
-          <table class="table table-hover">
-          <tr ng-show="event.keywords">
-              <td><b>Keywords:</b></td>
-              <td>{{ event.keywords }}</td>
-          </tr>
-          <tr ng-show="event.startEventDate">
-              <td><b>Event start:</b></td>
-              <td>{{ event.startEventDate | date:'longDate' }}</td>
-          </tr>
-          <tr ng-show="event.endEventDate">
-              <td><b>Event end:</b></td>
-              <td>{{ event.endEventDate | date:'longDate' }}</td>
-          </tr>
-          <tr ng-show="event.detailsURL">
-              <td><b>Details URL:</b></td>
-              <td><a href="{{ event.detailsURL }}" target="_blank">{{ event.detailsURL }}</a></td>
-          </tr>
-          <tr ng-show="event.geoLocation">
-              <td><b>Geolocation:</b></td>
-              <td>{{ event.geoLocation }}</td>
-          </tr>
-          <tr ng-show="language.title">
-              <td><b>Language:</b></td>
-              <td>{{ language.title }}</td>
-          </tr>
-          <!--
-          <tr ng-show="event.userID">
-              <td><b>User:</b></td>
-              <td>{{ event.userID }}</td>
-          </tr>
-          -->
-          <tr ng-show="event.scale">
-              <td><b>Scale:</b></td>
-              <td>{{ event.scale }}</td>
-          </tr>
-          <tr ng-show="event.externalResourceID">
-              <td><b>External Resource:</b></td>
-              <td>{{ event.externalResourceID }}</td>
-          </tr>
-          <tr ng-show="event.dateAddedToPC">
-              <td><b>Added:</b></td>
-              <td>{{ event.dateAddedToPC | date:'longDate' }}</td>
-          </tr>
-          <tr ng-show="event.dateIssuedByExternalResource">
-              <td><b>Issued:</b></td>
-              <td>{{ event.dateIssuedByExternalResource | date:'longDate' }}</td>
-          </tr>
-          <tr ng-show="event.dateModified">
-              <td><b>Modified:</b></td>
-              <td>{{ event.dateModified | date:'longDate' }}</td>
-          </tr>
-          <!--
-          <tr ng-show="event.viewsCount">
-              <td><b>Views:</b></td>
-              <td>{{ event.viewsCount }}</td>
-          </tr>
-          -->
-      </table>
-      </div>
-      <div class="col-lg-6">
-          <table class="table table-hover">
-              <tr ng-show="linked_event_visualization.results">
-                  <td><b>Linked Visualizations:</b></td>
-              </tr>
-          </table>
-      </div>
-      <div class="col-lg-6">
-          <table class="table table-hover">
-              <tr ng-repeat="linked in linked_event_visualization.results">
-                  <td><a href="#!/visualizations/{{ linked.visualization }}" target="_blank">{{ linked.title }}</a></td>
-              </tr>
-          </table>
-      </div>
-      <div class="col-lg-12">
-          <legend class="legend-primary">Options</legend>
-          <a type="button" class="btn btn-primary" href="#!/events/{{ event.id }}/edit">Edit</a>
-          <button type="button" class="btn btn-danger" ng-click="deleteEvent(event)">Delete</button>
-      </div>
-  </div>
-</div>
-<div class="row">
-    <div class="col-lg-12">
-        <legend class="legend-primary">Discussion</legend>
-    </div>
-</div>
-<div class="row">
-    <div class="col-lg-6">
-        <show-discussion ng-if="event.id" data-key="event_{{ event.id }}"></show-discussion>
-    </div>
-</div>
+	<div class="row">
+		<table class="table table-detail-main-data table-hover">
+			<tbody>
+				<tr ng-show="event.title" class="">
+					<td class="table-detail-title">Title:</td>
+					<td class="table-detail-content">{{event.title}}</td>
+				</tr>
+
+				<tr ng-show="event.description" class="">
+					<td class="table-detail-title">Description:</td>
+					<td class="table-detail-content">{{event.description}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+
+	<div class="row">
+		<h3 class="legend-primary">Details</h3>
+		
+		<table class="table table-detail table-hover">
+			<tbody>           	
+				<tr ng-show="event.keywords" class="">
+					<td class="table-detail-title">Keywords:</td>
+					<td class="table-detail-content">{{event.keywords}}</td>
+				</tr>
+
+				<tr ng-show="event.startEventDate">
+              		<td class="table-detail-title">Event start:</td>
+              		<td class="table-detail-content">{{ event.startEventDate | date:'longDate' }}</td>
+          		</tr>
+          		<tr ng-show="event.endEventDate">
+              		<td class="table-detail-title">Event end:</td>
+              		<td class="table-detail-content">{{ event.endEventDate | date:'longDate' }}</td>
+          		</tr>
+          		<tr ng-show="event.detailsURL">
+              		<td class="table-detail-title">Details URL:</td>
+              		<td class="table-detail-content"><a href="{{ event.detailsURL }}" target="_blank">{{ event.detailsURL }}</a></td>
+          		</tr>
+          		<tr ng-show="event.geoLocation">
+              		<td class="table-detail-title">Geolocation:</td>
+              		<td class="table-detail-content">{{ event.geoLocation }}</td>
+          		</tr>
+          		<tr ng-show="language.title">
+              		<td class="table-detail-title">Language:</td>
+              		<td class="table-detail-content">{{ language.title }}</td>
+          		</tr>
+          		<!--
+          		<tr ng-show="event.userID">
+              		<td class="table-detail-title">User:</td>
+              		<td class="table-detail-content">{{ event.userID }}</td>
+          		</tr>
+          		-->
+          		<tr ng-show="event.scale">
+              		<td class="table-detail-title">Scale:</td>
+              		<td class="table-detail-content">{{ event.scale }}</td>
+          		</tr>
+          		<tr ng-show="event.externalResourceID">
+              		<td class="table-detail-title">External Resource:</td>
+              		<td class="table-detail-content">{{ event.externalResourceID }}</td>
+          		</tr>
+          		<tr ng-show="event.dateAddedToPC">
+              		<td class="table-detail-title">Added:</td>
+              		<td class="table-detail-content">{{ event.dateAddedToPC | date:'longDate' }}</td>
+          		</tr>
+          		<tr ng-show="event.dateIssuedByExternalResource">
+              		<td class="table-detail-title">Issued:</td>
+              		<td class="table-detail-content">{{ event.dateIssuedByExternalResource | date:'longDate' }}</td>
+          		</tr>
+          		<tr ng-show="event.dateModified">
+              		<td class="table-detail-title">Modified:</td>
+              		<td class="table-detail-content">{{ event.dateModified | date:'longDate' }}</td>
+          		</tr>
+          				
+			</tbody>
+		</table>
+	</div>
+
+	<div class="row" ng-show="linked_event_visualization.results">
+		<h3 class="legend-primary">Linked Visualizations</h3>
+
+
+		<div class="col-lg-3 pc-tile" ng-repeat="rv in linked_event_visualization.results" >
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<a href="#!/visualizations/{{ rv.visualization }}"><h3 class="panel-title">{{ rv.title | limitTo: 25}}  </h3></a>
+				</div>
+				<div class="panel-body">
+					<div class="visualization-graph-page-content">
+									
+						<div  ng-repeat="idvisulist in [rv.visualization]" ng-include='"modules/visualization/partials/graph.html"' ></div>
+						
+						
+            		</div>
+        		</div>
+      		</div>
+		</div>		
+		<!--	
+        <table class="table table-detail table-hover">
+        	<tbody>  
+            	<tr ng-repeat="linked in linked_event_visualization.results">
+                	<td class="table-detail-content"><a href="#!/visualizations/{{ linked.visualization }}" target="_blank">{{ linked.title }}</a></td>
+              	</tr>
+			</tbody>  
+		</table>
+      	-->
+      
+	</div>
+		
+
+	<div class="row">
+    	<h3 class="legend-primary">Discussion</h3>
+  	</div>
+	<div class="row">
+    	<div class="col-lg-6">
+      		<show-discussion ng-if="event.id" data-key="event_{{ event.id }}"></show-discussion>
+    	</div>
+  	</div>
+
+
 </div>

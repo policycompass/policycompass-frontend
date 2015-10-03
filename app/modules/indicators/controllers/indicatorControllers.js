@@ -31,7 +31,8 @@ angular.module('pcApp.indicators.controllers.indicator', [
     '$log',
     'IndicatorControllerHelper',
     '$filter',
-    function ($scope, Indicator, $location, $log, helper, $filter) {
+    '$routeParams',
+    function ($scope, Indicator, $location, $log, helper, $filter, $routeParams) {
 
         // Init the base functionalities
         helper.baseCreateEditController($scope);
@@ -49,7 +50,13 @@ angular.module('pcApp.indicators.controllers.indicator', [
 
             // Save the Indicaotr and redirect to the detail view
             Indicator.save($scope.indicator,function(value, responseHeaders){
-                    $location.path('/indicators/' + value.id);
+                    $log.info($routeParams);
+                    if($routeParams.ref == 'dataset') {
+                        $location.search('ref', null);
+                        $location.path('/datasets/create/indicator');
+                    } else {
+                        $location.path('/indicators/' + value.id);
+                    }
                 },
                 function(err) {
                     throw { message: JSON.stringify(err.data)};

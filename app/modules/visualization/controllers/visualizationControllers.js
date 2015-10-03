@@ -28,6 +28,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
             		var data =  {
 					id : metricId,
 					title : metric.title,
+					acronym : metric.acronym,
 					issued : metric.issued,
 					};
 				
@@ -197,7 +198,15 @@ angular.module('pcApp.visualization.controllers.visualization', [
     					//console.log($scope.metricSelectedArray[idMetric].data['table']);
     					
     					//console.log($scope.metricSelectedArray[idMetric].data['table']);
-    					arrayIndividualListDataset = $scope.metricSelectedArray[idMetric].data['table'];
+    					if($scope.metricSelectedArray[idMetric].data)
+    					{
+    						arrayIndividualListDataset = $scope.metricSelectedArray[idMetric].data['table'];	
+    					}
+    					else
+    					{
+    						arrayIndividualListDataset = []; 	
+    					}
+    					
     					
     					//console.log("idMetric="+idMetric);
     					/*
@@ -227,6 +236,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
            				//console.log(arrayIndividualListDataset);
     					$arrayComboValues_Individuals = [];    
     					$arrayComboValuesChecked = [];
+    					
+    					
+    					$scope.individualCombo_value_[idMetric]=[];
     					for (x=0;x<arrayIndividualListDataset.length; x++) {
     						//console.log("x="+x);
     						if (arrayIndividualListDataset[x].individual)
@@ -776,7 +788,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
   		}
     		
     		//used while dataset not return resolutions
-			$scope.onlyTheirResolution=true;
+			$scope.onlyTheirResolution=false;
 			
 			$scope.resolutionoptions = [
     			{ label: 'Day', value: 'day' },
@@ -1250,6 +1262,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
             		var data =  {
 					id : metric.id,
 					title : metric.title,
+					acronym : metric.acronym,
 					issued : metric.issued,
 					};
 				
@@ -1548,105 +1561,248 @@ angular.module('pcApp.visualization.controllers.visualization', [
 		$scope.name = 'Link an event';
       	
       	
-   		$scope.showModal = function() {        
-			//console.log("show modal");
-			      
-	   		var s= document.getElementById("startDatePosX");
-	   		var e= document.getElementById("endDatePosX");
-	   		
-	   		//console.log("s.value="+s.value);        
-	   		dateRec = s.value;
-	   		dateRecEnd = e.value;
-			//console.log("dateRec="+dateRec+"--now="+Date.now());
-			if (dateRec)
+   		$scope.showModal = function(action) {        
+			
+			if (action=='datasets')
 			{
-				//dateRec = '2014-01-01';
-				//console.log("dateRec="+dateRec);
-				dateRec = dateRec.replace(/-/g,"/");
-				var res = dateRec.split("/");
-				var newDate = res[2]+"-"+res[0]+"-"+res[1];
-				//console.log("newDate="+newDate);
-				$scope.startDate = (newDate);
+				$scope.name = 'Link datasets';
+				$scope.opts = {
+					backdrop: true,
+					backdropClick: false,
+					dialogFade: true,
+					keyboard: true,        
+					templateUrl : 'modules/visualization/partials/addDataset.html',
+			        controller : 'ModalInstanceCtrlDataset',
+					resolve: {}, // empty storage
+					scope: $scope
+		  		};
+		
+		        $scope.opts.resolve.item = function() {
+		    		return angular.copy({name:$scope.name}); // pass name to Dialog
+				}
+		        
+		  		var modalInstance = $modal.open($scope.opts);
+		  
+		  		modalInstance.result.then(function(){
+		        	//on ok button press
+		        	//console.log('on ok button press');
+			    	//console.log($scope.eventsToPlot);
+		    		//console.log(modalInstance);
+		  			},function(){
+		    		//on cancel button press
+		    		//console.log("Modal Closed");
+		  			});
+				
 			}
 			else
 			{
-				//$scope.startDate = $filter("date")(Date.now(), 'yyyy-MM-dd');	
-				$scope.startDate = "";
-			}
-
-			if (dateRecEnd)
-			{
-				//dateRec = '2014-01-01';
-				//console.log("dateRec="+dateRec);
-				dateRecEnd = dateRecEnd.replace(/-/g,"/");
-				var res = dateRecEnd.split("/");
-				var newDate = res[2]+"-"+res[0]+"-"+res[1];
-				//console.log("newDate="+newDate);
-				$scope.endDate = (newDate);
-			}
-			else
-			{
-				//$scope.startDate = $filter("date")(Date.now(), 'yyyy-MM-dd');	
-				$scope.endDate = "";
-			}
-			
-			//console.log("$scope.endDate="+$scope.endDate);
-			
-			var arrayIdsMetricsSelected = [];
-			$scope.individualsSelected = [];
-			for (var i=0; i < $scope.ListMetricsFilter.length; i++) 
-			{			
-				arrayIdsMetricsSelected[i]=$scope.ListMetricsFilter[i].id;
-				
-				//console.log($scope.IndividualDatasetCheckboxes_[$scope.ListMetricsFilter[i].id]);
-				
-				for (var i_identity=0; i_identity < $scope.IndividualDatasetCheckboxes_[$scope.ListMetricsFilter[i].id].length; i_identity++)
+				$scope.name = 'Link an event';
+				$scope.historicalevent_id ='';
+		   		var s= document.getElementById("startDatePosX");
+		   		var e= document.getElementById("endDatePosX");
+		   		
+		   		//console.log("s.value="+s.value);        
+		   		dateRec = s.value;
+		   		dateRecEnd = e.value;
+				//console.log("dateRec="+dateRec+"--now="+Date.now());
+				if (dateRec)
 				{
-					//console.log($scope.IndividualDatasetCheckboxes_[$scope.ListMetricsFilter[i].id][i_identity]);	
-					var idindividual=$scope.IndividualDatasetCheckboxes_[$scope.ListMetricsFilter[i].id][i_identity];
-						
-					var a = $scope.individualsSelected.indexOf(idindividual);
-					if (a<0)
+					//dateRec = '2014-01-01';
+					//console.log("dateRec="+dateRec);
+					dateRec = dateRec.replace(/-/g,"/");
+					var res = dateRec.split("/");
+					var newDate = res[2]+"-"+res[0]+"-"+res[1];
+					//console.log("newDate="+newDate);
+					$scope.startDate = (newDate);
+				}
+				else
+				{
+					//$scope.startDate = $filter("date")(Date.now(), 'yyyy-MM-dd');	
+					$scope.startDate = "";
+				}
+	
+				if (dateRecEnd)
+				{
+					//dateRec = '2014-01-01';
+					//console.log("dateRec="+dateRec);
+					dateRecEnd = dateRecEnd.replace(/-/g,"/");
+					var res = dateRecEnd.split("/");
+					var newDate = res[2]+"-"+res[0]+"-"+res[1];
+					//console.log("newDate="+newDate);
+					$scope.endDate = (newDate);
+				}
+				else
+				{
+					//$scope.startDate = $filter("date")(Date.now(), 'yyyy-MM-dd');	
+					$scope.endDate = "";
+				}
+				
+				//console.log("$scope.endDate="+$scope.endDate);
+	
+				//console.log("resolution");
+				//console.log($scope.resolution);
+				$scope.minDateToSearch ='';
+				$scope.maxDateToSearch ='';
+				//console.log("$scope.timeStart");
+				//console.log($scope.timeStart);
+				
+				if ($scope.timeStart==='----')
+				{
+					if ($scope.TimeSelector.length>0)
 					{
-						$scope.individualsSelected.push(idindividual);
+						$scope.minDateToSearch=$scope.TimeSelector[1];
 					}
 				}
-			};
-			
-			//console.log("$scope.individualsSelected");
-			//console.log($scope.individualsSelected);
-			//$scope.startDate = '01-01-2011';
-			//$scope.startDate = s.value;
-			//$scope.startDateToFilter = '2014-09-17';
-			//$scope.startDateToFilter = $scope.startDate ;
-			//$scope.startDateToFilter = "Mon Sep 15 2014 00:00:00 GMT+0200 (Romance Daylight Time)";
-					
-	        $scope.opts = {
-				backdrop: true,
-				backdropClick: false,
-				dialogFade: true,
-				keyboard: true,        
-				templateUrl : 'modules/visualization/partials/addEvent.html',
-		        controller : 'ModalInstanceCtrl',
-				resolve: {}, // empty storage
-				scope: $scope
-	  		};
+				else
+				{
+					$scope.minDateToSearch=$scope.timeStart;
+				}
+				//console.log("$scope.minDateToSearch");
+				//console.log($scope.minDateToSearch);			
+				//console.log("$scope.timeEnd");
+				//console.log($scope.timeEnd);
+				
+				if ($scope.timeEnd==='----')
+				{
+					if ($scope.TimeSelector.length>0)
+					{
+						$scope.maxDateToSearch=$scope.TimeSelector[($scope.TimeSelector.length-1)];
+					}
+				}
+				else
+				{
+					$scope.maxDateToSearch=$scope.timeEnd;
+				}			
+				//console.log("$scope.maxDateToSearch");
+				//console.log($scope.maxDateToSearch);
+				
+				if ($scope.resolution)
+				{
+					//console.log($scope.resolution.value);
+					if ($scope.resolution.value=='year')
+					{
+						$scope.minDateToSearch = $scope.minDateToSearch+"-01-01";
+						$scope.maxDateToSearch = $scope.maxDateToSearch+"-12-31";
+					}
+					else if ($scope.resolution.value=='quarter')
+					{
+						var arrayDateQuarterA = $scope.minDateToSearch.split("-");
+						var arrayDateQuarterB = $scope.maxDateToSearch.split("-");
 	
-	        $scope.opts.resolve.item = function() {
-	    		return angular.copy({name:$scope.name, startDate:$scope.startDate, endDate:$scope.endDate, metricsArray: arrayIdsMetricsSelected, arrayIndividuals: $scope.individualsSelected}); // pass name to Dialog
-			}
-	        
-	  		var modalInstance = $modal.open($scope.opts);
-	  
-	  		modalInstance.result.then(function(){
-	        	//on ok button press
-	        	//console.log('on ok button press');
-		    	//console.log($scope.eventsToPlot);
-	    		//console.log(modalInstance);
-	  			},function(){
-	    		//on cancel button press
-	    		//console.log("Modal Closed");
-	  			});
+						var qmonthA = '01'
+						if (arrayDateQuarterA[1]=='Q1')
+						{
+							qmonthA = '01';
+						}
+						else if (arrayDateQuarterA[1]=='Q2')
+						{
+							qmonthA = '04';
+						}
+						else if (arrayDateQuarterA[1]=='Q3')
+						{
+							qmonthA = '07';
+						}					
+						else if (arrayDateQuarterA[1]=='Q4')
+						{
+							qmonthA = '10';
+						}	
+						
+						var qmonthB = '01'
+						if (arrayDateQuarterB[1]=='Q1')
+						{
+							qmonthB = '01';
+						}
+						else if (arrayDateQuarterB[1]=='Q2')
+						{
+							qmonthB = '04';
+						}
+						else if (arrayDateQuarterB[1]=='Q3')
+						{
+							qmonthB = '07';
+						}					
+						else if (arrayDateQuarterB[1]=='Q4')
+						{
+							qmonthB = '10';
+						}
+						
+						$scope.minDateToSearch = arrayDateQuarterA[0]+"-"+qmonthA+"-01";
+						$scope.maxDateToSearch = arrayDateQuarterB[0]+"-"+(qmonthB+1)+"-01";
+					}			
+					else if ($scope.resolution.value=='month')
+					{
+						$scope.minDateToSearch = $scope.minDateToSearch+"-01";
+						$scope.maxDateToSearch = $scope.maxDateToSearch+"-01";								
+					}
+					else if ($scope.resolution.value=='day')
+					{
+						$scope.minDateToSearch = $scope.minDateToSearch;
+						$scope.maxDateToSearch = $scope.maxDateToSearch;					
+					}				
+				}
+				
+				//$scope.minDateToSearch = $scope.minDateToSearch+"T00:00:00.000Z"
+				//$scope.maxDateToSearch = $scope.maxDateToSearch+"T23:59:00.000Z"
+				
+				//console.log($scope.minDateToSearch);
+				//console.log($scope.maxDateToSearch);
+	
+				
+				var arrayIdsMetricsSelected = [];
+				$scope.individualsSelected = [];
+				for (var i=0; i < $scope.ListMetricsFilter.length; i++) 
+				{			
+					arrayIdsMetricsSelected[i]=$scope.ListMetricsFilter[i].id;
+					
+					//console.log($scope.IndividualDatasetCheckboxes_[$scope.ListMetricsFilter[i].id]);
+					
+					for (var i_identity=0; i_identity < $scope.IndividualDatasetCheckboxes_[$scope.ListMetricsFilter[i].id].length; i_identity++)
+					{
+						//console.log($scope.IndividualDatasetCheckboxes_[$scope.ListMetricsFilter[i].id][i_identity]);	
+						var idindividual=$scope.IndividualDatasetCheckboxes_[$scope.ListMetricsFilter[i].id][i_identity];
+							
+						var a = $scope.individualsSelected.indexOf(idindividual);						
+						if (a<0)
+						{
+							$scope.individualsSelected.push(idindividual);
+						}
+					}
+				};
+				
+				//console.log("$scope.individualsSelected");
+				//console.log($scope.individualsSelected);
+				//$scope.startDate = '01-01-2011';
+				//$scope.startDate = s.value;
+				//$scope.startDateToFilter = '2014-09-17';
+				//$scope.startDateToFilter = $scope.startDate ;
+				//$scope.startDateToFilter = "Mon Sep 15 2014 00:00:00 GMT+0200 (Romance Daylight Time)";
+						
+		        $scope.opts = {
+					backdrop: true,
+					backdropClick: false,
+					dialogFade: true,
+					keyboard: true,        
+					templateUrl : 'modules/visualization/partials/addEvent.html',
+			        controller : 'ModalInstanceCtrl',
+					resolve: {}, // empty storage
+					scope: $scope
+		  		};
+		
+		        $scope.opts.resolve.item = function() {
+		    		return angular.copy({name:$scope.name, startDate:$scope.startDate, endDate:$scope.endDate, minDateToSearch:$scope.minDateToSearch, maxDateToSearch:$scope.maxDateToSearch, metricsArray: arrayIdsMetricsSelected, arrayIndividuals: $scope.individualsSelected}); // pass name to Dialog
+				}
+		        
+		  		var modalInstance = $modal.open($scope.opts);
+		  
+		  		modalInstance.result.then(function(){
+		        	//on ok button press
+		        	//console.log('on ok button press');
+			    	//console.log($scope.eventsToPlot);
+		    		//console.log(modalInstance);
+		  			},function(){
+		    		//on cancel button press
+		    		//console.log("Modal Closed");
+		  			});
+	  		}
 		};  
       
 
@@ -1770,15 +1926,18 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
 		$scope.optionToPlot = [];
 		
+
 		
-		$scope.validateCheckboxes = function(idIn) {
+		$scope.validateCheckboxes = function(idIn, source) {
 			
-//			console.log("idIn="+idIn);
-//			console.log($scope.individualCombo_value_[idIn]);
-			
+			//console.log("idIn="+idIn);
+			//console.log("source="+source);
+			//console.log($scope.individualCombo_value_[idIn]);
+			//console.log($scope.IndividualDatasetCheckboxes_[idIn]);
 			//console.log($scope.IndividualDatasetCheckboxes_[idIn].length);
 			if ($scope.IndividualDatasetCheckboxes_[idIn].length==0)
 			{
+				//console.log("j="+j);
 				for (j in $scope.individualCombo_value_[idIn]) 
 				{
 					//console.log("j=");
@@ -1787,7 +1946,24 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				}
 			}
 			
-			$scope.rePlotGraph();
+			if (source=='modal')
+			{
+				if ($scope.IndividualDatasetCheckboxes_[idIn].length==1)
+				{
+					//console.log("j="+j);
+					for (j in $scope.individualCombo_value_[idIn]) 
+					{
+						//console.log("j=");
+						//console.log($scope.individualCombo_value_[idIn][j].id);
+						$scope.IndividualDatasetCheckboxes_[idIn].push($scope.individualCombo_value_[idIn][j].id);
+					}
+				}
+			}
+			else
+			{
+				$scope.rePlotGraph();	
+			}
+			
 		}
 		
 		$scope.updateDescriptionEvent = function(index) {
@@ -1807,12 +1983,37 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			}
 			$scope.indexdataset=-1;
 			
+			//console.log("$scope.rePlotGraph() 1");
 			$scope.rePlotGraph();
 		}
 		
-		$scope.rePlotGraph = function() {
+		$scope.manualCheckoxesSelected = [];
+		$scope.manualCheckoxesSelected['showYAxes']=false;
+		
+		$scope.manualClick = function(checkboxId) {
+			//console.log("checkboxId="+checkboxId);
+			$scope.manualCheckoxesSelected[checkboxId]=true;
+			//console.log($scope.manualCheckoxesSelected);
+		}
+		
+		$scope.rePlotGraph = function() {								
+			//console.log("--rePlotGraph--");	
 									
-			//console.log("--rePlotGraph--");		
+			//clear container chart div
+			var divContent='';
+			divContent='<div class="loading-container"><div class="loading" ></div><div id="loading-text">loading</div></div>';
+			if ($scope.mode!='view')
+			{
+					if (document.getElementById("container_graph_"+$scope.visualization.id) !=null)
+					{
+							document.getElementById("container_graph_"+$scope.visualization.id).innerHTML = divContent;	
+					} 
+					else
+					{	
+						document.getElementById("container_graph_").innerHTML = divContent;
+					}
+			}	
+			
 			//console.log($scope.dataset_color_palete_)
 			//console.log($scope.IndividualDatasetCheckboxes_);
 			//console.log($scope.ListMetricsFilter);
@@ -1946,14 +2147,23 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						//console.log("timeStart="+$scope.timeStart);
 						//console.log("timeEnd="+$scope.timeEnd);
 						
-						
-						jsonFile = API_CONF.DATASETS_MANAGER_URL + "/datasets/"+resIdMetric+'?time_resolution='+timeresolution;
+						if (timeresolution)
+						{
+							jsonFile = API_CONF.DATASETS_MANAGER_URL + "/datasets/"+resIdMetric+'?time_resolution='+timeresolution;
+						}
+						else
+						{
+							jsonFile = API_CONF.DATASETS_MANAGER_URL + "/datasets/"+resIdMetric+'?';
+						}
 						//jsonFile = API_CONF.DATASETS_MANAGER_URL + "/datasets/"+resIdMetric+'?time_resolution='+timeresolution+strIdentities;
 						
 						//jsonFile = "/api/v1/datasetmanager/datasets/"+resIdMetric+'?time_resolution='+timeresolution+strIdentities;
 						
 						//console.log("scope.timeStart="+$scope.timeStart);
 						//console.log("scope.timeEnd="+$scope.timeEnd);
+						
+						
+						
 						if  ($scope.timeStart)
 						{
 							if ($scope.timeStart!='----')
@@ -2038,6 +2248,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 								
 								//console.log("valueIdentityColor");
 								//console.log(valueIdentityColor);
+								
 								arrayColorsDatasets.push(valueIdentityColor);
 
 
@@ -2045,6 +2256,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 								cntMetrics = cntMetrics+1;
 								
 								$scope.optionToPlot[resIdMetric] = {
+									'datasetid':resIdMetric,
 									'metricid':resIdMetric,
 									'Label':valueXAxis,
 									'Column':valueYAxis,
@@ -2130,6 +2342,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	  		});
 			
 				//$scope.recoverDataEnds=false;
+				$scope.recoverDataEnds = false;
+				
   				q.await($scope.recoverRelatedData);	
 
 				//q2.await($scope.plotGraphDatasets);
@@ -2148,6 +2362,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						if ($scope.recoverDataEnds)
 						{
 							q2.await($scope.plotGraphDatasets);
+							//q.await($scope.plotGraphDatasets);
 						}
 				});
              			
@@ -2170,11 +2385,45 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			$scope.TimeSelector = [];
 			$scope.cntIndividuals = 0;
 			$scope.TitleIndividuals =[];
+			$scope.cntTitleIndividual = 0;
+			$scope.cntYLabels=0;
+			
+			
+			//console.log("arguments");
+			//console.log(arguments);
+			//console.log(arguments.length);
+			//console.log("...............");
+			//var sizeArg = arguments.length;
+			
+			var cntIndividualsVisualisation = 0;
+			for (var i=1; i<arguments.length; i++)
+			{				
+				cntIndividualsVisualisation = cntIndividualsVisualisation + arguments[i]['data']['table'].length;
+			}
+			
 			for (var i=1; i<arguments.length; i++)
 			{
-				//console.log($scope.TitleUnits[arguments[i]['unit_id']]);
+				//console.log("----------------->"+$scope.TitleUnits[arguments[i]['unit_id']]);
 				if ($scope.TitleUnits[arguments[i]['unit_id']])
 				{
+					$scope.cntYLabels = $scope.cntYLabels +1;
+					
+					//console.log("scope.cntYLabels="+$scope.cntYLabels);
+					
+					//if (($scope.cntYLabels>=(arguments.length-1)) && ($scope.cntTitleIndividual>=$scope.cntIndividuals))
+					//if (($scope.cntTitleIndividual>=$scope.cntIndividuals))
+					if (($scope.cntYLabels>=(arguments.length-1)) && ($scope.cntTitleIndividual>=cntIndividualsVisualisation))
+					{
+							$scope.recoverDataEnds=true;
+							//console.log("Exit C!!!!");
+							
+							//console.log("arguments.length="+arguments.length);							
+							//console.log("scope.cntYLabels="+$scope.cntYLabels);
+							//console.log("scope.cntTitleIndividual="+$scope.cntTitleIndividual);
+							//console.log("scope.cntIndividuals="+$scope.cntIndividuals);
+							
+							//console.log("End recover indiv.");
+					}					
 				}
 				else
 				{
@@ -2184,15 +2433,36 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					
 					$dataUnit[i].$promise.then(function(unit) 
 					{
+						
+						
 						$scope.TitleUnits[unit.id] = unit.title;
-						//console.log("----->");
+						//console.log("TitleUnits ----->");
 						//console.log($scope.TitleUnits);
 						//console.log("<-----");
+						$scope.cntYLabels = $scope.cntYLabels +1;
+						//console.log("arguments");
+
+
+						//if ((arguments.length<=$scope.cntYLabels) && ($scope.cntTitleIndividual>=$scope.cntIndividuals))
+						//if (($scope.cntTitleIndividual>=$scope.cntIndividuals))
+						if (($scope.cntYLabels>=(arguments.length-1)) && ($scope.cntTitleIndividual>=$scope.cntIndividuals))
+						{
+							$scope.recoverDataEnds=true;
+							//console.log("Exit A!!!!");
+							//console.log("sizeArg="+sizeArg);
+							//console.log("arguments.length="+arguments.length);
+							//console.log("scope.cntYLabels="+$scope.cntYLabels);
+							//console.log("scope.cntTitleIndividual="+$scope.cntTitleIndividual);
+							//console.log("scope.cntIndividuals="+$scope.cntIndividuals);
+							//console.log($scope.TitleUnits);
+							//console.log("End recover indiv.");
+						}
+						
 					});
 					
 				}
 				
-				$scope.cntTitleIndividual = 0;
+				
 				//console.log(arguments[i]['data']['table'].length);
 				
 				for (var j=0; j<arguments[i]['data']['table'].length; j++)
@@ -2225,8 +2495,14 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					//console.log($scope.TimeSelector);
 
 					//$scope.cntIndividuals = $scope.cntIndividuals +1;
+					
+					//console.log(arguments[i].acronym);
+					//console.log(arguments[i]['data']['table'][j].individual);
+					//console.log($scope.TitleIndividuals);
+					
 					if ($scope.TitleIndividuals[arguments[i]['data']['table'][j].individual])
 					{
+						//console.log("aaaaaaaa");
 						/*
 						$scope.cntTitleIndividual = $scope.cntTitleIndividual +1; 
 							//console.log("cntTitleIndividual="+$scope.cntTitleIndividual);
@@ -2237,6 +2513,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 								$scope.recoverDataEnds=true;
 								//console.log("End recover indiv.");
 							}*/
+							
+							$scope.cntIndividuals = $scope.cntIndividuals +1;
 					}
 					else
 					{
@@ -2245,27 +2523,54 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						
 						//console.log("indiv="+arguments[i]['data']['table'][j].individual);
 						//console.log("j="+j);
+						
+						
 						$dataIndividualPromises[j] = Individual.getById(arguments[i]['data']['table'][j].individual);
 						
-						//$scope.TitleIndividuals[arguments[i]['data']['table'][j].individual] = "-----";
+						//console.log(arguments[i].acronym);
 						
+						//$scope.TitleIndividuals[arguments[i]['data']['table'][j].individual] = "-----";
+						//console.log("j="+j);
 						$dataIndividualPromises[j].$promise.then(function(indivudual) {
 						//$dataIndividualPromises[j].then(function(indivudual) {
 							
-							
-							//console.log(indivudual.id);
-							//console.log(indivudual.title);
+							//console.log("individual id="+indivudual.id);
+							//console.log("individual title="+indivudual.title);
 							$scope.TitleIndividuals[indivudual.id] = indivudual.title;
 							
 							$scope.cntTitleIndividual = $scope.cntTitleIndividual +1; 
 							//console.log("cntTitleIndividual="+$scope.cntTitleIndividual);
 							
 							//console.log($scope.TitleIndividuals);
+							/*
 							if ($scope.cntTitleIndividual>=$scope.cntIndividuals)
 							{
 								$scope.recoverDataEnds=true;
 								//console.log("End recover indiv.");
 							}
+							*/
+							
+							//console.log("indivudual.title ----->");
+							//console.log(indivudual.title);
+							//console.log("<-----");
+						
+							//if ((arguments.length<=$scope.cntYLabels) && ($scope.cntTitleIndividual>=$scope.cntIndividuals))
+							//if (($scope.cntTitleIndividual>=$scope.cntIndividuals))
+							//if (($scope.cntYLabels>=(arguments.length-1)) && ($scope.cntTitleIndividual>=$scope.cntIndividuals))
+							if (($scope.cntYLabels>=(arguments.length-1)) && ($scope.cntTitleIndividual>=cntIndividualsVisualisation))
+							{
+								$scope.recoverDataEnds=true;
+								
+								//console.log("Exit B!!!!");
+								//console.log("arguments.length="+arguments.length);
+								//console.log("scope.cntYLabels="+$scope.cntYLabels);
+								//console.log("scope.cntTitleIndividual="+$scope.cntTitleIndividual);
+								//console.log("scope.cntIndividuals="+$scope.cntIndividuals);
+								
+								
+								//console.log("End recover indiv.");
+							}
+
 							
 						});
 						
@@ -2277,7 +2582,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				
 			}
 			
-			
+			//console.log("cntIndividualsVisualisation="+cntIndividualsVisualisation);
 			
 									
 			//console.log($scope.TimeSelector);	
@@ -2449,6 +2754,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				$scope.cntCountriesToPlot = 0;
 				
 				var resultionToUse = '';
+				var unitsId = [];
 				for (var i=1; i<arguments.length; i++)
 				{	
 					//console.log("i="+i);
@@ -2459,6 +2765,32 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						//console.log(arguments[i].time.resolution);
 						//we fix de resolution combo with the values that the visualisation accepts
 						
+						if ($scope.mode=='create')
+						{
+						        if ($scope.ListMetricsFilter.length<=1)
+						        {
+						        	//console.log($scope.manualCheckoxesSelected);
+						        	//console.log($scope.manualCheckoxesSelected['showYAxes']);
+						        	
+						        	if ($scope.manualCheckoxesSelected['showYAxes']==false)
+						        	{
+						               $scope.showYAxes=true;
+						            }
+						        }
+						        else
+						        {
+						               var indexUnit = unitsId.indexOf(arguments[i].unit_id);
+						               if (indexUnit<0)
+						               {
+						                      unitsId.push(arguments[i].unit_id)
+						                      if ($scope.manualCheckoxesSelected['showYAxes']==false)
+						                      {
+						                      	$scope.showYAxes=false;	
+						                      }
+						                      
+						       			}
+								}
+						}                                         
 						
 						if (!$scope.resolution)
 						{
@@ -2789,6 +3121,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						}
 						else if (($scope.typeToPlot==='graph_line') || ($scope.typeToPlot==='graph_pie') || ($scope.typeToPlot==='graph_bars'))
 						{
+							//console.log("$scope.typeToPlot="+$scope.typeToPlot);
+							
 							var arrayValues = [];
 							var arrayLabels  = [];
 							var arrayValuesXY  = [];
@@ -2944,7 +3278,14 @@ angular.module('pcApp.visualization.controllers.visualization', [
 											{
 												//console.log($scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]);
 												//console.log(arguments[i]['data']['table'][j].individual);
-												var key = $scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]+"_"+j;
+												
+												var str = arguments[i].acronym;
+												//console.log("str="+str); 
+    											//var str = str.replace(/ /gi, "&");
+												//console.log("str="+str);
+												
+												//var key = $scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]+"_"+j;
+												var key = $scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]+" ["+str+"] _"+j;
 												//console.log(key);
 											}	
 										}
@@ -2953,7 +3294,12 @@ angular.module('pcApp.visualization.controllers.visualization', [
 										if ($sem>100000)
 										{
 											//console.log(arguments[i]['data']['table'][j].individual);
-											var key = arguments[i]['data']['table'][j].individual+"_"+j;
+											var str = arguments[i].acronym;
+											
+											//var key = arguments[i]['data']['table'][j].individual+"_"+j;
+											
+											var key = arguments[i]['data']['table'][j].individual+" ["+str+"] _"+j;
+											
 											//var key = " ";
 											//console.log("key fora error!!!");
 											//console.log($scope.TitleIndividuals);
@@ -2983,9 +3329,27 @@ angular.module('pcApp.visualization.controllers.visualization', [
 									var lineColor = '#000000';
 									
 									//console.log(colorsIdentities);
+									
+									//console.log($scope.optionToPlot[arguments[i].id]);
+									//console.log($scope.optionToPlot[arguments[i].id].identitiescolors);
+									//console.log(arguments[i]['data']['table'][j].individual);
+									
+									if (colorsIdentities)									
+									{
+										lineColor = $scope.optionToPlot[arguments[i].id].identitiescolors[arguments[i]['data']['table'][j].individual];
+									}
+									else
+									{
+										//console.log("to do comment line");										
+										//lineColor = $scope.colorScale(arguments[i]['data']['table'][j].individual.title);
+										//lineColor = $scope.colorScale("todoo!!!"+arguments[i]['data']['table'][j].individual);										
+										lineColor = $scope.colorScale($scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]);
+									}
+									/*
 									if (colorsIdentities)
 									{
-										//console.log(colorsIdentities.length);
+										console.log($scope.optionToPlot[arguments[i].id].identitiescolors[arguments[i]['data']['table'][j].individual]);
+										console.log(colorsIdentities);
 										//if (colorsIdentities.length>=(j+1))
 										
 										var cntObject=0;
@@ -3004,12 +3368,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
       										
       										cntObject=cntObject+1;
  										}
-										/*
-										if (colorsIdentities[j+1])
-										{											
-											lineColor = colorsIdentities[j+1];
-										}
-										*/
+
 									}
 									else
 									{
@@ -3019,6 +3378,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 										
 										lineColor = $scope.colorScale($scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]);
 									}
+									*/
 									//console.log("lineColor="+lineColor);
 									
 									var arrayDatasetTmp = {
@@ -3048,7 +3408,10 @@ angular.module('pcApp.visualization.controllers.visualization', [
 										//console.log("j="+j);
 										if ($scope.TitleIndividuals[arguments[i]['data']['table'][j].individual])
 										{
-											var label = $scope.TitleIndividuals[arguments[i]['data']['table'][j].individual];
+											var str = arguments[i].acronym;
+											
+											//var label = $scope.TitleIndividuals[arguments[i]['data']['table'][j].individual];
+											var label = $scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]+" ["+str+"]";
 											//console.log("label="+label+"----value=");
 											//console.log(obj);	
 											//console.log(obj_[j]);
@@ -3057,8 +3420,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
 										
 										if ($sem>100000)
 										{
-											var label = arguments[i]['data']['table'][j].individual;
-											
+											var str = arguments[i].acronym;
+											//var label = arguments[i]['data']['table'][j].individual;
+											var label = arguments[i]['data']['table'][j].individual+" ["+str+"]";
 										}
 										
 									
@@ -3171,13 +3535,20 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
 										if ($scope.TitleIndividuals[arguments[i]['data']['table'][j].individual])
 										{
-											var key = $scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]+"_"+j;	
+											var str = arguments[i].acronym;
+											
+											//var key = $scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]+"_"+j;
+																					
+											var key = $scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]+" ["+str+"]_"+j;
 										}
 										$sem = $sem +1;
 										
 										if ($sem>100000)
 										{
-											var key = arguments[i]['data']['table'][j].individual+"_"+j;
+											var str = arguments[i].acronym;
+											
+											//var key = arguments[i]['data']['table'][j].individual+"_"+j;
+											var key = arguments[i]['data']['table'][j].individual+" ["+str+"]_"+j;
 											//console.log("key fora error!!!");
 											//console.log($scope.TitleIndividuals);
 										}
@@ -3362,157 +3733,168 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					//console.log($scope.arrayDataset);
 					$scope.numbers1 = $scope.arrayDataset;
 					
+					//console.log($scope.arrayDataset);
+					//console.log($scope.arrayDataset.length);
 					if ($scope.arrayDataset.length==0)
 					{
-						$scope.rePlotGraph();
-					}
-					else
-					{
-						//console.log("else..");
-					
-					var legendsColumn = 0;
-					if ($scope.showLegend)
-					{
-						//legendsColumn = Math.ceil(numbers1.length/9);
-						legendsColumn = Math.ceil($scope.numbers1.length/9);
-					}
-					else
-					{
-						legendsColumn = 0;
-					}	
-				 	
-					if ($scope.numbers1)
-					{					
-				    
-						//
-						if ($scope.list) {
-							legendsColumn = 0;
-						}
-					
-						var margin = {top: 20, right: 20, bottom: 55+(legendsColumn)*20, left: 44},
-						//width = 700,
-						width = 980,
-						//width = 1050,
-						//height = 200;
-						height = 326,
-						font_size = 11,
-						radiouspoint = 4,
-						dymarging = 15,
-						offsetYaxesR = 10,
-						offsetYaxesL = -20,
-						distanceXaxes = 45
-						;
-					
-						if ($scope.list)
+						//console.log("$scope.rePlotGraph() 2-");
+						$scope.numbers1 = [];
+						if ($scope.mode=="create")
 						{
-							margin.top = margin.top / 5;
-							margin.right = margin.right / 5;
-							margin.bottom = margin.bottom / 5;
-							margin.left = margin.left / 5;
-							width = width / 5;
-							height = height/ 5;
-							font_size = font_size / 5;
-							radiouspoint = radiouspoint / 5;
-							dymarging = dymarging / 5;
-							offsetYaxesR = offsetYaxesR / 5;
-							offsetYaxesL = offsetYaxesL / 5;
-							distanceXaxes = distanceXaxes / 5;
-							$scope.showLegend = false;	
-											
-						}
-
-					
-						if (numbers1.length>0)
-		                {
-		                	$scope.numbers1=numbers1;
-		                	$scope.labelYAxe= labelYAxe;
-		                }
-	                	
-						if (($scope.mode=='create') || ($scope.mode=='edit'))
-						{
-							if (document.getElementById("container_graph_"+$scope.visualization.id) !=null)
+							if ($scope.autoreplot!=1)
 							{
-								document.getElementById("container_graph_"+$scope.visualization.id).innerHTML = "";	
-							} 
-							else
-							{	
-								document.getElementById("container_graph_").innerHTML = "";
+								$scope.rePlotGraph();
+							}
+							$scope.autoreplot=1;						
+						}
+					}
+					else
+					{
+						//console.log("else..");						
+						var legendsColumn = 0;
+						if ($scope.showLegend)
+						{
+							//legendsColumn = Math.ceil(numbers1.length/9);
+							legendsColumn = Math.ceil($scope.numbers1.length/9);
+						}
+						else
+						{
+							legendsColumn = 0;
+						}	
+					 	
+					 	//console.log("$scope.numbers1")
+					 	//console.log($scope.numbers1)
+					 	
+						if ($scope.numbers1)
+						{					
+							if ($scope.list) {
+								legendsColumn = 0;
 							}
 						
-							var barLine = policycompass.viz.line(
+							var margin = {top: 20, right: 20, bottom: 55+(legendsColumn)*20, left: 44},
+							//width = 700,
+							width = 980,
+							//width = 1050,
+							//height = 200;
+							height = 326,
+							font_size = 11,
+							radiouspoint = 4,
+							dymarging = 15,
+							offsetYaxesR = 10,
+							offsetYaxesL = -20,
+							distanceXaxes = 45
+							;
+						
+							if ($scope.list)
 							{
-		                		'idName':"container_graph_"+$scope.visualization.id,
-		                		'width': width,
-		                		'height': height,
-		                		'margin': margin,
-		                		'labelX': "label X",
-		                		'labelY': labelYAxe,
-		                		'radius': radiouspoint,
-		                		'dymarging': dymarging,
-		                		'offsetYaxesR': offsetYaxesR,
-		                		'offsetYaxesL': offsetYaxesL,
-		                		'distanceXaxes': distanceXaxes,
-		                		'font_size': font_size,
-								'showYAxesTogether': $scope.showYAxes,	                		
-		                		'showLegend': $scope.showLegend,							
-								'showLines': $scope.showLines,	
-								'showAreas': $scope.showAreas,													
-								'showPoints': $scope.showPoints,							
-								'showLabels': $scope.showLabels,							
-								'showGrid': $scope.showGrid,
-								'showAsPercentatge': $scope.showAsPercentatge,
-								'legendsColumn': legendsColumn,
-								'resolution': $scope.resolution.value
-							});
-						
-						
-							if (numbers1.length>0)							
-	                		{
-	                			
-	                			//barLine.render(numbers1, $scope.eventsToPlot, $scope.mode);
-	                			//console.log("$scope.firstLoad");
-	                			//console.log($scope.firstLoad);
-	                			
-	                			if ($scope.firstLoad==true)
-	                			{
-	                				$scope.firstLoad=false;
-	                				
-	                				$scope.$watch('sem', function(sem) {
-	                				
-	                				//console.log("$scope.sem="+$scope.sem);
-	                				//console.log("$scope.eventsToPlot.length="+$scope.eventsToPlot.length);	                				
-	                				//console.log("$scope.visualization.historical_events_in_visualization.length="+$scope.visualization.historical_events_in_visualization.length)
-	                				if ($scope.sem==$scope.visualization.historical_events_in_visualization.length)
-	                				{
-	                					//console.log("PINTAMOS!!!");
-	                					//console.log($scope.eventsToPlot);
-                						barLine.render($scope.numbers1, $scope.eventsToPlot, $scope.mode);	
-	                				}
-									
-            						});
-            					}
-            					else
-            					{
-            						
-            						//console.log("$scope.visualization.historical_events_in_visualization");
-            						//console.log($scope.visualization.historical_events_in_visualization);
-            						barLine.render($scope.numbers1, $scope.eventsToPlot, $scope.mode);
-            						
-            						/*
-            							$scope.$watch('sem', function(sem) {
+								margin.top = margin.top / 5;
+								margin.right = margin.right / 5;
+								margin.bottom = margin.bottom / 5;
+								margin.left = margin.left / 5;
+								width = width / 5;
+								height = height/ 5;
+								font_size = font_size / 5;
+								radiouspoint = radiouspoint / 5;
+								dymarging = dymarging / 5;
+								offsetYaxesR = offsetYaxesR / 5;
+								offsetYaxesL = offsetYaxesL / 5;
+								distanceXaxes = distanceXaxes / 5;
+								$scope.showLegend = false;	
+												
+							}
+	
+						   
+							if (numbers1.length>0)
+			                {
+			                	$scope.numbers1=numbers1;
+			                	$scope.labelYAxe= labelYAxe;
+			                }
+		                	
+							if (($scope.mode=='create') || ($scope.mode=='edit'))
+							{
+								if (document.getElementById("container_graph_"+$scope.visualization.id) !=null)
+								{
+									document.getElementById("container_graph_"+$scope.visualization.id).innerHTML = "";	
+								} 
+								else
+								{	
+									document.getElementById("container_graph_").innerHTML = "";
+								}
+							
+								var barLine = policycompass.viz.line(
+								{
+			                		'idName':"container_graph_"+$scope.visualization.id,
+			                		'width': width,
+			                		'height': height,
+			                		'margin': margin,
+			                		'labelX': "label X",
+			                		'labelY': labelYAxe,
+			                		'radius': radiouspoint,
+			                		'dymarging': dymarging,
+			                		'offsetYaxesR': offsetYaxesR,
+			                		'offsetYaxesL': offsetYaxesL,
+			                		'distanceXaxes': distanceXaxes,
+			                		'font_size': font_size,
+									'showYAxesTogether': $scope.showYAxes,	                		
+			                		'showLegend': $scope.showLegend,							
+									'showLines': $scope.showLines,	
+									'showAreas': $scope.showAreas,													
+									'showPoints': $scope.showPoints,							
+									'showLabels': $scope.showLabels,							
+									'showGrid': $scope.showGrid,
+									'showAsPercentatge': $scope.showAsPercentatge,
+									'legendsColumn': legendsColumn,
+									'resolution': $scope.resolution.value
+								});
+							
+								//console.log("numbers1.length="+numbers1.length);
+								if (numbers1.length>0)							
+		                		{
+		                			
+		                			//barLine.render(numbers1, $scope.eventsToPlot, $scope.mode);
+		                			//console.log("$scope.firstLoad");
+		                			//console.log($scope.firstLoad);
+		                			
+		                			if ($scope.firstLoad==true)
+		                			{
+		                				$scope.firstLoad=false;
+		                				
+		                				$scope.$watch('sem', function(sem) {
+		                				
+		                				//console.log("$scope.sem="+$scope.sem);
+		                				//console.log("$scope.eventsToPlot.length="+$scope.eventsToPlot.length);	                				
+		                				//console.log("$scope.visualization.historical_events_in_visualization.length="+$scope.visualization.historical_events_in_visualization.length)
+		                				if ($scope.sem==$scope.visualization.historical_events_in_visualization.length)
+		                				{
+		                					//console.log("PINTAMOS!!!");
+		                					//console.log($scope.eventsToPlot);
+	                						barLine.render($scope.numbers1, $scope.eventsToPlot, $scope.mode);	
+		                				}
+										
+	            						});
+	            					}
+	            					else
+	            					{
+	            						
+	            						//console.log("$scope.visualization.historical_events_in_visualization");
+	            						//console.log($scope.visualization.historical_events_in_visualization);
 	            						barLine.render($scope.numbers1, $scope.eventsToPlot, $scope.mode);
-            							});
-            						*/
-            						
-            						
-            					}
-            					
-            					
-	                			
-	                		}
+	            						
+	            						/*
+	            							$scope.$watch('sem', function(sem) {
+		            						barLine.render($scope.numbers1, $scope.eventsToPlot, $scope.mode);
+	            							});
+	            						*/
+	            						
+	            						
+	            					}
+	            					
+	            					
+		                			
+		                		}
+							}
+							
 						}
-						
-					}
 					}
 				}
 				else if ($scope.typeToPlot==='graph_pie')
@@ -4595,7 +4977,22 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				};
 								
 				var selectorIndividualData = value;				
-
+				
+				value = '';
+				for (var i in arrayValuesInString) 
+				{
+					//console.log(arrayValuesInString[i]);
+					
+					if (value)
+					{
+						value=value+';';
+					}
+					value = value+$scope.dataset_color_palete_[metricListIn[j].id][arrayValuesInString[i]];
+					
+					//console.log($scope.dataset_color_palete_[metricListIn[j].id][arrayValuesInString[i]]);
+				}
+				
+				/*
 				value = '';
 				//for (var i=0; i < $scope.dataset_color_palete_[myindex].length; i++)
 				for (var i in $scope.dataset_color_palete_[myindex]) 
@@ -4614,7 +5011,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							//value = value+i;
 					}
 				};
-								
+				*/			
 				var selectorIndividualColorData = value;					
 				
 				//console.log("selectorIndividualData");
@@ -5133,6 +5530,8 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualiza
 					}
 				}	
 				*/
+				
+				arrayValuesInString=[];
 				if ($scope.IndividualDatasetCheckboxes_.length>0)
 				{				
 					for (var i=0; i < $scope.IndividualDatasetCheckboxes_[myindex].length; i++) 
@@ -5146,6 +5545,9 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualiza
 									value=value+';';
 								}
 								value = value+$scope.IndividualDatasetCheckboxes_[myindex][i];
+								
+								arrayValuesInString.push($scope.IndividualDatasetCheckboxes_[myindex][i]);
+								
 								//value = value+i;
 							}
 					  	}
@@ -5160,7 +5562,23 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualiza
 				//console.log($scope.dataset_color_palete_);
 				//console.log($scope.dataset_color_palete_[myindex]);
 				//console.log($scope.dataset_color_palete_[myindex].length);
+
+
+				value = '';
+				for (var i in arrayValuesInString) 
+				{
+					//console.log(arrayValuesInString[i]);
+					
+					if (value)
+					{
+						value=value+';';
+					}
+					value = value+$scope.dataset_color_palete_[metricListIn[j].id][arrayValuesInString[i]];
+					
+					//console.log($scope.dataset_color_palete_[metricListIn[j].id][arrayValuesInString[i]]);
+				}
 				
+				/*
 				//for (var i=0; i < $scope.dataset_color_palete_[myindex].length; i++) 
 				for (var i in $scope.dataset_color_palete_[myindex])
 				{
@@ -5178,12 +5596,12 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualiza
 							//value = value+i;
 					}
 				};
-								
+						*/		
 				var selectorIndividualColorData = value;					
 				
 				//console.log("selectorIndividualColorData");
 				//console.log(selectorIndividualColorData);
-																						
+																					
 				//var visualization_query_data = 'Label:'+selectorLabel+',Column:'+selectorDataColumn+',Grouping:'+selectorGroupingData;
 				var visualization_query_data = 'Individual:'+selectorIndividualData+',Colors:'+selectorIndividualColorData;
 				
@@ -5304,6 +5722,40 @@ angular.module('pcApp.visualization').filter('pagination', function()
  };
 })
 
+.controller('ModalInstanceCtrlDataset', [
+	'$scope', 
+	'VisualizationByDataset',
+	'Visualization',
+	'Event',
+	'$filter',
+	'$route',
+	'$routeParams',	
+	'$modalInstance', 
+	'$modal', 
+	'item',
+	'searchclient',
+	'$location', 
+	'$log',
+	'API_CONF',
+	function($scope, VisualizationByDataset, Visualization, Event, $filter, $route, $routeParams, $modalInstance, $modal, item, searchclient, $location, $log, API_CONF) 
+	{
+		
+		//console.log("aaaaaaa");
+		
+		$scope.displaycontentMetricModal = function(idMetric) {
+			var containerLink = document.getElementById("modal-edit-metric-button-"+idMetric);
+			$(containerLink).parent().next().toggle(200);	 
+		};
+		
+		$scope.okModalDataset = function () {
+			$modalInstance.close();		
+		};
+      
+		$scope.cancelModalDataset = function () {
+			$modalInstance.dismiss('cancel');
+		};
+	
+}])
 
 .controller('ModalInstanceCtrl', [
 	'$scope', 
@@ -5355,7 +5807,32 @@ angular.module('pcApp.visualization').filter('pagination', function()
 	//$scope.startDateToFilter="";
 	$scope.endDateToFilter=item.endDate;
 	
+	
 	//$scope.startDateToFilter='2014-05-28';
+	
+	//console.log("$scope.startDateToFilter");
+	//console.log($scope.startDateToFilter);
+	//console.log("item.minDateToSearch");
+	//console.log(item.minDateToSearch);
+	//console.log("item.maxDateToSearch");
+	//console.log(item.maxDateToSearch);
+	
+	if (!$scope.startDateToFilter)
+	{
+		$scope.startDateToFilter=item.minDateToSearch;
+	}
+	
+	if (!$scope.endDateToFilter)
+	{
+		$scope.endDateToFilter=item.maxDateToSearch;
+	}
+	
+	//console.log("$scope.startDateToFilter");
+	//console.log($scope.startDateToFilter);
+
+	//console.log("$scope.endDateToFilter");
+	//console.log($scope.endDateToFilter);
+
 	
 	$scope.paginationEvents = 1;
 	$scope.filterEvents = "";
@@ -5363,6 +5840,7 @@ angular.module('pcApp.visualization').filter('pagination', function()
 	$scope.paginationEvents = "";
 	
 	$scope.arrayHE = [];
+	$scope.recomendationevents = [];
 	for (var i=0; i < $scope.metricslist.length; i++) {
 		//console.log($scope.metricslist[i]);
 		var metricId =$scope.metricslist[i]
@@ -5408,6 +5886,10 @@ angular.module('pcApp.visualization').filter('pagination', function()
             							//$scope.recomendationevents.push(arrayDatos);
             							//console.log($scope.arrayHE);
             							
+            							//console.log("idindividual="+herec.id);
+										//console.log($scope.arrayHE);
+            							//console.log($scope.arrayHE.indexOf(herec.id));
+            							
             							if($scope.arrayHE.indexOf(herec.id)==-1)
             							{
             								$scope.arrayHE[herec.id]=herec.id;
@@ -5452,8 +5934,8 @@ angular.module('pcApp.visualization').filter('pagination', function()
 	}
 	
 	/**************/
-	$scope.recommendedEvents = function(arrayIndividuals) {
-		console.log("recommendedEvents");
+	$scope.recommendedEvents = function(arrayIndividuals, startDateToSearch, endDateToSearch) {
+		//console.log("recommendedEvents");
 		
 		$scope.pagToSearch = 1;
 		$scope.itemsperpagesize = 1000;
@@ -5476,6 +5958,24 @@ angular.module('pcApp.visualization').filter('pagination', function()
         	}	
 		};	
 
+if  (startDateToSearch || endDateToSearch) 
+	{
+	
+		query.filtered['filter'] = {
+            			"and" : [
+                		{
+                    		"range" : {
+		    	                "startEventDate" : {"gte" : startDateToSearch,}
+                			}
+                		},
+                		{
+                    		"range" : {
+	    	                	"endEventDate" : {"lte" : endDateToSearch,}
+                			}
+                		}
+            			]
+        		};
+	}
 
     	//Perform search through client and get a search Promise
       	searchclient.search({
@@ -5503,6 +6003,7 @@ angular.module('pcApp.visualization').filter('pagination', function()
         			if($scope.arrayHE.indexOf(resp.hits.hits[i]._id)==-1)
             		{
             			$scope.arrayHE[resp.hits.hits[i]._source.id]=resp.hits.hits[i]._source.id;
+            			//console.log($scope.recomendationevents);
             			$scope.recomendationevents.push(resp.hits.hits[i]._source);            			
             		}
             		
@@ -5521,7 +6022,7 @@ angular.module('pcApp.visualization').filter('pagination', function()
 	
 	if (item.arrayIndividuals.length>0)
 	{
-		$scope.recommendedEvents(item.arrayIndividuals);
+		$scope.recommendedEvents(item.arrayIndividuals, item.minDateToSearch, item.maxDateToSearch);
 	}
 	
 	

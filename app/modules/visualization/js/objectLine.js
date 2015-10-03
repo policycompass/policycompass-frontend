@@ -1006,7 +1006,19 @@ return 0;}
 				      			.attr("dy", self.dymarging+"px")
 				      			//.attr("x", 50*(keyIndex))
 				      			.style("text-anchor", "end")
-				      			.text(self.labelY[0]);					
+				      			.text(function() {
+				      				var returnValue="";
+				      				if (self.showAsPercentatge)
+				      				{
+				      					returnValue = "As % ("+self.labelY[0]+")";
+				      				}
+				      				else
+				      				{
+				      					returnValue = self.labelY[0];
+				      				}
+				      				return returnValue;
+				      			} );
+				      			//.text(self.labelY[0]);					
 				}
 				else
 				{
@@ -1038,7 +1050,19 @@ return 0;}
 					      		})
 					      		.style("font-weight", "bold")
 				      			.style("text-anchor", "end")
-				      			.text(self.labelY[keyIndex]);
+								.text(function() {
+				      				var returnValue="";
+				      				if (self.showAsPercentatge)
+				      				{
+				      					returnValue = "As % ("+self.labelY[keyIndex]+")";
+				      				}
+				      				else
+				      				{
+				      					returnValue = self.labelY[keyIndex];
+				      				}
+				      				return returnValue;
+				      			} );				      			
+				      			//.text(self.labelY[keyIndex]);
 	
 					}
 				}
@@ -1330,7 +1354,19 @@ return 0;}
 		      			.attr("dy", paddingText)
 		      			.attr("y", offsetYaxes)
 		      			.style("text-anchor", "end")
-		      			.text(self.labelY[cnti-1])
+						.text(function() {
+				      				var returnValue="";
+				      				if (self.showAsPercentatge)
+				      				{
+				      					returnValue = "As % ("+self.labelY[cnti-1]+")";
+				      				}
+				      				else
+				      				{
+				      					returnValue = self.labelY[cnti-1];
+				      				}
+				      				return returnValue;
+				      			} )   			
+		      			//.text(self.labelY[cnti-1])		      			
 				      ;
 				      
 				      //.call(self.yArray[self.cntLineasPintadas]);
@@ -2725,6 +2761,7 @@ return 0;}
 				var dataToPlotUpdate = self.clone( dataToPlot );
 				
 				//var dataToPlotUpdate = dataToPlot;
+				//console.log(dataToPlotUpdate);
 				self.drawLines(dataToPlotUpdate, eventsData);
 				
 			}

@@ -98,6 +98,9 @@
                                 </span>
                             </div>
 
+                        </div>
+                        <div class="col-lg-6">
+
                             <div class="form-group"
                                  ng-class="{'has-error': datasetForm.url.$dirty && datasetForm.url.$invalid}">
                                 <label for="url">URL *</label>
@@ -106,8 +109,13 @@
                             </div>
 
                         </div>
+
+                    </div>
+
+                    <legend>External Resource</legend>
+                    <div class="row">
                         <div class="col-lg-6">
-                            <div class="form-group">
+                            <div class="form-group" ng-show="!custom">
                                 <label for="external_resource">External Resource *</label>
                                 <div id="external_resource" class="reference-selection pc-reference-selection-full"
                                      resource="ExternalResource"
@@ -117,14 +125,22 @@
                                 </div>
                             </div>
 
-                            <div class="form-group"
-                                 ng-class="{'has-error': datasetForm.custom.$dirty && datasetForm.custom.$invalid}">
+                            <div class="form-group" ng-show="custom" ng-class="{'has-error': datasetForm.custom.$dirty && datasetForm.custom.$invalid}">
                                 <label for="custom">Custom</label>
                                 <input type="text" class="form-control" id="custom" name="custom" placeholder="Open Data XY"
                                        ng-model="dataset.resource.custom" required>
                             </div>
                         </div>
 
+                        <div class="col-lg-6">
+                            <div class="form-group" ng-show="!custom">
+                                <button class="btn btn-info pc-er-button" ng-click="toogleResource()">Not there?</button>
+                            </div>
+
+                            <div class="form-group" ng-show="custom">
+                                <button class="btn btn-info pc-er-button" ng-click="toogleResource()">Choose from known Sources</button>
+                            </div>
+                        </div>
                     </div>
                 </fieldset>
 
