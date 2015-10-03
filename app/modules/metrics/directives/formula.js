@@ -36,19 +36,19 @@ angular.module('pcApp.metrics.directives.formula', [
                 var deferred = $q.defer();
                 $q.all(urlCalls)
                 .then(
-                function(results) {
-                    angular.forEach(results, function(value, key, obj){
-                        parsedFormula = parsedFormula.replace("__" + value.data.id + "__", '<span class="indicator-formula indicator-formula-selected">' + value.data.name + '</span>');
+                    function(results) {
+                        angular.forEach(results, function(value, key, obj){
+                            parsedFormula = parsedFormula.replace("__" + value.data.id + "__", '<span class="indicator-formula indicator-formula-selected">' + value.data.name + '</span>');
+                        });
+                        element.empty();
+                        element.append(parsedFormula);
+                    },
+                    function(errors) {
+                        deferred.reject(errors);
+                    },
+                    function(updates) {
+                        deferred.update(updates);
                     });
-                    element.empty();
-                    element.append(parsedFormula);
-                },
-                function(errors) {
-                    deferred.reject(errors);
-                },
-                function(updates) {
-                    deferred.update(updates);
-                });
             };
 
             scope.$watch('formula', function() {

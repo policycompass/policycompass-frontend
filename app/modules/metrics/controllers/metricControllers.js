@@ -8,60 +8,29 @@ angular.module('pcApp.metrics.controllers.metric', [
     'dialogs.main'
 ])
 
-.factory('Data', function (){
-    return {
-        creator: 1,
-        title: "",
-        formula: "",
-        variables: {}
-    };
-})
+.controller('CreateMetric1Controller', ['$scope', '$modal', 'API_CONF', '$http', 'MetricsControllerHelper', '$location', function($scope, $modal, API_CONF, $http, MetricsControllerHelper, $location) {
 
-.controller('CreateMetric1Controller', ['$scope', '$modal', 'API_CONF', '$http', 'Data', '$location', function($scope, $modal, API_CONF, $http, Data, $location) {
+    $scope.metrics_controller_helper = MetricsControllerHelper;
+    $scope.metrics_controller_helper.init();
 
-    $scope.data = Data;
-    $scope.data = {
-        creator: 1,
-        title: "",
-        formula: "",
-        variables: {}
-    };
     $scope.variableIndex = 1;
-
-    var url = API_CONF.INDICATOR_SERVICE_URL + "/indicators";
-
-    $http.get(url).
-        then(function(indicators) {
-            $scope.indicators = _.map(indicators.data.results, function(indicator){
-                return {
-                    icon:"",
-                    name: indicator.name,
-                    acronym: indicator.acronym,
-                    unit_category: indicator.unit_category,
-                    id: indicator.id,
-                    maker:"",
-                    ticked: false}
-            });
-    }, function(response) {
-            console.log(response);
-    });
 
     $scope.addIndicator = function(indicator) {
 
         var i = " __" + $scope.variableIndex + "__ ";
         if (angular.isUndefined($scope.cursorPosVal)){
-            $scope.data.formula = $scope.formula + i;
+            $scope.metrics_controller_helper.metricsdata.formula = $scope.formula + i;
             //$("#formula-div").append('<span contentEditable="false" class="indicator-formula indicator-formula-selected">' + indicator.name + '</span>');
             //$("#formula-div").css('height', ($("#formula-div")[0].scrollHeight + 19) +  'px');
         }
         else{
-            $scope.data.formula = [$scope.data.formula.slice(0, $scope.cursorPosVal), i, $scope.data.formula.slice($scope.cursorPosVal)].join('');
+            $scope.metrics_controller_helper.metricsdata.formula = [$scope.metrics_controller_helper.metricsdata.formula.slice(0, $scope.cursorPosVal), i, $scope.metrics_controller_helper.metricsdata.formula.slice($scope.cursorPosVal)].join('');
             //$("#formula-div").append('<span contentEditable="false" class="indicator-formula indicator-formula-selected">'+ indicator.name +'</span>' );
             //$("#formula-div").css('height',($("#formula-div")[0].scrollHeight + 19) + 'px');
             $scope.cursorPosVal = undefined;
         }
         $scope.variableIndex += 1;
-        $scope.data.variables[i] = {"type": "indicator", "id": indicator.id}
+        $scope.metrics_controller_helper.metricsdata.variables[i] = {"type": "indicator", "id": indicator.id}
     };
 
     $scope.getCursorPosition = function(event) {
@@ -119,7 +88,7 @@ angular.module('pcApp.metrics.controllers.metric', [
             $http({
                 url: url,
                 method: 'get',
-                params: {formula: $scope.data.formula}}).
+                params: {formula: $scope.metrics_controller_helper.metricsdata.formula}}).
             then(function(response) {
                 $location.path("/metrics/create-2")
             }, function(response) {
@@ -130,36 +99,18 @@ angular.module('pcApp.metrics.controllers.metric', [
 
 }])
 
-.controller('CreateMetric2Controller', ['$scope', '$modal', '$http', 'API_CONF', 'Data', '$location', function($scope, $modal, $http, API_CONF, Data, $location) {
-    $scope.data = Data;
+.controller('CreateMetric2Controller', ['$scope', '$modal', '$http', 'API_CONF', 'MetricsControllerHelper', '$location', function($scope, $modal, $http, API_CONF, MetricsControllerHelper, $location) {
 
-    var url = API_CONF.INDICATOR_SERVICE_URL + "/indicators";
-
-    $http.get(url).
-        then(function(indicators) {
-            $scope.indicators = _.map(indicators.data.results, function(indicator){
-                return {
-                    icon:"",
-                    name: indicator.name,
-                    acronym: indicator.acronym,
-                    unit_category: indicator.unit_category,
-                    id: indicator.id,
-                    maker:"",
-                    ticked: false}
-            });
-    }, function(response) {
-            console.log(response);
-    });
+    $scope.metrics_controller_helper = MetricsControllerHelper;
 
     $scope.submit = function () {
         var url = API_CONF.METRICS_MANAGER_URL + "/metrics";
 
         if ($scope.metadataForm.$valid) {
-            $http.post(url, $scope.data).
+            $http.post(url, $scope.metrics_controller_helper.metricsdata).
             then(function(response) {
                 $location.path("/metrics/" + response.data.id)
             }, function(response) {
-                console.log(response);
                 $scope.servererror = response.data;
             });
         }
@@ -171,92 +122,57 @@ angular.module('pcApp.metrics.controllers.metric', [
 
 }])
 
-.factory('DatasetService', function (){
-    return {
-        title: "",
-        acronym: "",
-        datasets: []
-    };
-})
+.controller('ApplyMetric1Controller', ['$scope', '$routeParams', 'ApplyMetricHelper', '$location', function($scope, $routeParams, ApplyMetricHelper, $location) {
 
-.controller('ApplyMetric1Controller', ['$scope', '$routeParams', 'API_CONF', '$http', 'DatasetService', '$location', function($scope, $routeParams, API_CONF, $http, DatasetService, $location) {
-
-    $scope.postdata = DatasetService;
-    $scope.postdata = {
-        title: "",
-        acronym: "",
-        datasets: []
-    }
-
-    $scope.metricId = $routeParams.metricId;
-
-    var metric_url = API_CONF.METRICS_MANAGER_URL + "/metrics/" + $scope.metricId;
-
-    $http.get(metric_url).
-            then(function(response) {
-                $scope.data = response.data;
-                $scope.data.variablesJson = JSON.parse($scope.data.variables.replace(/'/g, '"'));
-                _.each($scope.data.variablesJson, function(value, key){
-                    $scope.postdata.datasets.push({variable : key.trim(), dataset: -1, indicator: value.id });
-                });
-            }, function(response) {
-                console.log('error');
-                console.log(response);
-            });
-
+    $scope.apply_metric_helper = ApplyMetricHelper;
+    $scope.apply_metric_helper.init($routeParams.metricId);
 
     $scope.submit = function () {
-        _.each($scope.postdata.datasets, function(value, key){
+        _.each($scope.apply_metric_helper.data.datasets, function(value, key){
             delete value['indicator'];
         });
-        $location.path("/metrics/" + $scope.metricId + "/apply-2")
+        $location.path("/metrics/" + $routeParams.metricId + "/apply-2")
     };
 
 }])
 
-.controller('ApplyMetric2Controller', ['$scope', '$routeParams', 'API_CONF', '$http', 'DatasetService', '$location', function($scope, $routeParams, API_CONF, $http, DatasetService, $location) {
+.controller('ApplyMetric2Controller', ['$scope', '$routeParams', 'API_CONF', '$http', 'ApplyMetricHelper', '$location', function($scope, $routeParams, API_CONF, $http, ApplyMetricHelper, $location) {
 
-    $scope.postdata = DatasetService;
-
-    $scope.metricId = $routeParams.metricId;
+    $scope.apply_metric_helper = ApplyMetricHelper;
+    $scope.apply_metric_helper.init($routeParams.metricId);
 
     $scope.submit = function () {
-        var url = API_CONF.METRICS_MANAGER_URL + "/metrics/" + $scope.metricId + '/operationalize';
-        $http.post(url, $scope.postdata).
+        var url = API_CONF.METRICS_MANAGER_URL + "/metrics/" + $routeParams.metricId + '/operationalize';
+        $http.post(url, $scope.apply_metric_helper.data).
             then(function(response) {
-                console.log(response);
                 $location.path("/datasets/" + response.data.dataset.id)
             }, function(response) {
                 console.log(response);
                 $scope.servererror = response.data;
             });
-
     };
 
 }])
 
-.controller('MetricsmanagerDetailController', ['$scope', '$routeParams', 'API_CONF', '$http', function($scope, $routeParams, API_CONF, $http) {
+.controller('MetricsmanagerDetailController', ['$scope', '$routeParams', 'MetricService', 'IndicatorService', function($scope, $routeParams, MetricService, IndicatorService) {
 
-    $scope.metricId = $routeParams.metricId;
-
-    var metric_url = API_CONF.METRICS_MANAGER_URL + "/metrics/" + $scope.metricId;
-
-    $http.get(metric_url).
-            then(function(response) {
-                $scope.data = response.data;
-                var indicator_url = API_CONF.INDICATOR_SERVICE_URL + "/indicators/" + $scope.data.indicator;
-                $http.get(indicator_url).
-                    then(function(indicator) {
-                        $scope.indicator = indicator.data;
-                    }, function(response) {
-                        console.log('error');
-                        console.log(response);
-                    });
-            }, function(response) {
-                console.log('error');
-                console.log(response);
-            });
+    $scope.data = MetricService.get({id: $routeParams.metricId},
+        function(metric) {
+            var indicator_id = metric.indicator;
+            $scope.indicator = IndicatorService.get({id: indicator_id},
+                function(indicator){
+                },
+                function(err){
+                    throw { message: JSON.stringify(err.data)};
+                }
+            );
+        },
+        function(err) {
+            throw { message: JSON.stringify(err.data)};
+        }
+    );
 }])
+
 
 /**
  * Controller for the list of metrics

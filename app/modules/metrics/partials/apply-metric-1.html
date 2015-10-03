@@ -9,18 +9,17 @@
       </div>
     </div>
     <ul class="navigation-steps">
-      <li><a href="#!/create-formula" class="btn btn-prev disabled">Previous Step</a></li>
+      <li><a href="" class="btn btn-prev disabled">Previous Step</a></li>
       <li><a href="" class="btn btn-next" ng-click="submit();" ng-class="{'disabled' : !datasetForm.$valid || servererror.formula }">Next Step</a></li>
     </ul>
 
   </div>
   <div class="content-header">
-  	<h1><span class="glyphicon glyphicon-list-alt"></span> {{data.title}}</h1>
+  	<h1><span class="glyphicon glyphicon-list-alt"></span> {{apply_metric_helper.metric.title}}</h1>
   </div>
   <div class="row">
   	<div class="col-md-12">
-      <legend class="legend-primary">{{data.title}}</legend>
-  		<formula ng-if="data.formula && data.variables" data-formula="data.formula" data-variables="data.variables"></formula>
+  		<formula ng-if="apply_metric_helper.metric.formula && apply_metric_helper.metric.variables" data-formula="apply_metric_helper.metric.formula" data-variables="apply_metric_helper.metric.variables"></formula>
   	</div>
   </div>
 
@@ -42,7 +41,7 @@
             <tr>
           </thead>
           <tbody>
-              <tr indicator-to-dataset data-datarow="indicator" ng-repeat="indicator in postdata.datasets"></tr>
+              <tr id="variable_{{indicator.variable}}" indicator-to-dataset data-datarow="indicator" ng-repeat="indicator in apply_metric_helper.data.datasets"></tr>
           </tbody>
         </table>
       </div>

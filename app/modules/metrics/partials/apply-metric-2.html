@@ -1,42 +1,44 @@
 <div class="container">
   <div class="content-header">
-    <h1><span class="glyphicon glyphicon-list-alt"></span> {{data.title}}</h1>
+    <h3 class="fonticon fonticon-formula">Operationalize Metric</h3>
+    <div class="subtitle-help">
+      <h4>
+        <div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div>
+        Step 2 - Add Metadata</h4>
+        <div ng-class="{active: help}" class="help-text">
+      </div>
+    </div>
+    <ul class="navigation-steps">
+      <li><a href="#!/metrics/{{metricId}}/apply-1" class="btn btn-prev disabled">Previous Step</a></li>
+      <li><a href="" class="btn btn-next" ng-click="submit();" ng-class="{'disabled' : !datasetForm.$valid || servererror.formula }">Next Step</a></li>
+    </ul>
   </div>
-  {{ indicator.name }}
+  <div class="content-header">
+    <h1><span class="glyphicon glyphicon-list-alt"></span> {{apply_metric_helper.metric.title}}</h1>
+  </div>
 
   <div class="row">
     <div class="col-md-12">
-      <formula ng-if="data.formula && data.variables" data-formula="data.formula" data-variables="data.variables"></formula>
+      <form name="datasetForm" novalidate>
+        <div class="form-group" ng-class="{ 'has-error': (datasetForm.title.$invalid && !datasetForm.title.$pristine) || servererror.title }">
+          <label for="title" class="field-label">Title</label>
+          <div class="field-content">
+            <input ng-model="apply_metric_helper.data.title" type="text" name="title" class="form-control" required>
+            <p ng-show="datasetForm.title.$error.required && !datasetForm.title.$pristine" class="help-block">This field is required</p>
+            <p ng-show="servererror.title" class="help-block">{{ servererror.title[0] }}</p>
+          </div>
+        </div>
+
+        <div class="form-group" ng-class="{ 'has-error': (datasetForm.acronym.$invalid && !datasetForm.title.$pristine) || servererror.title }">
+          <label for="title" class="field-label">Acronym</label>
+          <div class="field-content">
+            <input ng-model="apply_metric_helper.data.acronym" type="text" name="acronym" class="form-control" required>
+            <p ng-show="datasetForm.acronym.$error.required && !datasetForm.acronym.$pristine" class="help-block">This field is required</p>
+            <p ng-show="servererror.acronym" class="help-block">{{ servererror.acronym[0] }}</p>
+          </div>
+        </div>
+
+      </form>
     </div>
   </div>
-
-  <form name="datasetForm" novalidate>
-
-    <div class="form-group" ng-class="{ 'has-error': (datasetForm.title.$invalid && !datasetForm.title.$pristine) || servererror.title }">
-      <label for="title" class="field-label">Title</label>
-      <div class="field-content">
-        <input ng-model="postdata.title" type="text" name="title" class="form-control" required>
-        <p ng-show="datasetForm.title.$error.required && !datasetForm.title.$pristine" class="help-block">This field is required</p>
-        <p ng-show="servererror.title" class="help-block">{{ servererror.title[0] }}</p>
-      </div>
-    </div>
-
-    <div class="form-group" ng-class="{ 'has-error': (datasetForm.acronym.$invalid && !datasetForm.title.$pristine) || servererror.title }">
-      <label for="title" class="field-label">Acronym</label>
-      <div class="field-content">
-        <input ng-model="postdata.acronym" type="text" name="acronym" class="form-control" required>
-        <p ng-show="datasetForm.acronym.$error.required && !datasetForm.acronym.$pristine" class="help-block">This field is required</p>
-        <p ng-show="servererror.title" class="help-block">{{ servererror.title[0] }}</p>
-      </div>
-    </div>
-  </form>
-
-  {{ postdata }}
-
-  <div class="row">
-    <div class="col-md-12">
-      <a href="" ng-click="submit();" class="btn pull-right">Submit</a>
-    </div>
-  </di>
-
 </div>

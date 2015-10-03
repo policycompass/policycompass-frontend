@@ -22,16 +22,15 @@
   </div>
 
   <div class="content-body">
-    <formula ng-if="data.formula && data.variables" data-formula="data.formula" data-variables="data.variables"></formula>
+    <formula ng-if="metrics_controller_helper.metricsdata.formula && metrics_controller_helper.metricsdata.variables" data-formula="metrics_controller_helper.metricsdata.formula" data-variables="metrics_controller_helper.metricsdata.variables"></formula>
   </div>
 
   <div class="metadata metadata-formula">
-
     <form name="metadataForm" class="simple-form" novalidate>
       <div class="form-group" ng-class="{ 'has-error': (metadataForm.title.$invalid && !metadataForm.title.$pristine) || servererror.title }">
         <label for="title" class="field-label">Title</label>
         <div class="field-content">
-          <input ng-model="data.title" type="text" name="title" class="form-control" required placeholder="Formula">
+          <input ng-model="metrics_controller_helper.metricsdata.title" type="text" name="title" class="form-control" required placeholder="Formula">
           <p ng-show="metadataForm.title.$error.required && !metadataForm.title.$pristine" class="help-block">This field is required</p>
           <p ng-show="servererror.title" class="help-block">{{ servererror.title[0] }}</p>
         </div>
@@ -43,13 +42,14 @@
           <select
             name="indicator"
             class="form-control"
-            ng-options="i.id as i.name for i in indicators"
-            ng-model="data.indicator" >
+            ng-options="i.id as i.name for i in metrics_controller_helper.indicators"
+            ng-model="metrics_controller_helper.metricsdata.indicator" >
           </select>
           <p ng-show="metadataForm.indicator.$error.required && !metadataForm.indicator.$pristine" class="help-block">This field is required</p>
           <p ng-show="servererror.indicator" class="help-block">{{ servererror.indicator[0] }}</p>
         </div>
       </div>
     </form>
-
   </div>
+
+</div>

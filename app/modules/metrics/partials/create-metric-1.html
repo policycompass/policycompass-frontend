@@ -22,7 +22,7 @@
 
   <div class="content-body">
     <!--<div class="calculation-formula">-->
-    <formula data-formula="data.formula" data-variables="data.variables"></formula>
+    <formula data-formula="metrics_controller_helper.metricsdata.formula" data-variables="metrics_controller_helper.metricsdata.variables"></formula>
     <!-- </div> -->
   </div>
 
@@ -33,7 +33,7 @@
         <form name="formulaForm" class="simple-form" novalidate>
           <div class="form-group" ng-class="{ 'has-error': (formulaForm.formula.$invalid && !formulaForm.formula.$pristine) || servererror.formula }">
             <label for="exampleInputEmail1">Formula</label>
-            <input ng-model="data.formula" name="formula" class="form-control" ng-keyup="getCursorPosition($event)" ng-click="getCursorPosition($event)" ng-change="clearErrors();" required>
+            <input ng-model="metrics_controller_helper.metricsdata.formula" name="formula" class="form-control" ng-keyup="getCursorPosition($event)" ng-click="getCursorPosition($event)" ng-change="clearErrors();" required>
             <p ng-show="formulaForm.formula.$error.required && !formulaForm.formula.$pristine" class="help-block">This field is required</p>
             <p ng-show="servererror.formula" class="help-block">{{ servererror.formula }}</p>
           </div>
@@ -42,7 +42,7 @@
 
       <div class="col-md-4">
         <ul class="list-group">
-          <li ng-repeat="indicator in indicators" class="list-group-item">
+          <li ng-repeat="indicator in metrics_controller_helper.indicators" class="list-group-item">
             {{ indicator.name }} <a href="" ng-click="addIndicator(indicator)">add</a>
           </li>
         </ul>
