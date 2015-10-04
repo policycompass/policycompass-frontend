@@ -29,7 +29,11 @@ angular.module('pcApp.metrics.directives.formula', [
                     var index = scope.formula.indexOf(key.replace(' ', ''));
                     if(index > -1) {
                         var url = API_CONF.INDICATOR_SERVICE_URL + "/indicators/" + value.id;
-                        urlCalls.push($http.get(url));
+                        urlCalls.push($http({
+                            url: url,
+                            method: "GET",
+                            params: {key: key}
+                        }));
                         parsedFormula = parsedFormula.replace(key.replace(' ', ''), " __" + value.id + "__ ");
                     }
                 });
@@ -38,7 +42,8 @@ angular.module('pcApp.metrics.directives.formula', [
                 .then(
                     function(results) {
                         angular.forEach(results, function(value, key, obj){
-                            parsedFormula = parsedFormula.replace("__" + value.data.id + "__", '<span class="indicator-formula indicator-formula-selected">' + value.data.name + '</span>');
+                            var variable = value.config.params.key;
+                            parsedFormula = parsedFormula.replace("__" + value.data.id + "__", '<span id="variable' + variable.trim() + '" class="indicator-formula indicator-formula-selected">' + value.data.name + '</span>');
                         });
                         element.empty();
                         element.append(parsedFormula);
