@@ -14,11 +14,9 @@
     </ul>
 
   </div>
-  <div class="content-header">
-  	<h1><span class="glyphicon glyphicon-list-alt"></span> {{apply_metric_helper.metric.title}}</h1>
-  </div>
   <div class="row">
   	<div class="col-md-12">
+      <label>Formula</label>
   		<formula ng-if="apply_metric_helper.metric.formula && apply_metric_helper.metric.variables" data-formula="apply_metric_helper.metric.formula" data-variables="apply_metric_helper.metric.variables"></formula>
   	</div>
   </div>
@@ -29,10 +27,8 @@
     </div>
   </div>
 
-    <div class="row">
+    <div class="row" style="margin-top: 40px;">
       <div class="col-md-12">
-        <legend class="legend-primary">Please select a dataset for each indicator in your metric </legend>
-        Hover over the indicator to see where it is represented in the metric.
         <table class="table table-bordered">
           <thead>
             <tr>
@@ -41,7 +37,7 @@
             <tr>
           </thead>
           <tbody>
-              <tr id="variable_{{indicator.variable}}" indicator-to-dataset data-datarow="indicator" ng-repeat="indicator in apply_metric_helper.data.datasets"></tr>
+              <tr id="row{{indicator.variable}}" ng-mouseenter="highlightIndicator(indicator.variable);" ng-mouseleave="unhighlightIndicator(indicator.variable);" indicator-to-dataset data-datarow="indicator" ng-repeat="indicator in apply_metric_helper.data.datasets"></tr>
           </tbody>
         </table>
       </div>

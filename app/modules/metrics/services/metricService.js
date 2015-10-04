@@ -61,17 +61,20 @@ angular.module('pcApp.metrics.services.metric',[
 
     var helper = {};
 
-    helper.init = function() {
+    helper.clear = function() {
         helper.metricsdata = {
             creator: 1,
             title: "",
             formula: "",
             variables: {}
-        }
+        };
+    }
+
+    helper.init = function() {
+        helper.clear();
 
         var indicators = IndicatorService.query(
             function() {
-                console.log(indicators);
                 helper.indicators = _.map(indicators.results, function(indicator) {
                     return {
                         icon:"",
@@ -89,6 +92,7 @@ angular.module('pcApp.metrics.services.metric',[
             }
         );
     }
+
     return helper;
 }])
 
@@ -100,18 +104,16 @@ angular.module('pcApp.metrics.services.metric',[
     var datasets = {};
     var _metric_id;
 
-    datasets.init = function(metric_id) {
+    datasets.clear = function() {
+        datasets.data = {
+            title: "",
+            acronym: "",
+            datasets: []
+        };
+    }
 
-        if(_metric_id !== metric_id){
-            _metric_id = metric_id;
-
-            datasets.data = {
-                title: "",
-                acronym: "",
-                datasets: []
-            };
-
-            datasets.metric = MetricService.get({id: metric_id},
+    datasets.getDatasets = function(metric_id) {
+        datasets.metric = MetricService.get({id: metric_id},
                 function(metric) {
                     var variablesJson = JSON.parse(datasets.metric.variables.replace(/'/g, '"'));
                     _.each(variablesJson, function(value, key){
@@ -122,6 +124,15 @@ angular.module('pcApp.metrics.services.metric',[
                     throw { message: JSON.stringify(err.data)};
                 }
             );
+    }
+
+    datasets.init = function(metric_id) {
+
+        if(_metric_id !== metric_id){
+            _metric_id = metric_id;
+
+            datasets.clear();
+            datasets.getDatasets(metric_id);
         }
     };
     return datasets;

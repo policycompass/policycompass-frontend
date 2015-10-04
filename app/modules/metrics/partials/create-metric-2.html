@@ -9,19 +9,17 @@
         <div ng-class="{active: help}" class="help-text">
         </div>
     </div>
-    <ul class="navigation-steps">
-      <li><a href="#!/metrics/create-1" class="btn btn-prev">Previous Step</a></li>
-      <li><a href="" class="btn btn-next" ng-click="submit();" ng-class="{'disabled' : !metadataForm.$valid }">Next Step</a></li>
-    </ul>
+
     <div class="pc-visualization-formcontrols">
       <div class="button-group">
-        <a class="btn btn-save">Save</a>
-        <a  class="btn btn-dataset">Save and Apply to Data sets</a>
+        <a class="btn btn-save" ng-click="submitData(false);" ng-class="{'disabled' : !metadataForm.$valid }">Save</a>
+        <a class="btn btn-dataset" ng-click="submitData(true);" ng-class="{'disabled' : !metadataForm.$valid }">Save and Apply to Data sets</a>
       </div>
     </div>
   </div>
 
   <div class="content-body">
+    <label>Formula from Step 1</label>
     <formula ng-if="metrics_controller_helper.metricsdata.formula && metrics_controller_helper.metricsdata.variables" data-formula="metrics_controller_helper.metricsdata.formula" data-variables="metrics_controller_helper.metricsdata.variables"></formula>
   </div>
 
@@ -30,9 +28,10 @@
       <div class="form-group" ng-class="{ 'has-error': (metadataForm.title.$invalid && !metadataForm.title.$pristine) || servererror.title }">
         <label for="title" class="field-label">Title</label>
         <div class="field-content">
-          <input ng-model="metrics_controller_helper.metricsdata.title" type="text" name="title" class="form-control" required placeholder="Formula">
+          <input ng-model="metrics_controller_helper.metricsdata.title" type="text" name="title" class="form-control" required>
           <p ng-show="metadataForm.title.$error.required && !metadataForm.title.$pristine" class="help-block">This field is required</p>
           <p ng-show="servererror.title" class="help-block">{{ servererror.title[0] }}</p>
+          <p ng-hide="servererror.title || (metadataForm.title.$error.required && !metadataForm.title.$pristine)" class="help-block">Please add a title for your metric</p>
         </div>
       </div>
 
@@ -44,6 +43,7 @@
             class="form-control"
             ng-options="i.id as i.name for i in metrics_controller_helper.indicators"
             ng-model="metrics_controller_helper.metricsdata.indicator" >
+            <option value="" selected>Choose Indicator</option>
           </select>
           <p ng-show="metadataForm.indicator.$error.required && !metadataForm.indicator.$pristine" class="help-block">This field is required</p>
           <p ng-show="servererror.indicator" class="help-block">{{ servererror.indicator[0] }}</p>

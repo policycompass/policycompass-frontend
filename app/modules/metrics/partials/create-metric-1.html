@@ -10,43 +10,98 @@
     </div>
     <ul class="navigation-steps">
       <li><a href="#!/create-formula" class="btn btn-prev">Previous Step</a></li>
-      <li><a href="" class="btn btn-next" ng-click="submit();" ng-class="{'disabled' : !formulaForm.$valid || servererror.formula }">Next Step</a></li>
+      <li><a href="" class="btn btn-next" ng-click="submitFormula();" ng-class="{'disabled' : !formulaForm.$valid || servererror.formula }">Next Step</a></li>
     </ul>
     <div class="pc-visualization-formcontrols">
-      <div class="button-group">
-        <a class="btn btn-keyboard">Extended Keyboard</a>
-        <a  class="btn btn-function">Functions (e.g. normalisation)</a>
-      </div>
+        <a  class="btn btn-function" ng-click="toggleFunctions();">show available normalisation Functions</a>
     </div>
   </div>
 
   <div class="content-body">
-    <!--<div class="calculation-formula">-->
-    <formula data-formula="metrics_controller_helper.metricsdata.formula" data-variables="metrics_controller_helper.metricsdata.variables"></formula>
-    <!-- </div> -->
+    <div class="row" ng-if="showFunctions">
+      <div class="col-md-12">
+        <div class="well" style="height: auto;">
+            <div class="row">
+                <div class="col-lg-12">
+                    <table class="table table-hover">
+                        <thead>
+                          <tr>
+                             <th>Name</th>
+                             <th>Description</th>
+                             <th>Acronym</th>
+                          </tr>
+                          </thead>
+                        <tbody>
+                        <tr>
+                            <td>Normalisation Function 1</td>
+                            <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus quis lectus metus, at posuere neque. Sed pharetra nibh eget orci convallis at posuere leo convallis. Sed blandit augue vitae augue scelerisque bibendum. Vivamus sit amet libero turpis, non venenatis urna. In blandit, odio convallis suscipit venenatis, ante ipsum cursus augue.
+                            </td>
+                            <td>norm</td>
+                        </tr>
+                    </tbody></table>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <label>Formula Preview</label>
+        <!--<div class="calculation-formula">-->
+        <formula data-formula="metrics_controller_helper.metricsdata.formula" data-variables="metrics_controller_helper.metricsdata.variables"></formula>
+        <!-- </div> -->
+      </div>
+    </div>
+
   </div>
 
   <div class="dataset-filters-bottom">
 
     <div class="row">
       <div class="col-md-8">
+        <label>Formula</label>
         <form name="formulaForm" class="simple-form" novalidate>
           <div class="form-group" ng-class="{ 'has-error': (formulaForm.formula.$invalid && !formulaForm.formula.$pristine) || servererror.formula }">
-            <label for="exampleInputEmail1">Formula</label>
             <input ng-model="metrics_controller_helper.metricsdata.formula" name="formula" class="form-control" ng-keyup="getCursorPosition($event)" ng-click="getCursorPosition($event)" ng-change="clearErrors();" required>
             <p ng-show="formulaForm.formula.$error.required && !formulaForm.formula.$pristine" class="help-block">This field is required</p>
             <p ng-show="servererror.formula" class="help-block">{{ servererror.formula }}</p>
+            <p ng-hide="servererror.formula || (formulaForm.formula.$error.required && !formulaForm.formula.$pristine)" class="help-block">Type in formula here. Add indicators from the list on the right. To use one of the predefined formulas, use the acronym.</p>
           </div>
         </form>
       </div>
 
+
+
       <div class="col-md-4">
-        <ul class="list-group">
-          <li ng-repeat="indicator in metrics_controller_helper.indicators" class="list-group-item">
-            {{ indicator.name }} <a href="" ng-click="addIndicator(indicator)">add</a>
-          </li>
-        </ul>
+        <label>Add indicator to formula</label>
+
+        <div class="panel panel-default">
+          <div class="panel-heading" style="background: #e5e5e5;">
+            <div class="input-group" style="padding: 5px;">
+              <!--<span class="input-group-addon">Search</span>-->
+              <input type="text" class="form-control" placeholder="Search for indicator..." ng-model="searchText">
+            </div>
+          </div>
+
+          <ul class="list-group" style="margin-top:0px; height: 300px; overflow:auto;">
+            <li ng-repeat="indicator in metrics_controller_helper.indicators | filter:searchText" class="list-group-item">
+              <div class="row">
+                <div class="col-md-10">
+                  {{ indicator.name }}</br>
+                  <small>{{ indicator.acronym }}</small>
+                </div>
+                <div class="col-md-2">
+                  <a href="" ng-click="addIndicator(indicator)"><span style="background-color: #F27711;" class="label label-primary">add</span></a>
+                </div>
+              </div>
+            </li>
+          </ul>
+
+        </div>
+
       </div>
+
     </div>
   </div>
 </div>
