@@ -4,21 +4,72 @@
     </legend>
 
 
+    <div class="row">
+        <div class="col-lg-5">
+            <h1>Select Python Script</h1>
+            <input type="file" on-read-file="showContent($fileContent)"/>
 
-        <div class="row">
-            <div class="col-lg-5">
-                <h1>Select Python Script</h1>
-                <input type="file" on-read-file="showContent($fileContent)" />
-                <div ng-if="content">
-                    <h2>Script content:</h2>
-                    <pre>{{ content }}</pre>
-                </div>
-                <input type="text" ng-model="modul.name">
-                <a class="btn" ng-click="post()">Add Extractor!</a>
+            <div ng-if="content">
+                <h2>Script content:</h2>
+                <pre>{{ content }}</pre>
             </div>
-            <div class="col-lg-7">{{ex_added}}</div>
+            <input type="text" ng-model="modul.name">
+            <a class="btn" ng-click="post(); ex_added()">Add Extractor!</a>
         </div>
-
+        <div class="col-lg-7">
+            <br>On left side you can select your python script to upload it and add a new data source to the Events
+            Manager. The script needs to fulfill the following requirements:
+            <br>
+            <ul>
+                <br>
+                <li>A run()-method has to be implemented which needs to include the following parameters in the
+                    following order:
+                </li>
+                <ul>
+                    <br>
+                    <li>run(start, end, keyword)</li>
+                    <br>
+                    <li>through start and end you need to be able to pass a parameter in the format YYYY-MM-DD</li>
+                    <br>
+                    <li>through keyword you need to be able to pass a string as a parameter</li>
+                </ul>
+                <br>
+                <br>
+                <li>The script has to return a python dictionary with the following keys:</li>
+                <ul>
+                    <br>
+                    <li>Mandatory:</li>
+                    <ul>
+                        <br>
+                        <li>title as string</li>
+                        <br>
+                        <li>date in the format YYYY-MM-DDThh:mm:ssZ (e.g. 1954-07-17T00:00:00Z)</li>
+                    </ul>
+                    <br>
+                    <li>Optional:</li>
+                    <ul>
+                        <br>
+                        <li>description as string</li>
+                        <br>
+                        <li>url as string</li>
+                        <br>
+                        <li>enddate as string</li>
+                        <br>
+                        <li>keywords as string</li>
+                        <br>
+                        <li>geolocation as string</li>
+                        <br>
+                        <li>language as string</li>
+                    </ul>
+                </ul>
+            </ul>
+            <br>
+            <br>The python libraries 'SPARQLWrapper' and 'requests' are available for the Event Manager, so you are able to use and import them within your script.
+            <br>
+            <br>After uploading the system will validate the script. If the validation is successful a new source will
+            be available through the Events Manager!
+        </div>
+    </div>
 
 
 </div>

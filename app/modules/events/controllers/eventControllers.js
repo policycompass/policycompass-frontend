@@ -3,8 +3,10 @@ angular.module('pcApp.events.controllers.event', [
     'pcApp.references.services.reference',
     'pcApp.config'
 ])
-
-    .controller('EventsController', ['$scope', 'Event', '$log', '$routeParams', function ($scope, Event, $log, $routeParams) {
+/**
+ * Controller to list events
+ */
+    .controller('EventsController', ['$scope', 'Event', '$routeParams', function ($scope, Event, $routeParams) {
         $scope.events = Event.query(
             {page: $routeParams.page},
             function (eventList) {
@@ -14,7 +16,9 @@ angular.module('pcApp.events.controllers.event', [
             }
         );
     }])
-
+/**
+ * Controller to list details of an event
+ */
     .controller('EventDetailController', [
         '$scope',
         '$routeParams',
@@ -70,7 +74,9 @@ angular.module('pcApp.events.controllers.event', [
             });
 
         }])
-
+/**
+ * Controller to edit a metric
+ */
     .controller('EventEditController', [
         '$scope',
         '$routeParams',
@@ -102,7 +108,9 @@ angular.module('pcApp.events.controllers.event', [
                 );
             };
         }])
-
+/**
+ * Controller to create a metric
+ */
     .controller('EventCreateController', [
         '$scope',
         'Event',
@@ -141,6 +149,9 @@ angular.module('pcApp.events.controllers.event', [
             };
         }])
 
+/**
+ * Controller to search and import events from external resources
+ */
     .controller('EventSearchController', [
         '$scope',
         '$filter',
@@ -164,7 +175,7 @@ angular.module('pcApp.events.controllers.event', [
             $scope.search = {};
             $scope.searchResults = [];
             $scope.availableExtractors = [];
-            $scope.init = function(){
+            $scope.init = function () {
                 $http.get(API_CONF.EVENTS_MANAGER_URL + '/configextractor').
 
                     success(function (data, status, headers, config) {
@@ -178,34 +189,34 @@ angular.module('pcApp.events.controllers.event', [
             };
             $scope.init();
             $scope.selectedExtractors = [];
-            $scope.isChecked = function(name){
+            $scope.isChecked = function (name) {
                 var match = false;
-                for(var i=0 ; i < $scope.selectedExtractors.length; i++) {
-                    if($scope.selectedExtractors[i] == name){
+                for (var i = 0; i < $scope.selectedExtractors.length; i++) {
+                    if ($scope.selectedExtractors[i] == name) {
                         match = true;
                     }
                 }
                 return match;
             };
 
-            $scope.sync = function(bool, item){
-                if(bool){
+            $scope.sync = function (bool, item) {
+                if (bool) {
                     // add item
                     $scope.selectedExtractors.push(item);
                 } else {
                     // remove item
-                    for(var i=0 ; i < $scope.selectedExtractors.length; i++) {
-                        if($scope.selectedExtractors[i] == item){
-                            $scope.selectedExtractors.splice(i,1);
+                    for (var i = 0; i < $scope.selectedExtractors.length; i++) {
+                        if ($scope.selectedExtractors[i] == item) {
+                            $scope.selectedExtractors.splice(i, 1);
                         }
                     }
                 }
             };
 
-            //Löschen
-            $scope.search.title = "war";
-            $scope.search.startEventDate = "1947-05-05";
-            $scope.search.endEventDate = "2010-05-05";
+            //Only for testing
+            //$scope.search.title = "war";
+            //$scope.search.startEventDate = "1947-05-05";
+            //$scope.search.endEventDate = "2010-05-05";
 
             $scope.searchEvent = function () {
                 $http.get(API_CONF.EVENTS_MANAGER_URL + '/harvestevents?keyword=' + $scope.search.title +
@@ -235,46 +246,62 @@ angular.module('pcApp.events.controllers.event', [
                 $location.path('/events/create');
             };
         }])
-
+/**
+ * Controller to add and edit a datasource
+ */
     .controller('EventConfigController', [
         '$scope',
+        '$window',
+        '$route',
         '$log',
         '$http',
         'API_CONF',
-        function($scope, $log, $http, API_CONF) {
-        $scope.showContent = function($fileContent){
-            $scope.content = $fileContent;
-        };
-        $scope.post = function(){
-            //$log.info($scope.modul.name);
-            //$log.info($scope.content);
-            $http.post(API_CONF.EVENTS_MANAGER_URL + '/configextractor', {name: $scope.modul.name, script: $scope.content}).
-                then(function(response) {
-                    if (response) {
-                        $scope.ex_added = "Script added!";
-                    }
-                    // this callback will be called asynchronously
-                    // when the response is available
-                }, function(response) {
-                    // called asynchronously if an error occurs
-                    // or server returns response with an error status.
-                });
-        }
-    }])
-
+        function ($scope, $window, $route, $log, $http, API_CONF) {
+            $scope.showContent = function ($fileContent) {
+                $scope.content = $fileContent;
+            };
+            $scope.ex_added = function () {
+                $window.alert("Script added!");
+                $route.reload();
+            };
+            $scope.post = function () {
+                //$log.info($scope.modul.name);
+                //$log.info($scope.content);
+                $http.post(API_CONF.EVENTS_MANAGER_URL + '/configextractor', {
+                    name: $scope.modul.name,
+                    script: $scope.content
+                }).
+                    then(function (response) {
+                        if (response) {
+                            $scope.ex_added = function () {
+                                $window.alert("Script added!");
+                                $route.reload();
+                            };
+                        }
+                        // this callback will be called asynchronously
+                        // when the response is available
+                    }, function (response) {
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                    });
+            }
+        }])
+/**
+ * Directive to read files
+ */
     .directive('onReadFile', function ($parse) {
         return {
             restrict: 'A',
             scope: false,
-            link: function(scope, element, attrs) {
+            link: function (scope, element, attrs) {
                 var fn = $parse(attrs.onReadFile);
 
-                element.on('change', function(onChangeEvent) {
+                element.on('change', function (onChangeEvent) {
                     var reader = new FileReader();
 
-                    reader.onload = function(onLoadEvent) {
-                        scope.$apply(function() {
-                            fn(scope, {$fileContent:onLoadEvent.target.result});
+                    reader.onload = function (onLoadEvent) {
+                        scope.$apply(function () {
+                            fn(scope, {$fileContent: onLoadEvent.target.result});
                         });
                     };
 

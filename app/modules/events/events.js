@@ -4,6 +4,9 @@ var events = angular.module('pcApp.events', [
     'pcApp.references.directives.forms'
 ]);
 
+/**
+ * Routings for mapping controller and template to a url
+ */
 events.config(function($routeProvider) {
     $routeProvider
         .when('/events', {
