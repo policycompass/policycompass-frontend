@@ -14,12 +14,17 @@ angular.module('pcApp.metrics.controllers.metric', [
     $scope.metrics_controller_helper.init();
 
     $scope.variableIndex = 1;
+    $scope.showFunctions = false;
+
+    $scope.toggleFunctions = function() {
+        $scope.showFunctions = !$scope.showFunctions;
+    }
 
     $scope.addIndicator = function(indicator) {
 
         var i = " __" + $scope.variableIndex + "__ ";
         if (angular.isUndefined($scope.cursorPosVal)){
-            $scope.metrics_controller_helper.metricsdata.formula = $scope.formula + i;
+            $scope.metrics_controller_helper.metricsdata.formula = $scope.metrics_controller_helper.metricsdata.formula + i;
             //$("#formula-div").append('<span contentEditable="false" class="indicator-formula indicator-formula-selected">' + indicator.name + '</span>');
             //$("#formula-div").css('height', ($("#formula-div")[0].scrollHeight + 19) +  'px');
         }
@@ -80,7 +85,7 @@ angular.module('pcApp.metrics.controllers.metric', [
         $scope.cursorPosVal = iCaretPos;
     };
 
-    $scope.submit = function () {
+    $scope.submitFormula = function () {
 
         var url = API_CONF.FORMULA_VALIDATION_URL;
 
@@ -103,13 +108,18 @@ angular.module('pcApp.metrics.controllers.metric', [
 
     $scope.metrics_controller_helper = MetricsControllerHelper;
 
-    $scope.submit = function () {
+    $scope.submitData = function (applyAfterwards) {
         var url = API_CONF.METRICS_MANAGER_URL + "/metrics";
 
         if ($scope.metadataForm.$valid) {
             $http.post(url, $scope.metrics_controller_helper.metricsdata).
             then(function(response) {
-                $location.path("/metrics/" + response.data.id)
+                if(applyAfterwards){
+                    $location.path("/metrics/" + response.data.id + "/apply-1");
+                }
+                else {
+                    $location.path("/metrics/" + response.data.id);
+                }
             }, function(response) {
                 $scope.servererror = response.data;
             });
@@ -134,6 +144,20 @@ angular.module('pcApp.metrics.controllers.metric', [
         $location.path("/metrics/" + $routeParams.metricId + "/apply-2")
     };
 
+    $scope.highlightIndicator = function(variable) {
+        var target = angular.element('#variable' + variable);
+        target.css('background', 'linear-gradient(to bottom, #9ac1e3, #72a9d8)');
+        target.css('color', 'white');
+        target.css('border-color', '#3177b3');
+    };
+
+    $scope.unhighlightIndicator = function(variable) {
+        var target = angular.element('#variable' + variable);
+        target.css('background', 'transparent');
+        target.css('border', '1px solid #ffd964');
+        target.css('color', '#b75c6f');
+    };
+
 }])
 
 .controller('ApplyMetric2Controller', ['$scope', '$routeParams', 'API_CONF', '$http', 'ApplyMetricHelper', '$location', function($scope, $routeParams, API_CONF, $http, ApplyMetricHelper, $location) {
@@ -141,17 +165,22 @@ angular.module('pcApp.metrics.controllers.metric', [
     $scope.apply_metric_helper = ApplyMetricHelper;
     $scope.apply_metric_helper.init($routeParams.metricId);
 
-    $scope.submit = function () {
+    $scope.submit = function (applyAgain) {
         var url = API_CONF.METRICS_MANAGER_URL + "/metrics/" + $routeParams.metricId + '/operationalize';
         $http.post(url, $scope.apply_metric_helper.data).
             then(function(response) {
-                $location.path("/datasets/" + response.data.dataset.id)
+                if(applyAgain){
+                    $location.path("/metrics/" + $routeParams.metricId + "/apply-1");
+                }
+                else{
+                    $scope.apply_metric_helper.clear();
+                    $scope.apply_metric_helper.getDatasets($routeParams.metricId);
+                    $location.path("/datasets/" + response.data.dataset.id);
+                }
             }, function(response) {
-                console.log(response);
                 $scope.servererror = response.data;
             });
     };
-
 }])
 
 .controller('MetricsmanagerDetailController', ['$scope', '$routeParams', 'MetricService', 'IndicatorService', function($scope, $routeParams, MetricService, IndicatorService) {
