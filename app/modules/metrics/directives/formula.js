@@ -17,43 +17,51 @@ angular.module('pcApp.metrics.directives.formula', [
         link: function(scope, element, attrs) {
 
             var parseFormula = function() {
-                var parsedFormula = scope.formula;
-                if(angular.isObject(scope.variables)){
-                    var variables = scope.variables;
-                }
-                else{
-                    var variables = JSON.parse(scope.variables.replace(/'/g, '"'));
-                }
-                var urlCalls = [];
-                angular.forEach(variables, function(value, key, obj) {
-                    var index = scope.formula.indexOf(key.replace(' ', ''));
-                    if(index > -1) {
-                        var url = API_CONF.INDICATOR_SERVICE_URL + "/indicators/" + value.id;
-                        urlCalls.push($http({
-                            url: url,
-                            method: "GET",
-                            params: {key: key}
-                        }));
-                        parsedFormula = parsedFormula.replace(key.replace(' ', ''), " __" + value.id + "__ ");
+
+                if(scope.formula){
+                    var parsedFormula = scope.formula;
+                    if(angular.isObject(scope.variables)){
+                        var variables = scope.variables;
                     }
-                });
-                var deferred = $q.defer();
-                $q.all(urlCalls)
-                .then(
-                    function(results) {
-                        angular.forEach(results, function(value, key, obj){
-                            var variable = value.config.params.key;
-                            parsedFormula = parsedFormula.replace("__" + value.data.id + "__", '<span id="variable' + variable.trim() + '" class="indicator-formula indicator-formula-selected">' + value.data.name + '</span>');
-                        });
-                        element.empty();
-                        element.append(parsedFormula);
-                    },
-                    function(errors) {
-                        deferred.reject(errors);
-                    },
-                    function(updates) {
-                        deferred.update(updates);
+                    else{
+                        var variables = JSON.parse(scope.variables.replace(/'/g, '"'));
+                    }
+                    var urlCalls = [];
+                    angular.forEach(variables, function(value, key, obj) {
+                        var index = scope.formula.indexOf(key.replace(' ', ''));
+                        if(index > -1) {
+                            var url = API_CONF.INDICATOR_SERVICE_URL + "/indicators/" + value.id;
+                            urlCalls.push($http({
+                                url: url,
+                                method: "GET",
+                                params: {key: key}
+                            }));
+                            parsedFormula = parsedFormula.replace(key.replace(' ', ''), " __" + value.id + "__ ");
+                        }
                     });
+                    var deferred = $q.defer();
+                    $q.all(urlCalls)
+                    .then(
+                        function(results) {
+                            angular.forEach(results, function(value, key, obj){
+                                var variable = value.config.params.key.trim();
+                                var replaceable = "__" + value.data.id + "__";
+                                var span = '<span id="variable' + variable + '" class="indicator-formula indicator-formula-selected">' + value.data.name + '</span>';
+                                parsedFormula = parsedFormula.replace(replaceable, span);
+                            });
+                            element.empty();
+                            element.append(parsedFormula);
+                        },
+                        function(errors) {
+                            deferred.reject(errors);
+                        },
+                        function(updates) {
+                            deferred.update(updates);
+                        });
+                }
+                else {
+                    element.empty();
+                }
             };
 
             scope.$watch('formula', function() {
