@@ -63,9 +63,11 @@ angular.module('pcApp.metrics.services.metric',[
 
     helper.clear = function() {
         helper.metricsdata = {
-            creator: 1,
             title: "",
             formula: "",
+            acronym: "",
+            description: "",
+            keywords: "",
             variables: {}
         };
     }

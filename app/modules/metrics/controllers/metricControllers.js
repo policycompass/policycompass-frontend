@@ -210,7 +210,7 @@ angular.module('pcApp.metrics.controllers.metric', [
 
     $scope.data = MetricService.get({id: $routeParams.metricId},
         function(metric) {
-            var indicator_id = metric.indicator;
+            var indicator_id = metric.indicator_id;
             $scope.indicator = IndicatorService.get({id: indicator_id},
                 function(indicator){
                 },
