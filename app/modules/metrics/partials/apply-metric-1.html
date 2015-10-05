@@ -37,7 +37,7 @@
             <tr>
           </thead>
           <tbody>
-              <tr id="row{{indicator.variable}}" ng-mouseenter="highlightIndicator(indicator.variable);" ng-mouseleave="unhighlightIndicator(indicator.variable);" indicator-to-dataset data-datarow="indicator" ng-repeat="indicator in apply_metric_helper.data.datasets"></tr>
+              <tr id="row{{indicator.variable}}" ng-mouseenter="highlightIndicator(indicator.variable, $event);" ng-mouseleave="unhighlightIndicator(indicator.variable, $event);" indicator-to-dataset data-datarow="indicator" ng-repeat="indicator in apply_metric_helper.data.datasets"></tr>
           </tbody>
         </table>
       </div>

@@ -23,7 +23,10 @@ angular.module('pcApp.metrics.controllers.metric', [
     $scope.addIndicator = function(indicator) {
 
         var i = " __" + $scope.variableIndex + "__ ";
-        if (angular.isUndefined($scope.cursorPosVal)){
+        if (angular.isUndefined($scope.cursorPosVal) || angular.isUndefined($scope.metrics_controller_helper.metricsdata.formula)){
+            if(angular.isUndefined($scope.metrics_controller_helper.metricsdata.formula)){
+                $scope.metrics_controller_helper.metricsdata.formula = "";
+            }
             $scope.metrics_controller_helper.metricsdata.formula = $scope.metrics_controller_helper.metricsdata.formula + i;
             //$("#formula-div").append('<span contentEditable="false" class="indicator-formula indicator-formula-selected">' + indicator.name + '</span>');
             //$("#formula-div").css('height', ($("#formula-div")[0].scrollHeight + 19) +  'px');
@@ -65,6 +68,10 @@ angular.module('pcApp.metrics.controllers.metric', [
         $scope.cursorPosVal = caretOffset;
         console.log($scope.cursorPosVal);*/
     };
+
+    $scope.clearErrors = function() {
+        $scope.servererror = undefined;
+    }
 
 
     $scope.doGetCaretPosition = function(oField) {
@@ -144,18 +151,34 @@ angular.module('pcApp.metrics.controllers.metric', [
         $location.path("/metrics/" + $routeParams.metricId + "/apply-2")
     };
 
-    $scope.highlightIndicator = function(variable) {
+    $scope.highlightIndicator = function(variable, event) {
+
         var target = angular.element('#variable' + variable);
         target.css('background', 'linear-gradient(to bottom, #9ac1e3, #72a9d8)');
         target.css('color', 'white');
         target.css('border-color', '#3177b3');
+
+        var el = event.currentTarget;
+        var span = angular.element(el.children[0].children[0]);
+        span.css('background', 'linear-gradient(to bottom, #9ac1e3, #72a9d8)');
+        span.css('color', 'white');
+        span.css('border-color', '#3177b3');
+
+
     };
 
-    $scope.unhighlightIndicator = function(variable) {
+    $scope.unhighlightIndicator = function(variable, event) {
+
         var target = angular.element('#variable' + variable);
         target.css('background', 'transparent');
         target.css('border', '1px solid #ffd964');
         target.css('color', '#b75c6f');
+
+        var el = event.currentTarget;
+        var span = angular.element(el.children[0].children[0]);
+        span.css('background', 'transparent');;
+        span.css('border', '1px solid #ffd964');
+        span.css('color', '#b75c6f');
     };
 
 }])
