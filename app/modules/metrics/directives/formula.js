@@ -36,7 +36,7 @@ angular.module('pcApp.metrics.directives.formula', [
                                 method: "GET",
                                 params: {key: key}
                             }));
-                            parsedFormula = parsedFormula.replace(key.replace(' ', ''), " __" + value.id + "__ ");
+                            parsedFormula = parsedFormula.replace(key.replace(' ', ''), " %" + value.id + "% ");
                         }
                     });
                     var deferred = $q.defer();
@@ -45,7 +45,7 @@ angular.module('pcApp.metrics.directives.formula', [
                         function(results) {
                             angular.forEach(results, function(value, key, obj){
                                 var variable = value.config.params.key.trim();
-                                var replaceable = "__" + value.data.id + "__";
+                                var replaceable = "%" + value.data.id + "%";
                                 var span = '<span id="variable' + variable + '" class="indicator-formula indicator-formula-selected">' + value.data.name + '</span>';
                                 parsedFormula = parsedFormula.replace(replaceable, span);
                             });

@@ -178,7 +178,7 @@ angular.module('pcApp.metrics.controllers.metric', [
         var span = angular.element(el.children[0].children[0]);
         span.css('background', 'transparent');;
         span.css('border', '1px solid #ffd964');
-        span.css('color', '#b75c6f');
+        span.css('color', '#4d4d4d');
     };
 
 }])
