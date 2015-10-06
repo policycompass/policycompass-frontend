@@ -416,11 +416,11 @@ $scope.md = jsonModel;
             throw { message: err.data};
         });
 
-	dlg = dialogs.create('/dialogs/runsimulation.html','RunSimulationController',{},{key: false,back: 'static'});
-	dlg.result.then(function(user){
-        },function(){
-          $scope.name = 'You decided not to enter in your name, that makes me sad.';
-        });
+//	dlg = dialogs.create('/dialogs/runsimulation.html','RunSimulationController',{},{key: false,back: 'static'});
+//	dlg.result.then(function(user){
+//        },function(){
+//          $scope.name = 'You decided not to enter in your name, that makes me sad.';
+//        });
 	// broadcasting the event
 	$rootScope.$broadcast('appChanged');
     };
@@ -996,7 +996,7 @@ $scope.res=value;
 
   $templateCache.put('/dialogs/savemodel.html', '<div class="modal-header"><h4 class="modal-title">Casual Model</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="title">Title *</label><input type="text" class="form-control" name="title" id="title" ng-model="user.title" text="Vale here" required><br /><label class="control-label" for="description">Description *</label><textarea class="form-control" rows="5" name="description" id="description" ng-model="user.description" required></textarea><br /><label class="control-label" for="keywords">Keywords : *</label><input type="text" class="form-control" name="keywords" id="keywords" ng-model="user.keywords" required><br /><label class="control-label" for="policyDomain">Policy Domain : *</label><select multiple class="form-control policydomain-options" id="policyDomain" name="policyDomain" ng-model="metric.policy_domains" required></select></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button></div></div></div></div>');
 
-  $templateCache.put('/dialogs/advancesettings.html', '<div class="modal-header"><h4 class="modal-title">Advance Settings</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="title">Activator *</label><select class="form-control" name="activator" id="activator" value="user.title" ng-model="user" ng-options="activator.title for activator in Fcmactivators" required></select><label class="control-label" for="title">Scale *</label><select class="form-control" name="scale" id="scale" ng-model="user.scale" required><option value="3">3</option><option value="5">5</option><option value="7">7</option><option value="9">9</option></select></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button></div>');
+  $templateCache.put('/dialogs/advancesettings.html', '<div class="modal-header"><h4 class="modal-title">Advanced Settings</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="title">Activator *</label><select class="form-control" name="activator" id="activator" value="user.title" ng-model="user" ng-options="activator.title for activator in Fcmactivators" required></select><label class="control-label" for="title">Scale *</label><select class="form-control" name="scale" id="scale" ng-model="user.scale" required><option value="3">3</option><option value="5">5</option><option value="7">7</option><option value="9">9</option></select></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button></div>');
 
   $templateCache.put('/dialogs/editmetrics.html', '<div class="modal-header"><h4 class="modal-title">Edit Metrics</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><div id="filterMetrics" class="selectorMetrics" metrics-list="user.ListMetricsFilter" number-Max-Metrics="1" functionformetric="save()"></div></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button></div>');
 
