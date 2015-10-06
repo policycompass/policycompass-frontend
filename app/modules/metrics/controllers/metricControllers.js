@@ -143,6 +143,7 @@ angular.module('pcApp.metrics.controllers.metric', [
 
     $scope.apply_metric_helper = ApplyMetricHelper;
     $scope.apply_metric_helper.init($routeParams.metricId);
+    $scope.error = true;
 
     $scope.submit = function () {
         _.each($scope.apply_metric_helper.data.datasets, function(value, key){
@@ -151,8 +152,15 @@ angular.module('pcApp.metrics.controllers.metric', [
         $location.path("/metrics/" + $routeParams.metricId + "/apply-2")
     };
 
-    $scope.highlightIndicator = function(variable, event) {
+    $scope.$watch('apply_metric_helper.data.datasets', function (newvalue, oldvalue) {
+        var notValid = true;
+        _.each(newvalue, function(value, key){
+                notValid = !(value.dataset > 0);
+        });
+        $scope.error = notValid;
+    }, true);
 
+    $scope.highlightIndicator = function(variable, event) {
         var target = angular.element('#variable' + variable);
         target.css('background', 'linear-gradient(to bottom, #9ac1e3, #72a9d8)');
         target.css('color', 'white');
@@ -163,12 +171,9 @@ angular.module('pcApp.metrics.controllers.metric', [
         span.css('background', 'linear-gradient(to bottom, #9ac1e3, #72a9d8)');
         span.css('color', 'white');
         span.css('border-color', '#3177b3');
-
-
     };
 
     $scope.unhighlightIndicator = function(variable, event) {
-
         var target = angular.element('#variable' + variable);
         target.css('background', 'transparent');
         target.css('border', '1px solid #ffd964');
@@ -180,7 +185,6 @@ angular.module('pcApp.metrics.controllers.metric', [
         span.css('border', '1px solid #ffd964');
         span.css('color', '#4d4d4d');
     };
-
 }])
 
 .controller('ApplyMetric2Controller', ['$scope', '$routeParams', 'API_CONF', '$http', 'ApplyMetricHelper', '$location', function($scope, $routeParams, API_CONF, $http, ApplyMetricHelper, $location) {
@@ -204,6 +208,7 @@ angular.module('pcApp.metrics.controllers.metric', [
                 $scope.servererror = response.data;
             });
     };
+
 }])
 
 .controller('MetricsmanagerDetailController', ['$scope', '$routeParams', 'MetricService', 'IndicatorService', function($scope, $routeParams, MetricService, IndicatorService) {

@@ -10,7 +10,7 @@
     </div>
     <ul class="navigation-steps">
       <li><a href="" class="btn btn-prev disabled">Previous Step</a></li>
-      <li><a href="" class="btn btn-next" ng-click="submit();" ng-class="{'disabled' : !datasetForm.$valid || servererror.formula }">Next Step</a></li>
+      <li><a href="" class="btn btn-next" ng-click="submit();" ng-class="{'disabled' : error }">Next Step</a></li>
     </ul>
 
   </div>
@@ -21,26 +21,19 @@
   	</div>
   </div>
 
-  <div class="row">
+  <div class="row formula-row">
     <div class="col-md-12">
-      <form name="datasetForm" novalidate>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Indicator</th>
+            <th>Dataset</th>
+          <tr>
+        </thead>
+        <tbody>
+            <tr id="row{{indicator.variable}}" ng-mouseenter="highlightIndicator(indicator.variable, $event);" ng-mouseleave="unhighlightIndicator(indicator.variable, $event);" indicator-to-dataset data-datarow="indicator" ng-repeat="indicator in apply_metric_helper.data.datasets"></tr>
+        </tbody>
+      </table>
     </div>
   </div>
-
-    <div class="row formula-row">
-      <div class="col-md-12">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th>Indicator</th>
-              <th>Dataset</th>
-            <tr>
-          </thead>
-          <tbody>
-              <tr id="row{{indicator.variable}}" ng-mouseenter="highlightIndicator(indicator.variable, $event);" ng-mouseleave="unhighlightIndicator(indicator.variable, $event);" indicator-to-dataset data-datarow="indicator" ng-repeat="indicator in apply_metric_helper.data.datasets"></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </form>
 </div>
