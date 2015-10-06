@@ -12,7 +12,7 @@ $text-color:lighten($bk_3_2,20);
   border:1px solid $bk_3_1;
   border-radius:$radius;
   line-height:2em;
-  font-size:1.26666em; // 19/ 15 
+  font-size:1.26666em; // 19/ 15
   color:$text-color;
   font-family:$mono;
 }
@@ -32,17 +32,17 @@ $text-color:lighten($bk_3_2,20);
   font-weight:bold;
   // font-style:italic;
    padding:0 5px;
-  
+
   border:1px solid $bk_4_1;
   border:1px solid darken($bk_1_3,20);
-  
+
     min-height: inherit !important;
     font-size:1em;
     border-radius:$radius;
   &:hover {
    background:linear-gradient(to bottom,$bk_4_3, $bk_4_4);
    background:linear-gradient(to bottom,$bk_4_4, $bk_4_3);
-    color:white; 
+    color:white;
     border-color:$bk_4_1;
   }
 }
@@ -53,10 +53,6 @@ $text-color:lighten($bk_3_2,20);
      border-color:$bk_2_1;
  }
 }
-
-
-
-
 
 .metadata {
   background:$gris_95;
@@ -83,6 +79,39 @@ $text-color:lighten($bk_3_2,20);
   float: left;
   margin-right: 20px;
   }
-  
-  
 }
+
+.panel-heading {
+  &.formula-grey-panel-heading {
+    background: #e5e5e5;
+  }
+}
+
+.input-group {
+  &.formula-input-group-padding {
+    padding: 5px;
+  }
+}
+
+.list-group {
+  &.formula-list-group {
+    margin-top:0px;
+    height: 300px;
+    overflow:auto;
+  }
+}
+
+.label {
+  &.label-primary {
+    &.formula-span {
+      background-color: #F27711;
+    }
+  }
+}
+
+.row {
+  &.formula-row {
+    margin-top: 40px;
+  }
+}
+
