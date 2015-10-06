@@ -22,7 +22,7 @@ angular.module('pcApp.metrics.controllers.metric', [
 
     $scope.addIndicator = function(indicator) {
 
-        var i = " __" + $scope.variableIndex + "__ ";
+        var i = "__" + $scope.variableIndex + "__";
         if (angular.isUndefined($scope.cursorPosVal) || angular.isUndefined($scope.metrics_controller_helper.metricsdata.formula)){
             if(angular.isUndefined($scope.metrics_controller_helper.metricsdata.formula)){
                 $scope.metrics_controller_helper.metricsdata.formula = "";
