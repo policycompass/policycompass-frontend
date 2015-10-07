@@ -1,0 +1,85 @@
+<div class="container container-create-formula" id="container-create-formula">
+
+  <div class="content-header">
+    <h3 class="fonticon fonticon-formula">Metric Builder</h3>
+    <div class="subtitle-help">
+      <h4>
+        <div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div>
+        Step 2 - Enter Metadata for your Metric</h4>
+        <div ng-class="{active: help}" class="help-text">
+        </div>
+    </div>
+
+    <div class="pc-visualization-formcontrols">
+      <div class="button-group">
+        <a class="btn btn-save" ng-click="submitData(false);" ng-class="{'disabled' : !metadataForm.$valid }">Save</a>
+        <a class="btn btn-dataset" ng-click="submitData(true);" ng-class="{'disabled' : !metadataForm.$valid }">Save and Apply to Data sets</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-body">
+    <label>Formula from Step 1</label>
+    <formula ng-if="metrics_controller_helper.metricsdata.formula && metrics_controller_helper.metricsdata.variables" data-formula="metrics_controller_helper.metricsdata.formula" data-variables="metrics_controller_helper.metricsdata.variables"></formula>
+  </div>
+
+  <div class="metadata metadata-formula">
+    <form name="metadataForm" class="simple-form" novalidate>
+
+      <div class="form-group" ng-class="{ 'has-error': (metadataForm.title.$invalid && !metadataForm.title.$pristine) || servererror.title }">
+        <label for="title" class="field-label">Title</label>
+        <div class="field-content">
+          <input ng-model="metrics_controller_helper.metricsdata.title" type="text" name="title" class="form-control" required>
+          <p ng-show="metadataForm.title.$error.required && !metadataForm.title.$pristine" class="help-block">This field is required</p>
+          <p ng-show="servererror.title" class="help-block">{{ servererror.title[0] }}</p>
+          <p ng-hide="servererror.title || (metadataForm.title.$error.required && !metadataForm.title.$pristine)" class="help-block">Please add a title for your metric</p>
+        </div>
+      </div>
+
+      <div class="form-group" ng-class="{ 'has-error': (metadataForm.acronym.$invalid && !metadataForm.acronym.$pristine) || servererror.acronym }">
+        <label for="Acronym" class="field-label">Acronym</label>
+        <div class="field-content">
+          <input ng-model="metrics_controller_helper.metricsdata.acronym" type="text" name="acronym" class="form-control" required>
+          <p ng-show="metadataForm.acronym.$error.required && !metadataForm.acronym.$pristine" class="help-block">This field is required</p>
+          <p ng-show="servererror.acronym" class="help-block">{{ servererror.acronym[0] }}</p>
+          <p ng-hide="servererror.acronym || (metadataForm.acronym.$error.required && !metadataForm.acronym.$pristine)" class="help-block">Please add a acronym for your metric</p>
+        </div>
+      </div>
+
+      <div class="form-group" ng-class="{ 'has-error': (metadataForm.indicator.$invalid && !metadataForm.indicator.$pristine) || servererror.indicator }">
+        <label for="indicator" class="field-label">Indicator</label>
+        <div class="field-content">
+          <select
+            name="indicator"
+            class="form-control"
+            ng-options="i.id as i.name for i in metrics_controller_helper.indicators"
+            ng-model="metrics_controller_helper.metricsdata.indicator_id" >
+            <option value="" selected>Choose Indicator</option>
+          </select>
+          <p ng-show="metadataForm.indicator.$error.required && !metadataForm.indicator.$pristine" class="help-block">This field is required</p>
+          <p ng-show="servererror.indicator" class="help-block">{{ servererror.indicator[0] }}</p>
+        </div>
+      </div>
+
+      <div class="form-group" ng-class="{ 'has-error': (metadataForm.description.$invalid && !metadataForm.description.$pristine) || servererror.description }">
+        <label for="Description" class="field-label">Description</label>
+        <div class="field-content">
+          <textarea ng-model="metrics_controller_helper.metricsdata.description" name="description" class="form-control" rows="10"></textarea>
+          <p ng-show="servererror.description" class="help-block">{{ servererror.description[0] }}</p>
+          <p ng-hide="servererror.description" class="help-block">Please add a description for your metric (optional)</p>
+        </div>
+      </div>
+
+      <div class="form-group" ng-class="{ 'has-error': servererror.keywords }">
+        <label for="Keywords" class="field-label">Keywords</label>
+        <div class="field-content">
+          <input ng-model="metrics_controller_helper.metricsdata.keywords" type="text" name="keywords" class="form-control">
+          <p ng-show="servererror.keywords" class="help-block">{{ servererror.keywords[0] }}</p>
+          <p ng-hide="servererror.keywords" class="help-block">Add Keywords as a comma seperated list (optional)</p>
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+</div>

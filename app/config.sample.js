@@ -14,14 +14,16 @@ var useRemoteServices = false;
 // Configuration for locally installed services
 var policyCompassConfig = {
     'URL': '/api/v1',
-    'DATASETS_MANAGER_URL': '/api/v1/datasetmanager',
-    'METRICS_MANAGER_URL': '/api/v1/metricsmanager',
-    'VISUALIZATIONS_MANAGER_URL': '/api/v1/visualizationsmanager',
-    'EVENTS_MANAGER_URL': '/api/v1/eventsmanager',
-    'REFERENCE_POOL_URL': '/api/v1/references',
-    'INDICATOR_SERVICE_URL': '/api/v1/indicatorservice',
-    'FCM_URL': '/api/v1/fcmmanager',
-    'ELASTIC_URL' : 'localhost:9000',
+    'DATASETS_MANAGER_URL': 'http://localhost:8000/api/v1/datasetmanager',
+    'VISUALIZATIONS_MANAGER_URL': 'http://localhost:8000/api/v1/visualizationsmanager',
+    'EVENTS_MANAGER_URL': 'http://localhost:8000/api/v1/eventsmanager',
+    'METRICS_MANAGER_URL': 'http://localhost:8000/api/v1/metricsmanager',
+    'FORMULA_VALIDATION_URL' : 'http://localhost:8000/api/v1/metricsmanager/formulas/validate',
+    'NORMALIZERS_URL': 'http://localhost:8000/api/v1/metricsmanager/normalizers',
+    'REFERENCE_POOL_URL': 'http://localhost:8000/api/v1/references',
+    'INDICATOR_SERVICE_URL': 'http://localhost:8000/api/v1/indicatorservice',
+    'FCM_URL': 'http://localhost:8080/api/v1/fcmmanager',
+    'ELASTIC_URL' : 'http://localhost:9200/',
     'ELASTIC_INDEX_NAME' : 'policycompass_search',
     // FIXME: disabling adhocracy doesn't work due to use of
     // UserState controller in index.html
@@ -34,9 +36,11 @@ var policyCompassConfig = {
 var remotePolicyCompassConfig = {
     'URL': '/api/v1',
     'DATASETS_MANAGER_URL': 'https://services-dev.policycompass.eu/api/v1/datasetmanager',
-    'METRICS_MANAGER_URL': 'https://services-dev.policycompass.eu/api/v1/metricsmanager',
     'VISUALIZATIONS_MANAGER_URL': 'https://services-dev.policycompass.eu/api/v1/visualizationsmanager',
     'EVENTS_MANAGER_URL': 'https://services-dev.policycompass.eu/api/v1/eventsmanager',
+    'METRICS_MANAGER_URL': 'https://services-dev.policycompass.eu/api/v1/metricsmanager',
+    'FORMULA_VALIDATION_URL' : 'https://services-dev.policycompass.eu/api/v1/metricsmanager/formulas/validate',
+    'NORMALIZERS_URL': 'https://services-dev.policycompass.eu/api/v1/metricsmanager/normalizers',
     'REFERENCE_POOL_URL': 'https://services-dev.policycompass.eu/api/v1/references',
     'INDICATOR_SERVICE_URL': 'https://services-dev.policycompass.eu/api/v1/indicatorservice',
     'FCM_URL': 'https://alpha.policycompass.eu/api/v1/fcmmanager',
