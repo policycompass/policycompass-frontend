@@ -28,15 +28,18 @@
                           <tr>
                              <th>Name</th>
                              <th>Description</th>
+                             <th>Arguments</th>
                              <th>Acronym</th>
                           </tr>
                           </thead>
                         <tbody>
-                        <tr>
-                            <td>Normalisation Function 1</td>
-                            <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus quis lectus metus, at posuere neque. Sed pharetra nibh eget orci convallis at posuere leo convallis. Sed blandit augue vitae augue scelerisque bibendum. Vivamus sit amet libero turpis, non venenatis urna. In blandit, odio convallis suscipit venenatis, ante ipsum cursus augue.
+                        <tr ng-repeat="function in metrics_controller_helper.normalizers">
+                            <td>{{ function.name }}</td>
+                            <td>{{ function.description }}</td>
+                            <td>
+                              <p ng-repeat="argument in function.arguments">{{$index + 1}}. {{ argument.name }} ({{ argument.type }})</p>
                             </td>
-                            <td>norm</td>
+                            <td>{{ function.acronym }}</td>
                         </tr>
                     </tbody></table>
                 </div>

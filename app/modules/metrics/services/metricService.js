@@ -54,10 +54,28 @@ angular.module('pcApp.metrics.services.metric',[
 }])
 
 /**
+ * Factory to get Normalizers
+ *
+ */
+.factory('NormalizerService',  ['$resource', 'API_CONF', function($resource, API_CONF) {
+    // Get the base URL from the configuration
+    var url = API_CONF.NORMALIZERS_URL;
+    var Normalizer = $resource(url,
+        {
+            'query': {
+                method: 'GET',
+                isArray: false
+            }
+        }
+    );
+    return Normalizer;
+}])
+
+/**
  * Factory to create Metric using a wizard
  */
 
-.factory('MetricsControllerHelper', ['IndicatorService', function (IndicatorService){
+.factory('MetricsControllerHelper', ['IndicatorService', 'NormalizerService', function (IndicatorService, NormalizerService){
 
     var helper = {};
 
@@ -86,6 +104,13 @@ angular.module('pcApp.metrics.services.metric',[
                     };
                 });
             },
+            function(err) {
+                throw { message: JSON.stringify(err.data)};
+            }
+        );
+
+        helper.normalizers = NormalizerService.query(
+            function() {},
             function(err) {
                 throw { message: JSON.stringify(err.data)};
             }
