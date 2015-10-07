@@ -1,0 +1,93 @@
+<div class="modal-header">
+	<h1 class="ng-binding"><span class="glyphicon glyphicon-list-alt"></span> Link datasets</h1>
+</div>
+
+<div class="modal-body">
+	<div id="basic-modal-content-pc">
+
+		<tabset>
+			<tab heading="Search Datasets">
+				<div class="row createvisualization">
+					<div indexdataset="indexdataset" id="filterDatasets"  class="selectorDatasets" datasets-list="ListMetricsFilter" number-Max-Datasets="99" functionfordataset="rePlotGraphFromSearch(actionDone,position)" disable-Row="arrayResolutionsFilter[resolution.value]"></div>
+				</div>
+			</tab>
+			<tab heading="Datasets Configuration">
+				<div class="row createvisualization">
+					<div ng-show="ListMetricsFilter.length==0">No dataset linked</div>
+					<div ng-show="metric.title" ng-controller="LoadCombosMetric" class="designer-metrics active" class="designer-metrics" id="designer-metrics-num-{{metric.id}}" ng-repeat="metric in ListMetricsFilter track by $index" >
+						<h4>{{metric.title}} -- {{metric.issued | date:'longDate' }}</h4>	
+
+						<input type="hidden" ng-model="MetricSelectediId_[metric.id]" id="MetricSelectediId_{{metric.id}}" name="MetricSelectedId[]" value="">
+						<input type="hidden" ng-model="MetricSelectediIndex_[metric.id]" ng-init="MetricSelectediIndex_[metric.id]=metric.id" id="MetricSelectediIndex_{{metric.id}}" name="MetricSelectediIndex[]" value="{{metric.id}}">
+
+						<div class="metric-buttons">
+							<a type="button" data-intro="Edit dataset view properties" data-position="top" class="btn btn-primary btn-create" ng-click="displaycontentMetricModal(metric.id);collapsetFilterDataset=!collapsetFilterDataset;" id="modal-edit-metric-button-{{metric.id}}"><span ng-hide="collapsetFilterDataset">Open</span><span ng-show="collapsetFilterDataset">Collapse</span> Edit Mode</a>											    	
+					    	<button type="button" data-intro="Remove dataset from the visualisation" data-position="top" class="btn btn-danger btn-clear" ng-click="deleteMetricFromList(metric.id, metric.title, ListMetricsFilter, $index);" id="delete-metric-button-{{metric.id}}">Remove</button>						    	
+					    	<a type="button" data-intro="Access to the dataset data" data-position="right" class="btn btn-info btn-adddataset" href="#!/datasets/{{metric.id}}" target="_blank" id="view-metric-button-{{metric.id}}">View Dataset in detaill</a>						    	
+					  	</div>
+
+						<div class="metric-forms" style="display: none;">
+							<div class="metric-form-item">
+								<br>
+								<table>
+									<thead>
+										<th><label for="color">Individual</label></th>
+										<th ng-show="isSelectedSon('graph_line')"><label for="color">Colour</label></th>
+									</thead>
+									<body>
+										<tr ng-repeat="option in individualCombo_value_[metric.id]">
+											<td>
+												<label ng-click="validateCheckboxes(metric.id);">
+															<input type="checkbox" 
+															checklist-model="IndividualDatasetCheckboxes_[metric.id]" 
+															checklist-value="option.id"
+															> {{option.title}}
+												</label>
+											</td>
+											<td ng-show="isSelectedSon('graph_line') || isSelectedSon('graph_pie')">
+												<spectrum 
+													ng-init=" dataset_color_palete_[metric.id][option.id] = dataset_color_palete_[metric.id][option.id] == null ? colorScale(option.title) : dataset_color_palete_[metric.id][option.id] "
+													ng-model="dataset_color_palete_[metric.id][option.id]"
+													ng-model-onblur 
+													ng-change="rePlotGraph()"
+													options="{
+														showInput: true, 
+														showAlpha: false,
+														allowEmpty: false,
+														preferredFormat: 'hex'
+													}"
+												></spectrum> 
+												
+												<!--
+												<spectrum-colorpicker
+													ng-init=" dataset_color_palete_[metric.id][option.id] = dataset_color_palete_[metric.id][option.id] == null ? colorScale(option.title) : dataset_color_palete_[metric.id][option.id] "
+													ng-model="dataset_color_palete_[metric.id][option.id]"
+													ng-model-onblur 
+													ng-change="enableApplyFunction();"
+													options="{
+														showInput: true, 
+														showAlpha: false,
+														allowEmpty: false,
+														preferredFormat: 'hex'
+													}">
+												</spectrum-colorpicker>
+												-->	
+											</td>
+										</tr>
+									</body>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</tab>
+		</tabset>
+		
+	</div>   
+
+	<div class="modal-footer">
+		<button class="btn btn-primary btn-close" ng-click="cancelModalDataset()">Close</button>
+		<a href="#!/datasets/create"  target="_blank" class="btn btn-default btn-create" id="adddataset">Create a new dataset</a>
+	</div>
+
+</div>

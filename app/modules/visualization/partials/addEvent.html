@@ -1,5 +1,5 @@
 <div class="modal-header">
-	<h3>{{item.name}}</h3>
+	<h1 class="ng-binding"><span class="glyphicon glyphicon-list-alt"></span> {{item.name}}</h1>
 </div>
 
 
@@ -8,109 +8,62 @@
 -->	
 <div class="modal-body">
 	<div id="basic-modal-content-pc">
-
-	<tabset>                                        
-		
-		
-		<tab heading="Recommended">
-			<!--
-			<div class="modal-header">
-				<legend class="legend-primary">Select an event from the list</legend>	
-				<h4>According the current visualisation related data the list of historical events recommended are:</h4>
-				<h4>According the current visualisation related data the list of historical events recommended are:</h4>
-			</div>
-			-->
-			<div class="row"><br/></div>
-
-        			<div>
-        				<!--
-        				<label for="historicalEvents">Historical events:</label>
-        				-->
-			        	<div>        		
-			        		<label ng-show="recomendationevents.length>1" for="">{{recomendationevents.length}} events found</label> 
-							<label ng-show="recomendationevents.length==1" for="">{{recomendationevents.length}} event found</label>
-			        		<label ng-show="recomendationevents.length==0" for="">No events found</label> 
-			        	</div>
-						
-						<div class="createvisualization " >
-							<div class="filterMetricsPagination" id="filterMetricsPaginationDirective">
-	           					<div class="button-group">
-									<button ng-show="recomendationevents.length>1" ng-disabled="curPage == 0"  class="btn" ng-click="curPage=curPage-1">
-										<span class="glyphicon glyphicon-chevron-left"></span>  Previous
-									</button>
-									<button ng-show="recomendationevents.length>1" ng-disabled="curPage >= recomendationevents.length/pageSize - 1" class="btn pull-right" ng-click="curPage = curPage+1">	
-										Next <span class="glyphicon glyphicon-chevron-right"></span>
-									</button>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-				        	<ul class="metrics-list" id="metrics-list">
-				        		<!--
-								<li ng-repeat="event in recomendationevents | orderBy:'title' | pagination: curPage * pageSize | limitTo: pageSize " ><a href ng-click="selectHE(event,'recomendation')">{{event.title}}</a></li>				
-								-->
-								<li ng-repeat="event in recomendationevents | orderBy:'title' | pagination: curPage * pageSize | limitTo: pageSize " >
-									<!--
-									<a href ng-click="selectHE(event,'recomendation')">{{event.title}}</a>
-									-->
-									<span ng-show="idsEventsToPlot[event.id]">
-										{{event.title}} (It's assigned)
-									</span>
-									<span ng-hide="idsEventsToPlot[event.id]">
-										<a href ng-click="selectHE(event,'recomendation')">{{event.title}}</a>
-									</span>								
-									
-									</li>
-									
-							</ul>
-    					</div>
-						<!--
-						<div>
-							<button ng-show="recomendationevents.length>1" ng-disabled="curPage == 0"  class="btn" ng-click="curPage=curPage-1">
-							 <span class="glyphicon glyphicon-chevron-left"></span>  Previous
-							</button>
-							<button ng-show="recomendationevents.length>1" ng-disabled="curPage >= recomendationevents.length/pageSize - 1" class="btn pull-right" ng-click="curPage = curPage+1">
-							Next <span class="glyphicon glyphicon-chevron-right"></span>
-							</button>
-						</div>
-						-->
+		<tabset>
+			<tab heading="Recommended">
+				<div class="row"><br/></div>
+        		<div>
+		        	<div>
+						<label ng-show="recomendationevents.length>1" for="">{{recomendationevents.length}} events found</label> 
+						<label ng-show="recomendationevents.length==1" for="">{{recomendationevents.length}} event found</label>
+						<label ng-show="recomendationevents.length==0" for="">No events found</label> 
 					</div>
 
-		</tab>
+					<div class="createvisualization " >
+						<div class="filterMetricsPagination" id="filterMetricsPaginationDirective">
+							<div class="button-group">
+								<button ng-show="recomendationevents.length>1" ng-disabled="curPage == 0"  class="btn" ng-click="curPage=curPage-1">
+									<span class="glyphicon glyphicon-chevron-left"></span>  Previous
+								</button>
+								<button ng-show="recomendationevents.length>1" ng-disabled="curPage >= recomendationevents.length/pageSize - 1" class="btn pull-right" ng-click="curPage = curPage+1">	
+									Next <span class="glyphicon glyphicon-chevron-right"></span>
+								</button>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+				       	<ul class="metrics-list" id="metrics-list">
+							<li ng-repeat="event in recomendationevents | orderBy:'title' | pagination: curPage * pageSize | limitTo: pageSize " >
+								<span ng-show="idsEventsToPlot[event.id]">
+									{{event.title}} (It's assigned)
+								</span>
+								<span ng-hide="idsEventsToPlot[event.id]">
+									<a href ng-click="selectHE(event,'recomendation')">{{event.title}}</a>
+								</span>
+							</li>
+						</ul>
+    				</div>
+
+				</div>
+
+			</tab>
 
 
-		<tab heading="Search">
-			<!--
-			<div class="modal-header">
-				<legend class="legend-primary">Select an event from the list</legend>	
-				<h4>Remember that you can use the filter funtion to find an event.</h4>
-			</div>
-			-->
-			<div class="row"><br/></div>
-			
-				<div>
-					<!--
-					<button ng-hide="isOpened" class="btn btn-primary" ng-click="collapseFilter()">View Filter</button>
-					<button ng-hide="!isOpened" class="btn btn-primary" ng-click="collapseFilter()">Hide Filter</button>
-					-->
-					<!--
-		    		<div collapse="!isOpened">
-		    		-->
-		    		<div>
-    					<form action="#" name="searchEventsForm" role="form"  novalidate >
-    						<!--
-							<hr>
-							-->
+			<tab heading="Search">
+				<div class="row"><br/></div>
+				<div> 
+					<div>
+						<form action="#" name="searchEventsForm" role="form"  novalidate >
 							<div class="row">
 								<div class="col-sm-4">
-		        					<label for="">Search text</label>
-	    	    					<input placeholder="--all events--" ng-change="findEventsByFilter('ini', filterEvent, startDateToFilter, endDateToFilter)" type="text" id="filterEvent" ng-model="filterEvent" name="filterEvent">
+			       					<label for="">Search text</label>
+			    					<input placeholder="--all events--" ng-change="findEventsByFilter('ini', filterEvent, startDateToFilter, endDateToFilter)" type="text" id="filterEvent" ng-model="filterEvent" name="filterEvent">
 								</div>
-
+		
 								<div class="col-sm-4">
 									<div class="form-group date-picker" ng-controller="DateController">
-		            		    		<label for="retrievalDate">Start date</label>
-		                				<p class="input-group">
+			           		    		<label for="retrievalDate">Start date</label>
+			               				<p class="input-group">
 					                    	<input type="text"
 					                           id="startDateToFilter"
 					                           name="startDateToFilter"
@@ -121,7 +74,7 @@
 					                           min-date-old="minDate"
 					                           max-date-old="maxDate"
 					                           min-date="startDateToFilter"
-					                           max-date="endDateToFilter"					                           
+					                           max-date="endDateToFilter"
 					                           datepicker-options="dateOptions"
 					                           show-button-bar="false"
 					                           ng-required="false"
@@ -133,15 +86,15 @@
 					                    	</span>
 			                			</p>
 			            			</div>
-		        				</div>
-
+				        		</div>
+		
 								<div class="col-sm-4">
 									<div class="form-group date-picker" ng-controller="DateController">
-				                		<label for="retrievalDate">End date</label>
-				                		<p class="input-group">
-				                    		<input type="text"
-					                           id="endDateToFilter"
-					                           name="endDateToFilter"
+						           		<label for="retrievalDate">End date</label>
+						           		<p class="input-group">
+						                	<input type="text"
+							                	id="endDateToFilter"
+							                    name="endDateToFilter"
 					                           class="form-control"
 					                           datepicker-popup=""
 					                           ng-model="endDateToFilter"
@@ -156,14 +109,14 @@
 					                           ng-disabled="true"
 					                           ng-change="findEventsByFilter('ini', filterEvent, startDateToFilter, endDateToFilter)"
 					                           close-text="Close" />
-						                    <span class="input-group-btn">
-				    		                    <a type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></a>
-				            		        </span>
-				                		</p>
-				            		</div>
-			        			</div>
-	    					</div>
-		    			</form>
+											<span class="input-group-btn">
+						    		        	<a type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></a>
+											</span>
+										</p>
+						            </div>
+					        	</div>
+			    			</div>
+				    	</form>
 					</div>
 
 					<hr>
@@ -205,65 +158,85 @@
 								
 							</ul>
 						</div>
-						<!--
-						<div>
-							<button ng-show="events.hits.total>1" ng-disabled="pagToSearch==1"  class="btn" ng-click="findEventsByFilter('prev', filterEvent)">
-							 <span class="glyphicon glyphicon-chevron-left"></span>  Previous
-							</button>
-							<button ng-show="events.hits.total>1" ng-disabled="events.hits.total<=pagToSearch*itemsperpagesize" class="btn" ng-click="findEventsByFilter('next', filterEvent)">
-							Next <span class="glyphicon glyphicon-chevron-right"></span>
-							</button>
-						</div>
-						-->
 					</div>
-
-
-			</div>
+				</div>
+			</tab>
 			
-		</tab>
+			<tab heading="Historical Events Configuration">
+				
+				<br />
+				<div ng-show="eventsToPlot.length==0">No events selected</div>
+				<div ng-if="eventsToPlot.length > 0 " id="listHistoricalEventsToPlot">						
+					<div class="designer-metrics ng-scope active" id="designer-metrics-he-num-{{$index+1}}" ng-repeat="event in eventsToPlot track by $index">
+						<h4>{{event.title}}</h4>
+						<input type="hidden" ng-model="idHE[$index+1]" id="idHE{{$index+1}}" name="idHE[]" value="{{event.id}}">
+						<input type="hidden" ng-model="titleHE[$index+1]" id="titleHE{{$index+1}}" name="titleHE[]" value="{{event.title}}">
+						<input type="hidden" ng-model="startDateHE[$index+1]" id="startDateHE{{$index+1}}" name="startDateHE[]" value="{{event.startDate}}">
+						<input type="hidden" ng-model="endDateHE[$index+1]" id="endDateHE{{$index+1}}" name="endDateHE[]" value="{{event.endDate}}">					    	
+						<div class="historicalevent-buttons active">
+			    			<a type="button" data-intro="Edit event main data" data-position="right" class="btn btn-primary btn-create" ng-click="vieweditHE[$index+1]=!vieweditHE[$index+1]">
+							<span ng-show="vieweditHE[$index+1]">Collapse</span> Edit Mode</a>
+			    			<button data-intro="Remove event from the list of related events" data-position="left" type="button" class="btn btn-danger btn-clear" ng-click="deleteContainerHistoricalEvent('row_config_',$index+1, event.title)" id="delete-he-button-{{event.id}}">Remove</button>				    				
+						</div>
+
+						<div ng-show="vieweditHE[$index+1]" class="contentHE">
+							<div><br/></div>
+							<div ng-if="event.color"><label for="">Colour:</label> 
+								
+								<spectrum
+									name="colorHE[]" ng-model="colorHE[$index+1]" ng-model-onblur ng-change="updatecolorEvent($index);rePlotGraph()"
+									options="{
+										showInput: true, 
+										showAlpha: false,
+										allowEmpty: false,
+										preferredFormat: 'hex'
+									}">
+								</spectrum>
+
+								
+								<!--
+								<spectrum-colorpicker
+									name="colorHE[]" ng-model="colorHE[$index+1]" ng-model-onblur ng-change="updatecolorEvent($index);rePlotGraph()"
+									options="{
+										showInput: true, 
+										showAlpha: false,
+										allowEmpty: false,
+										preferredFormat: 'hex'
+									}">
+								</spectrum-colorpicker>
+								-->
+							</div>
+							<div ng-if="event.startDate"><label for="">From:</label> {{event.startDate | date:'longDate'}} </div>
+							<div ng-if="event.endDate"><label for="">To:</label> {{event.endDate | date:'longDate'}} </div>
+							<div ng-if="event.desc"><label for="">Description:</label> 
+								<textarea ng-blur="updateDescriptionEvent($index);rePlotGraph()" rows="2" cols="50" ng-model="descHE[$index+1]" ng-trim="false" maxlength="150" name="descriptionHEToAdd" id="descriptionHEToAdd">{descHE[$index+1]}}</textarea>
+								<span>{{150 - descHE[$index+1].length}} left</span>
+							</div>
+						</div>
+					</div>
+				</div>
+            </tab>
+
+		</tabset>
 		
-	</tabset>
 		
-		
-		<!--
-		<form action="#" name="neweventForm" ng-submit="submitFormAddEvent()" novalidate>
-		-->
 		<form action="#" name="neweventForm" role="form"  ng-submit="submitFormAddEvent()" novalidate >
 
-
-    
-
-<!--
-			<div class="form-group" ng-show="events">
-				<label for="historicalEvents">Historical events:</label>
-					<div>
-						<select 
-							ng-model="myOption"
-                			ng-options="event.title for event in events.results track by event.id"
-                			ng-change="changeselectHE(myOption)"
-                			class="form-control" >
-            					<option value="">Select Historical Event</option>
-            			</select>					
-      				</div>
-			</div>
--->			
-      <div ng-if="historicalevent_id>0" class="events-display-fields">
+      		<div ng-if="historicalevent_id>0" class="events-display-fields">
       
-			<div class="form-group" ng-class="{ 'has-error' : neweventForm.title.$invalid && !neweventForm.title.$pristine }">
-            	<label for="titleHE" class="mandatory field-label">Title:</label>
-              <div class="field-content">{{historicalevent_title}}</div>
-            	<input type="hidden" maxlength="80" size="60" name="idHE" id="idHE" class="form-control" ng-model="historicalevent_id">
-            	<input type="hidden" maxlength="80" size="60" name="titleHE" id="titleHE" class="form-control" ng-model="historicalevent_title">
-            	<p ng-show="neweventForm.title.$invalid && !neweventForm.title.$pristine" class="help-block">A title is required.</p>
-        	</div>
+				<div class="form-group" ng-class="{ 'has-error' : neweventForm.title.$invalid && !neweventForm.title.$pristine }">
+            		<label for="titleHE" class="mandatory field-label">Title:</label>
+              		<div class="field-content">{{historicalevent_title}}</div>
+            		<input type="hidden" maxlength="80" size="60" name="idHE" id="idHE" class="form-control" ng-model="historicalevent_id">
+            		<input type="hidden" maxlength="80" size="60" name="titleHE" id="titleHE" class="form-control" ng-model="historicalevent_title">
+            		<p ng-show="neweventForm.title.$invalid && !neweventForm.title.$pristine" class="help-block">A title is required.</p>
+        		</div>
 
-
-			<div class="form-group" ng-controller="DateController">
-
-                <label for="startDate" class="field-label">Start date:</label>
-                <div class="field-content">{{historicalevent_startDate | date:'longDate'}}</div>
-                <p class="input-group">
-                    <input type="hidden"
+				<div class="form-group" ng-controller="DateController">
+                	<label for="startDate" class="field-label">Start date:</label>
+                	<div class="field-content">{{historicalevent_startDate | date:'longDate'}}</div>
+                	<p class="input-group">
+                    	<input type="hidden"
                            id="startDate"
                            name="startDate"
                            class="form-control"
@@ -278,20 +251,14 @@
                            ng-disabled="true"
                            close-text="Close" 
                            value="{{historicalevent_he_startdate}}" />
-                     <!--
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
-                    -->
-                </p>
-            </div>
-            
-            
-			<div class="form-group" ng-controller="DateController">
-                <label for="endDate" class="field-label">End date:</label>
-                <div class="field-content">{{historicalevent_endDate | date:'longDate'}}</div>
-                <p class="input-group">
-                    <input type="hidden"
+                	</p>
+            	</div>
+                        
+				<div class="form-group" ng-controller="DateController">
+                	<label for="endDate" class="field-label">End date:</label>
+                	<div class="field-content">{{historicalevent_endDate | date:'longDate'}}</div>
+                	<p class="input-group">
+                    	<input type="hidden"
                            id="endDate"
                            name="endDate"
                            class="form-control"
@@ -306,42 +273,44 @@
                            ng-disabled="true"
                            close-text="Close" 
                            value="{{historicalevent_he_enddate}}" />
-                    <!--
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
-                    -->
-                </p>
-            </div> 
-            <div class="form-group">
-				<label for="Description" class="field-label">Colour:</label>
-        
-				<div class="field-content">
-					<!--
-					<input type='color' name='color' ng-model="historicalevent_color_palete"  />
-					-->
+                	</p>
+            	</div>
+            	 
+            	<div class="form-group">
+					<label for="Description" class="field-label">Colour:</label>        
+					<div class="field-content">
 				
-					<spectrum-colorpicker
-  						ng-model="historicalevent_color_palete"
-  							options="{
-  								showInput: true, 
-  								showAlpha: false,
-  								allowEmpty: false,
-  								preferredFormat: 'hex'
-  							}">
-					</spectrum-colorpicker>					
-
-				<input type="hidden"
-                           id="historicalevent_color"
-                           name="historicalevent_color"
-                           class="form-control"
-                           ng-required="false"
-                           value="{{historicalevent_color_palete}}"
-					 />						 					
+						<spectrum
+	  						ng-model="historicalevent_color_palete"
+	  							options="{
+	  								showInput: true, 
+	  								showAlpha: false,
+	  								allowEmpty: false,
+	  								preferredFormat: 'hex'
+	  							}">
+						</spectrum>	
+						<!--
+						<spectrum-colorpicker
+	  						ng-model="historicalevent_color_palete"
+	  							options="{
+	  								showInput: true, 
+	  								showAlpha: false,
+	  								allowEmpty: false,
+	  								preferredFormat: 'hex'
+	  							}">
+						</spectrum-colorpicker>					
+						-->
+						<input type="hidden"
+		                           id="historicalevent_color"
+		                           name="historicalevent_color"
+		                           class="form-control"
+		                           ng-required="false"
+		                           value="{{historicalevent_color_palete}}"
+							 />						 					
 				
-    			</div>
-    		</div>            
-          </div>
+    				</div>
+    			</div>            
+          	</div>
 
             
 			<div ng-if="historicalevent_id>0" class="form-group">
@@ -356,13 +325,10 @@
 		</form>		
 	</div>   
 
-			<div class="modal-footer">
-				<!--		
-				<a ng-disabled="neweventForm.$invalid" href="" ng-click="addAnotherHistoricalEvent('dynamicContainer'); rePlotGraph(); ok();" class="button btn btn-success" id="addmetric">Link event</a>
-				-->
-				<button ng-disabled="!historicalevent_id" href="" ng-click="addAnotherHistoricalEvent('dynamicContainer'); rePlotGraph(); ok();" class="btn" id="addmetric">Link event</button>				
-    			<button class="btn btn-primary" ng-click="cancel()">Close</button>
-    			<a href="#!/events/create"  target="_blank" class="btn btn-default" id="addmetric">Create a new event</a>
-			</div>
+	<div class="modal-footer">
+		<button ng-disabled="!historicalevent_id" href="" ng-click="addAnotherHistoricalEvent('dynamicContainer'); rePlotGraph(); ok();" class="btn" id="addmetric">Link event</button>				
+    	<button class="btn btn-primary" ng-click="cancel()">Close</button>
+    	<a href="#!/events/create"  target="_blank" class="btn btn-default btn-create" id="addmetric">Create a new event</a>
+	</div>
 
 </div>
