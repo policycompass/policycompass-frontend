@@ -10,8 +10,8 @@
 	    		<div ng-class="{active: help}" class="help-text"><p>First, add appropriate concepts for you causal model (click "Add Concept"),<br>Second, create relationship (causal relationship) among concepts you added (click "Create Relationship"),<br>Then save your model (click "Save Model").<br>After saving you model, you can run simulation for your model!</p></div>   
 <!--				<div class="fonticon fonticon-help help-switch" ng-click="showHelp(1)"></div>   -->
 				<a type="button" class="btn btn-primary btn-concept" ng-click="addObj()">Add Concept</a>
-				<a ng-if="isDisabled == true" type="button" class="btn btn-primary btn-association" ng-click="addEdge()" disabled>Create Association</a>
-				<a ng-if="isDisabled == false" type="button" class="btn btn-primary btn-association" ng-click="addEdge()">Create Association</a>
+				<a ng-if="isDisabled == true" type="button" class="btn btn-primary btn-association" ng-click="addEdge()" disabled>Create Relationship</a>
+				<a ng-if="isDisabled == false" type="button" class="btn btn-primary btn-association" ng-click="addEdge()">Create Relationship</a>
 				<a ng-if="mode == 'create' && isDisabled == true" type="button" class="btn btn-primary btn-save" ng-click="saveModel()" disabled>Save Model</a>
 				<a ng-if="mode == 'edit' && isDisabled == true" type="button" class="btn btn-primary btn-save" ng-click="updateModel()" disabled>Save Model</a>
 				<a ng-if="mode == 'create' && isDisabled == false" type="button" class="btn btn-primary btn-save" ng-click="saveModel()">Save Model</a>
@@ -35,8 +35,12 @@
  <!--          <hr> curl -H "Content-Type: application/json" -i -X POST -d '{{ fcmSimulation }}' localhost:8080/api/v1/fcmmanager/simulation  -->
             <tabset justified="true">
                 <tab heading="Run Simulation">
+<<<<<<< HEAD
 					To run the simulation of your model, set the value, metric, and weight.
 		    <button type="button" class="btn btn-danger pull-right" ng-click="advanceSettings()">Advance Settings</button>
+=======
+		    <button type="button" class="btn btn-danger pull-right" ng-click="advanceSettings()">Advanced Settings</button>
+>>>>>>> 0beea9a128ed48c1699bee5dcd7a8c77cee6f332
     		    <h4>Concepts :</h4>
 		    <table class="table table-hover">
 			<tr>
@@ -128,9 +132,9 @@
 			    <td></td>
 			</tr>
 		     </table>
-		     <button type="submit" class="btn btn-default" ng-click="correlationMatrix();">Correlation Matrix between Concepts</button>
+<!--		     <button type="submit" class="btn btn-default" ng-click="correlationMatrix();">Correlation Matrix between Concepts</button>
 		     <button type="submit" class="btn btn-default">Weight Calculation using the Historical Data</button>
-		     <button type="submit" class="btn btn-default">Reset Weights</button>
+		     <button type="submit" class="btn btn-default">Reset Weights</button>    -->
 		     <button type="submit" class="btn btn-default" ng-click="runSimulation();">Run Simulation</button>
 		</tab>
 

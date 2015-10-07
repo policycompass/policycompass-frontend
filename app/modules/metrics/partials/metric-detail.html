@@ -1,0 +1,96 @@
+<div class="container">
+    <div class="content-header">
+        <h1><span class="glyphicon glyphicon-list-alt"></span> {{ data.title }}</h1>
+
+        <div class="pc-visualization-formcontrols">
+            <div class="button-group">
+                <a type="button" class="btn btn-primary btn-create" ng-disabled="true" href="#!/datasets/{{ dataset.id }}/edit">Edit</a>
+                <a type="button" class="btn"
+                   href="#!/metrics/{{data.id}}/apply-1">Apply</a>
+                <a type="button" ng-disabled="true" class="btn btn-danger" ng-click="deleteDataset(dataset)">Delete</a></div>
+
+
+            <a type="button" class="btn btn-share" ng-click="share=!share" ng-class="{active: share}">Share</a></div>
+            <div ng-class="{active: share}" class="share-window" id="share-window" ng-init="e=1">
+            <ul class="share-menu">
+                <div class="fonticon fonticon-close" ng-click="share=!share"></div>
+                <li><a href="" ng-click="e=1" ng-class="{active: e==1}">Share</a></li>
+                <li><a href="" ng-click="e=2" ng-class="{active: e==2}">Embed</a></li>
+            </ul>
+            <div ng-class="{active: e==1}" class="share-submenu">
+                <div class="row-block">
+                    <ul class="social-share">
+                        <li><a href="" class="fonticon fonticon-facebook"></a></li>
+                        <li><a href="" class="fonticon fonticon-twitter"></a></li>
+                        <li><a href="" class="fonticon fonticon-vk"></a></li>
+                        <li><a href="" class="fonticon fonticon-linkedin"></a></li>
+                        <li><a href="" class="fonticon fonticon-google"></a></li>
+                    </ul>
+                    <input type="text" value="http://localhost:9000/app/#/metrics/{{ data.id }}">
+                </div>
+            </div>
+            <div ng-class="{active: e==2}" class="share-submenu">
+                <div class="row-block">
+                    <input type="text"
+                           value='iframe width="100%" height="300" scrolling="no" frameborder="no" src="http://localhost:9000/app/#/metrics/{{ data.id }}"'>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="content-body">
+
+      <div class="row">
+        <div class="col-md-12">
+          <formula ng-if="data.formula && data.variables" data-formula="data.formula" data-variables="data.variables"></formula>
+        </div>
+      </div>
+
+
+
+        <div class="row">
+            <div class="col-lg-6">
+                <legend class="legend-primary">Details</legend>
+                <table class="table table-hover">
+
+                    <tr ng-show="data.title">
+                        <td><b>Title:</b></td>
+                        <td>{{ data.title }}</td>
+                    </tr>
+
+                    <tr ng-show="data.description">
+                        <td><b>Description:</b></td>
+                        <td>{{ data.description }}</td>
+                    </tr>
+
+                    <tr ng-show="indicator">
+                        <td><b>Indicator:</b></td>
+                        <td>{{ indicator.name }}</td>
+                    </tr>
+
+                    <tr ng-show="data.keywords">
+                        <td><b>Keywords:</b></td>
+                        <td>{{ data.keywords }}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="col-lg-6">
+                <legend class="legend-primary">Usage</legend>
+                <table class="table table-hover">
+
+                    <tr>
+                        <td><b>Metric used in Dataset:</b></td>
+                        <td>FIXME: Hier kommen Links zu den datasets hin</td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+
+   </div>
+
+
+</div>
+

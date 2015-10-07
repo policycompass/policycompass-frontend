@@ -7,7 +7,12 @@ var metrics = angular.module('pcApp.metrics', [
     'pcApp.metrics.directives.pcDatagrid',
     'pcApp.metrics.directives.ngDropzone',
     'pcApp.metrics.directives.forms',
-    'pcApp.references.directives.forms'
+    'pcApp.references.directives.forms',
+    'pcApp.metrics.directives.contenteditable',
+    'pcApp.metrics.directives.formula',
+    'pcApp.metrics.directives.indicator',
+    'pcApp.metrics.directives.datasetSelect',
+    'pcApp.metrics.directives.indicatorToDataset'
 ]);
 
 /**
@@ -18,17 +23,25 @@ metrics.config(function($routeProvider) {
         .when('/metrics', {
             redirectTo: '/browse/metric'
         })
-        .when('/metrics/create', {
-            controller: 'MetricCreateController',
-            templateUrl: 'modules/metrics/partials/create.html'
+        .when('/metrics/create-1', {
+            controller: 'CreateMetric1Controller',
+            templateUrl: 'modules/metrics/partials/create-metric-1.html'
         })
-        .when('/metrics/:metricId/edit', {
-            controller: 'MetricEditController',
-            templateUrl: 'modules/metrics/partials/create.html'
+        .when('/metrics/create-2', {
+            controller: 'CreateMetric2Controller',
+            templateUrl: 'modules/metrics/partials/create-metric-2.html'
         })
-        .when('/metrics/:metricId', {
-            controller: 'MetricDetailController',
-            templateUrl: 'modules/metrics/partials/detail.html'
+       .when('/metrics/:metricId', {
+            controller: 'MetricsmanagerDetailController',
+            templateUrl: 'modules/metrics/partials/metric-detail.html'
+        })
+       .when('/metrics/:metricId/apply-1', {
+            controller: 'ApplyMetric1Controller',
+            templateUrl: 'modules/metrics/partials/apply-metric-1.html'
+        })
+       .when('/metrics/:metricId/apply-2', {
+            controller: 'ApplyMetric2Controller',
+            templateUrl: 'modules/metrics/partials/apply-metric-2.html'
         })
         .otherwise({ redirectTo: '/' });
 });
