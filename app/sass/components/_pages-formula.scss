@@ -54,6 +54,11 @@ $text-color:lighten($bk_3_2,20);
  }
 }
 
+.field-label {
+  font-weight:bold;
+  // color:$claro;
+}
+
 .metadata {
   background:$gris_95;
   padding:15px;
@@ -62,6 +67,11 @@ $text-color:lighten($bk_3_2,20);
   .form-group {
     overflow:hidden;
   }
+  .field-label,
+   .field-content {
+   line-height:2em;
+   }
+  
   .field-label {
     $ancho:$unidad * 2;
     width:$ancho;
@@ -69,7 +79,7 @@ $text-color:lighten($bk_3_2,20);
     margin-right:- $ancho;
     text-align:right;
     padding-right:10px;
-    line-height:2em;
+    
   }
   .field-content {
     margin-left:$ancho;

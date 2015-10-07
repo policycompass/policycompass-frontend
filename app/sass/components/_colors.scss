@@ -15,7 +15,7 @@ $main:black;
 
 $main_2:$bk_1_2;
 
-$main_3:$gris_95;
+$main_3:$gris_96;
 $main_bk:$gris_98;
 $main_bk_2:$gris_90;
 
@@ -29,6 +29,11 @@ a,
 h1, h2, h3, h4 {
   color:$main;
 }
+
+h1:before {
+  color:$gris_40;
+  color:$bk_3;
+}
  
 .fonticon-help:before{
   color:$help_icon;
@@ -41,6 +46,56 @@ h4:before,
 .searchItemIcon a:before {
   color:$main_4;
 }
+
+.metricIcon a:before { color:$bk_2;}
+
+.result-wrapper-metric {
+  // border-color:$bk_2;
+  // h5 a,
+  .searchItemIcon a:before {
+     color:$bk_2;
+     color:$bk_3;
+  }
+}
+.result-wrapper-event {
+  // border-color:$bk_3;
+  // h5 a,
+  .searchItemIcon a:before {
+     color:$bk_3;
+     color:$bk_2;
+  }
+
+}
+.result-wrapper-fuzzymap {
+  // border-color:$bk_4_1;
+  // h5 a,
+  .searchItemIcon a:before {
+     color:$bk_4_1;
+  }
+}
+.result-wrapper-dataset {
+ // border-color:$bk_4;
+  // h5 a,
+  .searchItemIcon a:before {
+     color:$bk_4;
+  }
+}
+.result-wrapper-indicator {
+ // border-color:$bk_1_2;
+ // h5 a,
+  .searchItemIcon a:before {
+     color:$bk_1_2;
+  }
+}
+ .result-wrapper-visualization {
+ // border-color:#9b589d;
+ // h5 a,
+  .searchItemIcon a:before {
+     color:#9b589d;
+  }
+} 
+
+
 .row-view-main h3.fonticon:before {
   background:$main_4;
 }
@@ -57,6 +112,7 @@ h4:before,
 }
 .result-wrapper {
   background:$main_3;
+
 }
 header {
 background: linear-gradient(to bottom, $main_bk 0%, $main_3 99.5%, $main_bk_2);
