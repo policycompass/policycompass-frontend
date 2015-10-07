@@ -164,7 +164,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
     }
   },
   function(error) {
-    throw { message: JSON.stringify(err.data)};
+    throw { message: JSON.stringify(error.data)};
   });
 
   if ($routeParams.fcmId)
@@ -229,7 +229,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
 	$rootScope.$broadcast('appChanged');
     },
     function (error) {
-	throw { message: JSON.stringify(err.data)};
+	throw { message: JSON.stringify(error.data)};
     }
   );
 
@@ -248,7 +248,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
 
   },
   function(error) {
-    throw { message: JSON.stringify(err.data)};
+    throw { message: JSON.stringify(error.data)};
   });
 
 }
@@ -428,23 +428,13 @@ $scope.md = jsonModel;
             throw { message: err.data};
         });
 
-<<<<<<< HEAD
-	dlg = dialogs.create('/dialogs/runsimulation.html','RunSimulationController',{},{key: false,back: 'static'});
-	dlg.result.then(function(user){
-        },function(){
-          $scope.name = 'You decided not to enter in your name, that makes me sad.';
-        });
-		// broadcasting the event
-		$rootScope.$broadcast('appChanged');
-=======
-//	dlg = dialogs.create('/dialogs/runsimulation.html','RunSimulationController',{},{key: false,back: 'static'});
-//	dlg.result.then(function(user){
-//        },function(){
-//          $scope.name = 'You decided not to enter in your name, that makes me sad.';
-//        });
-	// broadcasting the event
-	$rootScope.$broadcast('appChanged');
->>>>>>> 0beea9a128ed48c1699bee5dcd7a8c77cee6f332
+    	//dlg = dialogs.create('/dialogs/runsimulation.html','RunSimulationController',{},{key: false,back: 'static'});
+    	//dlg.result.then(function(user){
+         //   },function(){
+         //     $scope.name = 'You decided not to enter in your name, that makes me sad.';
+         //   });
+        // broadcasting the event
+        $rootScope.$broadcast('appChanged');
     };
 
     $scope.impactAnalysis = function(){
@@ -781,7 +771,7 @@ $scope.md = jsonModel;
     $scope.Fcmactivators = FcmActivator.query({}, function(activatorList) {
     },
     function(error) {
-	throw { message: JSON.stringify(err.data)};
+	throw { message: JSON.stringify(error.data)};
     });
 
   $scope.activator1 = FCMActivatorDetail.getActivator();
