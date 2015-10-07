@@ -26,7 +26,6 @@
     "underscore": "=1.7.0",
     "queue-async": "=1.0.7",
     "d3": "=3.4.11",
-    "angular-spectrum-colorpicker": "=1.2.0",
     "elasticsearch": "=2.4.3",
     "skrollr": "=0.6.27",
     "topojson": "=1.6.18",
@@ -35,7 +34,8 @@
     "isteven-angular-multiselect":"=4.0.0",
     "angularjs-slider": "=0.1.6",
     "checklist-model": "0.2.4",
-    "ngstorage": "=0.3.7"
+    "ngstorage": "=0.3.7",
+    "angular-spectrum": "=0.0.1"
   },
   "resolutions": {
     "angular-bootstrap": "=0.12.0",

@@ -11,10 +11,12 @@ npm install
 ```
 * Install front-end packages (linux)
 ```
+./node_modules/.bin/bower prune
 ./node_modules/.bin/bower install
 ```
 * Install front-end packages (windows)
 ```
+node_modules\.bin\bower prune
 node_modules\.bin\bower install
 ```
 * Copy the development.sample.json to development.json and configure the development.json with your service domains

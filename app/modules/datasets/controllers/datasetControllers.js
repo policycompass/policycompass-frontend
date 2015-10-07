@@ -196,6 +196,10 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 $scope.inputTable.items = newData;
                 $scope.inputInstance.loadData($scope.inputTable.items);
             };
+
+            $scope.nextStep = function () {
+                return true;
+            }
     }])
 
     .controller('DatasetStep2Controller', [
@@ -308,6 +312,15 @@ angular.module('pcApp.datasets.controllers.dataset', [
             };
 
             $scope.nextStep = function () {
+                if($scope.selection.output.length == 0){
+                    dialogs.error('Validation Error', 'Please provide a Data Dimension Type.');
+                    return false;
+                }
+                if($scope.individualSelection.length == 0){
+                    dialogs.error('Validation Error', 'Please choose at least one Data Dimension.');
+                    return false;
+                }
+
                 creationService.data.classPreSelection = $scope.selection.output;
                 creationService.data.extraMetadata = $scope.extraMetadata;
                 creationService.data.individualSelection = $scope.individualSelection;
@@ -388,6 +401,21 @@ angular.module('pcApp.datasets.controllers.dataset', [
             };
 
             $scope.nextStep = function () {
+
+                if($scope.timeResolution.output[0] == null){
+                    dialogs.error('Validation Error', 'Please provide a Time Resolution.');
+                    return false;
+                }
+                if($scope.time.start == null || $scope.time.start == ''){
+                    dialogs.error('Validation Error', 'Please provide a Start Date.');
+                    return false;
+                }
+
+                if($scope.time.end == null || $scope.time.end == ''){
+                    dialogs.error('Validation Error', 'Please provide an End Date.');
+                    return false;
+                }
+
                 if($scope.timeResolution.output[0]) {
                     creationService.data.timeResolution = $scope.timeResolution.output[0].id;
                 }
@@ -562,7 +590,8 @@ angular.module('pcApp.datasets.controllers.dataset', [
         'ngProgress',
         '$routeParams',
         'creationService',
-        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService) {
+        '$location',
+        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService, $location) {
 
             var init = function () {
                 $scope.unitSelector = false;
@@ -570,7 +599,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 $scope.unit = {
                     input:  creationService.data.dataset.unit,
                     output: []
-                }
+                };
                 if($scope.ListDatasetsFilter.length > 0){
                     $scope.unitSelector = true;
                 }
@@ -579,10 +608,19 @@ angular.module('pcApp.datasets.controllers.dataset', [
             init();
 
             $scope.nextStep = function () {
+                if($scope.ListDatasetsFilter.length == 0){
+                    dialogs.error('Validation Error', 'Please provide an Indicator.');
+                    return false;
+                }
+
+                if($scope.unit.output.length == 0){
+                    dialogs.error('Validation Error', 'Please provide an Unit.');
+                    return false;
+                }
+
                 creationService.data.indicator = $scope.ListDatasetsFilter;
                 creationService.data.dataset.unit = $scope.unit.output;
             };
-
 
             $scope.indicatorSelected = function () {
                 if($scope.ListDatasetsFilter.length > 0 ){
@@ -646,7 +684,9 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 $scope.external_resource = {
                     input: creationService.data.dataset.external_resource,
                     output: []
-                }
+                };
+
+                $scope.custom = false;
             };
 
             init();
@@ -657,6 +697,10 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 creationService.data.dataset.policy_domains = $scope.policy_domains.output;
                 creationService.data.dataset.external_resource = $scope.external_resource.output;
                 //creationService.data.dataset =   $scope.dataset;
+            };
+
+            $scope.toogleResource = function () {
+                $scope.custom = !$scope.custom;
             };
 
             var buildData = function () {
