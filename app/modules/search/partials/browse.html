@@ -31,21 +31,27 @@
     <div class="search-results-header">
         <div class="filterbar">
             <!--a class="search-icon-btn" data-placement="left" data-canvas="#myNavmenuCanvas" data-target="#myNavmenu" type="button" data-toggle="offcanvas"><span class="filter-menu-icon glyphicon glyphicon-th-list"></span><span class="filter-menu-link">Filter</span></a-->
+            <span class="text-show">Sort By</span>
             <select class="btn btn-show btn-sm dropdown-toggle" ng-model="selectedSortItem"
                     ng-change="sortItemsChanged()" ng-init="selectedSortItem = selectedSortItem || sortOptions[0]"
                     ng-options="sortOptionItem.name for sortOptionItem in sortOptions">
             </select>
-            <span class="text-show">Sort By</span>
+            <span class="text-show">Show</span>
             <select class="btn btn-show btn-sm dropdown-toggle" ng-model="selectedItemPerPage"
                     ng-change="itemsPerPageChanged()"
                     ng-init="selectedItemPerPage = selectedItemPerPage || itemsPerPageChoices[0]"
                     ng-options="itemIPP as itemIPP.name for itemIPP in itemsPerPageChoices">
             </select>
-            <span class="text-show">Show</span>
         </div>
         <div class="num-results-wrap">
-            <div class="num-results" ng-hide="searchResults.length"><span>No results found</span></div>
-            <div class="num-results" ng-show="searchResults.length"><span>Page {{currentPage}} of {{searchResultsCount}} results found</span>
+            <div class="num-results">
+                <span><ng-pluralize count="searchResultsCount"
+                              when="{'0': 'No results found',
+                                   '1': '1 result found',
+                                   'other': '{} results found'}">
+                </ng-pluralize></span>
+            <!--<div class="num-results" ng-hide="searchResults.length"><span>No results found</span></div>-->
+            <!--<div class="num-results" ng-show="searchResults.length"><span>{{searchResultsCount}} results found</span>-->
             </div>
         </div>
     </div>
