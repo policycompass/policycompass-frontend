@@ -79,13 +79,10 @@ angular.module('pcApp.metrics.services.metric',[
             function() {
                 helper.indicators = _.map(indicators.results, function(indicator) {
                     return {
-                        icon:"",
                         name: indicator.name,
                         acronym: indicator.acronym,
                         unit_category: indicator.unit_category,
-                        id: indicator.id,
-                        maker:"",
-                        ticked: false
+                        id: indicator.id
                     };
                 });
             },
