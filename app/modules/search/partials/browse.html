@@ -51,7 +51,7 @@
     </div>
 
     <div class="search-results row-flex">
-        <div ng-repeat="searchResult in searchResults" class="result-wrapper">
+        <div ng-repeat="searchResult in searchResults" class="result-wrapper result-wrapper-{{searchResult['_type']}}">
             <div class="result-block searchItemIcon {{searchResult['_type']}}Icon" ng-cloak>
 
                 <div ng-show="searchResult['_type']=='metric'" class="search-result">
@@ -109,6 +109,7 @@
                             <label class="key-field-title">Start of Event: </label>
                             {{ searchResult['_source']['startEventDate']|date:'d-M-yy'}}
                         </div>
+                        <!--
                         <div class="browse-item-stars">
                             <div class="stars" title="4.1 points">
                                 <div class="star star-active"></div>
@@ -118,6 +119,7 @@
                                 <div class="star star-inactive"></div>
                             </div>
                         </div>
+                        -->
                     </div>
                 </div>
                 <div ng-show="searchResult['_type']=='visualization'" class="search-result">
@@ -150,6 +152,7 @@
                             <label class="key-field-title">Keywords: </label>
                             {{ searchResult['_source']['keywords']|date:'d-M-yy'}}
                         </div>
+                        <!--
                         <div class="browse-item-stars">
                             <div class="stars" title="4.1 points">
                                 <div class="star star-active"></div>
@@ -159,9 +162,13 @@
                                 <div class="star star-inactive"></div>
                             </div>
                         </div>
+                        -->
                     </div>
                 </div>
-
+                
+                <div class="texticon texticon-{{searchResult['_type']}}"></div>
+                
+                
                 <!-- /.col-lg-12  -->
             </div>
             <!-- /result-block .col-lg-3  -->
