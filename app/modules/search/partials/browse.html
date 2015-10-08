@@ -68,6 +68,10 @@
                             <label class="key-field-title">Publisher: </label>
                             {{ searchResult['_source']['publisher'] }}
                         </div>
+                        <div class="key-field">
+                            <label class="key-field-title">Comments: </label>
+                            {{ searchResult['_source']['commentsCount']}}
+                        </div>
                     </div>
                 </div>
 
@@ -80,6 +84,10 @@
                     <div class="attributes">
 
                         <p>{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
+                        <div class="key-field">
+                            <label class="key-field-title">Comments: </label>
+                            {{ searchResult['_source']['commentsCount']}}
+                        </div>
 
                     </div>
                 </div>
@@ -91,6 +99,10 @@
                     </h5>
                     <div class="attributes">
                         <p >{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
+                        <div class="key-field">
+                            <label class="key-field-title">Comments: </label>
+                            {{ searchResult['_source']['commentsCount']}}
+                        </div>
                     </div>
                 </div>
 
@@ -108,6 +120,10 @@
                         <div class="key-field">
                             <label class="key-field-title">Start of Event: </label>
                             {{ searchResult['_source']['startEventDate']|date:'d-M-yy'}}
+                        </div>
+                        <div class="key-field">
+                            <label class="key-field-title">Comments: </label>
+                            {{ searchResult['_source']['commentsCount']}}
                         </div>
                         <div class="browse-item-stars">
                             <div class="stars" title="4.1 points">
@@ -134,6 +150,10 @@
                             <label class="key-field-title">Created on: </label>
                             {{ searchResult['_source']['created_at']|date:'d-M-yy'}}
                         </div>
+                        <div class="key-field">
+                            <label class="key-field-title">Comments: </label>
+                            {{ searchResult['_source']['commentsCount']}}
+                        </div>
                     </div>
                 </div>
                 <div ng-show="searchResult['_type']=='fuzzymap'" class="search-result">
@@ -149,6 +169,10 @@
                         <div class="key-field">
                             <label class="key-field-title">Keywords: </label>
                             {{ searchResult['_source']['keywords']|date:'d-M-yy'}}
+                        </div>
+                        <div class="key-field">
+                            <label class="key-field-title">Comments: </label>
+                            {{ searchResult['_source']['commentsCount']}}
                         </div>
                         <div class="browse-item-stars">
                             <div class="stars" title="4.1 points">
