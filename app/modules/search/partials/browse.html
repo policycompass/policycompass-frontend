@@ -182,93 +182,13 @@
 <!-- /.search content  -->
 
 <div class="browse-filters">
-    <div class="browse-filters-block">
-        <h4>Output</h4>
+    <div ng-repeat="facetCategory in facetCategories | orderBy: 'order'" ng-if="facetCategory.results>0" class="browse-filters-block">
+        <h4>{{facetCategory.label}}</h4>
         <ul>
             <li>
-                <input type="checkbox">
-                All
-            </li>
-            <li>
-            <li>
-                <input type="checkbox">
-                Datasets
-            </li>
-            <li>
-                <input type="checkbox">
-                Indicators
-            </li>
-            <li>
-            <li>
-                <input type="checkbox">
-                Properties
-            </li>
-            <li>
-            <li>
-                <input type="checkbox">
-                Metrics
-            </li>
-
-            <input type="checkbox">
-            Visualisations</li>
-            <li>
-                <input type="checkbox">
-                Causal Models
-            </li>
-        </ul>
-    </div>
-    <div class="browse-filters-block">
-        <h4>Propertiy</h4>
-        <ul>
-            <li>
-                <input type="checkbox">
-                All
-            </li>
-            <li>
-                <input type="checkbox">
-                Unemployment
-            </li>
-            <li>
-                <input type="checkbox">
-                Child Mortality
-            </li>
-            <li>
-                <input type="checkbox">
-                Life expectancy
-            </li>
-            <li>
-                <input type="checkbox">
-                Drug Consumption
-            </li>
-
-        </ul>
-    </div>
-    <div class="browse-filters-block">
-        <h4>Location</h4>
-        <ul>
-            <li>
-                <input type="checkbox">
-                All
-            </li>
-            <li>
-                <input type="checkbox">
-                Europe
-            </li>
-            <li>
-                <input type="checkbox">
-                Spain
-            </li>
-            <li>
-                <input type="checkbox">
-                Greece
-            </li>
-            <li>
-                <input type="checkbox">
-                Germany
-            </li>
-            <li>
-                <input type="checkbox">
-                Uk
+            <li ng-repeat="bucket in facetCategory.buckets">
+                <input type="checkbox" ng-model="bucket.selected" ng-change="facetChanged()" id="{{facetCategory.name}}_{{bucket.value}}">
+                <label for="{{facetCategory.name}}_{{bucket.value}}">{{bucket.label}} ({{bucket.results}})</label>
             </li>
         </ul>
     </div>

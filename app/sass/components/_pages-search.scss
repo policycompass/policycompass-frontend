@@ -141,7 +141,11 @@ $ancho:$unidad * 2;
       content: "\e626";
 }
 .browse-filters-block > ul {
- 
+  max-height: 200px;
+  overflow: auto;
+  label, input {
+    cursor: pointer;
+  }
 }
 
 
