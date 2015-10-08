@@ -212,7 +212,11 @@ $ancho:$unidad * 2;
 }
 
 .browse-filters-block > ul {
- 
+  max-height: 200px;
+  overflow: auto;
+  label, input {
+    cursor: pointer;
+  }
 }
 
 

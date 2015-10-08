@@ -4,9 +4,9 @@
  */
 (function () {
 
-    var searchmodule = angular.module('pcApp.search.controllers', ['pcApp.search.services.search', 'pcApp.config']);
+    var searchmodule = angular.module('pcApp.search.controllers', ['pcApp.search.services.search', 'pcApp.config', 'pcApp.references.services.reference']);
 
-    var searchMainController = function ($scope, $location, searchclient, esFactory, API_CONF, $routeParams, $timeout) {
+    var searchMainController = function ($scope, $location, searchclient, esFactory, API_CONF, Language, $routeParams, $timeout) {
         //Init Selectable number of items per page
         $scope.itemsPerPageChoices = [
             { id: 10, name: '10'},
@@ -21,6 +21,183 @@
             { id: 'Date', name: 'Date Created'}
         ];
 
+        var filters = {};
+        var requestAggs = {};
+        var facetsSelected = {};
+        var aggregationData = {};
+        $scope.facetCategories = [];
+
+        var aggregations = {
+            lang: {
+                label: 'Language',
+                field: ["language.id", "languageID"],
+                order: 1,
+                resolveLabel: function () {
+                    var that = this;
+                    Language.get({id: this.value}, function (response) {
+                        that.label = response.title;
+                    });
+                }
+            },
+            type: {
+                label: 'Content type',
+                field: ["_type"],
+                order: 0,
+                resolveLabel: function () {
+                    switch (this.value) {
+                        case "metric":
+                            this.label = "Metrics";
+                            break;
+                        case "event":
+                            this.label = "Events";
+                            break;
+                        case "indicator":
+                            this.label = "Indicators";
+                            break;
+                        case "dataset":
+                            this.label = "Datasets";
+                            break;
+                        case "fuzzymap":
+                            this.label = "Causal Models";
+                            break;
+                        case "visualization":
+                            this.label = "Visualizations";
+                            break;
+                        default:
+                            this.label = this.value;
+                            break;
+                    }
+                }
+            },
+            keyword: {
+                label: 'Keyword',
+                field: ["keywords"],
+                size: 200,
+                order: 2
+            }
+        };
+
+        normalizeAggregationFilter = function(){
+            var filters = [];
+            angular.forEach($scope.facetCategories, function (aggregation){
+                var terms = [];
+                angular.forEach(aggregation.buckets, function(bucket){
+                    if (bucket.selected){
+                        var field = aggregations[aggregation.name].field;
+                        if (angular.isArray(field)) {
+                            angular.forEach(field, function (fld) {
+                                var term = {};
+                                term[fld] = bucket.value;
+                                terms.push({"term":term});
+                            });
+                        } else {
+                            var term = {};
+                            term[field] = bucket.value;
+                            terms.push({"term":term});
+                        }
+                    }
+                });
+                if (terms.length>0){
+                    filters.push({"bool":{"should":terms}});
+                }
+            });
+            if (filters.length>0)
+                return {"bool":{"must":filters}};
+            return {};
+        };
+        $scope.facetCategoryResults = function(name){
+            return 1;
+            if ($scope.aggregationData[name])
+                return $scope.aggregationData[name].length;
+            return 0;
+        };
+        prepareAggregations = function(){
+            var request = {};
+            angular.forEach(aggregations, function (aggregation, name){
+                $scope.facetCategories.push({
+                    name: name,
+                    label: aggregation.label,
+                    order: aggregation.order,
+                    results: 0,
+                    buckets: {}
+                });
+                aggregations[name].index = $scope.facetCategories.length-1;
+
+                if (!angular.isArray(aggregation.field))
+                    aggregations[name].field = [aggregation.field];
+
+                var i=0;
+                angular.forEach(aggregation.field, function (fld){
+                    var obj = {};
+                    obj.field = fld;
+                    if (aggregation.size)
+                        obj.size = aggregation.size;
+                    var index = (aggregation.field.length>1)?name+'$'+(i++):name;
+                    request[index] = {
+                        "terms" : obj
+                    }
+                });
+            });
+            requestAggs = request;
+        };
+
+        normalizeAggregationResults = function(aggs){
+            //console.log(aggs);
+            var buckets = {};
+            angular.forEach(aggs, function(aggregation, key){
+                var resetCounters = true;
+                if (_match = key.match(/(.*)\$(\d+)/i)){
+                    key = _match[1];
+                    resetCounters = (_match[2]==1);
+                }
+                if (!aggregations[key]){
+                    console.log(key+" was unexpected");
+                    return;
+                }
+                var facetCategory = $scope.facetCategories[aggregations[key].index];
+                if (resetCounters){
+                    facetCategory.results = 0;
+                    facetCategory.buckets = {};
+                }
+
+                angular.forEach(aggregation.buckets, function(bucket){
+                    if (!facetCategory.buckets[bucket.key]){
+                        facetCategory.buckets[bucket.key] = {
+                            value: bucket.key,
+                            facetCategory:key,
+                            label: '',
+                            selected: false,
+                            results: 0
+                        };
+                        if (angular.isFunction(aggregations[key].resolveLabel))
+                            aggregations[key].resolveLabel.apply(facetCategory.buckets[bucket.key]);
+                        else
+                            facetCategory.buckets[bucket.key].label = facetCategory.buckets[bucket.key].value;
+
+                    }
+                    if (facetsSelected[key] && facetsSelected[key].indexOf(bucket.key) != -1)
+                        facetCategory.buckets[bucket.key].selected = true;
+                    if (resetCounters)
+                        facetCategory.buckets[bucket.key].results = 0;
+                    facetCategory.buckets[bucket.key].results += bucket.doc_count;
+                    facetCategory.results += bucket.doc_count;
+
+                });
+            });
+            //console.log($scope.facetCategories);
+        };
+
+        $scope.facetChanged = function() {
+            var bucket = this.bucket;
+            if (!facetsSelected.hasOwnProperty(bucket.facetCategory))
+                facetsSelected[bucket.facetCategory] = [];
+            var idx = facetsSelected[bucket.facetCategory].indexOf(bucket.value);
+            if (idx != -1 && !bucket.selected)
+                facetsSelected[bucket.facetCategory].splice(idx, 1);
+            if (idx == -1 && bucket.selected)
+                facetsSelected[bucket.facetCategory].push(bucket.value);
+            goSearch();
+        };
 
         // Set Search Fire Event
         goSearch = function () {
@@ -126,22 +303,34 @@
                     }
                 }
             }
-            ;
-            //Perform search through client and get a search Promise
-            searchclient.search({
+            var request = {
                 index: API_CONF.ELASTIC_INDEX_NAME,
                 type: $scope.searchItemType,
                 body: {
                     size: $scope.itemsperPage,
                     from: itemOffset,
                     sort: sort,
-                    query: query
+                    query: query,
+                    aggs: requestAggs
                 }
-            }).then(function (resp) {
+            };
+            var filters = normalizeAggregationFilter();
+            if (!angular.equals({}, filters)) {
+                request.body.post_filter = filters;
+                //request.body.query = {
+                //    filtered:{
+                //        query: query,
+                //        filter: filters
+                //    }
+                //}
+            }
+            //Perform search through client and get a search Promise
+            searchclient.search(request).then(function (resp) {
                 //If search is successfull return results in searchResults objects
                 $scope.searchResults = resp.hits.hits;
                 $scope.searchResultsCount = resp.hits.total;
                 $scope.totalItems = $scope.searchResultsCount;
+                normalizeAggregationResults(resp.aggregations);
             }, function (err) {
                 console.trace(err.message);
             });
@@ -159,6 +348,7 @@
             //Default current page
             $scope.currentPage = 1;
 
+            prepareAggregations();
 
             var type = $routeParams.type;
             if (type) {
