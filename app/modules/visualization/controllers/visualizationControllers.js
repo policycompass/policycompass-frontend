@@ -2404,11 +2404,15 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			for (var i=1; i<arguments.length; i++)
 			{
 				//console.log("----------------->"+$scope.TitleUnits[arguments[i]['unit_id']]);
+				//console.log("arguments[i]['unit_id']="+arguments[i]['unit_id']);
 				if ($scope.TitleUnits[arguments[i]['unit_id']])
 				{
 					$scope.cntYLabels = $scope.cntYLabels +1;
 					
 					//console.log("scope.cntYLabels="+$scope.cntYLabels);
+					//console.log("arguments.length-1="+(arguments.length-1));
+					//console.log("scope.cntTitleIndividual.length-1="+$scope.cntTitleIndividual);
+					//console.log("cntIndividualsVisualisation="+cntIndividualsVisualisation);
 					
 					//if (($scope.cntYLabels>=(arguments.length-1)) && ($scope.cntTitleIndividual>=$scope.cntIndividuals))
 					//if (($scope.cntTitleIndividual>=$scope.cntIndividuals))
@@ -2430,6 +2434,12 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					//console.log("-------------->"+arguments[i]['unit_id']);
 					
 					$dataUnit[i] = Unit.getById(arguments[i]['unit_id']);
+					if (arguments[i]['unit_id']==0)
+					{
+						$scope.TitleUnits[arguments[i]['unit_id']] = 'No unit';
+						$scope.cntYLabels = $scope.cntYLabels +1;
+						
+					}
 					
 					$dataUnit[i].$promise.then(function(unit) 
 					{
@@ -3148,14 +3158,17 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							//console.log(arguments[i]['unit_id']);
 							while (labelTemporalYAxes=="")
 							{
-								
-								if ($scope.TitleUnits[arguments[i]['unit_id']])
+								if (arguments[i]['unit_id']==0)
+								{
+									var labelTemporalYAxes = "No unit";
+								}
+								else if ($scope.TitleUnits[arguments[i]['unit_id']])
 								{
 									var labelTemporalYAxes = $scope.TitleUnits[arguments[i]['unit_id']];	
 								}
 								$sem = $sem +1;
 								
-								if ($sem>100000)
+								if ($sem>5000)
 								{
 									var labelTemporalYAxes = arguments[i]['unit_id'];
 									//console.log("fora error!!!");
