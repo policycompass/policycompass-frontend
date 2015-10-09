@@ -23,6 +23,9 @@ metrics.config(function($routeProvider) {
         .when('/metrics', {
             redirectTo: '/browse/metric'
         })
+        .when('/metrics/create', {
+            redirectTo: '/metrics/create-1'
+        })
         .when('/metrics/create-1', {
             controller: 'CreateMetric1Controller',
             templateUrl: 'modules/metrics/partials/create-metric-1.html'
