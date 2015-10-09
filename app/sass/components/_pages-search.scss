@@ -213,22 +213,11 @@ $ancho:$unidad * 2;
   content: "\e611";
 }
 
-.browse-filters-block > ul {
-
-
-
-
-
- 
-}
-
-
-
 .browse-filters-block {
   font-size:13px;
   ul {
     @include reset-list();
-    // margin:0;
+    max-height: 200px;
     li {
       line-height:1.5em;
       margin:0;
@@ -295,4 +284,3 @@ $ancho:$unidad * 2;
     content:"\e60a";
   }
 }
-
