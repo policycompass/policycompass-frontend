@@ -215,9 +215,14 @@ $ancho:$unidad * 2;
 
 .browse-filters-block {
   font-size:13px;
-  ul {
+  & > ul {
     @include reset-list();
+    overflow:auto;
     max-height: 200px;
+  }
+  ul {
+    
+    
     li {
       line-height:1.5em;
       margin:0;
