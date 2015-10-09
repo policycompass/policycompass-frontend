@@ -2404,11 +2404,15 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			for (var i=1; i<arguments.length; i++)
 			{
 				//console.log("----------------->"+$scope.TitleUnits[arguments[i]['unit_id']]);
+				//console.log("arguments[i]['unit_id']="+arguments[i]['unit_id']);
 				if ($scope.TitleUnits[arguments[i]['unit_id']])
 				{
 					$scope.cntYLabels = $scope.cntYLabels +1;
 					
 					//console.log("scope.cntYLabels="+$scope.cntYLabels);
+					//console.log("arguments.length-1="+(arguments.length-1));
+					//console.log("scope.cntTitleIndividual.length-1="+$scope.cntTitleIndividual);
+					//console.log("cntIndividualsVisualisation="+cntIndividualsVisualisation);
 					
 					//if (($scope.cntYLabels>=(arguments.length-1)) && ($scope.cntTitleIndividual>=$scope.cntIndividuals))
 					//if (($scope.cntTitleIndividual>=$scope.cntIndividuals))
@@ -2429,36 +2433,41 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				{
 					//console.log("-------------->"+arguments[i]['unit_id']);
 					
-					$dataUnit[i] = Unit.getById(arguments[i]['unit_id']);
 					
-					$dataUnit[i].$promise.then(function(unit) 
+					if (arguments[i]['unit_id']==0)
 					{
-						
-						
-						$scope.TitleUnits[unit.id] = unit.title;
-						//console.log("TitleUnits ----->");
-						//console.log($scope.TitleUnits);
-						//console.log("<-----");
+						$scope.TitleUnits[arguments[i]['unit_id']] = 'No unit';
 						$scope.cntYLabels = $scope.cntYLabels +1;
-						//console.log("arguments");
-
-
-						//if ((arguments.length<=$scope.cntYLabels) && ($scope.cntTitleIndividual>=$scope.cntIndividuals))
-						//if (($scope.cntTitleIndividual>=$scope.cntIndividuals))
-						if (($scope.cntYLabels>=(arguments.length-1)) && ($scope.cntTitleIndividual>=$scope.cntIndividuals))
-						{
-							$scope.recoverDataEnds=true;
-							//console.log("Exit A!!!!");
-							//console.log("sizeArg="+sizeArg);
-							//console.log("arguments.length="+arguments.length);
-							//console.log("scope.cntYLabels="+$scope.cntYLabels);
-							//console.log("scope.cntTitleIndividual="+$scope.cntTitleIndividual);
-							//console.log("scope.cntIndividuals="+$scope.cntIndividuals);
-							//console.log($scope.TitleUnits);
-							//console.log("End recover indiv.");
-						}
 						
-					});
+					}
+					else
+					{
+						$dataUnit[i] = Unit.getById(arguments[i]['unit_id']);
+						$dataUnit[i].$promise.then(function(unit) 
+						{
+							$scope.TitleUnits[unit.id] = unit.title;
+							//console.log("TitleUnits ----->");
+							//console.log($scope.TitleUnits);
+							//console.log("<-----");
+							$scope.cntYLabels = $scope.cntYLabels +1;
+							//console.log("arguments");
+							//if ((arguments.length<=$scope.cntYLabels) && ($scope.cntTitleIndividual>=$scope.cntIndividuals))
+							//if (($scope.cntTitleIndividual>=$scope.cntIndividuals))
+							if (($scope.cntYLabels>=(arguments.length-1)) && ($scope.cntTitleIndividual>=$scope.cntIndividuals))
+							{
+								$scope.recoverDataEnds=true;
+								//console.log("Exit A!!!!");
+								//console.log("sizeArg="+sizeArg);
+								//console.log("arguments.length="+arguments.length);
+								//console.log("scope.cntYLabels="+$scope.cntYLabels);
+								//console.log("scope.cntTitleIndividual="+$scope.cntTitleIndividual);
+								//console.log("scope.cntIndividuals="+$scope.cntIndividuals);
+								//console.log($scope.TitleUnits);
+								//console.log("End recover indiv.");
+							}
+						
+						});
+					}
 					
 				}
 				
@@ -3145,17 +3154,20 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							var labelTemporalYAxes = "";
 							
 							$sem = 0;
-							//console.log(arguments[i]['unit_id']);
+							//console.log(arguments);
 							while (labelTemporalYAxes=="")
 							{
-								
-								if ($scope.TitleUnits[arguments[i]['unit_id']])
+								if (arguments[i]['unit_id']==0)
+								{
+									var labelTemporalYAxes = "No unit";
+								}
+								else if ($scope.TitleUnits[arguments[i]['unit_id']])
 								{
 									var labelTemporalYAxes = $scope.TitleUnits[arguments[i]['unit_id']];	
 								}
 								$sem = $sem +1;
 								
-								if ($sem>100000)
+								if ($sem>5000)
 								{
 									var labelTemporalYAxes = arguments[i]['unit_id'];
 									//console.log("fora error!!!");
@@ -3205,6 +3217,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 									//console.log($scope.ListIndividualDatasetCheckboxes_);
 									//console.log($scope.ListIndividualDatasetCheckboxes_[arguments[i]['id']]);
 									//console.log("idIndiv="+$idIndiv);
+									//console.log($scope.ListIndividualDatasetCheckboxes_[arguments[i]['id']]);
+									
 									if ($scope.ListIndividualDatasetCheckboxes_[arguments[i]['id']])
 									{
 										var indexIndividual = $scope.ListIndividualDatasetCheckboxes_[arguments[i]['id']].indexOf(String($idIndiv));
@@ -3222,20 +3236,41 @@ angular.module('pcApp.visualization.controllers.visualization', [
 									
 									plotindividual=false;
 									
-									
-									for (var individual_checked_position in $scope.IndividualDatasetCheckboxes_[arguments[i].id]) {
-										
-										
-										if (arguments[i]['data']['table'][j].individual==$scope.IndividualDatasetCheckboxes_[arguments[i].id][individual_checked_position])
+									//console.log($scope.IndividualDatasetCheckboxes_);
+									//console.log(arguments[i].id);
+									//console.log($scope.IndividualDatasetCheckboxes_[arguments[i].id]);
+									var checkit=false;
+									if ($scope.IndividualDatasetCheckboxes_[arguments[i].id])
+									{
+										if  ($scope.IndividualDatasetCheckboxes_[arguments[i].id].length>0)
 										{
-											//console.log("Plot individ")
-											plotindividual=true;
+											checkit=true;	
+										}
+									}
+									
+									
+									if (checkit)
+									{	
+										for (var individual_checked_position in $scope.IndividualDatasetCheckboxes_[arguments[i].id]) {
+										
+											//console.log("dins for");	
+											if (arguments[i]['data']['table'][j].individual==$scope.IndividualDatasetCheckboxes_[arguments[i].id][individual_checked_position])
+											{
+												//console.log("Plot individ")
+												plotindividual=true;
+											}
+										
 										}
 										
 									}
+									else
+									{
+										plotindividual=true;
+									}
 								}
 								
-								
+								//console.log("plotindividual");
+								//console.log(plotindividual);
 								//plotindividual=true;
 								if (plotindividual) 
 								{
