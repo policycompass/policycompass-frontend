@@ -14,6 +14,7 @@ var useRemoteServices = false;
 // Configuration for locally installed services
 var policyCompassConfig = {
     'URL': '/api/v1',
+    'SEARCH_MANAGER_URL': 'http://localhost:8000/api/v1/searchmanager',
     'DATASETS_MANAGER_URL': 'http://localhost:8000/api/v1/datasetmanager',
     'VISUALIZATIONS_MANAGER_URL': 'http://localhost:8000/api/v1/visualizationsmanager',
     'EVENTS_MANAGER_URL': 'http://localhost:8000/api/v1/eventsmanager',
@@ -36,6 +37,7 @@ var policyCompassConfig = {
 // Configuration for remote services
 var remotePolicyCompassConfig = {
     'URL': '/api/v1',
+    'SEARCH_MANAGER_URL': 'http://localhost:8000/api/v1/searchmanager',
     'DATASETS_MANAGER_URL': 'https://services-dev.policycompass.eu/api/v1/datasetmanager',
     'VISUALIZATIONS_MANAGER_URL': 'https://services-dev.policycompass.eu/api/v1/visualizationsmanager',
     'EVENTS_MANAGER_URL': 'https://services-dev.policycompass.eu/api/v1/eventsmanager',
@@ -58,4 +60,3 @@ if(useRemoteServices == false) {
 } else {
     angular.module('pcApp.config', []).constant('API_CONF', remotePolicyCompassConfig);
 }
-
