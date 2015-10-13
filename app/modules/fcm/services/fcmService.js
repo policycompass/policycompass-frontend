@@ -85,7 +85,7 @@ angular.module('pcApp.fcm.services.fcm',[
 }])
 
 .factory('FcmSearchUpdate',  ['$resource', 'API_CONF', function($resource, API_CONF) {
-	var url = "/api/v1/searchmanager/updateindexitem/fuzzymap/:id";
+	var url = API_CONF.SEARCH_MANAGER_URL + "/updateindexitem/fuzzymap/:id";
 
 	return $resource(url, 
 		{
@@ -100,7 +100,7 @@ angular.module('pcApp.fcm.services.fcm',[
 }])
 
 .factory('FcmSearchDelete',  ['$resource', 'API_CONF', function($resource, API_CONF) {
-	var url = "/api/v1/searchmanager/deleteindexitem/fuzzymap/:id";
+	var url = API_CONF.SEARCH_MANAGER_URL + "/deleteindexitem/fuzzymap/:id";
 
 	return $resource(url, 
 		{
