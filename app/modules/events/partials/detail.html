@@ -1,89 +1,123 @@
 <div class="container">
-	<div class="content-header">
-		<h1><span class="glyphicon glyphicon-list-alt"></span> {{ event.title }}</h1>
+	<div class="content-header" >
+		<h1 class="fonticon fonticon-event">{{ event.title }}</h1>
 		<div class="pc-visualization-formcontrols">
 			<div class="button-group">
 				<a type="button" class="btn btn-primary  btn-create" href="#!/events/{{ event.id }}/edit">Edit</a>
-          		<a type="button" class="btn btn-danger  btn-clear" ng-click="deleteEvent(event)">Delete</a>
+        <a type="button" class="btn btn-danger  btn-clear" ng-click="deleteEvent(event)">Delete</a>
       		</div>
       	</div>
 	</div>
 	<div class="row">
-		<table class="table table-detail-main-data table-hover">
-			<tbody>
-				<tr ng-show="event.title" class="">
-					<td class="table-detail-title">Title:</td>
-					<td class="table-detail-content">{{event.title}}</td>
-				</tr>
+  <div class="metadata metadata-event metadata-event-description"> 
+<div class="form-group form-group-description" ngshow="event.description">
+  <div class="field-label">Description</div>
+  <div class="field-content">{{event.description}}</div>
+</div></div>
 
-				<tr ng-show="event.description" class="">
-					<td class="table-detail-title">Description:</td>
-					<td class="table-detail-content">{{event.description}}</td>
-				</tr>
-			</tbody>
-		</table>
+
 	</div>
 
 
 	<div class="row">
 		<h3 class="legend-primary">Details</h3>
+		
+    
 
-		<table class="table table-detail table-hover">
-			<tbody>
-				<tr ng-show="event.keywords" class="">
-					<td class="table-detail-title">Keywords:</td>
-					<td class="table-detail-content">{{event.keywords}}</td>
-				</tr>
 
-				<tr ng-show="event.startEventDate">
-              		<td class="table-detail-title">Event start:</td>
-              		<td class="table-detail-content">{{ event.startEventDate | date:'longDate' }}</td>
-          		</tr>
-          		<tr ng-show="event.endEventDate">
-              		<td class="table-detail-title">Event end:</td>
-              		<td class="table-detail-content">{{ event.endEventDate | date:'longDate' }}</td>
-          		</tr>
-          		<tr ng-show="event.detailsURL">
-              		<td class="table-detail-title">Details URL:</td>
-              		<td class="table-detail-content"><a href="{{ event.detailsURL }}" target="_blank">{{ event.detailsURL }}</a></td>
-          		</tr>
-          		<tr ng-show="event.geoLocation">
-              		<td class="table-detail-title">Geolocation:</td>
-              		<td class="table-detail-content">{{ event.geoLocation }}</td>
-          		</tr>
-          		<tr ng-show="language.title">
-              		<td class="table-detail-title">Language:</td>
-              		<td class="table-detail-content">{{ language.title }}</td>
-          		</tr>
-          		<!--
-          		<tr ng-show="event.userID">
-              		<td class="table-detail-title">User:</td>
-              		<td class="table-detail-content">{{ event.userID }}</td>
-          		</tr>
-          		-->
-          		<tr ng-show="event.scale">
-              		<td class="table-detail-title">Scale:</td>
-              		<td class="table-detail-content">{{ event.scale }}</td>
-          		</tr>
-          		<tr ng-show="event.externalResourceID">
-              		<td class="table-detail-title">External Resource:</td>
-              		<td class="table-detail-content">{{ event.externalResourceID }}</td>
-          		</tr>
-          		<tr ng-show="event.dateAddedToPC">
-              		<td class="table-detail-title">Added:</td>
-              		<td class="table-detail-content">{{ event.dateAddedToPC | date:'longDate' }}</td>
-          		</tr>
-          		<tr ng-show="event.dateIssuedByExternalResource">
-              		<td class="table-detail-title">Issued:</td>
-              		<td class="table-detail-content">{{ event.dateIssuedByExternalResource | date:'longDate' }}</td>
-          		</tr>
-          		<tr ng-show="event.dateModified">
-              		<td class="table-detail-title">Modified:</td>
-              		<td class="table-detail-content">{{ event.dateModified | date:'longDate' }}</td>
-          		</tr>
 
-			</tbody>
-		</table>
+<!-- FIELDS START -->
+
+
+
+
+
+
+
+<div class="metadata metadata-event"> 
+
+
+<div class="form-group form-group-keywords" ngshow="event.keywords">
+  <div class="field-label">Keywords</div>
+  <div class="field-content">{{event.keywords}}</div>
+</div>
+
+
+<div class="form-group form-group-date" >
+<div class="form-item" ngshow="event.startEventDate">
+    <div class="field-label">Event start</div>
+    <div class="field-content">{{ event.startEventDate | date:'longDate' }}</div>
+  </div>
+
+<div class="form-item" ng-show="event.endEventDate">
+    <div class="field-label">Event end</div>
+    <div class="field-content">{{ event.endEventDate | date:'longDate' }}</div>
+  </div>
+</div>
+<div class="form-group form-group-modified" >
+<div class="form-item" ngshow="event.dateAddedToPC">
+    <div class="field-label">Added</div>
+    <div class="field-content">{{ event.dateAddedToPC | date:'longDate' }}</div>
+  </div>
+
+
+
+
+ <div class="form-item" ng-show="event.dateIssuedByExternalResource">
+     <div class="field-label">Issued</div>
+    <div class="field-content">{{ event.dateIssuedByExternalResource | date:'longDate' }}</div>
+  </div>
+
+
+
+
+<div class="form-item" ng-show="event.dateModified">
+    <div class="field-label">Modified</div>
+    <div class="field-content">{{ event.dateModified | date:'longDate' }}</div>
+  </div>
+</div>
+
+
+
+
+
+<div class="form-group form-group-location" >
+<div class="form-item" ngshow="event.geoLocation">
+    <div class="field-label">Geolocation</div>
+    <div class="field-content">{{ event.geoLocation }}</div>
+  </div>
+
+
+
+
+<div class="form-item" ng-show="language.title">
+    <div class="field-label">Language</div>
+    <div class="field-content">{{ language.title }}</div>
+  </div>
+</div>
+<div class="form-group form-group-link" ngshow="event.detailsURL">
+  <div class="field-label">Details URL</div>
+  <div class="field-content"><a href="{{ event.detailsURL }}" target="_blank">{{ event.detailsURL }}</a></div>
+</div>
+
+<div class="form-group form-group-scale" ngshow="event.scale">
+  <div class="field-label">Scale</div>
+  <div class="field-content">{{ event.scale }}</div>
+</div>
+
+
+<div class="form-group form-group-external" ngshow="event.externalResourceID">
+  <div class="field-label">External Resource</div>
+  <div class="field-content">{{ event.externalResourceID }}</div>
+</div>
+
+
+
+
+</div>
+
+<!-- FIELDS END -->
+
 	</div>
 
 	<div class="row" ng-show="linked_event_visualization.results">
