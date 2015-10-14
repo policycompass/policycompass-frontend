@@ -176,7 +176,7 @@ angular.module('pcApp.events.controllers.event', [
             $scope.searchResults = [];
             $scope.availableExtractors = [];
             $scope.init = function () {
-                $http.get(API_CONF.EVENTS_MANAGER_URL + '/configextractor').
+                $http.get(API_CONF.EVENTS_MANAGER_URL + '/getextractor').
 
                     success(function (data, status, headers, config) {
                         //console.log(angular.toJson(data));
