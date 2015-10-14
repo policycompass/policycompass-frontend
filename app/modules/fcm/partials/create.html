@@ -75,7 +75,9 @@
 			    <select class="form-control" name="activator" id="activator" ng-model="user.activator" ng-options="activator.title for activator in Fcmactivators" required>
 			    </select></td>     -->
 			    <td align="center">
-			    <button  type="submit" class="btn btn-primary button-metrics" id="addmetricsbutton" ng-click="editMetrics($index);findMetricsByFilter();">{{ concept.metricTitle }}</button>
+				<button data-intro="Helps you to link datasets with this Concept" data-position="top" type="submit" class="btn btn-default btn-adddataset" id="modaladddataset" ng-click="editMetrics($index)">{{ concept.metricTitle }}</button>
+
+<!--			    <button  type="submit" class="btn btn-primary button-metrics" id="addmetricsbutton" ng-click="editMetrics($index);findMetricsByFilter();">{{ concept.metricTitle }}</button>  -->
 			    </td>
 			</tr>
 			<tr>
