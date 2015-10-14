@@ -5,7 +5,7 @@
     "main": "index.js",
     "author": "Fabian Kirstein",
     "devDependencies": {
-        "http-server": "",
+        "node-static": "",
         "http-proxy": "",
         "nconf": "",
         "karma": "~0.10",
