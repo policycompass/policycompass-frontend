@@ -139,7 +139,7 @@ angular.module('pcApp.metrics.services.metric',[
     datasets.getDatasets = function(metric_id) {
         datasets.metric = MetricService.get({id: metric_id},
                 function(metric) {
-                    var variablesJson = JSON.parse(datasets.metric.variables.replace(/'/g, '"'));
+                    var variablesJson = datasets.metric.variables;
                     _.each(variablesJson, function(value, key){
                         datasets.data.datasets.push({variable : key.trim(), dataset: -1, indicator: value.id });
                     });
@@ -161,7 +161,3 @@ angular.module('pcApp.metrics.services.metric',[
     };
     return datasets;
 }]);
-
-
-
-
