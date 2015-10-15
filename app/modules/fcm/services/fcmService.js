@@ -113,6 +113,29 @@ angular.module('pcApp.fcm.services.fcm',[
 
 }])
 
+
+.factory('Dataset',  ['$resource', 'API_CONF', function($resource, API_CONF) {
+    // Get the base URL from the configuration
+	//var url = "/api/v1/datasetmanager/datasets/:id";
+	var url = API_CONF.DATASETS_MANAGER_URL + "/datasets/:id";
+	var Dataset = $resource(url,
+		{
+			id: "@id"
+		},
+        {
+            // Add support for update
+            'update': { method:'PUT' },
+            // Array is false due to additional pagination data
+            'query': { method: 'GET', isArray:false}
+
+        }
+	);
+
+	return Dataset;
+}])
+	
+
+
 /**
  * Factory for the Resource for metrics
  */

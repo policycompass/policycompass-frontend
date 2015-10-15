@@ -118,7 +118,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
     };
 })
 
-.controller('CytoscapeCtrl', function($scope, $rootScope,  $window, $routeParams, $location, $translate, Fcm, FcmModel, FcmSimulation, FcmActivator, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, SimulationConceptsDetail, AssociationsDetail, SimulationAssociationsDetail, EditConcept, EditAssociation, FCMActivatorDetail, Metric){
+.controller('CytoscapeCtrl', function($scope, $rootScope,  $window, $routeParams, $location, $translate, Fcm, FcmModel, FcmSimulation, FcmActivator, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, SimulationConceptsDetail, AssociationsDetail, SimulationAssociationsDetail, EditConcept, EditAssociation, FCMActivatorDetail, Dataset){
   // container objects
   $scope.Models = [];
   $scope.mapData = [];
@@ -184,7 +184,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
 	{
 	    var newNode = {id:$scope.modeldetail.concepts[i].id.toString(), name:$scope.modeldetail.concepts[i].title, posX:$scope.modeldetail.concepts[i].positionX, posY:$scope.modeldetail.concepts[i].positionY};
 	    var Concept = {Id: $scope.modeldetail.concepts[i].id.toString(), title: $scope.modeldetail.concepts[i].title, description: $scope.modeldetail.concepts[i].description, scale: $scope.modeldetail.concepts[i].scale, value: $scope.modeldetail.concepts[i].value, metric_id: $scope.modeldetail.concepts[i].metric_id, x: $scope.modeldetail.concepts[i].positionX, y: $scope.modeldetail.concepts[i].positionY, dateAddedtoPC:$scope.modeldetail.concepts[i].dateAddedtoPC, dateModified:$scope.modeldetail.concepts[i].dateModified};
-	    var SimulationConcept = {Id: $scope.modeldetail.concepts[i].id.toString(), title: $scope.modeldetail.concepts[i].title, scale: $scope.modeldetail.concepts[i].scale, value: $scope.modeldetail.concepts[i].value, fixedoutput: 'False', metricId: $scope.modeldetail.concepts[i].metric_id, metricTitle: 'Add metric'};
+	    var SimulationConcept = {Id: $scope.modeldetail.concepts[i].id.toString(), title: $scope.modeldetail.concepts[i].title, scale: $scope.modeldetail.concepts[i].scale, value: $scope.modeldetail.concepts[i].value, fixedoutput: 'False', metricId: $scope.modeldetail.concepts[i].metric_id, metricTitle: 'Link Datasets', individuals: []};
 
 	    $scope.mapData.push(newNode);
 	    $scope.Concepts.push(Concept);
@@ -233,15 +233,15 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
     }
   );
 
-  $scope.Metrics = Metric.query({}, function(metricList) 
+  $scope.Datasets = Dataset.query({}, function(datasetList) 
   {
 	for (i=0; i<$scope.SimulationConcepts.length; i++)
 	{
-		for (j=0; j<metricList.count; j++)
+		for (j=0; j<datasetList.count; j++)
 		{
-			if (metricList.results[j].id==$scope.SimulationConcepts[i].metricId)
+			if (datasetList.results[j].id==$scope.SimulationConcepts[i].metricId)
 			{
-				$scope.SimulationConcepts[i].metricTitle = metricList.results[j].title;
+				$scope.SimulationConcepts[i].metricTitle = datasetList.results[j].title;
 			}
 		}
 	}
@@ -345,11 +345,15 @@ $scope.md = jsonModel;
     $scope.editMetrics = function(index){
 	dlg = dialogs.create('/dialogs/editmetrics.html','EditMetricsController',{},{key: false,back: 'static'});
 	dlg.result.then(function(user){
-			$scope.SimulationConcepts[index].metricId=user.ListMetricsFilter[0].id;
-			$scope.SimulationConcepts[index].metricTitle=user.ListMetricsFilter[0].title;
-        },function(){
+			if (user.ListMetricsFilter.length>0)
+			{
+				$scope.SimulationConcepts[index].metricId=user.ListMetricsFilter[0].id;
+				$scope.SimulationConcepts[index].metricTitle=user.ListMetricsFilter[0].title;
+				$scope.SimulationConcepts[index].individuals=user.Individuals;
+			}
+		},function(){
 			$scope.name = 'You decided not to enter in your name, that makes me sad.';
-        });
+		});
     };
 
     $scope.metricsManager = function(){
@@ -788,6 +792,44 @@ $scope.md = jsonModel;
   
 }) // end ModelController
 
+
+.controller('ModalInstanceCtrlDataset', [
+	'$scope', 
+	'VisualizationByDataset',
+	'Visualization',
+	'Event',
+	'$filter',
+	'$route',
+	'$routeParams',	
+	'$modalInstance', 
+	'item',
+	'searchclient',
+	'$location', 
+	'$log',
+	'API_CONF',
+	function($scope, VisualizationByDataset, Visualization, Event, $filter, $route, $routeParams, $modalInstance, item, searchclient, $location, $log, API_CONF) 
+	{
+		
+		//console.log("aaaaaaa");
+		
+		$scope.displaycontentMetricModal = function(idMetric) {
+			var containerLink = document.getElementById("modal-edit-metric-button-"+idMetric);
+			$(containerLink).parent().next().toggle(200);	 
+		};
+		
+		$scope.okModalDataset = function () {
+			$modalInstance.close();		
+		};
+      
+		$scope.cancelModalDataset = function () {
+			$modalInstance.dismiss('cancel');
+		};
+	
+}])
+
+
+
+
 .controller('EditMetricsController',function($scope, $modalInstance, data, FCMModelsDetail){
   $scope.user = [ 
   {FCMModelId: -1}, 
@@ -798,6 +840,16 @@ $scope.md = jsonModel;
   
   $scope.Models = [];	
   $scope.Models = FCMModelsDetail.getModels();
+  
+	$scope.displaycontentMetricModal = function(idMetric) {
+		var containerLink = document.getElementById("modal-edit-metric-button-"+idMetric);
+		$(containerLink).parent().next().toggle(200);	 
+	};
+		
+	$scope.updateIndividuals = function(individual, individualValue) {
+		$scope.user.Individuals = individual;		 
+		$scope.user.IndividualsValue = individualValue;		 
+	};
 
   $scope.cancel = function(){
     $modalInstance.dismiss('canceled');  
@@ -1010,6 +1062,152 @@ $scope.res=value;
   }; // end Impact of Two Concepts
 }) // end ImpactAnalysisController
 
+
+
+
+.controller('LoadCombosMetricInFCM', [
+	'$scope', 
+	'$route',
+	'$routeParams',
+	'$modal',  
+	'Metric', 
+	'Dataset',
+	'$location', 
+	'GetRelatedData',
+	'dialogs',
+	'$log', 
+	'API_CONF',
+	'Individual',
+	'Unit',
+	function($scope, $route, $routeParams, $modal, Metric, Dataset, $location, helper, dialogs, $log, API_CONF, Individual, Unit) {
+
+    	$scope.loadDataCombos = function(idMetric, valueColumTemp, valueGroupTemp) 
+		{
+    		//console.log("--loadDataCombos--idMetric="+idMetric+"---valueColumTemp="+valueColumTemp+"----valueGroupTemp="+valueGroupTemp+"-----");
+
+			id = idMetric;
+			//$scope.metricSelected = Metric.get({id: idMetric},
+			$scope.metricSelected = Dataset.get({id: idMetric},
+        			function(getMetric) {
+
+						//console.log("idMetric="+idMetric);
+        				$scope.correctmetrics = "1";
+        				
+        				//console.log("mode="+$scope.mode);
+        				//console.log("------$scope.metricSelected--------");
+        				var containerIndex = idMetric;
+        				//console.log("id="+idMetric);
+											
+        				myText = "grouping column";
+        				$arrayComboValues_yaxe = [];
+						$arrayComboValues = [];
+
+						var posValue=-1;
+						var posGroup=-1;
+
+    					if($scope.metricSelected.data)
+    					{
+    						arrayIndividualListDataset = $scope.metricSelected.data['table'];	
+    					}
+    					else
+    					{
+    						arrayIndividualListDataset = []; 	
+    					}
+    					
+    					
+           				//console.log(arrayIndividualListDataset);
+    					$arrayComboValues_Individuals = [];    
+    					$arrayComboValuesChecked = [];
+    					
+    					
+    					$scope.individualCombo_value=[];
+    					for (x=0;x<arrayIndividualListDataset.length; x++) {
+    						if (arrayIndividualListDataset[x].individual)
+    						{
+	    						
+	    						$dataIndividual = Individual.getById(arrayIndividualListDataset[x].individual);
+								$dataIndividual.$promise.then(function(indivudual){
+									//console.log(indivudual);
+		    						$arrayValores = {"id": indivudual.id,"title": indivudual.title};
+		    						$arrayComboValues_Individuals.push($arrayValores);
+	    							//console.log($arrayValores['id']);
+	    							$arrayComboValuesChecked.push($arrayValores['id']);
+	    							//$arrayComboValuesChecked.push($arrayValores);
+									
+									var TMP1 = [];
+									//TMP=$scope.individualCombo_value_[containerIndex];
+									if ($scope.individualCombo_value)
+									{
+										TMP1=$scope.individualCombo_value;
+									}
+									
+									TMP1.push($arrayValores);
+									$scope.individualCombo_value=TMP1;
+								
+									var TMP2 = [];
+									if ($scope.IndividualDatasetCheckboxes)
+									{
+										TMP2=$scope.IndividualDatasetCheckboxes;
+									}
+									
+									TMP2.push($arrayValores['id']);
+									$scope.IndividualDatasetCheckboxes=TMP2;	
+									
+									$scope.updateIndividuals($scope.IndividualDatasetCheckboxes, $scope.individualCombo_value);
+								});
+	
+    						}
+    					}
+    					
+    					$scope.optionsCombo_value=$arrayComboValues_yaxe;    					
+    					$scope.optionsCombo=$arrayComboValues;
+    					
+    					if (posValue>=0)
+    					{
+    						$scope.MetricSelectorDataColumn = $scope.optionsCombo_value[posValue];	
+    					}
+
+   						if (posGroup>0)
+   						{
+   							$scope.MetricSelectorGroupingData = $scope.optionsCombo[posGroup];
+   						}
+						
+        			},
+        			function(error) {
+            		//alert(error.data.message);
+            		throw { message: JSON.stringify(error.data.message)};
+        			}
+    			);   
+    	};
+    	
+		$scope.validateCheckboxes = function() {
+			if ($scope.IndividualDatasetCheckboxes.length==0)
+			{
+				//console.log("j="+j);
+				for (j in $scope.individualCombo_value) 
+				{
+					//console.log("j=");
+					//console.log($scope.individualCombo_value[j].id);
+					$scope.IndividualDatasetCheckboxes.push($scope.individualCombo_value[j].id);
+				}
+			}
+			$scope.updateIndividuals($scope.IndividualDatasetCheckboxes, $scope.individualCombo_value);
+		}
+    	//console.log($scope.metric.id);
+    	
+    	//console.log($scope.MetricSelectorLabelColumn);
+    	var myText = "from";
+    	if ($scope.MetricSelectorLabelColumn)
+    	{
+    		myText = $scope.MetricSelectorLabelColumn;
+    	}
+    	//console.log($scope.MetricSelectorLabelColumn_.length);
+    	
+		$scope.MetricSelectorLabelColumn=myText;
+		
+		$scope.loadDataCombos($scope.metric.id, "", "");	
+}])
+
 .run(['$templateCache',function($templateCache){
   $templateCache.put('/dialogs/addconcept.html', '<div class="modal-header"><h4 class="modal-title">Add Concept</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="title">Title *</label><input type="text" class="form-control" name="title" id="title" ng-model="user.title" text="Vale here" required><br /><label class="control-label" for="description">Description</label><textarea class="form-control" rows="5" name="description" id="description" ng-model="user.description"></textarea><br /></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Add</button></div>');
 
@@ -1023,7 +1221,9 @@ $scope.res=value;
 
   $templateCache.put('/dialogs/advancesettings.html', '<div class="modal-header"><h4 class="modal-title">Advanced Settings</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="title">Activator *</label><select class="form-control" name="activator" id="activator" value="user.title" ng-model="user" ng-options="activator.title for activator in Fcmactivators" required></select><label class="control-label" for="title">Scale *</label><select class="form-control" name="scale" id="scale" ng-model="user.scale" required><option value="3">3</option><option value="5">5</option><option value="7">7</option><option value="9">9</option></select></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button></div>');
 
-  $templateCache.put('/dialogs/editmetrics.html', '<div class="modal-header"><h4 class="modal-title">Edit Metrics</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><div id="filterMetrics" class="selectorMetrics" metrics-list="user.ListMetricsFilter" number-Max-Metrics="1" functionformetric="save()"></div></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button></div>');
+  $templateCache.put('/dialogs/editmetrics.html', '<div class="modal-header"><h1 class="ng-binding"><span class="glyphicon glyphicon-list-alt"></span> Link datasets</h1></div><div class="modal-body"><div id="basic-modal-content-pc"><tabset><tab heading="Search Datasets"><div class="row createvisualization"><div indexdataset="indexdataset" id="filterDatasets"  class="selectorDatasets" datasets-list="user.ListMetricsFilter" number-Max-Datasets="1"></div></div></tab><tab heading="Datasets Configuration"><div class="row createvisualization"><div ng-show="ListMetricsFilter.length==0">No dataset linked</div><div ng-show="metric.title" ng-controller="LoadCombosMetricInFCM" class="designer-metrics active" class="designer-metrics" id="designer-metrics-num-{{metric.id}}" ng-repeat="metric in user.ListMetricsFilter track by $index" ><h4>{{metric.title}} -- {{metric.issued | date:"longDate" }}</h4><input type="hidden" ng-model="MetricSelectediId_[metric.id]" id="MetricSelectediId_{{metric.id}}" name="MetricSelectedId[]" value=""><input type="hidden" ng-model="MetricSelectediIndex_[metric.id]" ng-init="MetricSelectediIndex_[metric.id]=metric.id" id="MetricSelectediIndex_{{metric.id}}" name="MetricSelectediIndex[]" value="{{metric.id}}"><div class="metric-buttons"><a type="button" data-intro="Edit dataset view properties" data-position="top" class="btn btn-primary btn-create" ng-click="displaycontentMetricModal(metric.id);collapsetFilterDataset=!collapsetFilterDataset;" id="modal-edit-metric-button-{{metric.id}}"><span ng-hide="collapsetFilterDataset">Open</span><span ng-show="collapsetFilterDataset">Collapse</span> Edit Mode</a><a type="button" data-intro="Access to the dataset data" data-position="right" class="btn btn-info btn-adddataset" href="#!/datasets/{{metric.id}}" target="_blank" id="view-metric-button-{{metric.id}}">View Dataset in detaill</a></div><div class="metric-forms" style="display: none;"><div class="metric-form-item"><br><table><thead><th><label for="color">Individual</label></th></thead><body><tr ng-repeat="option in individualCombo_value"><td><label ng-click="validateCheckboxes();"><input type="checkbox" checklist-model="IndividualDatasetCheckboxes" checklist-value="option.id"> {{option.title}}</label></td></tr></body></table></div></div></div></div></tab></tabset></div><div class="modal-footer"><button class="btn btn-primary btn-close" ng-click="save()">Close</button><a href="#!/datasets/create"  target="_blank" class="btn btn-default btn-create" id="adddataset">Create a new dataset</a></div></div>');
+
+  $templateCache.put('/dialogs/editmetrics1.html', '<div class="modal-header"><h4 class="modal-title">Edit Metrics</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><div id="filterMetrics" class="selectorMetrics" metrics-list="user.ListMetricsFilter" number-Max-Metrics="1" functionformetric="save()"></div></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button></div>');
 
  $templateCache.put('/dialogs/metricsmanager.html', '<div class="modal-header"><h4 class="modal-title">Metrics Manager</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><tabset justified="false"><tab heading="Source"><div id="filterMetrics" class="selectorMetrics" metrics-list="ListMetricsFilter" number-Max-Metrics="1"></div></tab><tab heading="Sink"><div id="filterMetrics" class="selectorMetrics" metrics-list="ListMetricsFilter" number-Max-Metrics="1"></div></tab></tabset></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button></div>');
 
