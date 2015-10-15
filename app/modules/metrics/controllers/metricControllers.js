@@ -73,7 +73,10 @@ angular.module('pcApp.metrics.controllers.metric', [
             $http({
                 url: url,
                 method: 'get',
-                params: {formula: $scope.metrics_controller_helper.metricsdata.formula}}).
+                params: {
+                  formula: $scope.metrics_controller_helper.metricsdata.formula,
+                  variables: $scope.metrics_controller_helper.metricsdata.variables
+                }}).
             then(function(response) {
                 $location.path("/metrics/create-2")
             }, function(response) {
@@ -220,5 +223,3 @@ angular.module('pcApp.metrics.controllers.metric', [
 	);
 
 }]);
-
-
