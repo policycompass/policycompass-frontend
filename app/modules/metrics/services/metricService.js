@@ -12,7 +12,10 @@ angular.module('pcApp.metrics.services.metric',[
 /**
  * Factory for the Resource for metrics
  */
-.factory('MetricService',  ['$resource', 'API_CONF', function($resource, API_CONF) {
+.factory('MetricService',  [
+    '$resource',
+    'API_CONF',
+    function($resource, API_CONF) {
     // Get the base URL from the configuration
     var url = API_CONF.METRICS_MANAGER_URL + "/metrics/:id";
     var Metric = $resource(url,
@@ -35,7 +38,10 @@ angular.module('pcApp.metrics.services.metric',[
  * Factory for getting an Indicator, which connects to the Indicator endpoint
  * FIX ME: Should I use the Service from the indicator app?
  */
-.factory('IndicatorService',  ['$resource', 'API_CONF', function($resource, API_CONF) {
+.factory('IndicatorService',  [
+    '$resource',
+    'API_CONF',
+    function($resource, API_CONF) {
     // Get the base URL from the configuration
     var url = API_CONF.INDICATOR_SERVICE_URL + "/indicators/:id";
     var Indicator = $resource(url,
@@ -57,7 +63,10 @@ angular.module('pcApp.metrics.services.metric',[
  * Factory to get Normalizers
  *
  */
-.factory('NormalizerService',  ['$resource', 'API_CONF', function($resource, API_CONF) {
+.factory('NormalizerService',  [
+    '$resource',
+    'API_CONF',
+    function($resource, API_CONF) {
     // Get the base URL from the configuration
     var url = API_CONF.NORMALIZERS_URL;
     var Normalizer = $resource(url,
@@ -75,7 +84,10 @@ angular.module('pcApp.metrics.services.metric',[
  * Factory to create Metric using a wizard
  */
 
-.factory('MetricsControllerHelper', ['IndicatorService', 'NormalizerService', function (IndicatorService, NormalizerService){
+.factory('MetricsControllerHelper', [
+    'IndicatorService',
+    'NormalizerService',
+    function (IndicatorService, NormalizerService){
 
     var helper = {};
 
