@@ -20,7 +20,7 @@ angular.module('pcApp.metrics.directives.datasetSelect', [
         },
         link: function(scope, element, attrs) {
 
-            var url = API_CONF.DATASETS_MANAGER_URL + "/datasets?indicator_id" + scope.indicator;
+            var url = API_CONF.DATASETS_MANAGER_URL + "/datasets?indicator_id=" + scope.indicator;
 
             $http.get(url).
             then(function(response) {
