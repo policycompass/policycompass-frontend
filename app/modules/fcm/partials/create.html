@@ -1,72 +1,70 @@
 
 <div class="container">
-	<div class="content-header">
-		<h3 ng-if="mode == 'create'"><span class="glyphicon glyphicon-pencil"></span> Create a New Causal Model</h3>
-		<h3 ng-if="mode == 'edit'"><span class="glyphicon glyphicon-pencil"></span> Edit Causal Model</h3>
-		
-		<div class="pc-visualization-formcontrols">
-			<div class="button-group">
-			<div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div>    
-	    		<div ng-class="{active: help}" class="help-text"><p>First, add appropriate concepts for you causal model (click "Add Concept"),<br>Second, create relationship (causal relationship) among concepts you added (click "Create Relationship"),<br>Then save your model (click "Save Model").<br>After saving you model, you can run simulation for your model!</p></div>   
-<!--				<div class="fonticon fonticon-help help-switch" ng-click="showHelp(1)"></div>   -->
-				<a type="button" class="btn btn-primary btn-concept" ng-click="addObj()">Add Concept</a>
-				<a ng-if="isDisabled == true" type="button" class="btn btn-primary btn-association" ng-click="addEdge()" disabled>Create Relationship</a>
-				<a ng-if="isDisabled == false" type="button" class="btn btn-primary btn-association" ng-click="addEdge()">Create Relationship</a>
-				<a ng-if="mode == 'create' && isDisabled == true" type="button" class="btn btn-primary btn-save" ng-click="saveModel()" disabled>Save Model</a>
-				<a ng-if="mode == 'edit' && isDisabled == true" type="button" class="btn btn-primary btn-save" ng-click="updateModel()" disabled>Save Model</a>
-				<a ng-if="mode == 'create' && isDisabled == false" type="button" class="btn btn-primary btn-save" ng-click="saveModel()">Save Model</a>
-				<a ng-if="mode == 'edit' && isDisabled == false" type="button" class="btn btn-primary btn-save" ng-click="updateModel()">Save Model</a>
-				<a ng-if="mode == 'create'" type="button" class="btn btn-primary btn-save" ng-click="saveModel()" disabled>Save As Model</a>
-				<a ng-if="mode == 'edit'" type="button" class="btn btn-primary btn-save" ng-click="saveModel()">Save As Model</a>
-			</div>
-		</div>
-	</div>
-
-
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="row">
-			<cytoscape cy-data="mapData" cy-edges="edgeData" cy-click="doClick(value)" cy-mouseup="doMouseUp(value,x,y)"></cytoscape>
-            </div><!-- /.row  -->
-        </div><!-- /.col-lg-12  -->
-
-        <div class="col-lg-12">
-         <hr> 
- <!--          <hr> curl -H "Content-Type: application/json" -i -X POST -d '{{ fcmSimulation }}' localhost:8080/api/v1/fcmmanager/simulation  -->
-            <tabset justified="true">
-                <tab heading="Run Simulation">
-					<!--To run the simulation of your model, set the value, metric, and weight.-->
-		    <button type="button" class="btn btn-danger pull-right" ng-click="advanceSettings()">Advanced Settings</button>
-    		    <h4>Concepts :</h4>
-		    <table class="table table-hover">
-			<tr>
-			    <td align="center" width="30%"><b>Title</b></td>
-<!--			    <td align="center" width="8%"><b>Scale</b></td>  -->
-			    <td align="center" width="15%">
-					<b>Value</b>
-<div align="right" class="fonticon fonticon-help help-switch" ng-click="help1=!help1"></div>
-		    		<div ng-class="{active: help1}" class="help-text"><p align="left">For each concept, select an appropriate value for the concept.<br>Basically, the concept value is fuzzified in 5 scale and you can change the scale through "Advanced Settings".</p></div>
-				</td>
-<!--			    <td align="center" width="10%"><b>Fixed Output</b></td>
+  <div class="content-header">
+    <h3 ng-if="mode == 'create'"><span class="glyphicon glyphicon-pencil"></span> Create a New Causal Model</h3>
+    <h3 ng-if="mode == 'edit'"><span class="glyphicon glyphicon-pencil"></span> Edit Causal Model</h3>
+    <div class="pc-visualization-formcontrols">
+      <div class="button-group">
+        <div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div>
+        <div ng-class="{active: help}" class="help-text">
+        <div class="fonticon fonticon-close" ng-click="help=!help"></div>
+          <p>First, add appropriate concepts for you causal model (click "Add Concept"),<br>
+            Second, create relationship (causal relationship) among concepts you added (click "Create Relationship"),<br>
+            Then save your model (click "Save Model").<br>
+            After saving you model, you can run simulation for your model!</p>
+        </div>
+        <!--				<div class="fonticon fonticon-help help-switch" ng-click="showHelp(1)"></div>   --> 
+        <a type="button" class="btn btn-primary btn-concept" ng-click="addObj()">Add Concept</a> <a ng-if="isDisabled == true" type="button" class="btn btn-primary btn-association" ng-click="addEdge()" disabled>Create Relationship</a> <a ng-if="isDisabled == false" type="button" class="btn btn-primary btn-association" ng-click="addEdge()">Create Relationship</a> <a ng-if="mode == 'create' && isDisabled == true" type="button" class="btn btn-primary btn-save" ng-click="saveModel()" disabled>Save Model</a> <a ng-if="mode == 'edit' && isDisabled == true" type="button" class="btn btn-primary btn-save" ng-click="updateModel()" disabled>Save Model</a> <a ng-if="mode == 'create' && isDisabled == false" type="button" class="btn btn-primary btn-save" ng-click="saveModel()">Save Model</a> <a ng-if="mode == 'edit' && isDisabled == false" type="button" class="btn btn-primary btn-save" ng-click="updateModel()">Save Model</a> <a ng-if="mode == 'create'" type="button" class="btn btn-primary btn-save" ng-click="saveModel()" disabled>Save As Model</a> <a ng-if="mode == 'edit'" type="button" class="btn btn-primary btn-save" ng-click="saveModel()">Save As Model</a> </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="row">
+        <cytoscape cy-data="mapData" cy-edges="edgeData" cy-click="doClick(value)" cy-mouseup="doMouseUp(value,x,y)"></cytoscape>
+      </div>
+      <!-- /.row  --> 
+    </div>
+    <!-- /.col-lg-12  -->
+    
+    <div class="col-lg-12">
+      <hr>
+      <!--          <hr> curl -H "Content-Type: application/json" -i -X POST -d '{{ fcmSimulation }}' localhost:8080/api/v1/fcmmanager/simulation  -->
+      <tabset justified="true"> <tab heading="Run Simulation"> 
+        <!--To run the simulation of your model, set the value, metric, and weight.-->
+        <button type="button" class="btn btn-danger pull-right" ng-click="advanceSettings()">Advanced Settings</button>
+        <h4>Concepts :</h4>
+        <table class="table table-hover">
+          <tr>
+            <td align="center" width="30%"><b>Title</b></td>
+            <!--			    <td align="center" width="8%"><b>Scale</b></td>  -->
+            <td align="center" width="15%"><b>Value</b>
+              <div align="right" class="fonticon fonticon-help help-switch" ng-click="help1=!help1"></div>
+              <div ng-class="{active: help1}" class="help-text">
+                           <div class="fonticon fonticon-close" ng-click="help1=!help1"></div>
+                <p align="left">For each concept, select an appropriate value for the concept.<br>
+                  Basically, the concept value is fuzzified in 5 scale and you can change the scale through "Advanced Settings".</p>
+              </div>
+              </td>
+            <!--			    <td align="center" width="10%"><b>Fixed Output</b></td>
 			    <td align="center" width="18%"><b>Activator</b></td>   -->
-			    <td align="center" width="55%">
-					<b>Metric</b>
-<div class="fonticon fonticon-help help-switch" ng-click="help2=!help2"></div>
-		    		<div ng-class="{active: help2}" class="help-text"><p>You can make a linkage between the concept and concrete data by browsing created metric. After making linkages, the weight between concepts can be calculated automatically.</p></div>
-				</td>
-			</tr>
-			<tr ng-show="Concepts" ng-repeat="concept in SimulationConcepts track by $index">
-			    <td>{{ concept.title }}</td>
-<!--			    <td align="center">{{ concept.scale }}</td>     -->
-			    <td align="center">
-			    <select class="form-control" name="fixedoutput" id="value" ng-model="SimulationConcepts[$index].value" required>
-				<option value="0.2">0.2 (Very Low)</option>
-				<option value="0.4">0.4 (Low)</option>
-				<option value="0.6">0.6 (Medium)</option>
-				<option value="0.8">0.8 (High)</option>
-				<option value="1">1.0 (Very High)</option>
-			    </select></td>
-<!--			    <td align="center">
+            <td align="center" width="55%"><b>Metric</b>
+              <div class="fonticon fonticon-help help-switch" ng-click="help2=!help2"></div>
+              <div ng-class="{active: help2}" class="help-text">
+                <div class="fonticon fonticon-close" ng-click="help2=!help2"></div>
+                <p>You can make a linkage between the concept and concrete data by browsing created metric. After making linkages, the weight between concepts can be calculated automatically.</p>
+              </div></td>
+          </tr>
+          <tr ng-show="Concepts" ng-repeat="concept in SimulationConcepts track by $index">
+            <td>{{ concept.title }}</td>
+            <!--			    <td align="center">{{ concept.scale }}</td>     -->
+            <td align="center"><select class="form-control" name="fixedoutput" id="value" ng-model="SimulationConcepts[$index].value" required>
+                <option value="0.2">0.2 (Very Low)</option>
+                <option value="0.4">0.4 (Low)</option>
+                <option value="0.6">0.6 (Medium)</option>
+                <option value="0.8">0.8 (High)</option>
+                <option value="1">1.0 (Very High)</option>
+              </select></td>
+            <!--			    <td align="center">
 			    <select class="form-control" name="fixedoutput" id="fixedoutput" ng-model="SimulationConcepts[$index].fixedoutput" required>
 				<option value="True">True</option>
 				<option value="False">False</option>
@@ -74,115 +72,109 @@
 			    <td align="center">
 			    <select class="form-control" name="activator" id="activator" ng-model="user.activator" ng-options="activator.title for activator in Fcmactivators" required>
 			    </select></td>     -->
-			    <td align="center">
-				<button data-intro="Helps you to link datasets with this Concept" data-position="top" type="submit" class="btn btn-default btn-adddataset" id="modaladddataset" ng-click="editMetrics($index)">{{ concept.metricTitle }}</button>
-
-<!--			    <button  type="submit" class="btn btn-primary button-metrics" id="addmetricsbutton" ng-click="editMetrics($index);findMetricsByFilter();">{{ concept.metricTitle }}</button>  -->
-			    </td>
-			</tr>
-			<tr>
-			    <td></td>
-			    <td></td>
-			    <td></td>
-			    <td></td>
-			</tr>
-		     </table>
-    		    <h4>Relationships :</h4>
-		    <table class="table table-hover">
-			<tr>
-			    <td align="center" width="10%"><b>Relation ID</b></td>
-			    <td align="center" width="35%"><b>Source Concept</b></td>
-			    <td align="center" width="35%"><b>Sink Concept</b></td>
-			    <td align="center" width="20%">
-					<b>Weight</b>
-    	<div class="subtitle-help">
-			<div class="fonticon fonticon-help help-switch" ng-click="help3=!help3"></div>
-								<div ng-class="{active: help3}" class="help-text"><p align="left">The strength of relationships can be presented as weights. For example, if source concept has strong negative impact on Sink concept, please select "Very Strong Positive".</p></div>
-				</td>
-				</td>
-<!--			    <td align="center" width="42%"><b>Metrics Manager</b></td>    -->
-			</tr>
-			<tr ng-show="Associations" ng-repeat="connection in SimulationAssociations track by $index">
-			    <td align="center">{{ connection.Sno }}</td>
-			    <td>{{ connection.source.title }}</td>
-			    <td>{{ connection.destination.title }}</td>
-			    <td align="center">
-				    <select class="form-control" name="weight" id="weight" ng-model="SimulationAssociations[$index].weighted" required>
-					<option value="1">Very Strong Positive</option>
-					<option value="0.75">Strong Positive</option>
-					<option value="0.5">Weak Positive</option>
-					<option value="0.25">Very Week Positive</option>
-					<option value="-0.25">Very Week Negative</option>
-					<option value="-0.5">Weak Negative</option>
-					<option value="-0.75">Strong Negative</option>
-					<option value="-1">Very Strong Negative</option>
-				    </select>
-			    </td>
-<!--			    <td align="center"><input type="text" class="form-control" name="weight" id="weight" ng-model="SimulationAssociations[$index].weighted" required></td>
+            <td align="center"><button data-intro="Helps you to link datasets with this Concept" data-position="top" type="submit" class="btn btn-default btn-adddataset" id="modaladddataset" ng-click="editMetrics($index)">{{ concept.metricTitle }}</button>
+              
+              <!--			    <button  type="submit" class="btn btn-primary button-metrics" id="addmetricsbutton" ng-click="editMetrics($index);findMetricsByFilter();">{{ concept.metricTitle }}</button>  --></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </table>
+        <h4>Relationships :</h4>
+        <table class="table table-hover">
+          <tr>
+            <td align="center" width="10%"><b>Relation ID</b></td>
+            <td align="center" width="35%"><b>Source Concept</b></td>
+            <td align="center" width="35%"><b>Sink Concept</b></td>
+            <td align="center" width="20%"><b>Weight</b>
+              <div class="subtitle-help">
+              <div class="fonticon fonticon-help help-switch" ng-click="help3=!help3"></div>
+              <div ng-class="{active: help3}" class="help-text">
+                <div class="fonticon fonticon-close" ng-click="help3=!help3"></div>
+                <p align="left">The strength of relationships can be presented as weights. For example, if source concept has strong negative impact on Sink concept, please select "Very Strong Positive".</p>
+              </div></td>
+              </td>
+            <!--			    <td align="center" width="42%"><b>Metrics Manager</b></td>    --> 
+          </tr>
+          <tr ng-show="Associations" ng-repeat="connection in SimulationAssociations track by $index">
+            <td align="center">{{ connection.Sno }}</td>
+            <td>{{ connection.source.title }}</td>
+            <td>{{ connection.destination.title }}</td>
+            <td align="center"><select class="form-control" name="weight" id="weight" ng-model="SimulationAssociations[$index].weighted" required>
+                <option value="1">Very Strong Positive</option>
+                <option value="0.75">Strong Positive</option>
+                <option value="0.5">Weak Positive</option>
+                <option value="0.25">Very Week Positive</option>
+                <option value="-0.25">Very Week Negative</option>
+                <option value="-0.5">Weak Negative</option>
+                <option value="-0.75">Strong Negative</option>
+                <option value="-1">Very Strong Negative</option>
+              </select></td>
+            <!--			    <td align="center"><input type="text" class="form-control" name="weight" id="weight" ng-model="SimulationAssociations[$index].weighted" required></td>
 			    <td align="center">
 			    <button  type="submit" class="btn btn-primary button-metrics" id="metricsmanagerbutton" ng-click="metricsManager();findMetricsByFilter();">Add metric, Add metric</button>
-			    </td>   --->
-			</tr>
-			<tr>
-			    <td></td>
-			    <td></td>
-			    <td></td>
-			    <td></td>
-			</tr>
-		     </table>
-<!--		     <button type="submit" class="btn btn-default" ng-click="correlationMatrix();">Correlation Matrix between Concepts</button>
+			    </td>   ---> 
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </table>
+        <!--		     <button type="submit" class="btn btn-default" ng-click="correlationMatrix();">Correlation Matrix between Concepts</button>
 		     <button type="submit" class="btn btn-default">Weight Calculation using the Historical Data</button>
 		     <button type="submit" class="btn btn-default">Reset Weights</button>    -->
-		     <button type="submit" class="btn btn-default" ng-click="runSimulation();">Run Simulation</button>
-		</tab>
+        <button type="submit" class="btn btn-default" ng-click="runSimulation();">Run Simulation</button>
+        </tab> <tab heading="Simulation Results">
+        <h4>Changes of Concept Values</h4>
+        <table class="table table-hover">
+          <tr>
+            <td align="center" width="20%"><b># of Iteration</b></td>
+            <td align="center" ng-repeat="n in range(1,totalIteration,1)"><b>{{ n }}</b></td>
+          </tr>
+          <tr ng-show="Concepts" ng-repeat="concept in Concepts">
+            <td>{{ concept.title }}</td>
+            <td align="center" ng-repeat="result in SimulationResults" ng-if="concept.Id == result.conceptID"><b>{{ result.output }}</b></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td align="center" ng-repeat="n in range(1,15,1)"></td>
+          </tr>
+        </table>
+        <button type="submit" class="btn btn-default" ng-click="impactAnalysis();">Impact Analysis</button>
+        </tab> <tab heading="Graph">
+        <div class="pcLinesChart" dataset="dataset" labels="labels" small="list"  mode="modeg" hideyaxeunits="hideyaxeunits" chartid="2" show-Legend="showLegend" show-Labels="showLabels" show-Lines="showLines" show-Areas="showAreas" show-Points="showPoints" show-Grid="showGrid"	show-Together="showYAxes" show-Percentatge="showAsPercentatge" xaxeformat="xaxeformat"></div>
+        </tab> <tab heading="Model Detail">
+        <table class="table table-hover">
+          <tr>
+            <td><b>Title:</b></td>
+            <td>{{ modeldetail.model.title }}</td>
+          </tr>
+          <tr>
+            <td><b>Description:</b></td>
+            <td>{{ modeldetail.model.description }}</td>
+          </tr>
+          <tr>
+            <td><b>Keywords:</b></td>
+            <td>{{ modeldetail.model.keywords }}</td>
+          </tr>
+          <tr>
+            <td><b>Issued:</b></td>
+            <td>{{ modeldetail.model.dateAddedtoPC | date:'longDate' }}</td>
+          </tr>
+          <tr ng-show="modeldetail.model.dateModified">
+            <td><b>Last Modified:</b></td>
+            <td>{{ modeldetail.model.dateModified | date:'longDate' }}</td>
+          </tr>
+        </table>
+        </tab> <tab heading="Comments">Comments</tab> </tabset>
+    </div>
+  </div>
+</div>
+</div>
 
-                <tab heading="Simulation Results">
-    		    <h4>Changes of Concept Values</h4>
-		    <table class="table table-hover">
-			<tr>
-			    <td align="center" width="20%"><b># of Iteration</b></td>
-			    <td align="center" ng-repeat="n in range(1,totalIteration,1)"><b>{{ n }}</b></td>
-			</tr>
-			<tr ng-show="Concepts" ng-repeat="concept in Concepts">
-			    <td>{{ concept.title }}</td>
-			    <td align="center" ng-repeat="result in SimulationResults" ng-if="concept.Id == result.conceptID"><b>{{ result.output }}</b></td>
-			</tr>
-			<tr>
-			    <td></td>
-			    <td align="center" ng-repeat="n in range(1,15,1)"></td>
-			</tr>
-		     </table>
-		     <button type="submit" class="btn btn-default" ng-click="impactAnalysis();">Impact Analysis</button>
-		</tab>
 
-        <tab heading="Graph">
-			<div class="pcLinesChart" dataset="dataset" labels="labels" small="list"  mode="modeg" hideyaxeunits="hideyaxeunits" chartid="2" show-Legend="showLegend" show-Labels="showLabels" show-Lines="showLines" show-Areas="showAreas" show-Points="showPoints" show-Grid="showGrid"	show-Together="showYAxes" show-Percentatge="showAsPercentatge" xaxeformat="xaxeformat"></div>
-		</tab>
-
-                <tab heading="Model Detail">
-		    <table class="table table-hover">
-			<tr>
-			    <td><b>Title:</b></td>
-			    <td>{{ modeldetail.model.title }}</td>
-			</tr>
-			<tr>
-			    <td><b>Description:</b></td>
-			    <td>{{ modeldetail.model.description }}</td>
-			</tr>
-			<tr>
-			    <td><b>Keywords:</b></td>
-			    <td>{{ modeldetail.model.keywords }}</td>
-			</tr>
-			<tr>
-			    <td><b>Issued:</b></td>
-			    <td>{{ modeldetail.model.dateAddedtoPC | date:'longDate' }}</td>
-			</tr>
-			<tr ng-show="modeldetail.model.dateModified">
-			    <td><b>Last Modified:</b></td>
-			    <td>{{ modeldetail.model.dateModified | date:'longDate' }}</td>
-			</tr>
-		     </table>
-		</tab>
-
-                <tab heading="Comments">Comments</tab>
-            </tabset>
