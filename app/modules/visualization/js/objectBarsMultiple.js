@@ -721,6 +721,38 @@ policycompass.viz.barsMultiple = function(options) {
 		
 		self.dataIn = dataIn;
 		self.eventsData = eventsData;
+
+		function alphabetical_sort_object_of_objects(data, attr) {
+		    var arr = [];
+		    for (var prop in data) {
+		        if (data.hasOwnProperty(prop)) {
+		            var obj = {};
+		            obj[prop] = data[prop];
+		            obj.tempSortName = data[prop][attr].toLowerCase();
+		            arr.push(obj);
+		        }
+		    }
+		
+		    arr.sort(function(a, b) {
+		        var at = a.tempSortName,
+		            bt = b.tempSortName;
+		        return at > bt ? 1 : ( at < bt ? -1 : 0 );
+		    });
+		
+		    var result = [];
+		    for (var i=0, l=arr.length; i<l; i++) {
+		        var obj = arr[i];
+		        delete obj.tempSortName;
+		        for (var prop in obj) {
+		            if (obj.hasOwnProperty(prop)) {
+		                var id = prop;
+		            }
+		        }
+		        var item = obj[id];
+		        result.push(item);
+		    }
+		    return result;
+		}
 		
 		if (Object.keys(dataIn).length === 0)
 		{
@@ -736,6 +768,13 @@ policycompass.viz.barsMultiple = function(options) {
 			//console.log(dataIn);
 			
 			var dataToPlotUpdate = self.clone( dataIn );
+			
+			//console.log(dataToPlotUpdate);
+
+
+			dataToPlotUpdate = alphabetical_sort_object_of_objects(dataToPlotUpdate, 'To');
+			
+			//console.log(dataToPlotUpdate);
 			
 			//self.drawBarsMultiple(dataIn, eventsData);
 			self.drawBarsMultiple(dataToPlotUpdate, eventsData);
