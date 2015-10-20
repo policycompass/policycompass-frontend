@@ -108,4 +108,34 @@ angular.module('pcApp.visualization.services.visualization',[
 	return VisualizationByEvent;
 }])
 
+
+.factory('FCMByIndividualSelected',  ['$resource', 'API_CONF', function($resource, API_CONF) {
+	var url = API_CONF.FCM_URL + "/individuals/:id";
+	//var url = API_CONF.FCM_URL + "/models";
+	//console.log(url);
+	var FCMByIndividualSelected = $resource(url,
+		{
+			id: "@id"
+		},
+        {
+            'query': { method: 'GET', isArray:true}
+        }
+	);
+	return FCMByIndividualSelected;
+}])
+
+.factory('FCMByDatasetSelected',  ['$resource', 'API_CONF', function($resource, API_CONF) {
+	var url = API_CONF.FCM_URL + "/datasets/:id";
+	//var url = API_CONF.FCM_URL + "/models";
+	//console.log(url);
+	var FCMByDatasetSelected = $resource(url,
+		{
+			id: "@id"
+		},
+        {
+            'query': { method: 'GET', isArray:true}
+        }
+	);
+	return FCMByDatasetSelected;
+}])
 ;

@@ -2396,9 +2396,11 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			//var sizeArg = arguments.length;
 			
 			var cntIndividualsVisualisation = 0;
+			$scope.numberOfArguments = 0;
 			for (var i=1; i<arguments.length; i++)
 			{				
 				cntIndividualsVisualisation = cntIndividualsVisualisation + arguments[i]['data']['table'].length;
+				$scope.numberOfArguments = $scope.numberOfArguments+ 1;
 			}
 			
 			for (var i=1; i<arguments.length; i++)
@@ -2441,10 +2443,11 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						
 					}
 					else
-					{
+					{						
 						$dataUnit[i] = Unit.getById(arguments[i]['unit_id']);
 						$dataUnit[i].$promise.then(function(unit) 
 						{
+							//console.log(unit.title);
 							$scope.TitleUnits[unit.id] = unit.title;
 							//console.log("TitleUnits ----->");
 							//console.log($scope.TitleUnits);
@@ -2471,6 +2474,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					
 				}
 				
+				
+				//console.log(arguments.length);
 				
 				//console.log(arguments[i]['data']['table'].length);
 				
@@ -2566,13 +2571,14 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							//if ((arguments.length<=$scope.cntYLabels) && ($scope.cntTitleIndividual>=$scope.cntIndividuals))
 							//if (($scope.cntTitleIndividual>=$scope.cntIndividuals))
 							//if (($scope.cntYLabels>=(arguments.length-1)) && ($scope.cntTitleIndividual>=$scope.cntIndividuals))
-							if (($scope.cntYLabels>=(arguments.length-1)) && ($scope.cntTitleIndividual>=cntIndividualsVisualisation))
+							if (($scope.cntYLabels>=($scope.numberOfArguments)) && ($scope.cntTitleIndividual>=cntIndividualsVisualisation))
 							{
 								$scope.recoverDataEnds=true;
 								
 								//console.log("Exit B!!!!");
 								//console.log("arguments.length="+arguments.length);
 								//console.log("scope.cntYLabels="+$scope.cntYLabels);
+								//console.log("$scope.numberOfArguments="+$scope.numberOfArguments);
 								//console.log("scope.cntTitleIndividual="+$scope.cntTitleIndividual);
 								//console.log("scope.cntIndividuals="+$scope.cntIndividuals);
 								
@@ -3567,7 +3573,6 @@ angular.module('pcApp.visualization.controllers.visualization', [
 									$sem = 0;
 									while (key=="")
 									{
-
 										if ($scope.TitleIndividuals[arguments[i]['data']['table'][j].individual])
 										{
 											var str = arguments[i].acronym;
@@ -4187,12 +4192,14 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	'Visualization', 
 	'VisualizationByDataset',
 	'VisualizationByEvent',
+	'FCMByIndividualSelected',
+	'FCMByDatasetSelected',
 	'$location', 
 	'GetRelatedData',
 	'dialogs',
 	'$log', 
 	'API_CONF',
-	function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualization, VisualizationByDataset, VisualizationByEvent, $location, helper, dialogs, $log, API_CONF) {
+	function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualization, VisualizationByDataset, VisualizationByEvent, FCMByIndividualSelected, FCMByDatasetSelected, $location, helper, dialogs, $log, API_CONF) {
 	
 	//this.message = "Hello VisualizationsDetailController";
 	//console.log("Hello VisualizationsDetailController");
@@ -4202,6 +4209,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
     helper.baseGetRelatedDataController($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualization, $location, helper, $log, API_CONF);
     			
     $scope.imageVisu = '/media/visualization_'+$routeParams.visualizationId+'.png';
+    $scope.arrayIndividualsUsed =[];
     
     //console.log($routeParams.visualizationId);
 	$scope.visualization = Visualization.get({id: $routeParams.visualizationId},
@@ -4218,6 +4226,36 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					id = $scope.visualization.datasets_in_visualization[i].dataset_id;
 					//console.log(id);
 					$scope.getMetricData(i, id, "", "", "");
+					
+					
+					
+					var arrayConfigMetricsFiltersToGetData = $scope.visualization.datasets_in_visualization[i]['visualization_query'].split(",");
+					//console.log(arrayConfigMetricsFiltersToGetData);
+					
+					for (x=0;x<arrayConfigMetricsFiltersToGetData.length;x++)
+	    			{
+	    				//console.log("x="+x);
+	    				var dataFilter = arrayConfigMetricsFiltersToGetData[x].split(":");
+	    				//console.log("dataFilter[0]="+dataFilter[0])
+	    				//console.log("dataFilter[1]="+dataFilter[1])
+
+
+	    				if (dataFilter[0]=='Individual')
+	    				{
+	    					//console.log(dataFilter[1]);	
+	    					
+	    					var dataIndividuos = dataFilter[1].split(";");
+	    					
+	    					for (xi=0;xi<dataIndividuos.length;xi++)
+	    					{
+	    						$scope.arrayIndividualsUsed[dataIndividuos[xi]]=dataIndividuos[xi];
+	    					}
+	    					
+	    						
+	    				}
+	    			}
+					
+					
 					
 					//$scope.visualizationByMetricList = VisualizationByMetric.get({id: id},
 					$scope.visualizationByMetricList = VisualizationByDataset.get({id: id},
@@ -4256,7 +4294,88 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					});		
 				
 				}
-							
+				
+				$scope.fcmRelated = [];
+				$scope.idsFCM_related = [];
+				if ($scope.arrayIndividualsUsed.length>0)
+				{
+					//console.log($scope.arrayIndividualsUsed);
+					for (var cj in $scope.arrayIndividualsUsed) 
+					{
+						//console.log($scope.arrayIndividualsUsed[cj]);
+						idIndiv= $scope.arrayIndividualsUsed[cj];
+				
+						$scope.relatedFCMByIndividual = FCMByIndividualSelected.query(
+							 {
+							 id: idIndiv
+							 },
+							function(relatedFCMByIndividual) {
+								//console.log("dins 1!!!");
+								//console.log(relatedFCMByIndividual);
+																								
+								for (var ci in relatedFCMByIndividual) 
+								{									
+									if (relatedFCMByIndividual[ci])
+									{
+										var a = $scope.idsFCM_related.indexOf(relatedFCMByIndividual[ci]['id']);
+										if (a<0)
+										{
+											$scope.idsFCM_related.push(relatedFCMByIndividual[ci]['id']);
+											var datosFCMByIndividual = {'id':relatedFCMByIndividual[ci]['id'],'title':relatedFCMByIndividual[ci]['title']};
+											$scope.fcmRelated.push(datosFCMByIndividual);
+										}
+									}
+								}
+								
+								//var datosFCMByIndividual = {'id':1,'title':"test"};								
+								//$scope.fcmRelated.push(datosFCMByIndividual);
+							},
+							function(error) {
+								//alert(error.data.message);
+								//throw { message: JSON.stringify(error.data.message)};
+							}
+						);
+					}
+				}
+				
+				//console.log($scope.visualization.datasets_in_visualization);
+				for (i in $scope.visualization.datasets_in_visualization)
+				{
+					var idDataset = $scope.visualization.datasets_in_visualization[i].dataset_id;
+					
+					$scope.FCMByDatasetSelected = FCMByDatasetSelected.query(
+							 {
+							 id: idDataset
+							 },
+							function(relatedFCMByDataset) {
+								//console.log("dins 2!!!");
+								//console.log(relatedFCMByDataset);
+								
+								for (var ci in relatedFCMByDataset) 
+								{
+									if (relatedFCMByDataset[ci])
+									{
+										var a = $scope.idsFCM_related.indexOf(relatedFCMByDataset[ci]['id']);
+										if (a<0)
+										{
+											$scope.idsFCM_related.push(relatedFCMByDataset[ci]['id']);
+											var datosFCMByDataset = {'id':relatedFCMByDataset[ci]['id'],'title':relatedFCMByDataset[ci]['title']};
+											$scope.fcmRelated.push(datosFCMByDataset);
+										}
+									}
+								}
+								
+								//var datosFCMByDataset = {'id':2,'title':"test2"};								
+								//$scope.fcmRelated.push(datosFCMByDataset);
+							},
+							function(error) {
+								//alert(error.data.message);
+								//throw { message: JSON.stringify(error.data.message)};
+							}
+						);
+						
+				}
+				
 				//console.log($scope.visualization.historical_events_in_visualization)
 				var colorTmp =[];
 				for (i in $scope.visualization.historical_events_in_visualization )
