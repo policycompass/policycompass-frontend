@@ -13,6 +13,6 @@ auth.config(function($routeProvider) {
             template: '<register></register>'
         })
         .when('/logout', {
-            template: '<adh-user-indicator></adh-user-indicator>'
+            template: '<div class="container"><h2>Logout</h2>Please log out by clicking on the logout link below:</div><adh-user-indicator></adh-user-indicator>'
         });
 });

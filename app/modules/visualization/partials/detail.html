@@ -1,6 +1,6 @@
 <div class="container">
 	<div class="content-header">
-		<h1><span class="glyphicon glyphicon-list-alt"></span> {{ visualization.title }}</h1>
+		<h1 class="fonticon fonticon-visualisation">{{ visualization.title }}</h1>
 		<div class="pc-visualization-formcontrols">
 			<div class="button-group">
 				<a type="button" class="btn btn-primary btn-create" href="#!/visualizations/{{ visualization.id }}/edit">Edit</a>
@@ -42,40 +42,102 @@
  	</div>
   	<br />
   	<div class="row"> 
-  		
-  		<table class="table table-detail-main-data table-hover">
-			<tbody>
-				<tr ng-show="visualization.title" class="">
-					<td class="table-detail-title">Title:</td>
-					<td class="table-detail-content">{{visualization.title}}</td>
-				</tr>
 
-				<tr ng-show="visualization.description" class="">
-					<td class="table-detail-title">Description:</td>
-					<td class="table-detail-content">{{visualization.description}}</td>
-				</tr>
-			</tbody>
-		</table>
-  		
-    	<!--
-		div.form-group[ng-show=""]>div.field-label+div.field-content
-		-->
-		<!--
-		<div class="display-fields">
-			<div class="form-group"  ng-show="metric.title">
-				<div class="field-label">Title: </div>
-				<div class="field-content"> {{ visualization.title }} </div>
-			</div>
-			<div class="form-group" ng-show="visualization.description">
-				<div class="field-label">Description: </div>
-				<div class="field-content"> {{ visualization.description }} </div>
+		<div class="metadata metadata-event metadata-event-description"> 
+			<div class="form-group form-group-description" ngshow="event.description">
+  				<div class="field-label">Description</div>
+  				<div class="field-content">{{visualization.description}}</div>
 			</div>
 		</div>
-		-->
+  		
+
 	</div>
 	<div class="row">
 		<h3 class="legend-primary">Details</h3>
+
+
+<!-- FIELDS START -->
+
+
+
+
+
+
+
+<div class="metadata metadata-event"> 
+
+
+	<div class="form-group form-group-keywords" ngshow="visualization.keywords">
+  		<div class="field-label">Keywords</div>
+  		<div class="field-content">{{visualization.keywords}}</div>
+	</div>
+
+	
+	<div class="form-group form-group-modified" >
+		<!--
+		<div class="form-item" ngshow="visualization.user_id">
+    		<div class="field-label">Athor</div>
+    		<div class="field-content">{{visualization.user_id}}</div>
+  		</div>
+  		-->
+		<div class="form-item" ngshow="visualization.created_at">
+    		<div class="field-label">Added</div>
+    		<div class="field-content">{{ visualization.created_at | date:'longDate' }}</div>
+  		</div>
+
+
+ 		<div class="form-item" ng-show="visualization.updated_at">
+     		<div class="field-label">Modified</div>
+    		<div class="field-content">{{ visualization.updated_at | date:'longDate' }}</div>
+  		</div>
+
+	</div>
+
+	
+	<div class="form-group form-group-location" >
+		<div class="form-item" >
+    		<div class="field-label">Language</div>
+    		<div class="field-content"><span ng-if="visualization.language_id" resolve-language id="visualization.language_id"></span></div>
+  		</div>
+	</div>
+</div>
+
+<div class="metadata metadata-event">
+
+	<div class="form-group form-group-external" >
+		<div class="form-item" >
+	  		<div class="field-label">Datasets</div>
+	  		<div class="field-content">  		
+					<div ng-repeat="metric in meticsRelated"> <a ng-href="#!/datasets/{{metric.id}}">{{metric.title}} <span ng-show="metric.acronym"> - [{{metric.acronym}}]</span></a></div>		
+			</div>
+		</div>
 		
+	</div>
+	<div class="form-group form-group-external" ng-show="visualization.historical_events_in_visualization">
+		<div class="form-item" >
+	  		<div class="field-label">Historical Events</div>
+	  		<div class="field-content">  		
+				<div ng-repeat="her in historicalEventsRelated">
+					<div class='square-box'>
+						<div class='square-content' style="background:{{her.color}};">
+							<div><span>&nbsp;</span></div>
+						</div>
+					</div>
+					<a ng-href="#!/events/{{her.event_id}}">{{her.title}}</a> 
+				</div>		
+			</div>
+		</div>
+		
+	</div>
+
+
+
+
+</div>
+
+<!-- FIELDS END -->
+
+		<!--
 		<table class="table table-detail table-hover">
 			<tbody>           	
 				<tr ng-show="visualization.user_id" class="">
@@ -127,6 +189,7 @@
 				</tr>
 			</tbody>
 		</table>
+		-->
 	</div>
 	
   	<div class="row" ng-show="relatedVisualizations.length>0">
