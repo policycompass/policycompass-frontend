@@ -1394,6 +1394,26 @@ angular.module('pcApp.visualization.controllers.visualization', [
     	};
 
 
+    	$scope.cancelVisualization = function() {
+    		
+			// Open a confirmation dialog
+        	var dlg = dialogs.confirm(
+            	"Are you sure?",
+            	"Do you want to exit without save this visualization?");
+        	dlg.result.then(function () {
+
+				if ($scope.mode=='create')
+				{
+					window.history.back();
+				}
+				else{
+					window.history.back();
+				}
+					            
+        	});    		
+    	}
+    
+    
 		//funtion to reset the form, used into the Revert button
 		$scope.revertVisualization = function(idMetric, metrictitle) {
         	// Open a confirmation dialog
@@ -5019,7 +5039,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
         		);
 			}; 
 				
-			 
+			
     
 	$scope.createVisualization = function(metricListIn) {
 		//console.log("...createVisualization Edit controller")
@@ -5583,7 +5603,7 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualiza
     	}    	
     }
 
-	
+    	
 	$scope.createVisualization = function(metricListIn) {
 		//console.log("$scope.createVisualization create controller")
 		//console.log("createVisualization AA");
