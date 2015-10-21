@@ -84,7 +84,7 @@ $ancho:$unidad * 2;
     color:$claro;
     opacity:.3;
     width:4em;
-    height:7em;
+    height:15em;
     text-align:center;
     // background:red;
     white-space: nowrap;
@@ -101,7 +101,8 @@ $ancho:$unidad * 2;
   content:"Visual.";
   }
   .texticon-fuzzymap:before {
-  content:"C. Model";
+  content: "Causal \a Model ";
+  white-space: pre; /* or pre-wrap */
   }
     .texticon-metric:before {
   content:"Metric";
