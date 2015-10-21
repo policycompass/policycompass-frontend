@@ -76,20 +76,11 @@
 
                 <tab heading="Graph">Graph</tab>
 
-                <tab heading="Comments">Comments</tab>
+                <tab heading="Comments">
+                    <show-discussion ng-if="models.model.id" data-key="model_{{ models.model.id }}"></show-discussion>
+                </tab>
             </tabset>
 
         </div><!-- /.col-lg-12  -->
-
     </div><!-- /.row  -->
-    <div class="row">
-        <div class="col-lg-12">
-            <legend class="legend-primary">Discussion</legend>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-6">
-            <show-discussion ng-if="models.model.fcmmodelID" data-key="model_{{ models.model.fcmmodelID }}"></show-discussion>
-        </div>
-    </div>
 </div>
