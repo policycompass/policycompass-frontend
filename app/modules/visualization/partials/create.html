@@ -44,17 +44,17 @@
 				<div id="png-container"></div>	
 				<div class="button-group">	
 					<button type="submit" data-intro="Save data" data-position="top" ng-disabled="visualizationForm.$invalid" class="btn btn-default btn-save" ng-click="createVisualization(ListMetricsFilter)">Save</button>				
-					<button type="submit" data-intro="Cancel" data-position="top" class="btn btn-default btn-danger" ng-click="cancelVisualization()">Cancel</button>
-				
+					
 					<button type="submit" data-intro="Revert data" data-position="top" class="btn btn-default btn-revert" ng-click="revertVisualization()">Revert</button>
 					
-				</div>			
+					
 				<button data-intro="Helps you to link datasets with this visualisation" data-position="top" type="submit" class="btn btn-default btn-adddataset" id="modaladddataset" ng-click="showModal('datasets')">Link Datasets</button>
 				
 				
 				<button ng-show="isSelectedSon('graph_line') && ListMetricsFilter.length>0" data-intro="Helps you to link this visualisation with events" data-position="top"  type="submit" class="btn btn-primary btn-adddevent" id="addHEbutton" ng-click="showModal('events')">Link Events</button>
+				<button type="submit" data-intro="Cancel" data-position="top" class="btn btn-default btn-danger" ng-click="cancelVisualization()">Cancel</button>
 				
-				
+				</div>
 				<button ng-hide="ListMetricsFilter.length==0" type="button" data-intro="Plot data in a map" data-position="top" ng-class="{'btn btn-default btn-map':!isSelectedParent(1),'btn btn-info btn-map':isSelectedParent(1)}" ng-click="selectTabParent(1); selectTabSon('mercator');rePlotGraph();">Map</button>					
 
 				<div ng-hide="ListMetricsFilter.length==0" ng-class="{'form-group pull-left':!isSelectedParent(2),'button-group':isSelectedParent(2)}">		
