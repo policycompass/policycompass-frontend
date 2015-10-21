@@ -4,6 +4,9 @@ var events = angular.module('pcApp.events', [
     'pcApp.references.directives.forms'
 ]);
 
+/**
+ * Routings for mapping controller and template to a url
+ */
 events.config(function($routeProvider) {
     $routeProvider
         .when('/events', {
@@ -16,6 +19,10 @@ events.config(function($routeProvider) {
         .when('/events/search', {
             controller: 'EventSearchController',
             templateUrl: 'modules/events/partials/search.html'
+        })
+        .when('/events/config', {
+            controller: 'EventConfigController',
+            templateUrl: 'modules/events/partials/config.html'
         })
         .when('/events/:eventId/edit', {
             controller: 'EventEditController',

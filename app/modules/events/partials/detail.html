@@ -8,8 +8,6 @@
       		</div>
       	</div>
 	</div>
-
-
 	<div class="row">
   <div class="metadata metadata-event metadata-event-description"> 
 <div class="form-group form-group-description" ngshow="event.description">
@@ -102,11 +100,6 @@
   <div class="field-content"><a href="{{ event.detailsURL }}" target="_blank">{{ event.detailsURL }}</a></div>
 </div>
 
-<div class="form-group form-group-scale" ngshow="event.scale">
-  <div class="field-label">Scale</div>
-  <div class="field-content">{{ event.scale }}</div>
-</div>
-
 
 <div class="form-group form-group-external" ngshow="event.externalResourceID">
   <div class="field-label">External Resource</div>
@@ -133,26 +126,26 @@
 				</div>
 				<div class="panel-body">
 					<div class="visualization-graph-page-content">
-									
+
 						<div  ng-repeat="idvisulist in [rv.visualization]" ng-include='"modules/visualization/partials/graph.html"' ></div>
-						
-						
+
+
             		</div>
         		</div>
       		</div>
-		</div>		
-		<!--	
+		</div>
+		<!--
         <table class="table table-detail table-hover">
-        	<tbody>  
+        	<tbody>
             	<tr ng-repeat="linked in linked_event_visualization.results">
                 	<td class="table-detail-content"><a href="#!/visualizations/{{ linked.visualization }}" target="_blank">{{ linked.title }}</a></td>
               	</tr>
-			</tbody>  
+			</tbody>
 		</table>
       	-->
-      
+
 	</div>
-		
+
 
 	<div class="row">
     	<h3 class="legend-primary">Discussion</h3>

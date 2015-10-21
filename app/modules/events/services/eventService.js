@@ -2,7 +2,9 @@ angular.module('pcApp.events.services.event', [
     'ngResource',
     'pcApp.config'
 ])
-
+/**
+ * Factory for the Resource of events
+ */
     .factory('Event', ['$resource', 'API_CONF', function ($resource, API_CONF) {
         var url = API_CONF.EVENTS_MANAGER_URL + "/events/:id";
         var Event = $resource(url,
@@ -46,6 +48,15 @@ angular.module('pcApp.events.services.event', [
         );
         return Language;
     }])
+
+/*    .factroy('searchEvent', function($resource){
+      return $resource(API_CONF.EVENTS_MANAGER_URL + '/harvestevents',{
+          keyword: '@keyword',
+          extractors: '@extractors', isArray:true,
+          start: '@start',
+          end: '@end'
+      });
+    })*/
 
     .service('eventService', function () {
         var eventList = [];
