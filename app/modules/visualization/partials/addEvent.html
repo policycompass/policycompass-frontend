@@ -1,12 +1,12 @@
-<div class="modal-header">
-	<h1 class="ng-binding"><span class="glyphicon glyphicon-list-alt"></span> {{item.name}}</h1>
+<div class="modal-header dialog-header-notify ng-scope">
+	<button type="button" class="close" ng-click="cancel()">×</button>
+	<h4 class="modal-title text-info ng-binding fonticon fonticon-event ng-binding"> {{item.name}}</h4>
 </div>
-
 
 <!--
 <div ng-controller="VisualizationsCreateController as vc" class="modal-body">
 -->	
-<div class="modal-body">
+<div class="modal-body text-info ng-binding ng-scope">
 	<div id="basic-modal-content-pc">
 		<tabset>
 			<tab heading="Recommended">
@@ -324,11 +324,9 @@
 			
 		</form>		
 	</div>   
-
-	<div class="modal-footer">
+</div>
+<div class="modal-footer ng-scope">
 		<button ng-disabled="!historicalevent_id" href="" ng-click="addAnotherHistoricalEvent('dynamicContainer'); rePlotGraph(); ok();" class="btn" id="addmetric">Link event</button>				
     	<button class="btn btn-primary" ng-click="cancel()">Close</button>
     	<a href="#!/events/create"  target="_blank" class="btn btn-default btn-create" id="addmetric">Create a new event</a>
-	</div>
-
 </div>
