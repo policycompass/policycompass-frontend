@@ -205,7 +205,10 @@ angular.module('pcApp.common.directives.mapscharts', [
         '<label class="checkbox-inline"><input ng-model="showLegend" type="checkbox" name="showLegend" class="checkbox filterCheckBox"> Show Legend</label>' +
         '<label class="checkbox-inline"><input ng-model="showZoom" type="checkbox" name="showZoom" class="checkbox filterCheckBox"> Enable Zoom</label>' +
         '<label class="checkbox-inline"><input ng-model="showBubbles" type="checkbox" name="showBubbles" class="checkbox filterCheckBox"> View as bubble marker</label>' +        
-        '<label ng-show="showLegend" class="checkbox-inline"><input type="color" name="color" ng-model="scaleColor"  /> Scale Colour </label>' +
+        '<label ng-show="showLegend" class="checkbox-inline">'+
+        //'<input type="color" name="color" ng-model="scaleColor"  /> ' +
+        '<spectrum name="color" ng-model="scaleColor" ng-model-onblur options="{showInput: true, showAlpha: false, allowEmpty: false, preferredFormat:hex}"></spectrum>'+
+        ' Scale Colour </label>' +
         '</div>' +
         '</div>'
     };
