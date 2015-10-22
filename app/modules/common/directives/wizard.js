@@ -259,7 +259,8 @@ angular.module('pcApp.common.directives.wizard', [
 						//	'<h2 class="page-title">I want to</h2>'+										
 							'<ul class="toc">'+
 								'<li ng-repeat="pillar in pillars track by $index" ng-class="{\'current active\': tabSelected>=$index, \'inactive\': tabSelected<$index}">'+
-								'<a  href="" ng-click="selecttab($index)">{{pillar[\'shortname\']}}<br>'+
+								//'<a  href="" ng-click="selecttab($index)">{{pillar[\'shortname\']}}<br>'+
+								'<a  href="" ng-click="selecttab($index)">'+
 								'{{pillar[\'title\']}}</a>'+
 								'</li>'+
 		          			'</ul>'+
