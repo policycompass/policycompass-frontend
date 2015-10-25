@@ -7,7 +7,14 @@
 		<div class="pc-visualization-formcontrols">
 			<div class="button-group">
 			<div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div>    
-	    		<div ng-class="{active: help}" class="help-text"><p>First, add appropriate concepts for you causal model (click "Add Concept"),<br>Second, create relationship (causal relationship) among concepts you added (click "Create Relationship"),<br>Then save your model (click "Save Model").<br>After saving you model, you can run simulation for your model!</p></div>   
+	    		<div ng-class="{active: help}" class="help-text">
+<p><span class="btn btn-concept">Add Concept</span><br>First, add appropriate concepts for you causal model.<br><br>
+<span class="btn btn-association">Create Relationship</span><br>Second, create relationship (causal relationship) among concepts you added (click "Create Relationship").<br><br>
+<span class="btn btn-save">Save Model</span><br>Then save your model (click "Save Model").<br><br>
+<span class="btn btn-save">Save As Model</span><br>After saving you model, you can run simulation for your model!<br><br>
+For each concept, select an appropriate value for the concept.<br>Basically, the concept value is fuzzified in 5 scale and you can change the scale through "Advanced Settings".<br><br>
+<span class="btn btn-default btn-adddataset">Add Metric</span><br>You can make a linkage between the concept and concrete data by browsing created metric. After making linkages, the weight between concepts can be calculated automatically.<br><br>
+The strength of relationships can be presented as weights. For example, if source concept has strong negative impact on Sink concept, please select "Very Strong Positive".</p></div>   
 <!--				<div class="fonticon fonticon-help help-switch" ng-click="showHelp(1)"></div>   -->
 				<a type="button" class="btn btn-primary btn-concept" ng-click="addObj()">Add Concept</a>
 				<a ng-if="isDisabled == true" type="button" class="btn btn-primary btn-association" ng-click="addEdge()" disabled>Create Relationship</a>
@@ -44,19 +51,21 @@
 <!--			    <td align="center" width="8%"><b>Scale</b></td>  -->
 			    <td align="center" width="15%">
 					<b>Value</b>
+<!--
 <div align="right" class="fonticon fonticon-help help-switch" ng-click="help1=!help1"></div>
-		    		<div ng-class="{active: help1}" class="help-text"><p align="left">For each concept, select an appropriate value for the concept.<br>Basically, the concept value is fuzzified in 5 scale and you can change the scale through "Advanced Settings".</p></div>
+		    		<div ng-class="{active: help1}" class="help-text"><p align="left">For each concept, select an appropriate value for the concept.<br>Basically, the concept value is fuzzified in 5 scale and you can change the scale through "Advanced Settings".</p></div> -->
 				</td>
 <!--			    <td align="center" width="10%"><b>Fixed Output</b></td>
 			    <td align="center" width="18%"><b>Activator</b></td>   -->
 			    <td align="center" width="55%">
 					<b>Metric</b>
+<!--
 <div class="fonticon fonticon-help help-switch" ng-click="help2=!help2"></div>
-		    		<div ng-class="{active: help2}" class="help-text"><p>You can make a linkage between the concept and concrete data by browsing created metric. After making linkages, the weight between concepts can be calculated automatically.</p></div>
+		    		<div ng-class="{active: help2}" class="help-text"><p>You can make a linkage between the concept and concrete data by browsing created metric. After making linkages, the weight between concepts can be calculated automatically.</p></div> -->
 				</td>
 			</tr>
 			<tr ng-show="Concepts" ng-repeat="concept in SimulationConcepts track by $index">
-			    <td>{{ concept.title }}</td>
+			    <td align="center">{{ concept.title }}</td>
 <!--			    <td align="center">{{ concept.scale }}</td>     -->
 			    <td align="center">
 			    <select class="form-control" name="fixedoutput" id="value" ng-model="SimulationConcepts[$index].value" required>
@@ -95,17 +104,18 @@
 			    <td align="center" width="35%"><b>Sink Concept</b></td>
 			    <td align="center" width="20%">
 					<b>Weight</b>
+<!--
     	<div class="subtitle-help">
 			<div class="fonticon fonticon-help help-switch" ng-click="help3=!help3"></div>
-								<div ng-class="{active: help3}" class="help-text"><p align="left">The strength of relationships can be presented as weights. For example, if source concept has strong negative impact on Sink concept, please select "Very Strong Positive".</p></div>
+								<div ng-class="{active: help3}" class="help-text"><p align="left">The strength of relationships can be presented as weights. For example, if source concept has strong negative impact on Sink concept, please select "Very Strong Positive".</p></div>  -->
 				</td>
 				</td>
 <!--			    <td align="center" width="42%"><b>Metrics Manager</b></td>    -->
 			</tr>
 			<tr ng-show="Associations" ng-repeat="connection in SimulationAssociations track by $index">
 			    <td align="center">{{ connection.Sno }}</td>
-			    <td>{{ connection.source.title }}</td>
-			    <td>{{ connection.destination.title }}</td>
+			    <td align="center">{{ connection.source.title }}</td>
+			    <td align="center">{{ connection.destination.title }}</td>
 			    <td align="center">
 				    <select class="form-control" name="weight" id="weight" ng-model="SimulationAssociations[$index].weighted" required>
 					<option value="1">Very Strong Positive</option>
