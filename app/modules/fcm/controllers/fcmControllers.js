@@ -58,7 +58,7 @@ angular.module('pcApp.fcm.controllers.fcm', [
 		}
 		for (i=0; i<$scope.models.connections.length; i++)
 		{
-		    var newEdge = {id:$scope.models.connections[i].id.toString(), source: $scope.models.connections[i].conceptFrom.toString(), target: $scope.models.connections[i].conceptTo.toString(), weighted: $scope.modeldetail.connections[i].weight.toString()};
+		    var newEdge = {id:$scope.models.connections[i].id.toString(), source: $scope.models.connections[i].conceptFrom.toString(), target: $scope.models.connections[i].conceptTo.toString(), weighted: $scope.models.connections[i].weight.toString()};
 		    $scope.edgeData.push(newEdge);
 		}
 		
