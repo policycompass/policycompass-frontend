@@ -370,7 +370,16 @@ policycompass.viz.pie = function(options)
 						 */
 						
 						//return resTRext[0]+" ("+labelY+" )";
-						return resTRext+" ("+labelY+" )";
+						//console.log("labelY-->"+labelY+"<----");
+							if (labelY!="  ")
+							{								
+								return resTRext+" ("+labelY+" )";
+							}
+							else
+							{
+								return resTRext;									
+							}
+						
 						})
 		    	
 		   	}
