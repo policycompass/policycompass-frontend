@@ -46,18 +46,19 @@
         </div>
       </div>
 
-      <div class="form-group" ng-class="{ 'has-error': (metadataForm.indicator.$invalid && !metadataForm.indicator.$pristine) || servererror.indicator }">
-        <label for="indicator" class="field-label">Indicator</label>
+      <div class="form-group" ng-class="{ 'has-error': (metadataForm.indicator_id.$invalid && !metadataForm.indicator_id.$pristine) || servererror.indicator_id }">
+        <label for="indicator_id" class="field-label">Indicator</label>
         <div class="field-content">
           <select
-            name="indicator"
+            name="indicator_id"
             class="form-control"
             ng-options="i.id as i.name for i in metrics_controller_helper.indicators"
-            ng-model="metrics_controller_helper.metricsdata.indicator_id" >
+            ng-model="metrics_controller_helper.metricsdata.indicator_id"
+            required>
             <option value="" selected>Choose Indicator</option>
           </select>
-          <p ng-show="metadataForm.indicator.$error.required && !metadataForm.indicator.$pristine" class="help-block">This field is required</p>
-          <p ng-show="servererror.indicator" class="help-block">{{ servererror.indicator[0] }}</p>
+          <p ng-show="metadataForm.indicator_id.$error.required && !metadataForm.indicator_id.$pristine" class="help-block">This field is required</p>
+          <p ng-show="servererror.indicator_id" class="help-block">{{ servererror.indicator_id[0] }}</p>
         </div>
       </div>
 
