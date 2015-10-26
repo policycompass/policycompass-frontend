@@ -1045,7 +1045,20 @@ return 0;}
 					      		 */
 					      		//.attr("fill", "none")
 					      		 .style("fill", function(d,i) {
-					      			return colorScale(lines[keyIndex].Key);
+					      		 	
+					      		 	var colorToReturn ="";
+					      		 	var lineColor = lines[keyIndex].Color;
+					      		 	if (lineColor)
+		        	   				{
+		        	   					colorToReturn = lineColor; 
+		        	   				}
+		        	   				else
+		        	   				{
+		        	   					colorToReturn = colorScale(lines[keyIndex].Key);
+		        	   				}
+		        	   				return colorToReturn;
+		        	   				
+					      			//return colorScale(lines[keyIndex].Key);
 					      			//return colorScaleLinel((cnt_linea-1));
 					      		})
 					      		.style("font-weight", "bold")
