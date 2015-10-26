@@ -1394,6 +1394,26 @@ angular.module('pcApp.visualization.controllers.visualization', [
     	};
 
 
+    	$scope.cancelVisualization = function() {
+    		
+			// Open a confirmation dialog
+        	var dlg = dialogs.confirm(
+            	"Are you sure?",
+            	"Do you want to exit without save this visualization?");
+        	dlg.result.then(function () {
+
+				if ($scope.mode=='create')
+				{
+					window.history.back();
+				}
+				else{
+					window.history.back();
+				}
+					            
+        	});    		
+    	}
+    
+    
 		//funtion to reset the form, used into the Revert button
 		$scope.revertVisualization = function(idMetric, metrictitle) {
         	// Open a confirmation dialog
@@ -2396,9 +2416,11 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			//var sizeArg = arguments.length;
 			
 			var cntIndividualsVisualisation = 0;
+			$scope.numberOfArguments = 0;
 			for (var i=1; i<arguments.length; i++)
 			{				
 				cntIndividualsVisualisation = cntIndividualsVisualisation + arguments[i]['data']['table'].length;
+				$scope.numberOfArguments = $scope.numberOfArguments+ 1;
 			}
 			
 			for (var i=1; i<arguments.length; i++)
@@ -2441,10 +2463,11 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						
 					}
 					else
-					{
+					{						
 						$dataUnit[i] = Unit.getById(arguments[i]['unit_id']);
 						$dataUnit[i].$promise.then(function(unit) 
 						{
+							//console.log(unit.title);
 							$scope.TitleUnits[unit.id] = unit.title;
 							//console.log("TitleUnits ----->");
 							//console.log($scope.TitleUnits);
@@ -2471,6 +2494,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					
 				}
 				
+				
+				//console.log(arguments.length);
 				
 				//console.log(arguments[i]['data']['table'].length);
 				
@@ -2566,13 +2591,14 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							//if ((arguments.length<=$scope.cntYLabels) && ($scope.cntTitleIndividual>=$scope.cntIndividuals))
 							//if (($scope.cntTitleIndividual>=$scope.cntIndividuals))
 							//if (($scope.cntYLabels>=(arguments.length-1)) && ($scope.cntTitleIndividual>=$scope.cntIndividuals))
-							if (($scope.cntYLabels>=(arguments.length-1)) && ($scope.cntTitleIndividual>=cntIndividualsVisualisation))
+							if (($scope.cntYLabels>=($scope.numberOfArguments)) && ($scope.cntTitleIndividual>=cntIndividualsVisualisation))
 							{
 								$scope.recoverDataEnds=true;
 								
 								//console.log("Exit B!!!!");
 								//console.log("arguments.length="+arguments.length);
 								//console.log("scope.cntYLabels="+$scope.cntYLabels);
+								//console.log("$scope.numberOfArguments="+$scope.numberOfArguments);
 								//console.log("scope.cntTitleIndividual="+$scope.cntTitleIndividual);
 								//console.log("scope.cntIndividuals="+$scope.cntIndividuals);
 								
@@ -3567,7 +3593,6 @@ angular.module('pcApp.visualization.controllers.visualization', [
 									$sem = 0;
 									while (key=="")
 									{
-
 										if ($scope.TitleIndividuals[arguments[i]['data']['table'][j].individual])
 										{
 											var str = arguments[i].acronym;
@@ -4187,12 +4212,14 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	'Visualization', 
 	'VisualizationByDataset',
 	'VisualizationByEvent',
+	'FCMByIndividualSelected',
+	'FCMByDatasetSelected',
 	'$location', 
 	'GetRelatedData',
 	'dialogs',
 	'$log', 
 	'API_CONF',
-	function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualization, VisualizationByDataset, VisualizationByEvent, $location, helper, dialogs, $log, API_CONF) {
+	function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualization, VisualizationByDataset, VisualizationByEvent, FCMByIndividualSelected, FCMByDatasetSelected, $location, helper, dialogs, $log, API_CONF) {
 	
 	//this.message = "Hello VisualizationsDetailController";
 	//console.log("Hello VisualizationsDetailController");
@@ -4202,6 +4229,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
     helper.baseGetRelatedDataController($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualization, $location, helper, $log, API_CONF);
     			
     $scope.imageVisu = '/media/visualization_'+$routeParams.visualizationId+'.png';
+    $scope.arrayIndividualsUsed =[];
     
     //console.log($routeParams.visualizationId);
 	$scope.visualization = Visualization.get({id: $routeParams.visualizationId},
@@ -4218,6 +4246,36 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					id = $scope.visualization.datasets_in_visualization[i].dataset_id;
 					//console.log(id);
 					$scope.getMetricData(i, id, "", "", "");
+					
+					
+					
+					var arrayConfigMetricsFiltersToGetData = $scope.visualization.datasets_in_visualization[i]['visualization_query'].split(",");
+					//console.log(arrayConfigMetricsFiltersToGetData);
+					
+					for (x=0;x<arrayConfigMetricsFiltersToGetData.length;x++)
+	    			{
+	    				//console.log("x="+x);
+	    				var dataFilter = arrayConfigMetricsFiltersToGetData[x].split(":");
+	    				//console.log("dataFilter[0]="+dataFilter[0])
+	    				//console.log("dataFilter[1]="+dataFilter[1])
+
+
+	    				if (dataFilter[0]=='Individual')
+	    				{
+	    					//console.log(dataFilter[1]);	
+	    					
+	    					var dataIndividuos = dataFilter[1].split(";");
+	    					
+	    					for (xi=0;xi<dataIndividuos.length;xi++)
+	    					{
+	    						$scope.arrayIndividualsUsed[dataIndividuos[xi]]=dataIndividuos[xi];
+	    					}
+	    					
+	    						
+	    				}
+	    			}
+					
+					
 					
 					//$scope.visualizationByMetricList = VisualizationByMetric.get({id: id},
 					$scope.visualizationByMetricList = VisualizationByDataset.get({id: id},
@@ -4256,7 +4314,88 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					});		
 				
 				}
-							
+				
+				$scope.fcmRelated = [];
+				$scope.idsFCM_related = [];
+				if ($scope.arrayIndividualsUsed.length>0)
+				{
+					//console.log($scope.arrayIndividualsUsed);
+					for (var cj in $scope.arrayIndividualsUsed) 
+					{
+						//console.log($scope.arrayIndividualsUsed[cj]);
+						idIndiv= $scope.arrayIndividualsUsed[cj];
+				
+						$scope.relatedFCMByIndividual = FCMByIndividualSelected.query(
+							 {
+							 id: idIndiv
+							 },
+							function(relatedFCMByIndividual) {
+								//console.log("dins 1!!!");
+								//console.log(relatedFCMByIndividual);
+																								
+								for (var ci in relatedFCMByIndividual) 
+								{									
+									if (relatedFCMByIndividual[ci])
+									{
+										var a = $scope.idsFCM_related.indexOf(relatedFCMByIndividual[ci]['id']);
+										if (a<0)
+										{
+											$scope.idsFCM_related.push(relatedFCMByIndividual[ci]['id']);
+											var datosFCMByIndividual = {'id':relatedFCMByIndividual[ci]['id'],'title':relatedFCMByIndividual[ci]['title']};
+											$scope.fcmRelated.push(datosFCMByIndividual);
+										}
+									}
+								}
+								
+								//var datosFCMByIndividual = {'id':1,'title':"test"};								
+								//$scope.fcmRelated.push(datosFCMByIndividual);
+							},
+							function(error) {
+								//alert(error.data.message);
+								//throw { message: JSON.stringify(error.data.message)};
+							}
+						);
+					}
+				}
+				
+				//console.log($scope.visualization.datasets_in_visualization);
+				for (i in $scope.visualization.datasets_in_visualization)
+				{
+					var idDataset = $scope.visualization.datasets_in_visualization[i].dataset_id;
+					
+					$scope.FCMByDatasetSelected = FCMByDatasetSelected.query(
+							 {
+							 id: idDataset
+							 },
+							function(relatedFCMByDataset) {
+								//console.log("dins 2!!!");
+								//console.log(relatedFCMByDataset);
+								
+								for (var ci in relatedFCMByDataset) 
+								{
+									if (relatedFCMByDataset[ci])
+									{
+										var a = $scope.idsFCM_related.indexOf(relatedFCMByDataset[ci]['id']);
+										if (a<0)
+										{
+											$scope.idsFCM_related.push(relatedFCMByDataset[ci]['id']);
+											var datosFCMByDataset = {'id':relatedFCMByDataset[ci]['id'],'title':relatedFCMByDataset[ci]['title']};
+											$scope.fcmRelated.push(datosFCMByDataset);
+										}
+									}
+								}
+								
+								//var datosFCMByDataset = {'id':2,'title':"test2"};								
+								//$scope.fcmRelated.push(datosFCMByDataset);
+							},
+							function(error) {
+								//alert(error.data.message);
+								//throw { message: JSON.stringify(error.data.message)};
+							}
+						);
+						
+				}
+				
 				//console.log($scope.visualization.historical_events_in_visualization)
 				var colorTmp =[];
 				for (i in $scope.visualization.historical_events_in_visualization )
@@ -4900,7 +5039,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
         		);
 			}; 
 				
-			 
+			
     
 	$scope.createVisualization = function(metricListIn) {
 		//console.log("...createVisualization Edit controller")
@@ -5287,464 +5426,473 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 	'API_CONF',
 	'Individual',
 	'Unit',
-function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualization, $location, helper, $log, API_CONF, Individual, Unit) {
-	
-	$scope.DatasetsLoaded = [];
-	$scope.TimeSelector = [];
-	$scope.scaleColor='';
-	//console.log('VisualizationsCreateController');
-	
-	$scope.mode = "create";
-	$scope.isFirstOpen = true;
-	$scope.firstLoad = false;
-	$scope.resetlocation = "/visualizations/create/";
+	'Auth',
+function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualization, $location, helper, $log, API_CONF, Individual, Unit, Auth) {
 
+	$scope.user = Auth;
 
-//	angular.element(document).ready(function () {
-        //console.log('Hello World 1');
-  //  });
-    
-	helper.baseVisualizationsCreateController($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualization, $location, helper, $log, API_CONF, Individual, Unit);
-	
-	//$scope.tabParent = 0;
-	//$scope.tabSon = 0;
-	
-	$scope.tabParent = 2;
-	$scope.tabSon = 'graph_line';
-	$scope.typeToPlot= 'graph_line';
-
-
-	$scope.eventsToPlot = [];		
+	if(!$scope.user.state.loggedIn) 
+	{
+		$location.path("/login")
+    }
+    else 
+    {		
+		$scope.DatasetsLoaded = [];
+		$scope.TimeSelector = [];
+		$scope.scaleColor='';
+		//console.log('VisualizationsCreateController');
 		
-	
-	$scope.MetricSelectediId_ = [];
-	$scope.MetricSelectediIndex_ = [];
-	$scope.MetricSelectorLabelColumn_ = [];
-	$scope.MetricSelectorDataColumn_ = [];
-	$scope.MetricSelectorGroupingData_ = [];
-	//$scope.Combo_MetricSelectorGroupingData_ = [];
-	
-	$scope.unitsCombo_value_ = [];
-	$scope.UnitSelectorLabelColumn_ = [];
-	$scope.IndividualSelectorLabelColumn_ = [];
-	
-	$scope.IndividualDatasetCheckboxes_ = [];
-//	console.log("definiomos dataset_color_palete_")
-	$scope.dataset_color_palete_ = [];
-	
-	$scope.individualCombo_value_ = [];
-	
-	$scope.optionsCombo_ = [];
-	$scope.optionsCombo_value_ = [];
+		$scope.mode = "create";
+		$scope.isFirstOpen = true;
+		$scope.firstLoad = false;
+		$scope.resetlocation = "/visualizations/create/";
 	
 	
-	$scope.idHE = [];
-	$scope.titleHE = [];
-	$scope.startDateHE = [];
-	$scope.endDateHE = [];
-	$scope.descHE = [];
-	$scope.colorHE = [];
-	
-	//filters
-	$scope.showLegend = true;
-	$scope.showLines = true;
-	$scope.showAreas = true;
-	$scope.showPoints = true;
-	$scope.showLabels = true;
-	$scope.showGrid = true;
-	//$scope.showYAxes = true;
-	$scope.showYAxes = false;
-	
-	$scope.showZoom = false;
-	$scope.showBubbles = false;
-	$scope.showMovement = true;
+	//	angular.element(document).ready(function () {
+	        //console.log('Hello World 1');
+	  //  });
+	    
+		helper.baseVisualizationsCreateController($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualization, $location, helper, $log, API_CONF, Individual, Unit);
+		
+		//$scope.tabParent = 0;
+		//$scope.tabSon = 0;
+		
+		$scope.tabParent = 2;
+		$scope.tabSon = 'graph_line';
+		$scope.typeToPlot= 'graph_line';
 	
 	
-	$scope.visualization = {};
-
-	this.historicalevent_he_id = '';
-	this.historicalevent_he_title = '';
-	this.historicalevent_he_startdate = '';
-	this.historicalevent_he_enddate = '';
-	this.historicalevent_he_description = '';
-
-/*
-    var metricsURL = $routeParams.metrics;
-    console.log("metricsURL="+metricsURL);
-    
-    if (metricsURL)
-    {
-    	var arrayMetricsURL = metricsURL.split(",");    		
-    	for (x=0;x<arrayMetricsURL.length;x++)
-    	{
-    		//console.log("arrayMetricsURL[x]="+arrayMetricsURL[x])
-    		if (arrayMetricsURL[x]>0)
-    		{
-	    		$scope.metric = Metric.get({id: arrayMetricsURL[x]},
-	            function(metric) {
-	            	//console.log("pppppppppppppppp");
-	            	if (metric.id>0)
-	            	{
-	            		$scope.addFilterMetric(metric.id, metric.title, metric.issued);	
-	            	}
-	            	//$scope.rePlotGraph();
-	            },
-	            function(err) {
-	                throw { message: JSON.stringify(err.data)};
-	            }
-	        	);
-        	}
-    	}    	
-    }
-*/
-	var datasetsURL = $routeParams.datasets;
-//    console.log("datasetsURL="+datasetsURL);
-
-    if (datasetsURL)
-    {
-    	var arrayMetricsURL = datasetsURL.split(",");    		
-    	for (x=0;x<arrayMetricsURL.length;x++)
-    	{
-    		//console.log("arrayMetricsURL[x]="+arrayMetricsURL[x])
-    		if (arrayMetricsURL[x]>0)
-    		{
-	    		//$scope.metric = Metric.get({id: arrayMetricsURL[x]},
-	    		$scope.metric = Dataset.get({id: arrayMetricsURL[x]},
-	            function(metric) {
-	            	//console.log("pppppppppppppppp");
-	            	if (metric.id>0)
-	            	{
-	            		$scope.addFilterMetric(metric.id, metric.title, metric.issued);	
-	            	}
-	            	//$scope.rePlotGraph();
-	            },
-	            function(err) {
-	                throw { message: JSON.stringify(err.data)};
-	            }
-	        	);
-        	}
-    	}    	
-    }
-
-    var eventsURL = $routeParams.events;
-
-    if (eventsURL)
-    {
-    	var arrayEventsURL = eventsURL.split(",");    		
-    	for (x=0;x<arrayEventsURL.length;x++)
-    	{    		
-    		if (arrayEventsURL[x]>0)
-    		{
-	    		$scope.event = Event.get({id: arrayEventsURL[x]},
-	    			
-	            function(event) {
-	
-					if (event.id>0)
-					{
-		            	var datosInT =  {
-							id : event.id,
-							title : event.title,
-							startDate : event.startEventDate,
-							endDate : event.endEventDate,
-							color: '#000000',
-							desc : event.description
-						}
+		$scope.eventsToPlot = [];		
 			
-						$scope.eventsToPlot.push(datosInT);	
-						
-					}
-	
-	            },
-	            function(err) {
-	                throw { message: JSON.stringify(err.data)};
-	            }
-	            );
-            }
-        	
-    	}    	
-    }
-
-	
-	$scope.createVisualization = function(metricListIn) {
-		//console.log("$scope.createVisualization create controller")
-		//console.log("createVisualization AA");
 		
-		//console.log(metricListIn);
+		$scope.MetricSelectediId_ = [];
+		$scope.MetricSelectediIndex_ = [];
+		$scope.MetricSelectorLabelColumn_ = [];
+		$scope.MetricSelectorDataColumn_ = [];
+		$scope.MetricSelectorGroupingData_ = [];
+		//$scope.Combo_MetricSelectorGroupingData_ = [];
 		
-        $scope.visualization.user_id = 1;        				     
-        $scope.visualization.views_count = 0;
-        $scope.visualization.visualization_type_id = 1;
-        
-        
-        if ($scope.typeToPlot=='graph_line')
-        {
-        	$scope.visualization.visualization_type_id = 1;
-        }
-        else if ($scope.typeToPlot=='graph_pie')
-        {
-        	$scope.visualization.visualization_type_id = 2;
-        }
-        else if ($scope.typeToPlot=='graph_bars')
-        {
-        	$scope.visualization.visualization_type_id = 3;
-        }
-        else
-        {
-        	$scope.visualization.visualization_type_id = 4;
-        }
-        
-        
-        $scope.visualization.status_flag_id = 0;
-    	
-        var dataConfig = [];
-        dataConfig['graphSelected'] = $scope.typeToPlot;
-        dataConfig['showLegend'] = $scope.showLegend;
-        dataConfig['showLines'] = $scope.showLines;
-        dataConfig['showAreas'] = $scope.showAreas;        
-        dataConfig['showPoints'] = $scope.showPoints;
-        dataConfig['showLabels'] = $scope.showLabels;
-        dataConfig['showGrid'] = $scope.showGrid;
-        dataConfig['showYAxes'] = $scope.showYAxes;
-        dataConfig['showZoom'] = $scope.showZoom;
-        dataConfig['showBubbles'] = $scope.showBubbles;
-        dataConfig['showMovement'] = $scope.showMovement;
-        
-        if (!$scope.showAsPercentatge)
-        {
-        	$scope.showAsPercentatge=false;
-        }
-        dataConfig['showAsPercentatge'] = $scope.showAsPercentatge;
-        dataConfig['resolution'] = $scope.resolution['value'];
-
-        if ($scope.timeStart!='----')
-        {
-        	dataConfig['timeStart'] = $scope.timeStart;	
-        }
-        if ($scope.timeEnd!='----')
-        {
-        	dataConfig['timeEnd'] = $scope.timeEnd;	
-        }
-
-        
-        var dataMetrics = [];
-
-		//for (i in $scope.MetricSelectediIndex_)        
-		for (j in metricListIn)
-		{
-			//console.log("j="+j);
-			i=metricListIn[j].id;
-
-			//console.log("i="+i+"---$scope.MetricSelectediIndex_["+i+"]="+$scope.MetricSelectediIndex_[i])
-			//console.log("i="+i);
-			//console.log("i="+i+"---$scope.MetricSelectediId_["+i+"]="+$scope.MetricSelectediId_[i])
-						
-			//if (!isNaN($scope.MetricSelectediId_[i]))
-			if (!isNaN($scope.MetricSelectediIndex_[i]))
-			{
-				//console.log("$scope.MetricSelectediId_["+i+"]="+$scope.MetricSelectediId_[i]);
-				//console.log("$scope.MetricSelectediIndex_["+i+"]="+$scope.MetricSelectediIndex_[i]);
-				var myindex = $scope.MetricSelectediIndex_[i];
-//				console.log(myindex);
-//				console.log($scope.IndividualSelectorLabelColumn_);
-				
-				value='';
-				
-//				console.log("myindex="+myindex);
-//				console.log("$scope.IndividualSelectorLabelColumn_");
-//				console.log($scope.IndividualSelectorLabelColumn_);
-				/*
-				if ($scope.IndividualSelectorLabelColumn_.length>0)
-				{
-					for (var i=0; i < $scope.IndividualSelectorLabelColumn_[myindex].length; i++) {
-						if (value)
+		$scope.unitsCombo_value_ = [];
+		$scope.UnitSelectorLabelColumn_ = [];
+		$scope.IndividualSelectorLabelColumn_ = [];
+		
+		$scope.IndividualDatasetCheckboxes_ = [];
+	//	console.log("definiomos dataset_color_palete_")
+		$scope.dataset_color_palete_ = [];
+		
+		$scope.individualCombo_value_ = [];
+		
+		$scope.optionsCombo_ = [];
+		$scope.optionsCombo_value_ = [];
+		
+		
+		$scope.idHE = [];
+		$scope.titleHE = [];
+		$scope.startDateHE = [];
+		$scope.endDateHE = [];
+		$scope.descHE = [];
+		$scope.colorHE = [];
+		
+		//filters
+		$scope.showLegend = true;
+		$scope.showLines = true;
+		$scope.showAreas = true;
+		$scope.showPoints = true;
+		$scope.showLabels = true;
+		$scope.showGrid = true;
+		//$scope.showYAxes = true;
+		$scope.showYAxes = false;
+		
+		$scope.showZoom = false;
+		$scope.showBubbles = false;
+		$scope.showMovement = true;
+		
+		
+		$scope.visualization = {};
+	
+		this.historicalevent_he_id = '';
+		this.historicalevent_he_title = '';
+		this.historicalevent_he_startdate = '';
+		this.historicalevent_he_enddate = '';
+		this.historicalevent_he_description = '';
+	
+	/*
+	    var metricsURL = $routeParams.metrics;
+	    console.log("metricsURL="+metricsURL);
+	    
+	    if (metricsURL)
+	    {
+	    	var arrayMetricsURL = metricsURL.split(",");    		
+	    	for (x=0;x<arrayMetricsURL.length;x++)
+	    	{
+	    		//console.log("arrayMetricsURL[x]="+arrayMetricsURL[x])
+	    		if (arrayMetricsURL[x]>0)
+	    		{
+		    		$scope.metric = Metric.get({id: arrayMetricsURL[x]},
+		            function(metric) {
+		            	//console.log("pppppppppppppppp");
+		            	if (metric.id>0)
+		            	{
+		            		$scope.addFilterMetric(metric.id, metric.title, metric.issued);	
+		            	}
+		            	//$scope.rePlotGraph();
+		            },
+		            function(err) {
+		                throw { message: JSON.stringify(err.data)};
+		            }
+		        	);
+	        	}
+	    	}    	
+	    }
+	*/
+		var datasetsURL = $routeParams.datasets;
+	//    console.log("datasetsURL="+datasetsURL);
+	
+	    if (datasetsURL)
+	    {
+	    	var arrayMetricsURL = datasetsURL.split(",");    		
+	    	for (x=0;x<arrayMetricsURL.length;x++)
+	    	{
+	    		//console.log("arrayMetricsURL[x]="+arrayMetricsURL[x])
+	    		if (arrayMetricsURL[x]>0)
+	    		{
+		    		//$scope.metric = Metric.get({id: arrayMetricsURL[x]},
+		    		$scope.metric = Dataset.get({id: arrayMetricsURL[x]},
+		            function(metric) {
+		            	//console.log("pppppppppppppppp");
+		            	if (metric.id>0)
+		            	{
+		            		$scope.addFilterMetric(metric.id, metric.title, metric.issued);	
+		            	}
+		            	//$scope.rePlotGraph();
+		            },
+		            function(err) {
+		                throw { message: JSON.stringify(err.data)};
+		            }
+		        	);
+	        	}
+	    	}    	
+	    }
+	
+	    var eventsURL = $routeParams.events;
+	
+	    if (eventsURL)
+	    {
+	    	var arrayEventsURL = eventsURL.split(",");    		
+	    	for (x=0;x<arrayEventsURL.length;x++)
+	    	{    		
+	    		if (arrayEventsURL[x]>0)
+	    		{
+		    		$scope.event = Event.get({id: arrayEventsURL[x]},
+		    			
+		            function(event) {
+		
+						if (event.id>0)
 						{
-							value=value+';';
-						}
-						value = value+$scope.IndividualSelectorLabelColumn_[myindex][i].id
-					  
-					}
-				}	
-				*/
-				
-				arrayValuesInString=[];
-				if ($scope.IndividualDatasetCheckboxes_.length>0)
-				{				
-					for (var i=0; i < $scope.IndividualDatasetCheckboxes_[myindex].length; i++) 
-					{
-						if (!isNaN(i))
-						{
-							if ($scope.IndividualDatasetCheckboxes_[myindex][i]>0)
-							{
-								if (value)
-								{
-									value=value+';';
-								}
-								value = value+$scope.IndividualDatasetCheckboxes_[myindex][i];
-								
-								arrayValuesInString.push($scope.IndividualDatasetCheckboxes_[myindex][i]);
-								
-								//value = value+i;
+			            	var datosInT =  {
+								id : event.id,
+								title : event.title,
+								startDate : event.startEventDate,
+								endDate : event.endEventDate,
+								color: '#000000',
+								desc : event.description
 							}
-					  	}
-					};
-				}
-
 				
-				var selectorIndividualData = value;				
-
-
-				value = '';
-				//console.log($scope.dataset_color_palete_);
-				//console.log($scope.dataset_color_palete_[myindex]);
-				//console.log($scope.dataset_color_palete_[myindex].length);
-
-
-				value = '';
-				for (var i in arrayValuesInString) 
+							$scope.eventsToPlot.push(datosInT);	
+							
+						}
+		
+		            },
+		            function(err) {
+		                throw { message: JSON.stringify(err.data)};
+		            }
+		            );
+	            }
+	        	
+	    	}    	
+	    }
+	
+	    	
+		$scope.createVisualization = function(metricListIn) {
+			//console.log("$scope.createVisualization create controller")
+			//console.log("createVisualization AA");
+			
+			//console.log(metricListIn);
+			
+	        $scope.visualization.user_id = 1;        				     
+	        $scope.visualization.views_count = 0;
+	        $scope.visualization.visualization_type_id = 1;
+	        
+	        
+	        if ($scope.typeToPlot=='graph_line')
+	        {
+	        	$scope.visualization.visualization_type_id = 1;
+	        }
+	        else if ($scope.typeToPlot=='graph_pie')
+	        {
+	        	$scope.visualization.visualization_type_id = 2;
+	        }
+	        else if ($scope.typeToPlot=='graph_bars')
+	        {
+	        	$scope.visualization.visualization_type_id = 3;
+	        }
+	        else
+	        {
+	        	$scope.visualization.visualization_type_id = 4;
+	        }
+	        
+	        
+	        $scope.visualization.status_flag_id = 0;
+	    	
+	        var dataConfig = [];
+	        dataConfig['graphSelected'] = $scope.typeToPlot;
+	        dataConfig['showLegend'] = $scope.showLegend;
+	        dataConfig['showLines'] = $scope.showLines;
+	        dataConfig['showAreas'] = $scope.showAreas;        
+	        dataConfig['showPoints'] = $scope.showPoints;
+	        dataConfig['showLabels'] = $scope.showLabels;
+	        dataConfig['showGrid'] = $scope.showGrid;
+	        dataConfig['showYAxes'] = $scope.showYAxes;
+	        dataConfig['showZoom'] = $scope.showZoom;
+	        dataConfig['showBubbles'] = $scope.showBubbles;
+	        dataConfig['showMovement'] = $scope.showMovement;
+	        
+	        if (!$scope.showAsPercentatge)
+	        {
+	        	$scope.showAsPercentatge=false;
+	        }
+	        dataConfig['showAsPercentatge'] = $scope.showAsPercentatge;
+	        dataConfig['resolution'] = $scope.resolution['value'];
+	
+	        if ($scope.timeStart!='----')
+	        {
+	        	dataConfig['timeStart'] = $scope.timeStart;	
+	        }
+	        if ($scope.timeEnd!='----')
+	        {
+	        	dataConfig['timeEnd'] = $scope.timeEnd;	
+	        }
+	
+	        
+	        var dataMetrics = [];
+	
+			//for (i in $scope.MetricSelectediIndex_)        
+			for (j in metricListIn)
+			{
+				//console.log("j="+j);
+				i=metricListIn[j].id;
+	
+				//console.log("i="+i+"---$scope.MetricSelectediIndex_["+i+"]="+$scope.MetricSelectediIndex_[i])
+				//console.log("i="+i);
+				//console.log("i="+i+"---$scope.MetricSelectediId_["+i+"]="+$scope.MetricSelectediId_[i])
+							
+				//if (!isNaN($scope.MetricSelectediId_[i]))
+				if (!isNaN($scope.MetricSelectediIndex_[i]))
 				{
-					//console.log(arrayValuesInString[i]);
+					//console.log("$scope.MetricSelectediId_["+i+"]="+$scope.MetricSelectediId_[i]);
+					//console.log("$scope.MetricSelectediIndex_["+i+"]="+$scope.MetricSelectediIndex_[i]);
+					var myindex = $scope.MetricSelectediIndex_[i];
+	//				console.log(myindex);
+	//				console.log($scope.IndividualSelectorLabelColumn_);
 					
-					if (value)
+					value='';
+					
+	//				console.log("myindex="+myindex);
+	//				console.log("$scope.IndividualSelectorLabelColumn_");
+	//				console.log($scope.IndividualSelectorLabelColumn_);
+					/*
+					if ($scope.IndividualSelectorLabelColumn_.length>0)
 					{
-						value=value+';';
-					}
-					value = value+$scope.dataset_color_palete_[metricListIn[j].id][arrayValuesInString[i]];
-					
-					//console.log($scope.dataset_color_palete_[metricListIn[j].id][arrayValuesInString[i]]);
-				}
-				
-				/*
-				//for (var i=0; i < $scope.dataset_color_palete_[myindex].length; i++) 
-				for (var i in $scope.dataset_color_palete_[myindex])
-				{
-					//console.log(".......i="+i);
-					//console.log($scope.dataset_color_palete_[myindex][i]);
-					
-					if($scope.dataset_color_palete_[myindex][i])
-					{
+						for (var i=0; i < $scope.IndividualSelectorLabelColumn_[myindex].length; i++) {
 							if (value)
 							{
 								value=value+';';
 							}
-							value = value+$scope.dataset_color_palete_[myindex][i];
-							//console.log("value="+value);
-							//value = value+i;
+							value = value+$scope.IndividualSelectorLabelColumn_[myindex][i].id
+						  
+						}
+					}	
+					*/
+					
+					arrayValuesInString=[];
+					if ($scope.IndividualDatasetCheckboxes_.length>0)
+					{				
+						for (var i=0; i < $scope.IndividualDatasetCheckboxes_[myindex].length; i++) 
+						{
+							if (!isNaN(i))
+							{
+								if ($scope.IndividualDatasetCheckboxes_[myindex][i]>0)
+								{
+									if (value)
+									{
+										value=value+';';
+									}
+									value = value+$scope.IndividualDatasetCheckboxes_[myindex][i];
+									
+									arrayValuesInString.push($scope.IndividualDatasetCheckboxes_[myindex][i]);
+									
+									//value = value+i;
+								}
+						  	}
+						};
 					}
-				};
-						*/		
-				var selectorIndividualColorData = value;					
+	
+					
+					var selectorIndividualData = value;				
+	
+	
+					value = '';
+					//console.log($scope.dataset_color_palete_);
+					//console.log($scope.dataset_color_palete_[myindex]);
+					//console.log($scope.dataset_color_palete_[myindex].length);
+	
+	
+					value = '';
+					for (var i in arrayValuesInString) 
+					{
+						//console.log(arrayValuesInString[i]);
+						
+						if (value)
+						{
+							value=value+';';
+						}
+						value = value+$scope.dataset_color_palete_[metricListIn[j].id][arrayValuesInString[i]];
+						
+						//console.log($scope.dataset_color_palete_[metricListIn[j].id][arrayValuesInString[i]]);
+					}
+					
+					/*
+					//for (var i=0; i < $scope.dataset_color_palete_[myindex].length; i++) 
+					for (var i in $scope.dataset_color_palete_[myindex])
+					{
+						//console.log(".......i="+i);
+						//console.log($scope.dataset_color_palete_[myindex][i]);
+						
+						if($scope.dataset_color_palete_[myindex][i])
+						{
+								if (value)
+								{
+									value=value+';';
+								}
+								value = value+$scope.dataset_color_palete_[myindex][i];
+								//console.log("value="+value);
+								//value = value+i;
+						}
+					};
+							*/		
+					var selectorIndividualColorData = value;					
+					
+					//console.log("selectorIndividualColorData");
+					//console.log(selectorIndividualColorData);
+																						
+					//var visualization_query_data = 'Label:'+selectorLabel+',Column:'+selectorDataColumn+',Grouping:'+selectorGroupingData;
+					var visualization_query_data = 'Individual:'+selectorIndividualData+',Colors:'+selectorIndividualColorData;
+					
+					var rowMetric = {
+	                    //metric: myindex,
+	                    dataset: myindex,
+	                    visualization_query: visualization_query_data
+	                	};
+	             	
+	             	dataMetrics.push(rowMetric);   	
+			
+				}
+			}
+			
+			
+	        
+	        var dataHE = [];
+	        
+	        for (i in $scope.idHE)
+	        {
+				if (!isNaN($scope.idHE[i]))
+				{
+					var rowHE = {
+	                    historical_event: $scope.idHE[i],
+	                    description: $scope.descHE[i],
+	                    color: $scope.colorHE[i]
+	                };
+					dataHE.push(rowHE);
+				}
+	        }
+	          
+			
+	        var data = [];
+	        var extra = [];
+	
+	
+			var string_filter_configuration = "";
+			for (key in dataConfig) {
+				if (!string_filter_configuration=="")
+				{
+					string_filter_configuration = string_filter_configuration + ",";
+				}
+				string_filter_configuration = string_filter_configuration + key +"="+dataConfig[key];
+			}
+			
+			//console.log("string_filter_configuration="+string_filter_configuration);
+			
+			
+			$scope.visualization.filter_configuration = string_filter_configuration;
+			
+			$scope.visualization.historical_events_in_visualization = dataHE;		
+			//console.log($scope.visualization.historical_events_in_visualization);
+			//$scope.visualization.metrics_in_visualization = dataMetrics;
+			
+			//console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!dataMetrics")
+			///console.log(dataMetrics);
+			
+			$scope.visualization.datasets_in_visualization = dataMetrics;
+			
+			/*
+			var svgString = new XMLSerializer().serializeToString(document.querySelector('svg'));
+			var canvas = document.getElementById("canvas");
+			var ctx = canvas.getContext("2d");
+			var DOMURL = self.URL || self.webkitURL || self;
+			var img = new Image();		
+			var svg = new Blob([svgString], {type: "image/svg+xml;charset=utf-8"});
+			var imgurl = DOMURL.createObjectURL(svg);
+			//console.log(imgurl);
+			img.onload = function() {
+	    		ctx.drawImage(img, 0, 0);
+	    		
+	    		var png = canvas.toDataURL("image/png");
+	    		//document.querySelector('#png-container').innerHTML = '<img src="'+png+'"/>';
+	    		//console.log(png);
+	    		$scope.visualization.imageurlpng = png;
+	    		DOMURL.revokeObjectURL(png);
+	    		
+				Visualization.save($scope.visualization,function(value, responseHeaders){
+					$location.path('/visualizations/' + value.id);
+				},
+				function(err) {
+		            throw { message: err.data};
+				}
+				);    		
 				
-				//console.log("selectorIndividualColorData");
-				//console.log(selectorIndividualColorData);
-																					
-				//var visualization_query_data = 'Label:'+selectorLabel+',Column:'+selectorDataColumn+',Grouping:'+selectorGroupingData;
-				var visualization_query_data = 'Individual:'+selectorIndividualData+',Colors:'+selectorIndividualColorData;
-				
-				var rowMetric = {
-                    //metric: myindex,
-                    dataset: myindex,
-                    visualization_query: visualization_query_data
-                	};
-             	
-             	dataMetrics.push(rowMetric);   	
-		
-			}
-		}
-		
-		
-        
-        var dataHE = [];
-        
-        for (i in $scope.idHE)
-        {
-			if (!isNaN($scope.idHE[i]))
-			{
-				var rowHE = {
-                    historical_event: $scope.idHE[i],
-                    description: $scope.descHE[i],
-                    color: $scope.colorHE[i]
-                };
-				dataHE.push(rowHE);
-			}
-        }
-          
-		
-        var data = [];
-        var extra = [];
-
-
-		var string_filter_configuration = "";
-		for (key in dataConfig) {
-			if (!string_filter_configuration=="")
-			{
-				string_filter_configuration = string_filter_configuration + ",";
-			}
-			string_filter_configuration = string_filter_configuration + key +"="+dataConfig[key];
-		}
-		
-		//console.log("string_filter_configuration="+string_filter_configuration);
-		
-		
-		$scope.visualization.filter_configuration = string_filter_configuration;
-		
-		$scope.visualization.historical_events_in_visualization = dataHE;		
-		//console.log($scope.visualization.historical_events_in_visualization);
-		//$scope.visualization.metrics_in_visualization = dataMetrics;
-		
-		//console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!dataMetrics")
-		///console.log(dataMetrics);
-		
-		$scope.visualization.datasets_in_visualization = dataMetrics;
-		
-		/*
-		var svgString = new XMLSerializer().serializeToString(document.querySelector('svg'));
-		var canvas = document.getElementById("canvas");
-		var ctx = canvas.getContext("2d");
-		var DOMURL = self.URL || self.webkitURL || self;
-		var img = new Image();		
-		var svg = new Blob([svgString], {type: "image/svg+xml;charset=utf-8"});
-		var imgurl = DOMURL.createObjectURL(svg);
-		//console.log(imgurl);
-		img.onload = function() {
-    		ctx.drawImage(img, 0, 0);
-    		
-    		var png = canvas.toDataURL("image/png");
-    		//document.querySelector('#png-container').innerHTML = '<img src="'+png+'"/>';
-    		//console.log(png);
-    		$scope.visualization.imageurlpng = png;
-    		DOMURL.revokeObjectURL(png);
-    		
+			};
+			img.src = imgurl;		
+			*/
+			
+			
+			$scope.visualization.language_id = $scope.visualization.language;
+			
 			Visualization.save($scope.visualization,function(value, responseHeaders){
-				$location.path('/visualizations/' + value.id);
-			},
-			function(err) {
-	            throw { message: err.data};
-			}
-			);    		
+					$location.path('/visualizations/' + value.id);
+				},
+				function(err) {
+		            throw { message: err.data};
+				}
+				);  
 			
 		};
-		img.src = imgurl;		
-		*/
-		
-		
-		$scope.visualization.language_id = $scope.visualization.language;
-		
-		Visualization.save($scope.visualization,function(value, responseHeaders){
-				$location.path('/visualizations/' + value.id);
-			},
-			function(err) {
-	            throw { message: err.data};
-			}
-			);  
-		
-	};
-
-
-	$scope.ListMetricsFilter = [];
-	$scope.metricsFilter = $scope.ListMetricsFilter;
-
-	//$scope.rePlotGraph();
-
+	
+	
+		$scope.ListMetricsFilter = [];
+		$scope.metricsFilter = $scope.ListMetricsFilter;
+	
+		//$scope.rePlotGraph();
+	}
 }])
 
 

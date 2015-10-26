@@ -10,22 +10,22 @@
     			<p>
     				To create a visualisation you need to:
 					<ul>
-						<li>Select witch dataset (one or more) do you wish to use. Use <span class="btn btn-adddataset">Link Datasets</span> button to do it.</li>
+						<li>Select which dataset (one or more) do you wish to use. Use the "Link Datasets" button to do it.</li>
 						<li>Select the type of chart you want using the appropiate button:
 							<ul>
-								<li><span class="btn btn-map">Map</span> To plot as a map chart.</li>								
-								<li><span class="btn btn-line">Line chart</span> To plot as a line chart.</li>
-								<li><span class="btn btn-pie">Pie chart</span> To plot as pie chart.</li>
-								<li><span class="btn btn-bars">Bars chart</span> To plot as a bar chart.</li>
+								<li>"Map" To plot as a map chart.</li>								
+								<li>"Line chart" To plot as a line chart.</li>
+								<li>"Pie chart" To plot as pie chart.</li>
+								<li>"Bars chart" To plot as a bar chart.</li>
 							</ul>
 						</li>
-						<li>In case you select a <span class="btn btn-line">Line chart</span>, then you can related historical events with the chart using the <span class="btn btn-adddevent">Link Events</span> button.</li>
+						<li>In case you select a "Line chart", then you can related historical events with the chart using the "Link Events" button.</li>
 						<li>Fulfil the mandatory fields that are marked with an asterisk.</li>
-						<li>Click over the button <span class="btn btn-save">Save</span> to save the visualisation.</li>
+						<li>Click over the button "Save" to save the visualisation.</li>
 					</ul>
 				</p>
 				<p>
-					If you need, you can click over the button <span class="btn btn-revert">Revert</span> to revert all your changes.
+					If you need, you can click over the button "Revert" to revert all your changes.
     			</p>
     		</div>
     	</div>
@@ -41,18 +41,23 @@
 	<div class="pc-visualization-formcontrols">
         <div class="form-group pull-left">
 				<canvas ng-show="false" id="canvas" width="800" height="400"></canvas>
-				<div id="png-container"></div>			
-				<button type="submit" data-intro="Save data" data-position="top" ng-disabled="visualizationForm.$invalid" class="btn btn-default btn-save" ng-click="createVisualization(ListMetricsFilter)">Save</button>				
-				<button type="submit" data-intro="Revert data" data-position="top" class="btn btn-default btn-revert" ng-click="revertVisualization()">Revert</button>
-									
+				<div id="png-container"></div>	
+				<div class="button-group">	
+					<button type="submit" data-intro="Save data" data-position="top" ng-disabled="visualizationForm.$invalid" class="btn btn-default btn-save" ng-click="createVisualization(ListMetricsFilter)">Save</button>				
+					
+					<button type="submit" data-intro="Revert data" data-position="top" class="btn btn-default btn-revert" ng-click="revertVisualization()">Revert</button>
+					
+					
 				<button data-intro="Helps you to link datasets with this visualisation" data-position="top" type="submit" class="btn btn-default btn-adddataset" id="modaladddataset" ng-click="showModal('datasets')">Link Datasets</button>
 				
 				
 				<button ng-show="isSelectedSon('graph_line') && ListMetricsFilter.length>0" data-intro="Helps you to link this visualisation with events" data-position="top"  type="submit" class="btn btn-primary btn-adddevent" id="addHEbutton" ng-click="showModal('events')">Link Events</button>
+				<button type="submit" data-intro="Cancel" data-position="top" class="btn btn-default btn-danger" ng-click="cancelVisualization()">Cancel</button>
 				
-				
+				</div>
 				<button ng-hide="ListMetricsFilter.length==0" type="button" data-intro="Plot data in a map" data-position="top" ng-class="{'btn btn-default btn-map':!isSelectedParent(1),'btn btn-info btn-map':isSelectedParent(1)}" ng-click="selectTabParent(1); selectTabSon('mercator');rePlotGraph();">Map</button>					
-				<div ng-hide="ListMetricsFilter.length==0" class="button-group">		
+
+				<div ng-hide="ListMetricsFilter.length==0" ng-class="{'form-group pull-left':!isSelectedParent(2),'button-group':isSelectedParent(2)}">		
 					<button type="button" data-intro="Plot data as Line, Pie or Bars chart" data-position="top" ng-class="{'btn btn-default btn':!isSelectedParent(2),'btn btn-info':isSelectedParent(2)}" ng-click="selectTabParent(2);selectTabSon('graph_line');rePlotGraph();" class="btn-parent">Graph</button>
 					<button type="button" data-intro="Plot data as line chart" data-position="top" ng-hide="!isSelectedParent(2)" ng-disabled="!isSelectedParent(2)" ng-class="{'btn btn-default':!isSelectedSon('graph_line'),'btn btn-info':isSelectedSon('graph_line')}" ng-click="selectTabParent(2);selectTabSon('graph_line');rePlotGraph();" class="btn-line">Line</button>
 					<button type="button" data-intro="Plot data as pie chart" data-position="top" ng-hide="!isSelectedParent(2)" ng-disabled="!isSelectedParent(2)" ng-class="{'btn btn-default':!isSelectedSon('graph_pie'),'btn btn-info':isSelectedSon('graph_pie')}" ng-click="selectTabParent(2);selectTabSon('graph_pie');rePlotGraph();"  class="btn-pie">Pie</button>

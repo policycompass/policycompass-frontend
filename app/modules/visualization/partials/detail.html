@@ -104,7 +104,7 @@
 
 <div class="metadata metadata-event">
 
-	<div class="form-group form-group-external" >
+	<div class="form-group form-group-datasets form-group-external" >
 		<div class="form-item" >
 	  		<div class="field-label">Datasets</div>
 	  		<div class="field-content">  		
@@ -113,7 +113,7 @@
 		</div>
 		
 	</div>
-	<div class="form-group form-group-external" ng-show="visualization.historical_events_in_visualization">
+	<div class="form-group form-group-events form-group-external" ng-show="visualization.historical_events_in_visualization">
 		<div class="form-item" >
 	  		<div class="field-label">Historical Events</div>
 	  		<div class="field-content">  		
@@ -129,6 +129,24 @@
 		</div>
 		
 	</div>
+	
+	<div class="form-group form-group-visualisations form-group-external" ng-show="relatedVisualizations.length>0">
+		<div class="form-item" >
+	  		<div class="field-label">Related Visualisations</div>
+	  		<div class="field-content">  		
+					<div ng-repeat="rv in relatedVisualizations"> <a ng-href="#!/visualizations/{{rv.visualization_id}}">{{rv.title}}</a></div>		
+			</div>
+		</div>		
+	</div>
+	
+	<div class="form-group form-group-fcms form-group-external" ng-show="fcmRelated.length>0">
+		<div class="form-item" >
+	  		<div class="field-label">Related Causal Models</div>
+	  		<div class="field-content">  		
+					<div ng-repeat="fcm in fcmRelated"> <a ng-href="#!/models/{{fcm.id}}">{{fcm.title}}</a></div>		
+			</div>
+		</div>		
+	</div>
 
 
 
@@ -137,61 +155,9 @@
 
 <!-- FIELDS END -->
 
-		<!--
-		<table class="table table-detail table-hover">
-			<tbody>           	
-				<tr ng-show="visualization.user_id" class="">
-					<td class="table-detail-title">Author:</td>
-					<td class="table-detail-content">{{visualization.user_id}}</td>
-				</tr>
-				<tr ng-show="visualization.user_id" class="">
-					<td class="table-detail-title">Language:</td>
-					<td class="table-detail-content"><span ng-if="visualization.language_id" resolve-language id="visualization.language_id"></span></td>
-				</tr>
-				<tr ng-show="visualization.created_at" class="">
-					<td class="table-detail-title">Date added:</td>
-					<td class="table-detail-content">{{ visualization.created_at | date:'longDate' }}</td>
-				</tr>
-				<tr ng-show="visualization.updated_at" class="">
-					<td class="table-detail-title">Updated:</td>
-					<td class="table-detail-content">{{ visualization.updated_at | date:'longDate' }}</td>
-				</tr>
-				<tr ng-show="visualization.keywords" class="">
-					<td class="table-detail-title">Keywords:</b></td>
-					<td class="table-detail-content">{{visualization.keywords}}</td>
-				</tr>            	
-				<tr ng-show="visualization.views_count>=0" class="">
-					<td class="table-detail-title">Views:</td>
-					<td class="table-detail-content">{{visualization.views_count}}</td>
-				</tr>
-				<tr ng-show="visualization.keywords" class="">
-					<td class="table-detail-title">Linked to Datasets:</b></td>
-					<td class="table-detail-content">
-						<ul>
-							<li ng-repeat="metric in meticsRelated"> <a ng-href="#!/datasets/{{metric.id}}">{{metric.title}} <span ng-show="metric.acronym"> - [{{metric.acronym}}]</span></a></li>
-						</ul>
-					</td>
-				</tr>
-				<tr ng-show="visualization.historical_events_in_visualization">
-					<td class="table-detail-title"> Linked to Historical Events: </td>
-					<td class="table-detail-content">
-						<ul>
-							<li ng-repeat="her in historicalEventsRelated">
-								<div class='square-box'>
-									<div class='square-content' style="background:{{her.color}};">
-										<div><span>&nbsp;</span></div>
-									</div>
-								</div>
-								<a ng-href="#!/events/{{her.event_id}}">{{her.title}}</a> 
-							</li>
-						</ul>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		-->
+		
 	</div>
-	
+<!--	
   	<div class="row" ng-show="relatedVisualizations.length>0">
 		<h3 class="legend-primary">Related Visualisations: </h3>
 		
@@ -204,18 +170,22 @@
 					<div class="visualization-graph-page-content">
 						<!--
 						<div ng-controller="VisualizationsEditController" ng-repeat="idvisulist in [rv.visualization_id]" ng-include='"modules/visualization/partials/graph.html"' ></div>
-						-->				
+						-->	
+						
+						<!--			
 						<div  ng-repeat="idvisulist in [rv.visualization_id]" ng-include='"modules/visualization/partials/graph.html"' ></div>
+						-->
 						
 						<!--
 						<div class="loadpcimage" id="rv.visualization_id" imgtype="'visualization'" imgalt="rv.title" imgtitle="rv.title"></div>
 						-->
+						<!--
             		</div>
         		</div>
       		</div>
 		</div>
   	</div>
-	
+-->
 			
 	<div class="row">
     	<h3 class="legend-primary">Discussion</h3>
