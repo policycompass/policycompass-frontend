@@ -4,7 +4,10 @@
     	<h3 ng-if="mode == 'edit'" class="fonticon fonticon-event">Edit Event</h3>
     	<div class="subtitle-help">
     		<h4><div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div>Event Data</h4>    
-    		<div ng-class="{active: help}" class="help-text"><p>You can create an event using this form.</p></div>
+    		<div ng-class="{active: help}" class="help-text">
+    			<div class="fonticon fonticon-close" ng-click="help=!help"></div>
+    			<p>You can create an event using this form.</p>
+    		</div>
     	</div>
 	</div>
 	
