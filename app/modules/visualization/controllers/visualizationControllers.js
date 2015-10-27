@@ -2468,7 +2468,14 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						$dataUnit[i].$promise.then(function(unit) 
 						{
 							//console.log(unit.title);
-							$scope.TitleUnits[unit.id] = unit.title;
+							if (unit.title=='Unitless')
+							{
+								$scope.TitleUnits[unit.id] = " ";
+							}
+							else
+							{
+								$scope.TitleUnits[unit.id] = unit.title;
+							}
 							//console.log("TitleUnits ----->");
 							//console.log($scope.TitleUnits);
 							//console.log("<-----");
