@@ -5061,7 +5061,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	$scope.createVisualization = function(metricListIn) {
 		//console.log("...createVisualization Edit controller")
 		//alert("ssssssssssssssssss");
-        $scope.visualization.user_id = 1;        				     
+        //$scope.visualization.user_id = 1;                				     
         $scope.visualization.views_count = 0;
         $scope.visualization.visualization_type_id = 1;
         
@@ -5636,7 +5636,7 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualiza
 			
 			//console.log(metricListIn);
 			
-	        $scope.visualization.user_id = 1;        				     
+	        //$scope.visualization.user_id = 1;        				     
 	        $scope.visualization.views_count = 0;
 	        $scope.visualization.visualization_type_id = 1;
 	        
