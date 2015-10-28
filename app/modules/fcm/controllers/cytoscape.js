@@ -489,6 +489,7 @@ $scope.md = jsonModel;
 		var edge1 = user.source.Id;
 		var edge2 = user.destination.Id;
 		user.Id = 'e'+($scope.edgeData.length);
+
 		// building the new Edge object from the data
 		// using the array length to generate an id for the sample (you can do it any other way)
 		var newEdge = {id:'e'+($scope.edgeData.length), source: edge1, target: edge2, weighted: user.weight};
@@ -597,10 +598,11 @@ $scope.md = jsonModel;
 				$scope.Associations[pos].source=user.source;
 				$scope.Associations[pos].destinationID=user.destination.Id;
 				$scope.Associations[pos].destination=user.destination;
+				$scope.Associations[pos].weighted=user.weight;
 
 				$scope.edgeData[pos].source=user.source.Id;
 				$scope.edgeData[pos].target=user.destination.Id;
-				$scope.edgeData[pos].weighted="?";
+				$scope.edgeData[pos].weighted=user.weight;
 			}
 
 			// broadcasting the event
@@ -713,20 +715,21 @@ $scope.md = jsonModel;
     $scope.user.Id = EditAssociation.getAssociation().Id;
     $scope.user.sourceID = EditAssociation.getAssociation().sourceID;
     $scope.user.destinationID = EditAssociation.getAssociation().destinationID;
+    $scope.user.weight = EditAssociation.getAssociation().weighted;
   
     $scope.Concepts = [];	
     $scope.Concepts = ConceptsDetail.getConcepts();
 
     for (i=0;i<$scope.Concepts.length;i++)
     {
-	if ($scope.Concepts[i].Id==$scope.user.sourceID)
-	{
-	$scope.user.source=$scope.Concepts[i];
-	}
-	if ($scope.Concepts[i].Id==$scope.user.destinationID)
-	{
-	$scope.user.destination=$scope.Concepts[i];
-	}
+		if ($scope.Concepts[i].Id==$scope.user.sourceID)
+		{
+			$scope.user.source=$scope.Concepts[i];
+		}
+		if ($scope.Concepts[i].Id==$scope.user.destinationID)
+		{
+			$scope.user.destination=$scope.Concepts[i];
+		}
     }
 
   $scope.cancel = function(){
@@ -1213,9 +1216,9 @@ $scope.res=value;
 
   $templateCache.put('/dialogs/editconcept.html', '<div class="modal-header"><h4 class="modal-title">Edit Concept</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="title">Title *</label><input type="text" class="form-control" name="title" id="title" ng-model="user.title" text="Vale here" required><br /><label class="control-label" for="description">Description</label><textarea class="form-control" rows="5" name="description" id="description" ng-model="user.description"></textarea><br /></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button><button type="button" class="btn btn-danger" ng-click="delete()">Delete</button></div>');
 
-  $templateCache.put('/dialogs/addassociation.html', '<div class="modal-header"><h4 class="modal-title">Create Relationship</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="source">Source Concept *</label><select class="form-control" name="source" id="source" ng-model="user.source" ng-options="concept.title for concept in Concepts" required></select><br /><label class="control-label" for="destination">Destination Concept *</label><select class="form-control" name="destination" id="destination" ng-model="user.destination" ng-options="concept.title for concept in Concepts" required></select></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Add</button></div>');
+  $templateCache.put('/dialogs/addassociation.html', '<div class="modal-header"><h4 class="modal-title">Create Relationship</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="source">Source Concept *</label><select class="form-control" name="source" id="source" ng-model="user.source" ng-options="concept.title for concept in Concepts" required></select><br /><label class="control-label" for="destination">Destination Concept *</label><select class="form-control" name="destination" id="destination" ng-model="user.destination" ng-options="concept.title for concept in Concepts" required></select><br /><label class="control-label" for="destination">Weight</label><select class="form-control" name="weight" id="weight" ng-model="user.weight" required><option value="1">Very Strong Positive</option><option value="0.75">Strong Positive</option><option value="0.5">Weak Positive</option><option value="0.25">Very Week Positive</option><option value="-0.25">Very Week Negative</option><option value="-0.5">Weak Negative</option><option value="-0.75">Strong Negative</option><option value="-1">Very Strong Negative</option></select></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Add</button></div>');
 
-  $templateCache.put('/dialogs/editassociation.html', '<div class="modal-header"><h4 class="modal-title">Edit Relationship</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="source">Source Concept *</label><select class="form-control" name="source" id="source" ng-model="user.source" ng-options="concept.title for concept in Concepts" required></select><br /><label class="control-label" for="destination">Destination Concept *</label><select class="form-control" name="destination" id="destination" ng-model="user.destination" ng-options="concept.title for concept in Concepts" required></select></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button><button type="button" class="btn btn-danger" ng-click="delete()">Delete</button></div>');
+  $templateCache.put('/dialogs/editassociation.html', '<div class="modal-header"><h4 class="modal-title">Edit Relationship</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="source">Source Concept *</label><select class="form-control" name="source" id="source" ng-model="user.source" ng-options="concept.title for concept in Concepts" required></select><br /><label class="control-label" for="destination">Destination Concept *</label><select class="form-control" name="destination" id="destination" ng-model="user.destination" ng-options="concept.title for concept in Concepts" required></select><br /><label class="control-label" for="destination">Weight</label><select class="form-control" name="weight" id="weight" ng-model="user.weight" required><option value="1">Very Strong Positive</option><option value="0.75">Strong Positive</option><option value="0.5">Weak Positive</option><option value="0.25">Very Week Positive</option><option value="-0.25">Very Week Negative</option><option value="-0.5">Weak Negative</option><option value="-0.75">Strong Negative</option><option value="-1">Very Strong Negative</option></select></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button><button type="button" class="btn btn-danger" ng-click="delete()">Delete</button></div>');
 
   $templateCache.put('/dialogs/savemodel.html', '<div class="modal-header"><h4 class="modal-title">Causal Model</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="title">Title *</label><input type="text" class="form-control" name="title" id="title" ng-model="user.title" text="Vale here" required><br /><label class="control-label" for="description">Description *</label><textarea class="form-control" rows="5" name="description" id="description" ng-model="user.description" required></textarea><br /><label class="control-label" for="keywords">Keywords : *</label><input type="text" class="form-control" name="keywords" id="keywords" ng-model="user.keywords" required><br /><label class="control-label" for="policyDomain">Policy Domain : *</label><select multiple class="form-control policydomain-options" size="5" id="policyDomain" name="policyDomain" ng-model="metric.policy_domains" required></select></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button></div></div></div></div>');
 
