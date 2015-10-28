@@ -1652,6 +1652,56 @@ return 0;}
 	      				//$('input[name="posx"]').val(posX);
 						//$('input[name="posy"]').val(posY);		
 	      				//$('#basic-modal-content').modal();
+
+						if (self.modeGraph=='view')
+						{
+							
+						}
+						else
+						{
+							if (self.xaxeformat=='sequence')
+							{
+								
+							}
+							else
+							{
+								var posMouse = d3.mouse(this);
+								var posX = posMouse[0];
+								posX = posX + self.margin.left;
+								var posY = posMouse[1];		
+								var maxPosX = self.width + self.margin.left;
+								var posXinvers = "";
+								if (posX>maxPosX)
+								{					
+									posXinvers = ""
+								}
+								else
+								{
+									if (self.xScale)
+									{
+										posXinvers = self.xScale.invert(posX-self.margin.left);
+										//posXinvers = self.xScaleInversa(posX-self.margin.left);
+										var format = d3.time.format("%m-%d-%Y");
+										posXinvers= format(posXinvers);
+										posXinvers = posXinvers.replace(/-/g,"/");
+									}
+								}			
+								
+								var format = d3.time.format("%m-%d-%Y");
+								var maxDateGraph = format(self.maxDate);
+								maxDateGraph = maxDateGraph.replace(/-/g,"/");
+								
+				      			//$('input[name="startDate"]').val(posXinvers);      			
+				      			$('input[name="startDatePosX"]').val(posXinvers);       			     	
+				      			$('input[name="endDatePosX"]').val(maxDateGraph);
+      							
+      							console.log(posXinvers);
+      							console.log(maxDateGraph);
+      							
+								document.getElementById("addHEbutton").click();	
+							}
+						}
+
 	      				
 	      			})
 	      			;	
@@ -1801,7 +1851,7 @@ return 0;}
 								tooltip.style("opacity",1.0).html("Click over to show "+str);
 							}
 							
-						}
+						}						
 												
       					})
 					.on("mouseout", function() {
@@ -1951,6 +2001,17 @@ return 0;}
 	                		d3.select(this).text(res);
 	                		
                 		}
+                		else
+						{
+							if (self.xaxeformat=='sequence')
+							{
+								
+							}
+							else
+							{
+								document.getElementById("modaladddataset").click();	
+							}
+						}
                 	})  
                 	
 			}
@@ -2366,6 +2427,53 @@ return 0;}
                     	//document.getElementById("container_graph_6").innerHTML = "";
                     	//self.init();
                     	//self.drawLines(self.linesIn,self.eventsData);	
+                    	
+						if (self.modeGraph=='view')
+						{
+							
+						}
+						else
+						{
+							if (self.xaxeformat=='sequence')
+							{
+								
+							}
+							else
+							{
+								var posMouse = d3.mouse(this);
+								var posX = posMouse[0];
+								posX = posX + self.margin.left;
+								var posY = posMouse[1];		
+								var maxPosX = self.width + self.margin.left;
+								var posXinvers = "";
+								if (posX>maxPosX)
+								{					
+									posXinvers = ""
+								}
+								else
+								{
+									if (self.xScale)
+									{
+										posXinvers = self.xScale.invert(posX-self.margin.left);
+										//posXinvers = self.xScaleInversa(posX-self.margin.left);
+										var format = d3.time.format("%m-%d-%Y");
+										posXinvers= format(posXinvers);
+										posXinvers = posXinvers.replace(/-/g,"/");
+									}
+								}			
+								
+								var format = d3.time.format("%m-%d-%Y");
+								var maxDateGraph = format(self.maxDate);
+								maxDateGraph = maxDateGraph.replace(/-/g,"/");
+								
+				      			//$('input[name="startDate"]').val(posXinvers);      			
+				      			$('input[name="startDatePosX"]').val(posXinvers);       			     	
+				      			$('input[name="endDatePosX"]').val(maxDateGraph);
+				      											
+								document.getElementById("addHEbutton").click();	
+							}
+						}                    	
+                    	
 					})
 					.transition()
 						.attr("r", self.radius)
@@ -2683,7 +2791,7 @@ return 0;}
       			else
       			{
       				
-      			
+      			/*
 				var posMouse = d3.mouse(this);
 				var posX = posMouse[0];
 				var posY = posMouse[1];		
@@ -2716,6 +2824,7 @@ return 0;}
 				//dateToSet = posXinvers;
 				//console.log("dateToSet="+dateToSet);
       			//$('#basic-modal-content').modal();
+      			*/
       			}
       		})      		
 			.append("g")

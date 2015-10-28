@@ -1585,6 +1585,16 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			
 			if (action=='datasets')
 			{
+				if ($scope.ListMetricsFilter.length>0)
+				{
+					$scope.tab1 = false;
+					$scope.tab2 = true;
+				}
+				else
+				{
+					$scope.tab1 = true;
+					$scope.tab2 = false;					
+				}
 				$scope.name = 'Link datasets';
 				$scope.opts = {
 					backdrop: true,

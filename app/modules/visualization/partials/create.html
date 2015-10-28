@@ -10,7 +10,7 @@
     			<p>
     				To create a visualisation you need to:
 					<ul>
-						<li>Select which dataset (one or more) do you wish to use. Use the "Link Datasets" button to do it.</li>
+						<li>Select which dataset (one or more) do you wish to use. Use the "Configure Datasets" button to do it.</li>
 						<li>Select the type of chart you want using the appropiate button:
 							<ul>
 								<li>"Map" To plot as a map chart.</li>								
@@ -48,7 +48,7 @@
 					<button type="submit" data-intro="Revert data" data-position="top" class="btn btn-default btn-revert" ng-click="revertVisualization()">Revert</button>
 					
 					
-				<button data-intro="Helps you to link datasets with this visualisation" data-position="top" type="submit" class="btn btn-default btn-adddataset" id="modaladddataset" ng-click="showModal('datasets')">Link Datasets</button>
+				<button data-intro="Helps you to configure datasets with this visualisation" data-position="top" type="submit" class="btn btn-default btn-adddataset" id="modaladddataset" ng-click="showModal('datasets')">Configure Datasets</button>
 				
 				
 				<button ng-show="isSelectedSon('graph_line') && ListMetricsFilter.length>0" data-intro="Helps you to link this visualisation with events" data-position="top"  type="submit" class="btn btn-primary btn-adddevent" id="addHEbutton" ng-click="showModal('events')">Link Events</button>
@@ -78,8 +78,10 @@
 	            	<div ng-show="((1==1)  || isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')) && (ListMetricsFilter.length>0)" class="graphContainerdiv">
 						<input type="hidden" id="startDatePosX" name="startDatePosX" value="">
 						<input type="hidden" id="endDatePosX" name="endDatePosX" value="">
- 		
+ 							<!--
 							<div ng-click="isSelectedSon('graph_line') ? showModal('events') : void(0)">
+							-->
+							<div>
 								<div ng-show="isSelectedSon('map_1') || isSelectedSon('mercator') || isSelectedSon('conicConformal') || isSelectedSon('equirectangular') || isSelectedSon('orthographic') || isSelectedSon('azimuthalEqualArea')">
 									<div ng-show="mapTimeSlider.length>0">
 										<rzslider
