@@ -15,25 +15,41 @@ angular.module('pcApp.common.directives.common', [
     };
 })
 
-.directive('editButtons', function () {
+.directive('editButtons', ['Auth', function (Auth) {
     return {
-        restrict: 'A',
+        restrict: 'E',
         rep1ace: true,
         scope:{
-
+            userpath: '@',
+            editurl:'@',
+            deletefunction: '='
         },
         template: '\
-            <ul class="nav nav-tabs nav-justified">\
-                <li ng-class="{active: item.active}" ng-repeat="item in ngModel"><a href="#{{contentBaseId}}-{{$index}}" data-toggle="tab">{{item.title}}</a></li>\
-            </ul>\
-            <div class="tab-content" style="height:{{tabeHeight}}px;overflow: auto">\
-              <div class="tab-pane" ng-class="{active: item.active}" id="{{contentBaseId}}-{{$index}}" ng-repeat="item in ngModel">{{item.content}}</div>\
-            </div>',
-        link: function(scope,$elem, el, attrs){
-            scope.contentBaseId = attrs.tabsBaseId;
+        <div class="button-group">\
+        <a type="button" ng-if="allowEdit()" class="btn btn-primary btn-create" href="{{editurl}}">Edit</a>\
+        <a type="button" ng-if="allowEdit()" class="btn btn-danger" ng-click="deletefunction();">Delete</a></div>\
+        </div>',
+        link: function(scope){
+
+            var isOwner = function () {
+                return Auth.userpath === scope.userpath;
+            };
+
+            var isAdmin = function () {
+                if(Auth.state.isAdmin){
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            };
+
+            scope.allowEdit = function () {
+                return (isAdmin() || isOwner());
+            }
         }
     };
-})
+}])
 
 .directive('customTabs', function () {
     return {
