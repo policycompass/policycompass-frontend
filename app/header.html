@@ -17,7 +17,7 @@
 
                     <li><a href="#!/request" data-hover="Request" ng-click="i=0" class="fonticon fonticon-request">Request</a></li>
                     <li><a href="#!/how-it-works" data-hover="How It Works" ng-click="i=0" class="fonticon fonticon-how">How It Works</a></li>
-                    <li><a href="" data-hover="" class="fonticon fonticon-user" ng-click="i=6"><span ng-if="!authState.loggedIn">User</span><span ng-if="authState.loggedIn">{{authState.userData.name}}</span></a></li>
+                    <li ng-click="i=6"><a ng-if="authState.loggedIn!==undefined" href="" data-hover="" class="fonticon fonticon-user"><span ng-if="!authState.loggedIn">User</span><span ng-if="authState.loggedIn">{{authState.userData.name}}</span></a></li>
                     <li><a href="" data-hover="" class="fonticon fonticon-share" ng-click="i=7"></a></li>
                 </ul>
             </div>
