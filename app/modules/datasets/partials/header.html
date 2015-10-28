@@ -6,7 +6,7 @@
             {{ stepData.title }}
         </h4>
         <div ng-class="{active: help}" class="help-text">
-
+			<div class="fonticon fonticon-close" ng-click="help=!help"></div>
             <p><span ng-bind-html="stepData.help"></span></p>
         </div>
     </div>

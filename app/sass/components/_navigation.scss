@@ -178,16 +178,18 @@ header .container  {
 
 .fonticon-close {
   position:absolute;
-  top:20px;
+  top:10px;
   right:20px;
   // background:white;
   // font-size:1.5em;
-  width:2em;
-  height:2em;
+  width:1.5em;
+  height:1.5em;
   
  color:transparentize($texto_negativo,.2);
   cursor:pointer;
   &:before {
+    display:block;
+    padding-top:5px;
     content:"\e60d";
   }
   
