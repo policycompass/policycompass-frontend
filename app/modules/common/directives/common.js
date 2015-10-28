@@ -14,6 +14,27 @@ angular.module('pcApp.common.directives.common', [
         });
     };
 })
+
+.directive('editButtons', function () {
+    return {
+        restrict: 'A',
+        rep1ace: true,
+        scope:{
+
+        },
+        template: '\
+            <ul class="nav nav-tabs nav-justified">\
+                <li ng-class="{active: item.active}" ng-repeat="item in ngModel"><a href="#{{contentBaseId}}-{{$index}}" data-toggle="tab">{{item.title}}</a></li>\
+            </ul>\
+            <div class="tab-content" style="height:{{tabeHeight}}px;overflow: auto">\
+              <div class="tab-pane" ng-class="{active: item.active}" id="{{contentBaseId}}-{{$index}}" ng-repeat="item in ngModel">{{item.content}}</div>\
+            </div>',
+        link: function(scope,$elem, el, attrs){
+            scope.contentBaseId = attrs.tabsBaseId;
+        }
+    };
+})
+
 .directive('customTabs', function () {
     return {
         restrict: 'A',
