@@ -32,7 +32,7 @@ angular.module('pcApp.common.directives.common', [
         link: function(scope){
 
             var isOwner = function () {
-                return Auth.userpath === scope.userpath;
+                return Auth.state.userPath === scope.userpath;
             };
 
             var isAdmin = function () {
@@ -46,7 +46,7 @@ angular.module('pcApp.common.directives.common', [
 
             scope.allowEdit = function () {
                 return (isAdmin() || isOwner());
-            }
+            };
         }
     };
 }])
