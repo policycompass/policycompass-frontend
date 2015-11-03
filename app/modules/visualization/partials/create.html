@@ -83,7 +83,7 @@
 							-->
 							<div>
 								<div ng-show="isSelectedSon('map_1') || isSelectedSon('mercator') || isSelectedSon('conicConformal') || isSelectedSon('equirectangular') || isSelectedSon('orthographic') || isSelectedSon('azimuthalEqualArea')">
-									<div ng-show="mapTimeSlider.length>0">
+									<div ng-show="mapTimeSlider.length>1">
 										<rzslider
 										 rz-slider-model="rangeDatesSliderMin"
 										 rz-slider-floor="0"
@@ -94,7 +94,7 @@
 								</div>
 	
 								<div ng-show="isSelectedSon('graph_pie')">	
-									<div ng-show="numbers2.length>0">
+									<div ng-show="numbers2.length>1">
 										<rzslider
 										 rz-slider-model="rangeDatesSliderMin"
 										 rz-slider-floor="0"
@@ -191,6 +191,9 @@
 								</div>
 
 								<div id="div_showZoom" ng-show="isSelectedParent(1) && !isSelectedSon('orthographic') && !isSelectedSon('azimuthalEqualArea')" class="on_check">
+									<input type="hidden" name="initialZoom" id="initialZoom" value="2">
+									<input type="hidden" name="initialLat" id="initialLat" value="49.009952">
+									<input type="hidden" name="initialLng" id="initialLng" value="2.548635">
 									<label class="checkbox-inline">
 										<input ng-model="showZoom" type="checkbox" ng-click="manualClick('showZoom');rePlotGraph();" name="showZoom"  id="showZoom" class="checkbox filterCheckBox"> Zoom
 									</label>
@@ -237,13 +240,13 @@
 								
 								<div id="div_resolution" ng-show="TimeSelector.length>1" class="on_check">
 									<label class="checkbox-inline">
-										Resolution <select id="resolution" ng-change="rePlotGraph();" ng-model="resolution" ng-options="opt as opt.label for opt in resolutionoptions"></select>
+										Resolution <select id="resolution" ng-change="timeStart='';timeEnd='';rePlotGraph();" ng-model="resolution" ng-options="opt as opt.label for opt in resolutionoptions"></select>
 									</label>
 								</div>								
 								
 								<div id="div_fromdate" ng-show="TimeSelector.length>1" class="on_check">
 									<label class="checkbox-inline">
-										From <select id="fromDate" ng-change="rePlotGraph();" ng-model="timeStart" ng-options="opt for opt in TimeSelector"></select>
+										From <select id="fromDate" ng-change="rePlotGraph()" ng-model="timeStart" ng-options="opt for opt in TimeSelector"></select>
 									</label>
 								</div>
 
