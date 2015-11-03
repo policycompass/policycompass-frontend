@@ -135,13 +135,16 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	'Unit',
 	function($scope, $route, $routeParams, $modal, Metric, Dataset, $location, helper, dialogs, $log, API_CONF, Individual, Unit) {
 
-
-        	
+		
+        
 		//console.log("LoadCombosMetric");
     	//helper.baseGetRelatedDataController($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF);
     	
     	//$scope.DatasetsLoaded = [];
-    	
+    	if ($scope.LoadCombosMetricExecuted!=1)
+    	{
+    		
+    	$scope.LoadCombosMetricExecuted=0;
     	$scope.loadDataCombos = function(idMetric, valueColumTemp, valueGroupTemp) {
     		//console.log("--loadDataCombos--idMetric="+idMetric+"---valueColumTemp="+valueColumTemp+"----valueGroupTemp="+valueGroupTemp+"-----");
 
@@ -523,7 +526,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			//$scope.loadDataCombos($scope.dataset.id, "", "");
 		}
     	
-    	
+    	}
     
 
 }])

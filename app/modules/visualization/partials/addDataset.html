@@ -40,7 +40,7 @@
 										<th ng-show="isSelectedSon('graph_line')"><label for="color">Colour</label></th>
 									</thead>
 									<body>
-										<tr ng-repeat="option in individualCombo_value_[metric.id]">
+										<tr ng-repeat="option in individualCombo_value_[metric.id] | orderBy:'title'">
 											<td>
 												<label ng-click="validateCheckboxes(metric.id);">
 															<input type="checkbox" 

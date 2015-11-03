@@ -330,13 +330,16 @@
 							
 
 							<div class="metric-buttons">
-								<a type="button" data-intro="Edit dataset view properties" data-position="top" class="btn btn-primary btn-create" ng-click="displaycontentMetric(metric.id);collapsetFilterDataset=!collapsetFilterDataset;" id="edit-metric-button-{{metric.id}}"><span ng-hide="collapsetFilterDataset">Open</span><span ng-show="collapsetFilterDataset">Collapse</span> Edit Mode</a>											    	
+								<!--
+								<a type="button" data-intro="Edit dataset view properties" data-position="top" class="btn btn-primary btn-create" ng-click="displaycontentMetric(metric.id);collapsetFilterDataset=!collapsetFilterDataset;" id="edit-metric-button-{{metric.id}}"><span ng-hide="collapsetFilterDataset">Open</span><span ng-show="collapsetFilterDataset">Collapse</span> Edit Mode</a>
+								-->											    	
 						    	<button type="button" data-intro="Remove dataset from the visualisation" data-position="top" class="btn btn-danger btn-clear" ng-click="deleteMetricFromList(metric.id, metric.title, ListMetricsFilter, $index);" id="delete-metric-button-{{metric.id}}">Remove</button>						    	
 						    	<a type="button" data-intro="Access to the dataset data" data-position="right" class="btn btn-info btn-adddataset" href="#!/datasets/{{metric.id}}" target="_blank" id="view-metric-button-{{metric.id}}">View Dataset in detaill</a>						    	
 						  	</div>
-
+								<!--
 								<div class="metric-forms" style="display: none;">
-
+								-->
+								<div class="metric-forms">
 										<div class="metric-form-item">
 											<br>
 											<table>
@@ -345,8 +348,8 @@
 													<th ng-show="isSelectedSon('graph_line')"><label for="color">Colour</label></th>
 												</thead>
 												<body>
-													<tr ng-repeat="option in individualCombo_value_[metric.id]">
-														<td>
+													<tr ng-repeat="option in individualCombo_value_[metric.id] | orderBy:'title'">
+														<td>fffffff
 															<label ng-click="validateCheckboxes(metric.id);">
 															<input type="checkbox" 
 															checklist-model="IndividualDatasetCheckboxes_[metric.id]" 
