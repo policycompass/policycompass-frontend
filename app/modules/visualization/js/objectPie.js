@@ -179,7 +179,11 @@ policycompass.viz.pie = function(options)
 		      	
 		      	var si = d3.format('.'+formatdecimal+'s');
 		      	
-		      	number = si(number);
+		      	if (number!="0.00")
+		      	{
+		      		number = si(number);
+		      	}
+		      	//number = (number);
 		      	
 		      	var textToReturn = number + " ("+average+"%)";
 		      					
@@ -303,7 +307,10 @@ policycompass.viz.pie = function(options)
 		      	
 		      	var si = d3.format('.'+formatdecimal+'s');
 		      	
-		      	number = si(number);
+		      	if (number!="0.00")
+		      	{
+		      		number = si(number);
+		      	}
 		      	
 		      	var textToReturn = number + " ("+average+"%)";	
 		      	
@@ -474,7 +481,11 @@ policycompass.viz.pie = function(options)
 		      	
 		      		var si = d3.format('.'+formatdecimal+'s');
 		      	
-		      		number = si(number);
+		      		if (number!="0.00")
+		      		{
+		      			number = si(number);
+		      		}
+		      		//number = (number);
 		      	
 		      		var textToReturn = pieslabels[i] + " ("+number + " - "+average+"%)";	
 		      	  		    				    		
