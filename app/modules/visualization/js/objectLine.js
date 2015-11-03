@@ -795,15 +795,25 @@ return 0;}
 		}
 		else
 		{
-			var yAxis = d3.svg.axis()
-	    		.scale(self.y)
-	    		//.scale(self.yArray)
-	    		//.orient("left")
-	    		//.orient("right")
-	    		.orient(orientText)
-	    		//.tickFormat(d3.format("."+formatdecimal+"s"))
-	    		.tickFormat(d3.format(".2s"))
-	    		;
+			if (self.maxVy<100)
+			{
+				var yAxis = d3.svg.axis()
+		    		.scale(self.y)
+		    		.orient(orientText)
+		    		;				
+			}
+			else
+			{
+				var yAxis = d3.svg.axis()
+		    		.scale(self.y)
+		    		//.scale(self.yArray)
+		    		//.orient("left")
+		    		//.orient("right")
+		    		.orient(orientText)
+		    		//.tickFormat(d3.format("."+formatdecimal+"s"))
+		    		.tickFormat(d3.format(".2s"))
+		    		;
+	    	}
 		}
 		var lineFunction = d3.svg.line()		
     		.x(function(d,i) {
