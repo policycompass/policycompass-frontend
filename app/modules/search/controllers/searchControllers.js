@@ -18,7 +18,9 @@
         $scope.sortOptions = [
             { id: 'Relevance', name: 'Relevance'},
             { id: 'Title', name: 'Title'},
-            { id: 'Date', name: 'Date Created'}
+            { id: 'Date', name: 'Date Created'},
+            { id: 'CommentsDesc', name: 'Comments Desc.'},
+            { id: 'CommentsAsc', name: 'Comments Asc.'}
         ];
 
         var filters = {};
@@ -282,6 +284,12 @@
             }
             else if ($scope.sortByItem == 'Title') {
                 var sort = ["title.lower_case_sort"];
+            }
+            else if ($scope.sortByItem == 'CommentsDesc') {
+                var sort = [{ "commentsCount" : {"order" : "desc"}}];
+            }
+            else if ($scope.sortByItem == 'CommentsAsc') {
+                var sort = [{ "commentsCount" : {"order" : "asc"}}];
             }
             else {
                 var sort = [
