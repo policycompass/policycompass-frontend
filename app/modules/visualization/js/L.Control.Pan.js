@@ -1,3 +1,7 @@
+/* ********
+ This code has been downloaded from https://github.com/kartena/Leaflet.Pancontrol
+************ */
+
 (function (factory) {
 	// Packaging/modules magic dance
 	var L;
