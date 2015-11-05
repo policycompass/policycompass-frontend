@@ -179,7 +179,7 @@ policycompass.viz.mapLeaflet = function(options)
 		var map = L.map("mapPC_"+self.idName, {
 		    layers: [
 		    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {        
-		        attribution: 'Policy Compass &copy;',
+		        //attribution: 'Policy Compass &copy;',
 		        noWrap: true
 		    })],
 		    zoom: initialZoom,
