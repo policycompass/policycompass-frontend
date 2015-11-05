@@ -80,6 +80,13 @@ data-deletefunction="deleteVisualization(visualization)">
   		<div class="field-content">{{visualization.keywords}}</div>
 	</div>
 
+	<div class="form-group form-group-keywords" ngshow="visualization.policy_domains">
+  		<div class="field-label">Policy domains</div>
+  		<div class="field-content">  		
+			<div ng-repeat="policydomain in visualization.policy_domains"><span ng-if="policydomain" resolve-policydomain id="policydomain"></span></div>
+		</div>
+	</div>
+
 	
 	<div class="form-group form-group-modified" >
 		<!--

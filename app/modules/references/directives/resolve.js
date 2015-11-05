@@ -67,4 +67,20 @@ angular.module('pcApp.references.directives.resolve', [
             },
             template: '<span>{{ individual.title }}</span>'
         };
+    }])
+    
+	.directive('resolvePolicydomain', ['$log', 'PolicyDomain', function ($log, PolicyDomain) {
+        return {
+            scope: {
+                id: '='
+            },
+            link: function(scope, element, attrs, ctrls) {
+                scope.policydomain = PolicyDomain.get(
+                    {id: scope.id},
+                    function() {
+                    }
+                );
+            },
+            template: '<span>{{ policydomain.title }}</span>'
+        };
     }]);
