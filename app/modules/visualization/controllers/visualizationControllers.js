@@ -4672,7 +4672,11 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	
 	//$scope.visualization.views_count = $scope.visualization.views_count +1;
 	
-	
+	$scope.deleteVisuItem = function(visualization) {
+		console.log("deleteVisuItem");
+		console.log("id:"+visualization.id);
+		console.log("title:"+visualization.title);
+	};
 
     // Function for deleting the visualization
     $scope.deleteVisualization = function(visualization) {
@@ -4772,10 +4776,16 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	'$location', 
 	'VisualizationsControllerHelper',	
 	'$log', 
+	'dialogs',
 	'API_CONF',
 	'Individual',
 	'Unit',
-	function($filter, $scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualization, $location, helper, $log, API_CONF, Individual, Unit) {
+	'Auth',
+	function($filter, $scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualization, $location, helper, $log, dialogs, API_CONF, Individual, Unit, Auth) {
+
+	$scope.user = Auth;
+	
+	$scope.userCanSave = true;
 
 	$scope.DatasetsLoaded = [];
 	$scope.TimeSelector = [];
@@ -4829,12 +4839,20 @@ angular.module('pcApp.visualization.controllers.visualization', [
     );
     
     
+	    
+    
 	$scope.visualization.$promise.then(function(metric) {
 //			console.log("DINS $scope.visualization.$promise.then")
 //			console.log(metric);
             //$scope.visualization.language = $scope.visualization.language.id;
             $scope.visualization.language = $scope.visualization.language_id;
-			
+
+			//console.log($scope.location);
+			$scope.locationData = {
+				input: $scope.visualization.location,
+				output: []
+			};
+
 			//console.log($scope.visualization.filter_configuration);
 			//console.log("-------------");
 			//console.log($scope.visualization.filter_configuration);
@@ -5486,6 +5504,30 @@ angular.module('pcApp.visualization.controllers.visualization', [
 		
 		$scope.visualization.language_id = $scope.visualization.language;
 		
+		$scope.visualization.location = $scope.locationData.output[0];
+		//console.log($scope.locationData)
+		
+		var saveErrorCallback = function (err) {
+                var headers = err.headers();
+                if(headers['content-type'] == 'text/html') {
+                    dialogs.error(
+                        "Internal Server Error",
+                        "Please contact the Policy Compass Administrators.");
+                }
+                if(headers['content-type'] == 'application/json') {
+                    var data = err.data;
+                    var message = '';
+
+                    for(var key in data) {
+                        message += '<b>' + key + '</b>' + ': ' + data[key] + '<br />';
+                    }
+                    dialogs.error(
+                        "Error",
+                        message);
+                }
+            };
+          
+        /*  
 		Visualization.update($scope.visualization,function(value, responseHeaders){
 				$location.path('/visualizations/' + value.id);
 			},
@@ -5494,7 +5536,14 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	            //console.log(err.data)
 			}
 			);
-
+		*/
+		
+		Visualization.update($scope.visualization,function(value, responseHeaders){
+				$location.path('/visualizations/' + value.id);
+			},saveErrorCallback
+			);		
+		
+		
 		/*
 		var svgString = new XMLSerializer().serializeToString(document.querySelector('svg'));
 		var canvas = document.getElementById("canvas");
@@ -5635,20 +5684,30 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $lo
 	'$location', 
 	'VisualizationsControllerHelper',
 	'$log', 
+	'dialogs',
 	'API_CONF',
 	'Individual',
 	'Unit',
 	'Auth',
-function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualization, $location, helper, $log, API_CONF, Individual, Unit, Auth) {
+function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualization, $location, helper, $log, dialogs, API_CONF, Individual, Unit, Auth) {
 
 	$scope.user = Auth;
-
+	
+	$scope.userCanSave = false;
 	if(!$scope.user.state.loggedIn) 
 	{
-		$location.path("/login")
+		$scope.userCanSave = false;
     }
     else 
-    {		
+    {	
+    	$scope.userCanSave = true;
+    }	
+    
+	$scope.locationData = {
+				input: '',
+				output: []
+			};
+			    
 		$scope.DatasetsLoaded = [];
 		$scope.TimeSelector = [];
 		$scope.scaleColor='';
@@ -6088,7 +6147,31 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualiza
 			
 			
 			$scope.visualization.language_id = $scope.visualization.language;
+
+			$scope.visualization.location = $scope.locationData
 			
+			var saveErrorCallback = function (err) {
+                var headers = err.headers();
+                if(headers['content-type'] == 'text/html') {
+                    dialogs.error(
+                        "Internal Server Error",
+                        "Please contact the Policy Compass Administrators.");
+                }
+                if(headers['content-type'] == 'application/json') {
+                    var data = err.data;
+                    var message = '';
+
+                    for(var key in data) {
+                        message += '<b>' + key + '</b>' + ': ' + data[key] + '<br />';
+                    }
+                    dialogs.error(
+                        "Error",
+                        message);
+                }
+            };
+            
+           
+			/*
 			Visualization.save($scope.visualization,function(value, responseHeaders){
 					$location.path('/visualizations/' + value.id);
 				},
@@ -6096,7 +6179,13 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualiza
 		            throw { message: err.data};
 				}
 				);  
+			*/
 			
+			Visualization.save($scope.visualization,function(value, responseHeaders){
+					$location.path('/visualizations/' + value.id);
+				},saveErrorCallback
+				);
+							
 		};
 	
 	
@@ -6104,7 +6193,7 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualiza
 		$scope.metricsFilter = $scope.ListMetricsFilter;
 	
 		//$scope.rePlotGraph();
-	}
+	
 }])
 
 

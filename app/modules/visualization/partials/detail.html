@@ -2,6 +2,14 @@
 	<div class="content-header">
 		<h1 class="fonticon fonticon-visualisation">{{ visualization.title }}</h1>
 		<div class="pc-visualization-formcontrols">
+			
+<!--
+<edit-buttons 
+data-userpath="{{visualization.creator_path}}" 
+data-editurl="#!/visualizations/{{visualization.id}}/edit"                
+data-deletefunction="deleteVisualization(visualization)">
+</edit-buttons>
+-->
 			<div class="button-group">
 				<a type="button" class="btn btn-primary btn-create" href="#!/visualizations/{{ visualization.id }}/edit">Edit</a>
 				
@@ -99,6 +107,12 @@
     		<div class="field-label">Language</div>
     		<div class="field-content"><span ng-if="visualization.language_id" resolve-language id="visualization.language_id"></span></div>
   		</div>
+
+		<div class="form-item" ng-if="visualization.location">
+    		<div class="field-label">Location</div>
+    		<div class="field-content"><span ng-if="visualization.location" resolve-individual id="visualization.location"></span></div>
+  		</div>
+  		  		
 	</div>
 </div>
 
