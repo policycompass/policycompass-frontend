@@ -28,10 +28,11 @@ angular.module('pcApp.visualization.services.visualization',[
 .factory('Dataset',  ['$resource', 'API_CONF', function($resource, API_CONF) {
     // Get the base URL from the configuration
 	//var url = "/api/v1/datasetmanager/datasets/:id";
-	var url = API_CONF.DATASETS_MANAGER_URL + "/datasets/:id";
+	var url = API_CONF.DATASETS_MANAGER_URL + "/datasets/:id?time_resolution=:time_resolution";
 	var Dataset = $resource(url,
 		{
-			id: "@id"
+			id: "@id",
+			time_resolution:"@time_resolution"
 		},
         {
             // Add support for update

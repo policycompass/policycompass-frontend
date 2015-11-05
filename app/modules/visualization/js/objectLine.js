@@ -375,7 +375,10 @@ policycompass.viz.line = function(options)
 						var arrayObjDate = obj[i].split("-");
 						//valuesX_day.push(("01/"+obj[i]));
 						//valuesX_day.push((arrayObjDate[0]+"-01-"+arrayObjDate[1]));
-						valuesX_day.push((obj[i])+"-01");
+						//valuesX_day.push((obj[i])+"-01");
+						
+						valuesX_day.push(("01-"+arrayObjDate[1]+"-"+arrayObjDate[0]));
+						
 						//valuesX_day.push((obj[i])+"/01");
 						
 					}
@@ -398,7 +401,7 @@ policycompass.viz.line = function(options)
    			self.lengthArrayXaxesLabel = arrayXaxesLabel.length;
 //   			console.log(self.lengthArrayXaxesLabel); 
 		});
-		
+
 		//console.log("--------------");
 		//console.log(self.arrayMaxVy);
 		//console.log(self.arrayMinVy);
@@ -795,15 +798,25 @@ return 0;}
 		}
 		else
 		{
-			var yAxis = d3.svg.axis()
-	    		.scale(self.y)
-	    		//.scale(self.yArray)
-	    		//.orient("left")
-	    		//.orient("right")
-	    		.orient(orientText)
-	    		//.tickFormat(d3.format("."+formatdecimal+"s"))
-	    		.tickFormat(d3.format(".2s"))
-	    		;
+			if (self.maxVy<100)
+			{
+				var yAxis = d3.svg.axis()
+		    		.scale(self.y)
+		    		.orient(orientText)
+		    		;				
+			}
+			else
+			{
+				var yAxis = d3.svg.axis()
+		    		.scale(self.y)
+		    		//.scale(self.yArray)
+		    		//.orient("left")
+		    		//.orient("right")
+		    		.orient(orientText)
+		    		//.tickFormat(d3.format("."+formatdecimal+"s"))
+		    		.tickFormat(d3.format(".2s"))
+		    		;
+	    	}
 		}
 		var lineFunction = d3.svg.line()		
     		.x(function(d,i) {
@@ -857,7 +870,14 @@ return 0;}
 						//resX=resX.replace("-","-01-");
 						//resX=resX.replace("/","/01/");
 						//resX="01/"+resX;
-						resX=resX+"/01";
+						//console.log("resX="+resX);
+						var arrayObjDate = resX.split("-");
+						
+						//resX=resX+"/01";
+						resX="01/"+arrayObjDate[1]+"/"+arrayObjDate[0];
+						
+						//console.log("resX="+resX);
+						
 					}
 					//else if (resX.length==9)
 					else if (self.resolution=='day')
@@ -1515,9 +1535,17 @@ return 0;}
 							else if (self.resolution=='month')
 							{
 								//resX="01/"+resX;
-								resX=resX+"/01";
+								//resX=resX+"/01";
 								//resX=resX.replace("-","-01-");
 								//resX=resX.replace("/","/01/");
+								
+								var arrayObjDate = resX.split("-");
+						
+								//resX=resX+"/01";
+								resX="01/"+arrayObjDate[1]+"/"+arrayObjDate[0];
+						
+								//console.log("resX="+resX);
+								
 							}
 							//else if (resX.length==9)
 							else if (self.resolution=='day')
@@ -2180,9 +2208,17 @@ return 0;}
 								else if (self.resolution=='month')
 								{
 									//resX="01/"+resX;
-									resX=resX+"/01";
+									//resX=resX+"/01";
 									//resX=resX.replace("-","-01-");
 									//resX=resX.replace("/","/01/");
+
+									var arrayObjDate = resX.split("-");
+						
+									//resX=resX+"/01";
+									resX="01/"+arrayObjDate[1]+"/"+arrayObjDate[0];
+						
+									//console.log("resX="+resX);									
+									
 								}
 								//else if (resX.length==9)
 								else if (self.resolution=='day')

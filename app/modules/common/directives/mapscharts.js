@@ -51,7 +51,6 @@ angular.module('pcApp.common.directives.mapscharts', [
 				}				
             });
                         
-
             $scope.$watch('showZoom', function(showZoom) {
 				if ($scope.numbers1)
 				{
@@ -119,7 +118,23 @@ angular.module('pcApp.common.directives.mapscharts', [
 				}
 					
 				//console.log("$scope.iddiv="+$scope.iddiv);
-						
+				var initialZoomMap = 2;
+				if (document.getElementById('initialZoom').value>0)
+				{
+					initialZoomMap = document.getElementById('initialZoom').value;
+				}
+				
+				if (document.getElementById('initialLat').value)
+				{
+					var initialLat = document.getElementById('initialLat').value;
+				}
+				
+				if (document.getElementById('initialLng').value)
+				{
+					var initialLng = document.getElementById('initialLng').value;
+				}
+
+													
 				if ($scope.numbers1)
 				{
 
@@ -172,6 +187,9 @@ angular.module('pcApp.common.directives.mapscharts', [
 						'scaleColor' : $scope.scaleColor,
 						'projection': $scope.projection,
 						'showZoom': $scope.showZoom,
+						'initialLat': initialLat,
+						'initialLng': initialLng,
+						'initialZoom': initialZoomMap,
 						'showBubbles': $scope.showBubbles,
 						'showMovement': $scope.showMovemen,
 						'data': $scope.dataset,
@@ -203,6 +221,9 @@ angular.module('pcApp.common.directives.mapscharts', [
         '<div ng-hide="small" id="showFilterContainer" class="showFilterContainer">' +
         '<div id="showFilter" class="showFilter on_check">' +  
         '<label class="checkbox-inline"><input ng-model="showLegend" type="checkbox" name="showLegend" class="checkbox filterCheckBox"> Show Legend</label>' +
+        '<input type="hidden" name="initialZoom" id="initialZoom" value="2">' +
+        '<input type="hidden" name="initialLat" id="initialLat" value="49.009952">' +
+        '<input type="hidden" name="initialLng" id="initialLng" value="2.548635">' +        
         '<label class="checkbox-inline"><input ng-model="showZoom" type="checkbox" name="showZoom" class="checkbox filterCheckBox"> Enable Zoom</label>' +
         '<label class="checkbox-inline"><input ng-model="showBubbles" type="checkbox" name="showBubbles" class="checkbox filterCheckBox"> View as bubble marker</label>' +        
         '<label ng-show="showLegend" class="checkbox-inline">'+
