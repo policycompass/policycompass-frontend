@@ -5614,6 +5614,7 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualiza
 	$scope.user = Auth;
 	
 	$scope.userCanSave = false;
+	
 	if(!$scope.user.state.loggedIn) 
 	{
 		$scope.userCanSave = false;
