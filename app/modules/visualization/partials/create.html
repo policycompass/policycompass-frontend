@@ -43,7 +43,9 @@
 				<canvas ng-show="false" id="canvas" width="800" height="400"></canvas>
 				<div id="png-container"></div>	
 				<div class="button-group">	
-					<button type="submit" data-intro="Save data" data-position="top" ng-disabled="visualizationForm.$invalid || !userCanSave" class="btn btn-default btn-save" ng-click="createVisualization(ListMetricsFilter)"><span ng-hide="user.state.loggedIn">Login to </span>Save</button>				
+					<button ng-if="mode == 'create'" type="submit" data-intro="Save data" data-position="top" ng-disabled="visualizationForm.$invalid || !userCanSave" class="btn btn-default btn-save" ng-click="createVisualization(ListMetricsFilter)"><span ng-hide="user.state.loggedIn">Login to </span>Save</button>				
+					<button ng-if="mode == 'edit'" type="submit" data-intro="Save data" data-position="top" ng-disabled="visualizationForm.$invalid || !userCanSave" class="btn btn-default btn-save" ng-click="createVisualization(ListMetricsFilter)"><span ng-hide="user.state.loggedIn">Login to </span>Save <span ng-hide="user.state.userPath==visualization.creator_path"> a copy</button>
+					
 					<button type="submit" data-intro="Revert data" data-position="top" class="btn btn-default btn-revert" ng-click="revertVisualization()">Revert</button>
 					<button data-intro="Helps you to configure datasets with this visualisation" data-position="top" type="submit" class="btn btn-default btn-adddataset" id="modaladddataset" ng-click="showModal('datasets')">Configure Datasets</button>
 					<button ng-show="isSelectedSon('graph_line') && ListMetricsFilter.length>0" data-intro="Helps you to link this visualisation with events" data-position="top"  type="submit" class="btn btn-primary btn-adddevent" id="addHEbutton" ng-click="showModal('events')">Link Events</button>
@@ -57,7 +59,9 @@
 					<button type="button" data-intro="Plot data as pie chart" data-position="top" ng-hide="!isSelectedParent(2)" ng-disabled="!isSelectedParent(2)" ng-class="{'btn btn-default':!isSelectedSon('graph_pie'),'btn btn-info':isSelectedSon('graph_pie')}" ng-click="selectTabParent(2);selectTabSon('graph_pie');rePlotGraph();"  class="btn-pie">Pie</button>
 					<button type="button" data-intro="Plot data as bars chart" data-position="top" ng-hide="!isSelectedParent(2)" ng-disabled="!isSelectedParent(2)" ng-class="{'btn btn-default':!isSelectedSon('graph_bars'),'btn btn-info':isSelectedSon('graph_bars')}" ng-click="selectTabParent(2);selectTabSon('graph_bars');rePlotGraph();"  class="btn-bars">Bars</button>
 		        </div>
-	            <span class="helpbutton" ></span>		
+		        <!--
+	            <span class="helpbutton" ></span>
+	            -->		
         </div>
     </div>
 
@@ -326,7 +330,7 @@
 		                </div>
 						-->
 						<div class="form-group">
-                        	<label for="policy_domains_data">Policy Domains</label>
+                        	<label for="policy_domains_data">Policy Domains *</label>
                         	<div id="policy_domains_data" class="reference-selection pc-reference-selection-full"
                             	 resource="PolicyDomain"
                              	selection-mode="multiple"

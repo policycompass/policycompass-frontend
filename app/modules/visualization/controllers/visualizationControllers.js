@@ -4432,7 +4432,10 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	'dialogs',
 	'$log', 
 	'API_CONF',
-	function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualization, VisualizationByDataset, VisualizationByEvent, FCMByIndividualSelected, FCMByDatasetSelected, $location, helper, dialogs, $log, API_CONF) {
+	'Auth',
+	function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualization, VisualizationByDataset, VisualizationByEvent, FCMByIndividualSelected, FCMByDatasetSelected, $location, helper, dialogs, $log, API_CONF, Auth) {
+	
+	$scope.user = Auth;
 	
 	//this.message = "Hello VisualizationsDetailController";
 	//console.log("Hello VisualizationsDetailController");
@@ -5542,12 +5545,40 @@ angular.module('pcApp.visualization.controllers.visualization', [
             };
           
 
-		
-		Visualization.update($scope.visualization,function(value, responseHeaders){
-				$location.path('/visualizations/' + value.id);
-			},saveErrorCallback
-			);		
-		
+		if ($scope.user.state.userPath!=$scope.visualization.creator_path)
+		{
+			delete $scope.visualization.id;
+			delete $scope.visualization.self;
+			delete $scope.visualization.creator_path;
+			delete $scope.visualization.created_at;
+			delete $scope.visualization.updated_at;
+			
+			$cntHE=0;
+			for (i = 0; i < $scope.visualization.historical_events_in_visualization.length; i++) { 
+    			if ($scope.visualization.historical_events_in_visualization[i].historical_event>0)
+    			{
+    				$cntHE = $cntHE +1;
+    			}
+			}
+			if ($cntHE==0)
+			{
+				delete $scope.visualization.historical_events_in_visualization;
+			}
+			
+			
+			Visualization.save($scope.visualization,function(value, responseHeaders){
+					$location.path('/visualizations/' + value.id);
+				},saveErrorCallback
+				);
+	
+		}
+		else
+		{		
+			Visualization.update($scope.visualization,function(value, responseHeaders){
+					$location.path('/visualizations/' + value.id);
+				},saveErrorCallback
+				);		
+		}
 		
 		
 	};
