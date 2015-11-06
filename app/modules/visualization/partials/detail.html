@@ -3,21 +3,22 @@
 		<h1 class="fonticon fonticon-visualisation">{{ visualization.title }}</h1>
 		<div class="pc-visualization-formcontrols">
 			
-<!--
-<edit-buttons 
-data-userpath="{{visualization.creator_path}}" 
-data-editurl="#!/visualizations/{{visualization.id}}/edit"                
-data-deletefunction="deleteVisualization(visualization)">
-</edit-buttons>
--->
+
+			<edit-buttons 
+			data-userpath="{{visualization.creator_path}}" 
+			data-editurl="#!/visualizations/{{visualization.id}}/edit"                
+			data-deletefunction="deleteCurrentVisualisation">
+			</edit-buttons>
+
 			<div class="button-group">
-				<a type="button" class="btn btn-primary btn-create" href="#!/visualizations/{{ visualization.id }}/edit">Edit</a>
-				
-				<a type="button" class="btn btn-primary btn-addCausalModel" href="#!/models/create">Create Causal Model</a>
-				
+				<!--
+				<a type="button" class="btn btn-primary btn-create" href="#!/visualizations/{{ visualization.id }}/edit">Edit</a>												
 				<a type="button" class="btn btn-danger btn-clear" ng-click="deleteVisualization(visualization)">Delete</a>
+				-->
+				<a type="button" class="btn btn-primary btn-addCausalModel" href="#!/models/create">Create Causal Model</a>
+				<a type="button" class="btn btn-share" ng-click="share=!share" ng-class="{active: share}">Share</a>	
       		</div>
-      		<a type="button" class="btn btn-share" ng-click="share=!share" ng-class="{active: share}">Share</a>		
+      			
       	</div>
         <div ng-class="{active: share}" class="share-window" id="share-window" ng-init="e=1">
     		<ul class="share-menu">

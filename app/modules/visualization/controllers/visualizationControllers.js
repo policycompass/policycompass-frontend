@@ -4672,12 +4672,6 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	
 	//$scope.visualization.views_count = $scope.visualization.views_count +1;
 	
-	$scope.deleteVisuItem = function(visualization) {
-		console.log("deleteVisuItem");
-		console.log("id:"+visualization.id);
-		console.log("title:"+visualization.title);
-	};
-
     // Function for deleting the visualization
     $scope.deleteVisualization = function(visualization) {
         // Open a confirmation dialog
@@ -4695,6 +4689,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
         });
     };	
 
+	$scope.deleteCurrentVisualisation = function(){$scope.deleteVisualization($scope.visualization);} 
 
 }])
 
