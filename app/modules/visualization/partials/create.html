@@ -298,31 +298,49 @@
                 			<input type="text" class="form-control" id="keywords" placeholder="Keywords" ng-model="visualization.keywords">
             			</div>
             			
-            			
+            			<!--
             			<div class="form-group" ng-class="{'has-error': visualizationForm.language.$dirty && visualizationForm.language.$invalid}">
                 			<label for="language" class="">Language *</label>
                 			<select class="form-control language-options" model="visualization.language" ng-model="visualization.language" id="language" name="language" required>
 			                </select>
             			</div>
-						
-						
+						-->
+	                    <div class="form-group">
+	                        <label for="language_data">Language *</label>	                        
+	                        <div id="language_data" class="reference-selection pc-reference-selection-full"
+	                             resource="Language"
+	                             selection-mode="single"
+	                             output="visualization.language_data.output"
+	                             input="visualization.language_data.output">
+	                        </div>
+	                    </div>
+
 						<div class="form-group">
-							<label for="location">Location</label>
-							
-							<div id="locationData" class="reference-selection pc-reference-selection-full"
+							<label for="location_data">Location</label>
+							<div id="location_data" class="reference-selection pc-reference-selection-full"
 								resource="Individual"
 								selection-mode="single"
-								output="locationData.output"
-								input="locationData.input"
+								output="visualization.location_data.output"
+								input="visualization.location_data.output"
 								parameters="{ class: 'Country' }">
 							</div>
 						</div>
-						
+						<!--
 						<div class="form-group" ng-class="{'has-error': visualizationForm.policyDomains.$dirty && visualizationForm.policyDomains.$invalid}" >
 		                    <label for="policyDomains">Policy Domains *</label>
 		                    <select multiple class="form-control policydomain-options" id="policyDomains" name="policy-domain" ng-model="visualizationForm.policy_domains" required>
 		                    </select>
-		                </div>						
+		                </div>
+						-->
+						<div class="form-group">
+                        	<label for="policy_domains_data">Policy Domains</label>
+                        	<div id="policy_domains_data" class="reference-selection pc-reference-selection-full"
+                            	 resource="PolicyDomain"
+                             	selection-mode="multiple"
+                             	output="visualization.policy_domains_data.output"
+                             	input="visualization.policy_domains_data.output">
+                        	</div>
+                    	</div>		                
 						
         		    </tab>
                 		    

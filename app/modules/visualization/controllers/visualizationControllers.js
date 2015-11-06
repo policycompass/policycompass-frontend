@@ -4826,6 +4826,22 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	$scope.visualization = Visualization.get({id: $routeParams.visualizationId},
         function(visualization) {
         	//console.log("---Visualization.get----");
+			
+			$scope.visualization.language_data = {
+				input: visualization.language_id,
+				output: [visualization.language_id]
+			};			
+			
+			$scope.visualization.location_data = {
+				input: visualization.location,
+				output: [visualization.location]
+			};
+			
+ 			$scope.visualization.policy_domains_data = {
+                    input: visualization.policy_domains,
+                    output: visualization.policy_domains
+            };
+                    	
         },
         function(error) {
             //alert(error.data.message);
@@ -4843,10 +4859,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
             $scope.visualization.language = $scope.visualization.language_id;
 
 			//console.log($scope.location);
-			$scope.locationData = {
-				input: $scope.visualization.location,
-				output: []
-			};
+			
 
 			//console.log($scope.visualization.filter_configuration);
 			//console.log("-------------");
@@ -5497,10 +5510,16 @@ angular.module('pcApp.visualization.controllers.visualization', [
 		
 		//console.log($scope.visualization);
 		
-		$scope.visualization.language_id = $scope.visualization.language;
+		//$scope.visualization.language_id = $scope.visualization.language;
+		$scope.visualization.language_id = $scope.visualization.language_data.output[0];
+		//console.log($scope.visualization.language_id);
 		
-		$scope.visualization.location = $scope.locationData.output[0];
-		//console.log($scope.locationData)
+		$scope.visualization.location = $scope.visualization.location_data.output[0];
+		//console.log($scope.visualization.location);
+		
+		$scope.visualization.policy_domains = $scope.visualization.policy_domains_data.output;
+		//console.log($scope.visualization.policy_domains);
+		
 		
 		var saveErrorCallback = function (err) {
                 var headers = err.headers();
@@ -5522,16 +5541,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                 }
             };
           
-        /*  
-		Visualization.update($scope.visualization,function(value, responseHeaders){
-				$location.path('/visualizations/' + value.id);
-			},
-			function(err) {
-	            throw { message: err.data};
-	            //console.log(err.data)
-			}
-			);
-		*/
+
 		
 		Visualization.update($scope.visualization,function(value, responseHeaders){
 				$location.path('/visualizations/' + value.id);
@@ -5539,99 +5549,14 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			);		
 		
 		
-		/*
-		var svgString = new XMLSerializer().serializeToString(document.querySelector('svg'));
-		var canvas = document.getElementById("canvas");
-		var ctx = canvas.getContext("2d");
-		var DOMURL = self.URL || self.webkitURL || self;
-		var img = new Image();		
-		var svg = new Blob([svgString], {type: "image/svg+xml;charset=utf-8"});
-		var imgurl = DOMURL.createObjectURL(svg);
-		//console.log(imgurl);
-		img.onload = function() {
-    		ctx.drawImage(img, 0, 0);
-    		
-    		var png = canvas.toDataURL("image/png");
-    		//document.querySelector('#png-container').innerHTML = '<img src="'+png+'"/>';
-    		//console.log(png);
-    		$scope.visualization.imageurlpng = png;
-    		
-    		console.log($scope.visualization.imageurlpng);
-    		DOMURL.revokeObjectURL(png);
-			
-			console.log($scope.visualization);
-			
-			Visualization.update($scope.visualization,function(value, responseHeaders){
-				$location.path('/visualizations/' + value.id);
-			},
-			function(err) {
-	            throw { message: err.data};
-	            //console.log(err.data)
-			}
-			);    	
-			
-    		
-		};
-		img.src = imgurl;
-		*/
+		
 	};
 
 	
 	
 	
 	
-	/*
-	$scope.eventsToPlot = [];
 	
-	var datosInT =  {
-				id : 1,
-				title : 'test',
-				startDate : '2014-06-30T22:00:00Z',
-				endDate : '2014-07-02T22:00:00Z',
-				desc : 'hooola'
-			}
-	
-	$scope.eventsToPlot.push(datosInT);		
-	*/
-/*	
-	$scope.ListMetricsFilter = [];
-	$scope.metricsFilter = $scope.ListMetricsFilter;
-	
-	$scope.MetricSelectediId_ = [];
-	$scope.MetricSelectediIndex_ = [];
-	$scope.MetricSelectorLabelColumn_ = [];
-	$scope.MetricSelectorDataColumn_ = [];
-	$scope.MetricSelectorGroupingData_ = [];
-	*/
-	/*
-	$scope.idHE = [];
-	$scope.titleHE = [];
-	$scope.startDateHE = [];
-	$scope.endDateHE = [];
-	$scope.descHE = [];
-	*/	
-/*
-	$scope.MetricSelectediId_[1]=1;
-	$scope.MetricSelectediIndex_[1]=1;
-	$scope.MetricSelectorLabelColumn_[1]='to';
-	$scope.MetricSelectorDataColumn_[1] ='value';
-	$scope.MetricSelectorGroupingData_[1] = 'grouping column';
-	selectedText = " ";
-	var myObject = {
-		'id':1,
-		'name':'test',
-		'column':'to',
-		'value':'value',
-		'group':'grouping column'
-	};
-	
-	//console.log("a1");					
-	$scope.ListMetricsFilter.push(myObject);	
-	*/
-
-	
-	//$scope.rePlotGraph();
-	//$scope.rePlotGraph();
 			
 }])
 
@@ -5698,11 +5623,7 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualiza
     	$scope.userCanSave = true;
     }	
     
-	$scope.locationData = {
-				input: '',
-				output: []
-			};
-			    
+             
 		$scope.DatasetsLoaded = [];
 		$scope.TimeSelector = [];
 		$scope.scaleColor='';
@@ -5775,7 +5696,22 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualiza
 		
 		
 		$scope.visualization = {};
-	
+
+			$scope.visualization.language_data = {
+				input: '',
+				output: []
+			};			
+			
+			$scope.visualization.location_data = {
+				input: '',
+				output: []
+			};
+			
+ 			$scope.visualization.policy_domains_data = {
+                    input: '',
+                    output: []
+            };
+            	
 		this.historicalevent_he_id = '';
 		this.historicalevent_he_title = '';
 		this.historicalevent_he_startdate = '';
@@ -6110,40 +6046,19 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualiza
 			
 			$scope.visualization.datasets_in_visualization = dataMetrics;
 			
-			/*
-			var svgString = new XMLSerializer().serializeToString(document.querySelector('svg'));
-			var canvas = document.getElementById("canvas");
-			var ctx = canvas.getContext("2d");
-			var DOMURL = self.URL || self.webkitURL || self;
-			var img = new Image();		
-			var svg = new Blob([svgString], {type: "image/svg+xml;charset=utf-8"});
-			var imgurl = DOMURL.createObjectURL(svg);
-			//console.log(imgurl);
-			img.onload = function() {
-	    		ctx.drawImage(img, 0, 0);
-	    		
-	    		var png = canvas.toDataURL("image/png");
-	    		//document.querySelector('#png-container').innerHTML = '<img src="'+png+'"/>';
-	    		//console.log(png);
-	    		$scope.visualization.imageurlpng = png;
-	    		DOMURL.revokeObjectURL(png);
-	    		
-				Visualization.save($scope.visualization,function(value, responseHeaders){
-					$location.path('/visualizations/' + value.id);
-				},
-				function(err) {
-		            throw { message: err.data};
-				}
-				);    		
-				
-			};
-			img.src = imgurl;		
-			*/
 			
 			
-			$scope.visualization.language_id = $scope.visualization.language;
-
-			$scope.visualization.location = $scope.locationData
+			
+			//$scope.visualization.language_id = $scope.visualization.language;
+			
+			$scope.visualization.language_id = $scope.visualization.language_data.output[0];
+			//console.log($scope.visualization.language_id);
+		
+			$scope.visualization.location = $scope.visualization.location_data.output[0];
+			//console.log($scope.visualization.location);
+		
+			$scope.visualization.policy_domains = $scope.visualization.policy_domains_data.output;
+			//console.log($scope.visualization.policy_domains);
 			
 			var saveErrorCallback = function (err) {
                 var headers = err.headers();
@@ -6166,20 +6081,12 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualiza
             };
             
            
-			/*
-			Visualization.save($scope.visualization,function(value, responseHeaders){
-					$location.path('/visualizations/' + value.id);
-				},
-				function(err) {
-		            throw { message: err.data};
-				}
-				);  
-			*/
-			
+				
 			Visualization.save($scope.visualization,function(value, responseHeaders){
 					$location.path('/visualizations/' + value.id);
 				},saveErrorCallback
 				);
+			
 							
 		};
 	
