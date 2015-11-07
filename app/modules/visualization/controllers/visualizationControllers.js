@@ -5644,18 +5644,6 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualiza
 
 	$scope.user = Auth;
 	
-	$scope.userCanSave = false;
-	
-	if(!$scope.user.state.loggedIn) 
-	{
-		$scope.userCanSave = false;
-    }
-    else 
-    {	
-    	$scope.userCanSave = true;
-    }	
-    
-             
 		$scope.DatasetsLoaded = [];
 		$scope.TimeSelector = [];
 		$scope.scaleColor='';
