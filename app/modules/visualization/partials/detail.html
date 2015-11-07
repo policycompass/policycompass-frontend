@@ -2,14 +2,26 @@
 	<div class="content-header">
 		<h1 class="fonticon fonticon-visualisation">{{ visualization.title }}</h1>
 		<div class="pc-visualization-formcontrols">
+
+			<edit-buttons 
+			data-userpath="{{visualization.creator_path}}" 
+			data-editurl="#!/visualizations/{{visualization.id}}/edit"                
+			data-deletefunction="deleteCurrentVisualisation">
+			</edit-buttons>
+			
 			<div class="button-group">
-				<a type="button" class="btn btn-primary btn-create" href="#!/visualizations/{{ visualization.id }}/edit">Edit</a>
-				
-				<a type="button" class="btn btn-primary btn-addCausalModel" href="#!/models/create">Create Causal Model</a>
-				
+				<!--
+				<a type="button" class="btn btn-primary btn-create" href="#!/visualizations/{{ visualization.id }}/edit">Edit</a>												
 				<a type="button" class="btn btn-danger btn-clear" ng-click="deleteVisualization(visualization)">Delete</a>
+				-->				
+				<a type="button" class="btn btn-primary btn-addCausalModel" href="#!/models/create">Create Causal Model</a>
+				<a type="button" class="btn btn-share" ng-click="share=!share" ng-class="{active: share}">Share</a>	
       		</div>
-      		<a type="button" class="btn btn-share" ng-click="share=!share" ng-class="{active: share}">Share</a>		
+      		
+      		<div nf-if="user.state.loggedIn" ng-show="!user.state.userPath.isAdmin" class="button">
+				<a type="button" ng-hide="user.state.userPath==visualization.creator_path" class="btn btn-primary btn-create" href="#!/visualizations/{{ visualization.id }}/edit">Edit</a>
+			</div>
+      			
       	</div>
         <div ng-class="{active: share}" class="share-window" id="share-window" ng-init="e=1">
     		<ul class="share-menu">
@@ -67,9 +79,16 @@
 <div class="metadata metadata-event"> 
 
 
-	<div class="form-group form-group-keywords" ngshow="visualization.keywords">
+	<div class="form-group form-group-keywords" ng-show="visualization.keywords">
   		<div class="field-label">Keywords</div>
   		<div class="field-content">{{visualization.keywords}}</div>
+	</div>
+
+	<div class="form-group form-group-keywords" ng-show="visualization.policy_domains.length>0">
+  		<div class="field-label">Policy domains</div>
+  		<div class="field-content">
+			<div ng-repeat="policydomain in visualization.policy_domains"><span ng-if="policydomain" resolve-policydomain id="policydomain"></span></div>
+		</div>
 	</div>
 
 	
@@ -80,7 +99,7 @@
     		<div class="field-content">{{visualization.user_id}}</div>
   		</div>
   		-->
-		<div class="form-item" ngshow="visualization.created_at">
+		<div class="form-item" ng-show="visualization.created_at">
     		<div class="field-label">Added</div>
     		<div class="field-content">{{ visualization.created_at | date:'longDate' }}</div>
   		</div>
@@ -99,6 +118,12 @@
     		<div class="field-label">Language</div>
     		<div class="field-content"><span ng-if="visualization.language_id" resolve-language id="visualization.language_id"></span></div>
   		</div>
+
+		<div class="form-item" ng-if="visualization.location">
+    		<div class="field-label">Location</div>
+    		<div class="field-content"><span ng-if="visualization.location" resolve-individual id="visualization.location"></span></div>
+  		</div>
+  		  		
 	</div>
 </div>
 
