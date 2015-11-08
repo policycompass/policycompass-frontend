@@ -25,6 +25,7 @@ The strength of relationships can be presented as weights. For example, if sourc
 				<a ng-if="mode == 'edit' && isDisabled == false" type="button" class="btn btn-primary btn-save" ng-click="updateModel()">Save Model</a>
 				<a ng-if="mode == 'create'" type="button" class="btn btn-primary btn-save" ng-click="saveModel()" disabled>Save As Model</a>
 				<a ng-if="mode == 'edit'" type="button" class="btn btn-primary btn-save" ng-click="saveModel()">Save As Model</a>
+				<button type="submit" data-intro="Cancel" data-position="top" class="btn btn-default btn-danger" ng-click="cancelModel()">Cancel</button>
 			</div>
 		</div>
 	</div>

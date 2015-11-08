@@ -309,6 +309,25 @@ else
         });
     };
 
+    	$scope.cancelModel = function() {
+    		
+			// Open a confirmation dialog
+        	var dlg = dialogs.confirm(
+            	"Are you sure?",
+            	"Do you want to exit without save this causal model?");
+        	dlg.result.then(function () {
+
+				if ($scope.mode=='create')
+				{
+					window.history.back();
+				}
+				else{
+					window.history.back();
+				}
+					            
+        	});    		
+    	}
+    
     $scope.updateModel = function(){
 		var jsonModel = {model: FCMModelsDetail.getModels(), userID: "1",
 			concepts: ConceptsDetail.getConcepts(), connections: AssociationsDetail.getAssociations()};
