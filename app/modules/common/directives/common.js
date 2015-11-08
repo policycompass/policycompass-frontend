@@ -14,6 +14,43 @@ angular.module('pcApp.common.directives.common', [
         });
     };
 })
+
+.directive('editButtons', ['Auth', function (Auth) {
+    return {
+        restrict: 'E',
+        rep1ace: true,
+        scope:{
+            userpath: '@',
+            editurl:'@',
+            deletefunction: '='
+        },
+        template: '\
+        <div class="button-group">\
+        <a type="button" ng-if="allowEdit()" class="btn btn-primary btn-create" href="{{editurl}}">Edit</a>\
+        <a type="button" ng-if="allowEdit()" class="btn btn-danger" ng-click="deletefunction();">Delete</a></div>\
+        </div>',
+        link: function(scope){
+
+            var isOwner = function () {
+                return Auth.state.userPath === scope.userpath;
+            };
+
+            var isAdmin = function () {
+                if(Auth.state.isAdmin){
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            };
+
+            scope.allowEdit = function () {
+                return (isAdmin() || isOwner());
+            };
+        }
+    };
+}])
+
 .directive('customTabs', function () {
     return {
         restrict: 'A',

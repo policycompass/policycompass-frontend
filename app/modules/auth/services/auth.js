@@ -8,6 +8,7 @@ angular.module('pcApp.auth.services.auth', [
         state: {
             loggedIn: undefined,
             userData: undefined,
+            userPath: undefined,
             isAdmin: undefined
         },
 
@@ -24,6 +25,7 @@ angular.module('pcApp.auth.services.auth', [
                     $rootScope.$apply(function () {
                         Auth.state.loggedIn = true;
                         Auth.state.userData = userData;
+                        Auth.state.userPath = userPath;
                         Auth.state.isAdmin = isAdmin;
 
                         $http.defaults.headers.common["X-User-Token"] = token;
@@ -38,6 +40,7 @@ angular.module('pcApp.auth.services.auth', [
                 $rootScope.$apply(function () {
                     Auth.state.loggedIn = false;
                     Auth.state.userData = undefined;
+                    Auth.state.userPath = undefined;
                     Auth.state.isAdmin = false;
 
                     delete $http.defaults.headers.common["X-User-Token"];

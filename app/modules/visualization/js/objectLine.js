@@ -375,7 +375,10 @@ policycompass.viz.line = function(options)
 						var arrayObjDate = obj[i].split("-");
 						//valuesX_day.push(("01/"+obj[i]));
 						//valuesX_day.push((arrayObjDate[0]+"-01-"+arrayObjDate[1]));
-						valuesX_day.push((obj[i])+"-01");
+						//valuesX_day.push((obj[i])+"-01");
+						
+						valuesX_day.push(("01-"+arrayObjDate[1]+"-"+arrayObjDate[0]));
+						
 						//valuesX_day.push((obj[i])+"/01");
 						
 					}
@@ -398,7 +401,7 @@ policycompass.viz.line = function(options)
    			self.lengthArrayXaxesLabel = arrayXaxesLabel.length;
 //   			console.log(self.lengthArrayXaxesLabel); 
 		});
-		
+
 		//console.log("--------------");
 		//console.log(self.arrayMaxVy);
 		//console.log(self.arrayMinVy);
@@ -795,15 +798,25 @@ return 0;}
 		}
 		else
 		{
-			var yAxis = d3.svg.axis()
-	    		.scale(self.y)
-	    		//.scale(self.yArray)
-	    		//.orient("left")
-	    		//.orient("right")
-	    		.orient(orientText)
-	    		//.tickFormat(d3.format("."+formatdecimal+"s"))
-	    		.tickFormat(d3.format(".2s"))
-	    		;
+			if (self.maxVy<100)
+			{
+				var yAxis = d3.svg.axis()
+		    		.scale(self.y)
+		    		.orient(orientText)
+		    		;				
+			}
+			else
+			{
+				var yAxis = d3.svg.axis()
+		    		.scale(self.y)
+		    		//.scale(self.yArray)
+		    		//.orient("left")
+		    		//.orient("right")
+		    		.orient(orientText)
+		    		//.tickFormat(d3.format("."+formatdecimal+"s"))
+		    		.tickFormat(d3.format(".2s"))
+		    		;
+	    	}
 		}
 		var lineFunction = d3.svg.line()		
     		.x(function(d,i) {
@@ -857,7 +870,14 @@ return 0;}
 						//resX=resX.replace("-","-01-");
 						//resX=resX.replace("/","/01/");
 						//resX="01/"+resX;
-						resX=resX+"/01";
+						//console.log("resX="+resX);
+						var arrayObjDate = resX.split("-");
+						
+						//resX=resX+"/01";
+						resX="01/"+arrayObjDate[1]+"/"+arrayObjDate[0];
+						
+						//console.log("resX="+resX);
+						
 					}
 					//else if (resX.length==9)
 					else if (self.resolution=='day')
@@ -1515,9 +1535,17 @@ return 0;}
 							else if (self.resolution=='month')
 							{
 								//resX="01/"+resX;
-								resX=resX+"/01";
+								//resX=resX+"/01";
 								//resX=resX.replace("-","-01-");
 								//resX=resX.replace("/","/01/");
+								
+								var arrayObjDate = resX.split("-");
+						
+								//resX=resX+"/01";
+								resX="01/"+arrayObjDate[1]+"/"+arrayObjDate[0];
+						
+								//console.log("resX="+resX);
+								
 							}
 							//else if (resX.length==9)
 							else if (self.resolution=='day')
@@ -1652,6 +1680,56 @@ return 0;}
 	      				//$('input[name="posx"]').val(posX);
 						//$('input[name="posy"]').val(posY);		
 	      				//$('#basic-modal-content').modal();
+
+						if (self.modeGraph=='view')
+						{
+							
+						}
+						else
+						{
+							if (self.xaxeformat=='sequence')
+							{
+								
+							}
+							else
+							{
+								var posMouse = d3.mouse(this);
+								var posX = posMouse[0];
+								posX = posX + self.margin.left;
+								var posY = posMouse[1];		
+								var maxPosX = self.width + self.margin.left;
+								var posXinvers = "";
+								if (posX>maxPosX)
+								{					
+									posXinvers = ""
+								}
+								else
+								{
+									if (self.xScale)
+									{
+										posXinvers = self.xScale.invert(posX-self.margin.left);
+										//posXinvers = self.xScaleInversa(posX-self.margin.left);
+										var format = d3.time.format("%m-%d-%Y");
+										posXinvers= format(posXinvers);
+										posXinvers = posXinvers.replace(/-/g,"/");
+									}
+								}			
+								
+								var format = d3.time.format("%m-%d-%Y");
+								var maxDateGraph = format(self.maxDate);
+								maxDateGraph = maxDateGraph.replace(/-/g,"/");
+								
+				      			//$('input[name="startDate"]').val(posXinvers);      			
+				      			$('input[name="startDatePosX"]').val(posXinvers);       			     	
+				      			$('input[name="endDatePosX"]').val(maxDateGraph);
+      							
+      							console.log(posXinvers);
+      							console.log(maxDateGraph);
+      							
+								document.getElementById("addHEbutton").click();	
+							}
+						}
+
 	      				
 	      			})
 	      			;	
@@ -1801,7 +1879,7 @@ return 0;}
 								tooltip.style("opacity",1.0).html("Click over to show "+str);
 							}
 							
-						}
+						}						
 												
       					})
 					.on("mouseout", function() {
@@ -1951,6 +2029,17 @@ return 0;}
 	                		d3.select(this).text(res);
 	                		
                 		}
+                		else
+						{
+							if (self.xaxeformat=='sequence')
+							{
+								
+							}
+							else
+							{
+								document.getElementById("modaladddataset").click();	
+							}
+						}
                 	})  
                 	
 			}
@@ -2119,9 +2208,17 @@ return 0;}
 								else if (self.resolution=='month')
 								{
 									//resX="01/"+resX;
-									resX=resX+"/01";
+									//resX=resX+"/01";
 									//resX=resX.replace("-","-01-");
 									//resX=resX.replace("/","/01/");
+
+									var arrayObjDate = resX.split("-");
+						
+									//resX=resX+"/01";
+									resX="01/"+arrayObjDate[1]+"/"+arrayObjDate[0];
+						
+									//console.log("resX="+resX);									
+									
 								}
 								//else if (resX.length==9)
 								else if (self.resolution=='day')
@@ -2366,6 +2463,53 @@ return 0;}
                     	//document.getElementById("container_graph_6").innerHTML = "";
                     	//self.init();
                     	//self.drawLines(self.linesIn,self.eventsData);	
+                    	
+						if (self.modeGraph=='view')
+						{
+							
+						}
+						else
+						{
+							if (self.xaxeformat=='sequence')
+							{
+								
+							}
+							else
+							{
+								var posMouse = d3.mouse(this);
+								var posX = posMouse[0];
+								posX = posX + self.margin.left;
+								var posY = posMouse[1];		
+								var maxPosX = self.width + self.margin.left;
+								var posXinvers = "";
+								if (posX>maxPosX)
+								{					
+									posXinvers = ""
+								}
+								else
+								{
+									if (self.xScale)
+									{
+										posXinvers = self.xScale.invert(posX-self.margin.left);
+										//posXinvers = self.xScaleInversa(posX-self.margin.left);
+										var format = d3.time.format("%m-%d-%Y");
+										posXinvers= format(posXinvers);
+										posXinvers = posXinvers.replace(/-/g,"/");
+									}
+								}			
+								
+								var format = d3.time.format("%m-%d-%Y");
+								var maxDateGraph = format(self.maxDate);
+								maxDateGraph = maxDateGraph.replace(/-/g,"/");
+								
+				      			//$('input[name="startDate"]').val(posXinvers);      			
+				      			$('input[name="startDatePosX"]').val(posXinvers);       			     	
+				      			$('input[name="endDatePosX"]').val(maxDateGraph);
+				      											
+								document.getElementById("addHEbutton").click();	
+							}
+						}                    	
+                    	
 					})
 					.transition()
 						.attr("r", self.radius)
@@ -2683,7 +2827,7 @@ return 0;}
       			else
       			{
       				
-      			
+      			/*
 				var posMouse = d3.mouse(this);
 				var posX = posMouse[0];
 				var posY = posMouse[1];		
@@ -2716,6 +2860,7 @@ return 0;}
 				//dateToSet = posXinvers;
 				//console.log("dateToSet="+dateToSet);
       			//$('#basic-modal-content').modal();
+      			*/
       			}
       		})      		
 			.append("g")

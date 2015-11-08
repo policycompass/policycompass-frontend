@@ -38,7 +38,7 @@ policycompass.viz.mapLeaflet = function(options)
 	d3.select(window).on('resize', resize);
 	
 	function resize() {
-		//console.log("sssssssss");	
+		//console.log("sssssssss");
 		var maxWidth = self.width;
 		var maxHeight = self.height;
 		self.maxWidth = maxWidth;
@@ -58,10 +58,13 @@ policycompass.viz.mapLeaflet = function(options)
 			windowWidth = maxWidth;
 		}
 		
-		self.windowWidth = windowWidth;
 		
+		self.windowWidth = windowWidth;
+
 		//windowHeight = (500 * windowWidth) / maxWidth;
 		windowHeight = (maxHeight * windowWidth) / maxWidth;
+		
+		
 		
 		document.getElementById('mapPC_'+self.idName).style.width=windowWidth+'px';
 		document.getElementById('mapPC_'+self.idName).style.height=windowHeight+'px';
@@ -71,7 +74,9 @@ policycompass.viz.mapLeaflet = function(options)
 	//document.getElementById('mapPC_'+self.idName).style.bottom='0';
 	//document.getElementById('mapPC_'+self.idName).style.left='0';
 	//document.getElementById('mapPC_'+self.idName).style.right='0';
-	document.getElementById('mapPC_'+self.idName).style.background='black';
+	//document.getElementById('mapPC_'+self.idName).style.background='white';
+	document.getElementById('mapPC_'+self.idName).style.background='#fafafa';
+	
 			
 	}
 	
@@ -93,6 +98,7 @@ policycompass.viz.mapLeaflet = function(options)
 
 	//console.log(self.idName);
 	document.getElementById(self.idName).innerHTML = "<div id='mapPC_"+self.idName+"' class='datamap'></div>";
+	
 	resize();
 	
 	var countriesData = {};
@@ -101,15 +107,22 @@ policycompass.viz.mapLeaflet = function(options)
 	
 
 	//var map = "";
-
-	var initialZoom = 3;
+	if (self.initialZoom>0)
+	{
+		var initialZoom = self.initialZoom;
+	}
+	else
+	{
+		var initialZoom = 2;	
+	}
+	
 		
 	initialZoom = (initialZoom * self.windowWidth) / self.maxWidth;
 	initialZoom = Math.round(initialZoom);
 		
 	//console.log("initialZoom");
 	//console.log(initialZoom);
-		
+	/*
 	L.Map.include({
 			panInsideBounds: function(bounds) {
 				bounds = L.latLngBounds(bounds);
@@ -140,28 +153,61 @@ policycompass.viz.mapLeaflet = function(options)
 				return this.panBy(new L.Point(dx, dy, true));
 			}
 		});
-
+	*/
    // var map = L.map("mapPC_"+self.idName).setView([49.009952, 2.548635], initialZoom);
+		
+		var initialLat = 49.009952;
+		if (self.initialLat!='undefined')
+		{
+			if (self.initialLat)
+			{
+				var initialLat = self.initialLat;	
+			}			
+		}
 
-
+		var initialLng = 2.548635;
+		if (self.initialLng!='undefined')
+		{
+			if (self.initialLng)
+			{
+				var initialLng = self.initialLng;
+			}
+		}
+		//console.log(initialLat);
+		//console.log(initialLng);
+		
 		var map = L.map("mapPC_"+self.idName, {
 		    layers: [
 		    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {        
-		        attribution: 'Policy Compass &copy;',
+		        //attribution: 'Policy Compass &copy;',
 		        noWrap: true
 		    })],
 		    zoom: initialZoom,
-		    center: [49.009952, 2.548635],
+		    center: [initialLat, initialLng],
 		    //center: [49.009952, 0],
-		    minZoom: 2, maxZoom: 8,
-		    //        maxBounds: [[-90.0,-180.0],[90.0,180.0]]
-		    maxBounds: [
-		        [-85.0, -180.0],
-		        [85.0, 180.0]
-		    ]
+		    minZoom: 1, maxZoom: 8,
+		    maxBounds: [[-90.0,-180.0],[90.0,180.0]]
+		    //maxBounds: [[-85.0, -180.0],[85.0, 180.0]]
 		
 		});
-    
+    	
+   		L.control.pan().addTo(map);	
+
+    	L.control.scale().addTo(map);
+
+		map.on('zoomend', function()
+		{
+			document.getElementById('initialZoom').value = map.getZoom();
+			document.getElementById('initialLat').value = map.getCenter().lat;
+			document.getElementById('initialLng').value = map.getCenter().lng;
+		});
+
+		map.on('moveend', function()
+		{
+			document.getElementById('initialLat').value = map.getCenter().lat;
+			document.getElementById('initialLng').value = map.getCenter().lng;
+		});
+    	
 		if (!self.showZoom)
 		{
 			map.touchZoom.disable();
