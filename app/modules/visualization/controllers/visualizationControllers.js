@@ -5543,9 +5543,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
                         message);
                 }
             };
-          
 
-		if ($scope.user.state.userPath!=$scope.visualization.creator_path)
+		if (($scope.user.state.userPath!=$scope.visualization.creator_path) && ($scope.user.state.isAdmin!=true))
 		{
 			delete $scope.visualization.id;
 			delete $scope.visualization.self;
@@ -5570,14 +5569,14 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					$location.path('/visualizations/' + value.id);
 				},saveErrorCallback
 				);
-	
 		}
 		else
-		{		
+		{
+					
 			Visualization.update($scope.visualization,function(value, responseHeaders){
 					$location.path('/visualizations/' + value.id);
 				},saveErrorCallback
-				);		
+				);
 		}
 		
 		

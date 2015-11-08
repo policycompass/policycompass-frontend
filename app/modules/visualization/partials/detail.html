@@ -18,7 +18,7 @@
 				<a type="button" class="btn btn-share" ng-click="share=!share" ng-class="{active: share}">Share</a>	
       		</div>
       		
-      		<div nf-if="user.state.loggedIn" ng-show="!user.state.userPath.isAdmin" class="button">
+      		<div nf-if="user.state.loggedIn" ng-show="!user.state.isAdmin" class="button">
 				<a type="button" ng-hide="user.state.userPath==visualization.creator_path" class="btn btn-primary btn-create" href="#!/visualizations/{{ visualization.id }}/edit">Edit</a>
 			</div>
       			
