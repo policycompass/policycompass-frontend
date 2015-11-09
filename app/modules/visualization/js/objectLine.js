@@ -394,7 +394,7 @@ policycompass.viz.line = function(options)
 						//strDatTmp = strDatTmp.replace("-","/");
 						//console.log(strDatTmp);
 						var arrayObjDate = obj[i].split("-");
-						strDatTmp = arrayObjDate[1]+"-"+arrayObjDate[2]+"-"+arrayObjDate[0];
+						strDatTmp = arrayObjDate[1]+"/"+arrayObjDate[2]+"/"+arrayObjDate[0];
 						//console.log(strDatTmp);
 						valuesX_day.push(strDatTmp);
 						
@@ -893,8 +893,8 @@ return 0;}
 						resX=resX;
 						//console.log(resX);
 						var arrayObjDate = resX.split("-");
-						resX = arrayObjDate[1]+"-"+arrayObjDate[2]+"-"+arrayObjDate[0];
-						//console.log(resX);
+						resX = arrayObjDate[1]+"/"+arrayObjDate[2]+"/"+arrayObjDate[0];
+						
 					}
 			        //console.log(resX);
 			          	
@@ -1565,7 +1565,7 @@ return 0;}
 							{
 								//resX=resX;
 								var arrayObjDate = resX.split("-");
-								resX = arrayObjDate[1]+"-"+arrayObjDate[2]+"-"+arrayObjDate[0];
+								resX = arrayObjDate[1]+"/"+arrayObjDate[2]+"/"+arrayObjDate[0];
 							}
 			        		//console.log(resX); 
 	                		
@@ -2241,7 +2241,7 @@ return 0;}
 								{
 									//resX=resX;
 									var arrayObjDate = resX.split("-");
-									resX = arrayObjDate[1]+"-"+arrayObjDate[2]+"-"+arrayObjDate[0];
+									resX = arrayObjDate[1]+"/"+arrayObjDate[2]+"/"+arrayObjDate[0];
 								}
 						        //console.log(resX);                     			
                     			return (self.xScale(getDate(resX)));	
