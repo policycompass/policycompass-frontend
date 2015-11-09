@@ -4,6 +4,10 @@
  * They are built on top of AngularJS' Resource module.
  */
 
+// As the API does not allow to not-paginate, we simply put in a large number
+// as page_size.
+var LARGE_NUMBER = 100000;
+
 angular.module('pcApp.metrics.services.metric',[
     'ngResource',
     'pcApp.config'
@@ -46,7 +50,8 @@ angular.module('pcApp.metrics.services.metric',[
     var url = API_CONF.INDICATOR_SERVICE_URL + "/indicators/:id";
     var Indicator = $resource(url,
         {
-            id: "@id"
+            id: "@id",
+            page_size: LARGE_NUMBER
         },
         {
             'update': { method:'PUT' },
