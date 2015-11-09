@@ -377,7 +377,8 @@ policycompass.viz.line = function(options)
 						//valuesX_day.push((arrayObjDate[0]+"-01-"+arrayObjDate[1]));
 						//valuesX_day.push((obj[i])+"-01");
 						
-						valuesX_day.push(("01-"+arrayObjDate[1]+"-"+arrayObjDate[0]));
+						//valuesX_day.push(("01-"+arrayObjDate[1]+"-"+arrayObjDate[0]));
+						valuesX_day.push((arrayObjDate[1]+"-01-"+arrayObjDate[0]));
 						
 						//valuesX_day.push((obj[i])+"/01");
 						
@@ -386,10 +387,15 @@ policycompass.viz.line = function(options)
 					else if (self.resolution=='day')
 					{
 						//resolution = 'day';
+						//console.log(obj[i]);
 						//var arrayObjDate = obj[i].split("-");
 						var strDatTmp=obj[i];
 						//strDatTmp = strDatTmp.replace("-","/");
 						//strDatTmp = strDatTmp.replace("-","/");
+						//console.log(strDatTmp);
+						var arrayObjDate = obj[i].split("-");
+						strDatTmp = arrayObjDate[1]+"-"+arrayObjDate[2]+"-"+arrayObjDate[0];
+						//console.log(strDatTmp);
 						valuesX_day.push(strDatTmp);
 						
 						//valuesX_day.push(arrayObjDate[2]+"/"+arrayObjDate[1]+"/"+arrayObjDate[0]);
@@ -506,6 +512,7 @@ return 0;}
 			{
 				//resolution = 'month';
 				formatXaxe = "%m-%Y";
+				//formatXaxe = "%d-%Y";
 			}
 			//else if (valuesX[0].length==9)
 			else if (self.resolution=='day')
@@ -874,7 +881,8 @@ return 0;}
 						var arrayObjDate = resX.split("-");
 						
 						//resX=resX+"/01";
-						resX="01/"+arrayObjDate[1]+"/"+arrayObjDate[0];
+						//resX="01/"+arrayObjDate[1]+"/"+arrayObjDate[0];
+						resX=arrayObjDate[1]+"/01/"+arrayObjDate[0];
 						
 						//console.log("resX="+resX);
 						
@@ -883,6 +891,10 @@ return 0;}
 					else if (self.resolution=='day')
 					{
 						resX=resX;
+						//console.log(resX);
+						var arrayObjDate = resX.split("-");
+						resX = arrayObjDate[1]+"-"+arrayObjDate[2]+"-"+arrayObjDate[0];
+						//console.log(resX);
 					}
 			        //console.log(resX);
 			          	
@@ -1542,15 +1554,18 @@ return 0;}
 								var arrayObjDate = resX.split("-");
 						
 								//resX=resX+"/01";
-								resX="01/"+arrayObjDate[1]+"/"+arrayObjDate[0];
-						
+								//resX="01/"+arrayObjDate[1]+"/"+arrayObjDate[0];
+								resX=arrayObjDate[1]+"/01/"+arrayObjDate[0];
+								
 								//console.log("resX="+resX);
 								
 							}
 							//else if (resX.length==9)
 							else if (self.resolution=='day')
 							{
-								resX=resX;
+								//resX=resX;
+								var arrayObjDate = resX.split("-");
+								resX = arrayObjDate[1]+"-"+arrayObjDate[2]+"-"+arrayObjDate[0];
 							}
 			        		//console.log(resX); 
 	                		
@@ -2215,15 +2230,18 @@ return 0;}
 									var arrayObjDate = resX.split("-");
 						
 									//resX=resX+"/01";
-									resX="01/"+arrayObjDate[1]+"/"+arrayObjDate[0];
-						
+									//resX="01/"+arrayObjDate[1]+"/"+arrayObjDate[0];
+									resX=arrayObjDate[1]+"/01/"+arrayObjDate[0];
+									
 									//console.log("resX="+resX);									
 									
 								}
 								//else if (resX.length==9)
 								else if (self.resolution=='day')
 								{
-									resX=resX;
+									//resX=resX;
+									var arrayObjDate = resX.split("-");
+									resX = arrayObjDate[1]+"-"+arrayObjDate[2]+"-"+arrayObjDate[0];
 								}
 						        //console.log(resX);                     			
                     			return (self.xScale(getDate(resX)));	
