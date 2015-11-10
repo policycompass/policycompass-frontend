@@ -6,13 +6,13 @@
  */
 
 angular.module('pcApp.datasets.controllers.dataset', [
-    'pcApp.datasets.services.dataset',
-    'pcApp.references.services.reference',
-    'pcApp.indicators.services.indicator',
-    'pcApp.config',
-    'dialogs.main',
-    'ngProgress'
-])
+        'pcApp.datasets.services.dataset',
+        'pcApp.references.services.reference',
+        'pcApp.indicators.services.indicator',
+        'pcApp.config',
+        'dialogs.main',
+        'ngProgress'
+    ])
 
 
     .factory('DatasetsControllerHelper', ['dialogs', '$log', function (dialogs, $log) {
@@ -90,35 +90,35 @@ angular.module('pcApp.datasets.controllers.dataset', [
             getTableSelection: function (startRow, startColumn, endRow, endColumn, items) {
                 //$log.info('sR '+ startRow + ' sC ' + startColumn + ' eR ' + endRow + ' eC ' +   endColumn);
                 var result = [];
-                if(startRow == endRow && startColumn == endColumn) {
+                if (startRow == endRow && startColumn == endColumn) {
                     result.push(items[startRow][startColumn]);
                 }
-                else if(startRow == endRow) {
-                    if(endColumn >= startColumn) {
-                        result = items[startRow].slice(startColumn, endColumn+1);
+                else if (startRow == endRow) {
+                    if (endColumn >= startColumn) {
+                        result = items[startRow].slice(startColumn, endColumn + 1);
                     } else {
-                        result = items[startRow].slice(endColumn, startColumn+1);
+                        result = items[startRow].slice(endColumn, startColumn + 1);
                     }
                 }
-                else if(startColumn == endColumn){
+                else if (startColumn == endColumn) {
                     var i;
-                    if(startRow <= endRow) {
+                    if (startRow <= endRow) {
                         result = [];
-                        for(i=startRow; i<=endRow; i++){
+                        for (i = startRow; i <= endRow; i++) {
                             result.push(items[i][startColumn]);
                         }
                     }
-                    if(startRow > endRow) {
+                    if (startRow > endRow) {
                         result = [];
-                        for(i=endRow; i<=startRow; i++){
+                        for (i = endRow; i <= startRow; i++) {
                             result.push(items[i][startColumn]);
                         }
                     }
                 }
                 return result;
             }
-            
-            
+
+
         };
     }])
 
@@ -135,11 +135,10 @@ angular.module('pcApp.datasets.controllers.dataset', [
             $scope.inputTable = creationService.data.inputTable;
 
             $scope.inputTable.settings.readOnly = false;
-            $scope.inputTable.settings.afterInit = function() {
+            $scope.inputTable.settings.afterInit = function () {
                 $scope.inputInstance = this;
             };
 
-            // ToDo Get URL from Config
             $scope.dropzone = {
                 config: {
                     clickable: true,
@@ -149,7 +148,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 dropzone: {},
                 handlers: {
                     // Callback for successful upload
-                    success: function(file, response) {
+                    success: function (file, response) {
                         // Go back to the data grid tab
                         $scope.tabsel = {
                             grid: true,
@@ -166,6 +165,17 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 isCollapsed: true
             };
 
+            $scope.ckanImport = {
+                isVisible: false,
+                toggleVisibility: function () {
+                    $scope.ckanImport.isVisible = !$scope.ckanImport.isVisible;
+                },
+                loadData: function (resource) {
+                    $scope.ckanImport.isVisible = false;
+                    console.log(resource);
+                }
+            }
+
 
             $scope.clearGrid = function () {
                 var dlg = dialogs.confirm(
@@ -179,13 +189,13 @@ angular.module('pcApp.datasets.controllers.dataset', [
             };
 
             $scope.rotateData = function () {
-                var data =  $scope.inputTable.items;
+                var data = $scope.inputTable.items;
                 var newData = [[]];
-                _.each(data, function(element, index, list){
+                _.each(data, function (element, index, list) {
                     var colum_index = index;
-                    _.each(element, function(element, index, list){
-                        if(element != null){
-                            if(colum_index == 0) {
+                    _.each(element, function (element, index, list) {
+                        if (element != null) {
+                            if (colum_index == 0) {
                                 newData[index] = [element];
                             } else {
                                 newData[index].push(element);
@@ -200,7 +210,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
             $scope.nextStep = function () {
                 return true;
             }
-    }])
+        }])
 
     .controller('DatasetStep2Controller', [
         '$scope',
@@ -221,7 +231,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     $scope.inputTable.items);
 
                 angular.forEach(result, function (r) {
-                    if((!_.contains($scope.individualSelection, r)) && r != null && r != ''){
+                    if ((!_.contains($scope.individualSelection, r)) && r != null && r != '') {
                         $scope.individualSelection.push(r);
                         $scope.$apply();
                     }
@@ -234,12 +244,12 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 $scope.inputTable.settings.afterSelectionEnd = getSelection;
                 $scope.inputTable.settings.readOnly = true;
 
-                if(creationService.data.individualSelection) {
+                if (creationService.data.individualSelection) {
                     $scope.individualSelection = creationService.data.individualSelection;
                 } else {
                     $scope.individualSelection = [];
                 }
-                if(creationService.data.extraMetadata) {
+                if (creationService.data.extraMetadata) {
                     $scope.extraMetadata = [];
                     angular.forEach(creationService.data.extraMetadata, function (em) {
 
@@ -291,11 +301,11 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
 
             };
-            
+
             $scope.$watch('extraMetadata', function (newValue) {
 
                 angular.forEach($scope.extraMetadata, function (em) {
-                    if(em.classOutput[0]) {
+                    if (em.classOutput[0]) {
                         em.sub = true;
                         em.class_id = em.classOutput[0];
                     } else {
@@ -312,11 +322,11 @@ angular.module('pcApp.datasets.controllers.dataset', [
             };
 
             $scope.nextStep = function () {
-                if($scope.selection.output.length == 0){
+                if ($scope.selection.output.length == 0) {
                     dialogs.error('Validation Error', 'Please provide a Data Dimension Type.');
                     return false;
                 }
-                if($scope.individualSelection.length == 0){
+                if ($scope.individualSelection.length == 0) {
                     dialogs.error('Validation Error', 'Please choose at least one Data Dimension.');
                     return false;
                 }
@@ -326,7 +336,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 creationService.data.individualSelection = $scope.individualSelection;
             };
 
-    }])
+        }])
 
     .controller('DatasetStep3Controller', [
         '$scope',
@@ -353,12 +363,11 @@ angular.module('pcApp.datasets.controllers.dataset', [
             };
 
 
-
             var init = function () {
                 $scope.inputTable = creationService.data.inputTable;
                 $scope.inputTable.settings.contextMenu = false;
                 $scope.inputTable.settings.afterSelectionEnd = getSelection;
-                $scope.inputTable.settings.afterInit = function() {
+                $scope.inputTable.settings.afterInit = function () {
                     $scope.inputInstance = this;
                 };
 
@@ -372,9 +381,9 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     output: []
                 };
 
-                if(creationService.data.timeResolution) {
+                if (creationService.data.timeResolution) {
                     angular.forEach($scope.timeResolution.input, function (t) {
-                        if(t.id == creationService.data.timeResolution) {
+                        if (t.id == creationService.data.timeResolution) {
                             t.ticked = true;
                         }
                     });
@@ -389,40 +398,40 @@ angular.module('pcApp.datasets.controllers.dataset', [
             init();
             $scope.pickStart = function () {
                 var selection = $scope.inputInstance.getSelected();
-                if(selection != 'undefined' && selection[0]==selection[2] && selection[1]==selection[3]) {
+                if (selection != 'undefined' && selection[0] == selection[2] && selection[1] == selection[3]) {
                     $scope.time.start = $scope.inputTable.items[selection[0]][selection[1]];
                 }
             };
             $scope.pickEnd = function () {
                 var selection = $scope.inputInstance.getSelected();
-                if(selection != 'undefined' && selection[0]==selection[2] && selection[1]==selection[3]) {
+                if (selection != 'undefined' && selection[0] == selection[2] && selection[1] == selection[3]) {
                     $scope.time.end = $scope.inputTable.items[selection[0]][selection[1]];
                 }
             };
 
             $scope.nextStep = function () {
 
-                if($scope.timeResolution.output[0] == null){
+                if ($scope.timeResolution.output[0] == null) {
                     dialogs.error('Validation Error', 'Please provide a Time Resolution.');
                     return false;
                 }
-                if($scope.time.start == null || $scope.time.start == ''){
+                if ($scope.time.start == null || $scope.time.start == '') {
                     dialogs.error('Validation Error', 'Please provide a Start Date.');
                     return false;
                 }
 
-                if($scope.time.end == null || $scope.time.end == ''){
+                if ($scope.time.end == null || $scope.time.end == '') {
                     dialogs.error('Validation Error', 'Please provide an End Date.');
                     return false;
                 }
 
-                if($scope.timeResolution.output[0]) {
+                if ($scope.timeResolution.output[0]) {
                     creationService.data.timeResolution = $scope.timeResolution.output[0].id;
                 }
                 creationService.data.time.start = $scope.time.start;
                 creationService.data.time.end = $scope.time.end;
             };
-    }])
+        }])
 
     .controller('DatasetStep4Controller', [
         '$scope',
@@ -438,7 +447,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
             var getSelection = function (startRow, startColumn, endRow, endColumn) {
 
                 var i, j;
-                if($scope.mode == 'row') {
+                if ($scope.mode == 'row') {
                     var result = DatasetsControllerHelper.getTableSelection(
                         startRow,
                         startColumn,
@@ -447,46 +456,46 @@ angular.module('pcApp.datasets.controllers.dataset', [
                         $scope.inputTable.items);
 
 
-                    var row = $scope.resultTable.items[$scope.selectionStep-1];
+                    var row = $scope.resultTable.items[$scope.selectionStep - 1];
                     //row = result;
                     var start;
-                    for(i=1; i<row.length; i++){
-                        if(row[i] == null || row[i] == '') {
+                    for (i = 1; i < row.length; i++) {
+                        if (row[i] == null || row[i] == '') {
                             start = i;
                             break;
                         }
                     }
 
                     var nextRow = false;
-                    for(i=start; i<row.length; i++){
-                        if(!result[i-start]) {
+                    for (i = start; i < row.length; i++) {
+                        if (!result[i - start]) {
                             break;
                         }
-                        row[i] = result[i-start];
-                        if(i == row.length-1){
+                        row[i] = result[i - start];
+                        if (i == row.length - 1) {
                             nextRow = true;
                         }
                     }
 
-                    $scope.resultTable.items[$scope.selectionStep-1] = row;
-                    if(nextRow){
+                    $scope.resultTable.items[$scope.selectionStep - 1] = row;
+                    if (nextRow) {
                         $scope.next();
                     }
                     $scope.$apply();
                 }
 
-                if($scope.mode == 'all') {
+                if ($scope.mode == 'all') {
 
-                    for(i=startRow; i<=endRow; i++){
-                        if(typeof $scope.resultTable.items[i-startRow] == 'undefined') {
+                    for (i = startRow; i <= endRow; i++) {
+                        if (typeof $scope.resultTable.items[i - startRow] == 'undefined') {
                             break;
                         }
-                        for(j=startColumn; j<=endColumn; j++){
+                        for (j = startColumn; j <= endColumn; j++) {
                             //$log.info($scope.resultTable.items[i-startRow][j-startColumn+1]);
-                            if(typeof $scope.resultTable.items[i-startRow][j-startColumn+1] == 'undefined') {
+                            if (typeof $scope.resultTable.items[i - startRow][j - startColumn + 1] == 'undefined') {
                                 break;
                             }
-                            $scope.resultTable.items[i-startRow][j-startColumn+1] = $scope.inputTable.items[i][j]
+                            $scope.resultTable.items[i - startRow][j - startColumn + 1] = $scope.inputTable.items[i][j]
                         }
 
 
@@ -510,9 +519,9 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
                 $scope.inputTable = creationService.data.inputTable;
                 $scope.resultTable = creationService.data.resultTable;
-                $scope.resultTable.settings.afterInit = function() {
+                $scope.resultTable.settings.afterInit = function () {
                     $scope.resultInstance = this;
-                    $scope.resultInstance.selectCell(0,0,0,$scope.timeSeriesLength);
+                    $scope.resultInstance.selectCell(0, 0, 0, $scope.timeSeriesLength);
                 };
 
                 $scope.inputTable.settings.contextMenu = false;
@@ -527,13 +536,13 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
                 $scope.selectionStep = 1;
                 $scope.lastStep = $scope.individualSelection.length;
-                if($scope.resultTable.items.length == 0) {
+                if ($scope.resultTable.items.length == 0) {
                     angular.forEach(creationService.data.individualSelection, function (i) {
                         $scope.resultTable.items.push([i]);
                     });
                 }
 
-                if($scope.resultTable.items[0].length > ($scope.timeSeries.length + 1)) {
+                if ($scope.resultTable.items[0].length > ($scope.timeSeries.length + 1)) {
                     $scope.resultTable.items = [];
                     angular.forEach(creationService.data.individualSelection, function (i) {
                         $scope.resultTable.items.push([i]);
@@ -544,14 +553,14 @@ angular.module('pcApp.datasets.controllers.dataset', [
             init();
 
             $scope.next = function () {
-                $scope.resultInstance.selectCell($scope.selectionStep,0,$scope.selectionStep,$scope.timeSeriesLength);
+                $scope.resultInstance.selectCell($scope.selectionStep, 0, $scope.selectionStep, $scope.timeSeriesLength);
                 $scope.selectionStep++;
 
             };
 
             $scope.prev = function () {
                 $scope.selectionStep--;
-                $scope.resultInstance.selectCell($scope.selectionStep-1,0,$scope.selectionStep-1,$scope.timeSeriesLength);
+                $scope.resultInstance.selectCell($scope.selectionStep - 1, 0, $scope.selectionStep - 1, $scope.timeSeriesLength);
 
             };
 
@@ -564,23 +573,23 @@ angular.module('pcApp.datasets.controllers.dataset', [
             };
 
             $scope.resetRow = function () {
-                for(var i=1; i<$scope.timeSeriesLength+1; i++){
+                for (var i = 1; i < $scope.timeSeriesLength + 1; i++) {
                     $scope.resultTable.items[$scope.selectionStep - 1][i] = '';
                 }
             };
 
             $scope.toggleMode = function () {
-                if($scope.mode == 'row'){
+                if ($scope.mode == 'row') {
                     $scope.mode = 'all';
-                    $scope.resultInstance.selectCell(0,0,$scope.individualSelection.length-1,$scope.timeSeriesLength);
+                    $scope.resultInstance.selectCell(0, 0, $scope.individualSelection.length - 1, $scope.timeSeriesLength);
 
                 } else {
                     $scope.mode = 'row';
-                    $scope.resultInstance.selectCell($scope.selectionStep-1,0,$scope.selectionStep-1,$scope.timeSeriesLength);
+                    $scope.resultInstance.selectCell($scope.selectionStep - 1, 0, $scope.selectionStep - 1, $scope.timeSeriesLength);
                 }
             }
 
-    }])
+        }])
 
     .controller('DatasetStep5Controller', [
         '$scope',
@@ -597,10 +606,10 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 $scope.unitSelector = false;
                 $scope.ListDatasetsFilter = creationService.data.indicator;
                 $scope.unit = {
-                    input:  creationService.data.dataset.unit,
+                    input: creationService.data.dataset.unit,
                     output: []
                 };
-                if($scope.ListDatasetsFilter.length > 0){
+                if ($scope.ListDatasetsFilter.length > 0) {
                     $scope.unitSelector = true;
                 }
             };
@@ -608,12 +617,12 @@ angular.module('pcApp.datasets.controllers.dataset', [
             init();
 
             $scope.nextStep = function () {
-                if($scope.ListDatasetsFilter.length == 0){
+                if ($scope.ListDatasetsFilter.length == 0) {
                     dialogs.error('Validation Error', 'Please provide an Indicator.');
                     return false;
                 }
 
-                if($scope.unit.output.length == 0){
+                if ($scope.unit.output.length == 0) {
                     dialogs.error('Validation Error', 'Please provide an Unit.');
                     return false;
                 }
@@ -623,14 +632,14 @@ angular.module('pcApp.datasets.controllers.dataset', [
             };
 
             $scope.indicatorSelected = function () {
-                if($scope.ListDatasetsFilter.length > 0 ){
+                if ($scope.ListDatasetsFilter.length > 0) {
                     $scope.unitSelector = true;
                 } else {
                     $scope.unitSelector = false;
                 }
             };
 
-    }])
+        }])
 
     .controller('DatasetStep6Controller', [
         '$scope',
@@ -645,14 +654,14 @@ angular.module('pcApp.datasets.controllers.dataset', [
             var init = function () {
                 $scope.resultTable = creationService.data.resultTable;
                 $scope.resultTable.settings.readOnly = false;
-                $scope.resultTable.settings.afterInit = function() {
+                $scope.resultTable.settings.afterInit = function () {
                     $scope.resultInstance = this;
                     $scope.resultInstance.selectCell();
                 };
             };
 
             init();
-    }])
+        }])
 
     .controller('DatasetStep7Controller', [
         '$scope',
@@ -710,11 +719,11 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 var count_ind = 0;
                 angular.forEach(individuals, function (i) {
                     var values = {};
-                    for(var j=0; j < creationService.data.timeSeries.length; j++){
-                        values[creationService.data.timeSeries[j]] = parseFloat(creationService.data.resultTable.items[count_ind][j+1]);
+                    for (var j = 0; j < creationService.data.timeSeries.length; j++) {
+                        values[creationService.data.timeSeries[j]] = parseFloat(creationService.data.resultTable.items[count_ind][j + 1]);
                     }
                     table.push({
-                        row: count_ind+1,
+                        row: count_ind + 1,
                         individual: i,
                         values: values
                     });
@@ -738,21 +747,21 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
                 payload.resource = {};
 
-                if(creationService.data.dataset.resource) {
-                    if(creationService.data.dataset.resource.url)
+                if (creationService.data.dataset.resource) {
+                    if (creationService.data.dataset.resource.url)
                         payload.resource.url = creationService.data.dataset.resource.url;
 
-                    if(creationService.data.dataset.resource.issued)
+                    if (creationService.data.dataset.resource.issued)
                         payload.resource.issued = $filter('date')(creationService.data.dataset.resource.issued, 'yyyy-MM-dd');
 
-                    if(creationService.data.dataset.resource.custom)
+                    if (creationService.data.dataset.resource.custom)
                         payload.resource.custom = creationService.data.dataset.resource.custom;
 
-                    if($scope.external_resource.output[0])
+                    if ($scope.external_resource.output[0])
                         payload.resource.external_resource = $scope.external_resource.output[0];
                 }
 
-                payload.policy_domains =   $scope.policy_domains.output;
+                payload.policy_domains = $scope.policy_domains.output;
                 payload.title = $scope.dataset.title;
                 payload.acronym = $scope.dataset.acronym;
                 payload.keywords = $scope.dataset.keywords;
@@ -770,16 +779,16 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
             var saveErrorCallback = function (err) {
                 var headers = err.headers();
-                if(headers['content-type'] == 'text/html') {
+                if (headers['content-type'] == 'text/html') {
                     dialogs.error(
                         "Internal Server Error",
                         "Please contact the Policy Compass Administrators.");
                 }
-                if(headers['content-type'] == 'application/json') {
+                if (headers['content-type'] == 'application/json') {
                     var data = err.data;
                     var message = '';
 
-                    for(var key in data) {
+                    for (var key in data) {
                         message += '<b>' + key + '</b>' + ': ' + data[key] + '<br />';
                     }
                     dialogs.error(
@@ -790,7 +799,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
             var saveFinish = function () {
                 var payload = preSave();
-                Dataset.save(payload, function(value, responseHeaders){
+                Dataset.save(payload, function (value, responseHeaders) {
                         creationService.reset();
                         $location.path('/datasets/' + value.id);
                     }, saveErrorCallback
@@ -799,7 +808,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
             var saveCopy = function () {
                 var payload = preSave();
-                Dataset.save(payload, function(value, responseHeaders){
+                Dataset.save(payload, function (value, responseHeaders) {
                         $location.path('/datasets/create');
                     }, saveErrorCallback
                 );
@@ -810,7 +819,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 saveCopy: saveCopy
             };
 
-    }])
+        }])
 
     .controller('DatasetDetailController', [
         '$scope',
@@ -825,19 +834,18 @@ angular.module('pcApp.datasets.controllers.dataset', [
         '$q',
         'Indicator',
         '$location',
-        function (
-            $scope,
-            DatasetsControllerHelper,
-            $log,
-            dialogs,
-            ngProgress,
-            $routeParams,
-            $filter,
-            Dataset,
-            Individual,
-            $q,
-            Indicator,
-            $location) {
+        function ($scope,
+                  DatasetsControllerHelper,
+                  $log,
+                  dialogs,
+                  ngProgress,
+                  $routeParams,
+                  $filter,
+                  Dataset,
+                  Individual,
+                  $q,
+                  Indicator,
+                  $location) {
 
             $scope.showTable = false;
             $scope.moreMetadata = {
@@ -851,7 +859,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     stretchH: 'all',
                     readOnly: true,
                     outsideClickDeselects: false,
-                    afterInit: function() {
+                    afterInit: function () {
                         $scope.table.instance = this;
                     }
                 },
@@ -873,7 +881,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 $q.all(promises).then(function (individuals) {
 
                     // Build the rows
-                    for(var i=0; i<table.length; i++){
+                    for (var i = 0; i < table.length; i++) {
                         var row = [individuals[i].title];
                         angular.forEach(table[i].values, function (v) {
                             row.push(v);
@@ -902,7 +910,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
             $scope.dataset = Dataset.get({id: $routeParams.datasetId}, getDatasetSuccess, getDatasetError);
 
-            $scope.deleteDataset = function(dataset) {
+            $scope.deleteDataset = function (dataset) {
                 // Open a confirmation dialog
                 var dlg = dialogs.confirm(
                     "Are you sure?",
@@ -911,7 +919,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     // Delete the dataset via the API
                     dataset.$delete(
                         {},
-                        function(){
+                        function () {
                             $location.path('/datasets');
                         }
                     );
