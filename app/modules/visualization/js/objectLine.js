@@ -327,7 +327,11 @@ policycompass.viz.line = function(options)
    				   valuesX.push((obj[i]));
  
 					//if (obj[i].length==4)
-					if (self.resolution=='quarter')
+					if (self.xaxeformat=='sequence')
+					{
+						valuesX_day.push(obj[i]);
+					}
+					else if (self.resolution=='quarter')
 					{
 						//resolution = 'quarter';
 						//console.log(obj[i]);
@@ -444,9 +448,11 @@ policycompass.viz.line = function(options)
 		//self.minVy = 0;
 		//console.log(valuesY);
 		self.minVx = d3.min(d3.values(valuesX_day));;
+		//console.log("self.minVx="+self.minVx);
 		//self.minVx = 0;
 		self.maxVx = d3.max(d3.values(valuesX_day));
-
+		//console.log("self.maxVx="+self.maxVx);
+		
 		//console.log(valuesX_day);
 		//console.log("maxVx="+self.maxVx);
 
@@ -592,6 +598,8 @@ return 0;}
         
         if (self.xaxeformat=='sequence')
         {
+        	//console.log("self.minVx="+self.minVx);
+        	//console.log("self.maxVx="+self.maxVx);
         	self.xScale = d3.scale.linear().domain([self.minVx, self.maxVx]).range([0, self.width]).clamp(true);
         }
         else
@@ -845,7 +853,11 @@ return 0;}
                 {
                 	//console.log(resX);
 					//if (resX.length==4)
-					if (self.resolution=='quarter')
+					if (self.xaxeformat=='sequence')
+					{
+						resX=resX;
+					}
+					else if (self.resolution=='quarter')
 					{
 						//console.log(resX);
 						var arrayObjDate = resX.split("-");
@@ -2185,6 +2197,7 @@ return 0;}
                     	
                     		if (self.xaxeformat=='sequence')
                     		{
+                    			//console.log(resX);
                     			return (self.xScale((resX)));
                     		}
                     		else
