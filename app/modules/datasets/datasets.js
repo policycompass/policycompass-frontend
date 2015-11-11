@@ -4,6 +4,7 @@
 
 angular.module('pcApp.datasets', [
     'pcApp.datasets.controllers.dataset',
+    'pcApp.datasets.directives.ckanImport',
     'pcApp.references.directives.forms',
     'ngHandsontable',
     'pcApp.datasets.directives.snippets',

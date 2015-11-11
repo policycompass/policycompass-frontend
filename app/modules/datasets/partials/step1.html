@@ -3,14 +3,19 @@
 
     <div class="pc-visualization-formcontrols">
         <div class="button-group">
-            <button type="button" class="btn btn-file" ng-click="dropzone.isCollapsed = !dropzone.isCollapsed">From File</button>
+            <button type="button" class="btn btn-file" ng-click="dropzone.isCollapsed = !dropzone.isCollapsed">
+                From File
+            </button>
+            <button type="button" class="btn btn-import-ckan ng-click=" ng-click="ckanImport.toggleVisibility()">
+                Import from EDP
+            </button>
             <button type="submit" class="btn btn-rotate" ng-click="rotateData()">Rotate Data</button>
             <button type="submit" class="btn btn-clear" ng-click="clearGrid()">Clear Grid</button>
         </div>
     </div>
 
     <div class="content-body">
-        <div id="pc-dropzone-container" collapse="dropzone.isCollapsed" class="well">
+        <div id="pc-dropzone-container" ng-show="!dropzone.isCollapsed" class="well">
             <div class="ng-dropzone dropzone"
                  id="pc-dropzone"
                  dropzone-config="dropzone.config"
@@ -18,6 +23,10 @@
                  event-handlers="dropzone.handlers">
             </div>
         </div>
+        <div ckan-import load-data='ckanImport.loadData' api-base="http://odportal:odp0rtl$12@www.paneuropeandataportal.eu/data/api/3"
+             id="pc-ckan-import-container" ng-show="ckanImport.isVisible"  class="well">
+        </div>
+
         <hot-table
                 settings="inputTable.settings"
                 datarows="inputTable.items"

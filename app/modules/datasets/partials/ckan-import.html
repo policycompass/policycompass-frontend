@@ -1,0 +1,65 @@
+<section>
+    <h4>Import datasets from the European Data Portal:</h4>
+
+    <div class="input-group">
+        <input type="text" class="form-control" placeholder="Search term, e.g. 'drug offences'"
+               ng-keyup="$event.keyCode == 13 && search(searchTerm)"
+               ng-model="searchTerm"
+        />
+        <span class="input-group-btn">
+        <button class="btn btn-default" type="button"
+                ng-click="search(searchTerm)"
+        >
+            <span class="glyphicon glyphicon-search"></span>
+        </button>
+         </span>
+    </div>
+
+    <hr/>
+
+    <div class="search results">
+        <div class="ckan-results">
+            <div ng-show="!results.length">
+                <h5>No results found.</h5>
+            </div>
+            <div ng-repeat="result in results | filter:byNumResourcesGtZero" class="ckan-results">
+                <div class="well">
+
+                    <div class="attributes">
+
+                        <h3>{{result.title}}</h3>
+
+                        <p>{{result.notes}}</p>
+
+                        <div ng-repeat="resource in result.resources | filter:byResourceTypeIn(['xls','tsv','csv','xlsx'])">
+                            <!-- FIXME: if no name or description -->
+
+                            <div ng-if="resource.name">
+                                <h5>
+                                    <a href ng-click="loadResource(resource)">{{resource.name}}</a>
+                                </h5>
+
+                                <p>
+                                    {{resource.description}}
+                                </p>
+                                <br ng-show="resource.description > 0 && resource.name"/>
+                            </div>
+                            <div ng-if="!resource.name && resource.description.length > 0">
+                                <h5>
+                                    <a href ng-click="loadResource(resource)">{{resource.description}}</a>
+                                </h5>
+                            </div>
+                            <div ng-if="!resource.name && (!resource.description || resource.description.length ==0)">
+                                <h5>
+                                    <a href ng-click="loadResource(resource)">Unlabeled
+                                        dataset resource</a>
+                                </h5>
+                            </div>
+                            Type: {{resource.format}}<br/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
