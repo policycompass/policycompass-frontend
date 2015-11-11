@@ -35,7 +35,19 @@ angular.module('pcApp.datasets.directives.ckanImport', [])
                 }
 
                 scope.loadResource = function (resource) {
-                    scope.loadData(resource);
+                    $http({
+                        url: API_CONF.DATASETS_MANAGER_URL + '/ckan/download',
+                        params: {
+                            api: attrs.apiBase,
+                            id: resource.id,
+                            convert: true
+                        }
+                    }).then(function (response) {
+                        console.log(response);
+                        scope.loadData(response.data);
+                    });
+
+
                 }
 
                 scope.search = function (term) {

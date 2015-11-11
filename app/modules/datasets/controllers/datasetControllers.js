@@ -157,7 +157,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                         this.removeAllFiles();
                         $scope.$apply();
                         // Load the data into the grid
-                        $scope.inputTable.items = response['result'];
+                        //$scope.inputTable.items = response['result'];
                         $scope.dropzone.isCollapsed = true;
                         $scope.inputInstance.loadData($scope.inputTable.items);
                     }
@@ -169,9 +169,13 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 isVisible: false,
                 toggleVisibility: function () {
                     $scope.ckanImport.isVisible = !$scope.ckanImport.isVisible;
+                    if ($scope.ckanImport.isVisible)
+                        $scope.dropzone.isCollapsed = true;
+
                 },
                 loadData: function (resource) {
                     $scope.ckanImport.isVisible = false;
+                    $scope.inputInstance.loadData(resource.result);
                     console.log(resource);
                 }
             }
