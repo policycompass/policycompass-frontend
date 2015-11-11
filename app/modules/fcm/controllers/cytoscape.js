@@ -212,6 +212,8 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
 	    $scope.SimulationAssociations.push(SimulationAssociation);
 	}
 
+	var metricVal = [];
+	var val=0;
 	for (i=0; i<$scope.SimulationConcepts.length; i++)
 	{
 	    var fixedOutput='True';
@@ -219,6 +221,19 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
 		if ($scope.SimulationAssociations[j].destinationID==$scope.SimulationConcepts[i].Id)
 		    fixedOutput='False';
 	    $scope.SimulationConcepts[i].fixedoutput=fixedOutput;
+
+		if ($scope.SimulationConcepts[i].metricId!=0)
+		{
+			metricVal.push(i);
+			Dataset.get({id: $scope.SimulationConcepts[i].metricId}, function(dataset) 
+			{
+				$scope.SimulationConcepts[metricVal[val]].metricTitle=dataset.title;
+				val = val + 1;
+			},
+			function(error) {
+			throw { message: JSON.stringify(error.data)};
+			});
+		}
 	}
 
 	if ($scope.Concepts.length>1)
@@ -233,18 +248,6 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
 	throw { message: JSON.stringify(error.data)};
     }
   );
-
-	for (i=0; i<$scope.SimulationConcepts.length; i++)
-	{
-		Dataset.get({id: $scope.SimulationConcepts[i].metricId}, function(dataset) 
-		{
-			$scope.SimulationConcepts[i].title=dataset.title;
-		},
-		function(error) {
-		throw { message: JSON.stringify(error.data)};
-		});
-	}
-
 
 }
 else
@@ -409,18 +412,46 @@ $scope.md = jsonModel;
 		}
 		for (i=0;i<$scope.SimulationAssociations.length;i++)
 		{
-			if ((i+1)==1)
-				$scope.SimulationAssociations[i].weighted=0.25;
-			else if ((i+1)%5==0)
-				$scope.SimulationAssociations[i].weighted=-0.25;
-			else if ((i+1)%4==0)
-				$scope.SimulationAssociations[i].weighted=0.75;
-			else if ((i+1)%3==0)
-				$scope.SimulationAssociations[i].weighted=-0.5;
-			else if ((i+1)%2==0)
-				$scope.SimulationAssociations[i].weighted=0.5;
-			else
-				$scope.SimulationAssociations[i].weighted=1;
+			for (j=0;j<$scope.SimulationConcepts.length;j++)
+			{
+				if ($scope.SimulationConcepts[j].Id==$scope.SimulationAssociations[i].source.Id)
+				{
+					if ($scope.SimulationConcepts[j].metricId!=0)
+					{
+						if ((i+1)==1)
+							$scope.SimulationAssociations[i].weighted=0.25;
+						else if ((i+1)%5==0)
+							$scope.SimulationAssociations[i].weighted=-0.25;
+						else if ((i+1)%4==0)
+							$scope.SimulationAssociations[i].weighted=0.75;
+						else if ((i+1)%3==0)
+							$scope.SimulationAssociations[i].weighted=-0.5;
+						else if ((i+1)%2==0)
+							$scope.SimulationAssociations[i].weighted=0.5;
+						else
+							$scope.SimulationAssociations[i].weighted=1;
+					}
+				}
+
+				if ($scope.SimulationConcepts[j].Id==$scope.SimulationAssociations[i].destination.Id)
+				{
+					if ($scope.SimulationConcepts[j].metricId!=0)
+					{
+						if ((i+1)==1)
+							$scope.SimulationAssociations[i].weighted=0.25;
+						else if ((i+1)%5==0)
+							$scope.SimulationAssociations[i].weighted=-0.25;
+						else if ((i+1)%4==0)
+							$scope.SimulationAssociations[i].weighted=0.75;
+						else if ((i+1)%3==0)
+							$scope.SimulationAssociations[i].weighted=-0.5;
+						else if ((i+1)%2==0)
+							$scope.SimulationAssociations[i].weighted=0.5;
+						else
+							$scope.SimulationAssociations[i].weighted=1;
+					}
+				}
+			}
 		}
     };
 
