@@ -348,13 +348,13 @@
             };
             var filters = normalizeAggregationFilter();
             if (!angular.equals({}, filters)) {
-                request.body.post_filter = filters;
-                //request.body.query = {
-                //    filtered:{
-                //        query: query,
-                //        filter: filters
-                //    }
-                //}
+                //request.body.post_filter = filters;
+                request.body.query = {
+                    filtered:{
+                        query: query,
+                        filter: filters
+                    }
+                }
             }
             //Perform search through client and get a search Promise
             searchclient.search(request).then(function (resp) {
