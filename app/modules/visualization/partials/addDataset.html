@@ -15,7 +15,7 @@
 			<tab heading="Datasets Configuration" active="tab2">
 				<div class="row createvisualization">
 					<div ng-show="ListMetricsFilter.length==0">No dataset linked</div>
-					<div ng-show="metric.title" ng-controller="LoadCombosMetric" class="designer-metrics active" class="designer-metrics" id="designer-metrics-num-{{metric.id}}" ng-repeat="metric in ListMetricsFilter track by $index" >
+					<div ng-show="metric.title" ng-controller="LoadCombosMetricModal" class="designer-metrics active" class="designer-metrics" id="designer-metrics-num-{{metric.id}}" ng-repeat="metric in ListMetricsFilter track by $index" >
 						<h4>{{metric.title}} -- {{metric.issued | date:'longDate' }}</h4>	
 
 						<input type="hidden" ng-model="MetricSelectediId_[metric.id]" id="MetricSelectediId_{{metric.id}}" name="MetricSelectedId[]" value="">

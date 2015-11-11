@@ -119,6 +119,26 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	
 }])
 
+.controller('LoadCombosMetricModal', [
+	'$scope', 
+	'$route',
+	'$routeParams',
+	'$modal',  
+	'Metric', 
+	'Dataset',
+	'$location', 
+	'GetRelatedData',
+	'dialogs',
+	'$log', 
+	'API_CONF',
+	'Individual',
+	'Unit',
+	function($scope, $route, $routeParams, $modal, Metric, Dataset, $location, helper, dialogs, $log, API_CONF, Individual, Unit) {
+		
+
+}])
+
+
 .controller('LoadCombosMetric', [
 	'$scope', 
 	'$route',
@@ -134,12 +154,10 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	'Individual',
 	'Unit',
 	function($scope, $route, $routeParams, $modal, Metric, Dataset, $location, helper, dialogs, $log, API_CONF, Individual, Unit) {
-
-		
         
 		//console.log("LoadCombosMetric");
     	//helper.baseGetRelatedDataController($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF);
-    	
+    	//console.log($scope.LoadCombosMetricExecuted);
     	//$scope.DatasetsLoaded = [];
     	if ($scope.LoadCombosMetricExecuted!=1)
     	{
@@ -1500,7 +1518,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			// Open a confirmation dialog
         	var dlg = dialogs.confirm(
             	"Are you sure?",
-            	"Do you want to exit without save this visualization?");
+            	"Do you want to exit without saving this visualization?");
         	dlg.result.then(function () {
 
 				if ($scope.mode=='create')
@@ -1699,12 +1717,14 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					$scope.tab2 = false;					
 				}
 				$scope.name = 'Link datasets';
+				
+				//to avoid modal in cache we add a random in to the url
 				$scope.opts = {
 					backdrop: true,
 					backdropClick: false,
 					dialogFade: true,
 					keyboard: true,        
-					templateUrl : 'modules/visualization/partials/addDataset.html',
+					templateUrl : 'modules/visualization/partials/addDataset.html?bust='+ Math.random().toString(36).slice(2),
 			        controller : 'ModalInstanceCtrlDataset',
 					resolve: {}, // empty storage
 					scope: $scope
@@ -1908,13 +1928,14 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				//$scope.startDateToFilter = '2014-09-17';
 				//$scope.startDateToFilter = $scope.startDate ;
 				//$scope.startDateToFilter = "Mon Sep 15 2014 00:00:00 GMT+0200 (Romance Daylight Time)";
-						
+				
+				//to avoid modal in cache we add a random in the path
 		        $scope.opts = {
 					backdrop: true,
 					backdropClick: false,
 					dialogFade: true,
 					keyboard: true,        
-					templateUrl : 'modules/visualization/partials/addEvent.html',
+					templateUrl : 'modules/visualization/partials/addEvent.html?bust='+ Math.random().toString(36).slice(2),
 			        controller : 'ModalInstanceCtrl',
 					resolve: {}, // empty storage
 					scope: $scope
