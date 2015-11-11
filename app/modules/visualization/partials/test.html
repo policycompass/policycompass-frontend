@@ -73,7 +73,7 @@ function redraw() {
 }
 
 var tooltip = d3.select("#map").append("div")
-    .attr("class", "tooltip");
+    .attr("class", "visualization-tooltip");
 
 queue()
     .defer(d3.json, "/app/modules/visualization/json/world-50m.json")
