@@ -13,8 +13,9 @@
 
 	<div class="pc-visualization-formcontrols">
         <div class="form-group pull-left">
-        	<a type="button" class="btn btn-danger" href="#!/indicators/{{ indicator.id }}">Cancel</a>
-            <button type="submit" id="saveButton" ng-disabled="indicatorForm.$invalid" class="btn btn-default btn-save" ng-click="save()">Save</button>
+			<a href="#!/login" ng-if="!userState.loggedIn" class="btn btn-default btn-save" target="_blank">Login to Save</a>
+            <a href="" id="saveButton" ng-disabled="indicatorForm.$invalid" ng-if="userState.loggedIn" class="btn btn-default btn-save" ng-click="save()">Save</a>
+			<a type="button" class="btn btn-danger" href="#!/indicators/{{ indicator.id }}">Cancel</a>
         </div>
    </div>
 

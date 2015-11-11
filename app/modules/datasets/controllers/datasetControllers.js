@@ -838,6 +838,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
         '$q',
         'Indicator',
         '$location',
+        'Auth',
         function ($scope,
                   DatasetsControllerHelper,
                   $log,
@@ -849,7 +850,10 @@ angular.module('pcApp.datasets.controllers.dataset', [
                   Individual,
                   $q,
                   Indicator,
-                  $location) {
+                  $location,
+                    Auth) {
+
+            $scope.userState = Auth.state;
 
             $scope.showTable = false;
             $scope.moreMetadata = {
