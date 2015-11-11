@@ -574,11 +574,28 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     $scope.resultTable.items.push([i]);
                 });
                 $scope.resultInstance.loadData($scope.resultTable.items);
+                $scope.selectionStep = 1;
+                $scope.resultInstance.selectCell($scope.selectionStep - 1, 0, $scope.selectionStep - 1, $scope.timeSeriesLength);
             };
 
             $scope.resetRow = function () {
                 for (var i = 1; i < $scope.timeSeriesLength + 1; i++) {
                     $scope.resultTable.items[$scope.selectionStep - 1][i] = '';
+                }
+            };
+
+            $scope.setNull = function () {
+                var row = $scope.resultTable.items[$scope.selectionStep - 1];
+                var start;
+                for (var i = 1; i < row.length; i++) {
+                    if (row[i] == null || row[i] == '') {
+                        start = i;
+                        break;
+                    }
+                }
+                row[start] = "-";
+                if (i == row.length - 1) {
+                    $scope.next();
                 }
             };
 
@@ -724,7 +741,11 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 angular.forEach(individuals, function (i) {
                     var values = {};
                     for (var j = 0; j < creationService.data.timeSeries.length; j++) {
-                        values[creationService.data.timeSeries[j]] = parseFloat(creationService.data.resultTable.items[count_ind][j + 1]);
+                        var cell_value = creationService.data.resultTable.items[count_ind][j + 1];
+                        if(cell_value == "-"){
+                            cell_value = ""
+                        }
+                        values[creationService.data.timeSeries[j]] = parseFloat(cell_value);
                     }
                     table.push({
                         row: count_ind + 1,

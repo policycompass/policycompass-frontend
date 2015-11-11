@@ -31,7 +31,7 @@ angular.module('pcApp.datasets.services.dataset',[
                     contextMenu: false,
                     stretchH: 'all',
                     outsideClickDeselects: false,
-                    readOnly: true
+                    readOnly: false
                 },
                 items: []
             },

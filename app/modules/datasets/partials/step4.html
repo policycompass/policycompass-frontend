@@ -13,6 +13,7 @@
         <div class="button-group" ng-show="mode=='row'">
             <a class="btn btn-prev" ng-disabled="selectionStep==1" ng-click="prev()">Prev</a>
             <a class="btn btn-next" ng-disabled="selectionStep==lastStep" ng-click="next()">Next</a>
+            <a class="btn btn-add" ng-click="setNull()">Set Value Unknown</a>
             <a class="btn btn-clear" ng-click="resetRow()">Clear Row</a>
             <a class="btn btn-clear" ng-click="reset()">Clear All</a>
         </div>
