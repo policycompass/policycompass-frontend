@@ -8,13 +8,20 @@
 			<div class="button-group">
 			<div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div>    
 	    		<div ng-class="{active: help}" class="help-text">
-<p><span class="btn btn-concept">Add Concept</span><br>First, add appropriate concepts for you causal model.<br><br>
-<span class="btn btn-association">Create Relationship</span><br>Second, create relationship (causal relationship) among concepts you added (click "Create Relationship").<br><br>
-<span class="btn btn-save">Save Model</span><br>Then save your model (click "Save Model").<br><br>
+<p>To create or edit a FCM user need to follow the process<br /><br />
+<span class="btn btn-concept">Add Concept</span><br>The relevant concept of causal model will be added from add concept dialog (click “Add Concept”). <br />In add concept dialog user need to add the concept name.  The concept discerption can be added in description section (optional).<br />After creating all the required concepts user need to create the relationship among the concept from create relationship dialog (click “create Relationship”).<br /><br />
+<span class="btn btn-association">Create Relationship</span><br>To create relationship between two concepts, user need to select source concept (effecting concept) and the destination Concept (affected concept) and the weight of the concept. The strength of relationships can be presented as weights. For example, if source concept has strong negative impact on Sink concept, please select "Very Strong Positive".<br />After the creation of a casual model, user needs to save the model (Click save model).<br /><br />
+<span class="btn btn-save">Save Model</span><br>To save a model, User need to provide the casual model Title, description (up to 250 characters), keywords and select policy domain. The new created casual model will be saved.<br />The save model can be edited following the same procedures as explained above for model creation, however user need to save the model by clicking save model or can save as new causal model by clicking the save as model.<br /><strong>NOTE:</strong> Every created or edited causal model need to be saved before the run simulation.<br><br>
 <span class="btn btn-save">Save As Model</span><br>After saving you model, you can run simulation for your model!<br><br>
-For each concept, select an appropriate value for the concept.<br>Basically, the concept value is fuzzified in 5 scale and you can change the scale through "Advanced Settings".<br><br>
-<span class="btn btn-default btn-adddataset">Add Metric</span><br>You can make a linkage between the concept and concrete data by browsing created metric. After making linkages, the weight between concepts can be calculated automatically.<br><br>
-The strength of relationships can be presented as weights. For example, if source concept has strong negative impact on Sink concept, please select "Very Strong Positive".</p></div>   
+<span class="btn btn-default">Run Simulation</span><br />To see the result of the causal model user need to run the simulation model by providing the following requirement. After running simulation, the value set for simulation will be saved to causal model and reflected to FCM graph. After proving all the required inputs as explain below user can run simulation (click “Run simulation”) and can see the results in simulation Results tab (click the simulation Results). <br /><br />
+<strong>VALUE </strong>User need to select the initial value of the relevant concept. <br /><br />
+<span class="btn btn-default btn-adddataset">Add Metric</span><br />
+If user does not know the initial value and want to create the initial values of relevant concepts from the relevant metric given in policy compass,  then link to relevant datasets (click Link dataset) and calculate the fuzzy value and weight (click fuzzy value and weight).<br />
+User need to select the relevant dataset and close.<br /><br />
+<span class="btn btn-danger">Advanced Settings</span><br />
+User can select the different activation function for calculating the concepts values. See the detail of different FCM activation from (E.I. Papageorgiou (2014), “JFCM: A Java Library for Fuzzy Cognitive Maps, Fuzzy Cognitive Maps for Applied science and Engineering, Springer). <br />
+User can also select the different fuzzy scale for the concepts values of causal model.
+</p></div>   
 <!--				<div class="fonticon fonticon-help help-switch" ng-click="showHelp(1)"></div>   -->
 				<button type="submit" class="btn btn-primary btn-concept" ng-click="addObj()">Add Concept</button>
 				<button type="submit" ng-if="isDisabled == true" class="btn btn-primary btn-association" ng-click="addEdge()" disabled>Create Relationship</button>
