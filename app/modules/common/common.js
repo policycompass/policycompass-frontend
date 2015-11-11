@@ -63,14 +63,14 @@ commonmanager.config(function ($routeProvider) {
         .otherwise({redirectTo: '/'});
 })
 
-commonmanager.run(['Progress', '$rootScope', '$http', function (Progress, $rootScope, $http) {
-    $rootScope.$on('$locationChangeSuccess', function () {
-        Progress.start();
+commonmanager.run(['ngProgress', '$rootScope', function (ngProgress, $rootScope) {
+    ngProgress.color('#f6921e');
 
-        // FIXME
-        $http({method: 'GET', url: '/app'})
-            .success(function (data, status, headers, config) {
-                Progress.complete();
-            });
+    $rootScope.$on('$locationChangeStart', function () {
+        ngProgress.start();
+    });
+
+    $rootScope.$on('$locationChangeSuccess', function () {
+        ngProgress.complete();
     });
 }])

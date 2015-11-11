@@ -5,7 +5,7 @@
  * But implemented again, because source are not maintained
  */
 angular.module('pcApp.datasets.directives.ckanImport', [])
-    .directive('ckanImport', ['$http', 'Progress', 'API_CONF', function ($http, Progress, API_CONF) {
+    .directive('ckanImport', ['$http', 'ngProgress', 'API_CONF', function ($http, ngProgress, API_CONF) {
         return {
             restrict: 'A',
             templateUrl: function (el, attrs) {
@@ -37,7 +37,7 @@ angular.module('pcApp.datasets.directives.ckanImport', [])
                 };
 
                 scope.loadResource = function (resource) {
-                    Progress.start();
+                    ngProgress.start();
                     $http({
                         url: API_CONF.DATASETS_MANAGER_URL + '/ckan/download',
                         params: {
@@ -47,12 +47,12 @@ angular.module('pcApp.datasets.directives.ckanImport', [])
                         }
                     }).then(function (response) {
                         scope.loadData(response.data);
-                        Progress.complete();
+                        ngProgress.complete();
                     });
                 };
 
                 scope.search = function (term, start) {
-                    Progress.start();
+                    ngProgress.start();
                     scope.lastTerm = term;
                     $http({
                         url: API_CONF.DATASETS_MANAGER_URL + '/ckan/search',
@@ -62,7 +62,7 @@ angular.module('pcApp.datasets.directives.ckanImport', [])
                             start: start
                         }
                     }).then(function (response) {
-                        Progress.complete();
+                        ngProgress.complete();
                         scope.ckan = response.data.result;
                     });
                 };

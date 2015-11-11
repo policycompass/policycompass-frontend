@@ -30,47 +30,6 @@ angular.module('pcApp.common.controllers', [])
      }])
      */
 
-    .factory('Progress', function (ngProgress, $http) {
-        var timer;
-        ngProgress.color('#f6921e');
-        return {
-            start: function () {
-                if (timer) return;
-
-                var me = this;
-                // reset the status of the progress bar
-                me.reset();
-                // start the progress bar
-                ngProgress.start();
-                // if the `complete` method is not called
-                // complete the progress of the bar after 5 seconds
-                timer = setTimeout(function () {
-                    me.complete();
-                }, 5000);
-
-
-            },
-            complete: function () {
-                if (timer) {
-                    ngProgress.complete();
-                    // remove the 5 second timer
-                    clearTimeout(timer);
-                    timer = null;
-                }
-            },
-            reset: function () {
-                if (timer) {
-                    // remove the 5 second timer
-                    clearTimeout(timer);
-                    timer = null;
-                    // reset the progress bar
-                    ngProgress.reset();
-                }
-            }
-        }
-    })
-
-
     .controller('CommonController', ['$scope', '$location', function ($scope, $location) {
         $scope.isActive = function (viewLocation) {
             return viewLocation === $location.path();
