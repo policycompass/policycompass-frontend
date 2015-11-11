@@ -37,6 +37,14 @@
                     <p ng-hide="servererror.acronym || (datasetForm.acronym.$error.required && !datasetForm.acronym.$pristine)" class="help-block">Please add a acronym for the new dataset</p>
                 </div>
             </div>
+            <div class="form-group" ng-class="{'has-error': datasetForm.unit_id.$dirty && datasetForm.unit_id.$invalid}">
+                <label for="unit_id" class="field-label">Unit</label>
+                <div class="field-content">
+                    <select class="form-control unit-options" ng-model="apply_metric_helper.data.unit_id" data-category="apply_metric_helper.unit_category_id" id="unit_id" required>
+                    </select>
+                    <p ng-hide="servererror.acronym || (datasetForm.acronym.$error.required && !datasetForm.acronym.$pristine)" class="help-block">Please select the unit for the new dataset</p>
+                </div>
+            </div>
         </form>
     </div>
 </div>
