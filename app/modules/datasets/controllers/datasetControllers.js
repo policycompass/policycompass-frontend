@@ -176,7 +176,6 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 loadData: function (resource) {
                     $scope.ckanImport.isVisible = false;
                     $scope.inputInstance.loadData(resource.result);
-                    console.log(resource);
                 }
             }
 
