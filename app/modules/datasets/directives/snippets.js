@@ -11,7 +11,8 @@ angular.module('pcApp.datasets.directives.snippets', [
         'creationService',
         '$route',
         'dialogs',
-        function ($log, $location, $rootScope, creationService, $route, dialogs) {
+        'Auth',
+        function ($log, $location, $rootScope, creationService, $route, dialogs, Auth) {
         return {
             restrict: 'AEC',
             scope: {
@@ -22,6 +23,9 @@ angular.module('pcApp.datasets.directives.snippets', [
             },
             templateUrl: 'modules/datasets/partials/header.html',
             controller: function ($scope, $element, $attrs) {
+
+                $scope.userState = Auth.state;
+
                 var steps = {
                     1: {
                         'title': 'Step 1 - Provide Source Data',

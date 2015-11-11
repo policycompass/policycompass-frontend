@@ -32,7 +32,10 @@ angular.module('pcApp.indicators.controllers.indicator', [
     'IndicatorControllerHelper',
     '$filter',
     '$routeParams',
-    function ($scope, Indicator, $location, $log, helper, $filter, $routeParams) {
+    'Auth',
+    function ($scope, Indicator, $location, $log, helper, $filter, $routeParams, Auth) {
+
+        $scope.userState = Auth.state;
 
         // Init the base functionalities
         helper.baseCreateEditController($scope);
@@ -75,7 +78,10 @@ angular.module('pcApp.indicators.controllers.indicator', [
     'IndicatorControllerHelper',
     '$filter',
     '$routeParams',
-    function ($scope, Indicator, $location, $log, helper, $filter, $routeParams) {
+    'Auth',
+    function ($scope, Indicator, $location, $log, helper, $filter, $routeParams, Auth) {
+
+        $scope.userState = Auth.state;
 
         // Init the base functionalities
         helper.baseCreateEditController($scope);
@@ -125,7 +131,10 @@ angular.module('pcApp.indicators.controllers.indicator', [
     '$filter',
     '$routeParams',
     'dialogs',
-    function ($scope, Indicator, PolicyDomain, UnitCategory, $location, $log, helper, $filter, $routeParams, dialogs) {
+    'Auth',
+    function ($scope, Indicator, PolicyDomain, UnitCategory, $location, $log, helper, $filter, $routeParams, dialogs, Auth) {
+
+        $scope.userState = Auth.state;
 
         $scope.indicator = Indicator.get({id: $routeParams.indicatorId},
             function(indicator) {
