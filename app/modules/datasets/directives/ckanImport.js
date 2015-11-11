@@ -5,7 +5,7 @@
  * But implemented again, because source are not maintained
  */
 angular.module('pcApp.datasets.directives.ckanImport', [])
-    .directive('ckanImport', ['$http', 'API_CONF', function ($http, API_CONF) {
+    .directive('ckanImport', ['$http', 'Progress', 'API_CONF', function ($http, Progress, API_CONF) {
         return {
             restrict: 'A',
             templateUrl: function (el, attrs) {
@@ -18,7 +18,7 @@ angular.module('pcApp.datasets.directives.ckanImport', [])
                 scope.itemsPerPage = 10;
                 scope.byNumResourcesGtZero = function (result) {
                     return result.num_resources > 0;
-                }
+                };
 
                 scope.byResourceTypeIn = function (types) {
                     return function (resource) {
@@ -29,15 +29,15 @@ angular.module('pcApp.datasets.directives.ckanImport', [])
                         }
                         return false;
                     }
-                }
+                };
 
                 scope.onPageChange = function () {
                     var start = (scope.currentPage - 1) * scope.itemsPerPage;
                     scope.search(scope.lastTerm, start);
-
-                }
+                };
 
                 scope.loadResource = function (resource) {
+                    Progress.start();
                     $http({
                         url: API_CONF.DATASETS_MANAGER_URL + '/ckan/download',
                         params: {
@@ -47,12 +47,12 @@ angular.module('pcApp.datasets.directives.ckanImport', [])
                         }
                     }).then(function (response) {
                         scope.loadData(response.data);
+                        Progress.complete();
                     });
-
-
-                }
+                };
 
                 scope.search = function (term, start) {
+                    Progress.start();
                     scope.lastTerm = term;
                     $http({
                         url: API_CONF.DATASETS_MANAGER_URL + '/ckan/search',
@@ -62,9 +62,10 @@ angular.module('pcApp.datasets.directives.ckanImport', [])
                             start: start
                         }
                     }).then(function (response) {
+                        Progress.complete();
                         scope.ckan = response.data.result;
                     });
-                }
+                };
             }
         }
     }]);
