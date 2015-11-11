@@ -16,7 +16,7 @@
                    href="https://carneades-dev.policycompass.eu/carneades/#/projects/compass" target="_blank" ng-disabled="true">Create
                     Argument Map</a>
                 <a type="button" class="btn btn-danger" ng-click="deleteDataset(dataset)"
-                   ng-if="userState.loggedIn || userState.userPath == dataset.creator_path || userState.isAdmin">
+                   ng-if="userState.loggedIn && (userState.userPath == dataset.creator_path || userState.isAdmin)">
                     Delete</a></div>
 
 
