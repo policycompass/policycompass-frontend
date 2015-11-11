@@ -436,7 +436,7 @@
             		<!--
             		<tab ng-show="isSelectedSon('graph_line')" heading="Historical Events">
             		-->
-            		<tab ng-show="1==2" heading="Historical Events">
+            		<tab ng-show="1==1" heading="Historical Events">
 						<div ng-show="ListMetricsFilter.length>0" class="buttonline clearfix-min">
 							<button data-intro="Helps you to link this visualisation with events" data-position="right"  type="submit" class="btn btn-primary button-metrics" id="addHEbutton" ng-click="showModal('events')">Add Historical Event</button>
 						</div>
@@ -506,7 +506,7 @@
 									<!--
 										{{event.desc}} 
 									-->
-									<textarea ng-blur="updateDescriptionEvent($index);rePlotGraph()" rows="2" cols="50" ng-model="descHE[$index+1]" ng-trim="false" maxlength="150" name="descriptionHEToAdd" id="descriptionHEToAdd">{descHE[$index+1]}}</textarea>
+									<textarea ng-blur="updateDescriptionEvent($index);rePlotGraph()" rows="2" cols="50" ng-model="descHE[$index+1]" ng-trim="false" maxlength="150" name="descriptionHEToAdd" id="descriptionHEToAdd">{{descHE[$index+1]}}</textarea>
     								<span>{{150 - descHE[$index+1].length}} left</span>
 									
 								</div>

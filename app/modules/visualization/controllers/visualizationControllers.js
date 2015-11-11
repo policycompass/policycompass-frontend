@@ -2050,8 +2050,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				$scope.startDateHE[posI] =dateStartRec;
 				$scope.endDateHE[posI] =dateEndRec;
 				$scope.colorHE[posI] =colorRec;
-				
-				$scope.descHE[posI] = $('#descriptionHEToAdd').val();
+				//$scope.descHE[posI] = $('#descriptionHEToAdd').val();
+				$scope.descHE[posI] = $scope.historicalevent_description;
 						
 				var datosInT =  {
 					id : idRec,
