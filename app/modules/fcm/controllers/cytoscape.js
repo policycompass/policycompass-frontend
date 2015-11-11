@@ -387,6 +387,42 @@ $scope.md = jsonModel;
 
 
 // **-*-****
+    $scope.weightCalulation = function(){
+		for (i=0;i<$scope.SimulationConcepts.length;i++)
+		{
+			if ($scope.SimulationConcepts[i].metricId!=0)
+			{
+				if ((i+1)==1)
+					$scope.SimulationConcepts[i].value=0.8;
+				else if ((i+1)%5==0)
+					$scope.SimulationConcepts[i].value=1;
+				else if ((i+1)%4==0)
+					$scope.SimulationConcepts[i].value=0.4;
+				else if ((i+1)%3==0)
+					$scope.SimulationConcepts[i].value=0.6;
+				else if ((i+1)%2==0)
+					$scope.SimulationConcepts[i].value=0.2;
+				else
+					$scope.SimulationConcepts[i].value=0.8;
+			}
+		}
+		for (i=0;i<$scope.SimulationAssociations.length;i++)
+		{
+			if ((i+1)==1)
+				$scope.SimulationAssociations[i].weighted=0.25;
+			else if ((i+1)%5==0)
+				$scope.SimulationAssociations[i].weighted=-0.25;
+			else if ((i+1)%4==0)
+				$scope.SimulationAssociations[i].weighted=0.75;
+			else if ((i+1)%3==0)
+				$scope.SimulationAssociations[i].weighted=-0.5;
+			else if ((i+1)%2==0)
+				$scope.SimulationAssociations[i].weighted=0.5;
+			else
+				$scope.SimulationAssociations[i].weighted=1;
+		}
+    };
+
     $scope.runSimulation = function(){
 	var Activator=FCMActivatorDetail.getActivator();
 	var jsonSimulation = {model: FCMModelsDetail.getModels(), userID: "1", activatorId: Activator[0].id,
