@@ -16,8 +16,8 @@
         <div class="col-lg-12">
             <div class="row">
                 <div class="col-lg-12 col-md-10 col-sm-10 col-xs-10">
-			<cytoscape cy-data="mapData" cy-edges="edgeData" cy-click="doClick(value)"></cytoscape>  
-		</div><!-- /.col-lg-9  -->
+					<cytoscape cy-data="mapData" cy-edges="edgeData" cy-click="doClick(value)"></cytoscape>  
+				</div><!-- /.col-lg-9  -->
             </div><!-- /.row  -->
         </div><!-- /.col-lg-12  -->
 
@@ -25,62 +25,67 @@
             <hr>
             <tabset justified="true">
                 <tab heading="Model Detail">
-		    <table class="table table-hover">
-			<tr ng-show="models.model.title">
-			    <td><b>Title:</b></td>
-			    <td>{{ models.model.title }}</td>
-			</tr>
-			<tr ng-show="models.model.description">
-			    <td><b>Description:</b></td>
-			    <td>{{ models.model.description }}</td>
-			</tr>
-			<tr ng-show="models.model.keywords">
-			    <td><b>Keywords:</b></td>
-			    <td>{{ models.model.keywords }}</td>
-			</tr>
-			<tr ng-show="models.model.dateAddedtoPC">
-			    <td><b>Issued:</b></td>
-			    <td>{{ models.model.dateAddedtoPC | date:'longDate' }}</td>
-			</tr>
-			<tr ng-show="mmodels.model.dateModified">
-			    <td><b>Last Modified:</b></td>
-			    <td>{{ models.model.dateModified | date:'longDate' }}</td>
-			</tr>
-		     </table>
-		</tab>
+					<table class="table table-hover">
+						<tr ng-show="models.model.title">
+							<td><b>Title:</b></td>
+							<td>{{ models.model.title }}</td>
+						</tr>
+						<tr ng-show="models.model.description">
+							<td><b>Description:</b></td>
+							<td>{{ models.model.description }}</td>
+						</tr>
+						<tr ng-show="models.model.keywords">
+							<td><b>Keywords:</b></td>
+							<td>{{ models.model.keywords }}</td>
+						</tr>
+						<tr ng-show="models.model.dateAddedtoPC">
+							<td><b>Issued:</b></td>
+							<td>{{ models.model.dateAddedtoPC | date:'longDate' }}</td>
+						</tr>
+						<tr ng-show="mmodels.model.dateModified">
+							<td><b>Last Modified:</b></td>
+							<td>{{ models.model.dateModified | date:'longDate' }}</td>
+						</tr>
+					</table>
+				</tab>
 
                 <tab heading="Show Concepts">
-		    <table class="table table-hover">
-			<tr>
-			    <td align="center" width="20%"><b>Title</b></td>
-			    <td align="center" width="30%"><b>Description</b></td>
-			    <td align="center" width="5%"><b>Input</b></td>
-			    <td align="center" width="14%"><b>Activator</b></td>
-			    <td align="center" width="5%"><b>Fixed Output</b></td>
-			    <td align="center" width="13%"><b>Issued</b></td>
-			    <td align="center" width="13%"><b>Last Modified</b></td>
-			</tr>
-			<tr ng-show="Concepts" ng-repeat="concept in Concepts">
-			    <td>{{ concept.title }}</td>
-			    <td>{{ concept.description }}</td>
-			    <td align="center">{{ concept.input }}</td>
-			    <td align="center">{{ concept.activator.title }}</td>
-			    <td align="center">{{ concept.fixedoutput }}</td>
-			    <td align="center">{{ concept.dateAddedtoPC | date:'longDate' }}</td>
-			    <td align="center">{{ concept.dateModified | date:'longDate' }}</td>
-			</tr>
-		     </table>
-		</tab>
+					<table class="table table-hover">
+						<tr>
+							<td align="center" width="20%"><b>Title</b></td>
+							<td align="center" width="30%"><b>Description</b></td>
+							<td align="center" width="5%"><b>Input</b></td>
+							<td align="center" width="14%"><b>Activator</b></td>
+							<td align="center" width="5%"><b>Fixed Output</b></td>
+							<td align="center" width="13%"><b>Issued</b></td>
+							<td align="center" width="13%"><b>Last Modified</b></td>
+						</tr>
+						<tr ng-show="Concepts" ng-repeat="concept in Concepts">
+							<td>{{ concept.title }}</td>
+							<td>{{ concept.description }}</td>
+							<td align="center">{{ concept.input }}</td>
+							<td align="center">{{ concept.activator.title }}</td>
+							<td align="center">{{ concept.fixedoutput }}</td>
+							<td align="center">{{ concept.dateAddedtoPC | date:'longDate' }}</td>
+							<td align="center">{{ concept.dateModified | date:'longDate' }}</td>
+						</tr>
+					 </table>
+				</tab>
 
                 <tab heading="Simulation">Simulation</tab>
 
                 <tab heading="Graph">Graph</tab>
 
-                <tab heading="Comments">
-                    <show-discussion ng-if="models.model.id" data-key="fuzzymap_{{ models.model.id }}"></show-discussion>
-                </tab>
             </tabset>
 
         </div><!-- /.col-lg-12  -->
     </div><!-- /.row  -->
+	<div class="row">
+    	<h3 class="legend-primary">Discussion</h3>
+  	</div>
+	<div class="row">
+    	<div class="col-lg-6">
+      		<show-discussion ng-if="models.model.id" data-key="fuzzymap_{{ models.model.id }}"></show-discussion>
+    	</div>
+  	</div>
 </div>
