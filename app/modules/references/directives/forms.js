@@ -13,11 +13,17 @@ angular.module('pcApp.references.directives.forms', [
     return {
         restrict: 'C',
         scope: {
-            model: '=model'
+            model: '=model',
+            category: '=category'
         },
         controller: function($scope){
+            var params = {};
+            if ($scope.category) {
+                params['category'] = $scope.category;
+            }
+
             $scope.units = Unit.query(
-                null,
+                params,
                 function() {
                     //$log.info($scope.units);
                 }
