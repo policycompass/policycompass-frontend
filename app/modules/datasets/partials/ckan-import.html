@@ -23,21 +23,21 @@
                 <h5>No results found.</h5>
             </div>
             <div ng-show="ckan.results">
-                <div ng-repeat="result in ckan.results | filter:byNumResourcesGtZero" class="ckan-results">
+                <div ng-repeat="dataset in ckan.results | filter:byNumResourcesGtZero" class="ckan-results">
                     <div class="well">
 
                         <div class="attributes">
 
-                            <h3>{{result.title}}</h3>
+                            <h3>{{dataset.title}}</h3>
 
-                            <p>{{result.notes}}</p>
+                            <p>{{dataset.notes}}</p>
 
-                            <div ng-repeat="resource in result.resources | filter:byResourceTypeIn(['xls','tsv','csv','xlsx'])">
+                            <div ng-repeat="resource in dataset.resources | filter:byResourceTypeIn(['xls','tsv','csv','xlsx'])">
                                 <!-- FIXME: if no name or description -->
 
                                 <div ng-if="resource.name">
                                     <h5>
-                                        <a href ng-click="loadResource(resource)">{{resource.name}}</a>
+                                        <a href ng-click="loadResource(dataset, resource)">{{resource.name}}</a>
                                     </h5>
 
                                     <p>
@@ -47,12 +47,12 @@
                                 </div>
                                 <div ng-if="!resource.name && resource.description.length > 0">
                                     <h5>
-                                        <a href ng-click="loadResource(resource)">{{resource.description}}</a>
+                                        <a href ng-click="loadResource(dataset, resource)">{{resource.description}}</a>
                                     </h5>
                                 </div>
                                 <div ng-if="!resource.name && (!resource.description || resource.description.length ==0)">
                                     <h5>
-                                        <a href ng-click="loadResource(resource)">Unlabeled
+                                        <a href ng-click="loadResource(dataset, resource)">Unlabeled
                                             dataset resource</a>
                                     </h5>
                                 </div>
