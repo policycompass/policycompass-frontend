@@ -45,7 +45,7 @@ $scope.dataset  (mandatory) = [{"Category":"1","From":20950114,"Key":"Air pollut
 			tooltip =  d3.select("body").append("div")
     		.attr("id","tooltip")
     		.html("")
-    		.attr("class", "tooltip")
+    		.attr("class", "visualization-tooltip")
     		.style("opacity", 0);
 
 			tooltipLegend =  d3.select("body").append("div")

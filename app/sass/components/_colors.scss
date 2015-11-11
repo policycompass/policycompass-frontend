@@ -127,3 +127,25 @@ background:$main_3;
 footer {
   background: linear-gradient(to bottom, $main_bk_2, $main_3 10px);
 }
+
+.tooltip-inner {
+  background-color: white;
+  color: $general;
+  border: 1px solid $main_2;
+}
+
+.tooltip.top .tooltip-arrow {
+  border-top-color: $main_2;
+}
+
+.tooltip.right .tooltip-arrow {
+  border-right-color: $main_2;
+}
+
+.tooltip.bottom .tooltip-arrow {
+  border-bottom-color: $main_2;
+}
+
+.tooltip.left .tooltip-arrow {
+  border-left-color: $main_2;
+}

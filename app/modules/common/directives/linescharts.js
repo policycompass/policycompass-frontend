@@ -83,7 +83,7 @@ $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01",
 			tooltip =  d3.select("body").append("div")
     		.attr("id","tooltip")
     		.html("")
-    		.attr("class", "tooltip")
+    		.attr("class", "visualization-tooltip")
     		.style("opacity", 0);
 
 			tooltipLegend =  d3.select("body").append("div")
