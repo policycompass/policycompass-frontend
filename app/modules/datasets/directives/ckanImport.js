@@ -15,6 +15,7 @@ angular.module('pcApp.datasets.directives.ckanImport', [])
                 'loadData': '='
             },
             link: function (scope, element, attrs, ctrls) {
+                scope.itemsPerPage = 10;
                 scope.byNumResourcesGtZero = function (result) {
                     return result.num_resources > 0;
                 }
@@ -28,6 +29,12 @@ angular.module('pcApp.datasets.directives.ckanImport', [])
                         }
                         return false;
                     }
+                }
+
+                scope.onPageChange = function () {
+                    var start = (scope.currentPage - 1) * scope.itemsPerPage;
+                    scope.search(scope.lastTerm, start);
+
                 }
 
                 scope.loadResource = function (resource) {
@@ -45,15 +52,17 @@ angular.module('pcApp.datasets.directives.ckanImport', [])
 
                 }
 
-                scope.search = function (term) {
+                scope.search = function (term, start) {
+                    scope.lastTerm = term;
                     $http({
                         url: API_CONF.DATASETS_MANAGER_URL + '/ckan/search',
                         params: {
                             api: attrs.apiBase,
-                            q: term
+                            q: term,
+                            start: start
                         }
                     }).then(function (response) {
-                        scope.results = response.data.result.results;
+                        scope.ckan = response.data.result;
                     });
                 }
             }
