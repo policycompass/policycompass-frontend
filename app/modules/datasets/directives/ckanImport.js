@@ -15,10 +15,6 @@ angular.module('pcApp.datasets.directives.ckanImport', [])
                 'loadData': '='
             },
             link: function (scope, element, attrs, ctrls) {
-                console.log("link us up scotty");
-
-                console.dir(arguments);
-
                 scope.byNumResourcesGtZero = function (result) {
                     return result.num_resources > 0;
                 }
@@ -43,7 +39,6 @@ angular.module('pcApp.datasets.directives.ckanImport', [])
                             convert: true
                         }
                     }).then(function (response) {
-                        console.log(response);
                         scope.loadData(response.data);
                     });
 
@@ -58,7 +53,6 @@ angular.module('pcApp.datasets.directives.ckanImport', [])
                             q: term
                         }
                     }).then(function (response) {
-                        console.log(response.data.result.results);
                         scope.results = response.data.result.results;
                     });
                 }
