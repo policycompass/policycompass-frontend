@@ -6,7 +6,7 @@
 
     var searchmodule = angular.module('pcApp.search.controllers', ['pcApp.search.services.search', 'pcApp.config', 'pcApp.references.services.reference']);
 
-    var searchMainController = function ($scope, $location, searchclient, esFactory, API_CONF, Language, $routeParams, $timeout) {
+    var searchMainController = function ($scope, $location, searchclient, esFactory, API_CONF, Language, PolicyDomain, Individual, $routeParams, $timeout) {
         //Init Selectable number of items per page
         $scope.itemsPerPageChoices = [
             { id: 10, name: '10'},
@@ -37,6 +37,29 @@
                 resolveLabel: function () {
                     var that = this;
                     Language.get({id: this.value}, function (response) {
+                        that.label = response.title;
+                    });
+                },
+                disable: true
+            },
+            policyDomains: {
+                label: 'Policy Domains',
+                field: ["policy_domains"],
+                order: 1,
+                resolveLabel: function () {
+                    var that = this;
+                    PolicyDomain.get({id: this.value}, function (response) {
+                        that.label = response.title;
+                    });
+                }
+            },
+            location: {
+                label: 'Location',
+                field: ["spatial", "location"],
+                order: 1,
+                resolveLabel: function () {
+                    var that = this;
+                    Individual.get({id: this.value}, function (response) {
                         that.label = response.title;
                     });
                 }
@@ -75,7 +98,7 @@
                 label: 'Keyword',
                 field: ["keywords"],
                 size: 200,
-                order: 2
+                disable: true
             }
         };
 
@@ -116,6 +139,7 @@
         prepareAggregations = function(){
             var request = {};
             angular.forEach(aggregations, function (aggregation, name){
+                if (aggregation.disable) return;
                 $scope.facetCategories.push({
                     name: name,
                     label: aggregation.label,
