@@ -107,6 +107,10 @@ Used to search metrics using ekasticsearch api
 
 }])
 
+.controller('wanttoController', ['$scope', '$rootScope', '$modal', function($scope, $rootScope, $modal) {
+	$rootScope.wizard_help = false;
+}])
+
 .controller('CreateDataset2Controller', ['$scope', '$modal', function($scope, $modal) {
 	console.log("CreateDataset2Controller");
 

@@ -35,7 +35,7 @@ commonmanager.config(function($routeProvider) {
             templateUrl: 'modules/common/partials/howItWorks.html'
         })
         .when('/i-want-to', {
-            controller: 'StaticController',
+            controller: 'wanttoController',
             templateUrl: 'modules/common/partials/wantto.html'
         })
         .when('/request', {
