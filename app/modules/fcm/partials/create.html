@@ -16,15 +16,16 @@ For each concept, select an appropriate value for the concept.<br>Basically, the
 <span class="btn btn-default btn-adddataset">Add Metric</span><br>You can make a linkage between the concept and concrete data by browsing created metric. After making linkages, the weight between concepts can be calculated automatically.<br><br>
 The strength of relationships can be presented as weights. For example, if source concept has strong negative impact on Sink concept, please select "Very Strong Positive".</p></div>   
 <!--				<div class="fonticon fonticon-help help-switch" ng-click="showHelp(1)"></div>   -->
-				<a type="button" class="btn btn-primary btn-concept" ng-click="addObj()">Add Concept</a>
-				<a ng-if="isDisabled == true" type="button" class="btn btn-primary btn-association" ng-click="addEdge()" disabled>Create Relationship</a>
-				<a ng-if="isDisabled == false" type="button" class="btn btn-primary btn-association" ng-click="addEdge()">Create Relationship</a>
-				<a ng-if="mode == 'create' && isDisabled == true" type="button" class="btn btn-primary btn-save" ng-click="saveModel()" disabled>Save Model</a>
-				<a ng-if="mode == 'edit' && isDisabled == true" type="button" class="btn btn-primary btn-save" ng-click="updateModel()" disabled>Save Model</a>
-				<a ng-if="mode == 'create' && isDisabled == false" type="button" class="btn btn-primary btn-save" ng-click="saveModel()">Save Model</a>
-				<a ng-if="mode == 'edit' && isDisabled == false" type="button" class="btn btn-primary btn-save" ng-click="updateModel()">Save Model</a>
-				<a ng-if="mode == 'create'" type="button" class="btn btn-primary btn-save" ng-click="saveModel()" disabled>Save As Model</a>
-				<a ng-if="mode == 'edit'" type="button" class="btn btn-primary btn-save" ng-click="saveModel()">Save As Model</a>
+				<button type="submit" class="btn btn-primary btn-concept" ng-click="addObj()">Add Concept</button>
+				<button type="submit" ng-if="isDisabled == true" class="btn btn-primary btn-association" ng-click="addEdge()" disabled>Create Relationship</button>
+				<button type="submit" ng-if="isDisabled == false" class="btn btn-primary btn-association" ng-click="addEdge()">Create Relationship</button>
+				<button type="submit" ng-if="mode == 'create' && isDisabled == true" class="btn btn-primary btn-save" ng-click="saveModel()" disabled>Save Model</button>
+				<button type="submit" ng-if="mode == 'edit' && isDisabled == true" class="btn btn-primary btn-save" ng-click="updateModel()" disabled>Save Model</button>
+				<button type="submit" ng-if="mode == 'create' && isDisabled == false" class="btn btn-primary btn-save" ng-click="saveModel()">Save Model</button>
+				<button type="submit" ng-if="mode == 'edit' && isDisabled == false" class="btn btn-primary btn-save" ng-click="updateModel()">Save Model</button>
+				<button type="submit" ng-if="mode == 'create'" class="btn btn-primary btn-save" ng-click="saveModel()" disabled>Save As Model</button>
+				<button type="submit" ng-if="mode == 'edit'" class="btn btn-primary btn-save" ng-click="saveModel()">Save As Model</button>
+				<button type="submit" data-intro="Cancel" data-position="top" class="btn btn-default btn-danger" ng-click="cancelModel()">Cancel</button>
 			</div>
 		</div>
 	</div>
