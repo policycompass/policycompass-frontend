@@ -233,23 +233,17 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
     }
   );
 
-  $scope.Datasets = Dataset.query({}, function(datasetList) 
-  {
 	for (i=0; i<$scope.SimulationConcepts.length; i++)
 	{
-		for (j=0; j<datasetList.count; j++)
+		Dataset.get({id: $scope.SimulationConcepts[i].metricId}, function(dataset) 
 		{
-			if (datasetList.results[j].id==$scope.SimulationConcepts[i].metricId)
-			{
-				$scope.SimulationConcepts[i].metricTitle = datasetList.results[j].title;
-			}
-		}
+			$scope.SimulationConcepts[i].title=dataset.title;
+		},
+		function(error) {
+		throw { message: JSON.stringify(error.data)};
+		});
 	}
 
-  },
-  function(error) {
-    throw { message: JSON.stringify(error.data)};
-  });
 
 }
 else
