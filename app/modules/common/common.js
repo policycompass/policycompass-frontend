@@ -1,18 +1,18 @@
- var commonmanager = angular.module('pcApp.common',[
-     'pcApp.common.controllers',
-     'pcApp.common.directives.search',
-     'pcApp.common.directives.submenus',
-     'pcApp.common.directives.common',
-     'pcApp.common.directives.piecharts',
-     'pcApp.common.directives.barscharts',
-     'pcApp.common.directives.linescharts',
-     'pcApp.common.directives.mapscharts',
-     'pcApp.common.directives.wizard',
-     'pcApp.common.directives.helpbutton',
-     'pcApp.common.directives.loadpcimage'
+var commonmanager = angular.module('pcApp.common', [
+    'pcApp.common.controllers',
+    'pcApp.common.directives.search',
+    'pcApp.common.directives.submenus',
+    'pcApp.common.directives.common',
+    'pcApp.common.directives.piecharts',
+    'pcApp.common.directives.barscharts',
+    'pcApp.common.directives.linescharts',
+    'pcApp.common.directives.mapscharts',
+    'pcApp.common.directives.wizard',
+    'pcApp.common.directives.helpbutton',
+    'pcApp.common.directives.loadpcimage'
 ])
 
-commonmanager.config(function($routeProvider) {
+commonmanager.config(function ($routeProvider) {
     $routeProvider
         .when('/', {
             controller: 'StaticController',
@@ -53,20 +53,24 @@ commonmanager.config(function($routeProvider) {
             templateUrl: 'modules/common/partials/create-dataset.html'
         })
         .when('/create-dataset-2', {
-            controller:'CreateDataset2Controller',
+            controller: 'CreateDataset2Controller',
             templateUrl: 'modules/common/partials/create-dataset-2.html'
         })
         .when('/create-data', {
             controller: 'StaticController',
             templateUrl: 'modules/common/partials/create-data.html'
         })
-        .otherwise({ redirectTo: '/' });
+        .otherwise({redirectTo: '/'});
 })
 
-commonmanager.run(function(Progress, $rootScope) {
-	 $rootScope.$on('$locationChangeSuccess', function () {
-            Progress.start();
-        });
-})
+commonmanager.run(['ngProgress', '$rootScope', function (ngProgress, $rootScope) {
+    ngProgress.color('#f6921e');
 
-;
+    $rootScope.$on('$locationChangeStart', function () {
+        ngProgress.start();
+    });
+
+    $rootScope.$on('$locationChangeSuccess', function () {
+        ngProgress.complete();
+    });
+}])

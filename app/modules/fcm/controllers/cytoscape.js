@@ -147,6 +147,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes',[])
   $scope.hideyaxeunits=true;
   $scope.NodeID = 0;
 
+
   FCMModelsDetail.setModels($scope.Models);
   ConceptsDetail.setConcepts($scope.Concepts);
   AssociationsDetail.setAssociations($scope.Associations);
@@ -455,6 +456,7 @@ $scope.md = jsonModel;
     };
 
     $scope.runSimulation = function(){
+
 	var Activator=FCMActivatorDetail.getActivator();
 	var jsonSimulation = {model: FCMModelsDetail.getModels(), userID: "1", activatorId: Activator[0].id,
 		concepts: SimulationConceptsDetail.getConcepts(), connections: SimulationAssociationsDetail.getAssociations()};
@@ -519,6 +521,10 @@ $scope.md = jsonModel;
          //   });
         // broadcasting the event
         $rootScope.$broadcast('appChanged');
+
+		$scope.tabsel = {
+			results: true
+		}
     };
 
     $scope.impactAnalysis = function(){
