@@ -36,7 +36,7 @@ angular.module('pcApp.datasets.directives.ckanImport', [])
                     scope.search(scope.lastTerm, start);
                 };
 
-                scope.loadResource = function (resource) {
+                scope.loadResource = function (dataset, resource) {
                     ngProgress.start();
                     $http({
                         url: API_CONF.DATASETS_MANAGER_URL + '/ckan/download',
@@ -46,7 +46,7 @@ angular.module('pcApp.datasets.directives.ckanImport', [])
                             convert: true
                         }
                     }).then(function (response) {
-                        scope.loadData(response.data);
+                        scope.loadData(dataset, resource, response.data);
                         ngProgress.complete();
                     });
                 };

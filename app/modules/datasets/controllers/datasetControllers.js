@@ -173,10 +173,16 @@ angular.module('pcApp.datasets.controllers.dataset', [
                         $scope.dropzone.isCollapsed = true;
 
                 },
-                loadData: function (resource) {
+                loadData: function (dataset, resource, data) {
                     $scope.ckanImport.isVisible = false;
-                    $scope.inputTable.items = resource.result;
-                    $scope.inputInstance.loadData(resource.result);
+                    $scope.inputTable.items = data.result;
+                    $scope.inputInstance.loadData(data.result);
+
+                    creationService.data.dataset.title = (dataset.title && dataset.title.length > 0) ?
+                        dataset.title : dataset.notes;
+                    creationService.data.dataset.description = (resource.name && resource.name.length > 0) ?
+                        resource.name : resource.description;
+
                 }
             }
 
