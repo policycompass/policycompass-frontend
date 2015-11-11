@@ -13,7 +13,7 @@
                 <a type="button" class="btn btn-line"
                    href="#!/visualizations/create/?datasets={{dataset.id}}">Visualise</a>
                 <a type="button" class="btn btn-tree"
-                   href="https://carneades-dev.policycompass.eu/carneades/#/projects/compass" target="_blank">Create
+                   href="https://carneades-dev.policycompass.eu/carneades/#/projects/compass" target="_blank" ng-disabled="true">Create
                     Argument Map</a>
                 <a type="button" class="btn btn-danger" ng-click="deleteDataset(dataset)">Delete</a></div>
 
@@ -34,7 +34,7 @@
                         <li><a href="" class="fonticon fonticon-linkedin"></a></li>
                         <li><a href="" class="fonticon fonticon-google"></a></li>
                     </ul>
-                    <input type="text" value="http://localhost:9000/app/#/visualizations/4">
+                    <input type="text" value="{{ location.absUrl() }}">
                 </div>
             </div>
             <div ng-class="{active: e==2}" class="share-submenu">
