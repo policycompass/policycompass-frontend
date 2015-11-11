@@ -4,8 +4,8 @@
   <h1 class="fonticon fonticon-indicator">{{ indicator.acronym }}</h1>
   <div class="pc-visualization-formcontrols">
     <div class="button-group">
-    <a type="button" class="btn btn-primary btn-create" ng-if="userState.loggedIn || userState.userPath == indicator.creator_path || userState.isAdmin" href="#!/indicators/{{ indicator.id }}/edit">Edit</a>
-    <a type="button" class="btn btn-danger btn-clear" ng-if="userState.loggedIn || userState.userPath == indicator.creator_path || userState.isAdmin" ng-click="deleteIndicator(indicator)">Delete</a>
+    <a type="button" class="btn btn-primary btn-create" ng-if="userState.loggedIn && (userState.userPath == indicator.creator_path || userState.isAdmin)" href="#!/indicators/{{ indicator.id }}/edit">Edit</a>
+    <a type="button" class="btn btn-danger btn-clear" ng-if="userState.loggedIn && (userState.userPath == indicator.creator_path || userState.isAdmin)" ng-click="deleteIndicator(indicator)">Delete</a>
     </div>
   </div>
 </div>
