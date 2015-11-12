@@ -482,11 +482,11 @@ plotChartMap = function() {
 		function style(feature) {
 			return {
 				weight: 2,
-				opacity: 1,
+				//opacity: 1,
 				color: 'white',
 				dashArray: '3',
-				fillOpacity: 0.7,
-				fillColor: getColor(feature.properties.density)
+				fillOpacity: 1,
+				fillColor: getColor(feature.properties.density)				
 			};
 		}
 
