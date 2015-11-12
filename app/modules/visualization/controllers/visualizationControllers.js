@@ -4808,7 +4808,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
 	$scope.DatasetsLoaded = [];
 	$scope.TimeSelector = [];
-	$scope.scaleColor='';
+	//$scope.scaleColor='';
+	$scope.scaleColor = '#f27711';
+	
 	
 	//console.log("controller VisualizationsEditController");
 
@@ -4946,7 +4948,14 @@ angular.module('pcApp.visualization.controllers.visualization', [
     			}
     			else if (dataFilter[0]=='scaleColor')
     			{
-    				$scope.scaleColor=dataFilter[1];
+    				if (dataFilter[1])
+    				{
+    					$scope.scaleColor = dataFilter[1];	
+    				}
+    				else
+    				{    					
+    					$scope.scaleColor = '#f27711';
+    				}
     			}
     			else
     			{
@@ -5342,7 +5351,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
         dataConfig['showBubbles'] = $scope.showBubbles;
         dataConfig['showMovement'] = $scope.showMovement;
         dataConfig['scaleColor'] = $scope.scaleColor;
-        
+                
         dataConfig['showAsPercentatge'] = $scope.showAsPercentatge;       
         dataConfig['resolution'] = $scope.resolution['value'];
 
@@ -5666,7 +5675,9 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualiza
 	
 		$scope.DatasetsLoaded = [];
 		$scope.TimeSelector = [];
-		$scope.scaleColor='';
+		//$scope.scaleColor='';
+		$scope.scaleColor = '#f27711';
+
 		//console.log('VisualizationsCreateController');
 		
 		$scope.mode = "create";
@@ -5898,6 +5909,8 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualiza
 	        dataConfig['showZoom'] = $scope.showZoom;
 	        dataConfig['showBubbles'] = $scope.showBubbles;
 	        dataConfig['showMovement'] = $scope.showMovement;
+	        dataConfig['scaleColor'] = $scope.scaleColor;
+	        
 	        
 	        if (!$scope.showAsPercentatge)
 	        {
@@ -6121,7 +6134,8 @@ function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualiza
             };
             
            
-				
+			//console.log($scope.visualization);
+			
 			Visualization.save($scope.visualization,function(value, responseHeaders){
 					$location.path('/visualizations/' + value.id);
 				},saveErrorCallback
