@@ -188,7 +188,9 @@ policycompass.viz.pie = function(options)
 		      	var textToReturn = number + " ("+average+"%)";
 		      					
 				//tooltip.style("opacity",1.0).html(pieslabels[i]+"<br />"+pies[i]);
-				tooltip.style("opacity",1.0).html(startDateToPlot+"<br />"+textToReturn);
+				//tooltip.style("opacity",1.0).html(startDateToPlot+"<br />"+textToReturn);
+				tooltip.style("opacity",1.0).html("<div class='tooltip-arrow'></div><div class='tooltip-inner ng-binding' ng-bind='content'>"+startDateToPlot+"<br />"+textToReturn+"</div>");
+				
 				})
 				
         	.on("mouseout", function(d, i) {

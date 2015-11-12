@@ -42,18 +42,24 @@ $scope.dataset  (mandatory) = [{"Category":"1","From":20950114,"Key":"Air pollut
 			
 			//$scope.cntloading = 0;
 			
-			tooltip =  d3.select("body").append("div")
-    		.attr("id","tooltip")
-    		.html("")
-    		.attr("class", "visualization-tooltip")
-    		.style("opacity", 0);
-
-			tooltipLegend =  d3.select("body").append("div")
-    		.attr("id","tooltipLegend")
-    		.html("")
-    		.attr("class", "tooltipLegend")
-    		.style("opacity", 0);
-    	
+			if (!document.getElementById("tooltip"))
+			{
+				tooltip =  d3.select("body").append("div")
+	    		.attr("id","tooltip")
+	    		.html("")
+	    		.attr("class", "tooltip right in fade")
+	    		.style("opacity", 0);
+			}
+			/*
+			if (!document.getElementById("tooltip"))
+			{
+				tooltipLegend =  d3.select("body").append("div")
+	    		.attr("id","tooltipLegend")
+	    		.html("")
+	    		.attr("class", "tooltipLegend")
+	    		.style("opacity", 0);
+    		}
+    		*/
     		var openedLabels = 0;
  		
 			mousemove = function() 
