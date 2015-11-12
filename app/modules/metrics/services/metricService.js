@@ -140,7 +140,7 @@ angular.module('pcApp.metrics.services.metric',[
 /**
  * Factory to operationalize Metric using a wizard
  */
-.factory('ApplyMetricHelper', ['MetricService', function (MetricService){
+.factory('ApplyMetricHelper', ['MetricService', 'IndicatorService', function (MetricService, IndicatorService){
 
     var datasets = {};
     var _metric_id;
@@ -149,6 +149,7 @@ angular.module('pcApp.metrics.services.metric',[
         datasets.data = {
             title: "",
             acronym: "",
+            unit_id: "",
             datasets: []
         };
     }
@@ -160,6 +161,10 @@ angular.module('pcApp.metrics.services.metric',[
                     _.each(variablesJson, function(value, key){
                         datasets.data.datasets.push({variable : key.trim(), dataset: -1, indicator: value.id });
                     });
+                    IndicatorService.get({id: metric.indicator_id},
+                        function (indicator) {
+                            datasets.unit_category_id = indicator.unit_category;
+                        });
                 },
                 function(err) {
                     throw { message: JSON.stringify(err.data)};
