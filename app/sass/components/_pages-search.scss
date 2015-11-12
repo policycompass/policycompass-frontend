@@ -218,12 +218,21 @@ $ancho:$unidad * 2;
   font-size:13px;
   & > ul {
     @include reset-list();
-    overflow:auto;
+    overflow: hidden;
+    overflow-y:auto;
     max-height: 200px;
   }
   
   label, input {
     cursor: pointer;
+  }
+  label {
+    width: 100%;
+    margin-left: -13px;
+    padding-left: 13px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-bottom: -3px;
   }
   ul {
     
