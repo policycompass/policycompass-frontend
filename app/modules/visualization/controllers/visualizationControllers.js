@@ -2165,9 +2165,13 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			if (indexStartDate>indexEndtDate)
 			{
 				//console.log(indexEndtDate);
-				var inter = $scope.timeEnd; 
-				$scope.timeEnd=$scope.timeStart;
-				$scope.timeStart=inter;
+				//console.log($scope.timeEnd);
+				if ($scope.timeEnd!='----')
+				{
+					var inter = $scope.timeEnd; 
+					$scope.timeEnd=$scope.timeStart;
+					$scope.timeStart=inter;
+				}
 				//$scope.timeEnd=$scope.TimeSelector[$scope.TimeSelector.length-1];
 			}
 
