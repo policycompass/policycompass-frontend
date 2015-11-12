@@ -225,7 +225,7 @@
             <li>
             <li ng-repeat="bucket in facetCategory.buckets">
                 <input type="checkbox" ng-model="bucket.selected" ng-change="facetChanged()" id="{{facetCategory.name}}_{{bucket.value}}">
-                <label for="{{facetCategory.name}}_{{bucket.value}}" tooltip-placement="right" tooltip="{{ bucket.label }}" tooltip-enable="bucket.label.length > 14">{{ bucket.label | limitTo:14 }}{{bucket.label.length > 14 ? '...' : ''}} ({{bucket.results}})</label>
+                <label for="{{facetCategory.name}}_{{bucket.value}}" tooltip-placement="right" tooltip="{{ bucket.label }}" tooltip-enable="bucket.label.length > 13">{{ bucket.label | limitTo:13 }}{{bucket.label.length > 13 ? '...' : ''}} ({{bucket.results}})</label>
             </li>
         </ul>
     </div>

@@ -231,7 +231,7 @@ $ancho:$unidad * 2;
     li {
       line-height:1.5em;
       margin:0;
-      
+      white-space: nowrap;
     }
   }
   border:1px solid $gris_80;
