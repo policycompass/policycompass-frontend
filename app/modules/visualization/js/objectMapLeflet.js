@@ -618,16 +618,18 @@ plotChartMap = function() {
 				{
 					radiumCircle = self.minRadious;
 				}
+
 				return L.circleMarker(latlng, {
 					//radius: 8,
 					radius: radiumCircle,
 					//radius: feature.density,
-					fillColor: "#ff7800",
-					fillColor: color(feature.density),					
+					//fillColor: "#ff7800",
+					//fillColor: color(feature.density),					
+					fillColor: getColor(feature.density),
 					color: "#000",
 					weight: 1,
 					opacity: 1,
-					fillOpacity: 0.8
+					fillOpacity: 1
 				});
 			}
 		}).addTo(map);
