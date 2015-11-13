@@ -429,8 +429,8 @@ policycompass.viz.barsMultiple = function(options) {
     	  						}
     	  			//tooltip.style("opacity",1.0).html(d.Key+"<br />"+startDateToPlot+"<br />"+d.ValueY);
     	  			var resTRext = d.Key.split("_");
-    	  			tooltip.style("opacity",1.0).html(resTRext[0]+"<br />"+startDateToPlot+"<br />"+valueString);
-    	  			
+    	  			//tooltip.style("opacity",1.0).html(resTRext[0]+"<br />"+startDateToPlot+"<br />"+valueString);
+    	  			tooltip.style("opacity",1.0).html("<div class='tooltip-arrow'></div><div class='tooltip-inner ng-binding' ng-bind='content'>"+resTRext[0]+"<br />"+startDateToPlot+"<br />"+valueString+"</div>");
     	  			
       			})
 				.on("click", function(d,i) {
@@ -554,7 +554,8 @@ policycompass.viz.barsMultiple = function(options) {
       			
       					console.log(d3.select(this));
       					d3.select(this).classed("circuloOn", true);
-		    			tooltip.style("opacity",1.0).html("Desc="+d.desc);      
+		    			//tooltip.style("opacity",1.0).html("Desc="+d.desc);  
+		    			tooltip.style("opacity",1.0).html("<div class='tooltip-arrow'></div><div class='tooltip-inner ng-binding' ng-bind='content'>Desc="+d.desc+"</div>");    
 		    			
       			
       		})

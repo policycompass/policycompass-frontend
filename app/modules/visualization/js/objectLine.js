@@ -1874,7 +1874,7 @@ return 0;}
 				    .on("mouseover", function() {
 				    	
 				    	//console.log(self.modeGraph);
-						if (self.modeGraph=='view')
+						if ((self.modeGraph=='view') || (self.xaxeformat=='sequence'))
 						{
 							//var str = d3.select(this).text();
 							var keyTmp = d['Key'].split("_");
@@ -1882,7 +1882,10 @@ return 0;}
 							
 							if(d3.select(this).attr("text-decoration")=='none')
 							{
-								tooltip.style("opacity",1.0).html("Click over to hide "+str);	
+								//tooltip.style("opacity",1.0).html("Click over to hide "+str);	
+								
+								tooltip.style("opacity",1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">Click over to hide '+str+'</div>');
+								
 								
 								d3.selectAll(".active_item")
 	                    			.style("opacity", 0.3);
@@ -1903,7 +1906,8 @@ return 0;}
 							}
 							else
 							{
-								tooltip.style("opacity",1.0).html("Click over to show "+str);
+								//tooltip.style("opacity",1.0).html("Click over to show "+str);
+								tooltip.style("opacity",1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">Click over to show '+str+'</div>');
 							}
 							
 						}						
@@ -1985,7 +1989,7 @@ return 0;}
 						//console.log("-----key="+d.Key.replace(/\s+/g, ''))
                 		// Determine if current line is visible
                 		
-                		if (self.modeGraph=='view')
+                		if ((self.modeGraph=='view') || (self.xaxeformat=='sequence'))
 						{                		
 	                		var active   = d.active ? false : true,
 	                		newOpacity = active ? 0 : 1;
@@ -2042,12 +2046,14 @@ return 0;}
 	                		if(d3.select(this).attr("text-decoration")=='none')
 	                		{
 	                			d3.select(this).attr("text-decoration","line-through");	
-	                			tooltip.style("opacity",1.0).html("Click over to show "+str);
+	                			//tooltip.style("opacity",1.0).html("Click over to show "+str);
+	                			tooltip.style("opacity",1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">Click over to show '+str+'</div>');
 	                		}
 	                		else
 	                		{
 	                			d3.select(this).attr("text-decoration","none");
-	                			tooltip.style("opacity",1.0).html("Click over to hide "+str);
+	                			//tooltip.style("opacity",1.0).html("Click over to hide "+str);
+	                			tooltip.style("opacity",1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">Click over to hide '+str+'</div>');
 	                		}
 	                		
 	                		
@@ -2470,8 +2476,10 @@ return 0;}
 		    				
 		    				//tooltip.style("opacity",1.0).html("<font color='"+colorScale(keyCircle)+"'>"+resSplit[0]+"<br/>"+endDateToPlot+" <br /> "+number+" "+units+"</font>");
 		    				
-		    				tooltip.style("opacity",1.0).html("<font color='"+colorCircle+"'>"+resSplit[0]+"<br/>"+endDateToPlot+" <br /> "+number+" "+units+"</font>");
-
+		    				//tooltip.style("opacity",1.0).html("<font color='"+colorCircle+"'>"+resSplit[0]+"<br/>"+endDateToPlot+" <br /> "+number+" "+units+"</font>");
+							
+							tooltip.style("opacity",1.0).html("<div class='tooltip-arrow'></div><div class='tooltip-inner ng-binding' ng-bind='content'><font color='"+colorCircle+"'>"+resSplit[0]+"<br/>"+endDateToPlot+" <br /> "+number+" "+units+"</font></div>");
+							
 		    				
 			    			//renderLine((self.x(i)), (self.y(d))); 
 			    		}
@@ -2696,7 +2704,9 @@ return 0;}
 				if (posXToPlot>0)
 				{
 					
-					tooltip.style("opacity",1.0).html(textTooltip);
+					//tooltip.style("opacity",1.0).html(textTooltip);					
+					tooltip.style("opacity",1.0).html("<div class='tooltip-arrow'></div><div class='tooltip-inner ng-binding' ng-bind='content'>"+textTooltip+"</div>");
+					
 					//d3.tooltip().placement("right")	
 				}
 				    
