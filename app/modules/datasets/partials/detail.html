@@ -153,6 +153,11 @@
                         <td>{{ indicator.name }}</td>
                     </tr>
 
+                    <tr>
+                        <td><b>Rating:</b></td>
+                        <td><pc-rating ng-if="dataset.id" rating-id="dataset_{{dataset.id}}"></pc-rating></td>
+                    </tr>
+
                 </table>
             </div>
 

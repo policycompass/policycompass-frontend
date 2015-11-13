@@ -73,6 +73,11 @@
                         <td><b>Keywords:</b></td>
                         <td>{{ data.keywords }}</td>
                     </tr>
+
+                    <tr>
+                        <td><b>Rating:</b></td>
+                        <td><pc-rating ng-if="data.id" rating-id="metric_{{data.id}}"></pc-rating></td>
+                    </tr>
                 </table>
             </div>
 
