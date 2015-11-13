@@ -54,8 +54,18 @@
   <div class="field-label">Last Modified</div>
     <div class="field-content">{{ indicator.modified | date:'longDate' }}</div>
   </div>
-</div>   
+</div>
 
-  </div>   
+  </div>
+  <div class="metadata metadata-event">
+    <div class="form-group form-group-rating">
+      <div class="form-item" >
+        <div class="field-label">Rating</div>
+        <div class="field-content">
+          <pc-rating ng-if="indicator.id" rating-id="indicator_{{indicator.id}}"></pc-rating>
+        </div>
+      </div>
+    </div>
+  </div>
   </div>
 </div>

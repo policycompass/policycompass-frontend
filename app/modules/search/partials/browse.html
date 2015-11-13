@@ -60,7 +60,7 @@
         <div ng-repeat="searchResult in searchResults" class="result-wrapper result-wrapper-{{searchResult['_type']}}">
             <div class="result-block searchItemIcon {{searchResult['_type']}}Icon" ng-cloak>
 
-                <div ng-show="searchResult['_type']=='metric'" class="search-result">
+                <div ng-if="searchResult['_type']=='metric'" class="search-result">
                     <h5>
                         <a href="#!/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}">{{
                             searchResult['_source']['title']}}</a>
@@ -78,10 +78,14 @@
                             <label class="key-field-title">Comments: </label>
                             {{ searchResult['_source']['commentsCount']}}
                         </div>
+                        <div class="key-field">
+                            <label class="key-field-title">Rating: </label>
+                            <pc-rating rating-id="{{searchResult['_type']}}_{{searchResult['_source']['id']}}" readonly="true"></pc-rating>
+                        </div>
                     </div>
                 </div>
 
-                <div ng-show="searchResult['_type']=='dataset'" class="search-result">
+                <div ng-if="searchResult['_type']=='dataset'" class="search-result">
                     <h5>
                         <a href="#!/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}">{{
                             searchResult['_source']['title']}}</a>
@@ -94,12 +98,15 @@
                             <label class="key-field-title">Comments: </label>
                             {{ searchResult['_source']['commentsCount']}}
                         </div>
-
+                        <div class="key-field">
+                            <label class="key-field-title">Rating: </label>
+                            <pc-rating rating-id="{{searchResult['_type']}}_{{searchResult['_source']['id']}}" readonly="true"></pc-rating>
+                        </div>
                     </div>
                 </div>
 
 
-                <div ng-show="searchResult['_type']=='indicator'" class="search-result">
+                <div ng-if="searchResult['_type']=='indicator'" class="search-result">
                     <h5>
                         <a href="#!/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}">{{ searchResult['_source']['name']}}</a>
                     </h5>
@@ -109,11 +116,15 @@
                             <label class="key-field-title">Comments: </label>
                             {{ searchResult['_source']['commentsCount']}}
                         </div>
+                        <div class="key-field">
+                            <label class="key-field-title">Rating: </label>
+                            <pc-rating rating-id="{{searchResult['_type']}}_{{searchResult['_source']['id']}}" readonly="true"></pc-rating>
+                        </div>
                     </div>
                 </div>
 
 
-                <div ng-show="searchResult['_type']=='event'" class="search-result">
+                <div ng-if="searchResult['_type']=='event'" class="search-result">
                     <h5><a href="#!/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}">
                         {{ searchResult['_source']['title']}}</a>
 
@@ -131,20 +142,13 @@
                             <label class="key-field-title">Comments: </label>
                             {{ searchResult['_source']['commentsCount']}}
                         </div>
-						<!--                        
-                        <div class="browse-item-stars">
-                            <div class="stars" title="4.1 points">
-                                <div class="star star-active"></div>
-                                <div class="star star-active"></div>
-                                <div class="star star-active"></div>
-                                <div class="star star-active"></div>
-                                <div class="star star-inactive"></div>
-                            </div>
+                        <div class="key-field">
+                            <label class="key-field-title">Rating: </label>
+                            <pc-rating rating-id="{{searchResult['_type']}}_{{searchResult['_source']['id']}}" readonly="true"></pc-rating>
                         </div>
-						-->                        
                     </div>
                 </div>
-                <div ng-show="searchResult['_type']=='visualization'" class="search-result">
+                <div ng-if="searchResult['_type']=='visualization'" class="search-result">
                     <h5>
                         <a href="#!/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}">{{
                             searchResult['_source']['title']}}</a>
@@ -162,9 +166,13 @@
                             <label class="key-field-title">Comments: </label>
                             {{ searchResult['_source']['commentsCount']}}
                         </div>
+                        <div class="key-field">
+                            <label class="key-field-title">Rating: </label>
+                            <pc-rating rating-id="{{searchResult['_type']}}_{{searchResult['_source']['id']}}" readonly="true"></pc-rating>
+                        </div>
                     </div>
                 </div>
-                <div ng-show="searchResult['_type']=='fuzzymap'" class="search-result">
+                <div ng-if="searchResult['_type']=='fuzzymap'" class="search-result">
                     <h5>
                         <a href="#!/models/{{ searchResult['_source']['id'] }}">{{
                             searchResult['_source']['title']}}</a>
@@ -182,17 +190,10 @@
                             <label class="key-field-title">Comments: </label>
                             {{ searchResult['_source']['commentsCount']}}
                         </div>
-						<!--
-                        <div class="browse-item-stars">
-                            <div class="stars" title="4.1 points">
-                                <div class="star star-active"></div>
-                                <div class="star star-active"></div>
-                                <div class="star star-active"></div>
-                                <div class="star star-active"></div>
-                                <div class="star star-inactive"></div>
-                            </div>
+                        <div class="key-field">
+                            <label class="key-field-title">Rating: </label>
+                            <pc-rating rating-id="{{searchResult['_type']}}_{{searchResult['_source']['id']}}" readonly="true"></pc-rating>
                         </div>
-						-->
                     </div>
                 </div>
                 

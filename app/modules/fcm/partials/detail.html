@@ -46,6 +46,10 @@
 							<td><b>Last Modified:</b></td>
 							<td>{{ models.model.dateModified | date:'longDate' }}</td>
 						</tr>
+						<tr>
+							<td><b>Rating:</b></td>
+							<td><pc-rating ng-if="models.model.id" rating-id="fuzzymap_{{models.model.id}}"></pc-rating></td>
+						</tr>
 					</table>
 				</tab>
 
