@@ -12,6 +12,7 @@ var pcAppDependencies = [
     'pcApp.fcm',
     'pcApp.developer',
     'pcApp.search',
+    'pcApp.ratings',
     'pcApp.indicators',
     'pcApp.datasets',
     'pcApp.references.directives.resolve',

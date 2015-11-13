@@ -119,11 +119,13 @@ $ancho:$unidad * 2;
   .texticon-dataset:before {
   content:"Dataset";
   }
-  
+  .rating-stars {
+    opacity:0.4;
+  }
   &:hover {
     background:$gris_99;
     
-   .browse-item-stars {
+   .rating-stars {
       opacity:1;
    }
   
@@ -259,47 +261,4 @@ $ancho:$unidad * 2;
     padding:5px;
   }
   
-}
-
-
-
-
-
-
-
-  .browse-item-stars {
-    // bottom:5px;
-    // right:20px;
-    // position:absolute;
-    // padding-right:5px;
-    // transform: translate(100%,0);
-    // background:white;
-    // width:100%;
-    opacity:0.3;
-    // color:$gris_70;
-  }
-.stars {
-  overflow:hidden;
-  // text-align:right;
-  margin-bottom:10px;
-  .star {
-    font-size:0.875em;
-    width:1.2em;
-    height:1em;
-    text-align:center;
-    display:inline-block;
-    // float:left;
-    // font-size:12px;
-    position:relative;
-    &:before {
-      content:"\e60b";
-      position:absolute;
-      top:2px;
-      left:0px;
-      
-    }
-  }
-  .star-inactive:before {
-    content:"\e60a";
-  }
 }
