@@ -2163,6 +2163,12 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			$scope.indexdataset=-1;
 			
 			//console.log("$scope.rePlotGraph() 1");
+			
+			$scope.curPageDataset = 0;
+ 			$scope.pageSizeDataset = 5;
+			
+			
+			
 			$scope.rePlotGraph();
 		}
 		
@@ -6187,7 +6193,14 @@ angular.module('pcApp.visualization').filter('pagination', function()
  return function(input, start)
  {
   start = +start;
-  return input.slice(start);
+  	if (input)
+  	{
+  		return input.slice(start);	
+  	}
+  	else{
+  		return start;
+  	}
+  	
  };
 })
 
