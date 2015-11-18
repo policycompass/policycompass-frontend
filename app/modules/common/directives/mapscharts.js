@@ -103,17 +103,17 @@ angular.module('pcApp.common.directives.mapscharts', [
 				
 				if (document.getElementById("directive_container_mapchart_"+$scope.chartid) !=null)
 				{
-					document.getElementById("directive_container_mapchart_"+$scope.chartid).innerHTML = "";
+					//document.getElementById("directive_container_mapchart_"+$scope.chartid).innerHTML = "";
 					$scope.iddiv="directive_container_mapchart_"+$scope.chartid;
 				} 
 				else if (document.getElementById("directive_container_mapchart_") !=null)
 				{
-					document.getElementById("directive_container_mapchart_").innerHTML = "";
+					//document.getElementById("directive_container_mapchart_").innerHTML = "";
 					$scope.iddiv="directive_container_mapchart_";
 				}
 				else if ($scope.chartid)
 				{
-					document.getElementById("directive_container_mapchart_").innerHTML = "";
+					//document.getElementById("directive_container_mapchart_").innerHTML = "";
 					$scope.iddiv="directive_container_mapchart_"+$scope.chartid;
 				}
 					
@@ -219,13 +219,13 @@ angular.module('pcApp.common.directives.mapscharts', [
 		'</div>'+		
         '</div>'+
         '<div ng-hide="small" id="showFilterContainer" class="showFilterContainer">' +
-        '<div id="showFilter" class="showFilter on_check">' +  
-        '<label class="checkbox-inline"><input ng-model="showLegend" type="checkbox" name="showLegend" class="checkbox filterCheckBox"> Show Legend</label>' +
+        '<div id="showFilter" class="showFilter on_check">' +          
         '<input type="hidden" name="initialZoom" id="initialZoom" value="2">' +
         '<input type="hidden" name="initialLat" id="initialLat" value="49.009952">' +
-        '<input type="hidden" name="initialLng" id="initialLng" value="2.548635">' +        
-        '<label class="checkbox-inline"><input ng-model="showZoom" type="checkbox" name="showZoom" class="checkbox filterCheckBox"> Enable Zoom</label>' +
-        '<label class="checkbox-inline"><input ng-model="showBubbles" type="checkbox" name="showBubbles" class="checkbox filterCheckBox"> View as bubble marker</label>' +        
+        '<input type="hidden" name="initialLng" id="initialLng" value="2.548635">' +
+		'<label class="checkbox-inline"><input ng-model="showLegend" type="checkbox" name="showLegend" class="checkbox filterCheckBox"> Show Legend </label> ' +                
+        '<label class="checkbox-inline"><input ng-model="showZoom" type="checkbox" name="showZoom" class="checkbox filterCheckBox"> Enable Zoom </label> ' +
+        '<label class="checkbox-inline"><input ng-model="showBubbles" type="checkbox" name="showBubbles" class="checkbox filterCheckBox"> View as bubble marker </label> ' +        
         '<label ng-show="showLegend" class="checkbox-inline">'+
         //'<input type="color" name="color" ng-model="scaleColor"  /> ' +
         '<spectrum name="color" ng-model="scaleColor" ng-model-onblur options="{showInput: true, showAlpha: false, allowEmpty: false, preferredFormat:hex}"></spectrum>'+

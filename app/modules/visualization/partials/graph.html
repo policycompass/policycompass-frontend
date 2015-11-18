@@ -11,8 +11,9 @@
 						<button title="Stops time serie" ng-show="showStop" type="submit" ng-click="stopBar()" class="btn btn-primary stop"></button>
 					</div>
 				</div>
+
 							<div ng-show="mapTimeSlider.length>1">
-								<rzslider
+								<rzslider								
 					 			rz-slider-model="rangeDatesSliderMin"
 					 			rz-slider-floor="0"
 					 			rz-slider-ceil="mapTimeSlider.length-1"
@@ -26,11 +27,23 @@
 		
 		<div ng-show="isSelectedSon('graph_pie')">
 			
+			<div ng-show="numbers2.length>1">
 			<form>
-				<div ng-show="numbers2.length>1">
+
+				<div class="slidermenu">
+					<div class="small">
+						<button title="Starts time serie" ng-show="showPlay" type="submit" ng-click="playBar()" class="btn btn-primary play"></button>
+						<button title="Starts time serie" ng-show="showReplay" type="submit" ng-click="replayBar()" class="btn btn-primary play"></button>
+						<button title="Pauses time serie" ng-show="showPause" type="submit" ng-click="pauseBar()" class="btn btn-primary pause"></button>
+						<button title="Stops time serie" ng-show="showStop" type="submit" ng-click="stopBar()" class="btn btn-primary stop"></button>
+					</div>
+				</div>
+				
+		
+				<div >
+					
 					<rzslider
 					 rz-slider-model="rangeDatesSliderMin"
-					 rz-slider-floor="0"
 					 rz-slider-ceil="numbers2.length-1"
 					 rz-slider-translate="translate"
 					 ></rzslider>
@@ -38,6 +51,7 @@
 				</div>
 
 			</form>	
+			</div>
 		</div>
 	</div>
 

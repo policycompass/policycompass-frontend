@@ -551,7 +551,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
 
 ////////////
-.factory('VisualizationsControllerHelper', ['$filter', 'dialogs', '$log', '$interval', function($filter, dialogs, $log, $interval) {
+.factory('VisualizationsControllerHelper', ['$filter', 'dialogs', '$log', '$interval', '$timeout', function($filter, dialogs, $log, $interval, $timeout) {
     return {
     	
     	baseVisualizationsCreateController: function($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualization, $location, helper, $log, API_CONF, Individual, Unit) {
@@ -569,14 +569,21 @@ angular.module('pcApp.visualization.controllers.visualization', [
 		
 		var stop;
 		
+
 		$scope.replayBar = function() {
 			$scope.showReplay = false;
 			stop = undefined;
 			$scope.rangeDatesSliderMin = 0;
+			
+			
 			$scope.playBar();
 		}
         $scope.playBar = function() {
-          
+        	
+ 			$timeout(function () {
+            	$scope.$broadcast('rzSliderForceRender');
+        	});
+                	
           $scope.showPause = true;
           $scope.showPlay = false;
           $scope.showStop = true;
@@ -591,28 +598,36 @@ angular.module('pcApp.visualization.controllers.visualization', [
           	i = $scope.rangeDatesSliderMin;          	
           	max = $scope.numbers2.length;
           }
-
+          
+          
           if ( angular.isDefined(stop) ) return;
 
           stop = $interval(function() {
+
             if (i < (max-1)) 
             {
-              $scope.rangeDatesSliderMin = i+1;             
+              $scope.rangeDatesSliderMin = i+1;         
             } 
             else {
-            	angular.isDefined(stop);
-
+            	if (angular.isDefined(stop)) 
+          	{
+            	$interval.cancel(stop);
+            	stop = undefined;
+          	}
 				$scope.showPause = false;
           		$scope.showPlay = false;
           		$scope.showStop = false;            	
           		$scope.showReplay = true;
-            	
             }
             i=i+1;
           }, 2000);
         };
 
         $scope.pauseBar = function() {
+        	
+        	$timeout(function () {
+            	$scope.$broadcast('rzSliderForceRender');
+        	});
         	
         	$scope.showPlay=true;
         	$scope.showPause = false;
@@ -625,6 +640,10 @@ angular.module('pcApp.visualization.controllers.visualization', [
         };
 		
         $scope.stopBar = function() {
+        	
+        	$timeout(function () {
+            	$scope.$broadcast('rzSliderForceRender');
+        	});
         	
         	$scope.showPause = false;
           	$scope.showPlay = true;
@@ -673,6 +692,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				returnValue = value;	
 			}
     		//$scope.plotMapChart();
+    		//console.log(returnValue);
 			return returnValue;			
 		}
 		
@@ -684,6 +704,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
 		$scope.translateCountrySlider = function(value)
   		{
+  			//console.log("translateCountrySlider value="+value);
   			if (value!=0)
   			{
   				//console.log("translateCountrySlider - value="+value);
@@ -734,7 +755,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			return returnValue;
   		}
   				
-		//$scope.numbermaxSlider = 1;
+ 				
+  		
 		$scope.translate = function(value)
   		{  			
   			//console.log("translate - value="+value);
@@ -881,9 +903,6 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				$scope.change_slider_value = value;  			
     		}
 
-
-
-    			
     		//console.log(returnValue);
 			return returnValue;
   		}
@@ -2144,6 +2163,12 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			$scope.indexdataset=-1;
 			
 			//console.log("$scope.rePlotGraph() 1");
+			
+			$scope.curPageDataset = 0;
+ 			$scope.pageSizeDataset = 5;
+			
+			
+			
 			$scope.rePlotGraph();
 		}
 		
@@ -4821,7 +4846,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	//$scope.scaleColor='';
 	$scope.scaleColor = '#f27711';
 	
-	
+	$scope.curPageDataset = 0;
+ 	$scope.pageSizeDataset = 5;
+ 	
 	//console.log("controller VisualizationsEditController");
 
 	//console.log("-----------");
@@ -6168,7 +6195,14 @@ angular.module('pcApp.visualization').filter('pagination', function()
  return function(input, start)
  {
   start = +start;
-  return input.slice(start);
+  	if (input)
+  	{
+  		return input.slice(start);	
+  	}
+  	else{
+  		return start;
+  	}
+  	
  };
 })
 

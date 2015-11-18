@@ -376,13 +376,26 @@
 								<div class="metric-forms">
 										<div class="metric-form-item">
 											<br>
+											<div ng-show="individualCombo_value_[metric.id].length/pageSizeDataset>1" class="createvisualization " >
+												<div class="filterMetricsPagination" id="filterMetricsPaginationDirective">
+													<div class="button-group">
+														<button  ng-disabled="curPageDataset == 0"  class="btn" ng-click="curPageDataset=curPageDataset-1">
+															<span class="glyphicon glyphicon-chevron-left"></span>  Previous
+														</button>
+														<button  ng-disabled="curPageDataset >= individualCombo_value_[metric.id].length/pageSizeDataset - 1" class="btn pull-right" ng-click="curPageDataset = curPageDataset+1">	
+															Next <span class="glyphicon glyphicon-chevron-right"></span>
+														</button>
+													</div>
+												</div>
+											</div>
+											
 											<table>
 												<thead>
 													<th><label for="color">Individual</label></th>
 													<th ng-show="isSelectedSon('graph_line')"><label for="color">Colour</label></th>
 												</thead>
 												<body>
-													<tr ng-repeat="option in individualCombo_value_[metric.id] | orderBy:'title'">
+													<tr ng-repeat="option in individualCombo_value_[metric.id] | pagination: curPageDataset * pageSizeDataset | limitTo: pageSizeDataset ">
 														<td>
 															<label ng-click="validateCheckboxes(metric.id);">
 															<input type="checkbox" 
@@ -436,7 +449,7 @@
             		<!--
             		<tab ng-show="isSelectedSon('graph_line')" heading="Historical Events">
             		-->
-            		<tab ng-show="1==1" heading="Historical Events">
+            		<tab ng-show="1==2" heading="Historical Events">
 						<div ng-show="ListMetricsFilter.length>0" class="buttonline clearfix-min">
 							<button data-intro="Helps you to link this visualisation with events" data-position="right"  type="submit" class="btn btn-primary button-metrics" id="addHEbutton" ng-click="showModal('events')">Add Historical Event</button>
 						</div>
