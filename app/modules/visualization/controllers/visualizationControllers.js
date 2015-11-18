@@ -4846,7 +4846,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	//$scope.scaleColor='';
 	$scope.scaleColor = '#f27711';
 	
-	
+	$scope.curPageDataset = 0;
+ 	$scope.pageSizeDataset = 5;
+ 	
 	//console.log("controller VisualizationsEditController");
 
 	//console.log("-----------");
