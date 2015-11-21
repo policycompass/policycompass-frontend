@@ -1,4 +1,5 @@
-angular.module('pcApp.common.directives.helpbutton', [])//exemple of use:
+angular.module('pcApp.common.directives.helpbutton', [])
+//exemple of use:
 //<span class="helpbutton"></span>
 
     .directive('helpbutton', [

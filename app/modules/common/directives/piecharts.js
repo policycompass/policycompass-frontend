@@ -1,4 +1,5 @@
-angular.module('pcApp.common.directives.piecharts', [])//exemple of use:
+angular.module('pcApp.common.directives.piecharts', [])
+//exemple of use:
 //<div class="pcPieChart" dataset="dataset" chartid="1" show-Legend="showLegend"  mode="view" show-Labels="showLabels"></div>
 //dataset -> array. Content expected
 //array contetn like

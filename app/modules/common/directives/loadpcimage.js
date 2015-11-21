@@ -1,4 +1,5 @@
-angular.module('pcApp.common.directives.loadpcimage', [])//exemple of use:
+angular.module('pcApp.common.directives.loadpcimage', [])
+//exemple of use:
 //<div class="loadpcimage" id="visualization.id" imgtype="'visualization'" imgalt="visualization.title" imgtitle="visualization.title"></div>
 
 

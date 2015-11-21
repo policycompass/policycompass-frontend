@@ -1,4 +1,5 @@
-angular.module('pcApp.common.directives.barscharts', [])//example of use:
+angular.module('pcApp.common.directives.barscharts', [])
+//example of use:
 //<div class="pcBarsChart" dataset="dataset" chartid="3"  mode="view" show-Legend="showLegend" show-Labels="showLabels"></div>
 //dataset -> array. Content expected
 //array contetn like
