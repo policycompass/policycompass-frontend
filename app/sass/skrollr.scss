@@ -8,6 +8,7 @@
     position: relative;
     opacity: 1;
 }
+
 .hsContent {
     max-width: 450px;
     margin: -150px auto 0 auto;
@@ -17,6 +18,7 @@
     padding: 0 8%;
     text-align: center
 }
+
 .bcg {
     background-position: center center;
     background-repeat: no-repeat;
@@ -25,12 +27,14 @@
     height: 100%;
     width: 100%;
 }
-#slide-1{
+
+#slide-1 {
     height: 60%;
 }
+
 /* Slide 1 */
 #slide-1 .bcg {
-    background-image:url('');
+    background-image: url('');
 }
 
 /* CSS - Slide 2 */
@@ -40,56 +44,64 @@
     height: 310px;
     text-align: center
 }
+
 /* CSS - Slide 3 */
 #slide-3 .bcg {
-    background-image:url('');}
-
+    background-image: url('');
+}
 
 .div_table {
     height: 100%;
     display: table;
     margin: auto;
 }
+
 .div_tablecell {
     display: table-cell;
     vertical-align: middle;
 }
-#slide1{
-    background-image:url('../img/parallaxImg/bcg_section-1.png');
+
+#slide1 {
+    background-image: url('../img/parallaxImg/bcg_section-1.png');
     background-position: center center;
     background-repeat: repeat;
     height: 600px;
 }
-#slide2{
+
+#slide2 {
     background-color: #ffffff;
     height: 200px;
 }
-#slide3{
-    background-image:url('../img/parallaxImg/bcg_section-3.png');
+
+#slide3 {
+    background-image: url('../img/parallaxImg/bcg_section-3.png');
     background-position: center center;
     background-repeat: repeat;
-/*    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;*/
+    /*    -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;*/
     height: 600px;
 }
-#slide4{
-    background-image:url('../img/parallaxImg/bcg_section-4.png');
-    background-position: center center;
-    background-repeat: repeat;
-    height: 600px;
-    width: 100%;
-}
-#slide5{
-    background-image:url('../img/parallaxImg/bcg_section-5.png');
+
+#slide4 {
+    background-image: url('../img/parallaxImg/bcg_section-4.png');
     background-position: center center;
     background-repeat: repeat;
     height: 600px;
     width: 100%;
 }
-#slide6{
-    background-image:url('../img/parallaxImg/bcg_section-6.png');
+
+#slide5 {
+    background-image: url('../img/parallaxImg/bcg_section-5.png');
+    background-position: center center;
+    background-repeat: repeat;
+    height: 600px;
+    width: 100%;
+}
+
+#slide6 {
+    background-image: url('../img/parallaxImg/bcg_section-6.png');
     background-position: center center;
     background-repeat: repeat;
     height: 600px;

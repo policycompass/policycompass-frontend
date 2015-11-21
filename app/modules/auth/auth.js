@@ -4,7 +4,7 @@ var auth = angular.module('pcApp.auth', [
     'pcApp.auth.directives.login'
 ]);
 
-auth.config(function($routeProvider) {
+auth.config(function ($routeProvider) {
     $routeProvider
         .when('/login', {
             template: '<login></login>'

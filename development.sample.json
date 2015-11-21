@@ -1,5 +1,5 @@
- {
-     "PC_SERVICES_URL": "http://localhost:8000",
-     "ELASTIC_SEARCH_URL": "http://localhost:9200",
-     "FCM_SERVICES_URL": "http://localhost:8080"
- }
+{
+    "PC_SERVICES_URL": "http://localhost:8000",
+    "ELASTIC_SEARCH_URL": "http://localhost:9200",
+    "FCM_SERVICES_URL": "http://localhost:8080"
+}

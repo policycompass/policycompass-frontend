@@ -1,123 +1,115 @@
 <div class="container container-create-formula" id="container-create-formula">
-  <div class="content-header">
-    <h3 class="fonticon fonticon-formula">Formula Builder</h3>
-    <div class="subtitle-help">
-      <h4>
-        <div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div>
-        Step 3 -Operationalize your metric by applying data to it</h4>
-      <div ng-class="{active: help}" class="help-text"> Steps:
-        <ol>
-          <li>Select Formula
-          <li>select region and time</li>
-          <li>Systen is trying to find the datasets for you</li>
-          <li>select datasets and apply to formula/metric</li>
-          <li>View new dataset (Operationalised metrid)</li>
-          <li>Visualise dataset (Operionalised metric)</li>
-        </ol>
-      </div>
-    </div>
-    <ul class="navigation-steps">
-      <li><a href="#!/create-formula-2" class="btn btn-prev">Previous Step</a></li>
-      <li><a href="#!/create-formula" class="btn btn-next">Next Step</a></li>
-    </ul>
+    <div class="content-header">
+        <h3 class="fonticon fonticon-formula">Formula Builder</h3>
+
+        <div class="subtitle-help">
+            <h4>
+                <div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div>
+                Step 3 -Operationalize your metric by applying data to it
+            </h4>
+            <div ng-class="{active: help}" class="help-text"> Steps:
+                <ol>
+                    <li>Select Formula
+                    <li>select region and time</li>
+                    <li>Systen is trying to find the datasets for you</li>
+                    <li>select datasets and apply to formula/metric</li>
+                    <li>View new dataset (Operationalised metrid)</li>
+                    <li>Visualise dataset (Operionalised metric)</li>
+                </ol>
+            </div>
+        </div>
+        <ul class="navigation-steps">
+            <li><a href="#!/create-formula-2" class="btn btn-prev">Previous Step</a></li>
+            <li><a href="#!/create-formula" class="btn btn-next">Next Step</a></li>
+        </ul>
         <div class="pc-visualization-formcontrols">
-        <div class="button-group">
-        <a  class="btn btn-browse fonticon-search">Find datasets</a>
-    <a  class="btn btn-dataset" disabled="true">Apply Datasets to metric</a> 
-    </div>
-    
-  </div>
-  </div>
-  <div class="content-body">
-    <div class="calculation-formula calculation-formula-3"> <span class="indicator-formula indicator-formula-title">Country Health Metric</span> = 
-      0.6 * nle ( <span class="indicator-formula indicator-formula-selected">Life expectancy</span> ) + 0.4 * ncm ( <span class="indicator-formula indicator-formula-selected">Child Mortality</span> ) / <span class="metrics-formula metrics-formula-selected">GDP</span> </div>
-  </div>
-  <h4 class="fonticon fonticon-search">Find Datasets</h4>
+            <div class="button-group">
+                <a class="btn btn-browse fonticon-search">Find datasets</a>
+                <a class="btn btn-dataset" disabled="true">Apply Datasets to metric</a>
+            </div>
 
-  <div class="metadata metadata-formula">
-    <div class="form-group">
-      <label for="name" class="field-label">Name</label>
-      <div class="field-content">
-        <input type="text" class="form-control" id="name">
-      </div>
+        </div>
     </div>
+    <div class="content-body">
+        <div class="calculation-formula calculation-formula-3">
+            <span class="indicator-formula indicator-formula-title">Country Health Metric</span> =
+            0.6 * nle (
+            <span class="indicator-formula indicator-formula-selected">Life expectancy</span> ) + 0.4 * ncm (
+            <span class="indicator-formula indicator-formula-selected">Child Mortality</span> ) /
+            <span class="metrics-formula metrics-formula-selected">GDP</span></div>
+    </div>
+    <h4 class="fonticon fonticon-search">Find Datasets</h4>
 
-    <div class="form-group">
-      <label for="property" class="field-label">Time</label>
-      <div class="field-content">
-        <div   class="dataset-select"  
-    isteven-multi-select
-    input-model="classtypedata"
-    output-model="outputClasstypedata"
-    button-label="icon name"
-    item-label="icon name maker"
-    tick-property="ticked"
-     
-	> </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="property" class="field-label">Region</label>
-      <div class="field-content">
-        <div   class="dataset-select"  
-    isteven-multi-select
-    input-model="classtypedata2"
-    output-model="outputClasstypedata"
-    button-label="icon name"
-    item-label="icon name maker"
-    tick-property="ticked"
-     
-	> </div>
-      
-    </div> </div>
+    <div class="metadata metadata-formula">
         <div class="form-group">
-      <label for="property" class="field-label">Class</label>
-      <div class="field-content">
-        <div   class="dataset-select"  
-    isteven-multi-select
-    input-model="classtypedata3"
-    output-model="outputClasstypedata"
-    button-label="icon name"
-    item-label="icon name maker"
-    tick-property="ticked"
-    
-	> </div></div></div>
-      
-   
+            <label for="name" class="field-label">Name</label>
 
-      
-  </div>
-  <div class="row-block">
-  <h4 class="fonticon  btn-dataset">Apply Datasets to metric</h4>
-<div class="apply-datasets">
+            <div class="field-content">
+                <input type="text" class="form-control" id="name">
+            </div>
+        </div>
 
-  <tabset > 
-    <!-- ini tab metrics --> 
-    <tab heading="Life expectancy">
-    
-    <ul class="metrics-list">
-       <li><a>
-             Life expectancy Dataset from Eurostat
-             </a>	</li>
-             <li> 
-    <a href="">Dataset for life expectancy in the EU by Worldbank</a>
-    
-   	</li>
-             <li>
-    <a href="">Life expectancy in the United Kingdom 1980-2003</a>
-    </li>
-             
-             				
-    				
-    </ul>
-   						
-   		
-  
-    </tab> 
-    <tab heading="Child Mortality"> </tab> 
-    <tab heading="GDP"> </tab> 
-      
-    </tabset>
+        <div class="form-group">
+            <label for="property" class="field-label">Time</label>
+
+            <div class="field-content">
+                <div class="dataset-select" isteven-multi-select input-model="classtypedata" output-model="outputClasstypedata" button-label="icon name" item-label="icon name maker" tick-property="ticked"
+
+                    ></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="property" class="field-label">Region</label>
+
+            <div class="field-content">
+                <div class="dataset-select" isteven-multi-select input-model="classtypedata2" output-model="outputClasstypedata" button-label="icon name" item-label="icon name maker" tick-property="ticked"
+
+                    ></div>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="property" class="field-label">Class</label>
+
+            <div class="field-content">
+                <div class="dataset-select" isteven-multi-select input-model="classtypedata3" output-model="outputClasstypedata" button-label="icon name" item-label="icon name maker" tick-property="ticked"
+
+                    ></div>
+            </div>
+        </div>
+
+
     </div>
-</div>
+    <div class="row-block">
+        <h4 class="fonticon  btn-dataset">Apply Datasets to metric</h4>
+
+        <div class="apply-datasets">
+
+            <tabset>
+                <!-- ini tab metrics -->
+                <tab heading="Life expectancy">
+
+                    <ul class="metrics-list">
+                        <li><a>
+                            Life expectancy Dataset from Eurostat
+                        </a></li>
+                        <li>
+                            <a href="">Dataset for life expectancy in the EU by Worldbank</a>
+
+                        </li>
+                        <li>
+                            <a href="">Life expectancy in the United Kingdom 1980-2003</a>
+                        </li>
+
+
+                    </ul>
+
+
+                </tab>
+                <tab heading="Child Mortality"></tab>
+                <tab heading="GDP"></tab>
+
+            </tabset>
+        </div>
+    </div>
 </div>

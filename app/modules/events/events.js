@@ -7,7 +7,7 @@ var events = angular.module('pcApp.events', [
 /**
  * Routings for mapping controller and template to a url
  */
-events.config(function($routeProvider) {
+events.config(function ($routeProvider) {
     $routeProvider
         .when('/events', {
             redirectTo: '/browse/event'
@@ -32,5 +32,5 @@ events.config(function($routeProvider) {
             controller: 'EventDetailController',
             templateUrl: 'modules/events/partials/detail.html'
         })
-        .otherwise({ redirectTo: '/' });
+        .otherwise({redirectTo: '/'});
 });

@@ -1,10 +1,9 @@
-angular.module('skrollrDirectives', [])
-  .directive('skrollr', function() {
+angular.module('skrollrDirectives', []).directive('skrollr', function () {
     var directiveDefinitionObject = {
-      link: function() {
-        skrollr.init();
-      }
+        link: function () {
+            skrollr.init();
+        }
     };
 
     return directiveDefinitionObject;
-  });
+});

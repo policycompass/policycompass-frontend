@@ -1,206 +1,196 @@
 .apply-datasets,
 .createvisualization {
 
-  .metrics-list {
-    @include reset-list();
-    li {
-      width:100%;
-            padding:0 10px;
-      margin-top:5px;
-      margin-bottom:5px;
-      &.active {
-        a {
-          background:$bk_4_3;
-          color:white;
-          &:before {
-            content: "\e607";
-          }
+    .metrics-list {
+        @include reset-list();
+        li {
+            width: 100%;
+            padding: 0 10px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            &.active {
+                a {
+                    background: $bk_4_3;
+                    color: white;
+                    &:before {
+                        content: "\e607";
+                    }
+                }
+            }
+            a {
+                background: $gris_98;
+                display: block;
+                padding: 10px;
+                width: 100%;
+                &:before {
+                    content: "\e608";
+                }
+            }
         }
-      }
-      a {
-         background:$gris_98;
-         display:block;
-         padding:10px;
-         width:100%;
-         &:before {
-            content: "\e608";
-         }
-      }
+        @media (min-width: $device) {
+            @include flex-container();
+            li {
+                width: 50%;
+            }
+        }
     }
-    @media (min-width:$device) {
-      @include  flex-container();
-      li {
-        width:50%;
-      }
+    .designer-metrics {
+        background: $gris_98;
+        padding: 10px;
+        margin: 5px 0;
+        h4:before {
+            content: "\e993";
+        }
     }
-  }
-  .designer-metrics {
-    background:$gris_98;
-    padding:10px;
-    margin:5px 0;
-    h4:before {
-      content: "\e993";
+    .filterMetricsPagination {
+        float: right;
     }
-  }
-  .filterMetricsPagination {
-    float:right;
-  }
-  
+
 }
 
-
-
-
-
-
-
-
 rzslider {
-  position: relative;
-  display: inline-block;
-  width: 100%;
-  height: 2px;
-  margin: 30px 0 15px 0;
-  vertical-align: middle;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: 2px;
+    margin: 30px 0 15px 0;
+    vertical-align: middle;
 }
 
 rzslider span {
-  position: absolute;
-  display: inline-block;
-  white-space: nowrap;
+    position: absolute;
+    display: inline-block;
+    white-space: nowrap;
 }
 
 rzslider span.base {
-  width: 100%;
-  height: 100%;
-  padding: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
 }
 
 rzslider span.bar {
-  z-index: 0;
-  width: 100%;
-  height: 100%;
-  background: #58595b;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    background: #58595b;
 }
 
 rzslider span.bar.selection {
-  z-index: 1;
-  width: 0;
-  background: #f7941e;
+    z-index: 1;
+    width: 0;
+    background: #f7941e;
 }
 
 rzslider span.pointer {
-  top: -15px;
-  z-index: 2;
-  width: 32px;
-  height: 32px;
-  cursor: pointer;
-  background-color: #58595b;
-  -webkit-border-radius: 16px;
-     -moz-border-radius: 16px;
-          border-radius: 16px;
+    top: -15px;
+    z-index: 2;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    background-color: #58595b;
+    -webkit-border-radius: 16px;
+    -moz-border-radius: 16px;
+    border-radius: 16px;
 }
 
 rzslider span.pointer:after {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  width: 8px;
-  height: 8px;
-  background: #71818e;
-  -webkit-border-radius: 4px;
-     -moz-border-radius: 4px;
-          border-radius: 4px;
-  content: '';
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    width: 8px;
+    height: 8px;
+    background: #71818e;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    content: '';
 }
 
 rzslider span.pointer:hover:after {
-  background-color: #f7941e;
+    background-color: #f7941e;
 }
 
 rzslider span.pointer.active:after {
-  background-color: #f7941e;
+    background-color: #f7941e;
 }
 
 rzslider span.bubble {
-  top: -32px;
-  padding: 1px 3px 1px 3px;
-  color: #f7941e;
-  cursor: default;
+    top: -32px;
+    padding: 1px 3px 1px 3px;
+    color: #f7941e;
+    cursor: default;
 }
 
 rzslider span.bubble.selection {
-  top: 15px;
+    top: 15px;
 }
 
 rzslider span.bubble.limit {
-  
 
 }
-
 
 .square-box {
     width: 20px;
     display: inline-table;
 }
 
-
 .visualization-graph-page-content {
-padding-left: 0px;
-padding-right: 0px;
-padding-top: 5px;
-padding-bottom: 5px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 .stroke {
-  fill: none;
-  stroke: #000;
-  stroke-width: 3px;
+    fill: none;
+    stroke: #000;
+    stroke-width: 3px;
 }
 
 .fill {
-  fill: #fff;
+    fill: #fff;
 }
 
 .graticule {
-  
-  stroke: #777;
-  stroke-width: .5px;
-  stroke-opacity: .5;
+
+    stroke: #777;
+    stroke-width: .5px;
+    stroke-opacity: .5;
 }
 
 .land {
-  fill: #222;
+    fill: #222;
 }
 
 .boundary {
-  fill: none;
-  stroke: #fff;
-  stroke-width: .5px;
+    fill: none;
+    stroke: #fff;
+    stroke-width: .5px;
 }
-
 
 .grid .tick {
     stroke: lightblue;
     opacity: 0.2;
 }
+
 .grid path {
-      stroke-width: 0;
+    stroke-width: 0;
 }
 
 .nodatatoplot {
-	font-size: 20px;
+    font-size: 20px;
 }
 
 .axis path, .axis line {
-fill: none;
-stroke: #000;
-shape-rendering: crispEdges;
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
 }
 
 .line {
 
-  stroke-width: 1.5px;
+    stroke-width: 1.5px;
 }
 
 .visualization-tooltip {
@@ -210,12 +200,12 @@ shape-rendering: crispEdges;
     padding: 8px;
     font: 15px Helvetica Neue;
     background: #FFF;
-    
+
     border: solid 1px #f7941e;
     border-radius: 8px;
     pointer-events: none;
-    z-order:1000;
-    text-align:center;
+    z-order: 1000;
+    text-align: center;
 }
 
 .tooltipdd {
@@ -229,7 +219,6 @@ shape-rendering: crispEdges;
     opacity: 0.95;
 }
 
-
 .tooltipLegend {
     position: absolute;
     width: 200px;
@@ -240,52 +229,45 @@ shape-rendering: crispEdges;
     border: solid 1px #aaa;
     border-radius: 8px;
     pointer-events: none;
-    z-order:1000;
-    text-align:left;
+    z-order: 1000;
+    text-align: left;
 }
 
 .showFilter {
-	background: #f2f2f2;
-	padding: 10px 20px;
-	border: 1px solid #cccccc;
-	border-radius: 6px;
-	margin-bottom: 20px;
-	width: 100%;
+    background: #f2f2f2;
+    padding: 10px 20px;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    width: 100%;
 }
 
-
 .on_check {
-	display: block;
-	float: left;
-	padding-left: 5px;
-	padding-right: 5px;
-	color: #000000;
+    display: block;
+    float: left;
+    padding-left: 5px;
+    padding-right: 5px;
+    color: #000000;
 }
 
 .graphContainerdiv {
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.tabsCreateMetric { 
-	float: left;
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
-	width:100%;
+.tabsCreateMetric {
+    float: left;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
 }
 
 .contentHE {
-	font-weight: normal;
-	padding: 0 40px;
+    font-weight: normal;
+    padding: 0 40px;
 }
-
-
-
-
-
-
 
 /*
 .createvisualization .designer-datasets:before,
@@ -324,9 +306,9 @@ shape-rendering: crispEdges;
   display: block;
 }
 
-.createvisualization .designer-datasets h3, 
+.createvisualization .designer-datasets h3,
 .createvisualization .designer-datasets h4,
-.createvisualization .designer-metrics h3, 
+.createvisualization .designer-metrics h3,
 .createvisualization .designer-metrics h4 {
   margin: 0 0 1em;
 }
@@ -360,7 +342,7 @@ shape-rendering: crispEdges;
 .createvisualization .datasets-list li,
 .createvisualization .metrics-list li {
 
-  
+
   position: relative;
 }
 

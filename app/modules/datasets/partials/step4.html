@@ -1,10 +1,6 @@
 <dataset-create-wrapper>
     <dataset-create-header step="4"></dataset-create-header>
-    <hot-table
-            settings="inputTable.settings"
-            datarows="inputTable.items"
-            height="500">
-    </hot-table>
+    <hot-table settings="inputTable.settings" datarows="inputTable.items" height="500"></hot-table>
 
     <div class="well pc-dataset-toolbar">
         <strong ng-show="mode=='row'">({{ selectionStep }}/{{ individualSelection.length }}) Data for {{ individualSelection[selectionStep-1] }}</strong>
@@ -23,10 +19,5 @@
         </div>
 
     </div>
-    <hot-table ng-disabled="true"
-            settings="resultTable.settings"
-            datarows="resultTable.items"
-            height="300"
-            class="pc-result-table">
-    </hot-table>
+    <hot-table ng-disabled="true" settings="resultTable.settings" datarows="resultTable.items" height="300" class="pc-result-table"></hot-table>
 </dataset-create-wrapper>

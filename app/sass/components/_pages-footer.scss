@@ -1,118 +1,94 @@
 #footer {
-  padding-top:3em;
-  padding-bottom:3em;
-  font-size:.825em;
-  color:$claro;
-  a  {
-    color:$claro;
-  }
+    padding-top: 3em;
+    padding-bottom: 3em;
+    font-size: .825em;
+    color: $claro;
+    a {
+        color: $claro;
+    }
 
-  .footer-links {
-    @include reset-list();
-    li {
-      display:inline-block;
-      border-right:1px solid $gris_80;
-      padding:5px 10px;
-      &:last-of-type {
-        border-right:none;
-      }
+    .footer-links {
+        @include reset-list();
+        li {
+            display: inline-block;
+            border-right: 1px solid $gris_80;
+            padding: 5px 10px;
+            &:last-of-type {
+                border-right: none;
+            }
+        }
     }
-  }
 
-  .flag-wrap  {
-    @include flex-container;
-    & > div {
-      width:$unidad * 2;
-      // float:left;
-      // margin-right:
-    
-     
+    .flag-wrap {
+        @include flex-container;
+        & > div {
+            width: $unidad * 2;
+            // float:left;
+            // margin-right:
+
+        }
+        .cols-flag {
+            // float:left;
+            // margin-right:20px;
+        }
+        .cols-flag-text {
+            width: $unidad * 10;
+        }
+
     }
-    .cols-flag {
-      // float:left;
-       // margin-right:20px;
+
+    .alert-paragraph {
+        position: relative;
+        // padding-left:3em;
     }
-    .cols-flag-text {
-      width:$unidad * 10;
+    .license-image {
+        float: left;
+        margin-right: 20px;
+        width: $unidad * 2;
     }
-    
-  }
-  
-  .alert-paragraph {
-    position:relative;
-    // padding-left:3em;
-  }
-  .license-image  {
-    float:left;
-    margin-right:20px;
-    width:$unidad * 2;
-  }
-  .alert-paragraph:before {
-    content:"\e606";
-    // position:absolute;
-    // left:0em;
-    font-size:1.2em;
-    // color:$bk;
-    // color:lighten($claro, 20);
-    
-  
-  }
-  
-  .footer-wrapper > div {
-    margin-top:10PX;
-    // margin-bottom:1em;
-    // background:white;
-  }
-  
-  
-  @media (min-width:$device) {
-    .footer-wrapper {
-      @include flex-container;
-      & > div {
-        width:50%;
-        
+    .alert-paragraph:before {
+        content: "\e606";
+        // position:absolute;
+        // left:0em;
+        font-size: 1.2em;
+        // color:$bk;
+        // color:lighten($claro, 20);
+
+    }
+
+    .footer-wrapper > div {
+        margin-top: 10PX;
+        // margin-bottom:1em;
         // background:white;
-        &:nth-child(2),
-        &:nth-child(1) {
-          // background:white;
-          // border-bottom:1px solid $gris_80;
-          
-        }
-        &:nth-child(1) {
-          padding-top:5px;
-        }
-      }
-      .footer-links {
-        margin-top:1em;
-        
-      }
-      
     }
-    
-  }
-  
+
+    @media (min-width: $device) {
+        .footer-wrapper {
+            @include flex-container;
+            & > div {
+                width: 50%;
+
+                // background:white;
+                &:nth-child(2),
+                &:nth-child(1) {
+                    // background:white;
+                    // border-bottom:1px solid $gris_80;
+
+                }
+                &:nth-child(1) {
+                    padding-top: 5px;
+                }
+            }
+            .footer-links {
+                margin-top: 1em;
+
+            }
+
+        }
+
+    }
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*
 footer{
@@ -141,12 +117,12 @@ footer {
   font-size:.875em;
   color:$claro;
   padding-top:2em;
-  
-  
+
+
 }
 
 footer .license {
-  margin-top: 20px;  
+  margin-top: 20px;
 }
 
 #eu-logo {
@@ -169,7 +145,7 @@ footer .license {
 footer {
   border-top-color:$gris_90;
   a {
-   
+
   }
 }
 

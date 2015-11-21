@@ -3,10 +3,10 @@
  * E2E-Test for creating a metric
  */
 
-describe('creation of a metric', function() {
+describe('creation of a metric', function () {
     browser.get('index.html#/metrics/create');
     browser.driver.manage().window().setSize(1280, 720);
-    it('should create metric', function() {
+    it('should create metric', function () {
 
         expect(browser.getTitle()).toEqual('Policy Compass');
 
@@ -17,7 +17,6 @@ describe('creation of a metric', function() {
         element(by.tagName('body')).sendKeys('2003-01-01');
         element(by.xpath('//*[@id="datagrid"]/div[1]/div[1]/div[1]/table/tbody/tr[1]/td[2]')).click();
         element(by.tagName('body')).sendKeys('2003-12-31');
-
 
 
         element(by.id('title')).sendKeys('TestTest');

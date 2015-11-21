@@ -1,94 +1,66 @@
 <div ng-controller="VisualizationsEditController">
-	<div ng-hide="list">
-		<div ng-show="isSelectedParent(1)">
-			<div ng-show="mapTimeSlider.length>1">
-			<form>
-				<div class="slidermenu">
-					<div class="small">
-						<button title="Starts time serie" ng-show="showPlay" type="submit" ng-click="playBar()" class="btn btn-primary play"></button>
-						<button title="Starts time serie" ng-show="showReplay" type="submit" ng-click="replayBar()" class="btn btn-primary play"></button>
-						<button title="Pauses time serie" ng-show="showPause" type="submit" ng-click="pauseBar()" class="btn btn-primary pause"></button>
-						<button title="Stops time serie" ng-show="showStop" type="submit" ng-click="stopBar()" class="btn btn-primary stop"></button>
-					</div>
-				</div>
+    <div ng-hide="list">
+        <div ng-show="isSelectedParent(1)">
+            <div ng-show="mapTimeSlider.length>1">
+                <form>
+                    <div class="slidermenu">
+                        <div class="small">
+                            <button title="Starts time serie" ng-show="showPlay" type="submit" ng-click="playBar()" class="btn btn-primary play"></button>
+                            <button title="Starts time serie" ng-show="showReplay" type="submit" ng-click="replayBar()" class="btn btn-primary play"></button>
+                            <button title="Pauses time serie" ng-show="showPause" type="submit" ng-click="pauseBar()" class="btn btn-primary pause"></button>
+                            <button title="Stops time serie" ng-show="showStop" type="submit" ng-click="stopBar()" class="btn btn-primary stop"></button>
+                        </div>
+                    </div>
 
-							<div ng-show="mapTimeSlider.length>1">
-								<rzslider								
-					 			rz-slider-model="rangeDatesSliderMin"
-					 			rz-slider-floor="0"
-					 			rz-slider-ceil="mapTimeSlider.length-1"
-					 			rz-slider-translate="translateCountrySlider"
-					 			></rzslider>
-							</div>
+                    <div ng-show="mapTimeSlider.length>1">
+                        <rzslider rz-slider-model="rangeDatesSliderMin" rz-slider-floor="0" rz-slider-ceil="mapTimeSlider.length-1" rz-slider-translate="translateCountrySlider"></rzslider>
+                    </div>
 
-			</form>
-			</div>
-		</div>
-		
-		<div ng-show="isSelectedSon('graph_pie')">
-			
-			<div ng-show="numbers2.length>1">
-			<form>
+                </form>
+            </div>
+        </div>
 
-				<div class="slidermenu">
-					<div class="small">
-						<button title="Starts time serie" ng-show="showPlay" type="submit" ng-click="playBar()" class="btn btn-primary play"></button>
-						<button title="Starts time serie" ng-show="showReplay" type="submit" ng-click="replayBar()" class="btn btn-primary play"></button>
-						<button title="Pauses time serie" ng-show="showPause" type="submit" ng-click="pauseBar()" class="btn btn-primary pause"></button>
-						<button title="Stops time serie" ng-show="showStop" type="submit" ng-click="stopBar()" class="btn btn-primary stop"></button>
-					</div>
-				</div>
-				
-		
-				<div >
-					
-					<rzslider
-					 rz-slider-model="rangeDatesSliderMin"
-					 rz-slider-ceil="numbers2.length-1"
-					 rz-slider-translate="translate"
-					 ></rzslider>
+        <div ng-show="isSelectedSon('graph_pie')">
 
-				</div>
+            <div ng-show="numbers2.length>1">
+                <form>
 
-			</form>	
-			</div>
-		</div>
-	</div>
+                    <div class="slidermenu">
+                        <div class="small">
+                            <button title="Starts time serie" ng-show="showPlay" type="submit" ng-click="playBar()" class="btn btn-primary play"></button>
+                            <button title="Starts time serie" ng-show="showReplay" type="submit" ng-click="replayBar()" class="btn btn-primary play"></button>
+                            <button title="Pauses time serie" ng-show="showPause" type="submit" ng-click="pauseBar()" class="btn btn-primary pause"></button>
+                            <button title="Stops time serie" ng-show="showStop" type="submit" ng-click="stopBar()" class="btn btn-primary stop"></button>
+                        </div>
+                    </div>
 
-	<center>
-		<div ng-show="isSelectedSon('graph_pie')">		
-			<div class="pcPieChart" dataset="dataset" chartid="visualization.id" show-Legend="showLegend" small="list" mode="mode" show-Labels="showLabels"></div>
-		</div>
-	
-		<div ng-show="isSelectedSon('graph_bars')">
-			<div class="pcBarsChart" dataset="datasetToSend" chartid="visualization.id" small="list"  mode="mode" show-Legend="showLegend" show-Labels="showLabels" show-Grid="showGrid" show-Percentatge="showAsPercentatge" 
-			resolution="resolution.value" 
-			labelyaxe="labelYAxe"></div>
-		</div>
-		<div ng-show="isSelectedSon('graph_line')">		
-			<div class="pcLinesChart" dataset="numbers1" events="eventsToPlot" 
-			labels="labelYAxe" small="list"  mode="mode" chartid="visualization.id" 
-			show-Legend="showLegend" 
-			show-Labels="showLabels"
-			show-Lines="showLines"
-			show-Areas="showAreas"
-			show-Points="showPoints"
-			show-Grid="showGrid"
-			show-Together="showYAxes"
-			show-Percentatge="showAsPercentatge"
-			resolution="resolution.value"
-			xaxeformat=""
-			></div>
-		</div>
-	
-		<div ng-hide="!isSelectedParent(1)">
-			<div class="pcMapsChart" chartid="visualization.id" dataset="datasetToSendMap"  
-			small="list"  mode="mode" show-Legend="showLegend" show-Zoom="showZoom" show-Bubbles="showBubbles" projection="typeToPlot"
-			fromcountry="translateCountryValue(rangeDatesSliderMin)"
-			tocountry="translateCountryValue(rangeDatesSliderMax)"
-			 scale-Color="scaleColor"
-			></div>
-		</div>
-	</center>
-		
+
+                    <div>
+
+                        <rzslider rz-slider-model="rangeDatesSliderMin" rz-slider-ceil="numbers2.length-1" rz-slider-translate="translate"></rzslider>
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <center>
+        <div ng-show="isSelectedSon('graph_pie')">
+            <div class="pcPieChart" dataset="dataset" chartid="visualization.id" show-Legend="showLegend" small="list" mode="mode" show-Labels="showLabels"></div>
+        </div>
+
+        <div ng-show="isSelectedSon('graph_bars')">
+            <div class="pcBarsChart" dataset="datasetToSend" chartid="visualization.id" small="list" mode="mode" show-Legend="showLegend" show-Labels="showLabels" show-Grid="showGrid" show-Percentatge="showAsPercentatge" resolution="resolution.value" labelyaxe="labelYAxe"></div>
+        </div>
+        <div ng-show="isSelectedSon('graph_line')">
+            <div class="pcLinesChart" dataset="numbers1" events="eventsToPlot" labels="labelYAxe" small="list" mode="mode" chartid="visualization.id" show-Legend="showLegend" show-Labels="showLabels" show-Lines="showLines" show-Areas="showAreas" show-Points="showPoints" show-Grid="showGrid" show-Together="showYAxes" show-Percentatge="showAsPercentatge" resolution="resolution.value" xaxeformat=""></div>
+        </div>
+
+        <div ng-hide="!isSelectedParent(1)">
+            <div class="pcMapsChart" chartid="visualization.id" dataset="datasetToSendMap" small="list" mode="mode" show-Legend="showLegend" show-Zoom="showZoom" show-Bubbles="showBubbles" projection="typeToPlot" fromcountry="translateCountryValue(rangeDatesSliderMin)" tocountry="translateCountryValue(rangeDatesSliderMax)" scale-Color="scaleColor"></div>
+        </div>
+    </center>
+
 </div>

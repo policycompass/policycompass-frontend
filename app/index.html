@@ -13,8 +13,7 @@
     <link href="../bower_components/spectrum/spectrum.css" rel="stylesheet" media="screen"/>
     <link href="../bower_components/chardin.js/chardinjs.css" rel="stylesheet">
     <link href="../bower_components/ngprogress/ngProgress.css" rel="stylesheet" media="screen"/>
-    <link href="../bower_components/isteven-angular-multiselect/isteven-multi-select.css" rel="stylesheet"
-          media="screen"/>
+    <link href="../bower_components/isteven-angular-multiselect/isteven-multi-select.css" rel="stylesheet" media="screen"/>
     <link href="../bower_components/Leaflet.Pancontrol/src/L.Control.Pan.css" rel="stylesheet" media="screen"/>
 
     <!--  App Styles -->
@@ -37,160 +36,159 @@
 </head>
 <body class="page" scroll ng-class="{fix:CreateMenu}">
 
-<div ng-include="'header.html'"></div>
+    <div ng-include="'header.html'"></div>
 
-<!--
-<div class="loadingHome" ng-controller='loadController' ng-init='loadPage()' >
-  <div class="loading-wrap">
-      <div class="loading-container">
-      <div class="loading"></div>
-      <div id="loading-text">loading</div>
+    <!--
+    <div class="loadingHome" ng-controller='loadController' ng-init='loadPage()' >
+      <div class="loading-wrap">
+          <div class="loading-container">
+          <div class="loading"></div>
+          <div id="loading-text">loading</div>
+        </div>
+        <div id="loading-logo-wrap">
+          <img src="img/logo-neg.svg" alt="Policy Compass's Logo" id="loading-logo">
+        </div>
+      </div>
     </div>
-    <div id="loading-logo-wrap">
-      <img src="img/logo-neg.svg" alt="Policy Compass's Logo" id="loading-logo">
-    </div>
-  </div>
-</div>
--->
+    -->
 
-<div ng-view="" id="main-content"></div>
-<div class="wizardbar" show-Wizard="wizard_help"></div>
-<div ng-include="'footer.html'"></div>
+    <div ng-view="" id="main-content"></div>
+    <div class="wizardbar" show-Wizard="wizard_help"></div>
+    <div ng-include="'footer.html'"></div>
 
 
-<adh-cross-window-channel></adh-cross-window-channel>
+    <adh-cross-window-channel></adh-cross-window-channel>
 
-<!--  Vendor Libs -->
-<script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
-<script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>
-<script type="text/javascript" src="../bower_components/angular-route/angular-route.min.js"></script>
-<script type="text/javascript" src="../bower_components/angular-resource/angular-resource.min.js"></script>
-<script type="text/javascript" src="../bower_components/angular-animate/angular-animate.min.js"></script>
-<script type="text/javascript" src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-<script type="text/javascript" src="../bower_components/handsontable/dist/handsontable.full.min.js"></script>
-<script type="text/javascript" src="../bower_components/ngHandsontable/dist/ngHandsontable.min.js"></script>
+    <!--  Vendor Libs -->
+    <script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>
+    <script type="text/javascript" src="../bower_components/angular-route/angular-route.min.js"></script>
+    <script type="text/javascript" src="../bower_components/angular-resource/angular-resource.min.js"></script>
+    <script type="text/javascript" src="../bower_components/angular-animate/angular-animate.min.js"></script>
+    <script type="text/javascript" src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script type="text/javascript" src="../bower_components/handsontable/dist/handsontable.full.min.js"></script>
+    <script type="text/javascript" src="../bower_components/ngHandsontable/dist/ngHandsontable.min.js"></script>
 
-<script type="text/javascript" src="../bower_components/jqueryui/jquery-ui.min.js"></script>
-<script type="text/javascript" src="../bower_components/dropzone/downloads/dropzone.min.js"></script>
-<script type="text/javascript" src="../bower_components/modernizr/modernizr.js"></script>
-<script type="text/javascript" src="../bower_components/jasny-bootstrap/dist/js/jasny-bootstrap.min.js"></script>
-<script type="text/javascript" src="../bower_components/cytoscape/dist/cytoscape.min.js"></script>
-<script type="text/javascript" src="../bower_components/angular-sanitize/angular-sanitize.min.js"></script>
-<script type="text/javascript" src="../bower_components/angular-dialog-service/dist/dialogs.min.js"></script>
-<script type="text/javascript"
-        src="../bower_components/angular-dialog-service/dist/dialogs-default-translations.min.js"></script>
-<script type="text/javascript" src="../bower_components/angular-translate/angular-translate.min.js"></script>
-<script type="text/javascript" src="../bower_components/queue-async/queue.min.js"></script>
-<script type="text/javascript" src="../bower_components/d3/d3.min.js"></script>
-<script type="text/javascript" src="../bower_components/underscore/underscore-min.js"></script>
-<script type="text/javascript" src="../bower_components/spectrum/spectrum.js"></script>
-<script type="text/javascript" src="../bower_components/angular-spectrum/dist/angular-spectrum.min.js"></script>
-<script type="text/javascript" src="../bower_components/elasticsearch/elasticsearch.angular.min.js"></script>
+    <script type="text/javascript" src="../bower_components/jqueryui/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="../bower_components/dropzone/downloads/dropzone.min.js"></script>
+    <script type="text/javascript" src="../bower_components/modernizr/modernizr.js"></script>
+    <script type="text/javascript" src="../bower_components/jasny-bootstrap/dist/js/jasny-bootstrap.min.js"></script>
+    <script type="text/javascript" src="../bower_components/cytoscape/dist/cytoscape.min.js"></script>
+    <script type="text/javascript" src="../bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+    <script type="text/javascript" src="../bower_components/angular-dialog-service/dist/dialogs.min.js"></script>
+    <script type="text/javascript" src="../bower_components/angular-dialog-service/dist/dialogs-default-translations.min.js"></script>
+    <script type="text/javascript" src="../bower_components/angular-translate/angular-translate.min.js"></script>
+    <script type="text/javascript" src="../bower_components/queue-async/queue.min.js"></script>
+    <script type="text/javascript" src="../bower_components/d3/d3.min.js"></script>
+    <script type="text/javascript" src="../bower_components/underscore/underscore-min.js"></script>
+    <script type="text/javascript" src="../bower_components/spectrum/spectrum.js"></script>
+    <script type="text/javascript" src="../bower_components/angular-spectrum/dist/angular-spectrum.min.js"></script>
+    <script type="text/javascript" src="../bower_components/elasticsearch/elasticsearch.angular.min.js"></script>
 
-<script src="../bower_components/topojson/topojson.js"></script>
-<script type="text/javascript" src="../bower_components/chardin.js/chardinjs.min.js"></script>
-<script type="text/javascript" src="../bower_components/checklist-model/checklist-model.js"></script>
-<script type="text/javascript" src="../bower_components/ngprogress/build/ngProgress.min.js"></script>
-<script type="text/javascript" src="../bower_components/isteven-angular-multiselect/isteven-multi-select.js"></script>
-<script type="text/javascript" src="../bower_components/angularjs-slider/dist/rzslider.min.js"></script>
-<script type="text/javascript" src="../bower_components/ngstorage/ngStorage.min.js"></script>
+    <script src="../bower_components/topojson/topojson.js"></script>
+    <script type="text/javascript" src="../bower_components/chardin.js/chardinjs.min.js"></script>
+    <script type="text/javascript" src="../bower_components/checklist-model/checklist-model.js"></script>
+    <script type="text/javascript" src="../bower_components/ngprogress/build/ngProgress.min.js"></script>
+    <script type="text/javascript" src="../bower_components/isteven-angular-multiselect/isteven-multi-select.js"></script>
+    <script type="text/javascript" src="../bower_components/angularjs-slider/dist/rzslider.min.js"></script>
+    <script type="text/javascript" src="../bower_components/ngstorage/ngStorage.min.js"></script>
 
-<!--  App Libs -->
-<script type="text/javascript" src="config.js"></script>
-<script type="text/javascript" src="app.js"></script>
-<script type="text/javascript" src="modules/developer/developer.js"></script>
-<script type="text/javascript" src="modules/common/common.js"></script>
-<script type="text/javascript" src="modules/common/controllers/common.js"></script>
-<script type="text/javascript" src="modules/common/directives/common.js"></script>
-<script type="text/javascript" src="modules/common/directives/submenus.js"></script>
-<script type="text/javascript" src="modules/common/directives/skrollrDirectives.js"></script>
-<script type="text/javascript" src="modules/common/directives/search.js"></script>
-<script type="text/javascript" src="modules/common/directives/piecharts.js"></script>
-<script type="text/javascript" src="modules/common/directives/barscharts.js"></script>
-<script type="text/javascript" src="modules/common/directives/linescharts.js"></script>
-<script type="text/javascript" src="modules/common/directives/helpbutton.js"></script>
-<script type="text/javascript" src="modules/common/directives/loadpcimage.js"></script>
-<script type="text/javascript" src="modules/common/directives/mapscharts.js"></script>
-<script type="text/javascript" src="modules/common/directives/wizard.js"></script>
-<script type="text/javascript" src="modules/references/services/referenceService.js"></script>
-<script type="text/javascript" src="modules/references/directives/forms.js"></script>
-<script type="text/javascript" src="modules/references/directives/resolve.js"></script>
-<script type="text/javascript" src="modules/metrics/metrics.js"></script>
-<script type="text/javascript" src="modules/metrics/controllers/metricControllers.js"></script>
-<script type="text/javascript" src="modules/metrics/services/metricService.js"></script>
-<script type="text/javascript" src="modules/metrics/directives/pcDatagrid.js"></script>
-<script type="text/javascript" src="modules/metrics/directives/ngDropzone.js"></script>
-<script type="text/javascript" src="modules/metrics/directives/forms.js"></script>
-<script type="text/javascript" src="modules/metrics/directives/formula.js"></script>
-<script type="text/javascript" src="modules/metrics/directives/indicator.js"></script>
-<script type="text/javascript" src="modules/metrics/directives/datasetSelect.js"></script>
-<script type="text/javascript" src="modules/metrics/directives/contenteditable.js"></script>
-<script type="text/javascript" src="modules/metrics/directives/indicatorToDataset.js"></script>
-<script type="text/javascript" src="modules/indicators/indicators.js"></script>
-<script type="text/javascript" src="modules/indicators/controllers/indicatorControllers.js"></script>
-<script type="text/javascript" src="modules/indicators/services/indicatorService.js"></script>
-<script type="text/javascript" src="modules/indicators/directives/forms.js"></script>
-<script type="text/javascript" src="modules/adhocracyEmbedder/adhocracyEmbedder.js"></script>
-<script type="text/javascript" src="modules/adhocracyEmbedder/services/adhocracy.js"></script>
-<script type="text/javascript" src="modules/auth/auth.js"></script>
-<script type="text/javascript" src="modules/auth/services/auth.js"></script>
-<script type="text/javascript" src="modules/auth/controllers/authControllers.js"></script>
-<script type="text/javascript" src="modules/auth/directives/login.js"></script>
-<script type="text/javascript" src="modules/deliberation/deliberation.js"></script>
-<script type="text/javascript" src="modules/deliberation/directives/showDiscussion.js"></script>
-<script type="text/javascript" src="modules/deliberation/directives/requestService.js"></script>
-<script type="text/javascript" src="modules/events/events.js"></script>
-<script type="text/javascript" src="modules/events/controllers/eventControllers.js"></script>
-<script type="text/javascript" src="modules/events/services/eventService.js"></script>
-<script type="text/javascript" src="modules/search/search.js"></script>
-<script type="text/javascript" src="modules/search/controllers/searchControllers.js"></script>
-<script type="text/javascript" src="modules/search/services/searchService.js"></script>
-<script type="text/javascript" src="modules/ratings/ratings.js"></script>
-<script type="text/javascript" src="modules/ratings/services/ratingsService.js"></script>
-<script type="text/javascript" src="modules/ratings/directives/ratingsDirective.js"></script>
-<script type="text/javascript" src="modules/visualization/visualization.js"></script>
-<script type="text/javascript" src="modules/visualization/controllers/visualizationControllers.js"></script>
-<script type="text/javascript" src="modules/visualization/services/visualizationService.js"></script>
-<script type="text/javascript" src="modules/visualization/js/objectBars.js"></script>
-<script type="text/javascript" src="modules/visualization/js/objectBarsMultiple.js"></script>
-<script type="text/javascript" src="modules/visualization/js/objectLine.js"></script>
-<script type="text/javascript" src="modules/visualization/js/objectPie.js"></script>
-<!--
-<script type="text/javascript" src="modules/visualization/js/objectMap.js"></script>
-<script type="text/javascript" src="modules/visualization/js/objMapW.js"></script>
--->
-<script type="text/javascript" src="modules/visualization/js/objectMapLeflet.js"></script>
-<script type="text/javascript" src="modules/visualization/js/leaflet.js"></script>
-<script type="text/javascript" src="../bower_components/Leaflet.Pancontrol/src/L.Control.Pan.js"></script>
+    <!--  App Libs -->
+    <script type="text/javascript" src="config.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+    <script type="text/javascript" src="modules/developer/developer.js"></script>
+    <script type="text/javascript" src="modules/common/common.js"></script>
+    <script type="text/javascript" src="modules/common/controllers/common.js"></script>
+    <script type="text/javascript" src="modules/common/directives/common.js"></script>
+    <script type="text/javascript" src="modules/common/directives/submenus.js"></script>
+    <script type="text/javascript" src="modules/common/directives/skrollrDirectives.js"></script>
+    <script type="text/javascript" src="modules/common/directives/search.js"></script>
+    <script type="text/javascript" src="modules/common/directives/piecharts.js"></script>
+    <script type="text/javascript" src="modules/common/directives/barscharts.js"></script>
+    <script type="text/javascript" src="modules/common/directives/linescharts.js"></script>
+    <script type="text/javascript" src="modules/common/directives/helpbutton.js"></script>
+    <script type="text/javascript" src="modules/common/directives/loadpcimage.js"></script>
+    <script type="text/javascript" src="modules/common/directives/mapscharts.js"></script>
+    <script type="text/javascript" src="modules/common/directives/wizard.js"></script>
+    <script type="text/javascript" src="modules/references/services/referenceService.js"></script>
+    <script type="text/javascript" src="modules/references/directives/forms.js"></script>
+    <script type="text/javascript" src="modules/references/directives/resolve.js"></script>
+    <script type="text/javascript" src="modules/metrics/metrics.js"></script>
+    <script type="text/javascript" src="modules/metrics/controllers/metricControllers.js"></script>
+    <script type="text/javascript" src="modules/metrics/services/metricService.js"></script>
+    <script type="text/javascript" src="modules/metrics/directives/pcDatagrid.js"></script>
+    <script type="text/javascript" src="modules/metrics/directives/ngDropzone.js"></script>
+    <script type="text/javascript" src="modules/metrics/directives/forms.js"></script>
+    <script type="text/javascript" src="modules/metrics/directives/formula.js"></script>
+    <script type="text/javascript" src="modules/metrics/directives/indicator.js"></script>
+    <script type="text/javascript" src="modules/metrics/directives/datasetSelect.js"></script>
+    <script type="text/javascript" src="modules/metrics/directives/contenteditable.js"></script>
+    <script type="text/javascript" src="modules/metrics/directives/indicatorToDataset.js"></script>
+    <script type="text/javascript" src="modules/indicators/indicators.js"></script>
+    <script type="text/javascript" src="modules/indicators/controllers/indicatorControllers.js"></script>
+    <script type="text/javascript" src="modules/indicators/services/indicatorService.js"></script>
+    <script type="text/javascript" src="modules/indicators/directives/forms.js"></script>
+    <script type="text/javascript" src="modules/adhocracyEmbedder/adhocracyEmbedder.js"></script>
+    <script type="text/javascript" src="modules/adhocracyEmbedder/services/adhocracy.js"></script>
+    <script type="text/javascript" src="modules/auth/auth.js"></script>
+    <script type="text/javascript" src="modules/auth/services/auth.js"></script>
+    <script type="text/javascript" src="modules/auth/controllers/authControllers.js"></script>
+    <script type="text/javascript" src="modules/auth/directives/login.js"></script>
+    <script type="text/javascript" src="modules/deliberation/deliberation.js"></script>
+    <script type="text/javascript" src="modules/deliberation/directives/showDiscussion.js"></script>
+    <script type="text/javascript" src="modules/deliberation/directives/requestService.js"></script>
+    <script type="text/javascript" src="modules/events/events.js"></script>
+    <script type="text/javascript" src="modules/events/controllers/eventControllers.js"></script>
+    <script type="text/javascript" src="modules/events/services/eventService.js"></script>
+    <script type="text/javascript" src="modules/search/search.js"></script>
+    <script type="text/javascript" src="modules/search/controllers/searchControllers.js"></script>
+    <script type="text/javascript" src="modules/search/services/searchService.js"></script>
+    <script type="text/javascript" src="modules/ratings/ratings.js"></script>
+    <script type="text/javascript" src="modules/ratings/services/ratingsService.js"></script>
+    <script type="text/javascript" src="modules/ratings/directives/ratingsDirective.js"></script>
+    <script type="text/javascript" src="modules/visualization/visualization.js"></script>
+    <script type="text/javascript" src="modules/visualization/controllers/visualizationControllers.js"></script>
+    <script type="text/javascript" src="modules/visualization/services/visualizationService.js"></script>
+    <script type="text/javascript" src="modules/visualization/js/objectBars.js"></script>
+    <script type="text/javascript" src="modules/visualization/js/objectBarsMultiple.js"></script>
+    <script type="text/javascript" src="modules/visualization/js/objectLine.js"></script>
+    <script type="text/javascript" src="modules/visualization/js/objectPie.js"></script>
+    <!--
+    <script type="text/javascript" src="modules/visualization/js/objectMap.js"></script>
+    <script type="text/javascript" src="modules/visualization/js/objMapW.js"></script>
+    -->
+    <script type="text/javascript" src="modules/visualization/js/objectMapLeflet.js"></script>
+    <script type="text/javascript" src="modules/visualization/js/leaflet.js"></script>
+    <script type="text/javascript" src="../bower_components/Leaflet.Pancontrol/src/L.Control.Pan.js"></script>
 
-<script type="text/javascript" src="modules/visualization/js/objToPlotMap.js"></script>
-<script type="text/javascript" src="modules/visualization/js/datamaps.world.min.js"></script>
-<script type="text/javascript" src="modules/fcm/fcm.js"></script>
-<script type="text/javascript" src="modules/fcm/controllers/fcmControllers.js"></script>
-<script type="text/javascript" src="modules/fcm/services/fcmService.js"></script>
-<script type="text/javascript" src="modules/fcm/controllers/cytoscape.js-panzoom.js"></script>
-<script type="text/javascript" src="modules/fcm/controllers/cytoscape.js"></script>
-<script type="text/javascript" src="modules/fcm/directives/cytoscape.js"></script>
+    <script type="text/javascript" src="modules/visualization/js/objToPlotMap.js"></script>
+    <script type="text/javascript" src="modules/visualization/js/datamaps.world.min.js"></script>
+    <script type="text/javascript" src="modules/fcm/fcm.js"></script>
+    <script type="text/javascript" src="modules/fcm/controllers/fcmControllers.js"></script>
+    <script type="text/javascript" src="modules/fcm/services/fcmService.js"></script>
+    <script type="text/javascript" src="modules/fcm/controllers/cytoscape.js-panzoom.js"></script>
+    <script type="text/javascript" src="modules/fcm/controllers/cytoscape.js"></script>
+    <script type="text/javascript" src="modules/fcm/directives/cytoscape.js"></script>
 
-<script type="text/javascript" src="modules/datasets/directives/ckanImport.js"></script>
-<script type="text/javascript" src="modules/datasets/datasets.js"></script>
-<script type="text/javascript" src="modules/datasets/controllers/datasetControllers.js"></script>
-<script type="text/javascript" src="modules/datasets/directives/ngDropzone.js"></script>
-<script type="text/javascript" src="modules/datasets/directives/snippets.js"></script>
-<script type="text/javascript" src="modules/datasets/services/datasetServices.js"></script>
+    <script type="text/javascript" src="modules/datasets/directives/ckanImport.js"></script>
+    <script type="text/javascript" src="modules/datasets/datasets.js"></script>
+    <script type="text/javascript" src="modules/datasets/controllers/datasetControllers.js"></script>
+    <script type="text/javascript" src="modules/datasets/directives/ngDropzone.js"></script>
+    <script type="text/javascript" src="modules/datasets/directives/snippets.js"></script>
+    <script type="text/javascript" src="modules/datasets/services/datasetServices.js"></script>
 
-<!--
-<link href="modules/visualization/css/leaflet.css" rel="stylesheet" media="screen" />
-<link href="modules/visualization/css/visualization.css" rel="stylesheet" media="screen" />
--->
-<!--Multiple inclusions of jquery caused errors with handsontable, so I commented it out (Alan)
-<script type="text/javascript" src="modules/visualization/js/jquery.js"></script>
-<script type="text/javascript" src="modules/visualization/js/jquery-ui.js"></script>-->
-<!--
-<link href="modules/visualization/css/visualization.css" rel="stylesheet" media="screen" />
--->
-<!--
- <link href="modules/visualization/css/style.css" rel="stylesheet" media="screen" />
--->
+    <!--
+    <link href="modules/visualization/css/leaflet.css" rel="stylesheet" media="screen" />
+    <link href="modules/visualization/css/visualization.css" rel="stylesheet" media="screen" />
+    -->
+    <!--Multiple inclusions of jquery caused errors with handsontable, so I commented it out (Alan)
+    <script type="text/javascript" src="modules/visualization/js/jquery.js"></script>
+    <script type="text/javascript" src="modules/visualization/js/jquery-ui.js"></script>-->
+    <!--
+    <link href="modules/visualization/css/visualization.css" rel="stylesheet" media="screen" />
+    -->
+    <!--
+     <link href="modules/visualization/css/style.css" rel="stylesheet" media="screen" />
+    -->
 </body>
 </html>

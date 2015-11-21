@@ -1,29 +1,29 @@
 .buttonBar {
-  @include reset-list();
-  // max-width:$device_max;
-  overflow:hidden;
-  margin:0 auto;
-  li {
-    float:left;
-    .btn {
-      display:inline-block;
-      border-radius:0;
-      border-left:none;
-    
+    @include reset-list();
+    // max-width:$device_max;
+    overflow: hidden;
+    margin: 0 auto;
+    li {
+        float: left;
+        .btn {
+            display: inline-block;
+            border-radius: 0;
+            border-left: none;
+
+        }
+        &:first-of-type {
+            .btn {
+                border-radius: 4px 0 0 4px;
+                border-left: 1px solid #999999;
+            }
+        }
+        &:last-of-type {
+            .btn {
+                border-radius: 0 4px 4px 0;
+            }
+        }
+
     }
-    &:first-of-type {
-      .btn {
-        border-radius:4px 0 0 4px;
-        border-left:1px solid #999999;
-      }
-    }
-     &:last-of-type {
-      .btn {
-        border-radius:0 4px 4px 0;
-      }
-    }
-    
-  }
 
 }
 
@@ -37,22 +37,21 @@
 
 .table-detail-main-data .table-detail-content,
 .table-detail .table-detail-content {
-      
+
 }
 
 .table-detail-main-data tr:first-child td,
 .table-detail tr:first-child td {
-  border-top: none;
+    border-top: none;
 }
 
-
 .table-detail-main-data .table-detail-content ul,
-.table-detail .table-detail-content ul{
-  margin: 0px;
-  padding:0px;
+.table-detail .table-detail-content ul {
+    margin: 0px;
+    padding: 0px;
 }
 
 .table-detail-main-data .table-detail-content li,
-.table-detail .table-detail-content li{
-       list-style-type: none;
+.table-detail .table-detail-content li {
+    list-style-type: none;
 }

@@ -4,7 +4,7 @@
  * They are built on top of AngularJS' Resource module.
  */
 
-angular.module('pcApp.indicators.services.indicator',[
+angular.module('pcApp.indicators.services.indicator', [
     'ngResource',
     'pcApp.config'
 ])
@@ -12,15 +12,14 @@ angular.module('pcApp.indicators.services.indicator',[
 /**
  * Factory for getting an Indicator, which connects to the Indicator endpoint
  */
-.factory('Indicator',  ['$resource', 'API_CONF', function($resource, API_CONF) {
-	var url = API_CONF.INDICATOR_SERVICE_URL + "/indicators/:id";
-	var Indicator = $resource(url,
-		{
-			id: "@id"
-		},
-        {
-            'update': { method:'PUT' }
+    .factory('Indicator', [
+        '$resource', 'API_CONF', function ($resource, API_CONF) {
+            var url = API_CONF.INDICATOR_SERVICE_URL + "/indicators/:id";
+            var Indicator = $resource(url, {
+                id: "@id"
+            }, {
+                'update': {method: 'PUT'}
+            });
+            return Indicator;
         }
-	);
-	return Indicator;
-}]);
+    ]);
