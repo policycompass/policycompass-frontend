@@ -1,4 +1,5 @@
-angular.module('pcApp.common.directives.linescharts', [])//esemple of use:
+angular.module('pcApp.common.directives.linescharts', [])
+//esemple of use:
 //<div class="pcLinesChart" dataset="dataset" labels="labels" small="list"  mode="mode" chartid="2" show-Legend="showLegend" show-Labels="showLabels"	show-Lines="showLines" show-Areas="showAreas" show-Points="showPoints" show-Grid="showGrid"	show-Together="showYAxes" show-Percentatge="showAsPercentatge" xaxeformat="xaxeformat" hideyaxeunits="hideyaxeunits"></div>
 //dataset -> array. Content expected
 //array contetn like
@@ -31,7 +32,8 @@ angular.module('pcApp.common.directives.linescharts', [])//esemple of use:
      $scope.chartid= '2';
      $scope.hideyaxeunits=true;
      $scope.resolution = day,month, year
-     */.directive('pcLinesChart', [
+     */
+    .directive('pcLinesChart', [
         '$log', 'API_CONF', function ($log, API_CONF) {
 
             return {
@@ -70,7 +72,11 @@ angular.module('pcApp.common.directives.linescharts', [])//esemple of use:
                     $scope.sem = [];
 
                     if (!document.getElementById("tooltip")) {
-                        tooltip = d3.select("body").append("div").attr("id", "tooltip").html("").attr("class", "tooltip right in fade").style("opacity", 0);
+                        tooltip = d3.select("body").append("div")
+                            .attr("id", "tooltip")
+                            .html("")
+                            .attr("class", "tooltip right in fade")
+                            .style("opacity", 0);
                     }
                     /*
                      if (!document.getElementById("tooltip"))
@@ -86,7 +92,9 @@ angular.module('pcApp.common.directives.linescharts', [])//esemple of use:
 
                     mousemove = function () {
                         //console.log(d3.event.pageX);
-                        tooltip.style("left", (d3.event.pageX + 20) + "px").style("top", (d3.event.pageY - 12) + "px");
+                        tooltip
+                            .style("left", (d3.event.pageX + 20) + "px")
+                            .style("top", (d3.event.pageY - 12) + "px");
 
                     };
 
@@ -415,7 +423,4 @@ angular.module('pcApp.common.directives.linescharts', [])//esemple of use:
                 template: '' + '<div id="directive_container_lineschart_{{chartid}}" class="{{xaxeformat}} pcchart container_graph directive_container_chart directive_container_chart_{{chartid}}">' + '<div class="loading-container">' + '<div ng-hide="small">' + '<div class="loading"></div>' + '<div id="loading-text">loading</div>' + '</div>' + '<div ng-show="small">' + '<div class="loading loading-small"></div>' + '<div id="loading-small-text">loading</div>' + '</div>' + '</div>' + '</div>' + '<div ng-hide="small" id="showFilterContainer" class="showFilterContainer">' + '<div id="showFilter" class="showFilter on_check">' + '<label class="checkbox-inline"><input ng-model="showLegend" type="checkbox" name="showLegend" class="checkbox filterCheckBox"> Show Legend</label>' + '<label class="checkbox-inline"><input ng-model="showLines"  type="checkbox" name="showLines"  class="checkbox filterCheckBox"> Show Lines</label>' + '<label class="checkbox-inline"><input ng-model="showAreas"  type="checkbox" name="showAreas"  class="checkbox filterCheckBox"> Show Areas</label>' + '<label class="checkbox-inline"><input ng-model="showPoints" type="checkbox" name="showPoints" class="checkbox filterCheckBox"> Show Points</label>' + '<label class="checkbox-inline"><input ng-model="showLabels" type="checkbox" name="showLabels" class="checkbox filterCheckBox"> Show Labels</label>' + '<label class="checkbox-inline"><input ng-model="showGrid"   type="checkbox" name="showGrid"   class="checkbox filterCheckBox"> Show Grid</label>' + '<label class="checkbox-inline"><input ng-model="showTogether"  type="checkbox" name="showTogether"  class="checkbox filterCheckBox"> Show only one Y axe</label>' + '<label class="checkbox-inline"><input ng-model="showPercentatge" type="checkbox" name="showPercentatge" class="checkbox filterCheckBox"> Show as %</label>' + '</div>' + '</div>'
             };
         }
-    ])
-
-
-;
+    ]);

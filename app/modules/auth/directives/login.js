@@ -13,7 +13,8 @@ angular.module('pcApp.auth.directives.login', [
                 }
             };
         }
-    ]).directive('register', [
+    ])
+    .directive('register', [
         'Adhocracy', function (Adhocracy) {
             return {
                 restrict: 'E',
@@ -24,7 +25,8 @@ angular.module('pcApp.auth.directives.login', [
                 }
             };
         }
-    ]).directive('adhUserIndicator', [
+    ])
+    .directive('adhUserIndicator', [
         'Adhocracy', function (Adhocracy) {
             return {
                 restrict: 'E',
@@ -35,7 +37,8 @@ angular.module('pcApp.auth.directives.login', [
                 }
             };
         }
-    ]).directive('adhCrossWindowChannel', [
+    ])
+    .directive('adhCrossWindowChannel', [
         'Adhocracy', function (Adhocracy) {
             return {
                 restrict: 'E',

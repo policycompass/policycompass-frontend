@@ -1,6 +1,8 @@
-angular.module('pcApp.common.directives.mapscharts', [])//exemple of use:
+angular.module('pcApp.common.directives.mapscharts', [])
+//exemple of use:
     /*
-     */.directive('pcMapsChart', [
+     */
+    .directive('pcMapsChart', [
         '$log', 'API_CONF', function ($log, API_CONF) {
 
             return {
