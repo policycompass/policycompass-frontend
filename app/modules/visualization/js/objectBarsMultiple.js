@@ -656,8 +656,17 @@ policycompass.viz.barsMultiple = function(options) {
 		//console.log(self.parentSelect);
 		self.parentSelect = self.parentSelect.replace("undefined","");
 		//console.log(self.parentSelect);
-		var selection = d3.select(self.parentSelect); 
-		var clientwidth = selection[0][0].clientWidth;
+		var selection = d3.select(self.parentSelect);
+		
+		if (selection[0][0])
+		{
+			var clientwidth = selection[0][0].clientWidth;
+		}
+		else
+		{
+			var clientwidth = self.maxWidth;
+		} 
+		
 		
 		if (self.maxWidth<clientwidth)
 		{
