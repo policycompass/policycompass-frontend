@@ -10,7 +10,7 @@ var indicators = angular.module('pcApp.indicators', [
 /**
  * The routes are configured and connected with the respective controller here
  */
-indicators.config(function($routeProvider) {
+indicators.config(function ($routeProvider) {
     $routeProvider
         .when('/indicators/create', {
             controller: 'IndicatorCreateController',
@@ -24,5 +24,5 @@ indicators.config(function($routeProvider) {
             controller: 'IndicatorDetailController',
             templateUrl: 'modules/indicators/partials/detail.html'
         })
-        .otherwise({ redirectTo: '/' });
+        .otherwise({redirectTo: '/'});
 });

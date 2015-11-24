@@ -4,23 +4,43 @@
  */
 (function () {
 
-    var searchmodule = angular.module('pcApp.search.controllers', ['pcApp.search.services.search', 'pcApp.config', 'pcApp.references.services.reference']);
+    var searchmodule = angular.module('pcApp.search.controllers', [
+        'pcApp.search.services.search', 'pcApp.config', 'pcApp.references.services.reference'
+    ]);
 
     var searchMainController = function ($scope, $location, searchclient, esFactory, API_CONF, Language, PolicyDomain, Individual, $routeParams, $timeout) {
         //Init Selectable number of items per page
         $scope.itemsPerPageChoices = [
-            { id: 10, name: '10'},
-            { id: 20, name: '20'},
-            { id: 30, name: '30'}
+            {
+                id: 10,
+                name: '10'
+            }, {
+                id: 20,
+                name: '20'
+            }, {
+                id: 30,
+                name: '30'
+            }
         ];
 
         //Init Sort Options
         $scope.sortOptions = [
-            { id: 'Relevance', name: 'Relevance'},
-            { id: 'Title', name: 'Title'},
-            { id: 'Date', name: 'Date Created'},
-            { id: 'CommentsDesc', name: 'Comments Desc.'},
-            { id: 'CommentsAsc', name: 'Comments Asc.'}
+            {
+                id: 'Relevance',
+                name: 'Relevance'
+            }, {
+                id: 'Title',
+                name: 'Title'
+            }, {
+                id: 'Date',
+                name: 'Date Created'
+            }, {
+                id: 'CommentsDesc',
+                name: 'Comments Desc.'
+            }, {
+                id: 'CommentsAsc',
+                name: 'Comments Asc.'
+            }
         ];
 
         var filters = {};
@@ -102,43 +122,43 @@
             }
         };
 
-        normalizeAggregationFilter = function(){
+        normalizeAggregationFilter = function () {
             var filters = [];
-            angular.forEach($scope.facetCategories, function (aggregation){
+            angular.forEach($scope.facetCategories, function (aggregation) {
                 var terms = [];
-                angular.forEach(aggregation.buckets, function(bucket){
-                    if (bucket.selected){
+                angular.forEach(aggregation.buckets, function (bucket) {
+                    if (bucket.selected) {
                         var field = aggregations[aggregation.name].field;
                         if (angular.isArray(field)) {
                             angular.forEach(field, function (fld) {
                                 var term = {};
                                 term[fld] = bucket.value;
-                                terms.push({"term":term});
+                                terms.push({"term": term});
                             });
                         } else {
                             var term = {};
                             term[field] = bucket.value;
-                            terms.push({"term":term});
+                            terms.push({"term": term});
                         }
                     }
                 });
-                if (terms.length>0){
-                    filters.push({"bool":{"should":terms}});
+                if (terms.length > 0) {
+                    filters.push({"bool": {"should": terms}});
                 }
             });
-            if (filters.length>0)
-                return {"bool":{"must":filters}};
+            if (filters.length > 0)
+                return {"bool": {"must": filters}};
             return {};
         };
-        $scope.facetCategoryResults = function(name){
+        $scope.facetCategoryResults = function (name) {
             return 1;
             if ($scope.aggregationData[name])
                 return $scope.aggregationData[name].length;
             return 0;
         };
-        prepareAggregations = function(){
+        prepareAggregations = function () {
             var request = {};
-            angular.forEach(aggregations, function (aggregation, name){
+            angular.forEach(aggregations, function (aggregation, name) {
                 if (aggregation.disable) return;
                 $scope.facetCategories.push({
                     name: name,
@@ -147,57 +167,56 @@
                     results: 0,
                     buckets: {}
                 });
-                aggregations[name].index = $scope.facetCategories.length-1;
+                aggregations[name].index = $scope.facetCategories.length - 1;
 
                 if (!angular.isArray(aggregation.field))
                     aggregations[name].field = [aggregation.field];
 
-                var i=0;
-                angular.forEach(aggregation.field, function (fld){
+                var i = 0;
+                angular.forEach(aggregation.field, function (fld) {
                     var obj = {};
                     obj.field = fld;
                     if (aggregation.size)
                         obj.size = aggregation.size;
-                    var index = (aggregation.field.length>1)?name+'$'+(i++):name;
+                    var index = (aggregation.field.length > 1) ? name + '$' + (i++) : name;
                     request[index] = {
-                        "terms" : obj
+                        "terms": obj
                     }
                 });
             });
             requestAggs = request;
         };
 
-        normalizeAggregationResults = function(aggs){
+        normalizeAggregationResults = function (aggs) {
             //console.log(aggs);
             var buckets = {};
-            angular.forEach(aggs, function(aggregation, key){
+            angular.forEach(aggs, function (aggregation, key) {
                 var resetCounters = true;
-                if (_match = key.match(/(.*)\$(\d+)/i)){
+                if (_match = key.match(/(.*)\$(\d+)/i)) {
                     key = _match[1];
-                    resetCounters = (_match[2]==1);
+                    resetCounters = (_match[2] == 1);
                 }
-                if (!aggregations[key]){
-                    console.log(key+" was unexpected");
+                if (!aggregations[key]) {
+                    console.log(key + " was unexpected");
                     return;
                 }
                 var facetCategory = $scope.facetCategories[aggregations[key].index];
-                if (resetCounters){
+                if (resetCounters) {
                     facetCategory.results = 0;
                     facetCategory.buckets = {};
                 }
 
-                angular.forEach(aggregation.buckets, function(bucket){
-                    if (!facetCategory.buckets[bucket.key]){
+                angular.forEach(aggregation.buckets, function (bucket) {
+                    if (!facetCategory.buckets[bucket.key]) {
                         facetCategory.buckets[bucket.key] = {
                             value: bucket.key,
-                            facetCategory:key,
+                            facetCategory: key,
                             label: '',
                             selected: false,
                             results: 0
                         };
                         if (angular.isFunction(aggregations[key].resolveLabel))
-                            aggregations[key].resolveLabel.apply(facetCategory.buckets[bucket.key]);
-                        else
+                            aggregations[key].resolveLabel.apply(facetCategory.buckets[bucket.key]); else
                             facetCategory.buckets[bucket.key].label = facetCategory.buckets[bucket.key].value;
 
                     }
@@ -213,7 +232,7 @@
             //console.log($scope.facetCategories);
         };
 
-        $scope.facetChanged = function() {
+        $scope.facetChanged = function () {
             var bucket = this.bucket;
             if (!facetsSelected.hasOwnProperty(bucket.facetCategory))
                 facetsSelected[bucket.facetCategory] = [];
@@ -229,8 +248,7 @@
         goSearch = function () {
             if ((typeof $scope.searchQuery == "undefined") || ($scope.searchQuery == "")) {
                 searchText = ""
-            }
-            else {
+            } else {
                 searchText = $scope.searchQuery
             }
             $scope.search(searchText);
@@ -305,20 +323,15 @@
             //Build Sort
             if ($scope.sortByItem == 'Relevance') {
                 var sort = ["_score"];
-            }
-            else if ($scope.sortByItem == 'Title') {
+            } else if ($scope.sortByItem == 'Title') {
                 var sort = ["title.lower_case_sort"];
-            }
-            else if ($scope.sortByItem == 'CommentsDesc') {
-                var sort = [{ "commentsCount" : {"order" : "desc"}}];
-            }
-            else if ($scope.sortByItem == 'CommentsAsc') {
-                var sort = [{ "commentsCount" : {"order" : "asc"}}];
-            }
-            else {
+            } else if ($scope.sortByItem == 'CommentsDesc') {
+                var sort = [{"commentsCount": {"order": "desc"}}];
+            } else if ($scope.sortByItem == 'CommentsAsc') {
+                var sort = [{"commentsCount": {"order": "asc"}}];
+            } else {
                 var sort = [
-                    {"id": {"order": "desc"}},
-                    "_score"
+                    {"id": {"order": "desc"}}, "_score"
                 ];
             }
             //Build query
@@ -328,11 +341,9 @@
                         _all: searchQuery
                     }
                 };
-            }
-            else {
+            } else {
                 var query = {
-                    match_all: {
-                    }
+                    match_all: {}
                 }
             }
             var request = {
@@ -350,7 +361,7 @@
             if (!angular.equals({}, filters)) {
                 //request.body.post_filter = filters;
                 request.body.query = {
-                    filtered:{
+                    filtered: {
                         query: query,
                         filter: filters
                     }

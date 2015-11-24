@@ -1,129 +1,127 @@
 .fonticon-event:before {
-  content: "\e612";
-  // color:$claro;
+    content: "\e612";
+    // color:$claro;
 }
+
 .fonticon-indicator:before {
-  content: "\e803";
-      content: "\e80a";
+    content: "\e803";
+    content: "\e80a";
 }
 
 .metadata-event {
-  background:transparent;
-  @include flex-container();
-  padding:0;
-  margin-right:-10px;
-  margin-left:-10px;
-  border:none;
-  .form-item {
-    overflow:hidden;
-    border-bottom:1px solid $gris_90;
-    &:last-of-type {
-      border-bottom:none;
+    background: transparent;
+    @include flex-container();
+    padding: 0;
+    margin-right: -10px;
+    margin-left: -10px;
+    border: none;
+    .form-item {
+        overflow: hidden;
+        border-bottom: 1px solid $gris_90;
+        &:last-of-type {
+            border-bottom: none;
+        }
     }
-  }
-  .form-group {
-    background:linear-gradient(to top,$gris_95,transparent);
-    background:$gris_97;
-    background:linear-gradient(to right,$gris_95 12em,$gris_97 12em);
-    margin-right:1%;
-    margin-left:1%;
-    width:48%;
-    border:1px solid $gris_90;
-    border-radius:$radius;
-    
-     &:hover {
-      background:white;
-       background:linear-gradient(to right,$gris_99 12em,white 12em);
-      .field-label {
-        color:$claro;
-      }
-      &:before {
-        // opacity:1;
-      }
-     }
-  }
-    .field-label, 
-    .field-content {
-      line-height:1.4em;
-      padding-top:5px;
-      padding-bottom:5px;
-    }
-  $ancho:11em;
-  .field-label {
-    
-    
-   padding-left:2em;
-    width:$ancho;
-    margin-right:- $ancho;
-    font-weight:600;
-  }
-  .field-content {
-    margin-left:$ancho;
-  }
-  .form-group:before {
-    font-family:policy;
-          
-          content: "\f059";
-      position:absolute;
-      top:5px;
-      left:10px;
-      // color:$bk_3_1;
-      color:$bk;
-      // font-size:2em;
-      
-  }
-  .form-group-keywords:before {
-     content: "\e800";
-  }
-  
-  .form-group-date:before {
-      content: "\e808";
-  }
-  .form-group-modified:before {
-      content: "\e60f";
-  }
-  
-  .form-group-link:before {
-       content: "\e805";
-  }
-  .form-group-location:before {
-      content: "\e802";
-       content: "\e9c9";
-  }
-  .form-group-language:before {
-      content: "\e9c9";
+    .form-group {
+        background: linear-gradient(to top, $gris_95, transparent);
+        background: $gris_97;
+        background: linear-gradient(to right, $gris_95 12em, $gris_97 12em);
+        margin-right: 1%;
+        margin-left: 1%;
+        width: 48%;
+        border: 1px solid $gris_90;
+        border-radius: $radius;
 
-  }
-  .form-group-scale:before {
-     content: "\e803";
-  }
-  .form-group-events:before {
-     content: "\e612";
-  }  
-  .form-group-datasets:before {
-     content: "\e611";
-  }  
-  .form-group-visualisations:before {
-     content: "\e626";
-  }  
-  .form-group-fcms:before {
-     content: "\e627";
-  }  
-     
-     
-          
-  
-  
+        &:hover {
+            background: white;
+            background: linear-gradient(to right, $gris_99 12em, white 12em);
+            .field-label {
+                color: $claro;
+            }
+            &:before {
+                // opacity:1;
+            }
+        }
+    }
+    .field-label,
+    .field-content {
+        line-height: 1.4em;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    $ancho: 11em;
+    .field-label {
+
+        padding-left: 2em;
+        width: $ancho;
+        margin-right: - $ancho;
+        font-weight: 600;
+    }
+    .field-content {
+        margin-left: $ancho;
+    }
+    .form-group:before {
+        font-family: policy;
+
+        content: "\f059";
+        position: absolute;
+        top: 5px;
+        left: 10px;
+        // color:$bk_3_1;
+        color: $bk;
+        // font-size:2em;
+
+    }
+    .form-group-keywords:before {
+        content: "\e800";
+    }
+
+    .form-group-date:before {
+        content: "\e808";
+    }
+    .form-group-modified:before {
+        content: "\e60f";
+    }
+
+    .form-group-link:before {
+        content: "\e805";
+    }
+    .form-group-location:before {
+        content: "\e802";
+        content: "\e9c9";
+    }
+    .form-group-language:before {
+        content: "\e9c9";
+
+    }
+    .form-group-scale:before {
+        content: "\e803";
+    }
+    .form-group-events:before {
+        content: "\e612";
+    }
+    .form-group-datasets:before {
+        content: "\e611";
+    }
+    .form-group-visualisations:before {
+        content: "\e626";
+    }
+    .form-group-fcms:before {
+        content: "\e627";
+    }
+
 }
+
 .metadata-event-description {
-  .form-group-description{
-   width:80%;
-  }
+    .form-group-description {
+        width: 80%;
+    }
 }
 
 .form-group-keywords {
-  
+
 }
+
 .form-group {
-  position:relative;
+    position: relative;
 }

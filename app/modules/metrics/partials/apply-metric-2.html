@@ -1,12 +1,13 @@
 <div class="container">
     <div class="content-header">
         <h3 class="fonticon fonticon-formula">Apply Metric</h3>
+
         <div class="subtitle-help">
             <h4>
                 <div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div>
-                Step 2 - Add Metadata</h4>
-            <div ng-class="{active: help}" class="help-text">
-            </div>
+                Step 2 - Add Metadata
+            </h4>
+            <div ng-class="{active: help}" class="help-text"></div>
         </div>
 
         <div class="pc-visualization-formcontrols">
@@ -21,27 +22,37 @@
         <form name="datasetForm" class="simple-form" novalidate>
             <div class="form-group" ng-class="{ 'has-error': (datasetForm.title.$invalid && !datasetForm.title.$pristine) || servererror.title }">
                 <label for="title" class="field-label">Title</label>
+
                 <div class="field-content">
                     <input ng-model="apply_metric_helper.data.title" type="text" name="title" class="form-control" required>
+
                     <p ng-show="datasetForm.title.$error.required && !datasetForm.title.$pristine" class="help-block">This field is required</p>
+
                     <p ng-show="servererror.title" class="help-block">{{ servererror.title[0] }}</p>
+
                     <p ng-hide="servererror.title || (datasetForm.title.$error.required && !datasetForm.title.$pristine)" class="help-block">Please add a title for the new dataset</p>
                 </div>
             </div>
             <div class="form-group" ng-class="{ 'has-error': (datasetForm.acronym.$invalid && !datasetForm.acronym.$pristine) || servererror.indicator }">
                 <label class="field-label">Acronym</label>
+
                 <div class="field-content">
                     <input ng-model="apply_metric_helper.data.acronym" type="text" name="acronym" class="form-control" required>
+
                     <p ng-show="datasetForm.acronym.$error.required && !datasetForm.acronym.$pristine" class="help-block">This field is required</p>
+
                     <p ng-show="servererror.acronym" class="help-block">{{ servererror.acronym[0] }}</p>
+
                     <p ng-hide="servererror.acronym || (datasetForm.acronym.$error.required && !datasetForm.acronym.$pristine)" class="help-block">Please add a acronym for the new dataset</p>
                 </div>
             </div>
             <div class="form-group" ng-class="{'has-error': datasetForm.unit_id.$dirty && datasetForm.unit_id.$invalid}">
                 <label for="unit_id" class="field-label">Unit</label>
+
                 <div class="field-content">
                     <select class="form-control unit-options" ng-model="apply_metric_helper.data.unit_id" data-category="apply_metric_helper.unit_category_id" id="unit_id" required>
                     </select>
+
                     <p ng-hide="servererror.acronym || (datasetForm.acronym.$error.required && !datasetForm.acronym.$pristine)" class="help-block">Please select the unit for the new dataset</p>
                 </div>
             </div>

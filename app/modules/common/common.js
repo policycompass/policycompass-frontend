@@ -63,14 +63,16 @@ commonmanager.config(function ($routeProvider) {
         .otherwise({redirectTo: '/'});
 })
 
-commonmanager.run(['ngProgress', '$rootScope', function (ngProgress, $rootScope) {
-    ngProgress.color('#f6921e');
+commonmanager.run([
+    'ngProgress', '$rootScope', function (ngProgress, $rootScope) {
+        ngProgress.color('#f6921e');
 
-    $rootScope.$on('$locationChangeStart', function () {
-        ngProgress.start();
-    });
+        $rootScope.$on('$locationChangeStart', function () {
+            ngProgress.start();
+        });
 
-    $rootScope.$on('$locationChangeSuccess', function () {
-        ngProgress.complete();
-    });
-}])
+        $rootScope.$on('$locationChangeSuccess', function () {
+            ngProgress.complete();
+        });
+    }
+])

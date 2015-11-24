@@ -1,264 +1,259 @@
-$ancho:$unidad * 2;
+$ancho: $unidad * 2;
 .browse-filters,
 .search-content {
-  @include paddings();
+    @include paddings();
 }
 
-@media (max-width:$device - 1) {
-  .browse-filters {
-    clear:both;
-  }
-}
-@media (min-width:$device) {
-.browse-filters {
-  
-  width:$ancho;
-  float:left;
-  margin-right:- $ancho;
-
-  // display:none;
+@media (max-width: $device - 1) {
+    .browse-filters {
+        clear: both;
+    }
 }
 
-.search-content {
-  float:left;
-  
-  width:$unidad * 10;
-  margin-left:$ancho;
-  margin-right: - 100%;
+@media (min-width: $device) {
+    .browse-filters {
+
+        width: $ancho;
+        float: left;
+        margin-right: - $ancho;
+
+        // display:none;
+    }
+
+    .search-content {
+        float: left;
+
+        width: $unidad * 10;
+        margin-left: $ancho;
+        margin-right: - 100%;
+    }
 }
-}
+
 .search-results-header {
-  color:$claro;
-  margin:1em 0;
-  overflow:hidden;
+    color: $claro;
+    margin: 1em 0;
+    overflow: hidden;
 }
+
 .num-results-wrap,
 .filterbar {
-  @include paddings();
-  width:$unidad * 6;
-  float:left;
-  position:relative;
-  
-}
-
-@media (min-width:$device) {
-  .result-wrapper {
-    width:49.5%;
     @include paddings();
-      &:nth-child(2n) {
-      // background:$gris_80;
-      margin-left:0.5%;
-    }
-    &:nth-child(2n + 1) {
-      // background:red;
-      margin-right:0.5%;
-    }
-    
-  }
+    width: $unidad * 6;
+    float: left;
+    position: relative;
+
 }
 
+@media (min-width: $device) {
+    .result-wrapper {
+        width: 49.5%;
+        @include paddings();
+        &:nth-child(2n) {
+            // background:$gris_80;
+            margin-left: 0.5%;
+        }
+        &:nth-child(2n + 1) {
+            // background:red;
+            margin-right: 0.5%;
+        }
 
-
-
+    }
+}
 
 .result-wrapper {
- 
 
-    border:1px solid $gris_90;
-  border-radius:$radius;
-  
-  margin-bottom:10px;
-  display:block;
+    border: 1px solid $gris_90;
+    border-radius: $radius;
 
-  p {
-    // display:none;
-  }
-  .texticon {
-      position:absolute;
-      top:0em;
-      
-      left:1em;
-      font-family:tahoma;
-    font-size:10px;
-    padding-top:5.5em;
-    color:$claro;
-    opacity:.3;
-    width:4em;
-    height:15em;
-    text-align:center;
-    // background:red;
-    white-space: nowrap;
-	overflow: hidden;
-      &:hover {
-        opacity:1;
-      }
-     
+    margin-bottom: 10px;
+    display: block;
 
-    
+    p {
+        // display:none;
     }
-    
-  .texticon-visualization:before {
-  content:"Visual.";
-  }
-  .texticon-fuzzymap:before {
-  content: "Causal \a Model ";
-  white-space: pre; /* or pre-wrap */
-  }
+    .texticon {
+        position: absolute;
+        top: 0em;
+
+        left: 1em;
+        font-family: tahoma;
+        font-size: 10px;
+        padding-top: 5.5em;
+        color: $claro;
+        opacity: .3;
+        width: 4em;
+        height: 15em;
+        text-align: center;
+        // background:red;
+        white-space: nowrap;
+        overflow: hidden;
+        &:hover {
+            opacity: 1;
+        }
+
+    }
+
+    .texticon-visualization:before {
+        content: "Visual.";
+    }
+    .texticon-fuzzymap:before {
+        content: "Causal \a Model ";
+        white-space: pre; /* or pre-wrap */
+    }
     .texticon-metric:before {
-  content:"Metric";
-  }
+        content: "Metric";
+    }
     .texticon-event:before {
-  content:"Event";
-  }
+        content: "Event";
+    }
     .texticon-dataset:before {
-  content:"Dataset";
-  }
-  .texticon-indicator:before {
-  content:"Indicator";
-  }
-  .texticon-dataset:before {
-  content:"Dataset";
-  }
-  .rating-stars {
-    opacity:0.4;
-  }
-  &:hover {
-    background:$gris_99;
-    
-   .rating-stars {
-      opacity:1;
-   }
-  
-  }
-  
+        content: "Dataset";
+    }
+    .texticon-indicator:before {
+        content: "Indicator";
+    }
+    .texticon-dataset:before {
+        content: "Dataset";
+    }
+    .rating-stars {
+        opacity: 0.4;
+    }
+    &:hover {
+        background: $gris_99;
+
+        .rating-stars {
+            opacity: 1;
+        }
+
+    }
 
 }
-.search-results {
-  // display:flex;
-  // flex-flow: row wrap;
-
-}
-
 
 .search-results {
-  h5 {
-    font-size:1em;
-    line-height:1.4em;
-    font-weight:600;
-    a {
-      
-    }
-    
-  }
-  
-  .result-wrapper {
-    position:relative;
+    // display:flex;
+    // flex-flow: row wrap;
 
-    
-  }
-  .attributes {
-    margin-left:4em;
-    font-size:14px;
-    .description {
-      display:none;
-    }
-    color:$claro;
-   
-  }
-  .key-field-title {
-    font-weight:normal;
-    font-style:italic;
-    
-  }
-  
-  
 }
 
+.search-results {
+    h5 {
+        font-size: 1em;
+        line-height: 1.4em;
+        font-weight: 600;
+        a {
+
+        }
+
+    }
+
+    .result-wrapper {
+        position: relative;
+
+    }
+    .attributes {
+        margin-left: 4em;
+        font-size: 14px;
+        .description {
+            display: none;
+        }
+        color: $claro;
+
+    }
+    .key-field-title {
+        font-weight: normal;
+        font-style: italic;
+
+    }
+
+}
 
 .result-wrapper {
 
-    
 }
-.searchItemIcon a {
- position:relative;
- padding-left:3.7em;
- // padding-top:1em;
- display:block;
- &:before {
 
-  font-weight:normal;
-  content:"\e612";
-  position:absolute;
-  left:-5px;
-  top:10px;
-  font-size:30px;
-  line-height:1em;
- }
-  
+.searchItemIcon a {
+    position: relative;
+    padding-left: 3.7em;
+    // padding-top:1em;
+    display: block;
+    &:before {
+
+        font-weight: normal;
+        content: "\e612";
+        position: absolute;
+        left: -5px;
+        top: 10px;
+        font-size: 30px;
+        line-height: 1em;
+    }
+
 }
 
 .metricIcon a:before {
-  content:"\e613";
-  content: "\e625";
+    content: "\e613";
+    content: "\e625";
 }
+
 .fuzzymapIcon a:before {
-  content:"\e610";
-      content: "\e627";
+    content: "\e610";
+    content: "\e627";
 }
+
 .visualizationIcon a:before {
-  content:"\e615";
-      content: "\e626";
+    content: "\e615";
+    content: "\e626";
 }
+
 .indicatorIcon a:before {
-  content: "\e80a";
+    content: "\e80a";
 }
+
 .datasetIcon a:before {
-  content: "\e611";
+    content: "\e611";
 }
 
 .browse-filters-block {
-  font-size:13px;
-  & > ul {
-    @include reset-list();
-    overflow: hidden;
-    overflow-y:auto;
-    max-height: 200px;
-  }
-  
-  label, input {
-    cursor: pointer;
-  }
-  label {
-    width: 100%;
-    margin-left: -13px;
-    padding-left: 13px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    margin-bottom: -3px;
-  }
-  ul {
-    
-    
-    li {
-      line-height:1.5em;
-      margin:0;
-      white-space: nowrap;
+    font-size: 13px;
+    & > ul {
+        @include reset-list();
+        overflow: hidden;
+        overflow-y: auto;
+        max-height: 200px;
     }
-  }
-  border:1px solid $gris_80;
-  border-radius:$radius;
-  h4 {
-    margin:0;
-    border-bottom:1px solid $gris_80;
-    line-height:1.6em;
-    font-size:16px;
-    padding:0 10px;
-  }
-  & +  .browse-filters-block {
-    margin:1em 0;
-  }
-  h3, ul {
-    padding:5px;
-  }
-  
+
+    label, input {
+        cursor: pointer;
+    }
+    label {
+        width: 100%;
+        margin-left: -13px;
+        padding-left: 13px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        margin-bottom: -3px;
+    }
+    ul {
+
+        li {
+            line-height: 1.5em;
+            margin: 0;
+            white-space: nowrap;
+        }
+    }
+    border: 1px solid $gris_80;
+    border-radius: $radius;
+    h4 {
+        margin: 0;
+        border-bottom: 1px solid $gris_80;
+        line-height: 1.6em;
+        font-size: 16px;
+        padding: 0 10px;
+    }
+    & + .browse-filters-block {
+        margin: 1em 0;
+    }
+    h3, ul {
+        padding: 5px;
+    }
+
 }

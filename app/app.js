@@ -41,18 +41,20 @@ var pcApp = angular.module('pcApp', pcAppDependencies)
         $rootScope.location = $location;
     })
 
-    /**
-     * Very simple central error handling
-     */
-    .factory('$exceptionHandler', ['$injector', '$log', function ($injector, $log) {
-        return function (exception, cause) {
-            // Use the dialogs module to display error messages
-            var dialogs = $injector.get("dialogs");
-            dialogs.notify("Error", String(exception.message));
-            $log.error(cause);
-            $log.error(exception);
-        };
-    }])
+/**
+ * Very simple central error handling
+ */
+    .factory('$exceptionHandler', [
+        '$injector', '$log', function ($injector, $log) {
+            return function (exception, cause) {
+                // Use the dialogs module to display error messages
+                var dialogs = $injector.get("dialogs");
+                dialogs.notify("Error", String(exception.message));
+                $log.error(cause);
+                $log.error(exception);
+            };
+        }
+    ])
 
 
     .controller('loadController', function ($scope) {
@@ -63,6 +65,8 @@ var pcApp = angular.module('pcApp', pcAppDependencies)
         }
     })
 
-    .config(['$locationProvider', function ($locationProvider) {
-        $locationProvider.html5Mode(false).hashPrefix('!');
-    }]);
+    .config([
+        '$locationProvider', function ($locationProvider) {
+            $locationProvider.html5Mode(false).hashPrefix('!');
+        }
+    ]);

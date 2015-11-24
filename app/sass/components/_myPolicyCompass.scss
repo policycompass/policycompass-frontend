@@ -1,92 +1,98 @@
 
 .user-info {
-  .user-photo {
-    width:$unidad;
-    padding:20px;
-    float:left;
-    margin-right:20px;
-  }
-  overflow:hidden;
-  .user-name,
-  .user-mail,
-  .user-role {
-    border-bottom:1px solid $gris_90;
-    color:$claro;
-    
-  }
-  .user-mail:before {
-    content:"\e10c";
-  }
-  .user-role {
-    font-style:italic;
-  }
-  .user-data {
-    margin-left:$unidad;
-    padding-top:1.5em;
-  }
+    .user-photo {
+        width: $unidad;
+        padding: 20px;
+        float: left;
+        margin-right: 20px;
+    }
+    overflow: hidden;
+    .user-name,
+    .user-mail,
+    .user-role {
+        border-bottom: 1px solid $gris_90;
+        color: $claro;
+
+    }
+    .user-mail:before {
+        content: "\e10c";
+    }
+    .user-role {
+        font-style: italic;
+    }
+    .user-data {
+        margin-left: $unidad;
+        padding-top: 1.5em;
+    }
 }
 
 #my-policy {
-  .view-item {
-    width:25%;
-    // float:left;
-    
-    
-    padding:0 10px 0;
-  }
-  .view-item-content {
-    // background:$gris_90;
-    padding:5px 10px;
-  }
-  .summary {
-    display:none;
-  }
-  
-  .view-title {
-    font-size:1em;
-    COLOR:$claro;
-    // margin:5px 0;
-    padding:5px;
-    
-    &:before {
-      // content:"\25CF";
-      // padding-right:.5em;
-      // color:$gris_80;
+    .view-item {
+        width: 25%;
+        // float:left;
+
+        padding: 0 10px 0;
     }
-    // background:white;
-    
-    // font-weight:700;
-  }
-  
-  
+    .view-item-content {
+        // background:$gris_90;
+        padding: 5px 10px;
+    }
+    .summary {
+        display: none;
+    }
+
+    .view-title {
+        font-size: 1em;
+        COLOR: $claro;
+        // margin:5px 0;
+        padding: 5px;
+
+        &:before {
+            // content:"\25CF";
+            // padding-right:.5em;
+            // color:$gris_80;
+        }
+        // background:white;
+
+        // font-weight:700;
+    }
+
 }
+
 .title:before {
     // content:"\e637";
-    color:$bk_3;
-    padding-left:0;
+    color: $bk_3;
+    padding-left: 0;
 }
 
 .fonticon-datasets:before {
-  content:"\f0ce";
+    content: "\f0ce";
 }
+
 .fonticon-properties:before {
-content:"\e129";
+    content: "\e129";
 }
+
 .fonticon-metrics:before {
-content:"\e639";
+    content: "\e639";
 }
+
 .fonticon-events:before {
-content:"\e638";
+    content: "\e638";
 }
+
 .fonticon-visualisations:before {
-  content:"\e636";
+    content: "\e636";
 }
+
 .fonticon-FCMs:before {
-  content:"\ea58";
+    content: "\ea58";
 }
+
 .fonticon-discussions:before {
-  content:"\e14e";
+    content: "\e14e";
 }
+
 .fonticon-requests:before {
-  content:"\e121";
+    content: "\e121";
 }

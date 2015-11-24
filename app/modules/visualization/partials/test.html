@@ -1,134 +1,114 @@
-    
-
-
 <div>
 
-<!--
-<ui-gmap-google-map 
-                    center="map.center"
-                    zoom="map.zoom"
-                    options="map.options"
-                    dragging="map.dragging"
-                    control="map.control"
-                    ng-cloak
-></ui-gmap-google-map>
--->
-<!--
-<datamap
-  options="map.options"
-  data="map.data"
-  colors="map.colors"
-  type="{{ map.type }}"
-  >
-</datamap>	
-	
-
-<nvd3-line-with-focus-chart
-    	data="exampleData"
-        id="colorExample"
-        height="400"
-        height2="50"
-        margin="{left:80,top:50,bottom:30,right:50}"
-        yAxisTickFormat="yAxisTickFormatFunction()"
-        y2axistickformat="yAxisTickFormatFunction()"
-        xAxisTickFormat="xAxisTickFormatFunction()"
-        x2AxisTickFormat="xAxisTickFormatFunction()"
-        color="colorFunction()"
-        showLegend="true"
-        noData="No Data!!"
-        x="xFunction()"
-        y="yFunction()"
-        interactive="true"
-        tooltips="true"
-        tooltipcontent="toolTipContentFunction()"
-        >
-        	<svg></svg>
-    </nvd3-line-with-focus-chart>
-    
--->
-<script>
-// The SVG container
-var width  = 960,
-    height = 550;
-
-var color = d3.scale.category10();
-
-var projection = d3.geo.mercator()
-                .translate([480, 300])
-                .scale(970);
-
-var path = d3.geo.path()
-    .projection(projection);
-
-var svg = d3.select("#map").append("svg")
-    .attr("width", width)
-    .attr("height", height)
-    .call(d3.behavior.zoom()
-    .on("zoom", redraw))
-    .append("g");
+    <!--
+    <ui-gmap-google-map
+                        center="map.center"
+                        zoom="map.zoom"
+                        options="map.options"
+                        dragging="map.dragging"
+                        control="map.control"
+                        ng-cloak
+    ></ui-gmap-google-map>
+    -->
+    <!--
+    <datamap
+      options="map.options"
+      data="map.data"
+      colors="map.colors"
+      type="{{ map.type }}"
+      >
+    </datamap>
 
 
-function redraw() {
-    svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-}
+    <nvd3-line-with-focus-chart
+            data="exampleData"
+            id="colorExample"
+            height="400"
+            height2="50"
+            margin="{left:80,top:50,bottom:30,right:50}"
+            yAxisTickFormat="yAxisTickFormatFunction()"
+            y2axistickformat="yAxisTickFormatFunction()"
+            xAxisTickFormat="xAxisTickFormatFunction()"
+            x2AxisTickFormat="xAxisTickFormatFunction()"
+            color="colorFunction()"
+            showLegend="true"
+            noData="No Data!!"
+            x="xFunction()"
+            y="yFunction()"
+            interactive="true"
+            tooltips="true"
+            tooltipcontent="toolTipContentFunction()"
+            >
+                <svg></svg>
+        </nvd3-line-with-focus-chart>
 
-var tooltip = d3.select("#map").append("div")
-    .attr("class", "visualization-tooltip");
+    -->
+    <script>
+        // The SVG container
+        var width = 960, height = 550;
 
-queue()
-    .defer(d3.json, "/app/modules/visualization/json/world-50m.json")
-    .defer(d3.tsv, "/app/modules/visualization/json/world-country-names.tsv")
-    .await(ready);
+        var color = d3.scale.category10();
 
-function ready(error, world, names) {
-	
-	console.log("world");
-	console.log(world);
-	
-	console.log("names");
-	console.log(names);
-	
+        var projection = d3.geo.mercator().translate([480, 300]).scale(970);
 
-  var countries = topojson.object(world, world.objects.countries).geometries,
-      neighbors = topojson.neighbors(world, countries),
-      i = -1,
-      n = countries.length;
+        var path = d3.geo.path().projection(projection);
 
-  countries.forEach(function(d) { 
-    var tryit = names.filter(function(n) { return d.id == n.id; })[0];
-    if (typeof tryit === "undefined"){
-      d.name = "Undefined";
-      //console.log(d);
-    } else {
-      d.name = tryit.name; 
-    }
-  });
+        var svg = d3.select("#map").append("svg").attr("width", width).attr("height", height).call(d3.behavior.zoom().on("zoom", redraw)).append("g");
 
-var country = svg.selectAll(".country").data(countries);
 
-  country
-   .enter()
-    .insert("path")
-    .attr("class", "country")    
-      .attr("title", function(d,i) { return d.name; })
-      .attr("d", path)
-      .style("fill", function(d, i) { return color(d.color = d3.max(neighbors[i], function(n) { return countries[n].color; }) + 1 | 0); });
+        function redraw() {
+            svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+        }
 
-    //Show/hide tooltip
-    country
-      .on("mousemove", function(d,i) {
-        var mouse = d3.mouse(svg.node()).map( function(d) { return parseInt(d); } );
+        var tooltip = d3.select("#map").append("div").attr("class", "visualization-tooltip");
 
-        tooltip
-          .classed("hidden", false)
-          .attr("style", "left:"+(mouse[0]+25)+"px;top:"+mouse[1]+"px")
-          .html(d.name)
-      })
-      .on("mouseout",  function(d,i) {
-        tooltip.classed("hidden", true)
-      });
+        queue().defer(d3.json, "/app/modules/visualization/json/world-50m.json").defer(d3.tsv, "/app/modules/visualization/json/world-country-names.tsv").await(ready);
 
-}
-</script>
+        function ready(error, world, names) {
+
+            console.log("world");
+            console.log(world);
+
+            console.log("names");
+            console.log(names);
+
+
+            var countries = topojson.object(world, world.objects.countries).geometries, neighbors = topojson.neighbors(world, countries), i = -1, n = countries.length;
+
+            countries.forEach(function (d) {
+                var tryit = names.filter(function (n) {
+                    return d.id == n.id;
+                })[0];
+                if (typeof tryit === "undefined") {
+                    d.name = "Undefined";
+                    //console.log(d);
+                } else {
+                    d.name = tryit.name;
+                }
+            });
+
+            var country = svg.selectAll(".country").data(countries);
+
+            country.enter().insert("path").attr("class", "country").attr("title", function (d, i) {
+                return d.name;
+            }).attr("d", path).style("fill", function (d, i) {
+                return color(d.color = d3.max(neighbors[i], function (n) {
+                        return countries[n].color;
+                    }) + 1 | 0);
+            });
+
+            //Show/hide tooltip
+            country.on("mousemove", function (d, i) {
+                var mouse = d3.mouse(svg.node()).map(function (d) {
+                    return parseInt(d);
+                });
+
+                tooltip.classed("hidden", false).attr("style", "left:" + (mouse[0] + 25) + "px;top:" + mouse[1] + "px").html(d.name)
+            }).on("mouseout", function (d, i) {
+                tooltip.classed("hidden", true)
+            });
+
+        }
+    </script>
 
 </div>

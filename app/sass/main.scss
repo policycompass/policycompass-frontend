@@ -2,95 +2,114 @@
 [ng\:cloak], [ng-cloak], .ng-cloak {
     display: none !important;
 }
-.page{
+
+.page {
     // padding-top: 72px;
 }
-header{
-    
-    
-}
-.border-top{
-    background:url(../img/border-top.png) no-repeat center ;
-    height:15px;
-}
-.border-bottom{
-    background:url(../img/border-bottom.png) no-repeat center ;
-    height:15px;
+
+header {
+
 }
 
+.border-top {
+    background: url(../img/border-top.png) no-repeat center;
+    height: 15px;
+}
 
-.legend-primary{
+.border-bottom {
+    background: url(../img/border-bottom.png) no-repeat center;
+    height: 15px;
+}
+
+.legend-primary {
     color: #428BCA;
     border-color: #428BCA;
 }
-.legend-warning{
+
+.legend-warning {
     color: #f7941e;
-    border-color:#f7941e;
+    border-color: #f7941e;
 
 }
-.legend-default{
+
+.legend-default {
     color: #58595b;
-    
-    border-color:#58595b;
+
+    border-color: #58595b;
 }
 
 /* Input*/
-.form-control{
+.form-control {
     // height: 39px;
     // border-radius: 0px !important;
     // box-shadow:none;
 }
+
 /* Pre */
 pre {
-    box-shadow:none;
+    box-shadow: none;
     border-radius: 0px !important;
 }
 
 /* Tooltip */
-.tooltip-primary + .tooltip > .tooltip-inner {background-color: #428BCA;}
-.tooltip-primary +.tooltip > .tooltip-arrow {
+.tooltip-primary + .tooltip > .tooltip-inner {
+    background-color: #428BCA;
+}
+
+.tooltip-primary + .tooltip > .tooltip-arrow {
     border-top-color: #428BCA;
 }
-.tooltip-warning + .tooltip > .tooltip-inner {background-color: #f7941e;}
+
+.tooltip-warning + .tooltip > .tooltip-inner {
+    background-color: #f7941e;
+}
+
 .tooltip-warning + .tooltip > .tooltip-arrow {
     border-top-color: #f7941e;
 }
+
 /*container*/
-.containerWithSecondBar{
-   padding-top: 80px;
+.containerWithSecondBar {
+    padding-top: 80px;
     margin-top: 30px;
 }
+
 /*nav bar*/
-#btn-navbar-toggle{
- border:1px solid #eee;
+#btn-navbar-toggle {
+    border: 1px solid #eee;
 }
-.icon-bar{
+
+.icon-bar {
     background-color: #CCCCCC;
 }
+
 /*Dropdown menu*/
-.dropdown-menu{
+.dropdown-menu {
     border-radius: 0px;
     -webkit-box-shadow: none;
 }
-.dropdown-menu>li>a {
+
+.dropdown-menu > li > a {
     text-align: left;
 }
-.dropdown-menu>li>a:hover,.dropdown-menu>li>a:focus,.dropdown-menu>li>a:active {
+
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus, .dropdown-menu > li > a:active {
     color: #f7941e !important;
     -webkit-transition: color 300ms ease-out;
     -moz-transition: color 300ms ease-out;
     transition: color 300ms ease-out;
 }
+
 /*Dropdown menu effect*/
 .open > .dropdown-menu {
     -webkit-transform: scale(1, 1);
     transform: scale(1, 1);
 
 }
+
 .open > .dropdown-menu li a {
     color: #000;
 }
-
 
 .date-picker > p > ul {
     -webkit-transform-origin: none !important;
@@ -103,9 +122,6 @@ pre {
     -webkit-transition: none !important;
 }
 
-
-
-
 /* Tab */
 
 /* Pagination*/
@@ -113,56 +129,59 @@ pre {
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
 }
+
 .pagination > li:first-child > a, .pagination > li:first-child > span {
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
 }
+
 .pager li > a, .pager li > span {
     border-radius: 0px;
 }
+
 /* Rating */
-.rating{
+.rating {
     color: #f7941e;
 }
 
 /*Fcm Page*/
-.fcm-editor-icon{
+.fcm-editor-icon {
     font-size: 66px;
 }
-.fcm-editor-effect{
-    min-height:135px;
-    padding-top:10px;
-    padding-left:20px;
+
+.fcm-editor-effect {
+    min-height: 135px;
+    padding-top: 10px;
+    padding-left: 20px;
     text-align: center;
 }
-.fcm-editor-effect > a{
+
+.fcm-editor-effect > a {
     color: #ffffff;
-    -webkit-transition:color 300ms ease-out;
-    -moz-transition:color 300ms ease-out;
+    -webkit-transition: color 300ms ease-out;
+    -moz-transition: color 300ms ease-out;
     transition: color 300ms ease-out;
 
 }
-.fcm-editor-effect > a:hover,.fcm-editor-effect > a:active,.fcm-editor-effect > a:focus{
+
+.fcm-editor-effect > a:hover, .fcm-editor-effect > a:active, .fcm-editor-effect > a:focus {
     color: #E3E3E3;
     text-decoration: none;
     font-weight: 400;
-    -webkit-transition:color 300ms ease-out;
-    -moz-transition:color 300ms ease-out;
+    -webkit-transition: color 300ms ease-out;
+    -moz-transition: color 300ms ease-out;
     transition: color 300ms ease-out;
 }
-.fcm-editor-window{
-    min-height:250px;
+
+.fcm-editor-window {
+    min-height: 250px;
     border: 1px solid #eeeeee;
     margin-bottom: 10px;
 }
 
 /* Pc*/
-@media only screen and (min-width: 1024px){
+@media only screen and (min-width: 1024px) {
     /* nav-small*/
-
-    
-
-    
 
 }
 

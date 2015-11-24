@@ -10,13 +10,10 @@
                 </a>
 
                 <a type="button" class="btn btn-primary btn-create" ng-disabled="true" href="#!/datasets/{{ dataset.id }}/edit">Edit</a>
-                <a type="button" class="btn btn-line"
-                   href="#!/visualizations/create/?datasets={{dataset.id}}">Visualise</a>
-                <a type="button" class="btn btn-tree"
-                   href="https://carneades-dev.policycompass.eu/carneades/#/projects/compass" target="_blank" ng-disabled="true">Create
+                <a type="button" class="btn btn-line" href="#!/visualizations/create/?datasets={{dataset.id}}">Visualise</a>
+                <a type="button" class="btn btn-tree" href="https://carneades-dev.policycompass.eu/carneades/#/projects/compass" target="_blank" ng-disabled="true">Create
                     Argument Map</a>
-                <a type="button" class="btn btn-danger" ng-click="deleteDataset(dataset)"
-                   ng-if="userState.loggedIn && (userState.userPath == dataset.creator_path || userState.isAdmin)">
+                <a type="button" class="btn btn-danger" ng-click="deleteDataset(dataset)" ng-if="userState.loggedIn && (userState.userPath == dataset.creator_path || userState.isAdmin)">
                     Delete</a></div>
 
 
@@ -41,8 +38,7 @@
             </div>
             <div ng-class="{active: e==2}" class="share-submenu">
                 <div class="row-block">
-                    <input type="text"
-                           value='iframe width="100%" height="300" scrolling="no" frameborder="no" src="http://localhost:9000/app/#/visualizations/4"'>
+                    <input type="text" value='iframe width="100%" height="300" scrolling="no" frameborder="no" src="http://localhost:9000/app/#/visualizations/4"'>
                 </div>
             </div>
         </div>
@@ -51,12 +47,9 @@
 
     <div class="content-body">
 
-        <hot-table
-                ng-if="showTable"
-                settings="table.settings"
-                datarows="table.items">
-        </hot-table>
-        <br />
+        <hot-table ng-if="showTable" settings="table.settings" datarows="table.items"></hot-table>
+        <br/>
+
         <div id="pc-more-container" collapse="moreMetadata.isCollapsed" class="well">
             <div class="row">
                 <div class="col-lg-6">
@@ -64,12 +57,16 @@
 
                         <tr ng-if="dataset.spatial">
                             <td><b>Spatial:</b></td>
-                            <td><resource-title resource="Individual" id="dataset.spatial"></resource-title></td>
+                            <td>
+                                <resource-title resource="Individual" id="dataset.spatial"></resource-title>
+                            </td>
                         </tr>
 
                         <tr ng-if="dataset.language_id">
                             <td><b>Language:</b></td>
-                            <td><resource-title resource="Language" id="dataset.language_id"></resource-title></td>
+                            <td>
+                                <resource-title resource="Language" id="dataset.language_id"></resource-title>
+                            </td>
                         </tr>
 
                         <tr ng-show="dataset.issued">
@@ -155,7 +152,9 @@
 
                     <tr>
                         <td><b>Rating:</b></td>
-                        <td><pc-rating ng-if="dataset.id" rating-id="dataset_{{dataset.id}}"></pc-rating></td>
+                        <td>
+                            <pc-rating ng-if="dataset.id" rating-id="dataset_{{dataset.id}}"></pc-rating>
+                        </td>
                     </tr>
 
                 </table>
@@ -167,7 +166,9 @@
 
                     <tr ng-if="dataset.unit_id">
                         <td><b>Unit:</b></td>
-                        <td><resource-title resource="Unit" id="dataset.unit_id"></resource-title></td>
+                        <td>
+                            <resource-title resource="Unit" id="dataset.unit_id"></resource-title>
+                        </td>
                     </tr>
                     <tr ng-show="dataset.time">
                         <td><b>Time Span:</b></td>
@@ -181,7 +182,9 @@
 
                     <tr ng-if="dataset.class_id">
                         <td><b>Dimension Type:</b></td>
-                        <td><resource-title resource="Class" id="dataset.class_id"></resource-title></td>
+                        <td>
+                            <resource-title resource="Class" id="dataset.class_id"></resource-title>
+                        </td>
                     </tr>
 
                 </table>

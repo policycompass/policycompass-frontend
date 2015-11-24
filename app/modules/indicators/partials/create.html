@@ -1,74 +1,78 @@
 <div class="container container-create-visualisation" id="container-create-visualisation">
-	<div class="content-header">
-    	<h3 ng-if="mode == 'create'" class="fonticon fonticon-indicator">Define a New Indicator</h3>
-    	<h3 ng-if="mode == 'edit'" class="fonticon fonticon-indicator">{{ indicator.acronym }} - Edit Indicator</h3>
-    	<div class="subtitle-help">
-    		<h4><div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div>Indicator Data</h4>    
-    		<div ng-class="{active: help}" class="help-text">
-    			<div class="fonticon fonticon-close" ng-click="help=!help"></div>
-    			<p>Indicator herlp.</p>
-    		</div>
-    	</div>
-	</div>
+    <div class="content-header">
+        <h3 ng-if="mode == 'create'" class="fonticon fonticon-indicator">Define a New Indicator</h3>
 
-	<div class="pc-visualization-formcontrols">
-        <div class="form-group pull-left">
-			<a href="#!/login" ng-if="!userState.loggedIn" class="btn btn-default btn-save" target="_blank">Login to Save</a>
-            <a href="" id="saveButton" ng-disabled="indicatorForm.$invalid" ng-if="userState.loggedIn" class="btn btn-default btn-save" ng-click="save()">Save</a>
-			<a type="button" class="btn btn-danger" href="#!/indicators/{{ indicator.id }}">Cancel</a>
+        <h3 ng-if="mode == 'edit'" class="fonticon fonticon-indicator">{{ indicator.acronym }} - Edit Indicator</h3>
+
+        <div class="subtitle-help">
+            <h4>
+                <div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div>
+                Indicator Data
+            </h4>
+            <div ng-class="{active: help}" class="help-text">
+                <div class="fonticon fonticon-close" ng-click="help=!help"></div>
+                <p>Indicator herlp.</p>
+            </div>
         </div>
-   </div>
+    </div>
 
-	<div class="content-body">
-		<form name="indicatorForm" role="form" novalidate>
-		    <div class="row">
-		        <div class="col-lg-4">
-		            <fieldset>
-		                <legend>Main Details</legend>
-		                <div class="form-group" ng-class="{'has-error': indicatorForm.title.$dirty && indicatorForm.title.$invalid}">
-		                    <label for="title">Name *</label>
-		                    <input type="text" class="form-control" id="title" name="title" placeholder="Indicator Name" ng-model="indicator.name" ng-minlength="3" required>
-		                </div>
-		
-		                <div class="form-group" ng-class="{'has-error': indicatorForm.acronym.$dirty && indicatorForm.acronym.$invalid}" ng-if="mode == 'create'">
-		                    <label for="acronym">Acronym *</label>
-		                    <input type="text" class="form-control" id="acronym" name="name" placeholder="Indicator Name" ng-model="indicator.acronym" ng-minlength="3" required>
-		                </div>
-		
-		                <div class="form-group" ng-class="{'has-error': indicatorForm.unitCategory.$dirty && indicatorForm.unitCategory.$invalid}">
-		                    <label for="unitCategory">Unit Category *</label>
-		                    <select class="form-control unit-category-options" id="unitCategory" name="unit" ng-model="indicator.unit_category" required>
-		                    </select>
-		                </div>
-		
-		                <div class="form-group" ng-class="{'has-error': indicatorForm.language.$dirty && indicatorForm.language.$invalid}">
-		                    <label for="language" class="">Language *</label>
-		                    <select class="form-control language-options" model="indicator.language" ng-model="indicator.language" id="language" name="language" required>
-		                    </select>
-		                </div>
-		
-		            </fieldset>
-		        </div>
-		        <div class="col-lg-8">
-		            <fieldset>
-		                <legend>Further Information</legend>
-		                <div class="form-group" ng-class="{'has-error': indicatorForm.description.$dirty && indicatorForm.description.$invalid}">
-		                    <label for="indicator-description" class="">Description *</label>
-		                    <textarea class="form-control" rows="8" id="indicator-description" name="indicator-description" ng-model="indicator.description" required></textarea>
-		                </div>
-		                <div class="form-group" ng-class="{'has-error': indicatorForm.policyDomains.$dirty && indicatorForm.policyDomains.$invalid}" >
-		                    <label for="policyDomains">Policy Domains *</label>
-		                    <select multiple class="form-control policydomain-options" id="policyDomains" name="policy-domain" ng-model="indicator.policy_domains" required>
-		                    </select>
-		                </div>
-		            </fieldset>
-		        </div>
-		
-		        
-		
-		    </div>
-		
-		</form>
+    <div class="pc-visualization-formcontrols">
+        <div class="form-group pull-left">
+            <a href="#!/login" ng-if="!userState.loggedIn" class="btn btn-default btn-save" target="_blank">Login to Save</a>
+            <a href="" id="saveButton" ng-disabled="indicatorForm.$invalid" ng-if="userState.loggedIn" class="btn btn-default btn-save" ng-click="save()">Save</a>
+            <a type="button" class="btn btn-danger" href="#!/indicators/{{ indicator.id }}">Cancel</a>
+        </div>
+    </div>
 
-	</div>
+    <div class="content-body">
+        <form name="indicatorForm" role="form" novalidate>
+            <div class="row">
+                <div class="col-lg-4">
+                    <fieldset>
+                        <legend>Main Details</legend>
+                        <div class="form-group" ng-class="{'has-error': indicatorForm.title.$dirty && indicatorForm.title.$invalid}">
+                            <label for="title">Name *</label>
+                            <input type="text" class="form-control" id="title" name="title" placeholder="Indicator Name" ng-model="indicator.name" ng-minlength="3" required>
+                        </div>
+
+                        <div class="form-group" ng-class="{'has-error': indicatorForm.acronym.$dirty && indicatorForm.acronym.$invalid}" ng-if="mode == 'create'">
+                            <label for="acronym">Acronym *</label>
+                            <input type="text" class="form-control" id="acronym" name="name" placeholder="Indicator Name" ng-model="indicator.acronym" ng-minlength="3" required>
+                        </div>
+
+                        <div class="form-group" ng-class="{'has-error': indicatorForm.unitCategory.$dirty && indicatorForm.unitCategory.$invalid}">
+                            <label for="unitCategory">Unit Category *</label>
+                            <select class="form-control unit-category-options" id="unitCategory" name="unit" ng-model="indicator.unit_category" required>
+                            </select>
+                        </div>
+
+                        <div class="form-group" ng-class="{'has-error': indicatorForm.language.$dirty && indicatorForm.language.$invalid}">
+                            <label for="language" class="">Language *</label>
+                            <select class="form-control language-options" model="indicator.language" ng-model="indicator.language" id="language" name="language" required>
+                            </select>
+                        </div>
+
+                    </fieldset>
+                </div>
+                <div class="col-lg-8">
+                    <fieldset>
+                        <legend>Further Information</legend>
+                        <div class="form-group" ng-class="{'has-error': indicatorForm.description.$dirty && indicatorForm.description.$invalid}">
+                            <label for="indicator-description" class="">Description *</label>
+                            <textarea class="form-control" rows="8" id="indicator-description" name="indicator-description" ng-model="indicator.description" required></textarea>
+                        </div>
+                        <div class="form-group" ng-class="{'has-error': indicatorForm.policyDomains.$dirty && indicatorForm.policyDomains.$invalid}">
+                            <label for="policyDomains">Policy Domains *</label>
+                            <select multiple class="form-control policydomain-options" id="policyDomains" name="policy-domain" ng-model="indicator.policy_domains" required>
+                            </select>
+                        </div>
+                    </fieldset>
+                </div>
+
+
+            </div>
+
+        </form>
+
+    </div>
 </div>

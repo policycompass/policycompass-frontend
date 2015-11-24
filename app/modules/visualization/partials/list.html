@@ -1,40 +1,41 @@
 <div class="container">
-	<h1><span class="glyphicon glyphicon-search"></span> Browse Visualisations ({{ visualizations.count }})</h1>
-	<br />
+    <h1><span class="glyphicon glyphicon-search"></span> Browse Visualisations ({{ visualizations.count }})</h1>
+    <br/>
 
-	<div class="container">
-		<div class="row">
-            <div class="col-lg-3 pc-tile" ng-show="visualizations" ng-repeat="visualization in visualizations.results" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 pc-tile" ng-show="visualizations" ng-repeat="visualization in visualizations.results">
                 <div class="panel panel-default">
-          					
+
                     <div class="panel-heading">
                         <a href="#!/visualizations/{{ visualization.id }}">
-                        <h3 class="panel-title">{{ visualization.title | limitTo: 25}}</h3>
+                            <h3 class="panel-title">{{ visualization.title | limitTo: 25}}</h3>
                         </a>
 
                     </div>
                     <div class="panel-body">
-                        {{ visualization.created_at | date:'longDate' }}    
-                        <br />
-						<div class="visualization-graph-page-content">	
-							<div ng-controller="VisualizationsEditController" ng-repeat="idvisulist in [visualization.id]" ng-include='"modules/visualization/partials/graph.html"' ></div>	
-						</div>
-						<br />
-                        
+                        {{ visualization.created_at | date:'longDate' }}
+                        <br/>
+
+                        <div class="visualization-graph-page-content">
+                            <div ng-controller="VisualizationsEditController" ng-repeat="idvisulist in [visualization.id]" ng-include='"modules/visualization/partials/graph.html"'></div>
+                        </div>
+                        <br/>
+
                     </div>
                 </div>
             </div>
         </div>
 
-		<div class="row">
-		    <a ng-disabled="!visualizations.previous"  class="btn btn-warning" href="#!/visualizations{{ visualizations.previous }}">
-		        <span class="glyphicon glyphicon-chevron-left"></span> Previous
-		    </a>
-		    <a ng-disabled="!visualizations.next" class="btn btn-warning pull-right" href="#!/visualizations{{ visualizations.next }}">
-		        Next <span class="glyphicon glyphicon-chevron-right"></span>
-		    </a>
-		</div>
-        
+        <div class="row">
+            <a ng-disabled="!visualizations.previous" class="btn btn-warning" href="#!/visualizations{{ visualizations.previous }}">
+                <span class="glyphicon glyphicon-chevron-left"></span> Previous
+            </a>
+            <a ng-disabled="!visualizations.next" class="btn btn-warning pull-right" href="#!/visualizations{{ visualizations.next }}">
+                Next <span class="glyphicon glyphicon-chevron-right"></span>
+            </a>
+        </div>
+
     </div>
 
 </div>

@@ -12,9 +12,9 @@ angular.module('pcApp.datasets', [
     'pcApp.references.directives.resolve'
 ])
 
-    /**
-     * The routes are configured and connected with the respective controller here
-     */
+/**
+ * The routes are configured and connected with the respective controller here
+ */
     .config(function ($routeProvider) {
         $routeProvider
             .when('/datasets', {

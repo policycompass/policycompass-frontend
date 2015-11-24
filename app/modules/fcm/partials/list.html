@@ -1,32 +1,33 @@
 <div class="container">
 
-<h1><span class="glyphicon glyphicon-search"></span> FCM Models</h1>
+    <h1><span class="glyphicon glyphicon-search"></span> FCM Models</h1>
 
-<br />
-<div class="container">
-<div class="row">
+    <br/>
 
-    <div class="col-lg-3 pc-tile" ng-show="models" ng-repeat="model in models" >
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title">{{ model.title | limitTo: 25}}</h3>
-          </div>
-          <div class="panel-body">
-            {{ model.dateAddedtoPC | date:'longDate' }}
-            <br /><br />
-            <a href="#!/models/{{ model.id }}" type="button" class="btn btn-primary">Details</a>
-          </div>
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-3 pc-tile" ng-show="models" ng-repeat="model in models">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{ model.title | limitTo: 25}}</h3>
+                    </div>
+                    <div class="panel-body">
+                        {{ model.dateAddedtoPC | date:'longDate' }}
+                        <br/><br/>
+                        <a href="#!/models/{{ model.id }}" type="button" class="btn btn-primary">Details</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <a ng-disabled="!metrics.previous" class="btn btn-warning" href="#!/models{{ model.previous }}">
+                <span class="glyphicon glyphicon-chevron-left"></span> Previous
+            </a>
+            <a ng-disabled="!metrics.next" class="btn btn-warning pull-right" href="#!/models{{ model.next }}">
+                Next <span class="glyphicon glyphicon-chevron-right"></span>
+            </a>
         </div>
     </div>
-
-</div>
-<div class="row">
-    <a ng-disabled="!metrics.previous"  class="btn btn-warning" href="#!/models{{ model.previous }}">
-        <span class="glyphicon glyphicon-chevron-left"></span> Previous
-    </a>
-    <a ng-disabled="!metrics.next" class="btn btn-warning pull-right" href="#!/models{{ model.next }}">
-        Next <span class="glyphicon glyphicon-chevron-right"></span>
-    </a>
-</div>
-</div>
 

@@ -18,7 +18,7 @@ var metrics = angular.module('pcApp.metrics', [
 /**
  * The routes are configured and connected with the respective controller here
  */
-metrics.config(function($routeProvider) {
+metrics.config(function ($routeProvider) {
     $routeProvider
         .when('/metrics', {
             redirectTo: '/browse/metric'
@@ -34,17 +34,17 @@ metrics.config(function($routeProvider) {
             controller: 'CreateMetric2Controller',
             templateUrl: 'modules/metrics/partials/create-metric-2.html'
         })
-       .when('/metrics/:metricId', {
+        .when('/metrics/:metricId', {
             controller: 'MetricsmanagerDetailController',
             templateUrl: 'modules/metrics/partials/metric-detail.html'
         })
-       .when('/metrics/:metricId/apply-1', {
+        .when('/metrics/:metricId/apply-1', {
             controller: 'ApplyMetric1Controller',
             templateUrl: 'modules/metrics/partials/apply-metric-1.html'
         })
-       .when('/metrics/:metricId/apply-2', {
+        .when('/metrics/:metricId/apply-2', {
             controller: 'ApplyMetric2Controller',
             templateUrl: 'modules/metrics/partials/apply-metric-2.html'
         })
-        .otherwise({ redirectTo: '/' });
+        .otherwise({redirectTo: '/'});
 });

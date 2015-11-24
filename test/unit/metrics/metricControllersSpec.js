@@ -3,7 +3,7 @@
  * Unittests for the metric controllers
  */
 
-describe('Metrics Controller Spec', function() {
+describe('Metrics Controller Spec', function () {
 
     // Static test data
     var respond = {
@@ -24,7 +24,7 @@ describe('Metrics Controller Spec', function() {
             "title": "English",
             "id": 1
         },
-        "external_resource":{
+        "external_resource": {
             "url": "http://epp.eurostat.ec.europa.eu/",
             "id": 1,
             "api_url": "http://epp.eurostat.ec.europa.eu/portal/page/portal/sdmx_web_services/getting_started/rest_sdmx_2.1",
@@ -43,8 +43,7 @@ describe('Metrics Controller Spec', function() {
         "data": {
             "ranges": {
                 "Country": [
-                    "Germany",
-                    "Spain"
+                    "Germany", "Spain"
                 ]
             },
             "table": [
@@ -54,8 +53,7 @@ describe('Metrics Controller Spec', function() {
                     "to": "2003-12-31",
                     "value": "23900.0",
                     "Country": "Germany"
-                },
-                {
+                }, {
                     "row": 12,
                     "from": "2003-01-01",
                     "to": "2003-12-31",
@@ -84,8 +82,7 @@ describe('Metrics Controller Spec', function() {
         "next": null,
         "previous": null,
         "results": [
-            respond,
-            respond
+            respond, respond
         ]
     };
 
@@ -101,8 +98,7 @@ describe('Metrics Controller Spec', function() {
                     to: "2003-12-31",
                     value: "23900.0",
                     Country: "Germany"
-                },
-                {
+                }, {
                     from: "2004-01-01",
                     to: "2004-12-31",
                     value: "25000.0",
@@ -123,27 +119,27 @@ describe('Metrics Controller Spec', function() {
     beforeEach(module('ngRoute'));
     beforeEach(module('pcApp.metrics'));
 
-    describe('MetricDetailController', function(){
+    describe('MetricDetailController', function () {
         var scope, metDetCtrl, httpBackend, location;
 
-        beforeEach(inject(function($rootScope, $routeParams, $controller, $httpBackend, $location){
+        beforeEach(inject(function ($rootScope, $routeParams, $controller, $httpBackend, $location) {
             location = $location;
             httpBackend = $httpBackend;
             // Mock the API response
             httpBackend.when('GET', '/api/v1/metricsmanager/metrics/1').respond(respond);
             $routeParams.metricId = 1;
             scope = $rootScope.$new();
-            metDetCtrl = $controller('MetricDetailController',{
+            metDetCtrl = $controller('MetricDetailController', {
                 $scope: scope
             });
         }));
 
-        it('should have a metric',function(){
+        it('should have a metric', function () {
             httpBackend.flush();
             expect(scope.metric.spatial).toBe('Germany, Spain');
         });
 
-        it('should have several control variables', function(){
+        it('should have several control variables', function () {
             httpBackend.flush();
             expect(scope.gridvisible).toBeDefined();
             expect(scope.gridloaded).toBeDefined();
@@ -151,10 +147,13 @@ describe('Metrics Controller Spec', function() {
             expect(scope.grid.instance).toBeDefined();
         });
 
-        it('extra legend should have correct values', function(){
+        it('extra legend should have correct values', function () {
             httpBackend.flush();
             expect(scope.extralegend).toEqual([
-                {column: 'D', value: 'Country'}
+                {
+                    column: 'D',
+                    value: 'Country'
+                }
             ]);
 
         });
@@ -173,20 +172,20 @@ describe('Metrics Controller Spec', function() {
 
     });
 
-    describe('MetricController', function(){
+    describe('MetricController', function () {
         var scope, metCtrl, httpBackend;
 
-        beforeEach(inject(function($rootScope, $controller, $httpBackend){
+        beforeEach(inject(function ($rootScope, $controller, $httpBackend) {
             httpBackend = $httpBackend;
             // Mock the API response
             httpBackend.when('GET', '/api/v1/metricsmanager/metrics').respond(respond_list);
             scope = $rootScope.$new();
-            metCtrl = $controller('MetricsController',{
+            metCtrl = $controller('MetricsController', {
                 $scope: scope
             });
         }));
 
-        it('should have list of metrics',function(){
+        it('should have list of metrics', function () {
             httpBackend.flush();
             expect(scope.metrics.count).toBe(2);
             expect(scope.metrics.results[0].spatial).toBe('Germany, Spain');
@@ -194,37 +193,53 @@ describe('Metrics Controller Spec', function() {
 
     });
 
-    describe('MetricCreateController', function(){
+    describe('MetricCreateController', function () {
         var scope, metCtrl, httpBackend, location;
 
-        beforeEach(inject(function($rootScope, $controller, $httpBackend, $location){
+        beforeEach(inject(function ($rootScope, $controller, $httpBackend, $location) {
             location = $location;
             httpBackend = $httpBackend;
             // Mock the API response
             httpBackend.when('POST', '/api/v1/metricsmanager/metrics').respond({id: 1});
             scope = $rootScope.$new();
-            metCtrl = $controller('MetricCreateController',{
+            metCtrl = $controller('MetricCreateController', {
                 $scope: scope
             });
         }));
 
-        it('should have several variables',function(){
+        it('should have several variables', function () {
             expect(scope.mode).toEqual('create');
             expect(scope.gridvisible).toEqual(true);
             expect(scope.metric).toEqual({});
-            expect(scope.columns).toEqual({from: 0, to: 1, value: 2});
+            expect(scope.columns).toEqual({
+                from: 0,
+                to: 1,
+                value: 2
+            });
             expect(scope.step).toEqual('one');
             expect(scope.columnselection).toBeDefined();
             expect(scope.extracolumns).toEqual([]);
-            expect(scope.tabsel).toEqual({grid: true, file: false});
-            expect(scope.grid).toEqual({data: [[]], instance: {}});
+            expect(scope.tabsel).toEqual({
+                grid: true,
+                file: false
+            });
+            expect(scope.grid).toEqual({
+                data: [[]],
+                instance: {}
+            });
             expect(scope.nextStep).toBeDefined();
             expect(scope.prevStep).toBeDefined();
         });
 
         it('should be possible to add and remove extra columns', function () {
             scope.addExtraColumn();
-            expect(scope.extracolumns).toEqual([{i: 1, column: null, value: null}]);
+            expect(scope.extracolumns).toEqual([
+                {
+                    i: 1,
+                    column: null,
+                    value: null
+                }
+            ]);
             scope.removeExtraColumn(1);
             expect(scope.extracolumns).toEqual([]);
         });
@@ -242,15 +257,28 @@ describe('Metrics Controller Spec', function() {
             scope.columns.from = 0;
             scope.columns.to = 1;
             scope.columns.value = 2;
-            scope.extracolumns = [{i: 1, column: 1, value: "bla"}];
-            expect(function(){ scope.validation(); }).toThrow();
+            scope.extracolumns = [
+                {
+                    i: 1,
+                    column: 1,
+                    value: "bla"
+                }
+            ];
+            expect(function () {
+                scope.validation();
+            }).toThrow();
         });
 
         it('should convert input correctly', function () {
-            scope.extracolumns = [{i: 1, column: 3, value: "Country"}];
+            scope.extracolumns = [
+                {
+                    i: 1,
+                    column: 3,
+                    value: "Country"
+                }
+            ];
             scope.grid.data = [
-                ["2003-01-01", "2003-01-01", "100.0", "Spain"],
-                ["2004-01-01", "2004-01-01", "200.0", "Spain"]
+                ["2003-01-01", "2003-01-01", "100.0", "Spain"], ["2004-01-01", "2004-01-01", "200.0", "Spain"]
             ];
             scope.createMetric();
 
@@ -261,8 +289,7 @@ describe('Metrics Controller Spec', function() {
                         to: "2003-01-01",
                         value: "100.0",
                         Country: "Spain"
-                    },
-                    {
+                    }, {
                         from: "2004-01-01",
                         to: "2004-01-01",
                         value: "200.0",
@@ -271,10 +298,11 @@ describe('Metrics Controller Spec', function() {
                 ],
                 extra_columns: [
                     "Country"
-                ]});
+                ]
+            });
         });
 
-        it('should create a metric',function(){
+        it('should create a metric', function () {
             scope.metric = input;
             spyOn(location, 'path');
             scope.createMetric();
@@ -285,10 +313,10 @@ describe('Metrics Controller Spec', function() {
     });
 
 
-    describe('MetricEditController', function(){
+    describe('MetricEditController', function () {
         var scope, metCtrl, httpBackend, location, routeParams;
 
-        beforeEach(inject(function($rootScope, $controller, $httpBackend, $location){
+        beforeEach(inject(function ($rootScope, $controller, $httpBackend, $location) {
             location = $location;
             httpBackend = $httpBackend;
             // Mock the API responses
@@ -298,13 +326,13 @@ describe('Metrics Controller Spec', function() {
             routeParams = {
                 metricId: 1
             };
-            metCtrl = $controller('MetricEditController',{
+            metCtrl = $controller('MetricEditController', {
                 $scope: scope,
                 $routeParams: routeParams
             });
         }));
 
-        it('should have the metric in the right format',function(){
+        it('should have the metric in the right format', function () {
             httpBackend.flush();
             expect(scope.mode).toEqual('edit');
             expect(scope.gridvisible).toEqual(true);
@@ -312,25 +340,37 @@ describe('Metrics Controller Spec', function() {
             expect(scope.metric.language).toEqual(1);
             expect(scope.metric.external_resource).toEqual(1);
             expect(scope.metric.policy_domains).toEqual(['1']);
-            expect(scope.extracolumns).toEqual([{i: 1, column: 3, value: "Country"}]);
+            expect(scope.extracolumns).toEqual([
+                {
+                    i: 1,
+                    column: 3,
+                    value: "Country"
+                }
+            ]);
             expect(scope.grid.data).toEqual([
-                ["2003-01-01", "2003-12-31", "23900.0", "Germany"],
-                ["2003-01-01", "2003-12-31", "20900.0", "Spain"]
+                ["2003-01-01", "2003-12-31", "23900.0", "Germany"], ["2003-01-01", "2003-12-31", "20900.0", "Spain"]
             ]);
         });
 
-        it('should have several variables',function(){
+        it('should have several variables', function () {
             expect(scope.mode).toEqual('edit');
-            expect(scope.columns).toEqual({from: 0, to: 1, value: 2});
+            expect(scope.columns).toEqual({
+                from: 0,
+                to: 1,
+                value: 2
+            });
             expect(scope.step).toEqual('one');
             expect(scope.columnselection).toBeDefined();
-            expect(scope.tabsel).toEqual({grid: true, file: false});
+            expect(scope.tabsel).toEqual({
+                grid: true,
+                file: false
+            });
             expect(scope.grid.instance).toEqual({});
             expect(scope.nextStep).toBeDefined();
             expect(scope.prevStep).toBeDefined();
         });
 
-        it('should update a metric',function(){
+        it('should update a metric', function () {
             spyOn(location, 'path');
             scope.createMetric();
             httpBackend.flush();

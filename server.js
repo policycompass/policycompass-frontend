@@ -15,13 +15,13 @@
  *
  */
 var http = require('http'),
-nstatic = require('node-static'),
-url = require("url"),
-path = require("path"),
-fs = require("fs"),
-nconf = require('nconf'),
-mime = require('mime'),
-port = process.argv[2] || 9000;
+    nstatic = require('node-static'),
+    url = require("url"),
+    path = require("path"),
+    fs = require("fs"),
+    nconf = require('nconf'),
+    mime = require('mime'),
+    port = process.argv[2] || 9000;
 
 nconf.file('development.json');
 
@@ -31,22 +31,22 @@ var fcmServicesUrl = nconf.get('FCM_SERVICES_URL');
 var fileServer = new nstatic.Server('');
 
 // Heavily inspired by this Gist: https://gist.github.com/rpflorence/701407
-http.createServer(function(request, response) {
+http.createServer(function (request, response) {
 
-  var uri = url.parse(request.url).pathname,
-  filename = path.join(process.cwd(), uri);
+    var uri = url.parse(request.url).pathname,
+        filename = path.join(process.cwd(), uri);
 
-  console.log('[%s] "%s %s" "%s"', (new Date).toUTCString(), request.method, request.url, request.headers['user-agent']);
+    console.log('[%s] "%s %s" "%s"', (new Date).toUTCString(), request.method, request.url, request.headers['user-agent']);
 
-  // Serve static files and handle rewrites to app (for development environment)
-  if (/^\/(app|)$/.exec(request.url)) {
-    response.writeHead(302, {"location": "/app/"});
-    response.end();
-  } else {
-    request.addListener('end', function () {
-      fileServer.serve(request, response);
-    }).resume();
-  }
+    // Serve static files and handle rewrites to app (for development environment)
+    if (/^\/(app|)$/.exec(request.url)) {
+        response.writeHead(302, {"location": "/app/"});
+        response.end();
+    } else {
+        request.addListener('end', function () {
+            fileServer.serve(request, response);
+        }).resume();
+    }
 }).listen(parseInt(port, 10));
 
 console.log("Static file server running at\n => http://localhost:" + port + "/\nCTRL + C to shutdown");

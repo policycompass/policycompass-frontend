@@ -6,16 +6,14 @@ angular.module('pcApp.events.controllers.event', [
 /**
  * Controller to list events
  */
-    .controller('EventsController', ['$scope', 'Event', '$routeParams', function ($scope, Event, $routeParams) {
-        $scope.events = Event.query(
-            {page: $routeParams.page},
-            function (eventList) {
-            },
-            function (error) {
+    .controller('EventsController', [
+        '$scope', 'Event', '$routeParams', function ($scope, Event, $routeParams) {
+            $scope.events = Event.query({page: $routeParams.page}, function (eventList) {
+            }, function (error) {
                 throw {message: JSON.stringify(err.data)};
-            }
-        );
-    }])
+            });
+        }
+    ])
 /**
  * Controller to list details of an event
  */
@@ -30,50 +28,37 @@ angular.module('pcApp.events.controllers.event', [
         '$log',
         function ($scope, $routeParams, $location, Event, LinkedEventVisualization, Languages, dialogs, $log) {
 
-            $scope.event = Event.get({id: $routeParams.eventId},
-                function (event) {
-                },
-                function (error) {
-                    alert(error.data.message);
-                }
-            );
+            $scope.event = Event.get({id: $routeParams.eventId}, function (event) {
+            }, function (error) {
+                alert(error.data.message);
+            });
 
             $scope.deleteEvent = function (event) {
                 // Open a confirmation dialog
-                var dlg = dialogs.confirm(
-                    "Are you sure?",
-                    "Do you want to delete the Event '" + event.title + "' permanently?");
+                var dlg = dialogs.confirm("Are you sure?", "Do you want to delete the Event '" + event.title + "' permanently?");
                 dlg.result.then(function () {
                     // Delete the metric via the API
-                    event.$delete(
-                        {},
-                        function () {
-                            $location.path('/events');
-                        }
-                    );
+                    event.$delete({}, function () {
+                        $location.path('/events');
+                    });
                 });
             };
 
 
-            $scope.linked_event_visualization = LinkedEventVisualization.get({id: $routeParams.eventId},
-                function (linked_event_visualization) {
-                },
-                function (err) {
-                    throw {message: JSON.stringify(err.data)};
-                }
-            );
-
-            $scope.event.$promise.then(function (event) {
-                $scope.language = Languages.get({id: event.languageID},
-                    function (language) {
-                    },
-                    function (err) {
-                        throw {message: JSON.stringify(err.data)};
-                    }
-                );
+            $scope.linked_event_visualization = LinkedEventVisualization.get({id: $routeParams.eventId}, function (linked_event_visualization) {
+            }, function (err) {
+                throw {message: JSON.stringify(err.data)};
             });
 
-        }])
+            $scope.event.$promise.then(function (event) {
+                $scope.language = Languages.get({id: event.languageID}, function (language) {
+                }, function (err) {
+                    throw {message: JSON.stringify(err.data)};
+                });
+            });
+
+        }
+    ])
 /**
  * Controller to edit a metric
  */
@@ -87,27 +72,23 @@ angular.module('pcApp.events.controllers.event', [
 
             $scope.mode = "edit";
 
-            $scope.event = Event.get({id: $routeParams.eventId},
-                function (event) {
-                },
-                function (err) {
-                    throw {message: JSON.stringify(err.data)};
-                }
-            );
+            $scope.event = Event.get({id: $routeParams.eventId}, function (event) {
+            }, function (err) {
+                throw {message: JSON.stringify(err.data)};
+            });
 
             $scope.createEvent = function () {
                 $scope.event.userID = 1;
                 $scope.event.viewsCount = 1;
 
                 Event.update($scope.event, function (value, responseHeaders) {
-                        $location.path('/events/' + value.id);
-                    },
-                    function (err) {
-                        throw {message: err.data};
-                    }
-                );
+                    $location.path('/events/' + value.id);
+                }, function (err) {
+                    throw {message: err.data};
+                });
             };
-        }])
+        }
+    ])
 /**
  * Controller to create a metric
  */
@@ -140,14 +121,13 @@ angular.module('pcApp.events.controllers.event', [
                 $scope.event.viewsCount = 1;
 
                 Event.save($scope.event, function (value, responseHeaders) {
-                        $location.path('/events/' + value.id);
-                    },
-                    function (err) {
-                        throw {message: err.data};
-                    }
-                );
+                    $location.path('/events/' + value.id);
+                }, function (err) {
+                    throw {message: err.data};
+                });
             };
-        }])
+        }
+    ])
 
 /**
  * Controller to search and import events from external resources
@@ -181,8 +161,7 @@ angular.module('pcApp.events.controllers.event', [
                     success(function (data, status, headers, config) {
                         //console.log(angular.toJson(data));
                         $scope.availableExtractors = data;
-                    }).
-                    error(function (data, status, headers, config) {
+                    }).error(function (data, status, headers, config) {
                         // called asynchronously if an error occurs
                         // or server returns response with an error status.
                     });
@@ -219,23 +198,18 @@ angular.module('pcApp.events.controllers.event', [
             //$scope.search.endEventDate = "2010-05-05";
 
             $scope.searchEvent = function () {
-                $http.get(API_CONF.EVENTS_MANAGER_URL + '/harvestevents?keyword=' + $scope.search.title +
-                    '&extractors=' + $scope.selectedExtractors + '&start=' +
-                    $filter('date')($scope.search.startEventDate, "yyyy-MM-dd") + '&end=' +
-                    $filter('date')($scope.search.endEventDate, "yyyy-MM-dd")).
+                $http.get(API_CONF.EVENTS_MANAGER_URL + '/harvestevents?keyword=' + $scope.search.title + '&extractors=' + $scope.selectedExtractors + '&start=' + $filter('date')($scope.search.startEventDate, "yyyy-MM-dd") + '&end=' + $filter('date')($scope.search.endEventDate, "yyyy-MM-dd")).
 
                     success(function (data, status, headers, config) {
                         //console.log(angular.toJson(data));
                         $scope.searchResults = data;
-                    }).
-                    error(function (data, status, headers, config) {
+                    }).error(function (data, status, headers, config) {
                         // called asynchronously if an error occurs
                         // or server returns response with an error status.
                     });
                 try {
                     $scope.step = 'second';
-                }
-                catch (err) {
+                } catch (err) {
                     console.log(err);
                 }
             };
@@ -245,7 +219,8 @@ angular.module('pcApp.events.controllers.event', [
                 //console.log("addEvent:" + angular.toJson(eventService.getEvent()));
                 $location.path('/events/create');
             };
-        }])
+        }
+    ])
 /**
  * Controller to add and edit a datasource
  */
@@ -270,22 +245,22 @@ angular.module('pcApp.events.controllers.event', [
                 $http.post(API_CONF.EVENTS_MANAGER_URL + '/configextractor', {
                     name: $scope.modul.name,
                     script: $scope.content
-                }).
-                    then(function (response) {
-                        if (response) {
-                            $scope.ex_added = function () {
-                                $window.alert("Script added!");
-                                $route.reload();
-                            };
-                        }
-                        // this callback will be called asynchronously
-                        // when the response is available
-                    }, function (response) {
-                        // called asynchronously if an error occurs
-                        // or server returns response with an error status.
-                    });
+                }).then(function (response) {
+                    if (response) {
+                        $scope.ex_added = function () {
+                            $window.alert("Script added!");
+                            $route.reload();
+                        };
+                    }
+                    // this callback will be called asynchronously
+                    // when the response is available
+                }, function (response) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                });
             }
-        }])
+        }
+    ])
 /**
  * Directive to read files
  */

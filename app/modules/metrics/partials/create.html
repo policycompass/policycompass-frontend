@@ -1,243 +1,236 @@
 <div class="container">
 
-<div class="content-header">
-    <h3 ng-if="mode == 'create'"><span class="glyphicon glyphicon-pencil"></span> Create a New Metric</h3>
-    <h3 ng-if="mode == 'edit'"><span class="glyphicon glyphicon-pencil"></span> Edit Metric</h3>
-</div>
+    <div class="content-header">
+        <h3 ng-if="mode == 'create'"><span class="glyphicon glyphicon-pencil"></span> Create a New Metric</h3>
+
+        <h3 ng-if="mode == 'edit'"><span class="glyphicon glyphicon-pencil"></span> Edit Metric</h3>
+    </div>
 
 
-<form name="metricForm" role="form" novalidate >
-<div class="row">
-    <div class="col-lg-4">
-            <legend>Main Details</legend>
-            <div class="form-group" ng-class="{'has-error': metricForm.title.$dirty && metricForm.title.$invalid}">
-                <label for="title">Title *</label>
-                <input type="text" class="form-control" id="title" name="title" placeholder="Metric Title" ng-model="metric.title" ng-minlength="3" required>
-            </div>
+    <form name="metricForm" role="form" novalidate>
+        <div class="row">
+            <div class="col-lg-4">
+                <legend>Main Details</legend>
+                <div class="form-group" ng-class="{'has-error': metricForm.title.$dirty && metricForm.title.$invalid}">
+                    <label for="title">Title *</label>
+                    <input type="text" class="form-control" id="title" name="title" placeholder="Metric Title" ng-model="metric.title" ng-minlength="3" required>
+                </div>
 
-            <div class="form-group" ng-class="{'has-error': metricForm.acronym.$dirty && metricForm.acronym.$invalid}">
-                <label for="acronym">Acronym *</label>
-                <input type="text" class="form-control" id="acronym" placeholder="Acronym" ng-model="metric.acronym" required>
-            </div>
+                <div class="form-group" ng-class="{'has-error': metricForm.acronym.$dirty && metricForm.acronym.$invalid}">
+                    <label for="acronym">Acronym *</label>
+                    <input type="text" class="form-control" id="acronym" placeholder="Acronym" ng-model="metric.acronym" required>
+                </div>
 
-            <div class="form-group" ng-class="{'has-error': metricForm.policyDomain.$dirty && metricForm.policyDomain.$invalid}">
-                <label for="policyDomain">Policy Domain *</label>
-                <select multiple class="form-control policydomain-options" id="policyDomain" name="policyDomain" ng-model="metric.policy_domains" required>
-                </select>
-            </div>
+                <div class="form-group" ng-class="{'has-error': metricForm.policyDomain.$dirty && metricForm.policyDomain.$invalid}">
+                    <label for="policyDomain">Policy Domain *</label>
+                    <select multiple class="form-control policydomain-options" id="policyDomain" name="policyDomain" ng-model="metric.policy_domains" required>
+                    </select>
+                </div>
 
-            <div class="form-group" ng-class="{'has-error': metricForm.keywords.$dirty && metricForm.keywords.$invalid}">
-                <label for="keywords">Keywords *</label>
-                <input type="text" class="form-control" id="keywords" placeholder="Keywords" ng-model="metric.keywords" required>
-            </div>
+                <div class="form-group" ng-class="{'has-error': metricForm.keywords.$dirty && metricForm.keywords.$invalid}">
+                    <label for="keywords">Keywords *</label>
+                    <input type="text" class="form-control" id="keywords" placeholder="Keywords" ng-model="metric.keywords" required>
+                </div>
 
-            <div class="form-group">
-                <label for="publisher">Publisher</label>
-                <input type="text" class="form-control" id="publisher" name="publisher" placeholder="Publisher" ng-model="metric.publisher">
-            </div>
+                <div class="form-group">
+                    <label for="publisher">Publisher</label>
+                    <input type="text" class="form-control" id="publisher" name="publisher" placeholder="Publisher" ng-model="metric.publisher">
+                </div>
 
-            <div class="form-group" ng-class="{'has-error': metricForm.resourceUrl.$dirty && metricForm.resourceUrl.$invalid}">
-                <label for="resourceUrl">Resource Url </label>
-                <input type="url" class="form-control" id="resourceUrl" name="resourceUrl" placeholder="http://www.datasource.example" ng-model="metric.resource_url">
-            </div>
+                <div class="form-group" ng-class="{'has-error': metricForm.resourceUrl.$dirty && metricForm.resourceUrl.$invalid}">
+                    <label for="resourceUrl">Resource Url </label>
+                    <input type="url" class="form-control" id="resourceUrl" name="resourceUrl" placeholder="http://www.datasource.example" ng-model="metric.resource_url">
+                </div>
 
-            <div class="form-group date-picker" ng-controller="DateController">
-                <label for="retrievalDate">Date of Retrieval</label>
-                <p class="input-group">
-                    <input type="text"
-                           id="retrievalDate"
-                           name="retrievalDate"
-                           class="form-control"
-                           datepicker-popup="{{ format }}"
-                           ng-model="metric.resource_issued"
-                           is-open="opened"
-                           min-date="minDate"
-                           max-date="maxDate"
-                           datepicker-options="dateOptions"
-                           show-button-bar="false"
-                           ng-required="false"
-                           ng-disabled="true"
-                           close-text="Close" />
+                <div class="form-group date-picker" ng-controller="DateController">
+                    <label for="retrievalDate">Date of Retrieval</label>
+
+                    <p class="input-group">
+                        <input type="text" id="retrievalDate" name="retrievalDate" class="form-control" datepicker-popup="{{ format }}" ng-model="metric.resource_issued" is-open="opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" show-button-bar="false" ng-required="false" ng-disabled="true" close-text="Close"/>
                     <span class="input-group-btn">
                         <a type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></a>
                     </span>
-                </p>
-            </div>
+                    </p>
+                </div>
 
-    </div>
-    <div class="col-lg-8">
-        <div ng-switch="step">
-            <div ng-switch-when="one">
-                <tabset>
-                    <tab heading="Data Grid" active="tabsel.grid">
-                        <div class="nav-wrapper offcanvas-wrapper">
-                            <div id="myNavmenuCanvas">
-                                <nav id="myNavmenu" class="navmenu navmenu-default navmenu-fixed-left offcanvas" role="navigation">
-                                    <a class="navmenu-brand" href="">Options</a>
-                                    <ul class="nav navmenu-nav">
-                                        <li><a href="" ng-click="rotateData()" class="btn"><span class="glyphicon glyphicon glyphicon-refresh"></span> Rotate Data</a></li>
-                                        <li><a href="" ng-click="addExtraColumn()" class="btn"><span class="glyphicon glyphicon glyphicon-plus"></span> Add Extra Column</a></li>
-                                        <li><a href="" ng-click="clearGrid()" class="btn"><span class="glyphicon glyphicon glyphicon-remove"></span> Clear Grid</a></li>
-                                        <li>
-                                            <select class="form-control date-format-options"
-                                                    ng-model="customdate.selection"
-                                                    model="customdate.selection"
-                                                    id="date-format"
-                                                    name="date-format">
-                                            </select>
-                                        </li>
-                                    </ul>
-                                </nav>
-                                <div class="navbar navbar-default">
-                                    <button type="button" class="navbar-toggle" data-toggle="offcanvas" data-target="#myNavmenu" data-canvas="#myNavmenuCanvas" data-placement="left">
-                                        <span class="icon-bar"></span>
-                                        <span class="icon-bar"></span>
-                                        <span class="icon-bar"></span>
-                                    </button>
-                                    <div id="metricContent">Metric Content *</div>
+            </div>
+            <div class="col-lg-8">
+                <div ng-switch="step">
+                    <div ng-switch-when="one">
+                        <tabset>
+                            <tab heading="Data Grid" active="tabsel.grid">
+                                <div class="nav-wrapper offcanvas-wrapper">
+                                    <div id="myNavmenuCanvas">
+                                        <nav id="myNavmenu" class="navmenu navmenu-default navmenu-fixed-left offcanvas" role="navigation">
+                                            <a class="navmenu-brand" href="">Options</a>
+                                            <ul class="nav navmenu-nav">
+                                                <li>
+                                                    <a href="" ng-click="rotateData()" class="btn"><span class="glyphicon glyphicon glyphicon-refresh"></span> Rotate Data</a>
+                                                </li>
+                                                <li>
+                                                    <a href="" ng-click="addExtraColumn()" class="btn"><span class="glyphicon glyphicon glyphicon-plus"></span> Add Extra Column</a>
+                                                </li>
+                                                <li>
+                                                    <a href="" ng-click="clearGrid()" class="btn"><span class="glyphicon glyphicon glyphicon-remove"></span> Clear Grid</a>
+                                                </li>
+                                                <li>
+                                                    <select class="form-control date-format-options" ng-model="customdate.selection" model="customdate.selection" id="date-format" name="date-format">
+                                                    </select>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                        <div class="navbar navbar-default">
+                                            <button type="button" class="navbar-toggle" data-toggle="offcanvas" data-target="#myNavmenu" data-canvas="#myNavmenuCanvas" data-placement="left">
+                                                <span class="icon-bar"></span>
+                                                <span class="icon-bar"></span>
+                                                <span class="icon-bar"></span>
+                                            </button>
+                                            <div id="metricContent">Metric Content *</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="pc-datagrid" instance="grid.instance" data="grid.data" ng-if="gridvisible" id="datagrid"></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-12">
-                                        <div class="pc-datagrid" instance="grid.instance" data="grid.data" ng-if="gridvisible" id="datagrid"></div>
+                                        <legend>Metric Columns</legend>
+                                    </div>
+                                    <div class="col-lg-2 pc-datagrid-mainlabel">
+                                        Time
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <div class="form-group" ng-class="{'has-error': metricForm.startcolumn.$dirty && metricForm.startcolumn.$invalid}">
+                                            <label for="startcolumn" class="control-label">Start Column *</label>
+                                            <select class="form-control pc-datagrid-columnselect" ng-model="columns.from" id="startcolumn" required>
+                                                <option value="{{ $index }}" ng-repeat="s in columnselection" ng-selected="$index == columns.from">{{ s }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <div class="form-group" ng-class="{'has-error': metricForm.endcolumn.$dirty && metricForm.endcolumn.$invalid}">
+                                            <label for="endcolumn" class="">End Column *</label>
+                                            <select class="form-control pc-datagrid-columnselect" ng-model="columns.to" id="endcolumn" required>
+                                                <option value="{{ $index }}" ng-repeat="s in columnselection" ng-selected="$index == columns.to">{{ s }}</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+
+
+                                <div class="row">
+                                    <div class="col-lg-2 pc-datagrid-mainlabel">
+                                        Value
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <div class="form-group" ng-class="{'has-error': metricForm.valuecolumn.$dirty && metricForm.valuecolumn.$invalid}">
+                                            <label for="valuecolumn" class="control-label">Column *</label>
+                                            <select class="form-control pc-datagrid-columnselect" ng-model="columns.value" id="valuecolumn" required>
+                                                <option value="{{ $index }}" ng-repeat="s in columnselection" ng-selected="$index == columns.value">{{ s }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <div class="form-group" ng-class="{'has-error': metricForm.dataunit.$dirty && metricForm.dataunit.$invalid}">
+                                            <label for="dataunit" class="">Unit *</label>
+                                            <select class="form-control unit-options" ng-model="metric.unit" model="metric.unit" id="dataunit" required>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" ng-repeat="e in extracolumns">
+                                    <div class="col-lg-2 pc-datagrid-mainlabel">
+                                        Extra Data
+                                        <a href="" ng-click="removeExtraColumn(e)"><span class="glyphicon glyphicon-remove"></span></a>
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <div class="form-group">
+                                            <label for="extracolumn_{{ e.i }}" class="control-label">Column</label>
+                                            <select class="form-control pc-datagrid-columnselect" ng-model="e.column" id="extracolumn_{{ e.i }}" required>
+                                                <option value="{{ $index }}" ng-repeat="s in columnselection" ng-selected="$index == e.column">{{ s }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <div class="form-group">
+                                            <label for="categorycolumn_{{ e.i }}" class="">Category</label>
+                                            <select class="form-control extra-category-options" ng-model="e.value" model="e.value" id="categorycolumn_{{ e.i }}" required></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+
+                                    </div>
+                                </div>
+
+
+                            </tab>
+                            <tab heading="From File" active="tabsel.file">
+                                <div class="ng-dropzone dropzone" dropzone-config="dropzone.config" dropzone="dropzone.dropzone" event-handlers="dropzone.handlers">
+
+                                </div>
+                            </tab>
+                        </tabset>
+                    </div>
+
+                    <div ng-switch-when="second">
+                        <h4>Additional Information</h4>
+
                         <div class="row">
                             <div class="col-lg-12">
-                                <legend>Metric Columns</legend>
-                            </div>
-                            <div class="col-lg-2 pc-datagrid-mainlabel">
-                                Time
-                            </div>
-                            <div class="col-lg-5">
-                                <div class="form-group" ng-class="{'has-error': metricForm.startcolumn.$dirty && metricForm.startcolumn.$invalid}">
-                                    <label for="startcolumn" class="control-label">Start Column *</label>
-                                    <select class="form-control pc-datagrid-columnselect" ng-model="columns.from" id="startcolumn" required>
-                                        <option value="{{ $index }}" ng-repeat="s in columnselection" ng-selected="$index == columns.from">{{ s }} </option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-5">
-                                <div class="form-group" ng-class="{'has-error': metricForm.endcolumn.$dirty && metricForm.endcolumn.$invalid}">
-                                    <label for="endcolumn" class="">End Column *</label>
-                                    <select class="form-control pc-datagrid-columnselect" ng-model="columns.to" id="endcolumn" required>
-                                        <option value="{{ $index }}" ng-repeat="s in columnselection" ng-selected="$index == columns.to">{{ s }} </option>
-                                    </select>
+                                <div class="form-group" ng-class="{'has-error': metricForm.metricdescription.$dirty && metricForm.metricdescription.$invalid}">
+                                    <label for="metricdescription" class="">Description *</label>
+                                    <textarea class="form-control" rows="10" id="metricdescription" name="metricdescription" ng-model="metric.description" required></textarea>
                                 </div>
                             </div>
                         </div>
-
-
                         <div class="row">
-                        <div class="col-lg-2 pc-datagrid-mainlabel">
-                            Value
-                        </div>
-                        <div class="col-lg-5">
-                            <div class="form-group" ng-class="{'has-error': metricForm.valuecolumn.$dirty && metricForm.valuecolumn.$invalid}">
-                                <label for="valuecolumn" class="control-label">Column *</label>
-                                <select class="form-control pc-datagrid-columnselect" ng-model="columns.value" id="valuecolumn" required>
-                                    <option value="{{ $index }}" ng-repeat="s in columnselection" ng-selected="$index == columns.value">{{ s }} </option>
-                                </select>
+                            <div class="col-lg-6">
+                                <div class="form-group" ng-class="{'has-error': metricForm.spatial.$dirty && metricForm.spatial.$invalid}">
+                                    <label for="spatial">Spatial</label>
+                                    <input type="text" class="form-control" id="spatial" name="spatial" placeholder="Spain, England" ng-model="metric.spatial">
+                                </div>
+                                <div class="form-group" ng-class="{'has-error': metricForm.external-resource.$dirty && metricForm.external-resource.$invalid}">
+                                    <label for="external-resource" class="">External Resource
+                                    </label>
+                                    <select class="form-control external-resource-options" model="metric.external_resource" ng-model="metric.external_resource" id="external-resource" name="external-resource">
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group" ng-class="{'has-error': metricForm.language.$dirty && metricForm.language.$invalid}">
+                                    <label for="language" class="">Language *</label>
+                                    <select class="form-control language-options" model="metric.language" ng-model="metric.language" id="language" name="language" required>
+                                    </select>
+                                </div>
+                                <div class="form-group" ng-class="{'has-error': metricForm.license.$dirty && metricForm.license.$invalid}">
+                                    <label for="license">License</label>
+                                    <input type="text" class="form-control" id="license" name="license" placeholder="MIT" ng-model="metric.license">
+                                </div>
                             </div>
                         </div>
-                        <div class="col-lg-5">
-                            <div class="form-group" ng-class="{'has-error': metricForm.dataunit.$dirty && metricForm.dataunit.$invalid}">
-                                <label for="dataunit" class="">Unit *</label>
-                                <select class="form-control unit-options" ng-model="metric.unit"  model="metric.unit" id="dataunit" required>
-                                </select>
-                            </div>
-                        </div>
+
                     </div>
 
-                    <div class="row" ng-repeat="e in extracolumns">
-                        <div class="col-lg-2 pc-datagrid-mainlabel">
-                            Extra Data  <a href="" ng-click="removeExtraColumn(e)"><span class="glyphicon glyphicon-remove"></span></a>
-                        </div>
-                        <div class="col-lg-5">
-                            <div class="form-group">
-                                <label for="extracolumn_{{ e.i }}" class="control-label">Column</label>
-                                <select class="form-control pc-datagrid-columnselect" ng-model="e.column" id="extracolumn_{{ e.i }}" required>
-                                    <option value="{{ $index }}" ng-repeat="s in columnselection"  ng-selected="$index == e.column">{{ s }}</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-5">
-                            <div class="form-group">
-                                <label for="categorycolumn_{{ e.i }}" class="">Category</label>
-                                <select class="form-control extra-category-options" ng-model="e.value" model="e.value" id="categorycolumn_{{ e.i }}" required></select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-12">
-
-                        </div>
-                    </div>
-
-
-
-                    </tab>
-                    <tab heading="From File" active="tabsel.file">
-                        <div class="ng-dropzone dropzone" dropzone-config="dropzone.config" dropzone="dropzone.dropzone" event-handlers="dropzone.handlers">
-
-                        </div>
-                    </tab>
-                </tabset>
-            </div>
-
-            <div ng-switch-when="second">
-                <h4>Additional Information</h4>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="form-group" ng-class="{'has-error': metricForm.metricdescription.$dirty && metricForm.metricdescription.$invalid}">
-                            <label for="metricdescription" class="">Description *</label>
-                            <textarea class="form-control" rows="10" id="metricdescription" name="metricdescription" ng-model="metric.description" required></textarea>
-                        </div>
-                    </div>
                 </div>
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="form-group" ng-class="{'has-error': metricForm.spatial.$dirty && metricForm.spatial.$invalid}">
-                            <label for="spatial">Spatial</label>
-                            <input type="text" class="form-control" id="spatial" name="spatial" placeholder="Spain, England" ng-model="metric.spatial">
-                        </div>
-                        <div class="form-group" ng-class="{'has-error': metricForm.external-resource.$dirty && metricForm.external-resource.$invalid}">
-                            <label for="external-resource" class="">External Resource
-                            </label>
-                            <select class="form-control external-resource-options"
-                                    model="metric.external_resource"
-                                    ng-model="metric.external_resource"
-                                    id="external-resource"
-                                    name="external-resource">
-                            </select>
-
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group" ng-class="{'has-error': metricForm.language.$dirty && metricForm.language.$invalid}">
-                            <label for="language" class="">Language *</label>
-                            <select class="form-control language-options" model="metric.language" ng-model="metric.language" id="language" name="language" required>
-                            </select>
-                        </div>
-                        <div class="form-group" ng-class="{'has-error': metricForm.license.$dirty && metricForm.license.$invalid}">
-                            <label for="license">License</label>
-                            <input type="text" class="form-control" id="license" name="license" placeholder="MIT" ng-model="metric.license">
-                        </div>
-                    </div>
+                <div class="form-group pull-right pc-metric-formcontrols">
+                    <a type="button" class="btn btn-danger" href="#!/metrics/{{ metric.id }}">Cancel</a>
+                    <button type="submit" ng-show="step=='second'" class="btn btn-default" ng-click="prevStep()">
+                        <span class="glyphicon glyphicon-chevron-left"></span> Previous Step
+                    </button>
+                    <button type="submit" id="nextStepButton" ng-show="step=='one'" ng-disabled="metricForm.$invalid" class="btn btn-default" ng-click="nextStep()">Next Step
+                        <span class="glyphicon glyphicon-chevron-right"></span></button>
+                    <button type="submit" id="saveButton" ng-show="step=='second'" ng-disabled="metricForm.$invalid" class="btn btn-default" ng-click="createMetric()">
+                        <span class="glyphicon glyphicon-floppy-disk"></span> Save
+                    </button>
                 </div>
-
             </div>
 
         </div>
-        <div class="form-group pull-right pc-metric-formcontrols">
-            <a type="button" class="btn btn-danger" href="#!/metrics/{{ metric.id }}">Cancel</a>
-            <button type="submit" ng-show="step=='second'" class="btn btn-default" ng-click="prevStep()"><span class="glyphicon glyphicon-chevron-left"></span> Previous Step</button>
-            <button type="submit" id="nextStepButton" ng-show="step=='one'" ng-disabled="metricForm.$invalid" class="btn btn-default" ng-click="nextStep()">Next Step <span class="glyphicon glyphicon-chevron-right"></span></button>
-            <button type="submit" id="saveButton" ng-show="step=='second'" ng-disabled="metricForm.$invalid" class="btn btn-default" ng-click="createMetric()"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>
-        </div>
-    </div>
-
-</div>
-</form>
+    </form>
 </div>

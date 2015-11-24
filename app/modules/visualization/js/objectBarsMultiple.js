@@ -1,787 +1,670 @@
 "use strict";
-var policycompass = policycompass || {'version':0.1, 'controller':{}, 'viz': {} ,'extras': {}};
+var policycompass = policycompass || {
+        'version': 0.1,
+        'controller': {},
+        'viz': {},
+        'extras': {}
+    };
 
-policycompass.viz.barsMultiple = function(options) {
+policycompass.viz.barsMultiple = function (options) {
 
     // Object
-    //console.log('Dins barsMultiple');	
+    //console.log('Dins barsMultiple');
 
     var self = {};
 
     // Get options data
 
-    for (var key in options){
+    for (var key in options) {
         self[key] = options[key];
-	}
+    }
 
-	//self.resolution='month'
-	//console.log(self.resolution);
-	if (!self.resolution)
-	{
-		self.resolution = 'day';	
-	}
-	//console.log(self.resolution);
-	
-    self.parentSelect = "#"+self.idName;
+    //self.resolution='month'
+    //console.log(self.resolution);
+    if (!self.resolution) {
+        self.resolution = 'day';
+    }
+    //console.log(self.resolution);
 
-	self.maxMargin = self.margin;
-	self.maxWidth = self.width;
-	self.maxHeight = self.height;
-	self.maxFont_size = self.font_size;
-	
-	self.cntResizes = 0;
-	d3.select(window).on('resize', resize);
-	
-	function resize() {		
-		self.cntResizes = self.cntResizes+1;
-		if (self.cntResizes>1)
-		{
-			var element=document.getElementById(self.parentSelect.replace("#",''));
-			element.innerHTML = "";		
-			self.init();	
-			self.render(self.dataIn, self.eventsData);
-		}
-		else
-		{
-			self.init();
-		}
-	}
-    
+    self.parentSelect = "#" + self.idName;
+
+    self.maxMargin = self.margin;
+    self.maxWidth = self.width;
+    self.maxHeight = self.height;
+    self.maxFont_size = self.font_size;
+
+    self.cntResizes = 0;
+    d3.select(window).on('resize', resize);
+
+    function resize() {
+        self.cntResizes = self.cntResizes + 1;
+        if (self.cntResizes > 1) {
+            var element = document.getElementById(self.parentSelect.replace("#", ''));
+            element.innerHTML = "";
+            self.init();
+            self.render(self.dataIn, self.eventsData);
+        } else {
+            self.init();
+        }
+    }
+
     self.drawBarsMultiple = function (bars, eventsData) {
-		//console.log(bars);
+        //console.log(bars);
 
-		var showAsPercentatge = self.showAsPercentatge;
-		
-		self.arrayFirstValuesKey = [];
-		self.arrayFirstValuesValue = [];
-		if (showAsPercentatge)
-		{
-			//var iniValue = bars[0].ValueY;
-			
-			bars.forEach(function(d,i) {
-				//console.log(i);
-				
-				
-				var a = self.arrayFirstValuesKey.indexOf(bars[i].Key);
-				
-				if (a<0)
-				{
-					var iniValue = bars[i].ValueY;
-					self.arrayFirstValuesKey.push(bars[i].Key);
-					self.arrayFirstValuesValue.push(bars[i].ValueY);
-					
-				}
-				else
-				{
-					var iniValue = self.arrayFirstValuesValue[a];
-				}
-				//console.log("iniValue="+iniValue);
-				if (iniValue!=0)
-				{
-					
-						//console.log("----------");
-						//console.log(bars[i]);
-						//console.log("valor inicial="+iniValue);
-						//console.log("valor recuperat="+bars[i].ValueY);
-						
-						var valueTMP = ((bars[i].ValueY - iniValue) / iniValue)*100;
-						
-						//console.log("valor temporal="+valueTMP);
-						//console.log("||||||||");
-						
-						bars[i].From = valueTMP;
-						bars[i].Value = valueTMP;
-						bars[i].ValueY = valueTMP;
-						bars[i].XY = bars[i].To+"|"+valueTMP;
-						//console.log(valueTMP);
-											
-					
-				}		
-			});			
-		}
-							
-		/*
-		var showLegend = document.getElementById("showLegend").checked;	
-		var showLabels = document.getElementById("showLabels").checked;
-		var showGrid = document.getElementById("showGrid").checked;
-		*/
-		var showLegend = self.showLegend;	
-		var showLabels = self.showLabels;
-		var showGrid = self.showGrid;
-						
-		//console.log(bars);
-		var colorScale = d3.scale.category20();
-		var valuesY = [];
-		//console.log("valuesY="+valuesY);
-		//console.log(valuesY);
-		bars.forEach(function(d,i) {
-			//console.log(d.ValueY)
-			valuesY.push(parseInt(d.ValueY));
-		});
-		//console.log("valuesY="+valuesY);
-		var maxV = d3.max(d3.values(valuesY));
-		var minVy = d3.min(d3.values(valuesY));
-		
-		//console.log("maxV="+maxV);
-		
-		var x0 = d3.scale.ordinal()
-    		.rangeRoundBands([0, self.width], .1);
+        var showAsPercentatge = self.showAsPercentatge;
 
-		var x1 = d3.scale.ordinal();
+        self.arrayFirstValuesKey = [];
+        self.arrayFirstValuesValue = [];
+        if (showAsPercentatge) {
+            //var iniValue = bars[0].ValueY;
 
-		var y = d3.scale.linear()
-    		.range([self.height, 0]);	
-    		 
-		var yInversa = d3.scale.linear()
-    		.range([0, self.height]);	
-
-    		  		
-    	var color = d3.scale.category20();
-    	
-		var xAxis = d3.svg.axis()
-    		.scale(x0)
-    		.orient("bottom")
-    		;
-
-		var yAxis = d3.svg.axis()
-    		.scale(y)
-    		.orient("left")
-    		.tickFormat(d3.format(".2s"));    	
-
-			
-			//var months = d3.set(bars.map(function(line) {return line.ValueX;})).values();
-			var xAxisData = d3.set(bars.map(function(line) {
-				//console.log(line.ValueX);	
-				return line.ValueX;}
-				)).values();
-
-			function make_x_axis() {
-		    	return d3.svg.axis()
-		        	.scale(x0)
-		         	.orient("bottom")
-		         	.ticks(20)		         	
-			}
-		
-			function make_y_axis() {
-		    	return d3.svg.axis()
-			        .scale(y)
-			        .orient("left")
-			        .ticks(20)
-			}
+            bars.forEach(function (d, i) {
+                //console.log(i);
 
 
-			//console.log("months");
-			//console.log(months);				
-			//console.log("xAxisData");
-			//console.log(xAxisData);
-			
-  			x0.domain(bars.map(function(d) {
-  				//console.log("d.Key="+d.Key);
-  				var resTRext = d.Key.split("_");
-  				//console.log(resTRext[0]);
-  				return resTRext[0];
-  				//return d.Key;
-  				}));
-  			
-  			//x1.domain(months).rangeRoundBands([0, x0.rangeBand()]);
-  			
-  			//console.log(xAxisData);
-  			//console.log(x0.rangeBand());
-  			x1.domain(xAxisData).rangeRoundBands([0, x0.rangeBand()]);  		
-  			//y.domain([0, d3.max(bars, function(d) {return d.ValueY;})]);
-  			
-  			var valueYmin = 0;
-  			if (minVy<0)
-  			{
-  				valueYmin = minVy;
-  			}
-  			
-  			//y.domain([0, maxV]);
-  			y.domain([valueYmin, maxV]);
+                var a = self.arrayFirstValuesKey.indexOf(bars[i].Key);
 
-			if (showLabels)
-			{
-		  		self.svg.append("g")
-      				.attr("class", "x axis")
-      				.attr("font-size", self.font_size)
-      				.attr("transform", "translate(0,"+self.height+")")
- 			        //.attr("fill", "none")
-		        	//.style("stroke", "#000000")
-		            .style("stroke-width", 1)		                     				
-      				.call(xAxis)
-      				.append("text")      				    		
-      				//.attr("x", self.width)
-					//.attr("dx", self.width- (self.margin.left*2))
-            		//.attr("dy", self.width- (self.margin.left*2))
-      				//.attr("transform", "rotate(-90)")
-      				//.style("text-anchor", "end")
-      				//.text(self.labelX)
-      				;
-				
-				var keyIndex;
-				var arrayYaxisProcessed = [];
-				var cnt_keyIndex = 0;
-				
-				self.svg.append("g")
-      				.attr("class", "y axis")
-      				.attr("font-size", self.font_size)
- 			        //.attr("fill", "none")
-		        	//.style("stroke", "#000000")
-		            .style("stroke-width", 1)      				
-      				.call(yAxis);
-      			//console.log(bars);
-				for (keyIndex in self.labelY) {
-					
-					if (arrayYaxisProcessed[self.labelY[keyIndex]]) 
-					{
-				    	// Exists
-				    	//console.log("Exists");
-					} 
-					else {
-    					// Does not exist 
-    					arrayYaxisProcessed[self.labelY[keyIndex]]=self.labelY[keyIndex];
-						
-						self.svg.append("g")
-	    					.append("text")
-			    			.attr("font-size", self.font_size)
-			      			.attr("transform", "rotate(-90)")
-			      			.attr("y", 15*(cnt_keyIndex))
-			      			//.style("stroke", function(d,i) {
-				      		//		//console.log("----->key="+key);
-				      		//		return colorScale(bars[keyIndex].Key);
-				      		//})	      				
-	      					.attr("dy", "15px")
-	      					.style("text-anchor", "end")
-	      					//.text(self.labelY[0]);
-	      					
-	      					.text(function() {
-				      				var returnValue="";
-				      				if (self.showAsPercentatge)
-				      				{
-				      					returnValue = "As % ("+self.labelY[keyIndex]+")";
-				      				}
-				      				else
-				      				{
-				      					returnValue = self.labelY[keyIndex];
-				      				}
-				      				return returnValue;
-				      			} )
-	      					//.text(self.labelY[keyIndex])    	
-	      					;
-	      					
-	      					cnt_keyIndex = cnt_keyIndex+1;				
-					}
+                if (a < 0) {
+                    var iniValue = bars[i].ValueY;
+                    self.arrayFirstValuesKey.push(bars[i].Key);
+                    self.arrayFirstValuesValue.push(bars[i].ValueY);
 
-	  				
-					
-				}
-				
-			}
-
-
-			if (showGrid)
-			{
-				self.svg.append("g")         
-    	    		.attr("class", "grid")
-        			.attr("transform", "translate(0," + self.height + ")")
-        			.call(make_x_axis()
-            			.tickSize(-self.height, 0, 0)
-            			.tickFormat("")
-        		)
-
-    			self.svg.append("g")         
-		        	.attr("class", "grid")
-    		    	.call(make_y_axis()
-        	    	.tickSize(-self.width, 0, 0)
-            		.tickFormat("")
-            		            		
-	        	)	     
-			}
-
-           // console.log(self.labelY[0]);
-               
-  			var myBars = self.svg.selectAll("rect")
-	      		.data(bars)
-    			.enter().append("rect")
-      			.attr("width", x1.rangeBand())
-	      		.attr("x", function(d) {
-	      			
-	      			//console.log("d.Key="+d.Key);
-	      			//console.log("d.ValueX="+d.ValueX);
-	      			var resTRext = d.Key.split("_");
-	      			//console.log("resTRext[0]="+resTRext[0]);
-
-
-	      			//return x0(d.Key)+x1(d.ValueX);
-	      			return x0(resTRext[0])+x1(d.ValueX);
-	      			
-	      			})
-    	  		//.attr("y", function(d) {return y(d.ValueY);})
-    	  		.attr("y", function(d) {
-    	  			return self.height;})
-      			//.attr("height", function(d) {return self.height - y(+d.ValueY);})
-      			.attr("height", function(d) {return 0;})
-	      		.style("fill", function(d) {
-	      			//console.log("d.ValueX="+d.ValueX);	      			
-	      			return color(d.ValueX);})
-    	  		.on("mouseout", function(d,i) {
-      				tooltip.style("opacity",0.0);
-      			})
-      			.on("mouseover", function(d,i) {
-	      			//console.log(d);
-
-
-					var resolution = 'day';
-					var formatXaxe = "%d-%m-%Y";
-					//console.log(valuesX[0].length);
-					//if (d.ValueX.length==4)
-					if (self.resolution=='quarter')
-					{
-						//resolution = 'quarter';
-						formatXaxe = "%Y";
-					}					
-					else if (self.resolution=='year')
-					{
-						//resolution = 'year';
-						formatXaxe = "%Y";
-					}
-					//else if (d.ValueX.length==7)
-					else if (self.resolution=='month')
-					{
-						//resolution = 'month';
-						formatXaxe = "%m-%Y";
-					}
-					//else if (d.ValueX.length==9)
-					else if (self.resolution=='day')
-					{
-						//resolution = 'day';
-						formatXaxe = "%d-%m-%Y";
-					}  
-					else
-					{
-						formatXaxe = "%Y";
-					}	  	
-    	
-	      			var resX = d.ValueX.replace("/", "-");
-	      			resX = resX.replace("/", "-");
-	      			resX = resX.replace("/", "-");
-	      			
-					//var resSplit = d.ValueX.split("-");
-					var resSplit = resX.split("-");
-					
-					var monthNames = [ "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
-	    			var startDateToPlot = "";
-	    				
-					//var startDateToPlot = monthNames[parseInt(resSplit[1])]+" "+parseInt(resSplit[2])+", "+resSplit[0];
-
-								if (self.resolution=='day')
-		    					{
-		    						startDateToPlot = monthNames[parseInt(resSplit[1])]+" "+parseInt(resSplit[2])+", "+resSplit[0];
-		    					}
-		    					else if (self.resolution=='month')
-		    					{
-		    						startDateToPlot = monthNames[parseInt(resSplit[0])]+", "+parseInt(resSplit[1]);
-		    					}
-		    					else if (self.resolution=='year')
-		    					{
-		    						startDateToPlot = +parseInt(resSplit[0]);
-		    					}
-		    					else if (self.resolution=='quarter')
-		    					{
-		    						startDateToPlot = resX;
-		    					}
-		    					else 
-		    					{
-		    						startDateToPlot = resX;
-		    					}
-	      			
-    	  			//tooltip.style("opacity",1.0).html(d.Key+"<br />Date="+d.ValueX+"<br />Value="+d.ValueY);
-    	  						
-    	  						var valueString=d.ValueY;
-    	  						if (showAsPercentatge)
-    	  						{
-    	  							
-    	  							//console.log(valueString);
-    	  							var formatdecimal = 0;
-    	  							if (valueString!=0)
-    	  							{
-										valueString = (parseFloat(valueString * 100) / 100).toFixed(2);
-										formatdecimal = Math.round(valueString/100)+1;
-		      						}
-		      						else
-		      						{
-		      							formatdecimal = 2;
-		      						}
-		      						
-    	  							
-    	  							if (formatdecimal<2)
-        							{
-        								formatdecimal =2;
-        							}
-        							else if (formatdecimal>4)
-        							{ 
-        								formatdecimal=4;
-        							}
-    	  							var si = d3.format('.'+formatdecimal+'s');					      	
-					      			valueString = si(valueString);
-					      		
-    	  							valueString=valueString+"%";
-    	  						}
-    	  			//tooltip.style("opacity",1.0).html(d.Key+"<br />"+startDateToPlot+"<br />"+d.ValueY);
-    	  			var resTRext = d.Key.split("_");
-    	  			//tooltip.style("opacity",1.0).html(resTRext[0]+"<br />"+startDateToPlot+"<br />"+valueString);
-    	  			tooltip.style("opacity",1.0).html("<div class='tooltip-arrow'></div><div class='tooltip-inner ng-binding' ng-bind='content'>"+resTRext[0]+"<br />"+startDateToPlot+"<br />"+valueString+"</div>");
-    	  			
-      			})
-				.on("click", function(d,i) {
-	      			//console.log("****");      			
-    	  			//console.log(i);
-      				//console.log(d);
-      				//console.log("_____");
-	      			//modal();
-					var posMouse = d3.mouse(this);
-					var posX = posMouse[0];
-					var posY = posMouse[1];	
-		    		//posX = xInversa(posX);
-		    		//posY = yInversa(posY);
-					//posX = d.ValueX;
-					//posY = d.ValueY;			
-      				//$('input[name="posx"]').val(posX);
-					//$('input[name="posy"]').val(posY);	
-						
-					$('input[name="startDatePosX"]').val(posX);
-      				//$('#basic-modal-content').modal();
-      			})     
-      			.transition().duration(3000) 	
-      				//.attr("height",function(d) {return 0;})		
-      				.attr("y", function(d) {
-      					return y(d.ValueY);
-      					})
-      				.attr("height", function(d) {
-      					
-      					var returnValue = self.height - y(+d.ValueY);
-      					if (returnValue<0)
-      					{
-      						returnValue=0;
-      					}
-      					//return self.height - y(+d.ValueY);
-      					return returnValue;
-      					})
-      				//.attr("height", function(d) {return y(d.ValueY);})
-      			;
-
-
-            
-                
-/*
-			if (showLegend)
-			{
-				
-		  		var legend = self.svg.selectAll(".legend")
-		      		//.data(months.slice().reverse())
-		      		.data(xAxisData.slice().reverse())
-		    		.enter().append("g")
-		      		.attr("class", "legend")		      		
-		      		.attr("transform", function(d, i) {return "translate(0," + i * 20 + ")";});
-		
-		  		legend.append("rect")
-		      		.attr("x", self.width - 18)
-		      		.attr("width", 18)
-		      		.attr("height", 18)
-		      		.style("fill", color);
-		
-		  		legend.append("text")
-		      		//.attr("x", self.width - 24)
-		      		.attr("x", self.width + self.margin.left + 40)
-		      		.attr("y", 9)
-		      		.attr("dy", ".35em")
-		      		.style("text-anchor", "end")
-		      		.text(function(d) {return d;});				
-			}
-*/
-
-			var dataForCircles = [];
-			for (var i in eventsData) {
-      			//dataForCircles[eventsData[i].posX]=eventsData[i].posY;
-      			//console.log(i);
-      			//console.log(eventsData[i].posX)
-      			//console.log(eventsData[i].posY)
-      			 var arrayTemporal = [];
-      			 arrayTemporal['posX']=eventsData[i].posX;
-      			 arrayTemporal['posY']=eventsData[i].posY;
-      			 arrayTemporal['desc']=eventsData[i].desc;
-      			 dataForCircles[i]=arrayTemporal;
-   			} 
-   			
-
-		
-		var myDiscoLinesX = self.svg.selectAll("lineXDisco").data(dataForCircles);
-
-			myDiscoLinesX.enter().append("line")
-							.attr("class","lineXDisco")
-							.style("stroke", function(d,i) {return colorScale("99");})
-							.attr("opacity", 0.5)
-                          .attr("x1", function(d,i){return (d.posX);})
-                          .attr("y1", self.height)
-                         .attr("x2", function(d,i){return (d.posX);})
-                         .attr("y2", function(d,i){return (d.posY);})
-                         
-		var myDiscoLinesY = self.svg.selectAll("lineYDisco").data(dataForCircles);
-
-			myDiscoLinesY.enter().append("line")
-							.attr("class","lineYDisco")
-							.style("stroke", function(d,i) {return colorScale("99");})
-							.attr("opacity", 0.5)
-                          .attr("x1", function(d,i){return 0;})
-                          .attr("y1", function(d,i){return (d.posY);})
-                         .attr("x2", function(d,i){return (d.posX);})
-                         .attr("y2", function(d,i){return (d.posY);})
-
-		var myCircles = self.svg.selectAll("circulos").data(dataForCircles);
-			
-			myCircles.enter().append("circle")
-                    .attr("cx", function(d,i){return (d.posX);})
-                    .attr("cy", function(d,i){return (d.posY);})
-                    .attr("r", self.radius)
-                    .attr("class","circulos")
-                    .attr("opacity", 1.0)
-                    .on("mouseover", function (d,i) {
-
-						var circle = d3.select(this);
-						 circle.transition()
-							.attr("r", self.radius * 2);
-
-      			
-      					console.log(d3.select(this));
-      					d3.select(this).classed("circuloOn", true);
-		    			//tooltip.style("opacity",1.0).html("Desc="+d.desc);  
-		    			tooltip.style("opacity",1.0).html("<div class='tooltip-arrow'></div><div class='tooltip-inner ng-binding' ng-bind='content'>Desc="+d.desc+"</div>");    
-		    			
-      			
-      		})
-            //.on("mouseover", function(d,i){console.log(d3.select(this));d3.select(this).classed("circuloOn", true);})
-            .on("mouseout", function(d,i){
-
-				var circle = d3.select(this);
-				 circle.transition()
-					.attr("r", self.radius);
-
-            	
-            	d3.select(this).classed("circuloOn",false);
-            	mouseout();
-            	})
-            .on("click", function(d,i){
-            	//console.log(d);
-            	});
-            	
-	
-            	//console.log("xAxisData");
-            	//console.log(xAxisData);
-            	var cnti = 1;
-            	var cntiMultiple=0;
-            	var incremetY = 0;
-            	//console.log("xAxisData.length="+xAxisData.length);
-            	//console.log("self.legendsColumn="+self.legendsColumn);
-            	
-        xAxisData.forEach(function(d,i) 
-        {
-				//console.log("xAxisData["+i+"]="+xAxisData[i]);
-	    		var valueX =  ((self.width/(xAxisData.length/self.legendsColumn)) * (cntiMultiple));
-	    		if (cnti%self.legendsColumn == 0)
-                {
-					cntiMultiple=cntiMultiple+1;
-				}
-
-				var valueY = (self.height) + self.margin.top + 30 + (incremetY)*20;
-				if (cnti%self.legendsColumn == 0)
-                {
-                    //console.log("---key="+key);
-                	incremetY = 0;                    		
+                } else {
+                    var iniValue = self.arrayFirstValuesValue[a];
                 }
-                else
-            	{
-                	incremetY = incremetY + 1;
-				}	        
-				
-				
-				if (showLegend)
-				{									
-					self.svg.append("rect")
-			    	.attr("x", valueX-10)
-					.attr("y", valueY-5) 	
-			    	.attr("width", 5)
-			    	.attr("height", 5)
-			    	.style("fill", color(xAxisData[i]));
-				
+                //console.log("iniValue="+iniValue);
+                if (iniValue != 0) {
 
-  				self.svg.append("text")
-                    //.attr("x", function(d,i){return self.width + 10 ;})
-                    .attr("x", function(d,i){
-                    	//console.log("cnti="+cnti+"--key="+key);
-                    	return valueX ;}
-                    	)
-					//.attr("y", function(d,i){return (0) + (20 * cnti-1) ;})
-					//.attr("y", function(d,i){return (self.height) + (self.margin.top+(self.margin.bottom/2))+2 ;})
-					.attr("y", function(d,i){
-						//console.log("--->cnti="+cnti+"--key="+key);
-						return  valueY;}
-						)
-					.attr("text-anchor","center")
-					.attr("text-decoration","none")					
-					.attr("class", "link superior legend value")				
-					.attr("font-size", self.font_size)					
-					//.style("stroke", color(xAxisData[i]))					
-					.style("fill",  color(xAxisData[i]))
-					      					
-					.text(xAxisData[i]);
-					
-				} 
-                	
-                	cnti = cnti+1;
-				
-		});            	
-            	
-            	
-	}
-    
+                    //console.log("----------");
+                    //console.log(bars[i]);
+                    //console.log("valor inicial="+iniValue);
+                    //console.log("valor recuperat="+bars[i].ValueY);
+
+                    var valueTMP = ((bars[i].ValueY - iniValue) / iniValue) * 100;
+
+                    //console.log("valor temporal="+valueTMP);
+                    //console.log("||||||||");
+
+                    bars[i].From = valueTMP;
+                    bars[i].Value = valueTMP;
+                    bars[i].ValueY = valueTMP;
+                    bars[i].XY = bars[i].To + "|" + valueTMP;
+                    //console.log(valueTMP);
+
+
+                }
+            });
+        }
+
+        /*
+         var showLegend = document.getElementById("showLegend").checked;
+         var showLabels = document.getElementById("showLabels").checked;
+         var showGrid = document.getElementById("showGrid").checked;
+         */
+        var showLegend = self.showLegend;
+        var showLabels = self.showLabels;
+        var showGrid = self.showGrid;
+
+        //console.log(bars);
+        var colorScale = d3.scale.category20();
+        var valuesY = [];
+        //console.log("valuesY="+valuesY);
+        //console.log(valuesY);
+        bars.forEach(function (d, i) {
+            //console.log(d.ValueY)
+            valuesY.push(parseInt(d.ValueY));
+        });
+        //console.log("valuesY="+valuesY);
+        var maxV = d3.max(d3.values(valuesY));
+        var minVy = d3.min(d3.values(valuesY));
+
+        //console.log("maxV="+maxV);
+
+        var x0 = d3.scale.ordinal().rangeRoundBands([0, self.width], .1);
+
+        var x1 = d3.scale.ordinal();
+
+        var y = d3.scale.linear().range([self.height, 0]);
+
+        var yInversa = d3.scale.linear().range([0, self.height]);
+
+
+        var color = d3.scale.category20();
+
+        var xAxis = d3.svg.axis().scale(x0).orient("bottom");
+
+        var yAxis = d3.svg.axis().scale(y).orient("left").tickFormat(d3.format(".2s"));
+
+
+        //var months = d3.set(bars.map(function(line) {return line.ValueX;})).values();
+        var xAxisData = d3.set(bars.map(function (line) {
+            //console.log(line.ValueX);
+            return line.ValueX;
+        })).values();
+
+        function make_x_axis() {
+            return d3.svg.axis().scale(x0).orient("bottom").ticks(20)
+        }
+
+        function make_y_axis() {
+            return d3.svg.axis().scale(y).orient("left").ticks(20)
+        }
+
+
+        //console.log("months");
+        //console.log(months);
+        //console.log("xAxisData");
+        //console.log(xAxisData);
+
+        x0.domain(bars.map(function (d) {
+            //console.log("d.Key="+d.Key);
+            var resTRext = d.Key.split("_");
+            //console.log(resTRext[0]);
+            return resTRext[0];
+            //return d.Key;
+        }));
+
+        //x1.domain(months).rangeRoundBands([0, x0.rangeBand()]);
+
+        //console.log(xAxisData);
+        //console.log(x0.rangeBand());
+        x1.domain(xAxisData).rangeRoundBands([0, x0.rangeBand()]);
+        //y.domain([0, d3.max(bars, function(d) {return d.ValueY;})]);
+
+        var valueYmin = 0;
+        if (minVy < 0) {
+            valueYmin = minVy;
+        }
+
+        //y.domain([0, maxV]);
+        y.domain([valueYmin, maxV]);
+
+        if (showLabels) {
+            self.svg.append("g").attr("class", "x axis").attr("font-size", self.font_size).attr("transform", "translate(0," + self.height + ")")//.attr("fill", "none")
+                //.style("stroke", "#000000")
+                .style("stroke-width", 1).call(xAxis).append("text")
+                //.attr("x", self.width)
+                //.attr("dx", self.width- (self.margin.left*2))
+                //.attr("dy", self.width- (self.margin.left*2))
+                //.attr("transform", "rotate(-90)")
+                //.style("text-anchor", "end")
+                //.text(self.labelX)
+            ;
+
+            var keyIndex;
+            var arrayYaxisProcessed = [];
+            var cnt_keyIndex = 0;
+
+            self.svg.append("g").attr("class", "y axis").attr("font-size", self.font_size)//.attr("fill", "none")
+                //.style("stroke", "#000000")
+                .style("stroke-width", 1).call(yAxis);
+            //console.log(bars);
+            for (keyIndex in self.labelY) {
+
+                if (arrayYaxisProcessed[self.labelY[keyIndex]]) {
+                    // Exists
+                    //console.log("Exists");
+                } else {
+                    // Does not exist
+                    arrayYaxisProcessed[self.labelY[keyIndex]] = self.labelY[keyIndex];
+
+                    self.svg.append("g").append("text").attr("font-size", self.font_size).attr("transform", "rotate(-90)").attr("y", 15 * (cnt_keyIndex))//.style("stroke", function(d,i) {
+                        //		//console.log("----->key="+key);
+                        //		return colorScale(bars[keyIndex].Key);
+                        //})
+                        .attr("dy", "15px").style("text-anchor", "end")//.text(self.labelY[0]);
+
+                        .text(function () {
+                            var returnValue = "";
+                            if (self.showAsPercentatge) {
+                                returnValue = "As % (" + self.labelY[keyIndex] + ")";
+                            } else {
+                                returnValue = self.labelY[keyIndex];
+                            }
+                            return returnValue;
+                        })
+                        //.text(self.labelY[keyIndex])
+                    ;
+
+                    cnt_keyIndex = cnt_keyIndex + 1;
+                }
+
+
+            }
+
+        }
+
+
+        if (showGrid) {
+            self.svg.append("g").attr("class", "grid").attr("transform", "translate(0," + self.height + ")").call(make_x_axis().tickSize(-self.height, 0, 0).tickFormat(""))
+
+            self.svg.append("g").attr("class", "grid").call(make_y_axis().tickSize(-self.width, 0, 0).tickFormat(""))
+        }
+
+        // console.log(self.labelY[0]);
+
+        var myBars = self.svg.selectAll("rect").data(bars).enter().append("rect").attr("width", x1.rangeBand()).attr("x", function (d) {
+
+                //console.log("d.Key="+d.Key);
+                //console.log("d.ValueX="+d.ValueX);
+                var resTRext = d.Key.split("_");
+                //console.log("resTRext[0]="+resTRext[0]);
+
+
+                //return x0(d.Key)+x1(d.ValueX);
+                return x0(resTRext[0]) + x1(d.ValueX);
+
+            })//.attr("y", function(d) {return y(d.ValueY);})
+                .attr("y", function (d) {
+                    return self.height;
+                })//.attr("height", function(d) {return self.height - y(+d.ValueY);})
+                .attr("height", function (d) {
+                    return 0;
+                }).style("fill", function (d) {
+                    //console.log("d.ValueX="+d.ValueX);
+                    return color(d.ValueX);
+                }).on("mouseout", function (d, i) {
+                    tooltip.style("opacity", 0.0);
+                }).on("mouseover", function (d, i) {
+                    //console.log(d);
+
+
+                    var resolution = 'day';
+                    var formatXaxe = "%d-%m-%Y";
+                    //console.log(valuesX[0].length);
+                    //if (d.ValueX.length==4)
+                    if (self.resolution == 'quarter') {
+                        //resolution = 'quarter';
+                        formatXaxe = "%Y";
+                    } else if (self.resolution == 'year') {
+                        //resolution = 'year';
+                        formatXaxe = "%Y";
+                    }
+                    //else if (d.ValueX.length==7)
+                    else if (self.resolution == 'month') {
+                        //resolution = 'month';
+                        formatXaxe = "%m-%Y";
+                    }
+                    //else if (d.ValueX.length==9)
+                    else if (self.resolution == 'day') {
+                        //resolution = 'day';
+                        formatXaxe = "%d-%m-%Y";
+                    } else {
+                        formatXaxe = "%Y";
+                    }
+
+                    var resX = d.ValueX.replace("/", "-");
+                    resX = resX.replace("/", "-");
+                    resX = resX.replace("/", "-");
+
+                    //var resSplit = d.ValueX.split("-");
+                    var resSplit = resX.split("-");
+
+                    var monthNames = [
+                        "",
+                        "January",
+                        "February",
+                        "March",
+                        "April",
+                        "May",
+                        "June",
+                        "July",
+                        "August",
+                        "September",
+                        "October",
+                        "November",
+                        "December"
+                    ];
+                    var startDateToPlot = "";
+
+                    //var startDateToPlot = monthNames[parseInt(resSplit[1])]+" "+parseInt(resSplit[2])+", "+resSplit[0];
+
+                    if (self.resolution == 'day') {
+                        startDateToPlot = monthNames[parseInt(resSplit[1])] + " " + parseInt(resSplit[2]) + ", " + resSplit[0];
+                    } else if (self.resolution == 'month') {
+                        startDateToPlot = monthNames[parseInt(resSplit[0])] + ", " + parseInt(resSplit[1]);
+                    } else if (self.resolution == 'year') {
+                        startDateToPlot = +parseInt(resSplit[0]);
+                    } else if (self.resolution == 'quarter') {
+                        startDateToPlot = resX;
+                    } else {
+                        startDateToPlot = resX;
+                    }
+
+                    //tooltip.style("opacity",1.0).html(d.Key+"<br />Date="+d.ValueX+"<br />Value="+d.ValueY);
+
+                    var valueString = d.ValueY;
+                    if (showAsPercentatge) {
+
+                        //console.log(valueString);
+                        var formatdecimal = 0;
+                        if (valueString != 0) {
+                            valueString = (parseFloat(valueString * 100) / 100).toFixed(2);
+                            formatdecimal = Math.round(valueString / 100) + 1;
+                        } else {
+                            formatdecimal = 2;
+                        }
+
+
+                        if (formatdecimal < 2) {
+                            formatdecimal = 2;
+                        } else if (formatdecimal > 4) {
+                            formatdecimal = 4;
+                        }
+                        var si = d3.format('.' + formatdecimal + 's');
+                        valueString = si(valueString);
+
+                        valueString = valueString + "%";
+                    }
+                    //tooltip.style("opacity",1.0).html(d.Key+"<br />"+startDateToPlot+"<br />"+d.ValueY);
+                    var resTRext = d.Key.split("_");
+                    //tooltip.style("opacity",1.0).html(resTRext[0]+"<br />"+startDateToPlot+"<br />"+valueString);
+                    tooltip.style("opacity", 1.0).html("<div class='tooltip-arrow'></div><div class='tooltip-inner ng-binding' ng-bind='content'>" + resTRext[0] + "<br />" + startDateToPlot + "<br />" + valueString + "</div>");
+
+                }).on("click", function (d, i) {
+                    //console.log("****");
+                    //console.log(i);
+                    //console.log(d);
+                    //console.log("_____");
+                    //modal();
+                    var posMouse = d3.mouse(this);
+                    var posX = posMouse[0];
+                    var posY = posMouse[1];
+                    //posX = xInversa(posX);
+                    //posY = yInversa(posY);
+                    //posX = d.ValueX;
+                    //posY = d.ValueY;
+                    //$('input[name="posx"]').val(posX);
+                    //$('input[name="posy"]').val(posY);
+
+                    $('input[name="startDatePosX"]').val(posX);
+                    //$('#basic-modal-content').modal();
+                }).transition().duration(3000)//.attr("height",function(d) {return 0;})
+                .attr("y", function (d) {
+                    return y(d.ValueY);
+                }).attr("height", function (d) {
+
+                    var returnValue = self.height - y(+d.ValueY);
+                    if (returnValue < 0) {
+                        returnValue = 0;
+                    }
+                    //return self.height - y(+d.ValueY);
+                    return returnValue;
+                })
+        //.attr("height", function(d) {return y(d.ValueY);})
+            ;
+
+
+        /*
+         if (showLegend)
+         {
+
+         var legend = self.svg.selectAll(".legend")
+         //.data(months.slice().reverse())
+         .data(xAxisData.slice().reverse())
+         .enter().append("g")
+         .attr("class", "legend")
+         .attr("transform", function(d, i) {return "translate(0," + i * 20 + ")";});
+
+         legend.append("rect")
+         .attr("x", self.width - 18)
+         .attr("width", 18)
+         .attr("height", 18)
+         .style("fill", color);
+
+         legend.append("text")
+         //.attr("x", self.width - 24)
+         .attr("x", self.width + self.margin.left + 40)
+         .attr("y", 9)
+         .attr("dy", ".35em")
+         .style("text-anchor", "end")
+         .text(function(d) {return d;});
+         }
+         */
+
+        var dataForCircles = [];
+        for (var i in eventsData) {
+            //dataForCircles[eventsData[i].posX]=eventsData[i].posY;
+            //console.log(i);
+            //console.log(eventsData[i].posX)
+            //console.log(eventsData[i].posY)
+            var arrayTemporal = [];
+            arrayTemporal['posX'] = eventsData[i].posX;
+            arrayTemporal['posY'] = eventsData[i].posY;
+            arrayTemporal['desc'] = eventsData[i].desc;
+            dataForCircles[i] = arrayTemporal;
+        }
+
+
+        var myDiscoLinesX = self.svg.selectAll("lineXDisco").data(dataForCircles);
+
+        myDiscoLinesX.enter().append("line").attr("class", "lineXDisco").style("stroke", function (d, i) {
+            return colorScale("99");
+        }).attr("opacity", 0.5).attr("x1", function (d, i) {
+            return (d.posX);
+        }).attr("y1", self.height).attr("x2", function (d, i) {
+            return (d.posX);
+        }).attr("y2", function (d, i) {
+            return (d.posY);
+        })
+
+        var myDiscoLinesY = self.svg.selectAll("lineYDisco").data(dataForCircles);
+
+        myDiscoLinesY.enter().append("line").attr("class", "lineYDisco").style("stroke", function (d, i) {
+            return colorScale("99");
+        }).attr("opacity", 0.5).attr("x1", function (d, i) {
+            return 0;
+        }).attr("y1", function (d, i) {
+            return (d.posY);
+        }).attr("x2", function (d, i) {
+            return (d.posX);
+        }).attr("y2", function (d, i) {
+            return (d.posY);
+        })
+
+        var myCircles = self.svg.selectAll("circulos").data(dataForCircles);
+
+        myCircles.enter().append("circle").attr("cx", function (d, i) {
+            return (d.posX);
+        }).attr("cy", function (d, i) {
+            return (d.posY);
+        }).attr("r", self.radius).attr("class", "circulos").attr("opacity", 1.0).on("mouseover", function (d, i) {
+
+            var circle = d3.select(this);
+            circle.transition().attr("r", self.radius * 2);
+
+
+            console.log(d3.select(this));
+            d3.select(this).classed("circuloOn", true);
+            //tooltip.style("opacity",1.0).html("Desc="+d.desc);
+            tooltip.style("opacity", 1.0).html("<div class='tooltip-arrow'></div><div class='tooltip-inner ng-binding' ng-bind='content'>Desc=" + d.desc + "</div>");
+
+
+        })//.on("mouseover", function(d,i){console.log(d3.select(this));d3.select(this).classed("circuloOn", true);})
+            .on("mouseout", function (d, i) {
+
+                var circle = d3.select(this);
+                circle.transition().attr("r", self.radius);
+
+
+                d3.select(this).classed("circuloOn", false);
+                mouseout();
+            }).on("click", function (d, i) {
+                //console.log(d);
+            });
+
+
+        //console.log("xAxisData");
+        //console.log(xAxisData);
+        var cnti = 1;
+        var cntiMultiple = 0;
+        var incremetY = 0;
+        //console.log("xAxisData.length="+xAxisData.length);
+        //console.log("self.legendsColumn="+self.legendsColumn);
+
+        xAxisData.forEach(function (d, i) {
+            //console.log("xAxisData["+i+"]="+xAxisData[i]);
+            var valueX = ((self.width / (xAxisData.length / self.legendsColumn)) * (cntiMultiple));
+            if (cnti % self.legendsColumn == 0) {
+                cntiMultiple = cntiMultiple + 1;
+            }
+
+            var valueY = (self.height) + self.margin.top + 30 + (incremetY) * 20;
+            if (cnti % self.legendsColumn == 0) {
+                //console.log("---key="+key);
+                incremetY = 0;
+            } else {
+                incremetY = incremetY + 1;
+            }
+
+
+            if (showLegend) {
+                self.svg.append("rect").attr("x", valueX - 10).attr("y", valueY - 5).attr("width", 5).attr("height", 5).style("fill", color(xAxisData[i]));
+
+
+                self.svg.append("text")//.attr("x", function(d,i){return self.width + 10 ;})
+                    .attr("x", function (d, i) {
+                        //console.log("cnti="+cnti+"--key="+key);
+                        return valueX;
+                    })//.attr("y", function(d,i){return (0) + (20 * cnti-1) ;})
+                    //.attr("y", function(d,i){return (self.height) + (self.margin.top+(self.margin.bottom/2))+2 ;})
+                    .attr("y", function (d, i) {
+                        //console.log("--->cnti="+cnti+"--key="+key);
+                        return valueY;
+                    }).attr("text-anchor", "center").attr("text-decoration", "none").attr("class", "link superior legend value").attr("font-size", self.font_size)//.style("stroke", color(xAxisData[i]))
+                    .style("fill", color(xAxisData[i]))
+
+                    .text(xAxisData[i]);
+
+            }
+
+            cnti = cnti + 1;
+
+        });
+
+
+    }
+
 
     self.init = function () {
-		
-		self.extraWidth = 0;
-		if (self.showLegend) 
-		{
-			self.extraWidth = 60;
-		}
-		
-		//console.log(self.parentSelect);
-		self.parentSelect = self.parentSelect.replace("undefined","");
-		//console.log(self.parentSelect);
-		var selection = d3.select(self.parentSelect); 
-		var clientwidth = selection[0][0].clientWidth;
-		
-		if (self.maxWidth<clientwidth)
-		{
-			self.width = self.maxWidth;
-			self.height = self.maxHeight;
-			self.font_size = self.maxFont_size;
-			self.margin = self.maxMargin;
-		}
-		else
-		{			
-			self.width = clientwidth-20;
-			
-			if (self.width<0)
-			{
-				//self.width = self.maxWidth;
-				self.width = window.innerWidth
-				|| document.documentElement.clientWidth
-				|| document.body.clientWidth;
-				if (self.width>200)
-				{
-					self.width=self.width-120;
-				}
-				if (self.width > self.maxWidth)
-				{
-					self.width = self.maxWidth;
-				}
-			}
-			
-			var newScale = (self.width) / self.maxWidth;
-			//console.log("newScale="+newScale);
-			self.height = self.maxHeight * newScale;	
-			self.font_size = self.maxFont_size * newScale;
-			self.margin = {'top': self.maxMargin.top * newScale, 'right': self.maxMargin.right * newScale, 'bottom': self.maxMargin.bottom * newScale, 'left': self.maxMargin.left * newScale};
 
-		}
-		//console.log(self.parentSelect);
-		
-		self.svg = d3.select(self.parentSelect).append("svg")
-			.attr("class","pc_chart")		
-    		.attr("width", self.width + self.margin.left + self.margin.right + self.extraWidth)
-    		.attr("height", self.height + self.margin.top + self.margin.bottom)
-    		.on("mousemove", mousemove)
-  			.append("g")
-    		.attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
-	}
+        self.extraWidth = 0;
+        if (self.showLegend) {
+            self.extraWidth = 60;
+        }
 
-	//function to clone an object
-	self.clone = function ( obj ) {
-    			if ( obj === null || typeof obj  !== 'object' ) {
-        			return obj;
-    			}
- 
-    			var temp = obj.constructor();
-    			for ( var key in obj ) {
-        			temp[ key ] = self.clone( obj[ key ] );
-    			}
- 
-    			return temp;
-	}
-	
-    self.render = function(dataIn, eventsData){
-		
-		self.dataIn = dataIn;
-		self.eventsData = eventsData;
+        //console.log(self.parentSelect);
+        self.parentSelect = self.parentSelect.replace("undefined", "");
+        //console.log(self.parentSelect);
+        var selection = d3.select(self.parentSelect);
+        var clientwidth = selection[0][0].clientWidth;
 
-		function alphabetical_sort_object_of_objects(data, attr) {
-		    var arr = [];
-		    for (var prop in data) {
-		        if (data.hasOwnProperty(prop)) {
-		            var obj = {};
-		            obj[prop] = data[prop];
-		            obj.tempSortName = data[prop][attr].toLowerCase();
-		            arr.push(obj);
-		        }
-		    }
-		
-		    arr.sort(function(a, b) {
-		        var at = a.tempSortName,
-		            bt = b.tempSortName;
-		        return at > bt ? 1 : ( at < bt ? -1 : 0 );
-		    });
-		
-		    var result = [];
-		    for (var i=0, l=arr.length; i<l; i++) {
-		        var obj = arr[i];
-		        delete obj.tempSortName;
-		        for (var prop in obj) {
-		            if (obj.hasOwnProperty(prop)) {
-		                var id = prop;
-		            }
-		        }
-		        var item = obj[id];
-		        result.push(item);
-		    }
-		    return result;
-		}
-		
-		if (Object.keys(dataIn).length === 0)
-		{
-			//console.log("No data");			
-			self.svg.append("text")
-              .text("No data to plot. Add metrics")
-              .attr("class", "nodatatoplot")
-              .attr("x", self.margin.left)
-              .attr("y", self.margin.top)			
-		}
-		else
-		{
-			//console.log(dataIn);
-			
-			var dataToPlotUpdate = self.clone( dataIn );
-			
-			//console.log(dataToPlotUpdate);
+        if (self.maxWidth < clientwidth) {
+            self.width = self.maxWidth;
+            self.height = self.maxHeight;
+            self.font_size = self.maxFont_size;
+            self.margin = self.maxMargin;
+        } else {
+            self.width = clientwidth - 20;
+
+            if (self.width < 0) {
+                //self.width = self.maxWidth;
+                self.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+                if (self.width > 200) {
+                    self.width = self.width - 120;
+                }
+                if (self.width > self.maxWidth) {
+                    self.width = self.maxWidth;
+                }
+            }
+
+            var newScale = (self.width) / self.maxWidth;
+            //console.log("newScale="+newScale);
+            self.height = self.maxHeight * newScale;
+            self.font_size = self.maxFont_size * newScale;
+            self.margin = {
+                'top': self.maxMargin.top * newScale,
+                'right': self.maxMargin.right * newScale,
+                'bottom': self.maxMargin.bottom * newScale,
+                'left': self.maxMargin.left * newScale
+            };
+
+        }
+        //console.log(self.parentSelect);
+
+        self.svg = d3.select(self.parentSelect).append("svg").attr("class", "pc_chart").attr("width", self.width + self.margin.left + self.margin.right + self.extraWidth).attr("height", self.height + self.margin.top + self.margin.bottom).on("mousemove", mousemove).append("g").attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
+    }
+
+    //function to clone an object
+    self.clone = function (obj) {
+        if (obj === null || typeof obj !== 'object') {
+            return obj;
+        }
+
+        var temp = obj.constructor();
+        for (var key in obj) {
+            temp[key] = self.clone(obj[key]);
+        }
+
+        return temp;
+    }
+
+    self.render = function (dataIn, eventsData) {
+
+        self.dataIn = dataIn;
+        self.eventsData = eventsData;
+
+        function alphabetical_sort_object_of_objects(data, attr) {
+            var arr = [];
+            for (var prop in data) {
+                if (data.hasOwnProperty(prop)) {
+                    var obj = {};
+                    obj[prop] = data[prop];
+                    obj.tempSortName = data[prop][attr].toLowerCase();
+                    arr.push(obj);
+                }
+            }
+
+            arr.sort(function (a, b) {
+                var at = a.tempSortName, bt = b.tempSortName;
+                return at > bt ? 1 : ( at < bt ? -1 : 0 );
+            });
+
+            var result = [];
+            for (var i = 0, l = arr.length; i < l; i++) {
+                var obj = arr[i];
+                delete obj.tempSortName;
+                for (var prop in obj) {
+                    if (obj.hasOwnProperty(prop)) {
+                        var id = prop;
+                    }
+                }
+                var item = obj[id];
+                result.push(item);
+            }
+            return result;
+        }
+
+        if (Object.keys(dataIn).length === 0) {
+            //console.log("No data");
+            self.svg.append("text").text("No data to plot. Add metrics").attr("class", "nodatatoplot").attr("x", self.margin.left).attr("y", self.margin.top)
+        } else {
+            //console.log(dataIn);
+
+            var dataToPlotUpdate = self.clone(dataIn);
+
+            //console.log(dataToPlotUpdate);
 
 
-			dataToPlotUpdate = alphabetical_sort_object_of_objects(dataToPlotUpdate, 'To');
-			
-			//console.log(dataToPlotUpdate);
-			
-			//self.drawBarsMultiple(dataIn, eventsData);
-			self.drawBarsMultiple(dataToPlotUpdate, eventsData);
-		}		
-		
-	}
+            dataToPlotUpdate = alphabetical_sort_object_of_objects(dataToPlotUpdate, 'To');
+
+            //console.log(dataToPlotUpdate);
+
+            //self.drawBarsMultiple(dataIn, eventsData);
+            self.drawBarsMultiple(dataToPlotUpdate, eventsData);
+        }
+
+    }
 
     self.init();
 

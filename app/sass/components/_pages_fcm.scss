@@ -1,116 +1,117 @@
 #EditorBody {
-	height: 350px;
-	width: 100%;
-	float: left;
-	position: relative;
-	top: 0px;
-	left: 0px;
-	border: 1px solid #aaa;
-	border-radius:10px;
-	-webkit-border-radius:10px;
-	padding: 0px;
-	display: block;
-	z-index: 1;
+    height: 350px;
+    width: 100%;
+    float: left;
+    position: relative;
+    top: 0px;
+    left: 0px;
+    border: 1px solid #aaa;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    padding: 0px;
+    display: block;
+    z-index: 1;
 }
 
 #left-toolbar {
-	height: 100%;
-	width: 150px;
-	float: left;
-	text-align: center;
-	position: relative;
-	top: 0px;
-	left: 0px;
-	border: 1px solid #aaa;
-	border-bottom-left-radius:8px;
-	border-top-left-radius:8px;
-	-webkit-border-bottom-left-radius:8px;
-	-moz-border-bottom-left-radius:8px;
-	padding: 0px;
-	display: block;
-	z-index: 0;
-	margin-bottom: 0px;
-	background-color:#E9E9E9;
+    height: 100%;
+    width: 150px;
+    float: left;
+    text-align: center;
+    position: relative;
+    top: 0px;
+    left: 0px;
+    border: 1px solid #aaa;
+    border-bottom-left-radius: 8px;
+    border-top-left-radius: 8px;
+    -webkit-border-bottom-left-radius: 8px;
+    -moz-border-bottom-left-radius: 8px;
+    padding: 0px;
+    display: block;
+    z-index: 0;
+    margin-bottom: 0px;
+    background-color: #E9E9E9;
 }
-  
+
 #cy {
-	height: 600px;
-	width: 100%;
-	float: left;
-    	border: 1px solid #428BCA;
-	position: relative;
+    height: 600px;
+    width: 100%;
+    float: left;
+    border: 1px solid #428BCA;
+    position: relative;
 }
-  
+
 #wrapper {
-	position: absolute;
-	z-index: 1;
-	top: 50px;
-	bottom: 50px;
-	left: 50px;
-	right: 50px;
-	background: #ccc;
-	overflow: hidden;
+    position: absolute;
+    z-index: 1;
+    top: 50px;
+    bottom: 50px;
+    left: 50px;
+    right: 50px;
+    background: #ccc;
+    overflow: hidden;
 }
 
 #scroller {
-	position: absolute;
-	z-index: 1;
-	-webkit-tap-highlight-color: rgba(0,0,0,0);
-	width: 100%;
-	-webkit-transform: translateZ(0);
-	-moz-transform: translateZ(0);
-	-ms-transform: translateZ(0);
-	-o-transform: translateZ(0);
-	transform: translateZ(0);
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	-webkit-text-size-adjust: none;
-	-moz-text-size-adjust: none;
-	-ms-text-size-adjust: none;
-	-o-text-size-adjust: none;
-	text-size-adjust: none;
+    position: absolute;
+    z-index: 1;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    width: 100%;
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-text-size-adjust: none;
+    -moz-text-size-adjust: none;
+    -ms-text-size-adjust: none;
+    -o-text-size-adjust: none;
+    text-size-adjust: none;
 }
 
 #scroller ul {
-	list-style: none;
-	padding: 0;
-	margin: 0;
-	width: 100%;
-	text-align: left;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    text-align: left;
 }
 
 #scroller li {
-	padding: 0 10px;
-	height: 40px;
-	line-height: 40px;
-	border-bottom: 1px solid #ccc;
-	border-top: 1px solid #fff;
-	background-color: #fafafa;
-	font-size: 14px;
+    padding: 0 10px;
+    height: 40px;
+    line-height: 40px;
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #fff;
+    background-color: #fafafa;
+    font-size: 14px;
 }
 
 #Footer {
-	height: 10%;
-	width: 100%;
-	float: left;
-	position: relative;
-	text-align: center;
-	top: 20px;
-	left: 0px;
-	border: 0px solid #aaa;
-	border-radius:10px;
-	-webkit-border-radius:10px;
-	padding: 0px;
-	display: block;
-	z-index: 1;
+    height: 10%;
+    width: 100%;
+    float: left;
+    position: relative;
+    text-align: center;
+    top: 20px;
+    left: 0px;
+    border: 0px solid #aaa;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    padding: 0px;
+    display: block;
+    z-index: 1;
 }
 
-#Addconcept{
-	display: none;
+#Addconcept {
+    display: none;
 }
-#Addconnection{
-	display:none;
+
+#Addconnection {
+    display: none;
 }

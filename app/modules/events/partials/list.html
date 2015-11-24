@@ -1,31 +1,32 @@
 <div class="container">
 
-<h1><span class="glyphicon glyphicon-search"></span> Browse Events ({{ events.count }})</h1>
-<br />
-<div class="container">
-<div class="row">
+    <h1><span class="glyphicon glyphicon-search"></span> Browse Events ({{ events.count }})</h1>
+    <br/>
 
-    <div class="col-lg-3 pc-tile" ng-show="events" ng-repeat="event in events.results" >
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title">{{ event.title | limitTo: 25}}</h3>
-          </div>
-          <div class="panel-body">
-            {{ event.issued | date:'longDate' }}
-            <br /><br />
-            <a href="#/events/{{ event.id }}" type="button" class="btn btn-primary">Details</a>
-          </div>
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-3 pc-tile" ng-show="events" ng-repeat="event in events.results">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{ event.title | limitTo: 25}}</h3>
+                    </div>
+                    <div class="panel-body">
+                        {{ event.issued | date:'longDate' }}
+                        <br/><br/>
+                        <a href="#/events/{{ event.id }}" type="button" class="btn btn-primary">Details</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <a ng-disabled="!events.previous" class="btn btn-warning" href="#/events?{{ events.previous.split('?')[1] }}">
+                <span class="glyphicon glyphicon-chevron-left"></span> Previous
+            </a>
+            <a ng-disabled="!events.next" class="btn btn-warning pull-right" href="#/events?{{ events.next.split('?')[1] }}">
+                Next <span class="glyphicon glyphicon-chevron-right"></span>
+            </a>
         </div>
     </div>
-
-</div>
-    <div class="row">
-        <a ng-disabled="!events.previous"  class="btn btn-warning" href="#/events?{{ events.previous.split('?')[1] }}">
-            <span class="glyphicon glyphicon-chevron-left"></span> Previous
-        </a>
-        <a ng-disabled="!events.next" class="btn btn-warning pull-right" href="#/events?{{ events.next.split('?')[1] }}">
-            Next <span class="glyphicon glyphicon-chevron-right"></span>
-        </a>
-    </div>
-</div>
 </div>
