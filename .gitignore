@@ -6,7 +6,8 @@ app/.sass-cache/
 bower_components
 development.json
 config.js
-.idea
+.idea/*
+!.idea/codeStyleSettings.xml
 npm-debug.log
 
 # Vim backup files
