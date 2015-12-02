@@ -441,7 +441,16 @@ policycompass.viz.pie = function (options) {
         //console.log(self.parentSelect);
 
         var selection = d3.select(self.parentSelect);
-        var clientwidth = selection[0][0].clientWidth;
+        
+        if (selection[0][0])
+        {
+        	var clientwidth = selection[0][0].clientWidth;
+        }
+        else
+        {
+        	var clientwidth = self.maxWidth;
+        }
+        
 
         if (self.maxWidth < clientwidth) {
             self.width = self.maxWidth;

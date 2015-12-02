@@ -18,25 +18,20 @@ policycompass.viz.mapLeaflet = function (options) {
         self[key] = options[key];
     }
 
-    //console.log(self);
-    //console.log("data");
-    //console.log(self.data);
-    //console.log("self.from_country");
-    //console.log(self.from_country);
-    //console.log("self.to_country");
-    //console.log(self.to_country);
-
-    //console.log("color rec");
-    //console.log(self.scaleColor);
+	if ((!self.mode) || (self.mode=='view')) {
+		var dom_el = document.querySelector('[ng-controller="VisualizationsEditController"]');
+    	var ng_el = angular.element(dom_el);
+    	var ng_el_scope = ng_el.scope();	
+	}
+	else {
+		var dom_el = "";
+		var ng_el = "";
+		var ng_el_scope = "";
+	}
+    
     if (!self.scaleColor) {
-        self.scaleColor = "#000000"
+    	self.scaleColor = "#f7941e"
     }
-    //console.log(self.scaleColor);
-    //console.log(self.data);
-
-
-    //console.log("self.showBubbles");
-    //console.log(self.showBubbles);
 
     d3.select(window).on('resize', resize);
 
@@ -66,24 +61,10 @@ policycompass.viz.mapLeaflet = function (options) {
 
         document.getElementById('mapPC_' + self.idName).style.width = windowWidth + 'px';
         document.getElementById('mapPC_' + self.idName).style.height = windowHeight + 'px';
-
-        //document.getElementById('mapPC_'+self.idName).style.position='absolute';
-        //document.getElementById('mapPC_'+self.idName).style.top='0';
-        //document.getElementById('mapPC_'+self.idName).style.bottom='0';
-        //document.getElementById('mapPC_'+self.idName).style.left='0';
-        //document.getElementById('mapPC_'+self.idName).style.right='0';
-        //document.getElementById('mapPC_'+self.idName).style.background='white';
         document.getElementById('mapPC_' + self.idName).style.background = '#fafafa';
 
 
     }
-
-    // Object
-
-
-    //console.log(self.idName);
-    //console.log("legend="+self.legend);
-    //console.log("zoom="+self.showZoom);
 
     if (self.idName == 'container_graph_undefined') {
         self.idName = 'container_graph_';
@@ -91,9 +72,10 @@ policycompass.viz.mapLeaflet = function (options) {
     self.parentSelect = "#" + self.idName;
 
 
-    //console.log(self.idName);
-    document.getElementById(self.idName).innerHTML = "<div id='mapPC_" + self.idName + "' class='datamap'></div>";
-
+    if (!document.getElementById("mapPC_"+self.idName))	{
+    	document.getElementById(self.idName).innerHTML = "<div id='mapPC_" + self.idName + "' class='datamap'></div>";
+	}
+	
     resize();
 
     var countriesData = {};
@@ -111,42 +93,6 @@ policycompass.viz.mapLeaflet = function (options) {
     initialZoom = (initialZoom * self.windowWidth) / self.maxWidth;
     initialZoom = Math.round(initialZoom);
 
-    //console.log("initialZoom");
-    //console.log(initialZoom);
-    /*
-     L.Map.include({
-     panInsideBounds: function(bounds) {
-     bounds = L.latLngBounds(bounds);
-     var viewBounds = this.getBounds(),
-     viewSw = this.project(viewBounds.getSouthWest()),
-     viewNe = this.project(viewBounds.getNorthEast()),
-     sw = this.project(bounds.getSouthWest()),
-     ne = this.project(bounds.getNorthEast()),
-     dx = 0,
-     dy = 0,
-     cp;	// compensate for projection (only works for map mercator)
-
-     if (viewNe.y < ne.y) { // north
-     cp = this.latLngToContainerPoint([85.05112878, 0]).y;
-     dy = ne.y - viewNe.y + (cp > 0 ? cp : 0);
-     }
-     if (viewNe.x > ne.x) { // east
-     dx = ne.x - viewNe.x;
-     }
-     if (viewSw.y > sw.y) { // south
-     cp = this.latLngToContainerPoint([-85.05112878, 0]).y - this.getSize().y;
-     dy = sw.y - viewSw.y + (cp < 0 ? cp : 0);
-     }
-     if (viewSw.x < sw.x) { // west
-     dx = sw.x - viewSw.x;
-     }
-
-     return this.panBy(new L.Point(dx, dy, true));
-     }
-     });
-     */
-    // var map = L.map("mapPC_"+self.idName).setView([49.009952, 2.548635], initialZoom);
-
     var initialLat = 49.009952;
     if (self.initialLat != 'undefined') {
         if (self.initialLat) {
@@ -160,29 +106,53 @@ policycompass.viz.mapLeaflet = function (options) {
             var initialLng = self.initialLng;
         }
     }
-    //console.log(initialLat);
-    //console.log(initialLng);
 
-    var map = L.map("mapPC_" + self.idName, {
-        layers: [
-            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                //attribution: 'Policy Compass &copy;',
-                noWrap: true
-            })
-        ],
-        zoom: initialZoom,
-        center: [initialLat, initialLng], //center: [49.009952, 0],
-        minZoom: 1,
-        maxZoom: 8,
-        maxBounds: [[-90.0, -180.0], [90.0, 180.0]]
-        //maxBounds: [[-85.0, -180.0],[85.0, 180.0]]
+	//remove info divs
+	var elements = document.getElementsByClassName("info_"+self.idName);
+	while(elements.length > 0) {
+       	elements[0].parentNode.removeChild(elements[0]);
+    }
+    //remove legend divs
+	var elements = document.getElementsByClassName("legend_"+self.idName);
+	while(elements.length > 0) {
+       	elements[0].parentNode.removeChild(elements[0]);
+    }
+    //remove elements divs
+	var elements = document.getElementsByClassName("leaflet-clickable");
+	while(elements.length > 0) {
+       	elements[0].parentNode.removeChild(elements[0]);
+    }
+    
+	//used to check if map exist
+	if (ng_el_scope.map != undefined) {
+		ng_el_scope.reload = true;
+		var map = ng_el_scope.map; 
+	}
+	else {	    
+	    var map = L.map("mapPC_" + self.idName, {
+	        layers: [
+	            L.tileLayer('//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	                //attribution: 'Policy Compass &copy;',
+	                noWrap: true
+	            })
+	        ],
+	        zoom: initialZoom,
+	        center: [initialLat, initialLng], //center: [49.009952, 0],
+	        minZoom: 1,
+	        maxZoom: 8,
+	        maxBounds: [[-90.0, -180.0], [90.0, 180.0]]
+	        //maxBounds: [[-85.0, -180.0],[85.0, 180.0]]
+	
+	    });
+	}
 
-    });
-
-    L.control.pan().addTo(map);
-
-    L.control.scale().addTo(map);
-
+	if (!ng_el_scope.reload) {	
+    	L.control.pan().addTo(map);
+    	L.control.scale().addTo(map);
+	}
+	
+	ng_el_scope.map=map;
+	
     map.on('zoomend', function () {
         document.getElementById('initialZoom').value = map.getZoom();
         document.getElementById('initialLat').value = map.getCenter().lat;
@@ -203,6 +173,15 @@ policycompass.viz.mapLeaflet = function (options) {
         $(".leaflet-control-zoom").css("visibility", "hidden");
         map.scrollWheelZoom.disable();
     }
+    else {
+		map.touchZoom.enable();
+		map.doubleClickZoom.enable();
+		map.scrollWheelZoom.enable();
+		map.boxZoom.enable();
+		map.keyboard.enable();
+		$(".leaflet-control-zoom").css("visibility", "visible");		
+		map.scrollWheelZoom.enable();			
+	} 
 
     plotChartMap = function () {
 
@@ -222,77 +201,23 @@ policycompass.viz.mapLeaflet = function (options) {
 
         var items = [];
         $.each(data.features, function (key, val) {
-            //console.log(val);
-            //if ((data.features[key].id=='ESP') || (data.features[key].id=='ITA'))
-            //console.log(self.data);
-            //console.log(self.data.length);
-            for (id = 0; id < self.data.length; id++) {
-                //console.log(self.data[id]);
-                //console.log(self.data[id].Title);
-                //console.log(self.data[id].Id);
-                //console.log("key="+key);
-                //console.log(data.features[key].id);
 
+            for (id = 0; id < self.data.length; id++) {
 
                 if (data.features[key].id == self.data[id].Id)
-                //if (1==2)
                 {
-                    //console.log(data.features[key].properties);
-                    //console.log(key);
                     var valueCalc = "";
-                    /*
-                     if (key>60)
-                     {
-                     valueCalc = 800
-                     }
-                     else
-                     {
-                     var valueCalc = key;
-                     }
-                     */
-                    //console.log(id);
-                    //console.log(self.data[id].Data)
-
-                    //console.log(self.data[id].Data);
-                    //console.log(self.from_country);
-                    //var a = self.data[id].Data.indexOf("'"+self.from_country+"'");
-                    //console.log(self.data[id].Data);
-                    //console.log(self.data[id].Data.length);
+                    
                     for (variable in self.data[id].Data) {
                         //console.log(variable)
                         if (variable == self.from_country) {
                             valueCalc = self.data[id].Data[variable];
                         }
                     }
-                    /*
-                     for (var iData = 0; iData < self.data[id].Data.length; iData++) {
-
-                     if (iData==self.from_country)
-                     {
-                     valueCalc = self.data[id].Data[iData];
-                     iData = self.data[id].Data.length;
-                     }
-                     }
-                     */
-
-                    /*
-                     if (a>=0)
-                     {
-                     alert(a);
-                     //valueCalc = self.data[id].Data["'"+self.from_country+"'"];
-                     valueCalc = self.data[id].Data['1996'];
-                     }
 
 
-                     valueCalc = self.data[id].Data['1996'];
-                     */
-                    //console.log("valueCalc="+valueCalc);
-
-
-                    //data.features[key].properties.popupContent = data.features[key].id;
-                    //console.log(data.features[key].id);
                     if (!valueCalc) {
-                        //console.log("aaaaaaaaaaaaa");
+                        //console.log("no data");
                     } else {
                         data.features[key].properties.density = valueCalc;
 
@@ -333,8 +258,6 @@ policycompass.viz.mapLeaflet = function (options) {
 
 
                         if (self.showBubbles) {
-                            //console.log(latlng);
-                            //console.log(data.features[key]);
                             countriesDataCircle["features"].push({
                                 'density': valueCalc,
                                 'geometry': {
@@ -360,28 +283,11 @@ policycompass.viz.mapLeaflet = function (options) {
         });
 
 
-        /*
-         L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
-         maxBounds: [
-         [-85.0, -180.0],
-         [85.0, 180.0]
-         ],
-         //zoom: 0,
-         //center: [49.009952, 2.548635],
-         minZoom: 2, maxZoom: 8,
-         attribution_old: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-         '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-         'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-         attribution: 'Policy Compass &copy;',
-         id: 'examples.map-20v6611k'
-         }).addTo(map);
-         */
-
         // control that shows state info on hover
         var info = L.control();
 
         info.onAdd = function (map) {
-            this._div = L.DomUtil.create('div', 'info');
+            this._div = L.DomUtil.create('div', 'info info_'+self.idName);
             this.update();
             return this._div;
         };
@@ -396,7 +302,13 @@ policycompass.viz.mapLeaflet = function (options) {
                 this._div.innerHTML = 'Data for: ' + self.from_country;
 
             };
-
+			
+			//remove info divs
+			var elements = document.getElementsByClassName("info_"+self.idName);
+			while(elements.length > 0) {
+        		elements[0].parentNode.removeChild(elements[0]);
+        	}
+        
             info.addTo(map);
         }
 
@@ -405,13 +317,6 @@ policycompass.viz.mapLeaflet = function (options) {
 
         self.difMaxMinScale = Math.round((Math.round(self.maxValueScale) - Math.round(self.minValueScale)) / 8);
 
-        //console.log("max="+self.maxValueScale)
-        //console.log("min="+self.minValueScale)
-
-        //console.log("max="+self.maxValueScale)
-        //console.log("min="+self.minValueScale)
-
-        //var color = d3.scale.linear().domain([self.minValueScale, self.maxValueScale]).range(['red', 'blue']);
 
         function ColorLuminance(hex, lum) {
             // validate hex string
@@ -528,8 +433,8 @@ policycompass.viz.mapLeaflet = function (options) {
             legend.onAdd = function (map) {
 
 
-                var div = L.DomUtil.create('div', 'info legend'), //grades = [0, 10, 20, 50, 100, 200, 500, 1000],
-                    grades = [
+                var div = L.DomUtil.create('div', 'info legend legend_'+self.idName);
+                var grades = [
                         self.minValueScale,
                         (self.difMaxMinScale * 2),
                         (self.difMaxMinScale * 3),
@@ -537,8 +442,10 @@ policycompass.viz.mapLeaflet = function (options) {
                         (self.difMaxMinScale * 5),
                         (self.difMaxMinScale * 6),
                         (self.difMaxMinScale * 7),
-                        self.maxDensityValue
-                    ], labels = [], from, to;
+                        self.maxDensityValue];
+                var labels = [];
+                var from;
+                var to;
 
                 for (var i = 0; i < grades.length; i++) {
                     from = grades[i];
@@ -551,17 +458,20 @@ policycompass.viz.mapLeaflet = function (options) {
                 return div;
             };
 
+
+    		//remove legend divs
+			var elements = document.getElementsByClassName("legend_"+self.idName);
+			while(elements.length > 0) {
+	        	elements[0].parentNode.removeChild(elements[0]);
+    		}
+    		
             legend.addTo(map);
         }
 
 
-        //console.log(countriesDataCircle);
         self.maxRadious = 30;
         self.minRadious = 3;
-        //console.log("self.maxDensityValue");
-        //console.log(self.maxDensityValue);
-        //if (self.showBubbles)
-        //{
+
         L.geoJson([countriesDataCircle], {
 
             style: function (feature) {
@@ -572,17 +482,13 @@ policycompass.viz.mapLeaflet = function (options) {
 
             pointToLayer: function (feature, latlng) {
 
-                //console.log(Math.round((feature.density *self.maxRadious ) / self.maxDensityValue));
                 var radiumCircle = Math.round((feature.density * self.maxRadious ) / self.maxDensityValue);
                 if (radiumCircle < self.minRadious) {
                     radiumCircle = self.minRadious;
                 }
 
                 return L.circleMarker(latlng, {
-                    //radius: 8,
                     radius: radiumCircle, //radius: feature.density,
-                    //fillColor: "#ff7800",
-                    //fillColor: color(feature.density),
                     fillColor: getColor(feature.density),
                     color: "#000",
                     weight: 1,
@@ -604,15 +510,7 @@ policycompass.viz.mapLeaflet = function (options) {
     q.await(plotChartMap);
 
 
-//});
 
-    self.init = function () {
-
-
-    }
-
-
-    self.init();
     return self;
 
 }

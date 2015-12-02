@@ -2337,7 +2337,15 @@ policycompass.viz.line = function (options) {
          */
 
         var selection = d3.select(self.parentSelect);
-        var clientwidth = selection[0][0].clientWidth;
+        
+        if (selection[0][0])
+        {
+        	var clientwidth = selection[0][0].clientWidth;
+        }
+        else
+        {
+			var clientwidth = self.maxWidth;
+        }
 
         if (self.maxWidth < clientwidth) {
             self.margin = self.maxMargin;

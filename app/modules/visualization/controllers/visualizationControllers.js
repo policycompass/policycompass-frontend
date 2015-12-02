@@ -4087,33 +4087,33 @@ angular.module('pcApp.visualization.controllers.visualization', [
                 var id_visu = $routeParams.visualizationId;
                 //console.log("id_visu="+id_visu);
                 $scope.relatedVisualizations = [];
+                $scope.urlListIndividuals = '';
 
-                //for (i in $scope.visualization.metrics_in_visualization)
                 for (i in $scope.visualization.datasets_in_visualization) {
-                    //id = $scope.visualization.metrics_in_visualization[i].metric_id;
-                    //id = $scope.visualization.datasets_in_visualization[i].metric_id;
                     id = $scope.visualization.datasets_in_visualization[i].dataset_id;
-                    //console.log(id);
                     $scope.getMetricData(i, id, "", "", "");
 
 
                     var arrayConfigMetricsFiltersToGetData = $scope.visualization.datasets_in_visualization[i]['visualization_query'].split(",");
-                    //console.log(arrayConfigMetricsFiltersToGetData);
 
                     for (x = 0; x < arrayConfigMetricsFiltersToGetData.length; x++) {
-                        //console.log("x="+x);
-                        var dataFilter = arrayConfigMetricsFiltersToGetData[x].split(":");
-                        //console.log("dataFilter[0]="+dataFilter[0])
-                        //console.log("dataFilter[1]="+dataFilter[1])
 
+                        var dataFilter = arrayConfigMetricsFiltersToGetData[x].split(":");
 
                         if (dataFilter[0] == 'Individual') {
-                            //console.log(dataFilter[1]);
-
                             var dataIndividuos = dataFilter[1].split(";");
 
                             for (xi = 0; xi < dataIndividuos.length; xi++) {
-                                $scope.arrayIndividualsUsed[dataIndividuos[xi]] = dataIndividuos[xi];
+                                if (!$scope.arrayIndividualsUsed[dataIndividuos[xi]]) {
+                                    if ($scope.urlListIndividuals) {
+                                        $scope.urlListIndividuals+="&";
+                                    }
+                                    else {
+                                        $scope.urlListIndividuals='?';
+                                    }
+                                    $scope.urlListIndividuals+="indicators="+dataIndividuos[xi];
+                                    $scope.arrayIndividualsUsed[dataIndividuos[xi]] = dataIndividuos[xi];
+                                }
                             }
 
 
