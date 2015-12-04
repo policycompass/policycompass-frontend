@@ -553,7 +553,12 @@ policycompass.viz.line = function (options) {
 					.style("text-anchor", "end").text(function () {
 						var returnValue = "";
 						if (self.showAsPercentatge) {
-							returnValue = "As % (" + self.labelY[0] + ")";
+							if (self.labelY[0]) {							
+								returnValue = "As % (" + self.labelY[0] + ")";
+							}
+							else {
+								returnValue = "As %"
+							}							
 						} else {
 							returnValue = self.labelY[0];
 						}
@@ -585,7 +590,13 @@ policycompass.viz.line = function (options) {
 						.text(function () {
                             var returnValue = "";
                             if (self.showAsPercentatge) {
-                                returnValue = "As % (" + self.labelY[keyIndex] + ")";
+                            	if (self.labelY[keyIndex]) {
+                                	returnValue = "As % (" + self.labelY[keyIndex] + ")";
+                               	}
+                               	else {
+                               		returnValue = "As %";
+                               	}
+                               	
                             } else {
                                 returnValue = self.labelY[keyIndex];
                             }
@@ -734,7 +745,12 @@ policycompass.viz.line = function (options) {
                     .text(function () {
 						var returnValue = "";
                         if (self.showAsPercentatge) {
-                        	returnValue = "As % (" + self.labelY[cnti - 1] + ")";
+                        	if (self.labelY[cnti - 1]) {
+                        		returnValue = "As % (" + self.labelY[cnti - 1] + ")";
+                        	}
+                        	else {
+                        		returnValue = "As %";
+                        	}                        	
 						} else {
                         	returnValue = self.labelY[cnti - 1];
                         }
@@ -770,7 +786,24 @@ policycompass.viz.line = function (options) {
 
 
                 if ((showAreas) && (cntpasadas == 1)) {
-
+                	
+					
+					if (document.getElementById('disableindividuals')) {
+                    	var arrayDisabledIndividuals = document.getElementById('disableindividuals').value.split("|");
+                    	var stringToCheck = d.Key.replace(/\W/g, '');
+                    	var a = arrayDisabledIndividuals.indexOf(stringToCheck);
+                   	}
+                   	else
+                   	{
+                   		var a=-1;
+                   	}
+                   
+                    var areaOpacity=0.3;
+                    
+                    if (a>=0) {
+                    	areaOpacity=0;
+                    }
+					
                     var area = d3.svg.area().x(function (d) {
 
                         var resX = d.xOriginal;
@@ -833,12 +866,31 @@ policycompass.viz.line = function (options) {
                         }
                         return colorToReturn;
                     })
-                    .style("opacity", 0.3);
+                    .style("opacity", areaOpacity);
                 }
                 if ((showLines) && (cntpasadas == 2)) {
+					
+					if (document.getElementById('disableindividuals')) {						
+                    	var arrayDisabledIndividuals = document.getElementById('disableindividuals').value.split("|");
+                    	var stringToCheck = d.Key.replace(/\W/g, '');
+                    	var a = arrayDisabledIndividuals.indexOf(stringToCheck);
+                   	}
+                   	else {
+                   		var a = -1;
+                   	}
+                   
+                    var lineOpacity=1;
+                    var lineClass = "line line--hover class_" + key.replace(/\W/g, '');
+                    if (a>=0) {
+                    	lineOpacity=0;
+                    }
+                    else {
+                    	lineClass += " active_item";
+                    }
                     
                     var path = self.svg.append("path").datum(data)                  
-                        .attr("class", "line line--hover active_item class_" + key.replace(/\W/g, ''))
+                        .attr("class", lineClass)
+                        .style("opacity", lineOpacity)
                         .attr("id", 'tag_' + key.replace(/\W/g, '')) // assign ID
                         .attr("fill", "none").style("stroke", function (d, i) {
 
@@ -938,7 +990,8 @@ policycompass.viz.line = function (options) {
 
                     });
 
-
+					
+                    			
                     self.svg.append("text")
                         .attr("x", function (d, i) {
                             return valueX;
@@ -947,9 +1000,27 @@ policycompass.viz.line = function (options) {
                             return valueY;
                         })
                         .attr("text-anchor", "center")
-                        .attr("text-decoration", "none")
-                        .attr("class", "link superior legend value")
-                        .attr("font-size", self.font_size)
+                        .attr("class", function() {
+                        	
+                        	if (document.getElementById('disableindividuals')) {
+                        		var arrayDisabledIndividuals = document.getElementById('disableindividuals').value.split("|");
+                    			var stringToCheck = d.Key.replace(/\W/g, '');
+                    			var a = arrayDisabledIndividuals.indexOf(stringToCheck);
+                    		}
+                    		else {
+                    			var a = -1;
+                    		}
+                    		
+                    		var extraClass='enableindividual';
+                    
+                    		if (a>=0) {
+                    			extraClass='disableindividual';
+                    		}
+                    		
+                    		return "link superior legend value legend_"+d.Key.replace(/\W/g, '')+" "+extraClass;
+                    		
+                        })
+                        .attr("font-size", self.font_size+1)
                         .style("fill", function (d, i) {
                             var colorToReturn;
 
@@ -968,7 +1039,12 @@ policycompass.viz.line = function (options) {
                                 var keyTmp = d['Key'].split("_");
                                 var str = keyTmp[0];
 
-                                if (d3.select(this).attr("text-decoration") == 'none') {
+                   				var arrayDisabledIndividuals = document.getElementById('disableindividuals').value.split("|");
+                    			var stringToCheck = d.Key.replace(/\W/g, '');
+                    			var a = arrayDisabledIndividuals.indexOf(stringToCheck);
+
+                                if (d3.select(this).classed("enableindividual")) {
+
                                     tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">Click over to hide ' + str + '</div>');
                                     d3.selectAll(".active_item").style("opacity", 0.3);
 
@@ -981,20 +1057,32 @@ policycompass.viz.line = function (options) {
                                     d3.selectAll(".point_" + d.Key.replace(/\W/g, '')).classed('pointOn', true)
                                         .style("opacity", 1);
 
-                                } else {
+                                } else {                                	
                                     tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">Click over to show ' + str + '</div>');
                                 }
 
                             }
 
-                        }).on("mouseout", function () {
-
-                            d3.selectAll(".active_item").style("opacity", 1);
-                            d3.selectAll("#tag_" + d.Key.replace(/\W/g, '')).style("stroke-width", 2);
-                            d3.selectAll(".point_" + d.Key.replace(/\W/g, '')).classed('pointOn', false);
-                            mouseout();
                         })
-
+                        .on("mouseout", function () {
+							
+							if (document.getElementById('disableindividuals')) {
+								var arrayDisabledIndividuals = document.getElementById('disableindividuals').value.split("|");
+                    			var stringToCheck = d.Key.replace(/\W/g, '');
+                    			var a = arrayDisabledIndividuals.indexOf(stringToCheck);
+                    		}
+                    		else {
+                    			var a = -1;
+                    		}
+                    		
+                    		if (a<0) {                    		
+                            	d3.selectAll(".active_item").style("opacity", 1);
+                            	d3.selectAll("#tag_" + d.Key.replace(/\W/g, '')).style("stroke-width", 2);
+                            	d3.selectAll(".point_" + d.Key.replace(/\W/g, '')).classed('pointOn', false);
+                            	
+                           	}
+                           	mouseout();
+                        })
                         .text(function (d, i) {
                             var resTRext = key.split("_");
                             var trimmedString = resTRext[0];
@@ -1026,42 +1114,89 @@ policycompass.viz.line = function (options) {
 
                             return trimmedString;
                         })
-
                         .on("click", function () {
 
                             if ((self.modeGraph == 'view') || (self.xaxeformat == 'sequence')) {
-                            	                            	
-                                var active = d.active ? false : true, newOpacity = active ? 0 : 1;
-                                var newOpacityArea = active ? 0 : 0.3;
+                            	
+                            	if (document.getElementById('disableindividuals')) {
+                            		var arrayDisabledIndividuals = document.getElementById('disableindividuals').value.split("|");
+                            		var stringToCheck = d.Key.replace(/\W/g, '');
+                            		var a = arrayDisabledIndividuals.indexOf(stringToCheck);
+                            	}
+                            	else {
+                            		var a = -1;
+                            	}
+                            	
+                            	d3.selectAll(".legend_" + stringToCheck).classed('enableindividual', true);
+                    			d3.selectAll(".legend_" + stringToCheck).classed('disableindividual', false);
+								
+								d3.selectAll(".class_" + stringToCheck).classed('active_item', true);
 
-                                d3.selectAll(".class_" + d.Key.replace(/\W/g, '')).transition().duration(100).style("opacity", newOpacity);
-                                d3.selectAll(".area_class_" + d.Key.replace(/\W/g, '')).transition().duration(100).style("opacity", newOpacityArea);
+                                d3.selectAll(".class_" + stringToCheck).transition().duration(100).style("opacity", 1);
+                                d3.selectAll(".area_class_" + stringToCheck).transition().duration(100).style("opacity", 0.3);
+
+								if (document.getElementById('disableindividuals')) {
+	                            	if (a>=0) {
+	                            		document.getElementById('disableindividuals').value = '';
+	                            		for (key in arrayDisabledIndividuals) {                            			
+	                            			if (arrayDisabledIndividuals[key]) {
+	                            				if (arrayDisabledIndividuals[key]!=stringToCheck) {
+	                            					if (document.getElementById('disableindividuals').value)
+	                            					{
+	                            						document.getElementById('disableindividuals').value +="|";
+	                            					}
+	                            					document.getElementById('disableindividuals').value +=arrayDisabledIndividuals[key];
+	                            					
+	                            					d3.selectAll(".legend_" + arrayDisabledIndividuals[key]).classed('enableindividual', false);
+	                                				d3.selectAll(".legend_" + arrayDisabledIndividuals[key]).classed('disableindividual', true);
+	                                				
+	                                				d3.selectAll(".class_" + stringToCheck).classed('active_item', false);
+	                                				
+					                                d3.selectAll(".class_" + arrayDisabledIndividuals[key]).transition().duration(100).style("opacity", 0);
+	                				                d3.selectAll(".area_class_" + arrayDisabledIndividuals[key]).transition().duration(100).style("opacity", 0);
+	
+	                                				
+	                            				}
+	                            			}
+	                            		}                            		
+	                            	}   
+	                            	else {                            		
+	                            		if (document.getElementById('disableindividuals').value)
+	                            		{
+	                            			document.getElementById('disableindividuals').value +="|";
+	                            		}
+	                            		document.getElementById('disableindividuals').value +=stringToCheck;
+	
+										d3.selectAll(".legend_" + d.Key.replace(/\W/g, '')).classed('enableindividual', false);
+	                                	d3.selectAll(".legend_" + d.Key.replace(/\W/g, '')).classed('disableindividual', true);
+										
+										d3.selectAll(".class_" + stringToCheck).classed('active_item', false);
+										
+					                    d3.selectAll(".class_" + d.Key.replace(/\W/g, '')).transition().duration(100).style("opacity", 0);
+	                				    d3.selectAll(".area_class_" + d.Key.replace(/\W/g, '')).transition().duration(100).style("opacity", 0);
+	                            		
+	                            	}
+                            	}
+                            	
+                                var active = d.active ? false : true;
+                                var newOpacity = active ? 0 : 1;
+                                var newOpacityArea = active ? 0 : 0.3;
 
                                 // Update whether or not the elements are active
                                 d.active = active;
 
                                 var str = d3.select(this).text();
                                 var res = "";
-
-                                if (active) {
+																
+                                if (active) {                                	                             
                                     res = 'Click to display ' + str;
                                     res = str.replace("hide", "display");
-
-                                    d3.selectAll(".class_" + d.Key.replace(/\W/g, '')).classed('active_item', false);
-
-                                } else {
-                                    res = str.replace("display", "hide");
-                                    d3.selectAll(".class_" + d.Key.replace(/\W/g, '')).classed('active_item', true).style("stroke-width", 4);
-                                }
-
-                                if (d3.select(this).attr("text-decoration") == 'none') {
-                                    d3.select(this).attr("text-decoration", "line-through");
                                     tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">Click over to show ' + str + '</div>');
                                 } else {
-                                    d3.select(this).attr("text-decoration", "none");
+                                    res = str.replace("display", "hide");
                                     tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">Click over to hide ' + str + '</div>');
                                 }
-
+								
                                 d3.select(this).text(res);
 
                             } else {
@@ -1073,6 +1208,7 @@ policycompass.viz.line = function (options) {
                             }
                         })
 
+
                 }
             });
 
@@ -1080,11 +1216,18 @@ policycompass.viz.line = function (options) {
             cntpasadas = cntpasadas + 1;
         }
 
-
         if (showPoints) {
             lines.forEach(function (d, i) {
                 var keyCircle = d.Key;
-                var colorCircle = d.Color;
+                //var colorCircle = d.Color;
+				var colorCircle = '';
+
+                if (d.Color) {
+                	colorCircle = d.Color;
+                } else {
+                	colorCircle = colorScale(d.Key);
+                }                
+                
                 var cntLine = i;
 
                 var datosCircle = []
@@ -1101,8 +1244,29 @@ policycompass.viz.line = function (options) {
                         units = self.labelY[i];
                     }
                 }
-
+				
+				if (document.getElementById('disableindividuals')) {
+					var arrayDisabledIndividuals = document.getElementById('disableindividuals').value.split("|");
+                	var stringToCheck = keyCircle.replace(/\W/g, '');
+                	var a = arrayDisabledIndividuals.indexOf(stringToCheck);
+               	}
+               	else {
+               		var a = -1;
+               	}
+                
+                var circleOpacity=1;
+                
+                var classCircle = "pointIn point_" + keyCircle.replace(/\W/g, '') + " class_" + keyCircle.replace(/\W/g, '');
+                
+                if (a>=0) {
+                	circleOpacity=0;
+                }
+                else {
+                	classCircle += " active_item";
+                }
+                  
                 myCircles.enter().append("circle").attr("cx", function (d, i) {
+
                     var res = d.split("|");
                     var resX = res[0];
                     if (self.xaxeformat == 'sequence') {                        
@@ -1139,13 +1303,16 @@ policycompass.viz.line = function (options) {
                         return (self.xScale(getDate(resX)));
                     }
                 })
+                .style("opacity", circleOpacity)
                 .attr("cy", function (d, i) {
                     var res = d.split("|");
                     var resY = res[1];
                     return self.yArray[cntLine](resY);
                 })
-                .attr("r", 0)
-                .attr("class", "pointIn active_item point_" + keyCircle.replace(/\W/g, '') + " class_" + keyCircle.replace(/\W/g, '')).style("stroke-width", self.radius).style("stroke", function (d, i) {
+                .attr("r", 0)                
+                .attr("class", classCircle)
+                .style("stroke-width", self.radius)
+                .style("stroke", function (d, i) {
 					var colorToReturn;
 
                     if (colorCircle) {
