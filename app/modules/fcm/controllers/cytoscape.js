@@ -274,6 +274,44 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                     $scope.isDisabled = false; else
                     $scope.isDisabled = true;
 
+		        $scope.SimulationResults.splice(0, $scope.SimulationResults.length);
+		        $scope.dataset.splice(0, $scope.dataset.length);
+		        $scope.labels.splice(0, $scope.labels.length);
+
+                for (i = 0; i < $scope.modeldetail.simulationResults.length; i++) {
+                    var ConceptResults = {
+                        Id: $scope.modeldetail.simulationResults[i].id.toString(),
+                        iterationID: $scope.modeldetail.simulationResults[i].iteration_id.toString(),
+                        conceptID: $scope.modeldetail.simulationResults[i].conceptID.toString(),
+                        output: $scope.modeldetail.simulationResults[i].output.toString()
+                    };
+
+                    $scope.SimulationResults.push(ConceptResults);
+                }
+
+                $scope.totalIteration = $scope.modeldetail.simulationResults[$scope.modeldetail.simulationResults.length - 1].iteration_id;
+
+                for (i = 0; i < $scope.SimulationConcepts.length; i++) {
+                    var iteration = [];
+                    var output = [];
+
+                    for (j = 0; j < $scope.modeldetail.simulationResults.length; j++) {
+                        if ($scope.modeldetail.simulationResults[j].conceptID == $scope.SimulationConcepts[i].Id) {
+                            if ($scope.modeldetail.simulationResults[j].iteration_id < 10)
+                                iteration.push("0" + $scope.modeldetail.simulationResults[j].iteration_id.toString()); else
+                                iteration.push($scope.modeldetail.simulationResults[j].iteration_id.toString());
+                            output.push($scope.modeldetail.simulationResults[j].output);
+                        }
+                    }
+                    var data = {
+                        Key: $scope.SimulationConcepts[i].title,
+                        ValueX: iteration,
+                        ValueY: output,
+                        Type: "FCM"
+                    };
+                    $scope.dataset.push(data);
+                    $scope.labels.push("");
+				}
                 // broadcasting the event
                 $rootScope.$broadcast('appChanged');
             }, function (error) {

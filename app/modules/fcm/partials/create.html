@@ -114,15 +114,7 @@
                             <td align="center" width="10%"><b>Relation ID</b></td>
                             <td align="center" width="33%"><b>Source Concept</b></td>
                             <td align="center" width="33%"><b>Sink Concept</b></td>
-                            <td align="center" width="24%">
-                                <b>Weight</b>
-                                <!--
-                                        <div class="subtitle-help">
-                                            <div class="fonticon fonticon-help help-switch" ng-click="help3=!help3"></div>
-                                                                <div ng-class="{active: help3}" class="help-text"><p align="left">The strength of relationships can be presented as weights. For example, if source concept has strong negative impact on Sink concept, please select "Very Strong Positive".</p></div>  -->
-                            </td>
-                            </td>
-                            <!--			    <td align="center" width="42%"><b>Metrics Manager</b></td>    -->
+                            <td align="center" width="24%"><b>Weight</b></td>
                         </tr>
                         <tr ng-show="Associations" ng-repeat="connection in SimulationAssociations track by $index">
                             <td align="center">{{ connection.Sno }}</td>
@@ -163,7 +155,7 @@
                     <table class="table table-hover">
                         <tr>
                             <td align="center" width="20%"><b># of Iteration</b></td>
-                            <td align="center" ng-repeat="n in range(1,totalIteration,1)"><b>{{ n }}</b></td>
+                            <td align="center" ng-repeat="n in range(1,,1)"><b>{{ n }}</b></td>
                         </tr>
                         <tr ng-show="Concepts" ng-repeat="concept in Concepts">
                             <td>{{ concept.title }}</td>
@@ -172,7 +164,7 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td align="center" ng-repeat="n in range(1,15,1)"></td>
+                            <td align="center" ng-repeat="n in range(1,totalIteration,1)"></td>
                         </tr>
                     </table>
                     <button type="submit" class="btn btn-default" ng-click="impactAnalysis();">Impact Analysis</button>

@@ -1,13 +1,13 @@
 <div class="container">
     <div class="content-header">
-        <h1><span class="glyphicon glyphicon-list-alt"></span> {{ models.model.title }}</h1>
+        <h1><span class="glyphicon glyphicon-list-alt"></span> {{ modeldetail.model.title }}</h1>
 
         <div class="pc-visualization-formcontrols">
-            <a type="button" class="btn btn-primary" href="#!/models/{{ models.model.id }}/edit">Run Simulation</a>
+            <a type="button" class="btn btn-primary" href="#!/models/{{ modeldetail.model.id }}/edit">Run Simulation</a>
 
             <div class="button-group">
-                <a type="button" class="btn btn-primary  btn-create" href="#!/models/{{ models.model.id }}/edit">Edit</a>
-                <a type="button" class="btn btn-danger  btn-clear" ng-click="deleteModel(models.model)">Delete</a>
+                <a type="button" class="btn btn-primary  btn-create" href="#!/models/{{ modeldetail.model.id }}/edit">Edit</a>
+                <a type="button" class="btn btn-danger  btn-clear" ng-click="deleteModel(modeldetail.model)">Delete</a>
             </div>
         </div>
     </div>
@@ -31,61 +31,108 @@
             <tabset justified="true">
                 <tab heading="Model Detail">
                     <table class="table table-hover">
-                        <tr ng-show="models.model.title">
+                        <tr ng-show="modeldetail.model.title">
                             <td><b>Title:</b></td>
-                            <td>{{ models.model.title }}</td>
+                            <td>{{ modeldetail.model.title }}</td>
                         </tr>
-                        <tr ng-show="models.model.description">
+                        <tr ng-show="modeldetail.model.description">
                             <td><b>Description:</b></td>
-                            <td>{{ models.model.description }}</td>
+                            <td>{{ modeldetail.model.description }}</td>
                         </tr>
-                        <tr ng-show="models.model.keywords">
+                        <tr ng-show="modeldetail.model.keywords">
                             <td><b>Keywords:</b></td>
-                            <td>{{ models.model.keywords }}</td>
+                            <td>{{ modeldetail.model.keywords }}</td>
                         </tr>
-                        <tr ng-show="models.model.dateAddedtoPC">
+                        <tr ng-show="modeldetail.model.dateAddedtoPC">
                             <td><b>Issued:</b></td>
-                            <td>{{ models.model.dateAddedtoPC | date:'longDate' }}</td>
+                            <td>{{ modeldetail.model.dateAddedtoPC | date:'longDate' }}</td>
                         </tr>
-                        <tr ng-show="mmodels.model.dateModified">
+                        <tr ng-show="modeldetail.model.dateModified">
                             <td><b>Last Modified:</b></td>
-                            <td>{{ models.model.dateModified | date:'longDate' }}</td>
+                            <td>{{ modeldetail.model.dateModified | date:'longDate' }}</td>
                         </tr>
                         <tr>
                             <td><b>Rating:</b></td>
                             <td>
-                                <pc-rating ng-if="models.model.id" rating-id="fuzzymap_{{models.model.id}}"></pc-rating>
+                                <pc-rating ng-if="modeldetail.model.id" rating-id="fuzzymap_{{modeldetail.model.id}}"></pc-rating>
                             </td>
                         </tr>
                     </table>
                 </tab>
 
-                <tab heading="Show Concepts">
+                <tab heading="Concepts & Relationships">
+                    <h4>Concepts :</h4>
                     <table class="table table-hover">
                         <tr>
                             <td align="center" width="20%"><b>Title</b></td>
-                            <td align="center" width="30%"><b>Description</b></td>
-                            <td align="center" width="5%"><b>Input</b></td>
-                            <td align="center" width="14%"><b>Activator</b></td>
-                            <td align="center" width="5%"><b>Fixed Output</b></td>
-                            <td align="center" width="13%"><b>Issued</b></td>
-                            <td align="center" width="13%"><b>Last Modified</b></td>
+                            <td align="center" width="20%"><b>Description</b></td>
+                            <td align="center" width="10%"><b>Scale</b></td>
+                            <td align="center" width="10%"><b>Value</b></td>
+                            <td align="center" width="10%"><b>Fixed Output</b></td>
+                            <td align="center" width="30%"><b>Dataset</b></td>
                         </tr>
-                        <tr ng-show="Concepts" ng-repeat="concept in Concepts">
+                        <tr ng-show="Concepts" ng-repeat="concept in SimulationConcepts">
                             <td>{{ concept.title }}</td>
                             <td>{{ concept.description }}</td>
-                            <td align="center">{{ concept.input }}</td>
-                            <td align="center">{{ concept.activator.title }}</td>
+                            <td align="center">{{ concept.scale }}</td>
+                            <td align="center">{{ concept.value }}</td>
                             <td align="center">{{ concept.fixedoutput }}</td>
-                            <td align="center">{{ concept.dateAddedtoPC | date:'longDate' }}</td>
-                            <td align="center">{{ concept.dateModified | date:'longDate' }}</td>
+                            <td align="center">{{ concept.metricTitle }}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                    <h4>Relationships :</h4>
+                    <table class="table table-hover">
+                        <tr>
+                            <td align="center" width="10%"><b>Relation ID</b></td>
+                            <td align="center" width="33%"><b>Source Concept</b></td>
+                            <td align="center" width="33%"><b>Sink Concept</b></td>
+                            <td align="center" width="24%"><b>Weight</b></td>
+                        </tr>
+                        <tr ng-show="Associations" ng-repeat="connection in SimulationAssociations">
+                            <td align="center">{{ connection.Sno }}</td>
+                            <td align="center">{{ connection.source.title }}</td>
+                            <td align="center">{{ connection.destination.title }}</td>
+                            <td align="center">{{ connection.weighted }}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                         </tr>
                     </table>
                 </tab>
 
-                <tab heading="Simulation">Simulation</tab>
+                <tab heading="Simulation Results" active="tabsel.results">
+                    <h4>Changes of Concept Values</h4>
+                    <table class="table table-hover">
+                        <tr>
+                            <td align="center" width="20%"><b># of Iteration</b></td>
+                            <td align="center" ng-repeat="n in range(1,totalIteration,1)"><b>{{ n }}</b></td>
+                        </tr>
+                        <tr ng-show="Concepts" ng-repeat="concept in Concepts">
+                            <td>{{ concept.title }}</td>
+                            <td align="center" ng-repeat="result in SimulationResults" ng-if="concept.Id == result.conceptID">
+                                <b>{{ result.output }}</b></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td align="center" ng-repeat="n in range(1,totalIteration,1)"></td>
+                        </tr>
+                    </table>
+                </tab>
 
-                <tab heading="Graph">Graph</tab>
+                <tab heading="Graph">
+                    <div class="pcLinesChart" dataset="dataset" labels="labels" small="list" mode="modeg" hideyaxeunits="hideyaxeunits" chartid="2" show-Legend="showLegend" show-Labels="showLabels" show-Lines="showLines" show-Areas="showAreas" show-Points="showPoints" show-Grid="showGrid" show-Together="showYAxes" show-Percentatge="showAsPercentatge" xaxeformat="xaxeformat"></div>
+                </tab>
 
             </tabset>
 
