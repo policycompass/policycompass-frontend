@@ -11,6 +11,25 @@ angular.module('pcApp.auth.services.auth', [
         '$q',
         function (Adhocracy, API_CONF, $rootScope, $http, $location, $q) {
 
+            var last = undefined;
+
+            $rootScope.$on("$locationChangeSuccess",
+                function(evt, nextUrl, prevUrl) {
+                    /* FIXME: Is there a more generic way to get the path
+                     * from the URL? */
+                    var next = nextUrl.split("#!")[1];
+                    var prev = prevUrl.split("#!")[1];
+
+                    if ((next == "/login" || next == "/register")
+                        && typeof prev !== "undefined"
+                        && prev !== "/login"
+                        && prev !== "/register"
+                    ) {
+                        last = prev;
+                    }
+                }
+            );
+
             var Auth = {
                 state: {
                     loggedIn: undefined,
@@ -67,7 +86,8 @@ angular.module('pcApp.auth.services.auth', [
                     Auth._login(data.userData, data.token, data.userPath).then(function (ready) {
 
                         if (($location.path() === '/login') || ($location.path() === '/register')) {
-                            $location.path('/');
+                            $location.path(last || '/');
+                            last = undefined;
                         }
                     });
                 });
