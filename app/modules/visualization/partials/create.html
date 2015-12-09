@@ -87,9 +87,7 @@
                             <div ng-show="((1==1)  || isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')) && (ListMetricsFilter.length>0)" class="graphContainerdiv">
                                 <input type="hidden" id="startDatePosX" name="startDatePosX" value="">
                                 <input type="hidden" id="endDatePosX" name="endDatePosX" value="">
-                                <!--
-                               <div ng-click="isSelectedSon('graph_line') ? showModal('events') : void(0)">
-                               -->
+
                                 <div>
                                     <div ng-show="isSelectedSon('map_1') || isSelectedSon('mercator') || isSelectedSon('conicConformal') || isSelectedSon('equirectangular') || isSelectedSon('orthographic') || isSelectedSon('azimuthalEqualArea')">
                                         <div ng-show="mapTimeSlider.length>1">
@@ -102,26 +100,7 @@
                                             <rzslider rz-slider-model="rangeDatesSliderMin" rz-slider-floor="0" rz-slider-ceil="numbers2.length-1" rz-slider-translate="translate"></rzslider>
                                         </div>
                                     </div>
-                                    <!--
-                                        <div ng-show="isSelectedSon('graph_pie')">
-                                            <div class="pcPieChart" dataset="dataset" chartid="visualization.id" show-Legend="showLegend" small="list" mode="mode" show-Labels="showLabels"></div>
-                                        </div>
-                                        <div ng-show="isSelectedSon('graph_bars')">
-                                            <div class="pcBarsChart" dataset="datasetToSend" chartid="visualization.id" small="list"  mode="mode" show-Legend="showLegend" show-Labels="showLabels"></div>
-                                        </div>
-                                        <div ng-show="isSelectedSon('graph_line')">
-                                            <div class="pcLinesChart" dataset="numbers1" events="eventsToPlot"
-                                            labels="labelYAxe" small="list"  mode="mode" chartid="visualization.id"
-                                            show-Legend="showLegend"
-                                            show-Labels="showLabels"
-                                            show-Lines="showLines"
-                                            show-Areas="showAreas"
-                                            show-Points="showPoints"
-                                            show-Grid="showGrid"
-                                            show-Together="showYAxes"
-                                            ></div>
-                                        </div>
-                                        -->
+                                    
                                     <center>
                                         <div>
                                             <div id="container_graph_{{visualization.id}}" class="container_graph">
@@ -137,10 +116,6 @@
                             </div>
                         </div>
 
-                        <!--
-                        <accordion close-others="oneAtATime">
-                            <accordion-group heading="Graph properties" is-open="isFirstOpen">
-                            -->
 
                         <div ng-show="ListMetricsFilter.length>0" id="showFilterContainer" class="showFilterContainer">
                             <div id="showFilter" ng-show="isSelectedParent(1) || isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')" class="showFilter on_check">
@@ -211,22 +186,6 @@
 												preferredFormat: 'hex'
 											}"></spectrum>
 
-                                        <!--
-                                        <spectrum-colorpicker
-                                            name='color' ng-model="scaleColor" ng-model-onblur ng-change="rePlotGraph()"
-                                            options="{
-                                                showInput: true,
-                                                showAlpha: false,
-                                                allowEmpty: false,
-                                                preferredFormat: 'hex'
-                                            }">
-                                        </spectrum-colorpicker>
-                                        -->
-                                        <!--
-                                        <input type='color' name='color'
-                                            ng-model="scaleColor"
-                                        ng-model-onblur ng-change="rePlotGraph()" />
-                                        -->
                                         Scale Colour
                                     </label>
                                 </div>
@@ -251,31 +210,9 @@
                                         <select id="toDate" ng-change="rePlotGraph();" ng-model="timeEnd" ng-options="opt for opt in TimeSelector"></select>
                                     </label>
                                 </div>
-
-                                <!--
-                                <div id="div_showMovement" ng-show="isSelectedParent(1)" class="on_check">
-                                    <label class="checkbox-inline">
-                                        <input ng-model="showMovement" type="checkbox" ng-click="rePlotGraph();" name="showMovement"  id="showMovement" class="checkbox filterCheckBox"> Enable Movement
-                                    </label>
-                                </div>
-                                -->
-                                <!--
-                                <div id="granularity" class="on_check">
-                                    <label class="checkbox-inline">Granularity
-                                        <select name="granularity" >
-                                              <option value="Daily">Daily</option>
-                                            <option value="Montly">Montly</option>
-                                            <option value="Yearly">Yearly</option>
-                                        </select>
-                                    </label>
-                                </div>
-                                -->
+                                
                             </div>
                         </div>
-                        <!--
-                            </accordion-group>
-                        </accordion>
-                        -->
 
                         <tabset ng-hide="ListMetricsFilter.length==0">
 
@@ -296,13 +233,6 @@
                                     <input type="text" class="form-control" id="keywords" placeholder="Keywords" ng-model="visualization.keywords">
                                 </div>
 
-                                <!--
-                                <div class="form-group" ng-class="{'has-error': visualizationForm.language.$dirty && visualizationForm.language.$invalid}">
-                                    <label for="language" class="">Language *</label>
-                                    <select class="form-control language-options" model="visualization.language" ng-model="visualization.language" id="language" name="language" required>
-                                    </select>
-                                </div>
-                                -->
                                 <div class="form-group">
                                     <label for="language_data">Language *</label>
 
@@ -314,13 +244,7 @@
 
                                     <div id="location_data" class="reference-selection pc-reference-selection-full" resource="Individual" selection-mode="single" output="visualization.location_data.output" input="visualization.location_data.output" parameters="{ class: 'Country' }"></div>
                                 </div>
-                                <!--
-                                <div class="form-group" ng-class="{'has-error': visualizationForm.policyDomains.$dirty && visualizationForm.policyDomains.$invalid}" >
-                                    <label for="policyDomains">Policy Domains *</label>
-                                    <select multiple class="form-control policydomain-options" id="policyDomains" name="policy-domain" ng-model="visualizationForm.policy_domains" required>
-                                    </select>
-                                </div>
-                                -->
+
                                 <div class="form-group">
                                     <label for="policy_domains_data">Policy Domains *</label>
 
@@ -335,7 +259,6 @@
 
                                 <div class="buttonline clearfix-min">
                                     <input ng-controller="controllercorrectmetriclist" type="hidden" ng-required="true" class="form-control" id="correctmetrics" ng-model="correctmetrics" ng-repeat="numberrows in [ListMetricsFilter.length]">
-
                                     <button data-intro="Helps you to find datasets" data-position="right" type="submit" class="btn btn-info button-metrics" id="addmetricsbutton" ng-click="addMetrictoList();findMetricsByFilter();collapsetFilter=!collapsetFilter">
                                         <span ng-hide="collapsetFilter">Collapse</span><span ng-show="collapsetFilter">Open</span> dataset filter
                                     </button>
@@ -349,9 +272,7 @@
                                 <div ng-show="metric.title" ng-controller="LoadCombosMetric" class="designer-metrics active" class="designer-metrics" id="designer-metrics-num-{{metric.id}}" ng-repeat="metric in ListMetricsFilter track by $index">
                                     <h4>{{metric.title}} -- {{metric.issued | date:'longDate' }}</h4>
                                     <input type="hidden" ng-model="MetricSelectediId_[metric.id]" id="MetricSelectediId_{{metric.id}}" name="MetricSelectedId[]" value="">
-
                                     <input type="hidden" ng-model="MetricSelectediIndex_[metric.id]" ng-init="MetricSelectediIndex_[metric.id]=metric.id" id="MetricSelectediIndex_{{metric.id}}" name="MetricSelectediIndex[]" value="{{metric.id}}">
-
 
                                     <div class="metric-buttons">
                                         <!--
@@ -402,19 +323,6 @@
   																	preferredFormat: 'hex'
   																}"></spectrum>
 
-                                                            <!--
-                                                            <spectrum-colorpicker
-                                                                ng-init=" dataset_color_palete_[metric.id][option.id] = dataset_color_palete_[metric.id][option.id] == null ? colorScale(option.title) : dataset_color_palete_[metric.id][option.id] "
-                                                                ng-model="dataset_color_palete_[metric.id][option.id]"
-                                                                ng-model-onblur ng-change="rePlotGraph()"
-                                                                  options="{
-                                                                      showInput: true,
-                                                                      showAlpha: false,
-                                                                      allowEmpty: false,
-                                                                      preferredFormat: 'hex'
-                                                                  }">
-                                                                </spectrum-colorpicker>
-                                                        -->
                                                         </td>
                                                     </tr>
                                                 </body>
@@ -424,15 +332,11 @@
                                         </div>
                                     </div>
 
-
                                 </div>
                             </tab>
                             <!-- end tab datasets -->
 
                             <!-- ini tab historical events -->
-                            <!--
-                            <tab ng-show="isSelectedSon('graph_line')" heading="Historical Events">
-                            -->
                             <tab ng-show="1==2" heading="Historical Events">
                                 <div ng-show="ListMetricsFilter.length>0" class="buttonline clearfix-min">
                                     <button data-intro="Helps you to link this visualisation with events" data-position="right" type="submit" class="btn btn-primary button-metrics" id="addHEbutton" ng-click="showModal('events')">Add Historical Event</button>
@@ -447,21 +351,8 @@
                                         <input type="hidden" ng-model="titleHE[$index+1]" id="titleHE{{$index+1}}" name="titleHE[]" value="{{event.title}}">
                                         <input type="hidden" ng-model="startDateHE[$index+1]" id="startDateHE{{$index+1}}" name="startDateHE[]" value="{{event.startDate}}">
                                         <input type="hidden" ng-model="endDateHE[$index+1]" id="endDateHE{{$index+1}}" name="endDateHE[]" value="{{event.endDate}}">
-                                        <!--
-                                        <input type="hidden" ng-model="descHE[$index+1]" id="descHE{{$index+1}}" name="descHE[]" value="{{event.desc}}">
-                                        <input type="hidden" ng-model="colorHE[$index+1]" id="colorHE{{$index+1}}" name="colorHE[]" value="{{event.color}}">
-                                        -->
-                                        <!--
-                                        <div class="contentHE">
-                                            <div ng-if="event.startDate"><label for="">From:</label> {{event.startDate | date:'longDate'}} </div>
-                                            <div ng-if="event.endDate"><label for="">To:</label> {{event.endDate | date:'longDate'}} </div>
-                                            <div ng-if="event.desc"><label for="">Description:</label> {{event.desc}} </div>
-                                        </div>
-                                        -->
+
                                         <div class="historicalevent-buttons active">
-                                            <!--
-                                            <div class="metric-button metric-delete-button" ng-click="deleteContainerHistoricalEvent('row_config_',$index+1)" id="delete-metric-button-{{metric.id}}"></div>
-                                            -->
                                             <a type="button" data-intro="Edit event main data" data-position="right" class="btn btn-primary btn-create" ng-click="vieweditHE[$index+1]=!vieweditHE[$index+1]">
                                                 <span ng-show="vieweditHE[$index+1]">Collapse</span> Edit</a>
 
@@ -479,20 +370,7 @@
 												allowEmpty: false,
 												preferredFormat: 'hex'
 											}"></spectrum>
-                                                <!--
-                                               <spectrum-colorpicker
-                                                   name="colorHE[]" ng-model="colorHE[$index+1]" ng-model-onblur ng-change="updatecolorEvent($index);rePlotGraph()"
-                                                   options="{
-                                                       showInput: true,
-                                                       showAlpha: false,
-                                                       allowEmpty: false,
-                                                       preferredFormat: 'hex'
-                                                   }">
-                                               </spectrum-colorpicker>
-                                           -->
-                                                <!--
-                                                <input type='color' name="colorHE[]" ng-model="colorHE[$index+1]" ng-model-onblur ng-change="updatecolorEvent($index);rePlotGraph()" />
-                                                -->
+
                                             </div>
 
                                             <div ng-if="event.startDate">
@@ -502,12 +380,8 @@
                                                 <label for="">To:</label> {{event.endDate | date:'longDate'}}
                                             </div>
                                             <div ng-if="event.desc"><label for="">Description:</label>
-                                                <!--
-                                                    {{event.desc}}
-                                                -->
                                                 <textarea ng-blur="updateDescriptionEvent($index);rePlotGraph()" rows="2" cols="50" ng-model="descHE[$index+1]" ng-trim="false" maxlength="150" name="descriptionHEToAdd" id="descriptionHEToAdd">{{descHE[$index+1]}}</textarea>
                                                 <span>{{150 - descHE[$index+1].length}} left</span>
-
                                             </div>
                                         </div>
                                     </div>
@@ -518,9 +392,8 @@
 
                         </tabset>
                     </div>
-
                 </div>
             </div>
-    </div>
-    </form>
+		</form>	
+    </div>    
 </div>

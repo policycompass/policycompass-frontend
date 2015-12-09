@@ -22,19 +22,13 @@
                         <input type="hidden" ng-model="MetricSelectediIndex_[metric.id]" ng-init="MetricSelectediIndex_[metric.id]=metric.id" id="MetricSelectediIndex_{{metric.id}}" name="MetricSelectediIndex[]" value="{{metric.id}}">
 
                         <div class="metric-buttons">
-                            <!--
-                            <a type="button" data-intro="Edit dataset view properties" data-position="top" class="btn btn-primary btn-create" ng-click="displaycontentMetricModal(metric.id);collapsetFilterDataset=!collapsetFilterDataset;" id="modal-edit-metric-button-{{metric.id}}"><span ng-hide="collapsetFilterDataset">Open</span><span ng-show="collapsetFilterDataset">Collapse</span> Edit Mode</a>
-                            -->
                             <button type="button" data-intro="Remove dataset from the visualisation" data-position="top" class="btn btn-danger btn-clear" ng-click="deleteMetricFromList(metric.id, metric.title, ListMetricsFilter, $index);" id="delete-metric-button-{{metric.id}}">Remove</button>
                             <a type="button" data-intro="Access to the dataset data" data-position="right" class="btn btn-info btn-adddataset" href="#!/datasets/{{metric.id}}" target="_blank" id="view-metric-button-{{metric.id}}">View Dataset in detaill</a>
                         </div>
-                        <!--
-                        <div class="metric-forms" style="display: none;">
-                        -->
+
                         <div class="metric-forms">
                             <div class="metric-form-item">
                                 <br>
-
                                 <div ng-show="individualCombo_value_[metric.id].length/pageSizeDataset>1" class="createvisualization ">
                                     <div class="filterMetricsPagination" id="filterMetricsPaginationDirective">
                                         <div class="button-group">
@@ -68,20 +62,6 @@
 														preferredFormat: 'hex'
 													}"></spectrum>
 
-                                                <!--
-                                                <spectrum-colorpicker
-                                                    ng-init=" dataset_color_palete_[metric.id][option.id] = dataset_color_palete_[metric.id][option.id] == null ? colorScale(option.title) : dataset_color_palete_[metric.id][option.id] "
-                                                    ng-model="dataset_color_palete_[metric.id][option.id]"
-                                                    ng-model-onblur
-                                                    ng-change="enableApplyFunction();"
-                                                    options="{
-                                                        showInput: true,
-                                                        showAlpha: false,
-                                                        allowEmpty: false,
-                                                        preferredFormat: 'hex'
-                                                    }">
-                                                </spectrum-colorpicker>
-                                                -->
                                             </td>
                                         </tr>
                                     </body>

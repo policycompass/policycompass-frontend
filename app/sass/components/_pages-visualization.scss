@@ -269,6 +269,13 @@ rzslider span.bubble.limit {
     padding: 0 40px;
 }
 
+.enableindividual {
+  text-decoration: none;
+}
+.disableindividual {
+  text-decoration: line-through;
+}
+
 /*
 .createvisualization .designer-datasets:before,
 .createvisualization .designer-metrics:before,
