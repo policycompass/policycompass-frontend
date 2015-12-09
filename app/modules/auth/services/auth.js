@@ -11,6 +11,25 @@ angular.module('pcApp.auth.services.auth', [
         '$q',
         function (Adhocracy, API_CONF, $rootScope, $http, $location, $q) {
 
+            var last = undefined;
+
+            $rootScope.$on("$locationChangeSuccess",
+                function(evt, nextUrl, prevUrl) {
+                    /* FIXME: Is there a more generic way to get the path
+                     * from the URL? */
+                    var next = nextUrl.split("#!")[1];
+                    var prev = prevUrl.split("#!")[1];
+
+                    if ((next == "/login" || next == "/register")
+                        && typeof prev !== "undefined"
+                        && prev !== "/login"
+                        && prev !== "/register"
+                    ) {
+                        last = prev;
+                    }
+                }
+            );
+
             var Auth = {
                 state: {
                     loggedIn: undefined,
@@ -23,10 +42,11 @@ angular.module('pcApp.auth.services.auth', [
                 // the AdhocracySDK.
 
                 _login: function (userData, token, userPath) {
-                    $http.get(API_CONF.ADHOCRACY_BACKEND_URL + "/principals/groups/gods/").then(function (response) {
+                    return $http.get(API_CONF.ADHOCRACY_BACKEND_URL + "/principals/groups/gods/").then(function (response) {
                         var godsGroup = response.data;
                         var godsGroupSheet = godsGroup.data["adhocracy_core.sheets.principal.IGroup"];
                         var isAdmin = (_.contains(godsGroupSheet.roles, "god") && _.contains(godsGroupSheet.users, userPath));
+                        var deferred = $q.defer();
 
                         _.defer(function () {
                             $rootScope.$apply(function () {
@@ -37,8 +57,12 @@ angular.module('pcApp.auth.services.auth', [
 
                                 $http.defaults.headers.common["X-User-Token"] = token;
                                 $http.defaults.headers.common["X-User-Path"] = userPath;
+
+                                deferred.resolve(true)
                             });
                         });
+
+                        return deferred.promise;
                     });
                 },
 
@@ -59,11 +83,13 @@ angular.module('pcApp.auth.services.auth', [
 
             Adhocracy.then(function (adh) {
                 adh.registerMessageHandler('login', function (data) {
-                    Auth._login(data.userData, data.token, data.userPath);
+                    Auth._login(data.userData, data.token, data.userPath).then(function (ready) {
 
-                    if (($location.path() === '/login') || ($location.path() === '/register')) {
-                        $location.path('/');
-                    }
+                        if (($location.path() === '/login') || ($location.path() === '/register')) {
+                            $location.path(last || '/');
+                            last = undefined;
+                        }
+                    });
                 });
                 adh.registerMessageHandler('logout', function (data) {
                     Auth._logout();
