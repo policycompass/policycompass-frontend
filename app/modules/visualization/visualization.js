@@ -11,10 +11,6 @@ visu.config(function ($routeProvider) {
             //templateUrl: 'modules/visualization/partials/list.html'
             redirectTo: '/browse/visualization'
         })
-        .when('/visualizations/test', {
-            controller: 'viewVisualizationCtrl',
-            templateUrl: 'modules/visualization/partials/test.html'
-        })
         .when('/visualizations/create/', {
             controller: 'VisualizationsCreateController',
             templateUrl: 'modules/visualization/partials/create.html'

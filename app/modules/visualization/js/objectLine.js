@@ -8,20 +8,15 @@ var policycompass = policycompass || {
 
 
 policycompass.viz.line = function (options) {
-    // Object
-    //console.log("Dins line!!!");
 
     var self = {};
-
-    // Get options data
 
     for (var key in options) {
 
         self[key] = options[key];
     }
-    //console.log(self);
+	
     self.parentSelect = "#" + self.idName;
-
     self.maxMargin = self.margin;
     self.maxWidth = self.width;
     self.maxHeight = self.height;
@@ -35,19 +30,9 @@ policycompass.viz.line = function (options) {
     self.cntResizes = 0;
     d3.select(window).on('resize', resize);
 
-    //console.log(self.resolution);
-    //self.resolution='quarter';
-    //self.resolution='year';
-    //self.resolution='month';
-    //self.resolution='day';
-
     if (!self.resolution) {
         self.resolution = 'day';
     }
-
-    //console.log("resolution");
-    //console.log(self.resolution);
-    //console.log(self.dataToPlot);
 
     function resize() {
         self.cntResizes = self.cntResizes + 1;
@@ -61,11 +46,8 @@ policycompass.viz.line = function (options) {
         }
     }
 
-    //console.log("self.todelete="+self.todelete);
-
 
     function make_x_axis() {
-        //console.log("self.x="+self.x);
         return d3.svg.axis().scale(self.xScale).orient("bottom").ticks(20)
     }
 
@@ -74,32 +56,22 @@ policycompass.viz.line = function (options) {
     }
 
     function mouseover() {
-
         posMouse = d3.mouse(this);
         posX = posMouse[0];
         posY = posMouse[1];
         posX = xInversa(posX);
         posY = yInversa(posY);
-        //console.log("posX="+posX);
-        //console.log("posY="+posY);
-
-
         tooltip.style("opacity", 1.0).html("key=<br/>pos x=" + posX + "<br/>pos y=" + posY);
-
     }
 
     function mouseout() {
         tooltip.style("opacity", 0.0);
-
     }
-
 
     function mouseoutLegend() {
         self.showLegendOpened = 0;
         tooltipLegend.style("opacity", 0.0);
-
     }
-
 
     function toIntArray(arr) {
         for (var i = 0; i < arr.length; i++) {
@@ -109,12 +81,6 @@ policycompass.viz.line = function (options) {
     }
 
     function renderLine(posX, posY) {
-        //console.log("renderLine 1");
-        // posX = xInversa(posX);
-        // posY = yInversa(posY);
-        //console.log("posX="+posX);
-        //console.log("posY="+posY);
-        //The data for our line
         var lineData = [
             {
                 "x": 0,
@@ -131,8 +97,7 @@ policycompass.viz.line = function (options) {
             }
         ];
 
-        //This is the accessor function we talked about above
-        var lineFunction = d3.svg.line()//.x(function(d) {return d.x;})
+        var lineFunction = d3.svg.line()
             .x(function (d) {
                 return d.x;
             }).y(function (d) {
@@ -147,106 +112,47 @@ policycompass.viz.line = function (options) {
         //The line SVG Path we draw
         var lineGraph = svgContainer.append("path").attr("d", lineFunction(lineData)).attr("stroke", "blue").attr("stroke-width", 2).attr("fill", "none");
 
-        /*
-         self.svg.selectAll("posmouse").data(dataForCircles);
-         myDiscoLinesY.enter().append("line")
-         .attr("class","posmouse")
-         .style("stroke", function(d,i) {return colorScale("99");})
-         .attr("opacity", 0.5)
-         .attr("x1", function(d,i){return 0;})
-         .attr("y1", function(d,i){return self.y(d.posY);})
-         .attr("x2", function(d,i){return self.x(d.posX);})
-         .attr("y2", function(d,i){return self.y(d.posY);})
-         */
     }
 
     self.drawLines = function (lines, eventsData) {
 
-        //console.log("drawlines eventsData");
-        //console.log(eventsData);
-        //console.log("cnt="+lines.length);
-        //console.log(lines);
-        //console.log("self.showYAxesTogether="+self.showYAxesTogether);
-        //console.log("self.margin.right="+self.margin.right);
         if (!self.showYAxesTogether) {
-            //self.margin.right = self.margin.right * lines.length;
-            //self.width = self.width - (self.margin.right * (lines.length-1));
             var widthTempoarl = self.width - (self.distanceXaxes * (lines.length - 1));
             if (widthTempoarl < (self.width / 3)) {
                 self.width = self.width / 3;
             } else {
                 self.width = widthTempoarl;
             }
-            //self.width = self.width - (18 * (lines.length-1));
             self.svg.attr("width", self.width + self.margin.left + self.margin.right);
-
         }
 
         self.linesIn = lines;
         self.eventsDataIn = eventsData;
 
-        /*
-
-         */
-        //console.log("lines");
-        //console.log(lines);
-        /*
-         var showLegend = document.getElementById("showLegend").checked;
-         var showLines = document.getElementById("showLines").checked;
-         var showPoints = document.getElementById("showPoints").checked;
-         var showLabels = document.getElementById("showLabels").checked;
-         var showGrid = document.getElementById("showGrid").checked;
-         */
         var showLegend = self.showLegend;
         var showLines = self.showLines;
         var showAreas = self.showAreas;
-
         var showPoints = self.showPoints;
-        //console.log("showPoints="+showPoints);
         var showLabels = self.showLabels;
         var showGrid = self.showGrid;
         var showAsPercentatge = self.showAsPercentatge
-        //console.log(showAsPercentatge);
-        //console.log("lines.length="+lines.length);
-        //var colorScale = d3.scale.category20c();
         var colorScale = d3.scale.category20();
-        //var colorScaleLinel = d3.scale.linear().domain([0,(lines.length-1)]).range(["black","red"]);
-
-        //var colorScale = d3.scale.linear().domain([0,1]).range(["red","blue"]);
-        /*
-         var colorScaleLinel = d3.scale.linear()
-         .domain([0,1])
-         .range(['#FFF', '#933'])
-         */
         var colorScaleForHE = d3.scale.category20();
-
         var parseDate = d3.time.format("%Y-%m-%d").parse;
-
         var valuesX = [];
-
         var valuesX_day = [];
-
         var valuesY = [];
-        //console.log("--------------");
+
         self.arrayMaxVy = [];
         self.arrayMinVy = [];
 
         if (showAsPercentatge) {
             lines.forEach(function (d, i) {
-                //console.log(i);
-                //console.log(lines[i]);
                 var iniValue = lines[i].ValueY[0];
-
                 if (iniValue != 0) {
                     lines[i].ValueX.forEach(function (d, j) {
-
-                        //console.log(lines[i].ValueY[j]);
-
                         var valueTMP = ((lines[i].ValueY[j] - iniValue) / iniValue) * 100;
-
                         lines[i].ValueY[j] = valueTMP;
-                        //console.log(valueTMP);
-
                     });
                 }
             });
@@ -255,77 +161,36 @@ policycompass.viz.line = function (options) {
         var arrayXaxesLabel = [];
 
         lines.forEach(function (d, i) {
-            //console.log("****** i="+i);
-            //console.log(d.Values);
-            //console.log(d.ValueY);
-            //console.log(d.Color);
-            //console.log("d.Position="+d.Position)
-            //console.log("---");
-            //console.log(d.Values);
             var r_data = []
-            //r_data = toIntArray(d.Values);
             r_data = toIntArray(d.ValueY);
-            //data = toIntArray(data);
-            //console.log(r_data);
-
-            //console.log(d3.max((d3.values(d.Values))));
-            //self.arrayMaxVy.push(d3.max(d3.values(d.Values)));
             self.arrayMaxVy.push(d3.max(d3.values(r_data)));
-
-            //var vMinValueD3 = d3.min(d3.values(d.Values));
             var vMinValueD3 = d3.min(d3.values(r_data));
-            /*
-             if (vMinValueD3>0)
-             {
-             vMinValueD3 = 0;
-             }
-             */
             self.arrayMinVy.push(vMinValueD3);
 
-
-            //obj = d.Values;
             var obj = d.ValueY;
-            //obj = d;
+
             for (var i in obj) {
-                //result = "." + i + " = " + obj[i] + "\n";
-                //console.log(result);
-                //valuesY.push(parseInt(obj[i]));
-                //valuesY.push(parseInt(obj[i]));
-
                 var twoPlacedFloat = parseFloat(obj[i]);
-                //var twoPlacedFloat = parseFloat(obj[i]).toFixed(2);
-
                 valuesY.push(twoPlacedFloat)
-
             }
             obj = d.ValueX;
-            //obj = d;
 
             for (var i in obj) {
-                //console.log("i="+i+"---obj[i]="+obj[i]);
 
                 var a = arrayXaxesLabel.indexOf(obj[i]);
                 if (a < 0) {
                     arrayXaxesLabel.push(obj[i]);
                 }
-                //result = "." + i + " = " + obj[i] + "\n";
-                //console.log(result);
-                //valuesX.push(parseInt(obj[i]));
-                //console.log(obj[i]);
+
                 valuesX.push((obj[i]));
 
-                //if (obj[i].length==4)
                 if (self.xaxeformat == 'sequence') {
                     valuesX_day.push(obj[i]);
                 } else if (self.resolution == 'quarter') {
-                    //resolution = 'quarter';
-                    //console.log(obj[i]);
 
                     var arrayObjDate = obj[i].split("-");
-
                     var newMonth = 1;
 
-                    //console.log(arrayObjDate[1]);
                     if ((arrayObjDate[1] == 'Q1') || (arrayObjDate[1] == 'Q2') || (arrayObjDate[1] == 'Q3') || (arrayObjDate[1] == 'Q4')) {
                         var Q = arrayObjDate[1].replace("Q", "");
                         newMonth = parseInt((Q * 3) - 2);
@@ -334,113 +199,42 @@ policycompass.viz.line = function (options) {
                         }
 
                         var dateToPush = arrayObjDate[0] + "-" + newMonth + "-01";
-                        //console.log(dateToPush);
-
                         valuesX_day.push(dateToPush);
                     }
 
-                    //var dt = new Date(obj[i],'01','01');
-                    //console.log(dt);
-                    //valuesX_day.push(dt);
-                    //valuesX_day.push(("01/01/"+obj[i]));
                 } else if (self.resolution == 'year') {
-                    //resolution = 'year';
+
                     valuesX_day.push(("01-01-" + obj[i]));
-
-                    //var dt = new Date(obj[i],'01','01');
-                    //console.log(dt);
-                    //valuesX_day.push(dt);
-                    //valuesX_day.push(("01/01/"+obj[i]));
                 }
-                //else if (obj[i].length==7)
                 else if (self.resolution == 'month') {
-                    //resolution = 'month';
-                    //console.log(obj[i]);
                     var arrayObjDate = obj[i].split("-");
-                    //valuesX_day.push(("01/"+obj[i]));
-                    //valuesX_day.push((arrayObjDate[0]+"-01-"+arrayObjDate[1]));
-                    //valuesX_day.push((obj[i])+"-01");
-
-                    //valuesX_day.push(("01-"+arrayObjDate[1]+"-"+arrayObjDate[0]));
                     valuesX_day.push((arrayObjDate[1] + "-01-" + arrayObjDate[0]));
-
-                    //valuesX_day.push((obj[i])+"/01");
-
                 }
-                //else if (obj[i].length==9)
                 else if (self.resolution == 'day') {
-                    //resolution = 'day';
-                    //console.log(obj[i]);
-                    //var arrayObjDate = obj[i].split("-");
                     var strDatTmp = obj[i];
-                    //strDatTmp = strDatTmp.replace("-","/");
-                    //strDatTmp = strDatTmp.replace("-","/");
-                    //console.log(strDatTmp);
                     var arrayObjDate = obj[i].split("-");
                     strDatTmp = arrayObjDate[1] + "/" + arrayObjDate[2] + "/" + arrayObjDate[0];
-                    //console.log(strDatTmp);
                     valuesX_day.push(strDatTmp);
-
-                    //valuesX_day.push(arrayObjDate[2]+"/"+arrayObjDate[1]+"/"+arrayObjDate[0]);
-
                 }
-                //valuesX[i]=obj[i];
             }
 
             self.lengthArrayXaxesLabel = arrayXaxesLabel.length;
-//   			console.log(self.lengthArrayXaxesLabel);
         });
 
-        //console.log("--------------");
-        //console.log(self.arrayMaxVy);
-        //console.log(self.arrayMinVy);
-        //console.log("--------------");
 
-        //console.log("valuesY="+valuesY);
-        //console.log("lines="+lines);
-        //console.log("lines[0].Values="+lines[0].Values);
-        /*
-         if (!lines[0].Values)
-         {
-         lines[0].Values=1;
-         }
-         */
         if (!lines[0].ValueY) {
             lines[0].ValueY = 1;
         }
 
 
-        //console.log(".....");
-        //console.log(lines[0].Values);
-        //console.log(".....");
-        //console.log(lines[0].Values.length);
-        //console.log(".....");
-        //console.log(valuesY);
         self.maxVy = d3.max(d3.values(valuesY));
         self.minVy = d3.min(d3.values(valuesY));
-
-        //console.log("self.maxVy="+self.maxVy);
-        //console.log("self.minVy="+self.minVy);
-
-        //self.minVy = 0;
-        //console.log(valuesY);
         self.minVx = d3.min(d3.values(valuesX_day));
-        ;
-        //console.log("self.minVx="+self.minVx);
-        //self.minVx = 0;
         self.maxVx = d3.max(d3.values(valuesX_day));
-        //console.log("self.maxVx="+self.maxVx);
-
-        //console.log(valuesX_day);
-        //console.log("maxVx="+self.maxVx);
 
         function getDate(d) {
             return new Date(d);
         }
-
-        //console.log("valuesX");
-        //console.log(valuesX);
-
 
         var dateRE = /^(\d{2})[\/\- ](\d{2})[\/\- ](\d{4})/;
 
@@ -476,48 +270,27 @@ policycompass.viz.line = function (options) {
             return 0;
         }
 
-        //var resolution = 'day';
         var formatXaxe = "%d-%m-%Y";
-        //valuesX.sort(dmyOrdA);
-        //console.log(self.xaxeformat);
         if (self.xaxeformat == 'sequence') {
             valuesX.sort();
         } else {
-            //console.log(valuesX[0].length);
-            //if (valuesX[0].length==4)
             if (self.resolution == 'quarter') {
-                //resolution = 'quarter';
                 formatXaxe = "%Y";
                 formatXaxe = "%d-%m-%Y";
             } else if (self.resolution == 'year') {
-                //resolution = 'year';
                 formatXaxe = "%Y";
             }
-            //else if (valuesX[0].length==7)
             else if (self.resolution == 'month') {
-                //resolution = 'month';
                 formatXaxe = "%m-%Y";
-                //formatXaxe = "%d-%Y";
             }
-            //else if (valuesX[0].length==9)
             else if (self.resolution == 'day') {
-                //resolution = 'day';
                 formatXaxe = "%d-%m-%Y";
             }
 
-            //console.log("resolution="+resolution);
             valuesX_day.sort(mdyOrdA);
 
-
-            //console.log("--date in 0-");
-            //console.log(valuesX_day[0]);
-            //console.log(getDate(valuesX_day[0]));
-            //console.log("---");
-
-            //console.log(valuesX_day[0]);;
             if (getDate(valuesX_day[0]) == "Invalid Date") {
                 var value = valuesX_day[0];
-                //console.log(value);
                 if (value) {
                     value = value.replace("-", "/");
                     value = value.replace("-", "/");
@@ -528,7 +301,6 @@ policycompass.viz.line = function (options) {
                 self.minDate = getDate(valuesX_day[0]);
             }
 
-            //self.minDate = getDate("01/01/1996");
             if (getDate(valuesX_day[valuesX_day.length - 1]) == "Invalid Date") {
                 var value = valuesX_day[valuesX_day.length - 1];
                 if (value) {
@@ -540,42 +312,15 @@ policycompass.viz.line = function (options) {
             } else {
                 self.maxDate = getDate(valuesX_day[valuesX_day.length - 1]);
             }
-            //self.maxDate = getDate(valuesX_day[valuesX_day.length-1]);
 
-            //console.log(valuesX_day[valuesX_day.length-1]);
-
-            //console.log("minDate="+self.minDate);
-            //console.log("maxDate="+self.maxDate);
-
-            //console.log(self.minDate);
-            //console.log(self.maxDate);
         }
 
-
-        //console.log(valuesX[0]);
-        //console.log("self.minDate="+self.minDate);
-
-        //console.log(valuesX[valuesX.length-1]);
-        //console.log("self.maxDate="+self.maxDate);
-
-
-        //console.log("self.minDate="+self.minDate);
-        //self.x = d3.scale.linear().domain([0,lines[0].Values.length-1]).range([0,self.width]).clamp(true);
-        //self.xScale = d3.scale.linear().domain([self.minVx, self.maxVx]).range([0, self.width]).clamp(true);
-
-        //console.log(self.minDate);
-        //console.log("resolution="+resolution);
-
         if (self.xaxeformat == 'sequence') {
-            //console.log("self.minVx="+self.minVx);
-            //console.log("self.maxVx="+self.maxVx);
             self.xScale = d3.scale.linear().domain([self.minVx, self.maxVx]).range([0, self.width]).clamp(true);
         } else {
             self.xScale = d3.time.scale().domain([self.minDate, self.maxDate]).range([0, self.width]).clamp(true);
         }
 
-
-        //self.xScaleInversa = d3.scale.linear().domain([0, self.width]).range([self.minVx, self.maxVx]).clamp(true);
         if (self.xaxeformat == 'sequence') {
             self.xScaleInversa = d3.scale.linear().domain([0, self.width]).range([self.minVx, self.maxVx]).clamp(true);
         } else {
@@ -584,16 +329,12 @@ policycompass.viz.line = function (options) {
             ]).clamp(true);
         }
 
-
-        //self.xScaleX = d3.scale.linear().domain([self.minVx, self.maxVx]).range([0, lines[0].Values.length-1]).clamp(true);
         if (self.xaxeformat == 'sequence') {
             self.xScaleX = d3.scale.linear().domain([self.minVx, self.maxVx]).range([0, self.maxVx]).clamp(true);
         } else {
             self.xScaleX = d3.time.scale().domain([self.minDate, self.maxDate]).range([0, self.maxDate]).clamp(true);
         }
 
-
-        //self.xScaleXInversa = d3.scale.linear().domain([0, lines[0].Values.length-1]).range([self.minVx, self.maxVx]).clamp(true);
         if (self.xaxeformat == 'sequence') {
             self.xScaleXInversa = d3.scale.linear().domain([0, self.maxVx]).range([self.minVx, self.maxVx]).clamp(true);
         } else {
@@ -602,17 +343,11 @@ policycompass.viz.line = function (options) {
             ]).clamp(true);
         }
 
-
-        //self.x = d3.scale.linear().domain([0,lines[0].Values.length-1]).range([0,self.width]).clamp(true);
         if (self.xaxeformat == 'sequence') {
             self.x = d3.scale.linear().domain([0, self.maxVx]).range([0, self.width]).clamp(true);
         } else {
             self.x = d3.time.scale().domain([0, self.maxDate]).range([0, self.width]);
         }
-
-
-        //self.xInversa = d3.scale.linear().domain([0, self.width]).range([self.minVx, self.maxVx]).clamp(true);
-        //self.xInversa = d3.scale.linear().domain([0,self.width]).range([0,lines[0].Values.length-1]).clamp(true);
 
         if (self.xaxeformat == 'sequence') {
             self.xInversa = d3.scale.linear().domain([0, self.width]).range([0, self.maxVx]).clamp(true);
@@ -620,12 +355,6 @@ policycompass.viz.line = function (options) {
             self.xInversa = d3.time.scale().domain([0, self.width]).range([0, self.maxDate]).clamp(true);
         }
 
-
-        //self.minVy = 0;
-        //console.log("self.maxVy="+self.maxVy);
-        //console.log("self.minVy="+self.minVy);
-        //self.y = d3.scale.linear().domain([0, self.maxVy]).range([self.height, 0]).clamp(true);
-        //self.yInversa = d3.scale.linear().domain([self.height, 0]).range([0, self.maxVy]).clamp(true);
         var minYToPlot = 0;
         var maxYToPlot = 0;
         self.yArray = [];
@@ -640,71 +369,46 @@ policycompass.viz.line = function (options) {
                 maxYToPlot = self.arrayMaxVy[i];
             }
 
-            //console.log("min Y ="+minYToPlot);
-            //console.log("max Y ="+maxYToPlot);
-
             self.yArray.push(d3.scale.linear().domain([minYToPlot, maxYToPlot]).range([self.height, 0]).clamp(true));
             self.yArrayInversa.push(d3.scale.linear().domain([self.height, 0]).range([
                 minYToPlot, maxYToPlot
             ]).clamp(true));
         });
 
-        //console.log("self.minVy="+self.minVy);
-        //console.log("self.maxVy="+self.maxVy);
-
         self.y = d3.scale.linear().domain([self.minVy, self.maxVy]).range([self.height, 0]).clamp(true);
         self.yInversa = d3.scale.linear().domain([self.height, 0]).range([self.minVy, self.maxVy]).clamp(true);
 
         var formatdecimal = 0;
 
-        //console.log(Math.round(self.maxVy/100)+1);
-        //console.log(self.maxVy)
-
-
-        //formatdecimal = parseInt(self.maxVy.toString().length);
         formatdecimal = Math.round(self.maxVy / 100) + 1;
 
         if (formatdecimal < 2) {
             formatdecimal = 2;
         }
-        //formatdecimal=4;
-        //console.log(formatdecimal);
+
         var orientText = "left";
         if (formatdecimal > 4) {
-            //orientText = "right";
             orientText = "left";
             formatdecimal = 4;
         }
-        /*
-         self.xInversa = d3.scale.linear().domain([0,self.width]).range([0,lines[0].Values.length-1]).clamp(true);
-         self.yInversa = d3.scale.linear().domain([self.height, 0]).range([0,self.maxVy]).clamp(true);
-         */
-        //var x = d3.scale.linear()
-        //	.range([0, self.width])
-        //var y = d3.scale.linear()
-        //	.range([self.height, 0]);
+
+
 
         if (self.xaxeformat == 'sequence') {
-            var xAxis = d3.svg.axis().scale(self.xScale).orient("bottom")//.ticks(d3.time.months, 1)
-                //.ticks(d3.time.weeks, 2)
+            var xAxis = d3.svg.axis().scale(self.xScale).orient("bottom")
                 .tickFormat(d3.format("." + formatdecimal + "s"));
         } else {
 
             if (self.resolution == 'quarter') {
 
-                //console.log(self.lengthArrayXaxesLabel);
-                var xAxis = d3.svg.axis().scale(self.xScale).orient("bottom")//.ticks(d3.time.month, 3)
-                    .ticks(d3.time.month, 2)//.tickFormat(d3.time.format(formatXaxe));
+                var xAxis = d3.svg.axis().scale(self.xScale).orient("bottom")
+                    .ticks(d3.time.month, 2)
                     .tickFormat(function (x) {
-                        //console.log(x);
-                        //var milli = (x.getTime() - 10000);
                         var milli = (x.getTime());
-                        //return d3.time.format(formatXaxe);
                         var vanilli = new Date(milli);
                         var mon = vanilli.getMonth();
                         var yr = vanilli.getFullYear();
-                        //console.log(mon);
-                        // return appropriate quarter for that month
+
                         if (mon <= 2) {
                             return "Q1 " + yr;
                         } else if (mon <= 5) {
@@ -714,16 +418,12 @@ policycompass.viz.line = function (options) {
                         } else {
                             return "Q4 " + yr;
                         }
-
-
                     });
 
             } else {
-                //console.log(self.lengthArrayXaxesLabel);
-                var xAxis = d3.svg.axis().scale(self.xScale).orient("bottom")//.ticks(d3.time.month, 3)
-                    .ticks(self.lengthArrayXaxesLabel).tickFormat(d3.time.format(formatXaxe));
-                ;
 
+                var xAxis = d3.svg.axis().scale(self.xScale).orient("bottom")
+                    .ticks(self.lengthArrayXaxesLabel).tickFormat(d3.time.format(formatXaxe));
             }
 
 
@@ -731,43 +431,29 @@ policycompass.viz.line = function (options) {
         self.xAxis = xAxis;
 
         if (self.hideyaxeunits == true) {
-            var yAxis = d3.svg.axis().scale(self.y)//.scale(self.yArray)
-                //.orient("left")
-                //.orient("right")
+            var yAxis = d3.svg.axis().scale(self.y)
                 .orient(orientText);
         } else {
             if (self.maxVy < 100) {
                 var yAxis = d3.svg.axis().scale(self.y).orient(orientText);
             } else {
-                var yAxis = d3.svg.axis().scale(self.y)//.scale(self.yArray)
-                    //.orient("left")
-                    //.orient("right")
-                    .orient(orientText)//.tickFormat(d3.format("."+formatdecimal+"s"))
+                var yAxis = d3.svg.axis().scale(self.y)
+                    .orient(orientText)
                     .tickFormat(d3.format(".2s"));
             }
         }
         var lineFunction = d3.svg.line().x(function (d, i) {
-            //console.log(i);
-            //console.log("........");
-            //console.log(d);
-            //xScale
-            //return self.x(d.posX);
-            //console.log("d.posX="+d.posX)
-            //console.log(d.xOriginal);
-            //return self.x(d.posX);
-            //return self.xScale(getDate(d.xOriginal));
+
+
             var resX = d.xOriginal;
             if (self.xaxeformat == 'sequence') {
                 return (self.xScale((resX)));
             } else {
-                //console.log(resX);
-                //if (resX.length==4)
+
                 if (self.xaxeformat == 'sequence') {
                     resX = resX;
                 } else if (self.resolution == 'quarter') {
-                    //console.log(resX);
                     var arrayObjDate = resX.split("-");
-
                     var newMonth = 1;
                     if ((arrayObjDate[1] == 'Q1') || (arrayObjDate[1] == 'Q2') || (arrayObjDate[1] == 'Q3') || (arrayObjDate[1] == 'Q4')) {
                         var Q = arrayObjDate[1].replace("Q", "");
@@ -784,43 +470,22 @@ policycompass.viz.line = function (options) {
                 } else if (self.resolution == 'year') {
                     resX = "01/01/" + resX;
                 }
-                //else if (resX.length==7)
                 else if (self.resolution == 'month') {
-
-                    //resX=resX.replace("-","-01-");
-                    //resX=resX.replace("/","/01/");
-                    //resX="01/"+resX;
-                    //console.log("resX="+resX);
                     var arrayObjDate = resX.split("-");
-
-                    //resX=resX+"/01";
-                    //resX="01/"+arrayObjDate[1]+"/"+arrayObjDate[0];
                     resX = arrayObjDate[1] + "/01/" + arrayObjDate[0];
-
-                    //console.log("resX="+resX);
-
                 }
-                //else if (resX.length==9)
                 else if (self.resolution == 'day') {
                     resX = resX;
-                    //console.log(resX);
                     var arrayObjDate = resX.split("-");
                     resX = arrayObjDate[1] + "/" + arrayObjDate[2] + "/" + arrayObjDate[0];
 
                 }
-                //console.log(resX);
-
                 return (self.xScale(getDate(resX)));
             }
 
 
         }).y(function (d) {
-            //console.log("-----")
-            //console.log(cntLineasPintadas);
-            //console.log("-->"+d.posY+"----"+self.y(d.posY))
-            //return self.y(d.posY);
             return self.yArray[self.cntLineasPintadas](d.posY);
-            //return 2;
         }).interpolate("linear");
 
         ;
@@ -839,46 +504,21 @@ policycompass.viz.line = function (options) {
         /* en plot mouse pointer*/
 
         if (showLabels) {
-            /*
-             self.svg.append("g")
-             .attr("class", "x axis")
-             .attr("transform", "translate(0," + self.height + ")")
-             .call(xAxis)
-             .attr("font-size", self.font_size)
-             .attr("fill", "none")
-             .style("stroke", '#000000')
-             .style("stroke-width", '1')
-             .selectAll("text")
-             .style("text-anchor", "end")
-             //.attr("dx", "-.8em")
-             //.attr("dy", ".15em")
-             .attr("transform", function(d) {
-             return "rotate(-25)"
-             })
-             ;
-             */
 
-            self.svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + self.height + ")").call(xAxis).attr("font-size", self.font_size).selectAll("text").style("text-anchor", "end")//.attr("dx", "-.8em")
-                //.attr("dy", ".15em")
-                .attr("transform", function (d) {
-                    return "rotate(-25)"
-                });
-
+            self.svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + self.height + ")")
+            .call(xAxis)
+            .attr("font-size", self.font_size).selectAll("text")
+            .style("text-anchor", "end")
+            .attr("transform", function (d) {
+				return "rotate(-25)"
+			});
 
             if (self.showYAxesTogether) {
 
-                //console.log("self.labelY.length="+self.labelY.length);
-//				for (index = 0; index < self.labelY.length; ++index) {
+
                 var keyIndex;
-                /*
-                 self.svg.append("g")
-                 .attr("class", "y axis")
-                 .attr("fill", "none")
-                 .style("stroke", '#000000')
-                 .style("stroke-width", '1')
-                 .call(yAxis)
-                 .attr("font-size", self.font_size);
-                 */
 
                 self.svg.append("g").attr("class", "y axis").call(yAxis).attr("font-size", self.font_size);
 
@@ -890,7 +530,6 @@ policycompass.viz.line = function (options) {
 
                     if (posa >= 0) {
                         // Exists
-                        //console.log("Exists");
                     } else {
                         // Does not exist
                         arrayYaxisProcessed.push(self.labelY[keyIndex]);
@@ -905,58 +544,64 @@ policycompass.viz.line = function (options) {
                     } else {
                         offsetYaxes = self.offsetYaxesL;
                     }
-                    self.svg.append("g").append("text").attr("font-size", self.font_size).attr("transform", "rotate(-90)").attr("y", offsetYaxes)//.attr("dy", ".71em")
-                        .attr("dy", self.dymarging + "px")//.attr("x", 50*(keyIndex))
-                        .style("text-anchor", "end").text(function () {
-                            var returnValue = "";
-                            if (self.showAsPercentatge) {
-                                returnValue = "As % (" + self.labelY[0] + ")";
-                            } else {
-                                returnValue = self.labelY[0];
-                            }
-                            return returnValue;
-                        });
-                    //.text(self.labelY[0]);
+                    self.svg.append("g")
+                    .append("text")
+                    .attr("font-size", self.font_size)
+                    .attr("transform", "rotate(-90)")
+                    .attr("y", offsetYaxes)                    
+					.attr("dy", self.dymarging + "px")
+					.style("text-anchor", "end").text(function () {
+						var returnValue = "";
+						if (self.showAsPercentatge) {
+							if (self.labelY[0]) {							
+								returnValue = "As % (" + self.labelY[0] + ")";
+							}
+							else {
+								returnValue = "As %"
+							}							
+						} else {
+							returnValue = self.labelY[0];
+						}
+						return returnValue;
+					});
                 } else {
 
                     var cnt_linea = 0;
                     for (keyIndex in self.labelY) {
                         cnt_linea = cnt_linea + 1;
-                        //for (keyIndex in arrayYaxisProcessed) {
-                        self.svg.append("g").append("text").attr("font-size", self.font_size).attr("transform", "rotate(-90)").attr("y", self.dymarging * (keyIndex))//.attr("dy", ".71em")
-                            .attr("dy", self.dymarging + "px")//.attr("x", 50*(keyIndex))
-
-                            //.style("fill", function (d, i) { return colorScale(lines[keyIndex].Key); })
-                            /*
-                             .style("stroke", function(d,i) {
-                             return colorScale(lines[keyIndex].Key);
-                             //return colorScaleLinel((cnt_linea-1));
-                             })
-                             *///.attr("fill", "none")
-                            .style("fill", function (d, i) {
-
-                                var colorToReturn = "";
-                                var lineColor = lines[keyIndex].Color;
-                                if (lineColor) {
-                                    colorToReturn = lineColor;
-                                } else {
-                                    colorToReturn = colorScale(lines[keyIndex].Key);
-                                }
-                                return colorToReturn;
-
-                                //return colorScale(lines[keyIndex].Key);
-                                //return colorScaleLinel((cnt_linea-1));
-                            }).style("font-weight", "bold").style("text-anchor", "end").text(function () {
-                                var returnValue = "";
-                                if (self.showAsPercentatge) {
-                                    returnValue = "As % (" + self.labelY[keyIndex] + ")";
-                                } else {
-                                    returnValue = self.labelY[keyIndex];
-                                }
-                                return returnValue;
-                            });
-                        //.text(self.labelY[keyIndex]);
-
+                        self.svg.append("g")
+                        .append("text")
+                        .attr("font-size", self.font_size)
+                        .attr("transform", "rotate(-90)")
+                        .attr("y", self.dymarging * (keyIndex))
+                        .attr("dy", self.dymarging + "px")
+                        .style("fill", function (d, i) {
+                            var colorToReturn = "";
+                            var lineColor = lines[keyIndex].Color;
+                            if (lineColor) {
+                                colorToReturn = lineColor;
+                            } else {
+                                colorToReturn = colorScale(lines[keyIndex].Key);
+                            }
+                            return colorToReturn;
+						})
+						.style("font-weight", "bold")
+						.style("text-anchor", "end")
+						.text(function () {
+                            var returnValue = "";
+                            if (self.showAsPercentatge) {
+                            	if (self.labelY[keyIndex]) {
+                                	returnValue = "As % (" + self.labelY[keyIndex] + ")";
+                               	}
+                               	else {
+                               		returnValue = "As %";
+                               	}
+                               	
+                            } else {
+                                returnValue = self.labelY[keyIndex];
+                            }
+                            return returnValue;
+						});
                     }
                 }
             }
@@ -964,11 +609,20 @@ policycompass.viz.line = function (options) {
 
 
         if (showGrid) {
-            self.svg.append("g").attr("class", "grid").attr("transform", "translate(0," + self.height + ")").call(make_x_axis().tickSize(-self.height, 0, 0).tickFormat(""))
+            self.svg.append("g")
+            .attr("class", "grid")
+            .attr("transform", "translate(0," + self.height + ")")
+            .call(make_x_axis()
+            .tickSize(-self.height, 0, 0)
+            .tickFormat(""))
 
-
-            self.svg.append("g").attr("class", "grid").call(make_y_axis().tickSize(-self.width, 0, 0).tickFormat(""))
+            self.svg.append("g")
+            .attr("class", "grid")
+            .call(make_y_axis()
+            .tickSize(-self.width, 0, 0)
+            .tickFormat(""))
         }
+        
         var cntpasadas;
         if (showAreas) {
             cntpasadas = 1;
@@ -977,10 +631,6 @@ policycompass.viz.line = function (options) {
         }
         while (cntpasadas <= 2) {
 
-            //for (cntpasadas = 1; cntpasadas <= 2; cntpasadas++) {
-            //console.log("cntpasadas="+cntpasadas);
-
-
             self.legendText = "";
             var cntiMultiple = 0;
             var incremetY = 0;
@@ -988,11 +638,7 @@ policycompass.viz.line = function (options) {
             lines.forEach(function (d, i) {
                 self.cntLineasPintadas = i;
                 cnti = cnti + 1;
-                //console.log("forEach");
-//    		console.log(d);
 
-                //var linesArray = [];
-                //var linesObject = new Object();
                 var linesArray = [];
                 var linesArrayX = [];
                 var linesArrayXY = [];
@@ -1000,54 +646,21 @@ policycompass.viz.line = function (options) {
 
                 var evaluate = 0;
                 if ('ValueY' in d) {
-                    //if (isArray(d.Values))
 
-                    //if (isArray(d.ValueY))
-                    //{
-                    //linesObject=d.values;
-                    //linesArray=d.Values;
-                    //linesArray=d.ValueY;
+
                     linesArray = d.ValueY;
                     linesArrayX = d.ValueX;
-                    //linesArrayXY = d.XY;
                     linesArrayXY = d.ValueX + "|" + d.ValueY;
                     lineColor = d.Color;
-                    //}
-                    //else
-                    //{
-                    //linesObject[0]=d.values;
-                    //linesArray[0]=d.Values;
-                    //	linesArray[0] = d.ValueY;
-                    //	linesArrayX[0] = d.ValueX;
-                    //	linesArrayXY[0] = d.XY;
-                    //}
-
-                    /*
-
-                     arrayPosXPosY = [];
-                     arrayPosXPosY['x'] = d.ValueX;
-                     arrayPosXPosY['y'] = d.ValueY;
-                     linesArray=arrayPosXPosY;
-                     */
 
                     evaluate = 1;
-                    //console.log(linesObject);
-                    //console.log(linesArray);
+
                 }
 
                 key = d.Key;
 
-
                 //to create n y axes
                 if ((!self.showYAxesTogether) && (showLabels)) {
-                    //console.log(linesArray);
-                    //maxAxis = d3.max(d3.values(linesArray));
-                    //minAxis = d3.min(d3.values(linesArray));
-                    //console.log(maxAxis);
-                    //var y1 = d3.scale.linear().domain([minAxis, maxAxis]).range([self.height, 0]); // in real world the domain would be dynamically calculated from the data
-                    // create left yAxis
-                    //var yAxisLeft = d3.svg.axis().scale(y1).ticks(10).orient("left");
-
 
                     var transform = "";
                     if (cnti === 1) {
@@ -1060,7 +673,6 @@ policycompass.viz.line = function (options) {
                         }
                         var orientText = "left";
                         if (formatdecimal > 4) {
-                            //orientText = "right";
                             orientText = "left";
                             formatdecimal = 4;
                         }
@@ -1068,20 +680,14 @@ policycompass.viz.line = function (options) {
                         transform = "translate(0,0)";
 
                         if (self.hideyaxeunits == true) {
-                            var yAxisLeft = d3.svg.axis().scale(self.yArray[i])//.ticks(10)
-                                //.orient("left")
-                                //.orient("right")
+                            var yAxisLeft = d3.svg.axis().scale(self.yArray[i])
                                 .orient(orientText);
                         } else {
-                            var yAxisLeft = d3.svg.axis().scale(self.yArray[i])//.ticks(10)
-                                //.orient("left")
-                                //.orient("right")
-                                .orient(orientText)//.tickFormat(d3.format("."+formatdecimal+"s"));
+                            var yAxisLeft = d3.svg.axis().scale(self.yArray[i])
+                                .orient(orientText)
                                 .tickFormat(d3.format(".2s"));
                         }
                     } else {
-                        //console.log("i="+i);
-                        //console.log(self.arrayMaxVy[i]);
                         formatdecimal = parseInt(self.arrayMaxVy[i].toString().length);
 
                         if (formatdecimal < 2) {
@@ -1089,88 +695,36 @@ policycompass.viz.line = function (options) {
                         }
 
                         var posFinalXAxeY = self.width;
-                        //console.log(posFinalXAxeY)
-                        //console.log("valuesY="+valuesY);
                         posFinalXAxeY = posFinalXAxeY + (self.distanceXaxes + formatdecimal) * (i - 1)
-                        //console.log(posFinalXAxeY);
-                        //console.log(formatdecimal);
-                        //posFinalXAxeY = posFinalXAxeY + self.margin.right*(i-1)
-                        //console.log(posFinalXAxeY)
-                        //console.log(self.yArray[i]);
                         transform = "translate(" + posFinalXAxeY + ",0)";
 
                         if (self.hideyaxeunits == true) {
                             var yAxisLeft = d3.svg.axis().scale(self.yArray[i]).ticks(10).orient("right");
                         } else {
-                            var yAxisLeft = d3.svg.axis().scale(self.yArray[i]).ticks(10).orient("right")//.tickFormat(d3.format("."+formatdecimal+"s"));
+                            var yAxisLeft = d3.svg.axis().scale(self.yArray[i]).ticks(10).orient("right")
                                 .tickFormat(d3.format(".2s"));
                         }
                     }
 
-                    //console.log(self.labelY);
-                    //console.log("cnti="+cnti);
-                    //console.log("self.labelY[cnti-1]="+self.labelY[cnti-1]);
                     var paddingText = "";
                     if (cnti == 1) {
-                        //paddingText="15px";
                         paddingText = self.dymarging + "px";
                     } else {
                         paddingText = "0px";
-                        //paddingText="-8px";
-                        //paddingText="15px";
                     }
 
                     var offsetYaxes = 0;
-                    //offsetYaxes = -20;
 
                     if (orientText == "left") {
                         offsetYaxes = self.offsetYaxesR;
                     } else {
                         offsetYaxes = self.offsetYaxesL / 2;
                     }
-                    /*
-                     self.svg.append("svg:g")
-                     .attr("class", "y axis axisLeft")
-                     //.attr("class", "y axis axisLeft class_"+d.Key.replace(/\W/g, ''))
-                     .attr("transform", transform)
-                     //
-                     //.style("stroke", function(d,i) {
-                     //	//console.log("----->key="+key);
-                     //	return colorScale(key);
-                     //	})
 
-                     .attr("fill", "none")
-                     .style("stroke", function (d, i) {
-
-                     var colorToReturn;
-
-                     if (lineColor)
-                     {
-                     colorToReturn = lineColor;
-                     }
-                     else
-                     {
-                     colorToReturn = colorScale(key);
-                     }
-                     return colorToReturn;
-
-                     //return colorScale(key);
-
-                     })
-                     .style("stroke-width", '1')
-                     .attr("font-size", self.font_size)
-                     .call(yAxisLeft)
-                     .append("text")
-                     .attr("transform", "rotate(-90)")
-                     //.attr("dy", ".71em")
-                     .attr("dy", paddingText)
-                     .attr("y", offsetYaxes)
-                     .style("text-anchor", "end")
-                     .text(self.labelY[cnti-1])
-                     ;
-                     */
-
-                    self.svg.append("svg:g").attr("class", "y axis axisLeft").attr("transform", transform).style("fill", function (d, i) {
+                    self.svg.append("svg:g")
+                    .attr("class", "y axis axisLeft")
+                    .attr("transform", transform)
+                    .style("fill", function (d, i) {
 
                         var colorToReturn;
 
@@ -1180,63 +734,41 @@ policycompass.viz.line = function (options) {
                             colorToReturn = colorScale(key);
                         }
                         return colorToReturn;
-                        //return colorScale(key);
-
                     })
-
-                        //.style("stroke-width", 2)
-                        .attr("font-size", self.font_size).call(yAxisLeft).append("text").attr("transform", "rotate(-90)")//.attr("dy", ".71em")
-                        .attr("dy", paddingText).attr("y", offsetYaxes).style("text-anchor", "end").text(function () {
-                            var returnValue = "";
-                            if (self.showAsPercentatge) {
-                                returnValue = "As % (" + self.labelY[cnti - 1] + ")";
-                            } else {
-                                returnValue = self.labelY[cnti - 1];
-                            }
+                    .attr("font-size", self.font_size)
+                    .call(yAxisLeft)
+                    .append("text")
+                    .attr("transform", "rotate(-90)")
+                    .attr("dy", paddingText)
+                    .attr("y", offsetYaxes)
+                    .style("text-anchor", "end")
+                    .text(function () {
+						var returnValue = "";
+                        if (self.showAsPercentatge) {
+                        	if (self.labelY[cnti - 1]) {
+                        		returnValue = "As % (" + self.labelY[cnti - 1] + ")";
+                        	}
+                        	else {
+                        		returnValue = "As %";
+                        	}                        	
+						} else {
+                        	returnValue = self.labelY[cnti - 1];
+                        }
                             return returnValue;
-                        })
-                        //.text(self.labelY[cnti-1])
-                    ;
-
-                    //.call(self.yArray[self.cntLineasPintadas]);
-
-
-                    /*****************************/
-
+					});
                 }
 
-                //var data = [];
                 var data = new Object();
 
                 if (evaluate === 1) {
-                    //console.log("linesArray");
-                    //console.log(linesArray);
+
                     data = linesArray.map(function (d, i) {
-
-                        //console.log("**********");
-                        //console.log(linesArray[i]);
-                        //console.log("x="+linesArrayX[i]);
-                        //console.log(self.x(linesArrayX[i]));
-                        //console.log("inversa="+self.xInversa(linesArrayX[i]));
-                        //console.log("scale="+self.xScale(linesArrayX[i]));
-                        //console.log("xScaleX="+self.xScaleX(linesArrayX[i]));
-                        //console.log(i);
-                        //console.log(d);
-
                         var posXToPrint = linesArrayX[i];
-                        //console.log("posXToPrint="+posXToPrint);
-
                         posXToPrint = self.xScaleX(posXToPrint);
-                        //console.log("posXToPrint="+posXToPrint);
-
                         posXToPrint = self.x(posXToPrint);
-                        //console.log("posXToPrint="+posXToPrint);
-
                         posXToPrint = self.xInversa(posXToPrint)
-                        //console.log("posXToPrint="+posXToPrint);
-                        //console.log("---cnti="+cnti);
+
                         return {
-                            //posX: posXToPrint,
                             posX: posXToPrint,
                             posY: d,
                             key: key,
@@ -1247,49 +779,32 @@ policycompass.viz.line = function (options) {
 
                 }
 
-                /*
-                 self.x.domain(d3.extent(data, function(d) {
-                 //console.log(d.posX)
-                 return d.posX;
-                 }));
-                 */
 
                 self.x.domain(d3.extent(data, function (d, i) {
-                    //console.log("i="+i);
-                    //console.log("d=");
-                    //console.log(d);
-                    //console.log("d.posX="+d.posX);
-                    //console.log("d.xOriginal="+d.xOriginal);
-                    //console.log("self.xScale(d.xOriginal)="+self.xScale(d.xOriginal));
-                    //console.log("self.xScaleX(d.xOriginal)="+self.xScaleX(d.xOriginal));
-                    //console.log("self.xScaleInversa(d.xOriginal)="+self.xScaleInversa(d.xOriginal));
-                    //(d.xOriginal)
-                    //console.log(d.posX)
-
-
-                    //return d.posX;
                     return d.xOriginal;
-                    //return 250;
-
                 }));
 
 
-                //self.y.domain([self.minVy, self.maxVy]);
-                /*
-                 y.domain(d3.extent(data, function(d) {
-                 //console.log(d.posY)
-                 return d.posY;
-                 }));
-                 */
-
                 if ((showAreas) && (cntpasadas == 1)) {
-
-                    //console.log("key="+key);
-                    //console.log(data);
-
+                	
+					
+					if (document.getElementById('disableindividuals')) {
+                    	var arrayDisabledIndividuals = document.getElementById('disableindividuals').value.split("|");
+                    	var stringToCheck = d.Key.replace(/\W/g, '');
+                    	var a = arrayDisabledIndividuals.indexOf(stringToCheck);
+                   	}
+                   	else
+                   	{
+                   		var a=-1;
+                   	}
+                   
+                    var areaOpacity=0.3;
+                    
+                    if (a>=0) {
+                    	areaOpacity=0;
+                    }
+					
                     var area = d3.svg.area().x(function (d) {
-                        //return self.xScale(getDate(d.xOriginal));
-
 
                         var resX = d.xOriginal;
 
@@ -1297,8 +812,6 @@ policycompass.viz.line = function (options) {
                             return (self.xScale((resX)));
                         } else {
 
-                            //console.log(resX);
-                            //if (resX.length==4)
                             if (self.resolution == 'quarter') {
                                 var arrayObjDate = resX.split("-");
 
@@ -1316,39 +829,25 @@ policycompass.viz.line = function (options) {
                             } else if (self.resolution == 'year') {
                                 resX = "01/01/" + resX;
                             }
-                            //else if (resX.length==7)
                             else if (self.resolution == 'month') {
-                                //resX="01/"+resX;
-                                //resX=resX+"/01";
-                                //resX=resX.replace("-","-01-");
-                                //resX=resX.replace("/","/01/");
-
                                 var arrayObjDate = resX.split("-");
-
-                                //resX=resX+"/01";
-                                //resX="01/"+arrayObjDate[1]+"/"+arrayObjDate[0];
                                 resX = arrayObjDate[1] + "/01/" + arrayObjDate[0];
-
-                                //console.log("resX="+resX);
-
                             }
-                            //else if (resX.length==9)
                             else if (self.resolution == 'day') {
-                                //resX=resX;
                                 var arrayObjDate = resX.split("-");
                                 resX = arrayObjDate[1] + "/" + arrayObjDate[2] + "/" + arrayObjDate[0];
                             }
-                            //console.log(resX);
-
                             return (self.xScale(getDate(resX)));
                         }
                     }).y0(self.height).y1(function (d) {
                         return (self.yArray[self.cntLineasPintadas](d.posY));
                     });
 
-                    self.svg.append("path").datum(data).attr("class", "area area_item item_" + (cnti - 1) + " area_class_" + key.replace(/\W/g, '')).attr("d", area).style("fill", function (d, i) {
-
-
+                    self.svg.append("path")
+                    .datum(data)
+                    .attr("class", "area area_item item_" + (cnti - 1) + " area_class_" + key.replace(/\W/g, ''))
+                    .attr("d", area)
+                    .style("fill", function (d, i) {
                         var colorToReturn;
 
                         if (lineColor) {
@@ -1357,11 +856,7 @@ policycompass.viz.line = function (options) {
                             colorToReturn = colorScale(key);
                         }
                         return colorToReturn;
-
-                        //return colorScale(key);
-
                     }).style("stroke", function (d, i) {
-
                         var colorToReturn;
 
                         if (lineColor) {
@@ -1370,23 +865,33 @@ policycompass.viz.line = function (options) {
                             colorToReturn = colorScale(key);
                         }
                         return colorToReturn;
-
-                        //return colorScale(key);
-
-                    })//.style("fill", function(d,i) {return colorScaleLinel((cnti-1));})
-                        //.style("stroke", function(d,i) {return colorScaleLinel(cnti-1);})
-                        .style("opacity", 0.3);
+                    })
+                    .style("opacity", areaOpacity);
                 }
                 if ((showLines) && (cntpasadas == 2)) {
-                    //console.log("data");
-                    //console.log(data);
-
-                    var path = self.svg.append("path").datum(data)//.attr("class", "line line--hover class_"+key.replace(/\s+/g, ''))
-                        .attr("class", "line line--hover active_item class_" + key.replace(/\W/g, ''))//.attr("id", 'tag_'+key.replace(/\s+/g, '')) // assign ID
+					
+					if (document.getElementById('disableindividuals')) {						
+                    	var arrayDisabledIndividuals = document.getElementById('disableindividuals').value.split("|");
+                    	var stringToCheck = d.Key.replace(/\W/g, '');
+                    	var a = arrayDisabledIndividuals.indexOf(stringToCheck);
+                   	}
+                   	else {
+                   		var a = -1;
+                   	}
+                   
+                    var lineOpacity=1;
+                    var lineClass = "line line--hover class_" + key.replace(/\W/g, '');
+                    if (a>=0) {
+                    	lineOpacity=0;
+                    }
+                    else {
+                    	lineClass += " active_item";
+                    }
+                    
+                    var path = self.svg.append("path").datum(data)                  
+                        .attr("class", lineClass)
+                        .style("opacity", lineOpacity)
                         .attr("id", 'tag_' + key.replace(/\W/g, '')) // assign ID
-                        //.style("stroke-width", 2)
-                        //.style("stroke", function(d,i) {return colorScale(key);})
-
                         .attr("fill", "none").style("stroke", function (d, i) {
 
                             var colorToReturn;
@@ -1396,49 +901,15 @@ policycompass.viz.line = function (options) {
                                 colorToReturn = colorScale(key);
                             }
                             return colorToReturn;
-                            //return colorScale(key);
 
                         }).style("stroke-width", 2)
-
-                        //.style("stroke", function(d,i) {return colorScaleLinel(cnti-1);})
-                        .attr("d", lineFunction)//.on("mouseover", mouseover)
+                        .attr("d", lineFunction)
                         .on("mouseover", function (d, i) {
-                            //console.log(d);
                             d3.select(this).style("stroke-width", 4);
-                            //console.log(d[i])
-
-                            //posMouse = d3.mouse(this);
-                            //posX = posMouse[0];
-                            //posY = posMouse[1];
-                            //posX = getDate(self.xInversa(posX));
-                            //posY = self.yInversa(posY);
-                            //tooltip.style("opacity",1.0).html("****<br/>key="+d[0].key+"<br/>pos x="+posX+"<br/>pos y="+posY);
-
                         }).on("mouseout", function () {
                             d3.select(this).style("stroke-width", 2);
                             mouseout();
                         }).on("click", function (d, i) {
-                            ///posMouse = d3.mouse(this);
-                            ///posX = posMouse[0];
-                            ///posY = posMouse[1];
-                            //console.log("posX="+posX);
-                            //console.log("self.xInversa(posX)="+self.xInversa(posX));
-                            //console.log("self.x(posX)="+self.x(posX));
-
-                            //console.log(self.xScaleXInversa(self.xInversa(posX)));
-
-                            //console.log("posY="+posY);
-                            //posX = posX;
-                            //posX = self.x(posX);
-                            //posX = self.xInversa(posX);
-                            ///posX = self.xScaleXInversa(self.xInversa(posX));
-                            ///posY = self.yInversa(posY);
-                            //console.log("posX="+posX);
-                            //console.log("posY="+posY);
-
-                            //$('input[name="posx"]').val(posX);
-                            //$('input[name="posy"]').val(posY);
-                            //$('#basic-modal-content').modal();
 
                             if (self.modeGraph == 'view') {
 
@@ -1457,7 +928,6 @@ policycompass.viz.line = function (options) {
                                     } else {
                                         if (self.xScale) {
                                             posXinvers = self.xScale.invert(posX - self.margin.left);
-                                            //posXinvers = self.xScaleInversa(posX-self.margin.left);
                                             var format = d3.time.format("%m-%d-%Y");
                                             posXinvers = format(posXinvers);
                                             posXinvers = posXinvers.replace(/-/g, "/");
@@ -1468,12 +938,8 @@ policycompass.viz.line = function (options) {
                                     var maxDateGraph = format(self.maxDate);
                                     maxDateGraph = maxDateGraph.replace(/-/g, "/");
 
-                                    //$('input[name="startDate"]').val(posXinvers);
                                     $('input[name="startDatePosX"]').val(posXinvers);
                                     $('input[name="endDatePosX"]').val(maxDateGraph);
-
-                                    console.log(posXinvers);
-                                    console.log(maxDateGraph);
 
                                     document.getElementById("addHEbutton").click();
                                 }
@@ -1491,13 +957,9 @@ policycompass.viz.line = function (options) {
                 }
                 var resTRext = key.split("_");
 
-//            self.legendText = self.legendText + '<div style="margin-top: 2px; width: 5px; background: '+colorScale(key)+'; height: 5px; float: left;"> </div>&nbsp;<font color="'+colorScale(key)+'">'+resTRext[0]+'</font><br/>';
-
                 self.legendText = self.legendText + '<div style="margin-top: 2px; width: 5px; background: ' + lineColor + '; height: 5px; float: left;"> </div>&nbsp;<font color="' + lineColor + '">' + resTRext[0] + '</font><br/>';
 
-
                 if (showLegend)
-                //if (1==1)
                 {
                     var valueX = ((self.width / (lines.length / self.legendsColumn)) * (cntiMultiple));
                     if (cnti % self.legendsColumn == 0) {
@@ -1506,18 +968,17 @@ policycompass.viz.line = function (options) {
 
                     var valueY = (self.height) + self.margin.top + 50 + (incremetY) * 20;
                     if (cnti % self.legendsColumn == 0) {
-                        //console.log("---key="+key);
                         incremetY = 0;
                     } else {
                         incremetY = incremetY + 1;
                     }
 
-                    self.svg.append("rect").attr("x", valueX - 10).attr("y", valueY - 5).attr("width", 5).attr("height", 5).style("fill", function (d, i) {
-
-                        //console.log(d);
-                        //console.log(i)
-                        //console.log(lineColor);
-
+                    self.svg.append("rect")
+                    .attr("x", valueX - 10)
+                    .attr("y", valueY - 5)
+                    .attr("width", 5)
+                    .attr("height", 5)
+                    .style("fill", function (d, i) {
                         var colorToReturn;
 
                         if (lineColor) {
@@ -1527,22 +988,40 @@ policycompass.viz.line = function (options) {
                         }
                         return colorToReturn;
 
-                        //return colorScale(key);
-
                     });
 
-
-                    self.svg.append("text")//.attr("x", function(d,i){return self.width + 10 ;})
+					
+                    			
+                    self.svg.append("text")
                         .attr("x", function (d, i) {
-                            //console.log("cnti="+cnti+"--key="+key);
                             return valueX;
-                        })//.attr("y", function(d,i){return (0) + (20 * cnti-1) ;})
-                        //.attr("y", function(d,i){return (self.height) + (self.margin.top+(self.margin.bottom/2))+2 ;})
+                        })
                         .attr("y", function (d, i) {
-                            //console.log("--->cnti="+cnti+"--key="+key);
                             return valueY;
-                        }).attr("text-anchor", "center").attr("text-decoration", "none").attr("class", "link superior legend value").attr("font-size", self.font_size).style("fill", function (d, i) {
-
+                        })
+                        .attr("text-anchor", "center")
+                        .attr("class", function() {
+                        	
+                        	if (document.getElementById('disableindividuals')) {
+                        		var arrayDisabledIndividuals = document.getElementById('disableindividuals').value.split("|");
+                    			var stringToCheck = d.Key.replace(/\W/g, '');
+                    			var a = arrayDisabledIndividuals.indexOf(stringToCheck);
+                    		}
+                    		else {
+                    			var a = -1;
+                    		}
+                    		
+                    		var extraClass='enableindividual';
+                    
+                    		if (a>=0) {
+                    			extraClass='disableindividual';
+                    		}
+                    		
+                    		return "link superior legend value legend_"+d.Key.replace(/\W/g, '')+" "+extraClass;
+                    		
+                        })
+                        .attr("font-size", self.font_size+1)
+                        .style("fill", function (d, i) {
                             var colorToReturn;
 
                             if (lineColor) {
@@ -1552,28 +1031,21 @@ policycompass.viz.line = function (options) {
                             }
                             return colorToReturn;
 
-                            //return colorScale(key);
-                        })/*
-                     .style("stroke", function(d,i) {
-                     //console.log("key="+key);
-                     return colorScale(key);
-                     //return colorScaleLinel(cnti-1);
-                     })
-                     *///.on("mouseover", function (d,i) {
+                        })
                         .on("mouseover", function () {
 
-                            //console.log(self.modeGraph);
                             if ((self.modeGraph == 'view') || (self.xaxeformat == 'sequence')) {
-                                //var str = d3.select(this).text();
+
                                 var keyTmp = d['Key'].split("_");
                                 var str = keyTmp[0];
 
-                                if (d3.select(this).attr("text-decoration") == 'none') {
-                                    //tooltip.style("opacity",1.0).html("Click over to hide "+str);
+                   				var arrayDisabledIndividuals = document.getElementById('disableindividuals').value.split("|");
+                    			var stringToCheck = d.Key.replace(/\W/g, '');
+                    			var a = arrayDisabledIndividuals.indexOf(stringToCheck);
+
+                                if (d3.select(this).classed("enableindividual")) {
 
                                     tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">Click over to hide ' + str + '</div>');
-
-
                                     d3.selectAll(".active_item").style("opacity", 0.3);
 
                                     var strokeWidth = d3.select("#tag_" + d.Key.replace(/\W/g, '')).style("stroke-width");
@@ -1582,33 +1054,37 @@ policycompass.viz.line = function (options) {
 
                                     d3.selectAll("#tag_" + d.Key.replace(/\W/g, '')).style("stroke-width", strokeWidth).style("opacity", 1);
 
-                                    d3.selectAll(".point_" + d.Key.replace(/\W/g, '')).classed('pointOn', true)//.attr("r", self.radius * 2)
+                                    d3.selectAll(".point_" + d.Key.replace(/\W/g, '')).classed('pointOn', true)
                                         .style("opacity", 1);
 
-                                } else {
-                                    //tooltip.style("opacity",1.0).html("Click over to show "+str);
+                                } else {                                	
                                     tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">Click over to show ' + str + '</div>');
                                 }
 
                             }
 
-                        }).on("mouseout", function () {
-
-                            d3.selectAll(".active_item").style("opacity", 1);
-
-                            d3.selectAll("#tag_" + d.Key.replace(/\W/g, '')).style("stroke-width", 2);
-
-                            d3.selectAll(".point_" + d.Key.replace(/\W/g, '')).classed('pointOn', false)
-                                //.attr("r", self.radius)
-                            ;
-
-
-                            mouseout();
                         })
-
+                        .on("mouseout", function () {
+							
+							if (document.getElementById('disableindividuals')) {
+								var arrayDisabledIndividuals = document.getElementById('disableindividuals').value.split("|");
+                    			var stringToCheck = d.Key.replace(/\W/g, '');
+                    			var a = arrayDisabledIndividuals.indexOf(stringToCheck);
+                    		}
+                    		else {
+                    			var a = -1;
+                    		}
+                    		
+                    		if (a<0) {                    		
+                            	d3.selectAll(".active_item").style("opacity", 1);
+                            	d3.selectAll("#tag_" + d.Key.replace(/\W/g, '')).style("stroke-width", 2);
+                            	d3.selectAll(".point_" + d.Key.replace(/\W/g, '')).classed('pointOn', false);
+                            	
+                           	}
+                           	mouseout();
+                        })
                         .text(function (d, i) {
                             var resTRext = key.split("_");
-
                             var trimmedString = resTRext[0];
                             var length = 100;
 
@@ -1636,70 +1112,91 @@ policycompass.viz.line = function (options) {
                                 trimmedString = trimmedString.substring(0, length) + "...";
                             }
 
-
-                            //return "Click to hide "+resTRext[0];})
                             return trimmedString;
                         })
-
                         .on("click", function () {
-                            //console.log("-----key="+d.Key.replace(/\s+/g, ''))
-                            // Determine if current line is visible
 
                             if ((self.modeGraph == 'view') || (self.xaxeformat == 'sequence')) {
-                                var active = d.active ? false : true, newOpacity = active ? 0 : 1;
+                            	
+                            	if (document.getElementById('disableindividuals')) {
+                            		var arrayDisabledIndividuals = document.getElementById('disableindividuals').value.split("|");
+                            		var stringToCheck = d.Key.replace(/\W/g, '');
+                            		var a = arrayDisabledIndividuals.indexOf(stringToCheck);
+                            	}
+                            	else {
+                            		var a = -1;
+                            	}
+                            	
+                            	d3.selectAll(".legend_" + stringToCheck).classed('enableindividual', true);
+                    			d3.selectAll(".legend_" + stringToCheck).classed('disableindividual', false);
+								
+								d3.selectAll(".class_" + stringToCheck).classed('active_item', true);
+
+                                d3.selectAll(".class_" + stringToCheck).transition().duration(100).style("opacity", 1);
+                                d3.selectAll(".area_class_" + stringToCheck).transition().duration(100).style("opacity", 0.3);
+
+								if (document.getElementById('disableindividuals')) {
+	                            	if (a>=0) {
+	                            		document.getElementById('disableindividuals').value = '';
+	                            		for (key in arrayDisabledIndividuals) {                            			
+	                            			if (arrayDisabledIndividuals[key]) {
+	                            				if (arrayDisabledIndividuals[key]!=stringToCheck) {
+	                            					if (document.getElementById('disableindividuals').value)
+	                            					{
+	                            						document.getElementById('disableindividuals').value +="|";
+	                            					}
+	                            					document.getElementById('disableindividuals').value +=arrayDisabledIndividuals[key];
+	                            					
+	                            					d3.selectAll(".legend_" + arrayDisabledIndividuals[key]).classed('enableindividual', false);
+	                                				d3.selectAll(".legend_" + arrayDisabledIndividuals[key]).classed('disableindividual', true);
+	                                				
+	                                				d3.selectAll(".class_" + stringToCheck).classed('active_item', false);
+	                                				
+					                                d3.selectAll(".class_" + arrayDisabledIndividuals[key]).transition().duration(100).style("opacity", 0);
+	                				                d3.selectAll(".area_class_" + arrayDisabledIndividuals[key]).transition().duration(100).style("opacity", 0);
+	
+	                                				
+	                            				}
+	                            			}
+	                            		}                            		
+	                            	}   
+	                            	else {                            		
+	                            		if (document.getElementById('disableindividuals').value)
+	                            		{
+	                            			document.getElementById('disableindividuals').value +="|";
+	                            		}
+	                            		document.getElementById('disableindividuals').value +=stringToCheck;
+	
+										d3.selectAll(".legend_" + d.Key.replace(/\W/g, '')).classed('enableindividual', false);
+	                                	d3.selectAll(".legend_" + d.Key.replace(/\W/g, '')).classed('disableindividual', true);
+										
+										d3.selectAll(".class_" + stringToCheck).classed('active_item', false);
+										
+					                    d3.selectAll(".class_" + d.Key.replace(/\W/g, '')).transition().duration(100).style("opacity", 0);
+	                				    d3.selectAll(".area_class_" + d.Key.replace(/\W/g, '')).transition().duration(100).style("opacity", 0);
+	                            		
+	                            	}
+                            	}
+                            	
+                                var active = d.active ? false : true;
+                                var newOpacity = active ? 0 : 1;
                                 var newOpacityArea = active ? 0 : 0.3;
-                                //console.log("Hide or show the elements based on the class");
-                                //console.log("d.Key.replace(/\W/g, '')="+d.Key.replace(/\W/g, ''));
-                                //d3.select("#tag"+key.replace(/\s+/g, ''))
-
-                                //d3.selectAll(".class_"+d.Key.replace(/\s+/g, ''))
-
-                                d3.selectAll(".class_" + d.Key.replace(/\W/g, '')).transition().duration(100).style("opacity", newOpacity);
-
-
-                                d3.selectAll(".area_class_" + d.Key.replace(/\W/g, '')).transition().duration(100).style("opacity", newOpacityArea);
-
 
                                 // Update whether or not the elements are active
                                 d.active = active;
 
-                                //var currentText= d3.select(this).text();
-                                //console.log(currentText);
                                 var str = d3.select(this).text();
                                 var res = "";
-
-                                if (active) {
+																
+                                if (active) {                                	                             
                                     res = 'Click to display ' + str;
                                     res = str.replace("hide", "display");
-                                    //console.log("active");
-
-                                    d3.selectAll(".class_" + d.Key.replace(/\W/g, '')).classed('active_item', false);
-
-
-                                } else {
-                                    res = str.replace("display", "hide");
-                                    //console.log("!!active");
-
-                                    d3.selectAll(".class_" + d.Key.replace(/\W/g, '')).classed('active_item', true).style("stroke-width", 4);
-
-                                }
-
-                                //console.log(d3.select(this).attr("text-anchor"));
-                                //console.log(d3.select(this).attr("text-decoration"));
-
-                                if (d3.select(this).attr("text-decoration") == 'none') {
-                                    d3.select(this).attr("text-decoration", "line-through");
-                                    //tooltip.style("opacity",1.0).html("Click over to show "+str);
                                     tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">Click over to show ' + str + '</div>');
                                 } else {
-                                    d3.select(this).attr("text-decoration", "none");
-                                    //tooltip.style("opacity",1.0).html("Click over to hide "+str);
+                                    res = str.replace("display", "hide");
                                     tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">Click over to hide ' + str + '</div>');
                                 }
-
-
-                                //console.log(d3.select(this).attr("text-decoration"));
-
+								
                                 d3.select(this).text(res);
 
                             } else {
@@ -1711,98 +1208,27 @@ policycompass.viz.line = function (options) {
                             }
                         })
 
+
                 }
             });
 
 
             cntpasadas = cntpasadas + 1;
         }
-        /*
-         self.showLegendOpened = 0;
-         if (showLegend)
-         {
-         self.svg.append("text")
-         .attr("x", function(d,i){return self.width + 10 ;})
-         .attr("y", function(d,i){return (0) + (0) ;})
-         .attr("text-anchor","center")
-         .attr("class", "link superior legend value")
-         .attr("font-size", self.font_size)
-         .style("stroke", function(d,i) {return 'black';})
-         .on("click", function (openedLabels) {
 
-
-         if (self.modeGraph=='view')
-         {
-         var str = d3.select(this).text();
-         var res = "";
-
-
-
-         d3.select(this).text(res);
-
-         if (self.showLegendOpened!=1)
-         {
-         tooltipLegend
-         .style("left", (d3.event.pageX +20) + "px")
-         .style("top", (d3.event.pageY - 12) + "px");
-
-         var tooltipLegendText="";
-         tooltipLegendText = "<div>"+self.legendText+"</div>";
-         tooltipLegend .style("opacity",1.0);//.html(tooltipLegendText);
-
-         tooltipLegend .html(tooltipLegendText);
-
-         self.showLegendOpened=1;
-         }
-         else
-         {
-         self.showLegendOpened=0;
-         tooltipLegend .style("opacity",0);
-         }
-
-         if (self.showLegendOpened!=1) {
-         res = 'Click to display color legends';
-         res = str.replace("hide", "display");
-         }
-         else {
-         res = str.replace("display", "hide");
-         }
-
-         d3.select(this).text(res);
-         }
-
-         })
-         .on("mouseout", function() {
-         //mouseout();
-         //mouseoutLegend();
-         })
-
-         .html(function(d,i) {
-         var resTRext = key.split("_");
-         var textToPlot;
-         if (self.modeGraph=='view')
-         {
-         var textToPlot= "Click to display color legends";
-         }
-         else
-         {
-         var textToPlot= ""
-         }
-
-         return textToPlot;
-         })
-
-         }
-         */
         if (showPoints) {
             lines.forEach(function (d, i) {
                 var keyCircle = d.Key;
-                var colorCircle = d.Color;
+                //var colorCircle = d.Color;
+				var colorCircle = '';
+
+                if (d.Color) {
+                	colorCircle = d.Color;
+                } else {
+                	colorCircle = colorScale(d.Key);
+                }                
+                
                 var cntLine = i;
-                //var myCircles = self.svg.selectAll("circles").data(d.Values);
-                //var myCircles = self.svg.selectAll("circles").data(d.ValueY);
-                //console.log("d.XY="+d.XY);
-                //var myCircles = self.svg.selectAll("circles").data(d.XY);
 
                 var datosCircle = []
                 for (var i in d.ValueX) {
@@ -1810,7 +1236,6 @@ policycompass.viz.line = function (options) {
                 }
 
                 var myCircles = self.svg.selectAll("circles").data(datosCircle);
-                //self.myCircles = myCircles;
 
                 var units = "";
                 units = "";
@@ -1819,29 +1244,36 @@ policycompass.viz.line = function (options) {
                         units = self.labelY[i];
                     }
                 }
-
+				
+				if (document.getElementById('disableindividuals')) {
+					var arrayDisabledIndividuals = document.getElementById('disableindividuals').value.split("|");
+                	var stringToCheck = keyCircle.replace(/\W/g, '');
+                	var a = arrayDisabledIndividuals.indexOf(stringToCheck);
+               	}
+               	else {
+               		var a = -1;
+               	}
+                
+                var circleOpacity=1;
+                
+                var classCircle = "pointIn point_" + keyCircle.replace(/\W/g, '') + " class_" + keyCircle.replace(/\W/g, '');
+                
+                if (a>=0) {
+                	circleOpacity=0;
+                }
+                else {
+                	classCircle += " active_item";
+                }
+                  
                 myCircles.enter().append("circle").attr("cx", function (d, i) {
-                    //console.log(d);
+
                     var res = d.split("|");
                     var resX = res[0];
-                    //console.log("resY="+res[1]);
-                    //console.log("resX="+resX);
-                    //console.log("self.xScale(resX)="+self.xScale(resX));
-                    //console.log("self.x(self.xScale(resX))="+self.x(self.xScale(resX)));
-                    //console.log("self.xInversa(resX)="+self.xInversa(resX));
-                    //console.log("self.xScaleX(resX)="+self.x(self.xScaleX(resX)));
-                    //console.log("self.xScaleXInversa="+self.xScaleXInversa(resX));
-                    //return self.x(resX);
-
-                    if (self.xaxeformat == 'sequence') {
-                        //console.log(resX);
+                    if (self.xaxeformat == 'sequence') {                        
                         return (self.xScale((resX)));
                     } else {
 
-                        //console.log(resX);
-                        //if (resX.length==4)
                         if (self.resolution == 'quarter') {
-                            //console.log(resX);
                             var arrayObjDate = resX.split("-");
 
                             var newMonth = 1;
@@ -1854,88 +1286,57 @@ policycompass.viz.line = function (options) {
                                 }
 
                                 var dateToPush = arrayObjDate[0] + "-" + newMonth + "-01";
-                                //console.log(dateToPush);
                                 resX = dateToPush;
-                                //console.log("resX="+resX);
                             }
 
                         } else if (self.resolution == 'year') {
                             resX = "01/01/" + resX;
                         }
-                        //else if (resX.length==7)
                         else if (self.resolution == 'month') {
-                            //resX="01/"+resX;
-                            //resX=resX+"/01";
-                            //resX=resX.replace("-","-01-");
-                            //resX=resX.replace("/","/01/");
-
                             var arrayObjDate = resX.split("-");
-
-                            //resX=resX+"/01";
-                            //resX="01/"+arrayObjDate[1]+"/"+arrayObjDate[0];
                             resX = arrayObjDate[1] + "/01/" + arrayObjDate[0];
-
-                            //console.log("resX="+resX);
-
                         }
-                        //else if (resX.length==9)
                         else if (self.resolution == 'day') {
-                            //resX=resX;
                             var arrayObjDate = resX.split("-");
                             resX = arrayObjDate[1] + "/" + arrayObjDate[2] + "/" + arrayObjDate[0];
                         }
-                        //console.log(resX);
                         return (self.xScale(getDate(resX)));
                     }
-
-                    //return 200;
-                }).attr("cy", function (d, i) {
+                })
+                .style("opacity", circleOpacity)
+                .attr("cy", function (d, i) {
                     var res = d.split("|");
                     var resY = res[1];
-                    //console.log("resY="+resY);
-                    //console.log("cntLine="+cntLine);
-                    //console.log("i="+i);
-
                     return self.yArray[cntLine](resY);
-                }).attr("r", 0)//.attr("class", "pointIn class_"+keyCircle.replace(/\s+/g, ''))
-                    .attr("class", "pointIn active_item point_" + keyCircle.replace(/\W/g, '') + " class_" + keyCircle.replace(/\W/g, '')).style("stroke-width", self.radius).style("stroke", function (d, i) {
+                })
+                .attr("r", 0)                
+                .attr("class", classCircle)
+                .style("stroke-width", self.radius)
+                .style("stroke", function (d, i) {
+					var colorToReturn;
 
-                        //console.log(colorCircle);
-                        //console.log(i);
+                    if (colorCircle) {
+                        colorToReturn = colorCircle;
+                    } else {
+                        colorToReturn = colorScale(keyCircle);
+                    }
+                    return colorToReturn;
 
-                        var colorToReturn;
-
-                        if (colorCircle) {
-                            colorToReturn = colorCircle;
-                        } else {
-                            colorToReturn = colorScale(keyCircle);
-                        }
-                        return colorToReturn;
-
-                        //return colorScale(keyCircle);
-                        //return colorScaleLinel(cntLine);
-                    })//.attr("opacity", 1.0)
-                    .on("mouseover", function (d, i) {
+                })
+                .on("mouseover", function (d, i) {
 
                         var s = d3.select(this).attr("style");
                         var indexS = s.indexOf("opacity: 0");
-                        //console.log("s="+s);
-                        //console.log("indexS="+indexS);
+
                         if (indexS > -1) {
-                            //alert("it's hidden");
+
                         } else {
                             d3.select(this).classed("pointOn", true);
 
                             var circle = d3.select(this);
                             circle.transition().attr("r", self.radius * 2);
                             var posMouse = d3.mouse(this);
-                            //var posX = posMouse[0];
-                            //var posY = posMouse[1];
-                            //posX = self.xInversa(posX);
-                            //posY = self.yInversa(posY);
 
-                            //posX = self.x(posX);
-                            //posX = self.xScaleXInversa(i);
                             var res = d.split("|");
                             var resX = res[0];
                             var resY = res[1];
@@ -1953,28 +1354,17 @@ policycompass.viz.line = function (options) {
                                     }
 
                                     var dateToPush = arrayObjDate[0] + "-" + newMonth + "-01";
-                                    //console.log(dateToPush);
                                     resX = dateToPush;
                                 }
                             } else if (self.resolution == 'year') {
                                 resX = "01/01/" + resX;
                             }
-                            //else if (resX.length==7)
                             else if (self.resolution == 'month') {
-                                //resX="01/"+resX;
                                 resX = resX + "/01";
-                                //resX=resX.replace("-","-01-");
-                                //resX=resX.replace("/","/01/");
                             }
-                            //else if (resX.length==9)
                             else if (self.resolution == 'day') {
                                 resX = resX;
                             }
-
-                            //console.log("posX="+posX);
-                            //console.log("posY="+posY);
-                            //tooltip.style("opacity",1.0).html("key="+keyCircle+"<br/>pos x="+resX+"<br/>pos y="+resY);
-
                             resX = resX.replace("/", "-");
                             resX = resX.replace("/", "-");
                             resX = resX.replace("/", "-");
@@ -2000,9 +1390,6 @@ policycompass.viz.line = function (options) {
                             if (self.xaxeformat == 'sequence') {
                                 endDateToPlot = resX;
                             } else {
-                                //console.log(resX);
-                                //console.log(resSplit);
-                                //console.log(self.resolution)
                                 if (self.resolution == 'day') {
                                     endDateToPlot = monthNames[parseInt(resSplit[1])] + " " + parseInt(resSplit[2]) + ", " + resSplit[0];
                                 } else if (self.resolution == 'month') {
@@ -2024,31 +1411,15 @@ policycompass.viz.line = function (options) {
                                     }
                                     endDateToPlot = Q + "-" + resSplit[0];
                                 }
-
-                                //console.log(endDateToPlot);
-
                             }
 
-
-                            //tooltip.style("opacity",1.0).html(resX+" <br /> "+resY+"<br />"+endDateToPlot);
-
-                            //var twoPlacedFloat = parseFloat(resY);
-
                             var twoPlacedFloat = (parseFloat(resY * 100) / 100).toFixed(2);
-
-                            //twoPlacedFloat = Math.round(twoPlacedFloat,2);
-                            //var twoPlacedFloat = parseFloat(resY).toFixed(2);
-
                             var resSplit = keyCircle.split("_");
-
                             var number = resY;
-                            //console.log(number);
                             number = (parseFloat(number * 100) / 100).toFixed(2);
 
                             var formatdecimal = 0;
-
                             formatdecimal = Math.round(number / 100) + 1;
-                            //console.log(formatdecimal);
 
                             if (formatdecimal < 2) {
                                 formatdecimal = 2;
@@ -2067,31 +1438,16 @@ policycompass.viz.line = function (options) {
                                 units = " %";
                             }
 
-                            //tooltip.style("opacity",1.0).html("<font color='"+colorScale(keyCircle)+"'>"+resSplit[0]+"<br/>"+endDateToPlot+" <br /> "+number+" "+units+"</font>");
-
-                            //tooltip.style("opacity",1.0).html("<font color='"+colorCircle+"'>"+resSplit[0]+"<br/>"+endDateToPlot+" <br /> "+number+" "+units+"</font>");
-
                             tooltip.style("opacity", 1.0).html("<div class='tooltip-arrow'></div><div class='tooltip-inner ng-binding' ng-bind='content'><font color='" + colorCircle + "'>" + resSplit[0] + "<br/>" + endDateToPlot + " <br /> " + number + " " + units + "</font></div>");
 
-
-                            //renderLine((self.x(i)), (self.y(d)));
                         }
-                    })//.on("mouseover", function(d,i){console.log(d3.select(this));d3.select(this).classed("circuloOn", true);})
+                    })
                     .on("mouseout", function (d, i) {
                         d3.select(this).classed("pointOn", false);
                         var circle = d3.select(this);
                         circle.transition().attr("r", self.radius);
                         mouseout();
                     }).on("click", function (d, i) {
-                        //console.log(d);
-                        //var datos = d.split("|");
-                        //console.log(datos[0]);
-                        //console.log(datos[1]);
-                        //self.todelete=datos[1];
-                        //policycompass.viz.line(self);
-                        //document.getElementById("container_graph_6").innerHTML = "";
-                        //self.init();
-                        //self.drawLines(self.linesIn,self.eventsData);
 
                         if (self.modeGraph == 'view') {
 
@@ -2110,7 +1466,6 @@ policycompass.viz.line = function (options) {
                                 } else {
                                     if (self.xScale) {
                                         posXinvers = self.xScale.invert(posX - self.margin.left);
-                                        //posXinvers = self.xScaleInversa(posX-self.margin.left);
                                         var format = d3.time.format("%m-%d-%Y");
                                         posXinvers = format(posXinvers);
                                         posXinvers = posXinvers.replace(/-/g, "/");
@@ -2121,7 +1476,6 @@ policycompass.viz.line = function (options) {
                                 var maxDateGraph = format(self.maxDate);
                                 maxDateGraph = maxDateGraph.replace(/-/g, "/");
 
-                                //$('input[name="startDate"]').val(posXinvers);
                                 $('input[name="startDatePosX"]').val(posXinvers);
                                 $('input[name="endDatePosX"]').val(maxDateGraph);
 
@@ -2139,15 +1493,8 @@ policycompass.viz.line = function (options) {
         /*************Ini plot historical events *******/
 
         var dataForCircles = [];
-        //console.log("self.eventsDataIn");
-        //console.log(self.eventsDataIn);
-        //console.log("eventsData");
-        //console.log(eventsData);
 
         for (var i in eventsData) {
-            //dataForCircles[eventsData[i].posX]=eventsData[i].posY;
-            //console.log("---------");
-            //console.log(eventsData[i]);
             var arrayTemporal = [];
             arrayTemporal['index'] = i;
             arrayTemporal['color'] = eventsData[i].color;
@@ -2155,7 +1502,6 @@ policycompass.viz.line = function (options) {
             arrayTemporal['startDate'] = eventsData[i].startDate;
             arrayTemporal['endDate'] = eventsData[i].endDate;
 
-            //arrayTemporal['posY']=eventsData[i].posY;
             arrayTemporal['posY'] = 0;
             arrayTemporal['desc'] = eventsData[i].desc;
             dataForCircles[i] = arrayTemporal;
@@ -2163,51 +1509,36 @@ policycompass.viz.line = function (options) {
 
         var historicalEvents = self.svg.selectAll("rectagles").data(dataForCircles);
 
-        //	console.log("d.startDate="+d.startDate);
-        //	console.log("getDate(d.startDate)="+getDate(d.startDate));
-        //	console.log("x="+self.xScale(getDate(d.startDate));
-        //console.log("historicalEvents");
-        //console.log(historicalEvents);
 
-        historicalEvents.enter().append("rect").attr("class", "lineXDisco")//.style("stroke", function(d,i) {return colorScale("event");})
-            //.style("stroke", "grey")
-            .style("stroke", function (d, i) {
-                //console.log("d.index"+d.index);
+        historicalEvents.enter().append("rect").attr("class", "lineXDisco")                   
+            .style("stroke", function (d, i) {                
                 var colorToPlot = colorScaleForHE(d.index);
                 if (d.color) {
                     colorToPlot = d.color;
                 }
                 return colorToPlot;
-            })//.style("stroke", "red")
+            })
             .style("fill", function (d, i) {
-                //console.log("d.index"+d.index);
                 var colorToPlot = colorScaleForHE(d.index);
                 if (d.color) {
                     colorToPlot = d.color;
                 }
                 return colorToPlot;
             }).attr("opacity", 0.5).attr("x", function (d, i) {
-                //console.log(i);
-                //console.log("d.startDate="+d.startDate);
-                //console.log(self.xScale(d.startDate));
                 var posXToPlot = self.xScale(getDate(d.startDate));
 
                 if (isNaN(posXToPlot)) {
                     posXToPlot = 1;
                 }
-                //console.log("posXToPlot="+posXToPlot);
                 return posXToPlot;
             }).attr("y", 0).attr("width", function (d, i) {
-                //console.log("i="+i+"---stardate="+d.startDate);
-                //console.log("i="+i+"---endDate="+d.endDate);
-
                 var dif = "1";
                 if (d.endDate != "") {
                     dif = self.xScale(getDate(d.endDate)) - self.xScale(getDate(d.startDate));
                 } else {
                     dif = 1;
                 }
-                //console.log("dif="+dif);
+
                 if (dif <= 0) {
                     dif = 1;
                 }
@@ -2218,10 +1549,9 @@ policycompass.viz.line = function (options) {
                 return dif;
             }).attr("height", self.height).on("mouseover", function (d, i) {
                 d3.select(this).style("stroke-width", 2);
-                //d3.select(this).classed("pointOn", true);
+
                 var textTooltip = "";
-                //console.log("-----------d.startDate");
-                //console.log(d.startDate);
+
                 if (d.startDate) {
                     var resSplit = d.startDate.split("-");
                 } else {
@@ -2246,7 +1576,6 @@ policycompass.viz.line = function (options) {
                 var startDateToPlot = monthNames[parseInt(resSplit[1])] + " " + parseInt(resSplit[2]) + ", " + resSplit[0];
 
 
-                //textTooltip = d.title+": "+d.startDate;
                 textTooltip = d.title + "<br /> From: " + startDateToPlot;
                 if (d.endDate != "") {
                     if (d.endDate) {
@@ -2255,7 +1584,6 @@ policycompass.viz.line = function (options) {
                         var resSplit = [];
                     }
                     var endDateToPlot = monthNames[parseInt(resSplit[1])] + " " + parseInt(resSplit[2]) + ", " + resSplit[0];
-                    //textTooltip = textTooltip+" - "+d.endDate;
                     textTooltip = textTooltip + " <br /> To: " + endDateToPlot;
 
                 }
@@ -2266,14 +1594,11 @@ policycompass.viz.line = function (options) {
                 var posXToPlot = self.xScale(getDate(d.startDate));
                 if (posXToPlot > 0) {
 
-                    //tooltip.style("opacity",1.0).html(textTooltip);
                     tooltip.style("opacity", 1.0).html("<div class='tooltip-arrow'></div><div class='tooltip-inner ng-binding' ng-bind='content'>" + textTooltip + "</div>");
 
-                    //d3.tooltip().placement("right")
                 }
 
             }).on("mouseout", function (d, i) {
-                //d3.select(this).classed("pointOn",false);
                 mouseout();
                 d3.select(this).style("stroke-width", 1);
             })
@@ -2296,8 +1621,7 @@ policycompass.viz.line = function (options) {
     var handleMouseOverGraph = function (posMouse) {
         var mouseX = posMouse[0];
         var mouseY = posMouse[1];
-        //console.log(mouseX);
-        //console.log(self.margin);
+
         if (self.hoverLineX) {
             if (mouseX - self.margin.left >= 0 && mouseX <= self.width + self.margin.left && mouseY - self.margin.top >= 0 && mouseY - self.margin.top - self.margin.bottom <= self.height - self.margin.bottom) {
                 // show the hover line
@@ -2315,26 +1639,11 @@ policycompass.viz.line = function (options) {
     /*** funtion to init. graph ***/
     self.init = function () {
 
-        //resize();
-
         var mousemove = function () {
-            //console.log(d3.event.pageX);
             tooltip.style("left", (d3.event.pageX + 20) + "px").style("top", (d3.event.pageY - 12) + "px");
-
         };
 
-        // console.log($scope.mode);
-
         self.parentSelect = self.parentSelect.replace("undefined", "");
-        //console.log(self.parentSelect);
-        //console.log(self.font_size);
-
-        /*
-         function redraw () {
-         self.svg.attr("transform", "translate(" + d3.event.translate + ")"
-         + " scale(" + d3.event.scale + ")");
-         };
-         */
 
         var selection = d3.select(self.parentSelect);
         
@@ -2361,7 +1670,6 @@ policycompass.viz.line = function (options) {
             self.width = clientwidth - 20;
 
             if (self.width < 0) {
-                //self.width = self.maxWidth;
                 self.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
                 if (self.width > 200) {
                     self.width = self.width - 120;
@@ -2372,7 +1680,7 @@ policycompass.viz.line = function (options) {
             }
 
             var newScale = (self.width) / self.maxWidth;
-            //console.log("newScale="+newScale);
+
             self.margin = {
                 'top': self.maxMargin.top * newScale,
                 'right': self.maxMargin.right * newScale,
@@ -2393,63 +1701,32 @@ policycompass.viz.line = function (options) {
             self.distanceXaxes = self.maxDistanceXaxes * newScale;
         }
 
-        //console.log(self.parentSelect);
-
 
 //************************************************************
 // Zoom specific updates
 //************************************************************
 
 
-        self.svg = d3.select(self.parentSelect).append("svg").attr("class", "pc_chart").attr("width", self.width + self.margin.left + self.margin.right).attr("height", self.height + self.margin.top + self.margin.bottom)//.call(d3.behavior.zoom().on("zoom", redraw))
+        self.svg = d3.select(self.parentSelect)
+        .append("svg").attr("class", "pc_chart")
+        .attr("width", self.width + self.margin.left + self.margin.right)
+        .attr("height", self.height + self.margin.top + self.margin.bottom)
+        //.call(d3.behavior.zoom().on("zoom", redraw))
+		.on("mousemove", function (d, i) {
+            var posMouse = d3.mouse(this);
+            var posX = posMouse[0];
+            var posY = posMouse[1];
+            handleMouseOverGraph(posMouse);
+            mousemove();
+		})
+		.on("click", function (d, i) {
+            if (self.xaxeformat == 'sequence') {
+            } else {
 
-            .on("mousemove", function (d, i) {
-                var posMouse = d3.mouse(this);
-                var posX = posMouse[0];
-                var posY = posMouse[1];
-                handleMouseOverGraph(posMouse);
-                mousemove();
-            }).on("click", function (d, i) {
-
-                if (self.xaxeformat == 'sequence') {
-                } else {
-
-                    /*
-                     var posMouse = d3.mouse(this);
-                     var posX = posMouse[0];
-                     var posY = posMouse[1];
-                     var maxPosX = self.width + self.margin.left;
-                     var posXinvers = "";
-                     if (posX>maxPosX)
-                     {
-                     posXinvers = ""
-                     }
-                     else
-                     {
-                     if (self.xScale)
-                     {
-                     posXinvers = self.xScale.invert(posX-self.margin.left);
-                     //posXinvers = self.xScaleInversa(posX-self.margin.left);
-                     var format = d3.time.format("%m-%d-%Y");
-                     posXinvers= format(posXinvers);
-                     posXinvers = posXinvers.replace(/-/g,"/");
-                     }
-                     }
-
-                     var format = d3.time.format("%m-%d-%Y");
-                     var maxDateGraph = format(self.maxDate);
-                     maxDateGraph = maxDateGraph.replace(/-/g,"/");
-
-                     //$('input[name="startDate"]').val(posXinvers);
-                     $('input[name="startDatePosX"]').val(posXinvers);
-                     $('input[name="endDatePosX"]').val(maxDateGraph);
-                     //showModal();
-                     //dateToSet = posXinvers;
-                     //console.log("dateToSet="+dateToSet);
-                     //$('#basic-modal-content').modal();
-                     */
-                }
-            }).append("g").attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
+            }
+		})
+		.append("g")
+		.attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
     }
 
     //function to clone an object
@@ -2468,35 +1745,20 @@ policycompass.viz.line = function (options) {
 
     /* function to Plot data into the graph*/
     self.render = function (dataToPlot, eventsData, modeGraph) {
-        //console.log("render lines");
-        //console.log("dataToPlot");
-        //console.log(dataToPlot);
-        //console.log("eventsData");
-        //console.log(eventsData);
-        //console.log(modeGraph)
+
         self.modeGraph = modeGraph;
 
         self.dataToPlot = dataToPlot;
         self.eventsData = eventsData;
         self.modeGraph = modeGraph;
 
-
-        //console.log(self);
-        //console.log(eventsData);
-        //console.log(dataToPlot);
         if (dataToPlot) {
             if (Object.keys(dataToPlot).length === 0) {
 
-                self.svg.append("text").text("No data to plot. Add metrics").attr("class", "nodatatoplot").attr("x", self.margin.left).attr("y", self.margin.top)
+                self.svg.append("text").text("No data to plot. Add datasets").attr("class", "nodatatoplot").attr("x", self.margin.left).attr("y", self.margin.top)
             } else {
-                //self.legendsColumn = Math.ceil(Object.keys(dataToPlot).length/9);
-                //self.legendsColumn = Math.ceil(3/9);
-                //console.log(self.legendsColumn);
 
                 var dataToPlotUpdate = self.clone(dataToPlot);
-
-                //var dataToPlotUpdate = dataToPlot;
-                //console.log(dataToPlotUpdate);
                 self.drawLines(dataToPlotUpdate, eventsData);
 
             }

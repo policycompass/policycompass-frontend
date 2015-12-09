@@ -3,9 +3,6 @@
     <h4 class="modal-title text-info ng-binding fonticon fonticon-event ng-binding"> {{item.name}}</h4>
 </div>
 
-<!--
-<div ng-controller="VisualizationsCreateController as vc" class="modal-body">
--->
 <div class="modal-body text-info ng-binding ng-scope">
     <div id="basic-modal-content-pc">
         <tabset>
@@ -91,9 +88,6 @@
 
                     <hr>
                     <div>
-                        <!--
-                        <label for="historicalEvents">Historical events:</label>
-                        -->
                         <div>
                             <label ng-show="events.hits.total>1" for="">{{events.hits.total}} events found</label>
                             <label ng-show="events.hits.total==1" for="">{{events.hits.total}} event found</label>
@@ -114,9 +108,6 @@
                         </div>
                         <div class="row">
                             <ul class="metrics-list" id="metrics-list">
-                                <!--
-                                <li ng-repeat="event in events.hits.hits track by $index" ><a href ng-click="selectHE(event,'search')">{{event._source.title}}</a></li>
-                                -->
                                 <li ng-repeat="event in events.hits.hits track by $index">
 									<span ng-show="idsEventsToPlot[event._id]">
 										{{event._source.title}} (It's assigned)
@@ -125,7 +116,6 @@
 										<a href ng-click="selectHE(event,'search')">{{event._source.title}}</a>
 									</span>
                                 </li>
-
                             </ul>
                         </div>
                     </div>
@@ -162,18 +152,6 @@
 										preferredFormat: 'hex'
 									}"></spectrum>
 
-
-                                <!--
-                                <spectrum-colorpicker
-                                    name="colorHE[]" ng-model="colorHE[$index+1]" ng-model-onblur ng-change="updatecolorEvent($index);rePlotGraph()"
-                                    options="{
-                                        showInput: true,
-                                        showAlpha: false,
-                                        allowEmpty: false,
-                                        preferredFormat: 'hex'
-                                    }">
-                                </spectrum-colorpicker>
-                                -->
                             </div>
                             <div ng-if="event.startDate">
                                 <label for="">From:</label> {{event.startDate | date:'longDate'}}
@@ -235,17 +213,7 @@
 	  								allowEmpty: false,
 	  								preferredFormat: 'hex'
 	  							}"></spectrum>
-                        <!--
-                        <spectrum-colorpicker
-                              ng-model="historicalevent_color_palete"
-                                  options="{
-                                      showInput: true,
-                                      showAlpha: false,
-                                      allowEmpty: false,
-                                      preferredFormat: 'hex'
-                                  }">
-                        </spectrum-colorpicker>
-                        -->
+
                         <input type="hidden" id="historicalevent_color" name="historicalevent_color" class="form-control" ng-required="false" value="{{historicalevent_color_palete}}"/>
 
                     </div>

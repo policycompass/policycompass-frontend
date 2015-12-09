@@ -2,32 +2,9 @@ angular.module('pcApp.visualization.services.visualization', [
     'ngResource', 'pcApp.config'
 ])
 
-    /*
-     .factory('SearchVisualisations',  ['$resource', 'API_CONF', function($resource, API_CONF) {
-     var url = "/"+API_CONF.ELASTIC_INDEX_NAME+'/:type/_search';
-     //console.log("url");
-     //console.log(url);
-
-     var SearchVisualisations = $resource(url,
-     {
-     search: "@search",
-     type: "@type"
-     },
-     {
-     'update': { method:'PUT' },
-     'post': { method:'POST', isArray:false },
-     'query': { method: 'GET', isArray:false}
-     //'query': { method: 'POST', isArray:false}
-     }
-     );
-     return SearchVisualisations;
-     }])
-     */
-
     .factory('Dataset', [
         '$resource', 'API_CONF', function ($resource, API_CONF) {
             // Get the base URL from the configuration
-            //var url = "/api/v1/datasetmanager/datasets/:id";
             var url = API_CONF.DATASETS_MANAGER_URL + "/datasets/:id?time_resolution=:time_resolution";
             var Dataset = $resource(url, {
                 id: "@id",
@@ -62,28 +39,9 @@ angular.module('pcApp.visualization.services.visualization', [
         }
     ])
 
-    /*
-     .factory('VisualizationByMetric',  ['$resource', 'API_CONF', function($resource, API_CONF) {
-     var url = API_CONF.VISUALIZATIONS_MANAGER_URL + "/linkedVisualizationsByMetric?metric_id=:id&page_size=100";
-     //console.log(url);
-     var VisualizationByMetric = $resource(url,
-     {
-     id: "@id"
-     },
-     {
-     'update': { method:'PUT' },
-     'query': { method: 'GET', isArray:false}
-     }
-     );
-     return VisualizationByMetric;
-     }])
-     */
-
-
     .factory('VisualizationByDataset', [
         '$resource', 'API_CONF', function ($resource, API_CONF) {
             var url = API_CONF.VISUALIZATIONS_MANAGER_URL + "/linkedVisualizationsByDataset?dataset_id=:id&page_size=100";
-            //console.log(url);
             var VisualizationByDataset = $resource(url, {
                 id: "@id"
             }, {
@@ -97,11 +55,9 @@ angular.module('pcApp.visualization.services.visualization', [
         }
     ])
 
-
     .factory('VisualizationByEvent', [
         '$resource', 'API_CONF', function ($resource, API_CONF) {
-            var url = API_CONF.VISUALIZATIONS_MANAGER_URL + "/linkedVisualizationsByEvent?historical_event_id=:id&page_size=100";
-            //console.log(url);
+            var url = API_CONF.VISUALIZATIONS_MANAGER_URL + "/linkedVisualizationsByEvent?historical_event_id=:id&page_size=100";            
             var VisualizationByEvent = $resource(url, {
                 id: "@id"
             }, {
@@ -115,12 +71,9 @@ angular.module('pcApp.visualization.services.visualization', [
         }
     ])
 
-
     .factory('FCMByIndividualSelected', [
         '$resource', 'API_CONF', function ($resource, API_CONF) {
             var url = API_CONF.FCM_URL + "/individuals/:id";
-            //var url = API_CONF.FCM_URL + "/models";
-            //console.log(url);
             var FCMByIndividualSelected = $resource(url, {
                 id: "@id"
             }, {
@@ -136,8 +89,6 @@ angular.module('pcApp.visualization.services.visualization', [
     .factory('FCMByDatasetSelected', [
         '$resource', 'API_CONF', function ($resource, API_CONF) {
             var url = API_CONF.FCM_URL + "/datasets/:id";
-            //var url = API_CONF.FCM_URL + "/models";
-            //console.log(url);
             var FCMByDatasetSelected = $resource(url, {
                 id: "@id"
             }, {

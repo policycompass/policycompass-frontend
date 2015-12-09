@@ -7,7 +7,7 @@
             <edit-buttons data-userpath="{{visualization.creator_path}}" data-editurl="#!/visualizations/{{visualization.id}}/edit" data-deletefunction="deleteCurrentVisualisation"></edit-buttons>
 
             <div class="button-group">
-                <a type="button" class="btn btn-primary btn-addCausalModel" href="#!/models/create{{urlListIndividuals}}">Create Causal Model</a>
+                <a type="button" class="btn btn-primary btn-addCausalModel" href="#!/models/create?{{urlListIndicators}}">Create Causal Model</a>
                 <a type="button" class="btn btn-share" ng-click="share=!share" ng-class="{active: share}">Share</a>
             </div>
 
@@ -62,12 +62,12 @@
         <!-- FIELDS START -->
         <div class="metadata metadata-event">
 
-            <div class="form-group form-group-keywords" ng-show="visualization.keywords">
-                <div class="field-label">Keywords</div>
+            <div class="form-group form-group-keywords" ng-if="visualization.keywords">
+                <div class="field-label">Keywordsw</div>
                 <div class="field-content">{{visualization.keywords}}</div>
             </div>
 
-            <div class="form-group form-group-keywords" ng-show="visualization.policy_domains.length>0">
+            <div class="form-group form-group-keywords" ng-if="visualization.policy_domains.length>0">
                 <div class="field-label">Policy domains</div>
                 <div class="field-content">
                     <div ng-repeat="policydomain in visualization.policy_domains">
@@ -76,11 +76,11 @@
             </div>
 
             <div class="form-group form-group-modified">
-                <div class="form-item" ng-show="visualization.created_at">
+                <div class="form-item" ng-if="visualization.created_at">
                     <div class="field-label">Added</div>
                     <div class="field-content">{{ visualization.created_at | date:'longDate' }}</div>
                 </div>
-                <div class="form-item" ng-show="visualization.updated_at">
+                <div class="form-item" ng-if="visualization.updated_at">
                     <div class="field-label">Modified</div>
                     <div class="field-content">{{ visualization.updated_at | date:'longDate' }}</div>
                 </div>
@@ -111,12 +111,12 @@
                     <div class="field-label">Datasets</div>
                     <div class="field-content">
                         <div ng-repeat="metric in meticsRelated"><a ng-href="#!/datasets/{{metric.id}}">{{metric.title}}
-                            <span ng-show="metric.acronym"> - [{{metric.acronym}}]</span></a></div>
+                            <span ng-if="metric.acronym"> - [{{metric.acronym}}]</span></a></div>
                     </div>
                 </div>
 
             </div>
-            <div class="form-group form-group-events form-group-external" ng-show="visualization.historical_events_in_visualization">
+            <div class="form-group form-group-events form-group-external" ng-if="visualization.historical_events_in_visualization">
                 <div class="form-item">
                     <div class="field-label">Historical Events</div>
                     <div class="field-content">
@@ -133,7 +133,7 @@
 
             </div>
 
-            <div class="form-group form-group-visualisations form-group-external" ng-show="relatedVisualizations.length>0">
+            <div class="form-group form-group-visualisations form-group-external" ng-if="relatedVisualizations.length>0">
                 <div class="form-item">
                     <div class="field-label">Related Visualisations</div>
                     <div class="field-content">
@@ -143,7 +143,7 @@
                 </div>
             </div>
 
-            <div class="form-group form-group-fcms form-group-external" ng-show="fcmRelated.length>0">
+            <div class="form-group form-group-fcms form-group-external" ng-if="fcmRelated.length>0">
                 <div class="form-item">
                     <div class="field-label">Related Causal Models</div>
                     <div class="field-content">
