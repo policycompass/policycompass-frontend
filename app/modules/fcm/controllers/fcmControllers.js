@@ -170,28 +170,31 @@ angular.module('pcApp.fcm.controllers.fcm', [
                     $scope.SimulationResults.push(ConceptResults);
                 }
 
-                $scope.totalIteration = $scope.modeldetail.simulationResults[$scope.modeldetail.simulationResults.length - 1].iteration_id;
+				if ($scope.SimulationResults.length>0)
+				{
+		            $scope.totalIteration = $scope.modeldetail.simulationResults[$scope.modeldetail.simulationResults.length - 1].iteration_id;
 
-                for (i = 0; i < $scope.SimulationConcepts.length; i++) {
-                    var iteration = [];
-                    var output = [];
+		            for (i = 0; i < $scope.SimulationConcepts.length; i++) {
+		                var iteration = [];
+		                var output = [];
 
-                    for (j = 0; j < $scope.modeldetail.simulationResults.length; j++) {
-                        if ($scope.modeldetail.simulationResults[j].conceptID == $scope.SimulationConcepts[i].Id) {
-                            if ($scope.modeldetail.simulationResults[j].iteration_id < 10)
-                                iteration.push("0" + $scope.modeldetail.simulationResults[j].iteration_id.toString()); else
-                                iteration.push($scope.modeldetail.simulationResults[j].iteration_id.toString());
-                            output.push($scope.modeldetail.simulationResults[j].output);
-                        }
-                    }
-                    var data = {
-                        Key: $scope.SimulationConcepts[i].title,
-                        ValueX: iteration,
-                        ValueY: output,
-                        Type: "FCM"
-                    };
-                    $scope.dataset.push(data);
-                    $scope.labels.push("");
+		                for (j = 0; j < $scope.modeldetail.simulationResults.length; j++) {
+		                    if ($scope.modeldetail.simulationResults[j].conceptID == $scope.SimulationConcepts[i].Id) {
+		                        if ($scope.modeldetail.simulationResults[j].iteration_id < 10)
+		                            iteration.push("0" + $scope.modeldetail.simulationResults[j].iteration_id.toString()); else
+		                            iteration.push($scope.modeldetail.simulationResults[j].iteration_id.toString());
+		                        output.push($scope.modeldetail.simulationResults[j].output);
+		                    }
+		                }
+		                var data = {
+		                    Key: $scope.SimulationConcepts[i].title,
+		                    ValueX: iteration,
+		                    ValueY: output,
+		                    Type: "FCM"
+		                };
+		                $scope.dataset.push(data);
+		                $scope.labels.push("");
+					}
 				}
                 // broadcasting the event
                 $rootScope.$broadcast('appChanged');
