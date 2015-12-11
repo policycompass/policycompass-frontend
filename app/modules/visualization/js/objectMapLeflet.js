@@ -21,14 +21,14 @@ policycompass.viz.mapLeaflet = function (options) {
 	if ((!self.mode) || (self.mode=='view')) {
 		var dom_el = document.querySelector('[ng-controller="VisualizationsEditController"]');
     	var ng_el = angular.element(dom_el);
-    	var ng_el_scope = ng_el.scope();	
+    	var ng_el_scope = ng_el.scope();
 	}
 	else {
 		var dom_el = "";
 		var ng_el = "";
 		var ng_el_scope = "";
 	}
-    
+
     if (!self.scaleColor) {
     	self.scaleColor = "#f7941e"
     }
@@ -75,7 +75,7 @@ policycompass.viz.mapLeaflet = function (options) {
     if (!document.getElementById("mapPC_"+self.idName))	{
     	document.getElementById(self.idName).innerHTML = "<div id='mapPC_" + self.idName + "' class='datamap'></div>";
 	}
-	
+
     resize();
 
     var countriesData = {};
@@ -122,13 +122,13 @@ policycompass.viz.mapLeaflet = function (options) {
 	while(elements.length > 0) {
        	elements[0].parentNode.removeChild(elements[0]);
     }
-    
+
 	//used to check if map exist
 	if (ng_el_scope.map != undefined) {
 		ng_el_scope.reload = true;
-		var map = ng_el_scope.map; 
+		var map = ng_el_scope.map;
 	}
-	else {	    
+	else {
 	    var map = L.map("mapPC_" + self.idName, {
 	        layers: [
 	            L.tileLayer('//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -142,17 +142,17 @@ policycompass.viz.mapLeaflet = function (options) {
 	        maxZoom: 8,
 	        maxBounds: [[-90.0, -180.0], [90.0, 180.0]]
 	        //maxBounds: [[-85.0, -180.0],[85.0, 180.0]]
-	
+
 	    });
 	}
 
-	if (!ng_el_scope.reload) {	
+	if (!ng_el_scope.reload) {
     	L.control.pan().addTo(map);
     	L.control.scale().addTo(map);
 	}
-	
+
 	ng_el_scope.map=map;
-	
+
     map.on('zoomend', function () {
         document.getElementById('initialZoom').value = map.getZoom();
         document.getElementById('initialLat').value = map.getCenter().lat;
@@ -179,9 +179,13 @@ policycompass.viz.mapLeaflet = function (options) {
 		map.scrollWheelZoom.enable();
 		map.boxZoom.enable();
 		map.keyboard.enable();
-		$(".leaflet-control-zoom").css("visibility", "visible");		
-		map.scrollWheelZoom.enable();			
-	} 
+		$(".leaflet-control-zoom").css("visibility", "visible");
+		map.scrollWheelZoom.enable();
+	}
+
+    test = function () {
+
+    };
 
     plotChartMap = function () {
 
@@ -207,9 +211,8 @@ policycompass.viz.mapLeaflet = function (options) {
                 if (data.features[key].id == self.data[id].Id)
                 {
                     var valueCalc = "";
-                    
+
                     for (variable in self.data[id].Data) {
-                        //console.log(variable)
                         if (variable == self.from_country) {
                             valueCalc = self.data[id].Data[variable];
                         }
@@ -268,7 +271,7 @@ policycompass.viz.mapLeaflet = function (options) {
                                 "properties": {
                                     "popupContent": data.features[key].properties.name + " (" + data.features[key].id + "): " + valueCalc
                                 }
-                            });
+                            })
 
                         } else {
                             countriesData["features"].push(data.features[key]);
@@ -278,7 +281,6 @@ policycompass.viz.mapLeaflet = function (options) {
 
 
             }
-
 
         });
 
@@ -302,13 +304,13 @@ policycompass.viz.mapLeaflet = function (options) {
                 this._div.innerHTML = 'Data for: ' + self.from_country;
 
             };
-			
+
 			//remove info divs
 			var elements = document.getElementsByClassName("info_"+self.idName);
 			while(elements.length > 0) {
         		elements[0].parentNode.removeChild(elements[0]);
         	}
-        
+
             info.addTo(map);
         }
 
@@ -464,7 +466,7 @@ policycompass.viz.mapLeaflet = function (options) {
 			while(elements.length > 0) {
 	        	elements[0].parentNode.removeChild(elements[0]);
     		}
-    		
+
             legend.addTo(map);
         }
 
@@ -513,4 +515,4 @@ policycompass.viz.mapLeaflet = function (options) {
 
     return self;
 
-}
+};

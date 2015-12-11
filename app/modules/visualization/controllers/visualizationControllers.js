@@ -20,13 +20,13 @@ angular.module('pcApp.visualization.controllers.visualization', [
                             };
 
                             $scope.meticsRelated.push(data);
-                                                        
+
                             if (!$scope.arrayListIndicators) {
                             	$scope.arrayListIndicators= [];
                             	$scope.urlListIndicators = '';
                             }
                             if (!$scope.arrayListIndicators[metric.indicator_id]) {
-                            	                                                        
+
                             	if ($scope.urlListIndicators) {
                             		$scope.urlListIndicators += '&';
                             	}
@@ -952,7 +952,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                 }
                             }
                         };
-                        
+
                         var ObjectData = {
                             'Key': position,
                             'Labels': arrayLabelsDataPie,
@@ -2809,13 +2809,13 @@ angular.module('pcApp.visualization.controllers.visualization', [
             $scope.imageVisu = '/media/visualization_' + $routeParams.visualizationId + '.png';
             $scope.arrayIndividualsUsed = [];
 
-			
+
             $scope.visualization = Visualization.get({id: $routeParams.visualizationId}, function (visualizationList) {
                 var id_visu = $routeParams.visualizationId;
                 $scope.relatedVisualizations = [];
-                                
+
 				//console.log($scope.visualization);
-				
+
                 for (i in $scope.visualization.datasets_in_visualization) {
                     id = $scope.visualization.datasets_in_visualization[i].dataset_id;
                     $scope.getMetricData(i, id, "", "", "");
@@ -2831,7 +2831,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                             for (xi = 0; xi < dataIndividuos.length; xi++) {
                                 if (!$scope.arrayIndividualsUsed[dataIndividuos[xi]]) {
-                                    
+
                                     $scope.arrayIndividualsUsed[dataIndividuos[xi]] = dataIndividuos[xi];
                                 }
                             }
@@ -3183,9 +3183,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
                     $scope.colorHE[(parseInt(i) + 1)] = $scope.visualization.historical_events_in_visualization[i].color;
 
                     var datosInT = {
-                        id: $scope.visualization.historical_events_in_visualization[i].historical_event_id, 
-                        title: titleEvent, 
-                        startDate: startEventDate, 
+                        id: $scope.visualization.historical_events_in_visualization[i].historical_event_id,
+                        title: titleEvent,
+                        startDate: startEventDate,
                         endDate: endEventDate,
                         desc: $scope.visualization.historical_events_in_visualization[i].description,
                         color: $scope.visualization.historical_events_in_visualization[i].color
@@ -3310,7 +3310,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                     var myObject = {
                         id: her.id,
-                        title: her.title, 
+                        title: her.title,
                         startDate: tmp_startDate,
                         endDate: tmp_endDate,
                         desc: datIn.description,
@@ -3435,7 +3435,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                             value = value + $scope.dataset_color_palete_[metricListIn[j].id][arrayValuesInString[i]];
 
                         }
-                        
+
                         var selectorIndividualColorData = value;
 
                         var visualization_query_data = 'Individual:' + selectorIndividualData + ',Colors:' + selectorIndividualColorData;
@@ -3561,7 +3561,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
         'API_CONF',
         function ($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF) {
 
-            
+
 
 
         }
@@ -3659,7 +3659,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
             this.historicalevent_he_startdate = '';
             this.historicalevent_he_enddate = '';
             this.historicalevent_he_description = '';
-            
+
             var datasetsURL = $routeParams.datasets;
 
             if (datasetsURL) {
@@ -3870,17 +3870,6 @@ angular.module('pcApp.visualization.controllers.visualization', [
     ])
 
 
-angular.module('pcApp.visualization').filter('pagination', function () {
-    return function (input, start) {
-        start = +start;
-        if (input) {
-            return input.slice(start);
-        } else {
-            return start;
-        }
-
-    };
-})
 
 	//controller used in the modal window used to link datasets
     .controller('ModalInstanceCtrlDataset', [
