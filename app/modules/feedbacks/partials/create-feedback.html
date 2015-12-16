@@ -1,0 +1,20 @@
+<div class="container">
+    <div class="content-header">
+        <h2 class="page-title">Send Feedback</h2>
+    </div>
+
+    <form name="feedbackForm" data-ng-controller="CreateFeedbackController">
+
+        <label>Subject:
+            <input id="subject_id" type="text" name="subject_text" data-ng-model="subject_text">
+        </label>
+        <br>
+
+        <label>Message:
+            <input id="message.id" type="text" name="message_text" data-ng-model="message_text">
+        </label>
+        <br>
+
+        <button data-ng-click="submit()">Submit</button>
+    </form>
+</div>
