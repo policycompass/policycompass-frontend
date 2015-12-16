@@ -344,20 +344,14 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             });
         };
 
-        $scope.cancelModel = function () {
+        $scope.cancelModel = function (id) {
 
             // Open a confirmation dialog
             var dlg = dialogs.confirm("Are you sure?", "Do you want to exit without save this causal model?");
             dlg.result.then(function () {
-
-                if ($scope.mode == 'create') {
-                    window.history.back();
-                } else {
-                    window.history.back();
-                }
-
+                $location.path('/models/' + id);
             });
-        }
+        };
 
         $scope.updateModel = function () {
             var jsonModel = {
