@@ -891,14 +891,14 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     var default_height = 500;
                     var row_height = 24;
                     if (rows > 0) {
-                        var height = row_height * rows + row_height;
+                        var height = row_height * rows + row_height + 5;
                         if (height > default_height) {
                             return default_height;
                         } else {
                             return height;
                         }
                     } else {
-                        return row_height * 2;
+                        return row_height * 2 + 5;
                     }
                 };
 
