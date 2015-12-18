@@ -1,19 +1,15 @@
 <div class="container">
     <div class="content-header">
-        <h1><span class="glyphicon glyphicon-list-alt"></span> {{ dataset.acronym }}</h1>
+        <h1 class="fonticon fonticon-dataset ng-binding">{{ dataset.title }}</h1>
 
         <div class="pc-visualization-formcontrols">
             <div class="button-group">
-                <a type="button" class="btn btn-primary btn-details data" ng-click="moreMetadata.isCollapsed = !moreMetadata.isCollapsed">
-                    <span ng-show="moreMetadata.isCollapsed">Show More Metadata</span>
-                    <span ng-show="!moreMetadata.isCollapsed">Hide More Metadata</span>
-                </a>
 
                 <a type="button" class="btn btn-primary btn-create" ng-disabled="true" href="#!/datasets/{{ dataset.id }}/edit">Edit</a>
                 <a type="button" class="btn btn-line" href="#!/visualizations/create/?datasets={{dataset.id}}">Visualise</a>
                 <a type="button" class="btn btn-tree" href="https://carneades-dev.policycompass.eu/carneades/#/projects/compass" target="_blank" ng-disabled="true">Create
                     Argument Map</a>
-                <a type="button" class="btn btn-danger" ng-click="deleteDataset(dataset)" ng-if="userState.loggedIn && (userState.userPath == dataset.creator_path || userState.isAdmin)">
+                <a type="button" class="btn btn-danger" ng-disabled="true" ng-click="deleteDataset(dataset)" ng-if="userState.loggedIn && (userState.userPath == dataset.creator_path || userState.isAdmin)">
                     Delete</a></div>
 
 
@@ -50,147 +46,154 @@
         <hot-table ng-if="showTable" settings="table.settings" datarows="table.items"></hot-table>
         <br/>
 
-        <div id="pc-more-container" collapse="moreMetadata.isCollapsed" class="well">
-            <div class="row">
-                <div class="col-lg-6">
-                    <table class="table table-hover">
 
-                        <tr ng-if="dataset.spatial">
-                            <td><b>Spatial:</b></td>
-                            <td>
-                                <resource-title resource="Individual" id="dataset.spatial"></resource-title>
-                            </td>
-                        </tr>
+        <div class="row">
+            <h3 class="legend-primary">Properties</h3>
 
-                        <tr ng-if="dataset.language_id">
-                            <td><b>Language:</b></td>
-                            <td>
-                                <resource-title resource="Language" id="dataset.language_id"></resource-title>
-                            </td>
-                        </tr>
+            <div class="metadata metadata-event">
 
-                        <tr ng-show="dataset.issued">
-                            <td><b>Issued:</b></td>
-                            <td>{{ dataset.issued | date:'longDate' }}</td>
-                        </tr>
+                <div class="form-group form-group-datasets">
+                    <div class="form-item" ng-if="indicator">
+                        <div class="field-label">Indicator</div>
+                        <div class="field-content">{{indicator.name}}</div>
+                    </div>
+                    <div class="form-item" ng-if="dataset.class_id">
+                        <div class="field-label">Dimension Type</div>
+                        <div class="field-content">
+                            <resource-title resource="Class" id="dataset.class_id"></resource-title>
 
-                        <tr ng-show="dataset.modified">
-                            <td><b>Last Modified:</b></td>
-                            <td>{{ dataset.modified | date:'longDate' }}</td>
-                        </tr>
-
-                        <tr ng-show="dataset.version">
-                            <td><b>Version:</b></td>
-                            <td>{{ dataset.version }}</td>
-                        </tr>
-
-
-                    </table>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="col-lg-6">
-                    <table class="table table-hover">
 
-                        <tr ng-show="dataset.resource.issued">
-                            <td><b>Resource Issued:</b></td>
-                            <td>{{ dataset.resource.issued | date:'longDate' }}</td>
-                        </tr>
-
-                        <tr ng-if="dataset.resource.external_resource">
-                            <td><b>External Resource:</b></td>
-                            <td>
-                                <a href="{{ dataset.resource.url }}" target="_blank">
-                                    <resource-title resource="ExternalResource" id="dataset.resource.external_resource"></resource-title>
-                                </a>
-                            </td>
-                        </tr>
-
-                        <tr ng-show="dataset.resource.custom">
-                            <td><b>Custom Resource:</b></td>
-                            <td>{{ dataset.resource.custom }}</td>
-                        </tr>
-
-                        <tr ng-if="dataset.policy_domains">
-                            <td><b>Policy Domains:</b></td>
-                            <td>
-                                <span ng-repeat="p in dataset.policy_domains">
-                                    <resource-title resource="PolicyDomain" id="p"></resource-title>
-                                </span>
-                            </td>
-                        </tr>
-                    </table>
+                <div class="form-group form-group-scale">
+                    <div class="form-item" ng-if="dataset.unit_id">
+                        <div class="field-label">Unit</div>
+                        <div class="field-content">
+                            <resource-title resource="Unit" id="dataset.unit_id"></resource-title>
+                        </div>
+                    </div>
+                    <div class="form-item" ng-if="dataset.time">
+                        <div class="field-label">Time Span</div>
+                        <div class="field-content">{{ dataset.time.start }} - {{ dataset.time.end }}</div>
+                    </div>
+                    <div class="form-item" ng-if="dataset.time">
+                        <div class="field-label">Resolution</div>
+                        <div class="field-content">{{ dataset.time.resolution }}</div>
+                    </div>
                 </div>
+
+
             </div>
         </div>
 
 
         <div class="row">
+            <h3 class="legend-primary">Details</h3>
 
-            <div class="col-lg-6">
-                <legend class="legend-primary">Details</legend>
-                <table class="table table-hover">
+            <div class="metadata metadata-event">
 
-                    <tr ng-show="dataset.title">
-                        <td><b>Title:</b></td>
-                        <td>{{ dataset.title }}</td>
-                    </tr>
+                <div class="form-group form-group-keywords" ng-if="dataset.keywords">
+                    <div class="field-label">Keywords</div>
+                    <div class="field-content">{{dataset.keywords}}</div>
+                </div>
 
-                    <tr ng-show="dataset.description">
-                        <td><b>Description:</b></td>
-                        <td>{{ dataset.description }}</td>
-                    </tr>
 
-                    <tr ng-show="dataset.keywords">
-                        <td><b>Keywords:</b></td>
-                        <td>{{ dataset.keywords }}</td>
-                    </tr>
+                <div class="form-group form-group-keywords" ng-if="dataset.policy_domains">
+                    <div class="field-label">Policy Domains</div>
+                    <div class="field-content">
+                        <div ng-repeat="policydomain in dataset.policy_domains">
+                            <span ng-if="policydomain" resolve-policydomain id="policydomain"></span></div>
+                    </div>
+                </div>
 
-                    <tr ng-show="indicator">
-                        <td><b>Indicator:</b></td>
-                        <td>{{ indicator.name }}</td>
-                    </tr>
+                <div class="form-group form-group-modified">
+                    <div class="form-item" ng-if="dataset.issued">
+                        <div class="field-label">Added</div>
+                        <div class="field-content">{{ dataset.issued | date:'longDate' }}</div>
+                    </div>
+                    <div class="form-item" ng-if="dataset.modified">
+                        <div class="field-label">Modified</div>
+                        <div class="field-content">{{ dataset.modified | date:'longDate' }}</div>
+                    </div>
+                </div>
 
-                    <tr>
-                        <td><b>Rating:</b></td>
-                        <td>
+
+                <div class="form-group form-group-location">
+                    <div class="form-item" ng-if="dataset.language_id">
+                        <div class="field-label">Language</div>
+                        <div class="field-content">
+                            <span resolve-language id="dataset.language_id"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-item" ng-if="dataset.spatial">
+                        <div class="field-label">Location</div>
+                        <div class="field-content">
+                            <span ng-if="dataset.spatial" resolve-individual id="dataset.spatial"></span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group form-group-datasets">
+                    <div class="form-item" ng-if="dataset.description">
+                        <div class="field-label">Description</div>
+                        <div class="field-content">{{ dataset.description }}</div>
+                    </div>
+
+                    <div class="form-item" ng-if="dataset.acronym">
+                        <div class="field-label">Acronym</div>
+                        <div class="field-content">{{ dataset.acronym }}</div>
+                    </div>
+                </div>
+
+                <div class="form-group form-group-link">
+                    <div class="form-item" ng-if="dataset.resource.issued">
+                        <div class="field-label">Resource Issued</div>
+                        <div class="field-content">{{ dataset.resource.issued | date:'longDate' }}</div>
+                    </div>
+
+                    <div class="form-item" ng-if="dataset.resource.external_resource">
+                        <div class="field-label">External Resource</div>
+                        <div class="field-content">
+                            <a href="{{ dataset.resource.url }}" target="_blank">
+                                <resource-title resource="ExternalResource" id="dataset.resource.external_resource"></resource-title>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="form-item" ng-if="dataset.resource.custom">
+                        <div class="field-label">Name</div>
+                        <div class="field-content">{{ dataset.resource.custom | date:'longDate' }}</div>
+                    </div>
+                    <div class="form-item" ng-if="dataset.license">
+                        <div class="field-label">Licence</div>
+                        <div class="field-content">{{ dataset.license }}</div>
+                    </div>
+                </div>
+
+
+
+                <div class="form-group form-group-lg">
+                    <div class="form-item">
+                        <div class="field-label">Rating</div>
+                        <div class="field-content">
                             <pc-rating ng-if="dataset.id" rating-id="dataset_{{dataset.id}}"></pc-rating>
-                        </td>
-                    </tr>
+                        </div>
+                    </div>
+                </div>
 
-                </table>
+
+                <div class="form-group form-group-rating">
+                    <div class="form-item" ng-if="dataset.version">
+                        <div class="field-label">Version</div>
+                        <div class="field-content">{{ dataset.version }}</div>
+                    </div>
+                </div>
             </div>
-
-            <div class="col-lg-6">
-                <legend class="legend-primary">Properties</legend>
-                <table class="table table-hover">
-
-                    <tr ng-if="dataset.unit_id">
-                        <td><b>Unit:</b></td>
-                        <td>
-                            <resource-title resource="Unit" id="dataset.unit_id"></resource-title>
-                        </td>
-                    </tr>
-                    <tr ng-show="dataset.time">
-                        <td><b>Time Span:</b></td>
-                        <td>{{ dataset.time.start }} - {{ dataset.time.end }}</td>
-                    </tr>
-
-                    <tr ng-show="dataset.time">
-                        <td><b>Resolution:</b></td>
-                        <td>{{ dataset.time.resolution }}</td>
-                    </tr>
-
-                    <tr ng-if="dataset.class_id">
-                        <td><b>Dimension Type:</b></td>
-                        <td>
-                            <resource-title resource="Class" id="dataset.class_id"></resource-title>
-                        </td>
-                    </tr>
-
-                </table>
-            </div>
-
         </div>
+
 
         <div class="row">
             <div class="col-lg-12">
@@ -204,7 +207,6 @@
         </div>
 
     </div>
-
 
 </div>
 
