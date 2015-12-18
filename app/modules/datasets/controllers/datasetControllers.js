@@ -886,6 +886,23 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
             // ToDo This should be part of a directive
             var getDatasetSuccess = function (dataset) {
+
+                var getHeight = function (rows) {
+                    var default_height = 500;
+                    var row_height = 24;
+                    if (rows > 0) {
+                        var height = row_height * rows + row_height;
+                        if (height > default_height) {
+                            return default_height;
+                        } else {
+                            return height;
+                        }
+                    } else {
+                        return row_height * 2;
+                    }
+                };
+
+
                 var table = dataset.data.table;
                 var promises = [];
 
@@ -910,6 +927,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     $scope.timeSeries = DatasetsControllerHelper.generateTimeSeries(dataset.time.resolution, dataset.time.start, dataset.time.end);
                     $scope.table.settings.colHeaders = [' '].concat($scope.timeSeries);
 
+                    $scope.table.settings.height = getHeight(table.length);
                     // Show the table
                     $scope.showTable = true;
 
