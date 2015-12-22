@@ -95,12 +95,6 @@ angular.module('pcApp.indicators.controllers.indicator', [
             });
 
             $scope.indicator.$promise.then(function (indicator) {
-                var domains = [];
-                $scope.indicator.policy_domains.forEach(function (e) {
-                    domains.push(String(e));
-                });
-                $scope.indicator.policy_domains = domains;
-                $log.info($scope.indicator.policy_domains);
 
             });
 
