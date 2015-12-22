@@ -1,6 +1,6 @@
 <div class="container">
     <div class="content-header">
-        <h1 class="fonticon fonticon-indicator">{{ indicator.acronym }}</h1>
+        <h1 class="fonticon fonticon-indicator">{{ indicator.name }}</h1>
 
         <div class="pc-visualization-formcontrols">
             <div class="button-group">
@@ -15,6 +15,10 @@
                 <div class="form-item" ngshow="indicator.description">
                     <div class="field-label">Description</div>
                     <div class="field-content">{{indicator.description}}</div>
+                </div>
+                <div class="form-item" ngshow="indicator.acronym">
+                    <div class="field-label">Acronym</div>
+                    <div class="field-content">{{indicator.acronym}}</div>
                 </div>
             </div>
         </div>
