@@ -51,7 +51,7 @@
                                         <tr ng-repeat="option in individualCombo_value_[metric.id] | pagination: curPageDataset * pageSizeDataset | limitTo: pageSizeDataset ">
                                             <td>
                                                 <label ng-click="validateCheckboxes(metric.id);">
-                                                    <input type="checkbox" checklist-model="IndividualDatasetCheckboxes_[metric.id]" checklist-value="option.id"> {{option.title}}
+                                                    <span ng-hide="isSelectedSon('mercator') && !option.iscountry"><input type="checkbox" checklist-model="IndividualDatasetCheckboxes_[metric.id]" checklist-value="option.id"></span> {{option.title}} &nbsp;<span ng-show="isSelectedSon('mercator') && !option.iscountry">(Is not a country)</span>
                                                 </label>
                                             </td>
                                             <td ng-show="isSelectedSon('graph_line') || isSelectedSon('graph_pie')">
