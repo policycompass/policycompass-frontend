@@ -303,6 +303,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                     $scope.colorScale = d3.scale.category20();
 
+					$scope.curPageDataset = 0;
+					$scope.pageSizeDataset = 5;
                     $scope.posSliderMap = 0;
                     $scope.rangeDatesSliderMin = 0;
                     $scope.rangeDatesSliderMax = 0;

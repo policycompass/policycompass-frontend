@@ -754,7 +754,468 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
 		    $scope.reset = function () {
 		        $rootScope.$broadcast('appChanged');
 		    };
-		}
+            // Mode is creation
+            $scope.mode = "create";
+        }
+
+
+        $scope.showHelp = function (helpId) {
+            if (helpId == 1) {
+                $scope.helpContents = "First, add appropriate concepts for you causal model (click \"Add Concept\"),<br>Second, create relationship (causal relationship) among concepts you added (click \"Create Relationship\"),<br>Then save your model (click \"Save Model\").<br>After saving you model, you can run simulation for your model!";
+            }
+            dlg = dialogs.create('/dialogs/help.html', 'helpController', {}, {
+                key: false,
+                back: 'static'
+            });
+            dlg.result.then(function (user) {
+            }, function () {
+                $scope.name = 'You decided not to enter in your name, that makes me sad.';
+            });
+        };
+
+        $scope.range = function (min, max, step) {
+            step = step || 1;
+            var input = [];
+            for (var i = min; i <= max; i += step)
+                input.push(i);
+            return input;
+        };
+
+        $scope.saveModel = function () {
+            dlg = dialogs.create('/dialogs/savemodel.html', 'ModelController', {}, {
+                key: false,
+                back: 'static'
+            });
+            dlg.result.then(function (user) {
+                $scope.Models.push(user);
+
+                var jsonModel = {
+                    ModelTitle: user.title,
+                    ModelDesc: user.description,
+                    ModelKeywords: user.keywords,
+                    userID: "1",
+                    concepts: ConceptsDetail.getConcepts(),
+                    connections: AssociationsDetail.getAssociations()
+                };
+
+                $scope.fcmModel = new Fcm();
+                $scope.fcmModel.data = jsonModel;
+
+                Fcm.save($scope.fcmModel, function (value) {
+                    FcmSearchUpdate.create({id: value.model.id}, function () {
+                        var dlg = dialogs.notify("Causal Model", "'" + user.title + "' Casual Model has been saved!");
+                    }, function (err) {
+                        throw {message: err.data};
+                    });
+                    $scope.md = value;
+                    $location.path('/models/' + value.model.id + '/edit');
+                }, function (err) {
+                    throw {message: err.data};
+                });
+            }, function () {
+                $scope.name = 'You decided not to enter in your name, that makes me sad.';
+            });
+        };
+
+        $scope.cancelModel = function (id) {
+
+            // Open a confirmation dialog
+            var dlg = dialogs.confirm("Are you sure?", "Do you want to exit without save this causal model?");
+            dlg.result.then(function () {
+                $location.path('/models/' + id);
+            });
+        };
+
+        $scope.updateModel = function () {
+            var jsonModel = {
+                model: FCMModelsDetail.getModels(),
+                userID: "1",
+                concepts: ConceptsDetail.getConcepts(),
+                connections: AssociationsDetail.getAssociations()
+            };
+
+            $scope.fcmModelUpdate = new FcmModel();
+            $scope.fcmModelUpdate.data = jsonModel;
+            $scope.md = jsonModel;
+            FcmModel.update({id: $routeParams.fcmId}, $scope.fcmModelUpdate, function (value) {
+                FcmSearchUpdate.update({id: $routeParams.fcmId}, function () {
+                    var dlg = dialogs.notify("Causal Model", "'" + value.model.title + "' Casual Model has been saved!");
+                }, function (err) {
+                    throw {message: err.data};
+                });
+//			$scope.md = value;
+                $window.location.reload();
+            }, function (err) {
+                throw {message: err.data};
+            });
+        };
+
+        $scope.advanceSettings = function () {
+            dlg = dialogs.create('/dialogs/advancesettings.html', 'AdvanceSettingsController', {}, {
+                key: false,
+                back: 'static'
+            });
+            dlg.result.then(function (user) {
+                $scope.Activator.pop();
+                $scope.Activator.push(user);
+            }, function () {
+                $scope.name = 'You decided not to enter in your name, that makes me sad.';
+            });
+        };
+
+        $scope.editMetrics = function (index) {
+            dlg = dialogs.create('/dialogs/editmetrics.html', 'EditMetricsController', {}, {
+                key: false,
+                back: 'static'
+            });
+            dlg.result.then(function (user) {
+                if (user.ListMetricsFilter.length > 0) {
+                    $scope.SimulationConcepts[index].metricId = user.ListMetricsFilter[0].id;
+                    $scope.SimulationConcepts[index].metricTitle = user.ListMetricsFilter[0].title;
+                    $scope.SimulationConcepts[index].individuals = user.Individuals;
+                }
+            }, function () {
+                $scope.name = 'You decided not to enter in your name, that makes me sad.';
+            });
+        };
+
+        $scope.metricsManager = function () {
+            dlg = dialogs.create('/dialogs/metricsmanager.html', 'MetricsManagerController', {}, {
+                key: false,
+                back: 'static'
+            });
+            dlg.result.then(function (user) {
+            }, function () {
+                $scope.name = 'You decided not to enter in your name, that makes me sad.';
+            });
+        };
+
+        $scope.correlationMatrix = function () {
+            dlg = dialogs.create('/dialogs/correlationmatrix.html', 'CorrelationMatrixController', {}, {
+                key: false,
+                back: 'static'
+            });
+            dlg.result.then(function (user) {
+            }, function () {
+                $scope.name = 'You decided not to enter in your name, that makes me sad.';
+            });
+        };
+
+
+// **-*-****
+        $scope.weightCalulation = function () {
+            for (i = 0; i < $scope.SimulationConcepts.length; i++) {
+                if ($scope.SimulationConcepts[i].metricId != 0) {
+                    if ((i + 1) == 1)
+                        $scope.SimulationConcepts[i].value = 0.8; else if ((i + 1) % 5 == 0)
+                        $scope.SimulationConcepts[i].value = 1; else if ((i + 1) % 4 == 0)
+                        $scope.SimulationConcepts[i].value = 0.4; else if ((i + 1) % 3 == 0)
+                        $scope.SimulationConcepts[i].value = 0.6; else if ((i + 1) % 2 == 0)
+                        $scope.SimulationConcepts[i].value = 0.2; else
+                        $scope.SimulationConcepts[i].value = 0.8;
+                }
+            }
+            for (i = 0; i < $scope.SimulationAssociations.length; i++) {
+                for (j = 0; j < $scope.SimulationConcepts.length; j++) {
+                    if ($scope.SimulationConcepts[j].Id == $scope.SimulationAssociations[i].source.Id) {
+                        if ($scope.SimulationConcepts[j].metricId != 0) {
+                            if ((i + 1) == 1)
+                                $scope.SimulationAssociations[i].weighted = 0.25; else if ((i + 1) % 5 == 0)
+                                $scope.SimulationAssociations[i].weighted = -0.25; else if ((i + 1) % 4 == 0)
+                                $scope.SimulationAssociations[i].weighted = 0.75; else if ((i + 1) % 3 == 0)
+                                $scope.SimulationAssociations[i].weighted = -0.5; else if ((i + 1) % 2 == 0)
+                                $scope.SimulationAssociations[i].weighted = 0.5; else
+                                $scope.SimulationAssociations[i].weighted = 1;
+                        }
+                    }
+
+                    if ($scope.SimulationConcepts[j].Id == $scope.SimulationAssociations[i].destination.Id) {
+                        if ($scope.SimulationConcepts[j].metricId != 0) {
+                            if ((i + 1) == 1)
+                                $scope.SimulationAssociations[i].weighted = 0.25; else if ((i + 1) % 5 == 0)
+                                $scope.SimulationAssociations[i].weighted = -0.25; else if ((i + 1) % 4 == 0)
+                                $scope.SimulationAssociations[i].weighted = 0.75; else if ((i + 1) % 3 == 0)
+                                $scope.SimulationAssociations[i].weighted = -0.5; else if ((i + 1) % 2 == 0)
+                                $scope.SimulationAssociations[i].weighted = 0.5; else
+                                $scope.SimulationAssociations[i].weighted = 1;
+                        }
+                    }
+                }
+            }
+        };
+
+        $scope.runSimulation = function () {
+
+            var Activator = FCMActivatorDetail.getActivator();
+            var jsonSimulation = {
+                model: FCMModelsDetail.getModels(),
+                userID: "1",
+                activatorId: Activator[0].id,
+                concepts: SimulationConceptsDetail.getConcepts(),
+                connections: SimulationAssociationsDetail.getAssociations()
+            };
+            var Concepts = ConceptsDetail.getConcepts();
+            var Associations = SimulationAssociationsDetail.getAssociations();
+
+            $scope.fcmSimulation = new FcmSimulation();
+            $scope.fcmSimulation.data = jsonSimulation;
+
+            $scope.SimulationResults.splice(0, $scope.SimulationResults.length);
+            $scope.dataset.splice(0, $scope.dataset.length);
+            $scope.labels.splice(0, $scope.labels.length);
+
+            $scope.md = $scope.fcmSimulation;
+
+            for (i = 0; i < $scope.edgeData.length; i++)
+                for (j = 0; j < Associations.length; j++)
+                    if (($scope.edgeData[i].id == Associations[j].Id))
+                        $scope.edgeData[i].weighted = Associations[j].weighted;
+
+            FcmSimulation.save($scope.fcmSimulation, function (value) {
+                for (i = 0; i < value.result.length; i++) {
+                    var ConceptResults = {
+                        Id: value.result[i].id.toString(),
+                        iterationID: value.result[i].iteration_id.toString(),
+                        conceptID: value.result[i].conceptID.toString(),
+                        output: value.result[i].output.toString()
+                    };
+
+                    $scope.SimulationResults.push(ConceptResults);
+                }
+
+                $scope.totalIteration = value.result[value.result.length - 1].iteration_id;
+
+                for (i = 0; i < Concepts.length; i++) {
+                    var iteration = [];
+                    var output = [];
+
+                    for (j = 0; j < value.result.length; j++) {
+                        if (value.result[j].conceptID == Concepts[i].Id) {
+                            if (value.result[j].iteration_id < 10)
+                                iteration.push("0" + value.result[j].iteration_id.toString()); else
+                                iteration.push(value.result[j].iteration_id.toString());
+                            output.push(value.result[j].output);
+                        }
+                    }
+                    var data = {
+                        Key: Concepts[i].title,
+                        ValueX: iteration,
+                        ValueY: output,
+                        Type: "FCM"
+                    };
+                    $scope.dataset.push(data);
+                    $scope.labels.push("");
+                }
+
+//	$scope.md = $scope.dataset;
+            }, function (err) {
+                throw {message: err.data};
+            });
+
+            //dlg = dialogs.create('/dialogs/runsimulation.html','RunSimulationController',{},{key: false,back: 'static'});
+            //dlg.result.then(function(user){
+            //   },function(){
+            //     $scope.name = 'You decided not to enter in your name, that makes me sad.';
+            //   });
+            // broadcasting the event
+            $rootScope.$broadcast('appChanged');
+
+            $scope.tabsel = {
+                results: true
+            }
+        };
+
+        $scope.impactAnalysis = function () {
+            dlg = dialogs.create('/dialogs/impactanalysis.html', 'ImpactAnalysisController', {}, {
+                key: false,
+                back: 'static'
+            });
+            dlg.result.then(function (user) {
+            }, function () {
+                $scope.name = 'You decided not to enter in your name, that makes me sad.';
+            });
+        };
+
+        // add object from the form then broadcast event which triggers the directive redrawing of the chart
+        // you can pass values and add them without redrawing the entire chart, but this is the simplest way
+        $scope.addObj = function () {
+            dlg = dialogs.create('/dialogs/addconcept.html', 'ConceptController', {}, {
+                key: false,
+                back: 'static'
+            });
+            dlg.result.then(function (user) {
+                // collecting data from the form
+                var newObj = user.title;
+                user.Id = 'n' + $scope.NodeID;
+                user.x = $scope.NodeID * 30 + 200;
+                user.y = $scope.NodeID * 30 + 100;
+                user.scale = 5;
+                // building the new Node object
+                // using the array length to generate an id for the sample (you can do it any other way)
+                var newNode = {
+                    id: 'n' + ($scope.NodeID),
+                    name: newObj,
+                    posX: user.x,
+                    posY: user.y
+                };
+                $scope.NodeID = $scope.NodeID + 1;
+                // adding the new Node to the nodes array
+                $scope.mapData.push(newNode);
+                $scope.Concepts.push(user);
+
+                if ($scope.Concepts.length > 1)
+                    $scope.isDisabled = false; else
+                    $scope.isDisabled = true;
+
+                // broadcasting the event
+                $rootScope.$broadcast('appChanged');
+                // resetting the form
+            }, function () {
+                $scope.name = 'You decided not to enter in your name, that makes me sad.';
+            });
+        };
+
+        // add Edges to the edges object, then broadcast the change event
+        $scope.addEdge = function () {
+            dlg = dialogs.create('/dialogs/addassociation.html', 'AssociationController', {}, {
+                key: false,
+                back: 'static'
+            });
+            dlg.result.then(function (user) {
+                // collecting the data from the form
+                var edge1 = user.source.Id;
+                var edge2 = user.destination.Id;
+                user.Id = 'e' + ($scope.edgeData.length);
+
+                // building the new Edge object from the data
+                // using the array length to generate an id for the sample (you can do it any other way)
+                var newEdge = {
+                    id: 'e' + ($scope.edgeData.length),
+                    source: edge1,
+                    target: edge2,
+                    weighted: user.weight
+                };
+                // adding the new edge object to the adges array
+                $scope.edgeData.push(newEdge);
+                $scope.Associations.push(user);
+                // broadcasting the event
+                $rootScope.$broadcast('appChanged');
+                // resetting the form
+            }, function () {
+                $scope.name = 'You decided not to enter in your name, that makes me sad.';
+            });
+        };
+
+        // sample function to be called when clicking on an object in the chart
+        $scope.doClick = function (value) {
+            var pos;
+            // sample just passes the object's ID then output it to the console and to an alert
+            EditConcept.setEditMode($scope.mode);
+            EditAssociation.setEditMode($scope.mode);
+            if (value.substring(0, 1) == "n") {
+                for (i = 0; i < $scope.Concepts.length; i++) {
+                    if ($scope.Concepts[i].Id == value.substring(1, value.length)) {
+                        EditConcept.setConcept($scope.Concepts[i]);
+                        pos = i;
+                    }
+                }
+                dlg = dialogs.create('/dialogs/editconcept.html', 'EditConceptController', {}, {
+                    key: false,
+                    back: 'static'
+                });
+                dlg.result.then(function (user) {
+                    if (user == "D") {
+                        for (i = 0; i < $scope.Associations.length; i++) {
+                            if (($scope.Associations[i].sourceID == $scope.Concepts[pos].Id) || ($scope.Associations[i].destinationID == $scope.Concepts[pos].Id)) {
+                                for (j = i; j < $scope.Associations.length - 1; j++) {
+                                    $scope.Associations[j] = $scope.Associations[j + 1];
+                                    $scope.edgeData[j] = $scope.edgeData[j + 1];
+                                }
+                                $scope.Associations.pop();
+                                $scope.edgeData.pop();
+                                i--;
+                            }
+                        }
+
+                        for (i = pos; i < $scope.Concepts.length - 1; i++) {
+                            $scope.Concepts[i] = $scope.Concepts[i + 1];
+                            $scope.mapData[i] = $scope.mapData[i + 1];
+                        }
+                        $scope.Concepts.pop();
+                        $scope.mapData.pop();
+
+                        if ($scope.Concepts.length > 1)
+                            $scope.isDisabled = false; else
+                            $scope.isDisabled = true;
+                    } else {
+                        // collecting data from the form
+                        $scope.Concepts[pos].title = user.title;
+                        $scope.Concepts[pos].description = user.description;
+                        $scope.Concepts[pos].scale = user.scale;
+
+                        $scope.mapData[pos].name = user.title;
+                    }
+
+                    // broadcasting the event
+                    $rootScope.$broadcast('appChanged');
+                }, function () {
+                    $scope.name = 'You decided not to enter in your name, that makes me sad.';
+                });
+            } else {
+                for (i = 0; i < $scope.Associations.length; i++) {
+                    if ($scope.Associations[i].Id == value.substring(1, value.length)) {
+                        EditAssociation.setAssociation($scope.Associations[i]);
+                        pos = i;
+                    }
+                }
+                dlg = dialogs.create('/dialogs/editassociation.html', 'EditAssociationController', {}, {
+                    key: false,
+                    back: 'static'
+                });
+                dlg.result.then(function (user) {
+                    if (user == "D") {
+                        for (i = pos; i < $scope.Associations.length - 1; i++) {
+                            $scope.Associations[i] = $scope.Associations[i + 1];
+                            $scope.edgeData[i] = $scope.edgeData[i + 1];
+                        }
+                        $scope.Associations.pop();
+                        $scope.edgeData.pop();
+                    } else {
+                        // collecting data from the form
+                        $scope.Associations[pos].sourceID = user.source.Id;
+                        $scope.Associations[pos].source = user.source;
+                        $scope.Associations[pos].destinationID = user.destination.Id;
+                        $scope.Associations[pos].destination = user.destination;
+                        $scope.Associations[pos].weighted = user.weight;
+
+                        $scope.edgeData[pos].source = user.source.Id;
+                        $scope.edgeData[pos].target = user.destination.Id;
+                        $scope.edgeData[pos].weighted = user.weight;
+                    }
+
+                    // broadcasting the event
+                    $rootScope.$broadcast('appChanged');
+                }, function () {
+                    $scope.name = 'You decided not to enter in your name, that makes me sad.';
+                });
+            }
+
+        };
+
+        $scope.doMouseUp = function (value, posx, posy) {
+            for (i = 0; i < $scope.Concepts.length; i++) {
+                if ($scope.Concepts[i].Id == value.substring(1, value.length)) {
+                    $scope.Concepts[i].x = posx;
+                    $scope.Concepts[i].y = posy;
+                    $scope.mapData[i].posX = posx;
+                    $scope.mapData[i].posY = posy;
+                }
+            }
+        };
+        // Fit the nodes in the Editor
+        $scope.reset = function () {
+            $rootScope.$broadcast('appChanged');
+        };
     })
 
     .controller('helpController', function ($scope, $modalInstance, $log, $routeParams, data) {

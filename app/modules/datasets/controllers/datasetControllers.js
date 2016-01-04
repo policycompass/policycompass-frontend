@@ -182,7 +182,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     creationService.data.dataset.description = (resource.name && resource.name.length > 0) ? resource.name : resource.description;
 
                 }
-            }
+            };
 
 
             $scope.clearGrid = function () {
@@ -196,19 +196,37 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
             $scope.rotateData = function () {
                 var data = $scope.inputTable.items;
-                var newData = [[]];
-                _.each(data, function (element, index, list) {
-                    var colum_index = index;
-                    _.each(element, function (element, index, list) {
-                        if (element != null) {
-                            if (colum_index == 0) {
-                                newData[index] = [element];
-                            } else {
-                                newData[index].push(element);
+
+                var maxCol = 0;
+                var maxRow = 0;
+
+                _.each(data, function (element, index) {
+                    var rowFilled = false;
+                    _.each(element, function (element, index) {
+                        if(element !=  null) {
+                            rowFilled = true;
+                            if(index > maxCol) {
+                                maxCol = index;
                             }
                         }
                     });
+                    if(rowFilled) {
+                        maxRow = index;
+                    }
                 });
+
+                var newData = [];
+                var i,j;
+                for (i = 0; i <= maxRow; i++) {
+                    for (j = 0; j <= maxCol; j++) {
+                        if(i == 0){
+                            newData[j] = [data[i][j]]
+                        }else {
+                            newData[j].push(data[i][j]);
+                        }
+                    }
+                }
+
                 $scope.inputTable.items = newData;
                 $scope.inputInstance.loadData($scope.inputTable.items);
             };
@@ -886,6 +904,23 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
             // ToDo This should be part of a directive
             var getDatasetSuccess = function (dataset) {
+
+                var getHeight = function (rows) {
+                    var default_height = 500;
+                    var row_height = 24;
+                    if (rows > 0) {
+                        var height = row_height * rows + row_height + 5;
+                        if (height > default_height) {
+                            return default_height;
+                        } else {
+                            return height;
+                        }
+                    } else {
+                        return row_height * 2 + 5;
+                    }
+                };
+
+
                 var table = dataset.data.table;
                 var promises = [];
 
@@ -910,6 +945,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     $scope.timeSeries = DatasetsControllerHelper.generateTimeSeries(dataset.time.resolution, dataset.time.start, dataset.time.end);
                     $scope.table.settings.colHeaders = [' '].concat($scope.timeSeries);
 
+                    $scope.table.settings.height = getHeight(table.length);
                     // Show the table
                     $scope.showTable = true;
 

@@ -169,12 +169,12 @@ angular.module('pcApp.references.directives.forms', [
 
                         params = $scope.parameters;
                         $scope.$watch('parameters', function (newValue) {
-                            ;
                             params = newValue;
                             getData();
                         });
 
                     }
+
                     $scope.output = [];
                     $scope.selection = [];
                     var service = $injector.get($scope.resource);
@@ -226,4 +226,154 @@ angular.module('pcApp.references.directives.forms', [
                 template: '<div class="dataset-select" ' + 'isteven-multi-select ' + 'input-model="selection" ' + 'output-model="outputData" ' + 'selection-mode="{{ selectionMode }}" ' + 'button-label="name" ' + 'item-label="name" ' + 'tick-property="ticked"></div>'
             }
         }
+    ])
+
+    /**
+     * This is a improved version of the referenceSelection directive.
+     * It works as a full replacement for the standard HTMl selection form, with
+     * real two-way-databinding and validation.
+     *
+     * Example:
+     *
+     * <div id="policyDomains"
+     * class="reference-selection-form pc-reference-selection-full"
+     * resource="PolicyDomain"
+     * ng-model="indicator.policy_domains"
+     * required>
+     * </div>
+     *
+     */
+    .directive('referenceSelectionForm', [
+        '$log', '$injector', function ($log, $injector) {
+            return {
+                restrict: 'C',
+                require: '?ngModel',
+                scope: {
+                    resource: '@',
+                    parameters: '=',
+                    model: '=ngModel'
+                },
+                link: function ($scope, $element, $attrs, ngModel) {
+
+                    if ($attrs.selectionMode != 'undefined' && $attrs.selectionMode == 'single') {
+                        $scope.selectionMode = 'single';
+                    } else {
+                        $scope.selectionMode = 'multiple';
+                    }
+
+                    var required = false;
+                    if ($attrs.required != 'undefined' && $attrs.required == true) {
+                        required = true;
+                    }
+
+                    var params = {};
+                    if ($scope.parameters != undefined) {
+                        params = $scope.parameters;
+                        $scope.$watch('parameters', function (newValue) {
+                            params = newValue;
+                            getData();
+                        });
+                    }
+
+                    $scope.output = [];
+                    $scope.selection = [];
+                    $scope.outputData = {};
+
+                    var initValue = null;
+                    if ($scope.selectionMode == 'single') {
+                        initValue = $scope.model;
+                    } else {
+                        if ($scope.model != undefined)
+                            initValue = $scope.model.slice();
+                    }
+
+                    var service = $injector.get($scope.resource);
+
+                    var getData = function () {
+                        service.query(params, function (data) {
+                            var sel = [];
+                            angular.forEach(data, function (d) {
+                                var ticked = false;
+                                if ($scope.selectionMode == 'single') {
+                                    if (initValue == d.id) {
+                                        ticked = true;
+                                    }
+                                } else {
+                                    if (_.contains(initValue, d.id)) {
+                                        ticked = true;
+                                    }
+                                }
+                                sel.push({
+                                    name: d.title,
+                                    id: d.id,
+                                    ticked: ticked
+                                });
+                            });
+                            $scope.selection = sel;
+
+
+                            $scope.$watch('model', function (newValue, oldValue) {
+                                if ($scope.selectionMode == 'single') {
+                                    angular.forEach($scope.selection, function (s) {
+                                        if (newValue == s.id) {
+                                            s.ticked = true;
+                                        } else {
+                                            s.ticked = false;
+                                        }
+                                    });
+                                } else {
+                                    angular.forEach($scope.selection, function (s) {
+                                        if (_.contains(newValue, s.id)) {
+                                            s.ticked = true;
+                                        } else {
+                                            s.ticked = false;
+                                        }
+                                    });
+                                }
+
+                                if (newValue == undefined && required) {
+                                    ngModel.$setValidity($attrs.id, false);
+                                } else {
+                                    ngModel.$setValidity($attrs.id, true);
+                                }
+                            });
+
+                        });
+                    };
+
+                    getData();
+                    $scope.$watchCollection('outputData', function (newValue, oldValue) {
+                        if (newValue.length > 0) {
+                            if ($scope.selectionMode == 'single') {
+                                angular.forEach(newValue, function (value) {
+                                    $scope.model = value.id;
+                                })
+                            } else {
+                                $scope.model = [];
+                                angular.forEach(newValue, function (value) {
+                                    $scope.model.push(value.id);
+                                })
+                            }
+                        } else {
+                            if(initValue == undefined)
+                                $scope.model = undefined;
+                        }
+                    });
+
+
+                },
+                template: '<div class="dataset-select" ' +
+                'isteven-multi-select ' +
+                'on-reset="onReset()" ' +
+                'input-model="selection" ' +
+                'output-model="outputData" ' +
+                'selection-mode="{{ selectionMode }}" ' +
+                'button-label="name"  ' +
+                'helper-elements="reset filter" ' +
+                'item-label="name" ' +
+                'tick-property="ticked">' +
+                '</div>'
+            }
+        }
     ]);
+

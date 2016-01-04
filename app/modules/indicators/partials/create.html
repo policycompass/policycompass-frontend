@@ -2,12 +2,14 @@
     <div class="content-header">
         <h3 ng-if="mode == 'create'" class="fonticon fonticon-indicator">Define a New Indicator</h3>
 
-        <h3 ng-if="mode == 'edit'" class="fonticon fonticon-indicator">{{ indicator.acronym }} - Edit Indicator</h3>
+        <h3 ng-if="mode == 'edit'" class="fonticon fonticon-indicator">Edit Indicator</h3>
 
         <div class="subtitle-help">
             <h4>
                 <div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div>
-                Indicator Data
+                <span ng-if="mode == 'edit'">{{ indicator.name }}</span>
+                <span ng-if="mode == 'create'">Enter the Indicator data</span>
+
             </h4>
             <div ng-class="{active: help}" class="help-text">
                 <div class="fonticon fonticon-close" ng-click="help=!help"></div>
@@ -25,7 +27,7 @@
     </div>
 
     <div class="content-body">
-        <form name="indicatorForm" role="form" novalidate>
+        <form name="indicatorForm" role="form">
             <div class="row">
                 <div class="col-lg-4">
                     <fieldset>
@@ -37,19 +39,26 @@
 
                         <div class="form-group" ng-class="{'has-error': indicatorForm.acronym.$dirty && indicatorForm.acronym.$invalid}" ng-if="mode == 'create'">
                             <label for="acronym">Acronym *</label>
-                            <input type="text" class="form-control" id="acronym" name="name" placeholder="Indicator Name" ng-model="indicator.acronym" ng-minlength="3" required>
+                            <input type="text" class="form-control" id="acronym" name="name" placeholder="Short Name" ng-model="indicator.acronym" ng-minlength="1" required>
                         </div>
 
                         <div class="form-group" ng-class="{'has-error': indicatorForm.unitCategory.$dirty && indicatorForm.unitCategory.$invalid}">
                             <label for="unitCategory">Unit Category *</label>
-                            <select class="form-control unit-category-options" id="unitCategory" name="unit" ng-model="indicator.unit_category" required>
+                            <div id="unitCategory"
+                                class="reference-selection-form pc-reference-selection-full"
+                                resource="UnitCategory" selection-mode="single"
+                                ng-model="indicator.unit_category" required>
+                            </div>
                             </select>
                         </div>
 
                         <div class="form-group" ng-class="{'has-error': indicatorForm.language.$dirty && indicatorForm.language.$invalid}">
                             <label for="language" class="">Language *</label>
-                            <select class="form-control language-options" model="indicator.language" ng-model="indicator.language" id="language" name="language" required>
-                            </select>
+                            <div id="language"
+                                class="reference-selection-form pc-reference-selection-full"
+                                resource="Language" selection-mode="single"
+                                ng-model="indicator.language" required>
+                            </div>
                         </div>
 
                     </fieldset>
@@ -63,16 +72,18 @@
                         </div>
                         <div class="form-group" ng-class="{'has-error': indicatorForm.policyDomains.$dirty && indicatorForm.policyDomains.$invalid}">
                             <label for="policyDomains">Policy Domains *</label>
-                            <select multiple class="form-control policydomain-options" id="policyDomains" name="policy-domain" ng-model="indicator.policy_domains" required>
-                            </select>
+                            <div id="policyDomains"
+                                class="reference-selection-form pc-reference-selection-full"
+                                resource="PolicyDomain"
+                                ng-model="indicator.policy_domains" required>
+                            </div>
+
                         </div>
                     </fieldset>
                 </div>
 
-
             </div>
 
         </form>
-
     </div>
 </div>
