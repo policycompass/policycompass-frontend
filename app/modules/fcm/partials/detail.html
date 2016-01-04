@@ -5,13 +5,15 @@
         <div class="pc-visualization-formcontrols">
             <a type="button" class="btn btn-primary" href="#!/models/{{ models.model.id }}/edit">Run Simulation</a>
 
+            <a type="button" class="btn btn-primary" ng-click="openModels()">Models</a>
+
             <div class="button-group">
                 <a type="button" class="btn btn-primary  btn-create" href="#!/models/{{ models.model.id }}/edit">Edit</a>
                 <a type="button" class="btn btn-danger  btn-clear" ng-click="deleteModel(models.model)">Delete</a>
             </div>
         </div>
     </div>
-
+{{ token }}
     <!-- Menu -->
     <div class="row">
         <!-- <div class="col-lg-12"><a type="button" class="btn btn-primary pull-left">Save</a></div>  -->
