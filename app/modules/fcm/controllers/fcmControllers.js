@@ -42,6 +42,7 @@ angular.module('pcApp.fcm.controllers.fcm', [
             $scope.editorLayout;
 
             $scope.models = FcmModel.get({id: $routeParams.fcmId}, function (fcmList) {
+                		$scope.token = fcmList;
                 for (i = 0; i < $scope.models.concepts.length; i++) {
                     var newNode = {
                         id: $scope.models.concepts[i].id.toString(),
@@ -91,16 +92,6 @@ angular.module('pcApp.fcm.controllers.fcm', [
                         $location.path('/browse');
                     });
                 });
-            };
-
-
-
-            // Function for deleting the FCM Model
-            $scope.openModels = function () {
-                // Open a confirmation dialog
-                    FcmModel.get({id: $routeParams.fcmId}, function (fcmList) {
-                		$scope.token = fcmList;
-                    });
             };
         }
     ])
