@@ -41,8 +41,13 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <table>
+								
+								<div ng-hide="individualCombo_value_[metric.id].length>0" class="loading-container">
+									<div class="loading"></div>
+									<div id="loading-text">loading</div>
+								</div>
+                                                
+                                <table ng-show="individualCombo_value_[metric.id].length>0">
                                     <thead>
                                         <th><label for="color">Individual</label></th>
                                         <th ng-show="isSelectedSon('graph_line')"><label for="color">Colour</label></th>

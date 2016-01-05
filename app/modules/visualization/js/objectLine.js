@@ -961,7 +961,7 @@ policycompass.viz.line = function (options) {
 
                 if (showLegend)
                 {
-                    var valueX = ((self.width / (lines.length / self.legendsColumn)) * (cntiMultiple));
+                    var valueX = ((self.maxWidth / (lines.length / self.legendsColumn)) * (cntiMultiple));
                     if (cnti % self.legendsColumn == 0) {
                         cntiMultiple = cntiMultiple + 1;
                     }
