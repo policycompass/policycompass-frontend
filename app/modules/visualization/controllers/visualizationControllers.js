@@ -170,9 +170,14 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                 $dataIndividual = Individual.getById(arrayIndividualListDataset[x].individual);
 
                                 $dataIndividual.$promise.then(function (indivudual) {
+                                	var iscountry=false;
+                                	if (indivudual.code) {
+                                		iscountry=true;
+                                	}
                                     $arrayValores = {
                                         "id": indivudual.id,
-                                        "title": indivudual.title
+                                        "title": indivudual.title,
+                                        "iscountry": iscountry
                                     };
                                     $arrayComboValues_Individuals.push($arrayValores);
                                     $arrayComboValuesChecked.push($arrayValores['id']);
@@ -2299,13 +2304,15 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                                     $sem = 0;
 
                                                     while (key == "") {
-
                                                         if ($scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]) {
                                                             if ($scope.TitleIndividuals[arguments[i]['data']['table'][j].individual] != arguments[i]['data']['table'][j].individual) {
-
-                                                                var str = arguments[i].acronym;
-                                                                var key = $scope.TitleIndividuals[arguments[i]['data']['table'][j].individual] + " [" + str + "] _" + j;
-
+																if (arguments.length>2) {
+                                                                	var str = arguments[i].acronym;
+                                                                	var key = $scope.TitleIndividuals[arguments[i]['data']['table'][j].individual] + " [" + str + "] _" + j;
+																}
+																else {
+																	var key = $scope.TitleIndividuals[arguments[i]['data']['table'][j].individual] + " _" + j;
+																}
                                                             }
                                                         }
                                                         $sem = $sem + 1;

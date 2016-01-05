@@ -961,7 +961,7 @@ policycompass.viz.line = function (options) {
 
                 if (showLegend)
                 {
-                    var valueX = ((self.width / (lines.length / self.legendsColumn)) * (cntiMultiple));
+                    var valueX = ((self.maxWidth / (lines.length / self.legendsColumn)) * (cntiMultiple));
                     if (cnti % self.legendsColumn == 0) {
                         cntiMultiple = cntiMultiple + 1;
                     }
@@ -1034,18 +1034,27 @@ policycompass.viz.line = function (options) {
                         })
                         .on("mouseover", function () {
 
-                            if ((self.modeGraph == 'view') || (self.xaxeformat == 'sequence')) {
+                            //if ((self.modeGraph == 'view') || (self.xaxeformat == 'sequence')) {
+                            if (1==1) {
 
                                 var keyTmp = d['Key'].split("_");
                                 var str = keyTmp[0];
-
-                   				var arrayDisabledIndividuals = document.getElementById('disableindividuals').value.split("|");
+								if (document.getElementById('disableindividuals')) {
+                   					var arrayDisabledIndividuals = document.getElementById('disableindividuals').value.split("|");
+                   				}
+                   				else {
+                   					var arrayDisabledIndividuals = [];
+                   				}
                     			var stringToCheck = d.Key.replace(/\W/g, '');
                     			var a = arrayDisabledIndividuals.indexOf(stringToCheck);
 
                                 if (d3.select(this).classed("enableindividual")) {
-
-                                    tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">Click over to hide ' + str + '</div>');
+									if ((self.modeGraph == 'view') || (self.xaxeformat == 'sequence')) { 
+                                    	tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '<br/><i>Click over to hide</i></div>');
+									}
+                                   	else {
+                                   		tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '</div>');
+                                   	}
                                     d3.selectAll(".active_item").style("opacity", 0.3);
 
                                     var strokeWidth = d3.select("#tag_" + d.Key.replace(/\W/g, '')).style("stroke-width");
@@ -1057,8 +1066,13 @@ policycompass.viz.line = function (options) {
                                     d3.selectAll(".point_" + d.Key.replace(/\W/g, '')).classed('pointOn', true)
                                         .style("opacity", 1);
 
-                                } else {                                	
-                                    tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">Click over to show ' + str + '</div>');
+                                } else {             
+                                	if ((self.modeGraph == 'view') || (self.xaxeformat == 'sequence')) {                                		                   
+                                    	tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '<br><i>Click over to show</i></div>');
+                                   	}
+                                   	else {
+                                   		tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '</div>');
+                                   	}
                                 }
 
                             }
@@ -1115,8 +1129,12 @@ policycompass.viz.line = function (options) {
                             return trimmedString;
                         })
                         .on("click", function () {
-
-                            if ((self.modeGraph == 'view') || (self.xaxeformat == 'sequence')) {
+                            
+                            if ((self.modeGraph == 'view') || (self.xaxeformat == 'sequence')) {                            
+                            
+                            	var resTRext = d.Key.split("_");
+                            	var trimmedString = resTRext[0];
+                            	//console.log(resTRext[0]);
                             	
                             	if (document.getElementById('disableindividuals')) {
                             		var arrayDisabledIndividuals = document.getElementById('disableindividuals').value.split("|");
@@ -1185,16 +1203,18 @@ policycompass.viz.line = function (options) {
                                 // Update whether or not the elements are active
                                 d.active = active;
 
+								var tooltipstr = resTRext[0];
                                 var str = d3.select(this).text();
+                                
                                 var res = "";
 																
                                 if (active) {                                	                             
                                     res = 'Click to display ' + str;
                                     res = str.replace("hide", "display");
-                                    tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">Click over to show ' + str + '</div>');
+                                    tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + tooltipstr + '<br/><i>Click over to show</i></div>');
                                 } else {
                                     res = str.replace("display", "hide");
-                                    tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">Click over to hide ' + str + '</div>');
+                                    tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + tooltipstr + '<br/><i>Click over to hide</i></div>');
                                 }
 								
                                 d3.select(this).text(res);
