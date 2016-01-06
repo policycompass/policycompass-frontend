@@ -16,11 +16,13 @@ angular.module('pcApp.metrics.controllers.metric', [
         'API_CONF',
         '$http',
         'MetricsControllerHelper',
+        'FormulaHelper',
         '$location',
         'Auth',
-        function ($scope, $modal, API_CONF, $http, MetricsControllerHelper, $location, Auth) {
+        function ($scope, $modal, API_CONF, $http, MetricsControllerHelper, FormulaHelper, $location, Auth) {
 
             $scope.user = Auth;
+            $scope.FormulaHelper = FormulaHelper;
 
             if (!$scope.user.state.loggedIn) {
                 $location.path("/login");
@@ -58,23 +60,8 @@ angular.module('pcApp.metrics.controllers.metric', [
                     }
                 };
 
-                // FIXME: MOVE TO SERVICE
                 $scope.getCursorPosition = function (event) {
-                    var oField = event.target;
-                    var iCaretPos = 0;
-
-                    // IE Support
-                    if (document.selection) {
-                        oField.focus();
-                        var oSel = document.selection.createRange();
-                        oSel.moveStart('character', -oField.value.length);
-                        iCaretPos = oSel.text.length;
-                    }
-
-                    else if (oField.selectionStart || oField.selectionStart == '0') {
-                        iCaretPos = oField.selectionStart;
-                    }
-                    $scope.cursorPosVal = iCaretPos;
+                    $scope.cursorPosVal = $scope.FormulaHelper.getCursorPosition(event);
                 };
 
                 $scope.clearErrors = function () {
@@ -279,8 +266,9 @@ angular.module('pcApp.metrics.controllers.metric', [
         'API_CONF',
         'MetricService',
         'IndicatorService',
+        'FormulaHelper',
         'Auth',
-        function ($scope, $routeParams, $location, $http, API_CONF, MetricService, IndicatorService, Auth) {
+        function ($scope, $routeParams, $location, $http, API_CONF, MetricService, IndicatorService, FormulaHelper, Auth) {
 
             // FIXME: MOVE TO SERVICE
             var isOwner = function (userpath) {
@@ -312,6 +300,7 @@ angular.module('pcApp.metrics.controllers.metric', [
                 return Math.max.apply( Math, numberlist );
             };
 
+            $scope.FormulaHelper = FormulaHelper;
             $scope.showFunctions = false;
             $scope.toggleFunctions = function() {
                 $scope.showFunctions = !$scope.showFunctions;
@@ -386,24 +375,10 @@ angular.module('pcApp.metrics.controllers.metric', [
                     }
                 };
 
-                // FIXME: MOVE TO SERVICE
-                $scope.getCursorPosition = function (event) {
-                    var oField = event.target;
-                    var iCaretPos = 0;
 
-                    // IE Support
-                    if (document.selection) {
-                        oField.focus();
-                        var oSel = document.selection.createRange();
-                        oSel.moveStart('character', -oField.value.length);
-                        iCaretPos = oSel.text.length;
-                    }
-
-                    else if (oField.selectionStart || oField.selectionStart == '0') {
-                        iCaretPos = oField.selectionStart;
-                    }
-                    $scope.cursorPosVal = iCaretPos;
-                };
+            $scope.getCursorPosition = function (event) {
+                $scope.cursorPosVal = $scope.FormulaHelper.getCursorPosition(event);
+            };
         }
     ])
 
