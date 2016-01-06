@@ -23,7 +23,7 @@ angular.module('pcApp.metrics.controllers.metric', [
             $scope.user = Auth;
 
             if (!$scope.user.state.loggedIn) {
-                $location.path("/login")
+                $location.path("/login");
             } else {
                 $scope.metrics_controller_helper = MetricsControllerHelper;
                 $scope.metrics_controller_helper.init();
@@ -35,6 +35,7 @@ angular.module('pcApp.metrics.controllers.metric', [
                     $scope.showFunctions = !$scope.showFunctions;
                 }
 
+                // FIXME: MOVE TO SERVICE
                 $scope.addIndicator = function (indicator) {
                     var i = "__" + $scope.variableIndex + "__";
                     if (angular.isUndefined($scope.cursorPosVal) || angular.isUndefined($scope.metrics_controller_helper.metricsdata.formula)) {
@@ -57,6 +58,7 @@ angular.module('pcApp.metrics.controllers.metric', [
                     }
                 };
 
+                // FIXME: MOVE TO SERVICE
                 $scope.getCursorPosition = function (event) {
                     var oField = event.target;
                     var iCaretPos = 0;
@@ -235,7 +237,27 @@ angular.module('pcApp.metrics.controllers.metric', [
         '$routeParams',
         'MetricService',
         'IndicatorService',
-        function ($scope, $routeParams, MetricService, IndicatorService) {
+        'Auth',
+        function ($scope, $routeParams, MetricService, IndicatorService, Auth) {
+
+            // FIXME: MOVE TO SERVICE
+            var isOwner = function (userpath) {
+                return Auth.state.userPath === userpath;
+            };
+
+            // FIXME: MOVE TO SERVICE
+            var isAdmin = function () {
+                if (Auth.state.isAdmin) {
+                    return true;
+                } else {
+                    return false;
+                }
+            };
+
+            // FIXME: MOVE TO SERVICE
+            $scope.allowEdit = function (userpath) {
+                return (isAdmin() || isOwner(userpath));
+            };
 
             $scope.data = MetricService.get({id: $routeParams.metricId}, function (metric) {
                 var indicator_id = metric.indicator_id;
@@ -246,6 +268,142 @@ angular.module('pcApp.metrics.controllers.metric', [
             }, function (err) {
                 throw {message: JSON.stringify(err.data)};
             });
+        }
+    ])
+
+    .controller('MetricsmanagerEditController', [
+        '$scope',
+        '$routeParams',
+        '$location',
+        '$http',
+        'API_CONF',
+        'MetricService',
+        'IndicatorService',
+        'Auth',
+        function ($scope, $routeParams, $location, $http, API_CONF, MetricService, IndicatorService, Auth) {
+
+            // FIXME: MOVE TO SERVICE
+            var isOwner = function (userpath) {
+                return Auth.state.userPath === userpath;
+            };
+
+            // FIXME: MOVE TO SERVICE
+            var isAdmin = function () {
+                if (Auth.state.isAdmin) {
+                    return true;
+                } else {
+                    return false;
+                }
+            };
+
+            // FIXME: MOVE TO SERVICE
+            var allowEdit = function (userpath) {
+                return (isAdmin() || isOwner(userpath));
+            };
+
+            var getNumber = function(key) {
+                var newKey = key.replace("__", "").replace("__", "");
+                return Number(newKey);
+            }
+
+            var getIndex = function(variables){
+                var keys = Object.keys(variables);
+                var numberlist = _.map(keys, getNumber);
+                return Math.max.apply( Math, numberlist );
+            };
+
+            $scope.showFunctions = false;
+            $scope.toggleFunctions = function() {
+                $scope.showFunctions = !$scope.showFunctions;
+            };
+
+
+
+            MetricService.get({id: $routeParams.metricId}, function (metric)
+                {
+
+                    $scope.data = metric;
+                    $scope.variableIndex = getIndex(metric.variables) + 1;
+                    var indicator_id = metric.indicator_id;
+                    IndicatorService.get({id: indicator_id}, function (indicator)
+                        {
+                            $scope.indicator = indicator;
+                        },
+                        function (err) {
+                            throw {message: JSON.stringify(err.data)};
+                        }
+                    );
+                    IndicatorService.query(function (indicators)
+                        {
+                            $scope.indicators = indicators.results;
+                        },
+                        function (err) {
+                            throw {message: JSON.stringify(err.data)
+                        };
+                    });
+
+                },
+                function (err) {
+                    throw {message: JSON.stringify(err.data)};
+                }
+            );
+
+
+            $scope.submit = function() {
+                var url = API_CONF.METRICS_MANAGER_URL + "/metrics/" + $routeParams.metricId;
+
+                $http.put(url, $scope.data).then(function (response) {
+                    $location.path(/metrics/ + $routeParams.metricId);
+                }, function (response) {
+                    $scope.servererror = response.data;
+                });
+            };
+
+            $scope.cancel = function() {
+                $location.path(/metrics/ + $routeParams.metricId);
+            };
+
+            // FIXME: MOVE TO SERVICE
+            $scope.addIndicator = function (indicator) {
+                    var i = "__" + $scope.variableIndex + "__";
+                    if (angular.isUndefined($scope.cursorPosVal) || angular.isUndefined($scope.data.formula)) {
+                        if (angular.isUndefined($scope.data.formula)) {
+                            $scope.metrics_controller_helper.metricsdata.formula = "";
+                        }
+                        $scope.data.formula = $scope.data.formula + i;
+                    } else {
+                        $scope.data.formula = [
+                            $scope.data.formula.slice(0, $scope.cursorPosVal),
+                            i,
+                            $scope.data.formula.slice($scope.cursorPosVal)
+                        ].join('');
+                        $scope.cursorPosVal = undefined;
+                    }
+                    $scope.variableIndex += 1;
+                    $scope.data.variables[i] = {
+                        "type": "indicator",
+                        "id": indicator.id
+                    }
+                };
+
+                // FIXME: MOVE TO SERVICE
+                $scope.getCursorPosition = function (event) {
+                    var oField = event.target;
+                    var iCaretPos = 0;
+
+                    // IE Support
+                    if (document.selection) {
+                        oField.focus();
+                        var oSel = document.selection.createRange();
+                        oSel.moveStart('character', -oField.value.length);
+                        iCaretPos = oSel.text.length;
+                    }
+
+                    else if (oField.selectionStart || oField.selectionStart == '0') {
+                        iCaretPos = oField.selectionStart;
+                    }
+                    $scope.cursorPosVal = iCaretPos;
+                };
         }
     ])
 
