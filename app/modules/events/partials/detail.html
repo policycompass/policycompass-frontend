@@ -4,8 +4,8 @@
 
         <div class="pc-visualization-formcontrols">
             <div class="button-group">
-                <a type="button" class="btn btn-primary  btn-create" href="#!/events/{{ event.id }}/edit">Edit</a>
-                <a type="button" class="btn btn-danger  btn-clear" ng-click="deleteEvent(event)">Delete</a>
+                <a type="button" class="btn btn-primary  btn-create" data-ng-disabled="!userState.loggedIn && !(userState.userPath == event.creator_path || userState.isAdmin)"  href="#!/events/{{ event.id }}/edit">Edit</a>
+                <a type="button" class="btn btn-danger  btn-clear" data-ng-disabled="!userState.loggedIn && !(userState.userPath == event.creator_path || userState.isAdmin)"  ng-click="deleteEvent(event)">Delete</a>
             </div>
         </div>
     </div>
@@ -30,12 +30,10 @@
 
         <div class="metadata metadata-event">
 
-
             <div class="form-group form-group-keywords" ngshow="event.keywords">
                 <div class="field-label">Keywords</div>
                 <div class="field-content">{{event.keywords}}</div>
             </div>
-
 
             <div class="form-group form-group-date">
                 <div class="form-item" ngshow="event.startEventDate">

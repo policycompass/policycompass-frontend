@@ -26,7 +26,10 @@ angular.module('pcApp.events.controllers.event', [
         'Languages',
         'dialogs',
         '$log',
-        function ($scope, $routeParams, $location, Event, LinkedEventVisualization, Languages, dialogs, $log) {
+        'Auth',
+        function ($scope, $routeParams, $location, Event, LinkedEventVisualization, Languages, dialogs, $log, Auth) {
+
+            $scope.userState = Auth.state;
 
             $scope.event = Event.get({id: $routeParams.eventId}, function (event) {
             }, function (error) {
@@ -68,7 +71,10 @@ angular.module('pcApp.events.controllers.event', [
         'Event',
         '$location',
         '$log',
-        function ($scope, $routeParams, Event, $location, $log) {
+        'Auth',
+        function ($scope, $routeParams, Event, $location, $log, Auth) {
+
+            $scope.userState = Auth.state;
 
             $scope.mode = "edit";
 
@@ -97,8 +103,12 @@ angular.module('pcApp.events.controllers.event', [
         'Event',
         '$location',
         '$log',
+        'dialogs',
         'eventService',
-        function ($scope, Event, $location, $log, eventService) {
+        'Auth',
+        function ($scope, Event, $location, $log, dialogs, eventService, Auth) {
+
+            $scope.userState = Auth.state;
 
             $scope.mode = "create";
 
@@ -116,15 +126,26 @@ angular.module('pcApp.events.controllers.event', [
                 eventService.removeEvent();
             }
 
+            var compareDates = function(){
+                if($scope.eventForm.startEventDate.$modelValue > $scope.eventForm.endEventDate.$modelValue){
+                    dialogs.error('Validation Error', 'Please provide a Start Date which is smaller than the End Date.');
+                    return false;
+                }
+                else return true;
+            };
+
+
             $scope.createEvent = function () {
                 $scope.event.userID = 1;
-                $scope.event.viewsCount = 1;
+                if(compareDates()) {
+                    $scope.event.viewsCount = 1;
 
-                Event.save($scope.event, function (value, responseHeaders) {
-                    $location.path('/events/' + value.id);
-                }, function (err) {
-                    throw {message: err.data};
-                });
+                    Event.save($scope.event, function (value, responseHeaders) {
+                        $location.path('/events/' + value.id);
+                    }, function (err) {
+                        throw {message: err.data};
+                    });
+                }
             };
         }
     ])
@@ -141,7 +162,10 @@ angular.module('pcApp.events.controllers.event', [
         '$http',
         'API_CONF',
         'eventService',
-        function ($scope, $filter, Event, $location, $log, $http, API_CONF, eventService) {
+        'Auth',
+        function ($scope, $filter, Event, $location, $log, $http, API_CONF, eventService, Auth) {
+
+            $scope.userState = Auth.state;
 
             $scope.step = 'one';
             $scope.nextStep = function () {
@@ -161,6 +185,7 @@ angular.module('pcApp.events.controllers.event', [
                     success(function (data, status, headers, config) {
                         //console.log(angular.toJson(data));
                         $scope.availableExtractors = data;
+
                     }).error(function (data, status, headers, config) {
                         // called asynchronously if an error occurs
                         // or server returns response with an error status.
@@ -285,3 +310,4 @@ angular.module('pcApp.events.controllers.event', [
             }
         };
     });
+
