@@ -357,7 +357,7 @@ angular.module('pcApp.metrics.controllers.metric', [
                     var i = "__" + $scope.variableIndex + "__";
                     if (angular.isUndefined($scope.cursorPosVal) || angular.isUndefined($scope.data.formula)) {
                         if (angular.isUndefined($scope.data.formula)) {
-                            $scope.metrics_controller_helper.metricsdata.formula = "";
+                            $scope.data.formula = "";
                         }
                         $scope.data.formula = $scope.data.formula + i;
                     } else {
