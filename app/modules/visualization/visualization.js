@@ -33,3 +33,15 @@ visu.config(function ($routeProvider) {
             templateUrl: 'modules/visualization/partials/detail.html'
         }).otherwise({redirectTo: '/'});
 });
+
+visu.filter('pagination', function () {
+    return function (input, start) {
+        start = +start;
+        if (input) {
+            return input.slice(start);
+        } else {
+            return start;
+        }
+
+    };
+});

@@ -4,6 +4,7 @@ app/fonts/icomoon/
 .sass-cache
 app/.sass-cache/
 bower_components
+app/dest
 development.json
 config.js
 .idea/*
