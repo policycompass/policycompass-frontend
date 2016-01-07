@@ -4,8 +4,8 @@
 
         <div class="pc-visualization-formcontrols">
             <div class="button-group">
-                <a type="button" class="btn btn-primary  btn-create" data-ng-disabled="!userState.loggedIn && !(userState.userPath == event.creator_path || userState.isAdmin)"  href="#!/events/{{ event.id }}/edit">Edit</a>
-                <a type="button" class="btn btn-danger  btn-clear" data-ng-disabled="!userState.loggedIn && !(userState.userPath == event.creator_path || userState.isAdmin)"  ng-click="deleteEvent(event)">Delete</a>
+                <a type="button" class="btn btn-primary  btn-create" ng-if="userState.loggedIn && (userState.userPath == event.creator_path || userState.isAdmin)"  href="#!/events/{{ event.id }}/edit">Edit</a>
+                <a type="button" class="btn btn-danger  btn-clear"  ng-if="userState.loggedIn && (userState.userPath == event.creator_path || userState.isAdmin)"  ng-click="deleteEvent(event)" ng-disabled="true">Delete</a>
             </div>
         </div>
     </div>
