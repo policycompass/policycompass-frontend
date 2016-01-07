@@ -20,8 +20,14 @@ angular.module('pcApp.feedbacks.services.feedbacksService', [
                 }
             });
 
-            Feedback.saveFeedback = function(name, email, subject, message){
-                return this.save({name:name, email:email,subject:subject,message:message})
+            Feedback.saveFeedback = function(name, email, subject, message, link){
+                return this.save({
+                    name: name,
+                    email: email,
+                    subject: subject,
+                    message: message,
+                    link: link
+                })
             };
             return Feedback;
          }

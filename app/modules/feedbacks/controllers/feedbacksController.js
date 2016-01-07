@@ -15,7 +15,6 @@ angular.module('pcApp.feedbacks.controllers.feedback', ['pcApp.feedbacks.service
     .controller('CreateFeedbackController',function($scope, CreateFeedbackControllerHelper, Feedback){
         $scope.createFeedbackControllerHelper = CreateFeedbackControllerHelper;
         $scope.feedback = Feedback;
-
         $scope.submit = function(){
             $scope.submitted = true;
             $scope.feedback.saveFeedback($scope.name_text, $scope.email_address, $scope.subject_text, $scope.message_text);
@@ -23,7 +22,8 @@ angular.module('pcApp.feedbacks.controllers.feedback', ['pcApp.feedbacks.service
 
     })
 
-    .controller('OpenFeedbackModal', function($scope, $modal){
+    .controller('OpenFeedbackModal', function($scope, $modal, $log, $location){
+
         $scope.open = function() {
             $modalInstance = $modal.open({
                 templateUrl: 'feedback-modal.html',
@@ -32,14 +32,14 @@ angular.module('pcApp.feedbacks.controllers.feedback', ['pcApp.feedbacks.service
                 controller: function ($scope, CreateFeedbackControllerHelper, Feedback) {
                     $scope.createFeedbackControllerHelper = CreateFeedbackControllerHelper;
                     $scope.feedback = Feedback;
-
                     $scope.submit = function () {
+                        $log.info($scope.context_text);
                         $scope.submitted = true;
-                        $scope.feedback.saveFeedback($scope.name_text, $scope.email_address, $scope.subject_text, $scope.message_text);
+                        $scope.feedback.saveFeedback($scope.name_text, $scope.email_address, $scope.subject_text, $scope.message_text, $location.absUrl());
                     }
-                },
+                }
             });
-        }
+        };
 
         $scope.cancel = function(){
             $modalInstance.close();
