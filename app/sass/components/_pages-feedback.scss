@@ -1,0 +1,31 @@
+.scrollbarButton{
+    margin: 0 auto;
+    padding: 10px;
+    position: fixed;
+    top: 6%;
+    right: 0;
+    cursor: pointer;
+    background: #e5e5e5;
+}
+
+.fonticon-feedback:before{
+    content:"\f0e0"
+}
+
+.container-create-feedback{
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.feedback-close-icon{
+    margin: 0 auto;
+    position: fixed;
+    top: 6%;
+    right: 1%;
+}
+
+.feedback-close-icon:before{
+    content:"\f00d"
+}
+
+
