@@ -15,7 +15,7 @@ angular.module('pcApp.references.directives.forms', [
                 restrict: 'C',
                 scope: {
                     model: '=model',
-                    category: '=category'
+                    category: '=?'
                 },
                 controller: function ($scope) {
                     var params = {};
