@@ -122,6 +122,21 @@ angular.module('pcApp.datasets.controllers.dataset', [
         }
     ])
 
+
+    .controller('DatasetEditController', [
+        '$scope',
+        'DatasetsControllerHelper',
+        '$log',
+        'dialogs',
+        'ngProgress',
+        '$routeParams',
+        'creationService',
+        'API_CONF',
+        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService, API_CONF) {
+
+        }
+    ])
+
     .controller('DatasetStep1Controller', [
         '$scope',
         'DatasetsControllerHelper',

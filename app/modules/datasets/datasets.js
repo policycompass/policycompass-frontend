@@ -52,4 +52,8 @@ angular.module('pcApp.datasets', [
                 controller: 'DatasetDetailController',
                 templateUrl: 'modules/datasets/partials/detail.html'
             })
+            .when('/datasets/:datasetId/edit', {
+                controller: 'DatasetEditController',
+                templateUrl: 'modules/datasets/partials/edit.html'
+            })
     });
