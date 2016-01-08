@@ -12,7 +12,8 @@ var metrics = angular.module('pcApp.metrics', [
     'pcApp.metrics.directives.formula',
     'pcApp.metrics.directives.indicator',
     'pcApp.metrics.directives.datasetSelect',
-    'pcApp.metrics.directives.indicatorToDataset'
+    'pcApp.metrics.directives.indicatorToDataset',
+    'pcApp.metrics.directives.functionsTable'
 ]);
 
 /**
@@ -45,6 +46,10 @@ metrics.config(function ($routeProvider) {
         .when('/metrics/:metricId/apply-2', {
             controller: 'ApplyMetric2Controller',
             templateUrl: 'modules/metrics/partials/apply-metric-2.html'
+        })
+        .when('/metrics/:metricId/edit', {
+            controller: 'MetricsmanagerEditController',
+            templateUrl: 'modules/metrics/partials/metric-edit.html'
         })
         .otherwise({redirectTo: '/'});
 });
