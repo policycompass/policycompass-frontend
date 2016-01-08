@@ -159,7 +159,7 @@
                             <div ng-if="event.endDate"><label for="">To:</label> {{event.endDate | date:'longDate'}}
                             </div>
                             <div ng-if="event.desc"><label for="">Description:</label>
-                                <textarea ng-blur="updateDescriptionEvent($index);rePlotGraph()" rows="2" cols="50" ng-model="descHE[$index+1]" ng-trim="false" maxlength="150" name="descriptionHEToAdd" id="descriptionHEToAdd">{descHE[$index+1]}}</textarea>
+                                <textarea ng-blur="updateDescriptionEvent($index);rePlotGraph()" rows="2" cols="50" ng-model="descHE[$index+1]" ng-trim="false" maxlength="150"></textarea>
                                 <span>{{150 - descHE[$index+1].length}} left</span>
                             </div>
                         </div>
@@ -225,7 +225,7 @@
                 <label for="Description">Description:</label>
 
                 <div>
-                    <textarea rows="2" cols="50" ng-model="historicalevent_description" ng-trim="false" maxlength="150" name="descriptionHEToAdd" id="descriptionHEToAdd">{{historicalevent_description}}</textarea>
+                    <textarea rows="2" cols="50" ng-model="historicalevent_description" ng-trim="false" maxlength="150" name="descriptionHEToAdd" id="descriptionHEToAdd"></textarea>
                     <span>{{150 - historicalevent_description.length}} left</span>
                 </div>
             </div>
