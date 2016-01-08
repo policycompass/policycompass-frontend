@@ -303,7 +303,7 @@
 
                                             <table>
                                                 <thead>
-                                                    <th><label for="color">Individual</label></th>
+                                                    <th><label for="color">Individual &nbsp;</label></th>
                                                     <th ng-show="isSelectedSon('graph_line')">
                                                         <label for="color">Colour</label></th>
                                                 </thead>
@@ -311,7 +311,7 @@
                                                     <tr ng-repeat="option in individualCombo_value_[metric.id] | pagination: curPageDataset * pageSizeDataset | limitTo: pageSizeDataset ">
                                                         <td>
                                                             <label ng-click="validateCheckboxes(metric.id);">
-                                                                <input type="checkbox" checklist-model="IndividualDatasetCheckboxes_[metric.id]" checklist-value="option.id"> {{option.title}}
+                                                                <span ng-hide="isSelectedSon('mercator') && !option.iscountry"><input type="checkbox" checklist-model="IndividualDatasetCheckboxes_[metric.id]" checklist-value="option.id"></span> {{option.title}} &nbsp;<span ng-show="isSelectedSon('mercator') && !option.iscountry">(Is not a country)</span>
                                                             </label>
                                                         </td>
                                                         <td ng-show="isSelectedSon('graph_line') || isSelectedSon('graph_pie')">
@@ -380,7 +380,7 @@
                                                 <label for="">To:</label> {{event.endDate | date:'longDate'}}
                                             </div>
                                             <div ng-if="event.desc"><label for="">Description:</label>
-                                                <textarea ng-blur="updateDescriptionEvent($index);rePlotGraph()" rows="2" cols="50" ng-model="descHE[$index+1]" ng-trim="false" maxlength="150" name="descriptionHEToAdd" id="descriptionHEToAdd">{{descHE[$index+1]}}</textarea>
+                                                <textarea ng-blur="updateDescriptionEvent($index);rePlotGraph()" rows="2" cols="50" ng-model="descHE[$index+1]" ng-trim="false" maxlength="150" name="descriptionHEToAddData" id="descriptionHEToAddData"></textarea>
                                                 <span>{{150 - descHE[$index+1].length}} left</span>
                                             </div>
                                         </div>
