@@ -99,7 +99,6 @@ angular.module('pcApp.indicators.controllers.indicator', [
             });
 
             $scope.save = function () {
-                $log.info($scope.indicator);
                 Indicator.update($scope.indicator, function (value, responseHeaders) {
                     $location.path('/indicators/' + value.id);
                 }, function (err) {

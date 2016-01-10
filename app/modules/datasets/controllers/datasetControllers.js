@@ -122,6 +122,167 @@ angular.module('pcApp.datasets.controllers.dataset', [
         }
     ])
 
+
+    .controller('DatasetEditController', [
+        '$scope',
+        '$location',
+        'DatasetsControllerHelper',
+        '$log',
+        'dialogs',
+        'ngProgress',
+        '$routeParams',
+        'creationService',
+        '$q',
+        'Dataset',
+        'Individual',
+        'Indicator',
+        'Auth',
+        'API_CONF',
+        function ($scope,
+                  $location,
+                  DatasetsControllerHelper,
+                  $log,
+                  dialogs,
+                  ngProgress,
+                  $routeParams,
+                  creationService,
+                  $q,
+                  Dataset,
+                  Individual,
+                  Indicator,
+                  Auth,
+                  API_CONF
+        ) {
+
+            var init = function () {
+                $scope.custom = false;
+                $scope.userState = Auth.state;
+            };
+
+            init();
+
+            $scope.toogleResource = function () {
+                $scope.custom = !$scope.custom;
+            };
+
+            $scope.userState = Auth.state;
+
+            $scope.showTable = false;
+            $scope.moreMetadata = {
+                isCollapsed: true
+            };
+
+            $scope.table = {
+                settings: {
+                    autoColumnSize: true,
+                    contextMenu: false,
+                    stretchH: 'all',
+                    readOnly: false,
+                    outsideClickDeselects: false,
+                    afterInit: function () {
+                        $scope.table.instance = this;
+                    }
+                },
+                items: [],
+                instance: null
+            };
+
+            // ToDo This should be part of a directive
+            var getDatasetSuccess = function (dataset) {
+                var getHeight = function (rows) {
+                    var default_height = 500;
+                    var row_height = 24;
+                    if (rows > 0) {
+                        var height = row_height * rows + row_height + 5;
+                        if (height > default_height) {
+                            return default_height;
+                        } else {
+                            return height;
+                        }
+                    } else {
+                        return row_height * 2 + 15;
+                    }
+                };
+
+
+                var table = dataset.data.table;
+                var promises = [];
+
+                // Resolve all Individuals first
+                angular.forEach(table, function (row) {
+                    promises.push(Individual.getById(row.individual).$promise);
+                });
+
+                // All Promises have to be resolved
+                $q.all(promises).then(function (individuals) {
+
+                    // Build the rows
+                    for (var i = 0; i < table.length; i++) {
+                        var row = [individuals[i].title];
+                        angular.forEach(table[i].values, function (v) {
+                            row.push(v);
+                        });
+                        $scope.table.items.push(row);
+                    }
+
+                    // Set the Column Headers
+                    $scope.timeSeries = DatasetsControllerHelper.generateTimeSeries(dataset.time.resolution, dataset.time.start, dataset.time.end);
+                    $scope.table.settings.colHeaders = [' '].concat($scope.timeSeries);
+
+                    $scope.table.settings.height = getHeight(table.length);
+                    // Show the table
+                    $scope.showTable = true;
+                    $scope.indicator = Indicator.get({id: dataset.indicator_id});
+                });
+
+                if(dataset.resource['custom']) {
+                    $scope.custom = true;
+                }
+
+            };
+
+            var getDatasetError = function (error) {
+                $location.path('/datasets');
+            };
+
+            $scope.dataset = Dataset.get({id: $routeParams.datasetId}, getDatasetSuccess, getDatasetError);
+
+            var preSave = function () {
+                delete $scope.dataset['data']['individuals'];
+
+                var table = [];
+                var row = 0;
+                angular.forEach($scope.table.items, function (i) {
+                    var values = {};
+                    for (var j = 0; j < $scope.timeSeries.length; j++) {
+                        var cell_value = i[j+1];
+                        $log.info(cell_value);
+                        if (cell_value == "-") {
+                            cell_value = ""
+                        }
+                        values[$scope.timeSeries[j]] = parseFloat(cell_value);
+                    }
+                    angular.forEach($scope.dataset['data']['table'], function (j) {
+                        if(j['row'] == row + 1) {
+                            j['values'] = values
+                        }
+                    });
+                    row++;
+                });
+            };
+
+            $scope.save = function () {
+                preSave();
+                Dataset.update($scope.dataset, function (value, responseHeaders) {
+                    $location.path('/datasets/' + value.id);
+                }, function (err) {
+                    throw {message: JSON.stringify(err.data)};
+                });
+            };
+
+        }
+    ])
+
     .controller('DatasetStep1Controller', [
         '$scope',
         'DatasetsControllerHelper',
