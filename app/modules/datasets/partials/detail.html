@@ -5,7 +5,7 @@
         <div class="pc-visualization-formcontrols">
             <div class="button-group">
 
-                <a type="button" class="btn btn-primary btn-create" ng-disabled="false" href="#!/datasets/{{ dataset.id }}/edit">Edit</a>
+                <a type="button" class="btn btn-primary btn-create" ng-if="userState.loggedIn && (userState.userPath == dataset.creator_path || userState.isAdmin)" href="#!/datasets/{{ dataset.id }}/edit">Edit</a>
                 <a type="button" class="btn btn-line" href="#!/visualizations/create/?datasets={{dataset.id}}">Visualise</a>
                 <a type="button" class="btn btn-tree" href="https://carneades-dev.policycompass.eu/carneades/#/projects/compass" target="_blank" ng-disabled="true">Create
                     Argument Map</a>
@@ -209,4 +209,3 @@
     </div>
 
 </div>
-

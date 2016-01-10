@@ -1,0 +1,141 @@
+<div class="container container-edit-dataset" id="container-edit-dataset">
+
+    <div class="content-header">
+        <h3 class="fonticon fonticon-dataset">Edit {{ dataset.title }}</h3>
+    </div>
+
+    <div class="pc-visualization-formcontrols">
+        <div class="button-group">
+            <a href="#!/login" ng-if="!userState.loggedIn" class="btn btn-default btn-save" target="_blank">Login to Save</a>
+            <a href="" id="saveButton" ng-disabled="datasetForm.$invalid" ng-if="userState.loggedIn && (userState.userPath == dataset.creator_path || userState.isAdmin)" class="btn btn-default btn-save" ng-click="save()">Save</a>
+            <a type="button" class="btn btn-danger" href="#!/datasets/{{ dataset.id }}">Cancel</a>
+        </div>
+    </div>
+
+    <div class="content-body">
+
+        <hot-table ng-if="showTable" settings="table.settings" datarows="table.items"></hot-table>
+        <br/>
+
+
+        <form name="datasetForm" role="form" novalidate>
+            <div class="row">
+                <div class="col-lg-4">
+                    <fieldset>
+                        <legend>Main Details</legend>
+                        <div class="form-group" ng-class="{'has-error': datasetForm.title.$dirty && datasetForm.title.$invalid}">
+                            <label for="title">Title *</label>
+                            <input type="text" class="form-control" id="title" name="title" placeholder="Dataset Title" ng-model="dataset.title" ng-minlength="3" required disabled>
+                        </div>
+
+                        <div class="form-group" ng-class="{'has-error': datasetForm.acronym.$dirty && datasetForm.acronym.$invalid}">
+                            <label for="acronym">Acronym *</label>
+                            <input type="text" class="form-control" id="acronym" name="name" placeholder="Acronym" ng-model="dataset.acronym" ng-minlength="3" required disabled>
+                        </div>
+
+                        <div class="form-group" ng-class="{'has-error': datasetForm.keywords.$dirty && datasetForm.keywords.$invalid}">
+                            <label for="keywords">Keywords *</label>
+                            <input type="text" class="form-control" id="keywords" name="keywords" placeholder="Keywords" ng-model="dataset.keywords" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="spatial">Spatial</label>
+                            <div id="spatial"
+                                class="reference-selection-form pc-reference-selection-full"
+                                resource="Individual" selection-mode="single"
+                                parameters="{ class: 'Country' }"
+                                ng-model="dataset.spatial" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="language">Language *</label>
+                            <div id="language"
+                                class="reference-selection-form pc-reference-selection-full"
+                                resource="Language" selection-mode="single"
+                                ng-model="dataset.language_id" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-class="{'has-error': datasetForm.license.$dirty && datasetForm.license.$invalid}">
+                            <label for="license">Licence</label>
+                            <input type="text" class="form-control" id="license" name="license" placeholder="CC BY 3.0" ng-model="dataset.license">
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="col-lg-8">
+                    <fieldset>
+                        <legend>Further Information</legend>
+                        <div class="form-group" ng-class="{'has-error': datasetForm.description.$dirty && datasetForm.description.$invalid}">
+                            <label for="dataset-description" class="">Description *</label>
+                            <textarea class="form-control" rows="5" id="dataset-description" name="dataset-description" ng-model="dataset.description" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="policy_domain">Policy Domains *</label>
+                            <div id="policy_domain"
+                                class="reference-selection-form pc-reference-selection-full"
+                                resource="PolicyDomain"
+                                ng-model="dataset.policy_domains" required>
+                            </div>
+                        </div>
+                        <legend>Resource Data</legend>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group date-picker" ng-controller="DateController">
+                                    <label for="retrievalDate">Date of Retrieval *</label>
+                                <span class="input-group">
+                                    <input type="text" id="retrievalDate" name="retrievalDate" class="form-control" datepicker-popup="{{ format }}" ng-model="dataset.resource.issued" is-open="opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" show-button-bar="false" ng-required="false" close-text="Close"/>
+                                <span class="input-group-btn">
+                                    <a type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></a>
+                                </span>
+                                </span>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-6">
+
+                                <div class="form-group" ng-class="{'has-error': datasetForm.url.$dirty && datasetForm.url.$invalid}">
+                                    <label for="url">URL *</label>
+                                    <input type="text" class="form-control" id="url" name="url" placeholder="http://eurostat.eu/1282" ng-model="dataset.resource.url" required>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <legend>External Resource</legend>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group" ng-show="!custom">
+                                    <label for="external_resource">External Resource *</label>
+                                    <div id="external_resource"
+                                        class="reference-selection-form pc-reference-selection-full"
+                                        resource="ExternalResource" selection-mode="single"
+                                        ng-model="dataset.resource.external_resource" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-show="custom" ng-class="{'has-error': datasetForm.custom.$dirty && datasetForm.custom.$invalid}">
+                                    <label for="custom">Custom</label>
+                                    <input type="text" class="form-control" id="custom" name="custom" placeholder="Open Data XY" ng-model="dataset.resource.custom">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group" ng-show="!custom">
+                                    <button class="btn btn-info pc-er-button" ng-click="toogleResource()">Not there?</button>
+                                </div>
+
+                                <div class="form-group" ng-show="custom">
+                                    <button class="btn btn-info pc-er-button" ng-click="toogleResource()">Choose from known Sources</button>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
