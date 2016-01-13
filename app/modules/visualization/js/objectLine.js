@@ -1107,19 +1107,19 @@ policycompass.viz.line = function (options) {
                             } else if (lines.length == 2) {
                                 length = 80;
                             } else if (lines.length == 3) {
-                                length = 60;
+                                length = 50;
                             } else if (lines.length == 4) {
-                                length = 40;
+                                length = 30;
                             } else if (lines.length == 5) {
                                 length = 28;
                             } else if (lines.length == 6) {
-                                length = 25;
-                            } else if (lines.length == 7) {
                                 length = 20;
+                            } else if (lines.length == 7) {
+                                length = 12;
                             } else if (lines.length == 8) {
-                                length = 18;
+                                length = 10;
                             } else {
-                                length = 18;
+                                length = 6;
                             }
 
                             if (trimmedString.length > length) {

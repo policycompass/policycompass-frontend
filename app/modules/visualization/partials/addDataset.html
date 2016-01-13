@@ -1,34 +1,48 @@
 <div class="modal-header dialog-header-notify ng-scope">
-    <button type="button" class="close" ng-click="cancelModalDataset()">×</button>
+    <button type="button" class="close" ng-click="cancelModalWindowDataset()">×</button>
     <h4 class="modal-title text-info ng-binding fonticon fonticon-dataset ng-binding"> Link datasets</h4>
 </div>
 
 <div class="modal-body text-info ng-binding ng-scope">
     <div id="basic-modal-content-pc">
-
+    	
+ 		<div ng-hide="hideAdvice" class="form-instructions">
+ 			<p class="text-danger">Changes will not be applied until you click over the "Apply" button!!!</p> 			
+ 		</div>
         <tabset>
             <tab heading="Add Datasets" active="tab1">
-                <div class="row createvisualization">
+            	
+            	<div ng-hide="!disabledApplyButton">
+            		<p class="text-danger">Loading data!!</p>	
+            	</div>
+            	
+            	
+                <div ng-hide="disabledApplyButton" class="row createvisualization">
+					<!--
                     <div indexdataset="indexdataset" id="filterDatasets" class="selectorDatasets" datasets-list="ListMetricsFilter" number-Max-Datasets="99" functionfordataset="rePlotGraphFromSearch(actionDone,position)" disable-Row="arrayResolutionsFilter[resolution.value]"></div>
+                    -->
+                    
+					<div indexdataset="indexdataset" id="filterDatasets" class="selectorDatasets" datasets-list="ListMetricsFilterModal" number-Max-Datasets="99" functionfordataset="rePlotGraphFromSearch(actionDone,position, 'modal')" disable-Row="arrayResolutionsFilter[resolution.value]"></div>
                 </div>
             </tab>
             <tab heading="Datasets Configuration" active="tab2">
                 <div class="row createvisualization">
-                    <div ng-show="ListMetricsFilter.length==0">No dataset linked</div>
-                    <div ng-show="metric.title" ng-controller="LoadCombosMetricModal" class="designer-metrics active" class="designer-metrics" id="designer-metrics-num-{{metric.id}}" ng-repeat="metric in ListMetricsFilter track by $index">
+                    <div ng-show="ListMetricsFilterModal.length==0">No dataset linked</div>
+                    <div ng-show="metric.title" ng-controller="LoadCombosMetricModal" class="designer-metrics active" class="designer-metrics" id="designer-metrics-num-{{metric.id}}" ng-repeat="metric in ListMetricsFilterModal track by $index">
                         <h4>{{metric.title}} -- {{metric.issued | date:'longDate' }}</h4>
 
                         <input type="hidden" ng-model="MetricSelectediId_[metric.id]" id="MetricSelectediId_{{metric.id}}" name="MetricSelectedId[]" value="">
                         <input type="hidden" ng-model="MetricSelectediIndex_[metric.id]" ng-init="MetricSelectediIndex_[metric.id]=metric.id" id="MetricSelectediIndex_{{metric.id}}" name="MetricSelectediIndex[]" value="{{metric.id}}">
 
                         <div class="metric-buttons">
-                            <button type="button" data-intro="Remove dataset from the visualisation" data-position="top" class="btn btn-danger btn-clear" ng-click="deleteMetricFromList(metric.id, metric.title, ListMetricsFilter, $index);" id="delete-metric-button-{{metric.id}}">Remove</button>
+                            <button type="button" data-intro="Remove dataset from the visualisation" data-position="top" class="btn btn-danger btn-clear" ng-click="deleteMetricFromList(metric.id, metric.title, ListMetricsFilterModal, $index, 'modal');" id="delete-metric-button-{{metric.id}}">Remove</button>
                             <a type="button" data-intro="Access to the dataset data" data-position="right" class="btn btn-info btn-adddataset" href="#!/datasets/{{metric.id}}" target="_blank" id="view-metric-button-{{metric.id}}">View Dataset in detaill</a>
                         </div>
 
                         <div class="metric-forms">
                             <div class="metric-form-item">
                                 <br>
+                                <!--
                                 <div ng-show="individualCombo_value_[metric.id].length/pageSizeDataset>1" class="createvisualization ">
                                     <div class="filterMetricsPagination" id="filterMetricsPaginationDirective">
                                         <div class="button-group">
@@ -41,12 +55,61 @@
                                         </div>
                                     </div>
                                 </div>
-								
-								<div ng-hide="individualCombo_value_[metric.id].length>0" class="loading-container">
+								-->
+																
+								<div ng-hide="showListIndividuals[metric.id]" class="loading-container">
 									<div class="loading"></div>
-									<div id="loading-text">loading</div>
+									<div id="loading-text">loading {{individualCombo_value_[metric.id].length}}/{{sizeIndividualsArray[metric.id]}}</div>
 								</div>
-                                                
+
+								<div>
+									<div ng-show="showListIndividuals[metric.id]">
+										
+										<div class="filterMetricsPagination" id="filterMetricsPaginationDirective">
+											<div class="button-group">
+								                <button ng-disabled="curPageDataset == 0" class="btn" ng-click="curPageDataset=curPageDataset-1">
+								                    <span class="glyphicon glyphicon-chevron-left"></span> Previous
+								                </button>
+								                <button ng-disabled="curPageDataset >= individualCombo_value_[metric.id].length/pageSizeDataset - 1" class="btn pull-right" ng-click="curPageDataset = curPageDataset+1">
+								                    Next <span class="glyphicon glyphicon-chevron-right"></span>
+								                </button>
+								            </div>
+										</div>
+										
+										<div class="filterDatasetsPaginationHeader" id="filterDatasetsPaginationHeaderDirective">
+											
+											<div>
+												
+												<label ng-show="individualCombo_value_[metric.id].length>1" for="">{{individualCombo_value_[metric.id].length}} individuals found</label>
+												<label ng-show="individualCombo_value_[metric.id].length==1" for="">{{individualCombo_value_[metric.id].length}} individual found</label>
+												<label ng-show="individualCombo_value_[metric.id].length==0" for="">No individuals found</label>
+												
+											</div>
+											
+										</div>
+										
+										<div class="filterDatasetPaginationBody createvisualization" id="filterDatasetsPaginationBodyDirective">
+											<ul class="datasets-list metrics-list ">
+												<li ng-class="{'metrics-list dataset-list active':ModalIndividualDatasetCheckboxes_[metric.id].indexOf(option.id) >= 0}" name="designer-dataset-num-{{dataset.id}}" ng-repeat="option in individualCombo_value_[metric.id] | orderBy: 'title' | pagination: curPageDataset * pageSizeDataset | limitTo: pageSizeDataset " >
+													<a ng-hide="isSelectedSon('mercator') && !option.iscountry" href="" x-ng-click="clickIndividual(metric.id, option.id);"  title="{{ ModalIndividualDatasetCheckboxes_[metric.id].indexOf(option.id) == -1 && 'Add ' || 'Remove ' }} '{{option.title}}'">					
+														<spectrum 
+															ng-show="isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')"
+															ng-init=" dataset_color_palete_[metric.id][option.id] = dataset_color_palete_[metric.id][option.id] == null ? colorScale(option.title) : dataset_color_palete_[metric.id][option.id] " ng-model="dataset_color_palete_[metric.id][option.id]" ng-model-onblur ng-change="changeColourIndividual()" options="{
+																						showInput: true,
+																						showAlpha: false,
+																						allowEmpty: false,
+																						preferredFormat: 'hex'
+																					}"></spectrum>
+															{{option.title}} &nbsp;
+													</a>
+													<span ng-show="isSelectedSon('mercator') && !option.iscountry">{{option.title}} &nbsp; (Is not a country)</span>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+
+								<!--
                                 <table ng-show="individualCombo_value_[metric.id].length>0">
                                     <thead>
                                         <th><label for="color">Individual</label></th>
@@ -55,12 +118,12 @@
                                     <body>
                                         <tr ng-repeat="option in individualCombo_value_[metric.id] | pagination: curPageDataset * pageSizeDataset | limitTo: pageSizeDataset ">
                                             <td>
-                                                <label ng-click="validateCheckboxes(metric.id);">
-                                                    <span ng-hide="isSelectedSon('mercator') && !option.iscountry"><input type="checkbox" checklist-model="IndividualDatasetCheckboxes_[metric.id]" checklist-value="option.id"></span> {{option.title}} &nbsp;<span ng-show="isSelectedSon('mercator') && !option.iscountry">(Is not a country)</span>
+                                                <label ng-click="validateCheckboxes(metric.id, 'modal');">
+                                                    <span ng-hide="isSelectedSon('mercator') && !option.iscountry"><input type="checkbox" checklist-model="ModalIndividualDatasetCheckboxes_[metric.id]" checklist-value="option.id"></span> {{option.title}} &nbsp;<span ng-show="isSelectedSon('mercator') && !option.iscountry">(Is not a country)</span>
                                                 </label>
                                             </td>
                                             <td ng-show="isSelectedSon('graph_line') || isSelectedSon('graph_pie')">
-                                                <spectrum ng-init=" dataset_color_palete_[metric.id][option.id] = dataset_color_palete_[metric.id][option.id] == null ? colorScale(option.title) : dataset_color_palete_[metric.id][option.id] " ng-model="dataset_color_palete_[metric.id][option.id]" ng-model-onblur ng-change="rePlotGraph()" options="{
+                                                <spectrum ng-init=" dataset_color_palete_[metric.id][option.id] = dataset_color_palete_[metric.id][option.id] == null ? colorScale(option.title) : dataset_color_palete_[metric.id][option.id] " ng-model="dataset_color_palete_[metric.id][option.id]" ng-model-onblur ng-change="changeColourIndividual()" options="{
 														showInput: true,
 														showAlpha: false,
 														allowEmpty: false,
@@ -71,6 +134,7 @@
                                         </tr>
                                     </body>
                                 </table>
+                              -->
                             </div>
                         </div>
                     </div>
@@ -81,6 +145,7 @@
     </div>
 </div>
 <div class="modal-footer ng-scope">
-    <button class="btn btn-primary btn-close" ng-click="cancelModalDataset()">Close</button>
+    <button ng-disabled="disabledApplyButton" class="btn btn-primary btn-validate" ng-click="okModalWindowDataset()">Apply</button>
+    <button class="btn btn-primary btn-clear" ng-click="cancelModalWindowDataset()">Cancel</button>
     <a href="#!/datasets/create" target="_blank" class="btn btn-default btn-create" id="adddataset">Create a new dataset</a>
 </div>

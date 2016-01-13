@@ -42,18 +42,23 @@
 
             <p>If you need help about how to use this form, please click over the question tag (<span class="fonticon fonticon-help help-switch" ng-click="help=!help"> </span>) or the "View help" button.
             </p>
+            
         </div>
     </div>
-
+	
+	<div ng-show="visualizationForm.$invalid || visualization.policy_domains_data.output.length==0" class="form-instructions">
+		<p class="text-danger">To save a visualisation you must be logged <span ng-show="user.state.loggedIn">(you are!!)</span> and all mandatory fields (*) must be fulfilled.</p>
+	</div>
+	
     <div class="pc-visualization-formcontrols">
         <div class="form-group pull-left">
             <canvas ng-show="false" id="canvas" width="800" height="400"></canvas>
             <div id="png-container"></div>
             <div class="button-group">
-                <button ng-if="mode == 'create'" type="submit" data-intro="Save data" data-position="top" ng-disabled="visualizationForm.$invalid || !user.state.loggedIn" class="btn btn-default btn-save" ng-click="createVisualization(ListMetricsFilter)">
+                <button ng-if="mode == 'create'" type="submit" data-intro="Save data" data-position="top" ng-disabled="visualizationForm.$invalid || !user.state.loggedIn || visualization.policy_domains_data.output.length==0" class="btn btn-default btn-save" ng-click="createVisualization(ListMetricsFilter)">
                     <span ng-hide="user.state.loggedIn">Login to </span>Save
                 </button>
-                <button ng-if="mode == 'edit'" type="submit" data-intro="Save data" data-position="top" ng-disabled="visualizationForm.$invalid || !user.state.loggedIn" class="btn btn-default btn-save" ng-click="createVisualization(ListMetricsFilter)">
+                <button ng-if="mode == 'edit'" type="submit" data-intro="Save data" data-position="top" ng-disabled="visualizationForm.$invalid || !user.state.loggedIn || visualization.policy_domains_data.output.length==0" class="btn btn-default btn-save" ng-click="createVisualization(ListMetricsFilter)">
                     <span ng-hide="user.state.loggedIn">Login to </span>Save
                     <span ng-hide="user.state.userPath==visualization.creator_path"> a copy</button>
 
