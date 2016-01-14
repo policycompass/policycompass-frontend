@@ -396,13 +396,13 @@ angular.module('pcApp.visualization.controllers.visualization', [
                             max = $scope.numbers2.length;
                         }
 
-
+						//console.log("i="+i);
                         if (angular.isDefined(stop)) return;
 
                         stop = $interval(function () {
 
-                            if (i < (max - 1)) {
-                                $scope.rangeDatesSliderMin = i + 1;
+                            if (i < (max - 1)) {                                
+                                $scope.rangeDatesSliderMin = i + 1;                                
                             } else {
                                 if (angular.isDefined(stop)) {
                                     $interval.cancel(stop);
@@ -474,8 +474,10 @@ angular.module('pcApp.visualization.controllers.visualization', [
                     $scope.translateCountryValue = function (value) {
                         return $scope.translateCountryDataValue(value);
                     }
-
+					
+					
                     $scope.translateCountrySlider = function (value) {
+                    	/*
                         if (value != 0) {
                             if (($scope.typeToPlot === 'map_1') || ($scope.typeToPlot === 'mercator') || ($scope.typeToPlot === 'conicConformal') || ($scope.typeToPlot === 'equirectangular') || ($scope.typeToPlot === 'orthographic') || ($scope.typeToPlot === 'azimuthalEqualArea')) {
                                 if ($scope.rangeDatesSliderMin == value) {
@@ -486,11 +488,11 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                 }
                             }
                         }
-
+						*/
                         return $scope.translateCountryDataValue(value);
                     }
-
-
+					
+					
                     $scope.translatePieValue = function (value) {
                         var returnValue = 0;
                         if (($scope.numbers2) && (parseInt(value) >= 0)) {
@@ -503,11 +505,127 @@ angular.module('pcApp.visualization.controllers.visualization', [
                         return returnValue;
                     }
 
+					/*
+					$scope.changeValueSliderPie  = function (value) {
+						//console.log("changeValueSliderPie");
+						console.log(value);
+					}
+					*/
+					
+					$scope.$watch('rangeDatesSliderMin', function (dataset) {
+						
+						var value = $scope.rangeDatesSliderMin;
+                        
+                        var arrayLabelsDataPie = [];
+                        var arrayValuesDataPie = [];
+                        var arrayUnitsDataPie = [];
+                        var arrayColorsDataPie = [];
 
-                    $scope.translate = function (value) {
+                        var plotChart = false;
 
+                        if (($scope.numbers2) && (parseInt(value) >= 0)) {
+                            plotChart = true;
+                            if ($scope.numbers2[value]) {
+                                returnValue = $scope.numbers2[value]['Key'];
+                            }
+
+                            var icnt = $scope.rangeDatesSliderMin;
+                            var maxRange = $scope.rangeDatesSliderMax;
+                            var Key = "";
+
+                            icnt = value;
+                            //USED FOR TESTING
+                            if (1 == 1) {
+                                if (Key) {
+                                    Key = Key + " and ";
+                                }
+
+                                if (!icnt) {
+                                    icnt = 0;
+                                }
+
+                                if ($scope.numbers2[icnt] === undefined) {
+                                } else {
+                                    Key = Key + $scope.numbers2[icnt]['Key'];
+
+                                    l = icnt;
+                                    for (var label in $scope.numbers2[l].Labels) {
+                                        var labelName = $scope.numbers2[l].Labels[label];
+                                        var valueName = $scope.numbers2[l].Values[label];
+                                        var unitsName = $scope.numbers2[l].Units[label];
+                                        var colorName = $scope.numbers2[l].Colors[label];
+
+                                        var a = arrayLabelsDataPie.indexOf(labelName);
+
+                                        if (a >= 0) {
+                                            arrayValuesDataPie[a] = parseInt(arrayValuesDataPie[a]) + parseInt(valueName);
+                                            var b = arrayUnitsDataPie.indexOf(unitsName);
+                                            if (b >= 0) {
+
+                                            } else {
+                                                arrayUnitsDataPie.push(unitsName);
+                                            }
+                                        } else {
+                                            arrayLabelsDataPie.push(labelName);
+                                            arrayValuesDataPie.push(valueName);
+                                            arrayUnitsDataPie.push(unitsName);
+                                            arrayColorsDataPie.push(colorName);
+
+                                        }
+                                    }
+                                }
+                                icnt = icnt + 1;
+                            }
+                        } 
+
+                        if (plotChart) {
+                            $scope.change_slider_value = value;
+                        }
+
+                        if (plotChart) {
+                            var ObjectData = {
+                                'Key': Key,
+                                'Labels': arrayLabelsDataPie,
+                                'Values': arrayValuesDataPie,
+                                'Units': arrayUnitsDataPie,
+                                'Colors': arrayColorsDataPie
+                            };
+                            
+                            
+                            $scope.dataset = [];
+                            $scope.dataset.push(ObjectData);
+                            
+                            if (($scope.mode == 'create') || ($scope.mode == 'edit')) {
+                            	
+                            	if ($scope.rangeDatesSliderMin == value) {
+	                                $scope.plotPieChart();
+
+                               	}
+                            }
+                            
+                         }
+
+
+						if (value != 0) {
+                            if (($scope.typeToPlot === 'map_1') || ($scope.typeToPlot === 'mercator') || ($scope.typeToPlot === 'conicConformal') || ($scope.typeToPlot === 'equirectangular') || ($scope.typeToPlot === 'orthographic') || ($scope.typeToPlot === 'azimuthalEqualArea')) {
+                                if ($scope.rangeDatesSliderMin == value) {
+                                    if (($scope.mode == 'create') || ($scope.mode == 'edit')) {
+                                        $scope.plotMapChart();
+                                    }
+
+                                }
+                            }
+                        }
+						
+						//$scope.dataset = [];
+						//$scope.dataset = angular.copy($scope.dataset_pie_chart);
+					});
+					
+                    $scope.translateFunction = function (value) {
+						
                         var returnValue = 0;
-                        returnValue = $scope.translatePieValue(value);
+                        returnValue = $scope.translatePieValue(value);     
+                        /*                   
                         var arrayLabelsDataPie = [];
                         var arrayValuesDataPie = [];
                         var arrayUnitsDataPie = [];
@@ -584,21 +702,29 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                 'Units': arrayUnitsDataPie,
                                 'Colors': arrayColorsDataPie
                             };
-
-                            $scope.dataset = [];
-
-                            $scope.dataset.push(ObjectData);
+							
+							
+							
+							
+                            //$scope.dataset = [];
+                            //$scope.dataset.push(ObjectData);
 
                             if (($scope.mode == 'create') || ($scope.mode == 'edit')) {
-                                $scope.plotPieChart();
-                            }
+                            	
+                            	if ($scope.rangeDatesSliderMin == value) {
+	                                $scope.plotPieChart();
 
+                               	}
+                            }
+                            
+				
                             $scope.change_slider_value = value;
                         }
-
+						*/
                         return returnValue;
                     }
-
+					
+					
                     //used while dataset not return resolutions
                     $scope.onlyTheirResolution = false;
 
@@ -801,6 +927,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
 
                     $scope.plotMapChart = function () {
+                    	
                         if (document.getElementById("container_graph_" + $scope.visualization.id) != null) {
                             document.getElementById("container_graph_" + $scope.visualization.id).innerHTML = "";
                         } else {
@@ -872,7 +999,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                     }
 
 
-                    $scope.plotPieChart = function () {
+                    $scope.plotPieChart = function () {                    	
                         if ($scope.typeToPlot === 'graph_pie') {
 
                             var margin = {
@@ -2407,6 +2534,19 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                                                             var a = $scope.mapTimeSlider.indexOf(ii);
                                                                             if (a < 0) {
                                                                                 $scope.mapTimeSlider.push(ii);
+																				
+																																		
+																				$scope.slider_translate_map = {
+									    											options: {
+									    												ceil: $scope.mapTimeSlider.length-1,
+									    												floor: 0,
+									    												showTicksValues: true,									    												
+									    												//ticksValuesTooltip: function(v) {
+									        											//	return 'Tooltip for ' + v;
+									      												//},									      												
+									      												translate: $scope.translateCountrySlider									      												
+									    											}
+																				};
 
                                                                                 $scope.mapTimeSlider.sort(function (a, b) {
                                                                                     var amod = a;
@@ -2455,6 +2595,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                                 }
                                             }
                                         }
+
 
                                     } else if (($scope.typeToPlot === 'graph_line') || ($scope.typeToPlot === 'graph_pie') || ($scope.typeToPlot === 'graph_bars')) {
 
@@ -2774,7 +2915,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                                         data: ""
                                                     }
                                                 ];
-                                            }
+                                            }                                            
                                             $scope.plotMapChart();
                                         }
 
@@ -2966,7 +3107,21 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                                     $scope.dataset = numbers2;
                                     $scope.numbers2 = numbers2;
-
+									
+									
+									
+									$scope.slider_translate_pie = {
+									    options: {
+									    	ceil: $scope.numbers2.length-1,
+									    	floor: 0,
+									    	showTicksValues: true,
+									    	//ticksValuesTooltip: function(v) {
+									        //	return 'Tooltip for ' + v;
+									      	//},      
+									      	translate: $scope.translateFunction,								      	
+									    }
+									};
+									
                                     $scope.rangeDatesSliderMax = $scope.numbers2.length - 1;
 
                                     $scope.selectedAll = false;
@@ -2987,6 +3142,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                     }
 
                                     $scope.plotPieChart();
+                                    
 
                                 }
                             } else if ($scope.typeToPlot === 'graph_bars') {

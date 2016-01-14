@@ -115,6 +115,7 @@ policycompass.viz.pie = function (options) {
             var average = Math.round((pies[i] * 100 / sumatotal), 2);
             var number = pies[i];
             number = (parseFloat(number * 100) / 100).toFixed(2);
+            
             var formatdecimal = 0;
             formatdecimal = Math.round(number / 100) + 1;
 
@@ -125,10 +126,12 @@ policycompass.viz.pie = function (options) {
             }
 						
             var si = d3.format('.' + formatdecimal + 's');
-
-            if (number != "0.00") {
-                number = si(number);
-            }
+			
+			if (formatdecimal > 2) {
+            	if (number != "0.00") {
+                	number = si(number);
+            	}
+           	}
             
             if (isNaN(average)) {
             	var textToReturn = number;
@@ -195,9 +198,8 @@ policycompass.viz.pie = function (options) {
                 var average = Math.round((pies[i] * 100 / sumatotal), 2);
                 var number = pies[i];
                 number = (parseFloat(number * 100) / 100).toFixed(2);
-
+				
                 var formatdecimal = 0;
-
                 formatdecimal = Math.round(number / 100) + 1;
 
                 if (formatdecimal < 2) {
@@ -207,11 +209,13 @@ policycompass.viz.pie = function (options) {
                 }
 
                 var si = d3.format('.' + formatdecimal + 's');
-
-                if (number != "0.00") {
-                    number = si(number);
-                }
-
+				
+				if (formatdecimal > 2) {
+                	if (number != "0.00") {
+                    	number = si(number);
+                	}
+				}
+				
                 //var textToReturn = number + " (" + average + "%)";
 
 				if (isNaN(average)) {                    	
@@ -317,6 +321,7 @@ policycompass.viz.pie = function (options) {
                     var average = Math.round((pies[i] * 100 / sumatotal), 2);
                     var number = pies[i];
                     number = (parseFloat(number * 100) / 100).toFixed(2);
+                    
                     var formatdecimal = 0;
                     formatdecimal = Math.round(number / 100) + 1;
 
@@ -327,11 +332,13 @@ policycompass.viz.pie = function (options) {
                     }
 
                     var si = d3.format('.' + formatdecimal + 's');
-
-                    if (number != "0.00") {
-                        number = si(number);
-                    }
-                    
+					
+					if (formatdecimal > 2) {
+                    	if (number != "0.00") {
+                        	number = si(number);
+                    	}
+					}
+                   
                     var resTRext = pieslabels[i];
                     var length = 42;
                     if (resTRext.length > length) {
@@ -368,10 +375,12 @@ policycompass.viz.pie = function (options) {
                     }
 
                     var si = d3.format('.' + formatdecimal + 's');
-
-                    if (number != "0.00") {
-                        number = si(number);
-                    }                   
+					
+					if (formatdecimal > 2) {
+                    	if (number != "0.00") {
+                        	number = si(number);
+                    	}                   
+					}
 					
 					if (isNaN(average)) {
                     	var str = pieslabels[i] + " (" + number + ")";
