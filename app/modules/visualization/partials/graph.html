@@ -13,7 +13,11 @@
                     </div>
 
                     <div ng-show="mapTimeSlider.length>1">
+                    	<div><br/></div>
+                    	<rzslider rz-slider-model="rangeDatesSliderMin" rz-slider-options="slider_translate_map.options"></rzslider>
+                    	<!--
                         <rzslider rz-slider-model="rangeDatesSliderMin" rz-slider-floor="0" rz-slider-ceil="mapTimeSlider.length-1" rz-slider-translate="translateCountrySlider"></rzslider>
+                       	-->
                     </div>
 
                 </form>
@@ -36,9 +40,11 @@
 
 
                     <div>
-
+                    	<div><br/></div>
+	                    <rzslider rz-slider-model="rangeDatesSliderMin" rz-slider-options="slider_translate_pie.options"></rzslider>                        				
+						<!--
                         <rzslider rz-slider-model="rangeDatesSliderMin" rz-slider-ceil="numbers2.length-1" rz-slider-translate="translate"></rzslider>
-
+						-->
                     </div>
 
                 </form>

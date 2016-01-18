@@ -115,6 +115,7 @@ policycompass.viz.pie = function (options) {
             var average = Math.round((pies[i] * 100 / sumatotal), 2);
             var number = pies[i];
             number = (parseFloat(number * 100) / 100).toFixed(2);
+            
             var formatdecimal = 0;
             formatdecimal = Math.round(number / 100) + 1;
 
@@ -123,13 +124,22 @@ policycompass.viz.pie = function (options) {
             } else if (formatdecimal > 4) {
                 formatdecimal = 4;
             }
-
+						
             var si = d3.format('.' + formatdecimal + 's');
-
-            if (number != "0.00") {
-                number = si(number);
+			
+			if (formatdecimal > 2) {
+            	if (number != "0.00") {
+                	number = si(number);
+            	}
+           	}
+            
+            if (isNaN(average)) {
+            	var textToReturn = number;
             }
-            var textToReturn = number + " (" + average + "%)";
+            else {
+            	var textToReturn = number + " (" + average + "%)";	
+            }
+            
             tooltip.style("opacity", 1.0).html("<div class='tooltip-arrow'></div><div class='tooltip-inner ng-binding' ng-bind='content'>" + startDateToPlot + "<br />" + textToReturn + "</div>");
 
         })
@@ -142,6 +152,7 @@ policycompass.viz.pie = function (options) {
         self.g.append("path").attr("d", self.arc).style("fill", function (d, i) {
             var colorToReturn;
             colorToReturn = colorScale(i);
+
             if (piesArray.Colors) {
                 if (piesArray.Colors[i]) {
                     colorToReturn = piesArray.Colors[i];
@@ -187,9 +198,8 @@ policycompass.viz.pie = function (options) {
                 var average = Math.round((pies[i] * 100 / sumatotal), 2);
                 var number = pies[i];
                 number = (parseFloat(number * 100) / 100).toFixed(2);
-
+				
                 var formatdecimal = 0;
-
                 formatdecimal = Math.round(number / 100) + 1;
 
                 if (formatdecimal < 2) {
@@ -199,12 +209,21 @@ policycompass.viz.pie = function (options) {
                 }
 
                 var si = d3.format('.' + formatdecimal + 's');
+				
+				if (formatdecimal > 2) {
+                	if (number != "0.00") {
+                    	number = si(number);
+                	}
+				}
+				
+                //var textToReturn = number + " (" + average + "%)";
 
-                if (number != "0.00") {
-                    number = si(number);
+				if (isNaN(average)) {                    	
+                    var textToReturn = number;
                 }
-
-                var textToReturn = number + " (" + average + "%)";
+                else {
+                	var textToReturn = number + " (" + average + "%)";
+                }
 
                 if (average < 3) {
                     return ("");
@@ -302,6 +321,7 @@ policycompass.viz.pie = function (options) {
                     var average = Math.round((pies[i] * 100 / sumatotal), 2);
                     var number = pies[i];
                     number = (parseFloat(number * 100) / 100).toFixed(2);
+                    
                     var formatdecimal = 0;
                     formatdecimal = Math.round(number / 100) + 1;
 
@@ -312,13 +332,69 @@ policycompass.viz.pie = function (options) {
                     }
 
                     var si = d3.format('.' + formatdecimal + 's');
-
-                    if (number != "0.00") {
-                        number = si(number);
+					
+					if (formatdecimal > 2) {
+                    	if (number != "0.00") {
+                        	number = si(number);
+                    	}
+					}
+                   
+                    var resTRext = pieslabels[i];
+                    var length = 42;
+                    if (resTRext.length > length) {
+						resTRext = resTRext.substring(0, length) + "...]";
+					}
+                            
+                    //var textToReturn = pieslabels[i] + " (" + number + " - " + average + "%)";
+                    
+                    if (isNaN(average)) {
+                    	var textToReturn = resTRext + " (" + number + ")";
                     }
-                    var textToReturn = pieslabels[i] + " (" + number + " - " + average + "%)";
+                    else {
+                    	var textToReturn = resTRext + " (" + number + " - " + average + "%)";
+                    }
+                    
                     return textToReturn;
-                });
+                })
+                .on("mouseover", function (d, i) {
+                	
+                	var sumatotal = 0;
+                    for (var ij = 0; ij < pies.length; ij++) {
+                        sumatotal = parseInt(sumatotal) + parseInt(pies[ij]);
+                    }
+                    var average = Math.round((pies[i] * 100 / sumatotal), 2);
+                    var number = pies[i];
+                    number = (parseFloat(number * 100) / 100).toFixed(2);
+                    var formatdecimal = 0;
+                    formatdecimal = Math.round(number / 100) + 1;
+
+                    if (formatdecimal < 2) {
+                        formatdecimal = 2;
+                    } else if (formatdecimal > 4) {
+                        formatdecimal = 4;
+                    }
+
+                    var si = d3.format('.' + formatdecimal + 's');
+					
+					if (formatdecimal > 2) {
+                    	if (number != "0.00") {
+                        	number = si(number);
+                    	}                   
+					}
+					
+					if (isNaN(average)) {
+                    	var str = pieslabels[i] + " (" + number + ")";
+                    }
+                    else {
+                    	var str = pieslabels[i] + " (" + number + " - " + average + "%)";
+                    }
+                    
+					tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '</div>');
+				})
+				.on("mouseout", function () {
+					tooltip.style("opacity", 0.0);
+                })                
+                ;
         }
     }
 

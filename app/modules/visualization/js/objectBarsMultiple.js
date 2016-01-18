@@ -17,7 +17,9 @@ policycompass.viz.barsMultiple = function (options) {
     if (!self.resolution) {
         self.resolution = 'day';
     }
-
+	
+	//self.margin.bottom = 55;
+	
     self.parentSelect = "#" + self.idName;
 
     self.maxMargin = self.margin;
@@ -95,8 +97,40 @@ policycompass.viz.barsMultiple = function (options) {
         var xAxis = d3.svg.axis().scale(x0).orient("bottom");
         var yAxis = d3.svg.axis().scale(y).orient("left").tickFormat(d3.format(".2s"));
 
+function wrap(text, width) {
+
+
+  text.each(function() {
+    var text = d3.select(this),
+        words = text.text().split(/\s+/).reverse(),
+        word,
+        line = [],
+        lineNumber = 0,
+        lineHeight = 1.1, // ems
+        y = text.attr("y"),
+        dy = parseFloat(text.attr("dy")),
+        tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
+    while (word = words.pop()) {
+      line.push(word);
+      tspan.text(line.join(" "));
+      if (tspan.node().getComputedTextLength() > width) {
+        line.pop();
+        tspan.text(line.join(" "));
+        line = [word];
+        tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+      }
+    }
+  });
+}
+
         var xAxisData = d3.set(bars.map(function (line) {
-            return line.ValueX;
+        	//console.log(line.ValueX);
+            //return line.ValueX;
+            return line.Key;
+        })).values();
+
+		var xAxisDataColor = d3.set(bars.map(function (line) {
+            return line.Color;
         })).values();
 
         function make_x_axis() {
@@ -108,10 +142,38 @@ policycompass.viz.barsMultiple = function (options) {
         }
 
         x0.domain(bars.map(function (d) {
-            var resTRext = d.Key.split("_");
-            return resTRext[0];
+            //var resTRext = .split("_");
+            var resTRext = d.To.split("_");
+            
+            var trimmedString = resTRext[0];
+            var length = 120;
+            if (trimmedString.length > length) {
+				trimmedString = trimmedString.substring(0, length) + "...";
+			}
+            
+            return trimmedString;
         }));
 
+		var legendsColumn = 0;
+		if (self.showLegend) {
+			legendsColumn = Math.ceil(xAxisData.length / 9);
+		} else {
+			legendsColumn = 0;
+		}
+		
+		
+		self.margin.bottom = 55 + (legendsColumn+1) * 20;
+		self.legendsColumn = legendsColumn;
+		
+        self.svg = d3.select(self.parentSelect)
+        .append("svg")
+        .attr("class", "pc_chart")
+        .attr("width", self.width + self.margin.left + self.margin.right + self.extraWidth)
+        .attr("height", self.height + self.margin.top + self.margin.bottom)
+        .on("mousemove", mousemove)
+        .append("g")
+        .attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
+        
         x1.domain(xAxisData).rangeRoundBands([0, x0.rangeBand()]);
 
         var valueYmin = 0;
@@ -122,13 +184,16 @@ policycompass.viz.barsMultiple = function (options) {
         y.domain([valueYmin, maxV]);
 
         if (showLabels) {
+        	
             self.svg.append("g")
             .attr("class", "x axis")
             .attr("font-size", self.font_size)
             .attr("transform", "translate(0," + self.height + ")")
             .style("stroke-width", 1)
             .call(xAxis)
-            .append("text");
+            //.append("text")
+            .selectAll(".tick text")
+      		.call(wrap, x0.rangeBand());
 
             var keyIndex;
             var arrayYaxisProcessed = [];
@@ -185,10 +250,18 @@ policycompass.viz.barsMultiple = function (options) {
         .data(bars)
         .enter()
         .append("rect")
-        .attr("width", x1.rangeBand())
-        .attr("x", function (d) {
-        	var resTRext = d.Key.split("_");
-        	return x0(resTRext[0]) + x1(d.ValueX);
+        //.attr("width", x1.rangeBand())
+        .attr("width", function (d) {
+        	var range = x1.rangeBand();
+        	//var range = 10;
+        	return range;
+        })
+        .attr("x", function (d,i) {
+        	//var resTRext = d.Key.split("_");
+        	var resTRext = d.To.split("_");
+       	
+        	//return x0(resTRext[0]) + x1(d.ValueX);
+        	return x0(resTRext[0]) + x1(d.Key);
         })
         .attr("y", function (d) {
         	return self.height;
@@ -197,7 +270,10 @@ policycompass.viz.barsMultiple = function (options) {
             return 0;
         })
         .style("fill", function (d) {                    
-            return color(d.ValueX);
+            //return color(d.ValueX);
+            //var resTRext = d.Key.split("_");
+            //return color(resTRext[0]);            
+            return (d.Color);
         })
         .on("mouseout", function (d, i) {
             tooltip.style("opacity", 0.0);
@@ -367,42 +443,156 @@ policycompass.viz.barsMultiple = function (options) {
         var cnti = 1;
         var cntiMultiple = 0;
         var incremetY = 0;
-
+		/*
+		// to plot legend at right
+		
         xAxisData.forEach(function (d, i) {
+        	
             var valueX = ((self.width / (xAxisData.length / self.legendsColumn)) * (cntiMultiple));
             if (cnti % self.legendsColumn == 0) {
                 cntiMultiple = cntiMultiple + 1;
             }
 
             var valueY = (self.height) + self.margin.top + 30 + (incremetY) * 20;
+            
             if (cnti % self.legendsColumn == 0) {
                 incremetY = 0;
             } else {
                 incremetY = incremetY + 1;
             }
+			
+            if (self.showLegend) {
+                self.svg.append("rect")
+                //.attr("x", valueX - 10)
+                .attr("x", self.width+7)
+                //.attr("y", valueY - 5)
+                .attr("y", (15*(cnti-1)+8))
+                .attr("width", 5)
+                .attr("height", 5)
+                //.style("fill", color(xAxisData[i]));
+                .style("fill", xAxisDataColor[i]);
+                
+                var trimmedString = xAxisData[i];
+                   var length = 10;
 
-            if (showLegend) {
+                    if (trimmedString.length > length) {
+                        trimmedString = trimmedString.substring(0, length) + "...";
+                    }
+                   
+                    
+                self.svg.append("text")
+                //.attr("x", function (d, i) {
+                //	return valueX;
+                //})
+                .attr("x", self.width+14)
+                //.attr("y", function (d, i) {
+                //	return valueY;
+                //})
+                .attr("y", (15*(cnti-1)+15))
+                .attr("text-anchor", "center")
+                .attr("text-decoration", "none")
+                .attr("class", "link superior legend value")
+                .attr("font-size", self.font_size)
+                //.style("fill", color(xAxisData[i]))
+                .style("fill", xAxisDataColor[i])
+                //.text(xAxisData[i]);
+                .text(trimmedString);
+            }
+            
+            cnti = cnti + 1;
+            
+		});
+		*/
+	
+		//to plot leggent at bottom
+		 
+		var cntiMultiple = 0;
+        var incremetY = 0;
+        var cnti = 0;
+        //self.legendsColumn = 1;
+		xAxisData.forEach(function (d, i) {
+			if (showLegend) {
+				
+                var valueX = ((self.maxWidth / (xAxisDataColor.length / self.legendsColumn)) * (cntiMultiple));
+                
+                
+                if ((i+1) % self.legendsColumn == 0) {
+                    cntiMultiple = cntiMultiple + 1;
+                }
+
+                var valueY = (self.height) + self.margin.top + 50 + (incremetY) * 20;
+                if ((i+1) % self.legendsColumn == 0) {
+                    incremetY = 0;
+                } else {
+                    incremetY = incremetY + 1;
+                }
+				
                 self.svg.append("rect")
                 .attr("x", valueX - 10)
                 .attr("y", valueY - 5)
                 .attr("width", 5)
                 .attr("height", 5)
-                .style("fill", color(xAxisData[i]));
+                .style("fill", xAxisDataColor[i])
+                ;
+
+
+				var trimmedStringTmp = xAxisData[i].split("_");
+				
+                var trimmedString = trimmedStringTmp[0];
+                var fullString = trimmedStringTmp[0];
+                var length = 100;
+
+                if (xAxisDataColor.length == 1) {
+                    length = 150;
+                } else if (xAxisDataColor.length == 2) {
+                    length = 80;
+                } else if (xAxisDataColor.length == 3) {
+                    length = 50;
+                } else if (xAxisDataColor.length == 4) {
+                    length = 30;
+                } else if (xAxisDataColor.length == 5) {
+                    length = 28;
+                } else if (xAxisDataColor.length == 6) {
+                    length = 20;
+                } else if (xAxisDataColor.length == 7) {
+                    length = 12;
+                } else if (xAxisDataColor.length == 8) {
+                    length = 10;
+                } else {
+                    length = 6;
+                }
+
+                if (trimmedString.length > length) {
+                    trimmedString = trimmedString.substring(0, length) + "...";
+                }
+
+                        				
+                			
                 self.svg.append("text")
-                .attr("x", function (d, i) {
-                	return valueX;
-                })
-                .attr("y", function (d, i) {
-                	return valueY;
-                })
-                .attr("text-anchor", "center")
-                .attr("text-decoration", "none")
-                .attr("class", "link superior legend value")
-                .attr("font-size", self.font_size)
-                .style("fill", color(xAxisData[i]))
-                .text(xAxisData[i]);
-            }
-            cnti = cnti + 1;
+                    .attr("x", function (d, i) {
+                        return valueX;
+                    })
+                    .attr("y", function (d, i) {
+                        return valueY;
+                    })
+                    .attr("text-anchor", "center")
+                    .attr("class", "link superior legend value")
+                    .attr("font-size", self.font_size+1)
+                    .style("fill", xAxisDataColor[i])
+                    .text(trimmedString)
+					.on("mouseover", function () {
+						var str = fullString;				
+						tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '</div>');
+					})
+					.on("mouseout", function () {
+						tooltip.style("opacity", 0.0);
+                    })					
+                    ;
+
+                }
+            
+            
+            
         });
     }
 
@@ -456,15 +646,8 @@ policycompass.viz.barsMultiple = function (options) {
             };
 
         }
-
-        self.svg = d3.select(self.parentSelect)
-        .append("svg")
-        .attr("class", "pc_chart")
-        .attr("width", self.width + self.margin.left + self.margin.right + self.extraWidth)
-        .attr("height", self.height + self.margin.top + self.margin.bottom)
-        .on("mousemove", mousemove)
-        .append("g")
-        .attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
+		
+		
     }
 
     //function to clone an object
@@ -524,6 +707,7 @@ policycompass.viz.barsMultiple = function (options) {
             .attr("x", self.margin.left)
             .attr("y", self.margin.top)
         } else {
+        	
             var dataToPlotUpdate = self.clone(dataIn);
             dataToPlotUpdate = alphabetical_sort_object_of_objects(dataToPlotUpdate, 'To');
             self.drawBarsMultiple(dataToPlotUpdate, eventsData);
