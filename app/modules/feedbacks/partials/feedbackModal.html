@@ -1,53 +1,63 @@
-<script type="text/ng-template" id="feedback-modal.html">
-    <div class="container container-create-visualisation" id="container-create-visualisation">
+<div class="scrollbarButton" id="feedbackButton">
+        <a type="button" class="fonticon fonticon-feedback" ng-click="open()">Feedback</a>
+</div>
+
+
+<!-- feedback modal template -->
+<script type="text/ng-template" id="feedback-modal">
+    <div class="container-create-feedback" id="container-create-feedback">
         <div class="content-header">
-            <h3> <span class="glyphicon glyphicon-pencil"></span>Send Feedback</h3>
+            <h3> <span class="glyphicon glyphicon-pencil"></span> Provide Feedback</h3>
         </div>
 
-    <div class="pc-visualization-formcontrols" ng-hide="ng-submitted">
-        <div class="button-group">
-            <a class="btn btn-default" type="button" ng-click="submit()" novalidate ng-disabled="feedbackForm.$invalid">Submit</a>
-            <a type="button" class="btn btn-danger" href="#!/">Cancel</a>
+        <div class="pc-visualization-formcontrols" ng-hide="ng-submitted">
+            <div class="button-group">
+                <a class="btn btn-default" type="button" ng-click="submit()" novalidate ng-disabled="feedbackForm.$invalid">Submit</a>
+                <!--<a type="button" class="btn btn-danger" ng-click="cancel()">Cancel</a> -->
+                <cancel-button></cancel-button>
+            </div>
         </div>
-    </div>
 
         <div class="content-body">
             <form name="feedbackForm" id="feedbackForm" role="form" ng-hide="ng-submitted">
                 <div class="row">
-                <div class="col-lg-6">
+                <div class="col-lg-12">
 
-                    <div class="form-group" ng-class="{'has-error': feedbackForm.name_text.$dirty && feedbackForm.name_text.$invalid}">
+                    <div class="form-group">
+                        <label>Link: </label>
+                        {{ location.absUrl() }}
+                    </div>
+
+                    <div class="form-group">
                         <label>Name</label>
-                        <input class="form-control" id="name_text" type="text" name="name_text" data-ng-model="name_text" required>
+                        <input class="form-control" id="name_text" type="text" name="name_text" data-ng-model="name_text">
                         <!--<span ng-show="feedbackForm.name_text.$dirty && !name_text" name="name_empty" id="name_empty">Please type your subject here</span> -->
                     </div>
 
-                    <div class="form-group" ng-class="{'has-error': feedbackForm.email_address.$dirty && feedbackForm.email_address.$invalid}">
+                    <div class="form-group">
                         <label>E-Mail</label>
-                        <input class="form-control" id="email_address" type="email" name="email_address" data-ng-model="email_address" required>
+                        <input class="form-control" id="email_address" type="email" name="email_address" data-ng-model="email_address">
                         <!--<span ng-show="feedbackForm.email_address.$dirty && !email_address" name="email_empty" id="email_empty">Please type your subject here</span> -->
                     </div>
 
                     <div class="form-group" ng-class="{'has-error': feedbackForm.subject_text.$dirty && feedbackForm.subject_text.$invalid}">
-                        <label>Subject</label>
+                        <label>Subject *</label>
                         <input class="form-control" id="subject_text" type="text" name="subject_text" data-ng-model="subject_text" required>
                         <!--<span ng-show="feedbackForm.subject_text.$dirty && !subject_text" name="subject_empty" id="subject_empty">Please type your subject here</span> -->
                     </div>
 
                     <div class="form-group" ng-class="{'has-error': feedbackForm.message_text.$dirty && feedbackForm.message_text.$invalid}">
-                        <label>Message</label>
+                        <label>Message *</label>
                         <textarea class="form-control" rows=10 id="message_text" type="text" name="message_text" data-ng-model="message_text" required></textarea>
                         <!--<span ng-show="feedbackForm.message_text.$dirty && !message_text" name="message_empty" id="message_empty">Please type your message here</span> -->
                     </div>
-
-
                 </div>
 
                 </div>
             </form>
 
             <div class="pc-visualization-formcontrols" ng-show="ng-submitted">
-                <a type="button" class="btn btn-danger" href="#!/">Return</a>
+                <a type="button" class="feedback-close-icon" ng-click="cancel()"></a>
                 <p>Thank you for sending us your feedback</p>
             </div>
 
