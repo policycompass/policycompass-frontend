@@ -29,18 +29,20 @@ angular.module('pcApp.fcm.controllers.fcm', [
         '$rootScope',
         '$routeParams',
         '$location',
+        'Fcm',
         'FcmModel',
         'FcmActivator',
         'FcmSearchDelete',
         'dialogs',
         '$log',
-        function ($scope, $rootScope, $routeParams, $location, FcmModel, FcmActivator, FcmSearchDelete, dialogs, $log) {
+        function ($scope, $rootScope, $routeParams, $location, Fcm, FcmModel, FcmActivator, FcmSearchDelete, dialogs, $log) {
             $scope.mapData = [];
             $scope.edgeData = [];
             $scope.Concepts = [];
             $scope.editorLayout;
 
             $scope.models = FcmModel.get({id: $routeParams.fcmId}, function (fcmList) {
+                		$scope.token = fcmList;
                 for (i = 0; i < $scope.models.concepts.length; i++) {
                     var newNode = {
                         id: $scope.models.concepts[i].id.toString(),
