@@ -46,8 +46,8 @@
         </div>
     </div>
 	
-	<div ng-show="visualizationForm.$invalid || visualization.policy_domains_data.output.length==0" class="form-instructions">
-		<p class="text-danger">To save a visualisation you must be logged <span ng-show="user.state.loggedIn">(you are!!)</span> and all mandatory fields (*) must be fulfilled.</p>
+	<div ng-show="(visualizationForm.$invalid || visualization.policy_domains_data.output.length==0) && ListMetricsFilter.length>0" class="form-instructions">
+		<p class="text-danger">To save a visualisation <span ng-hide="user.state.loggedIn"> you must be logged and </span> all mandatory fields (*) must be filled.</p>
 	</div>
 	
     <div class="pc-visualization-formcontrols">
