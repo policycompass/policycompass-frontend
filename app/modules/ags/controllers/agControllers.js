@@ -90,7 +90,7 @@ angular.module('pcApp.ags.controllers.ag', [
         '$location',
         '$log',
         'dialogs',
-        'agservice',
+        'agService',
         'Auth',
         function ($scope, Ag, $location, $log, dialogs, agservice, Auth) {
 
@@ -146,7 +146,7 @@ angular.module('pcApp.ags.controllers.ag', [
         '$log',
         '$http',
         'API_CONF',
-        'agservice',
+        'agService',
         'Auth',
         function ($scope, $filter, Ag, $location, $log, $http, API_CONF, agservice, Auth) {
 

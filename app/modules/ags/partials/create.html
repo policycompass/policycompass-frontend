@@ -1,120 +1,51 @@
 <div class="container container-create-visualisation" id="container-create-visualisation">
     <div class="content-header">
-        <h3 ng-if="mode == 'create'" class="fonticon fonticon-event">Create a New Event</h3>
-
-        <h3 ng-if="mode == 'edit'" class="fonticon fonticon-event">Edit Event</h3>
+        <h3 ng-if="mode == 'create'" class="fonticon fonticon-ag">Create a new argument graph</h3>
+        <h3 ng-if="mode == 'edit'" class="fonticon fonticon-ag">Edit argument graph</h3>
 
         <div class="subtitle-help">
             <h4>
                 <div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div>
-                Event Data
+                Argument graph data
             </h4>
             <div ng-class="{active: help}" class="help-text">
                 <div class="fonticon fonticon-close" ng-click="help=!help"></div>
-                <p>You can create an event using this form.</p>
+                <p>You can create an argument graph using this form.</p>
             </div>
         </div>
     </div>
 
     <div class="pc-visualization-formcontrols">
         <div class="button-group">
-            <a type="button" class="btn btn-default btn-map" href="#!/events/search">Import Event from External Resource</a>
-            <a href="#!/login" ng-if="!userState.loggedIn" class="btn btn-default btn-save" target="_blank">Login to Save</a>
-            <a href="" id="saveButton" data-ng-disabled="eventForm.$invalid" ng-if="userState.loggedIn" class="btn btn-default btn-save" ng-click="createEvent()">Save</a>
-            <a type="button" class="btn btn-danger" href="#!/events/{{event.id}}">Cancel</a>
+            <a href="#!/login" ng-if="!userState || !userState.loggedIn" class="btn btn-default btn-save" target="_blank">Login to Save</a>
+            <a href="" id="saveButton" data-ng-disabled="agForm.$invalid" ng-if="userState.loggedIn" class="btn btn-default btn-save" ng-click="createAg()">Save</a>
+            <a type="button" class="btn btn-danger" href="#!/ags/{{ag.id}}">Cancel</a>
             </button>
         </div>
     </div>
 
     <div class="content-body">
-        <form name="eventForm" role="form" novalidate>
+        <form name="agForm" role="form" novalidate>
             <div class="row">
                 <div class="col-lg-4">
                     <h4>Main Details</h4>
 
-                    <div class="form-group" ng-class="{'has-error': eventForm.title.$dirty && eventForm.title.$invalid}">
-                        <label for="title">Title *</label>
-                        <input type="text" class="form-control" id="title" name="title" placeholder="Event Title" ng-model="event.title" ng-minlength="3" required>
+                    <div class="form-group" ng-class="{'has-error': agForm.title.$dirty && agForm.title.$invalid}">
+                        <label for="name">Title *</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Argumentation graph title" ng-model="ag.name" ng-minlength="10" required>
                     </div>
-
-                    <div class="form-group" ng-class="{'has-error': eventForm.keywords.$dirty && eventForm.keywords.$invalid}">
-                        <label for="keywords">Keywords *</label>
-                        <input type="text" class="form-control" id="keywords" placeholder="Keywords" ng-model="event.keywords" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="geoLocation">Geolocation</label>
-                        <input type="text" class="form-control" id="geoLocation" name="geoLocation" placeholder="Geolocation" ng-model="event.geoLocation">
-                    </div>
-
-                    <div class="form-group" ng-class="{'has-error': eventForm.detailsURL.$dirty && eventForm.detailsURL.$invalid}">
-                        <label for="detailsURL">Details Url </label>
-                        <input type="url" class="form-control" id="detailsURL" name="detailsURL" placeholder="http://www.datasource.example" ng-model="event.detailsURL">
-                    </div>
-
                 </div>
                 <div class="col-lg-8">
 
                     <h4>&nbsp;</h4>
 
-                    <div class="form-group" ng-class="{'has-error': eventForm.eventdescription.$dirty && eventForm.eventdescription.$invalid}">
-                        <label for="eventdescription" class="">Description *</label>
-                        <textarea class="form-control" rows="10" id="eventdescription" name="eventdescription" ng-model="event.description" required></textarea>
-                    </div>
-
-                    <div class="form-group" ng-class="{'has-error': eventForm.startEventDate.$dirty && eventForm.startEventDate.$invalid}" >
-                        <div class="col-lg-6">
-                            <div class="form-group date-picker" ng-controller="DateController">
-                                <label for="startEventDate">Start Date of Event *</label>
-
-
-                                <p class="input-group">
-                                    <input type="text" id="startEventDate" name="startEventDate" class="form-control" datepicker-popup="{{ format }}" ng-model="event.startEventDate" is-open="opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" show-button-bar="false" ng-required="true" close-text="Close" required/>
-                                            <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default" ng-click="open($event)">
-                                                    <i class="glyphicon glyphicon-calendar"></i></button>
-                                            </span>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group date-picker" ng-controller="DateController">
-                                <label for="endEventDate">End Date of Event *</label>
-
-                                <p class="input-group">
-                                    <input type="text" id="endEventDate" name="endEventDate" class="form-control" datepicker-popup="{{ format }}" ng-model="event.endEventDate" is-open="opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" show-button-bar="false" ng-required="true" close-text="Close" required/>
-                                            <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default" ng-click="open($event)">
-                                                    <i class="glyphicon glyphicon-calendar"></i></button>
-                                            </span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="form-group" ng-class="{'has-error': eventForm.languageID.$dirty && eventForm.languageID.$invalid}">
-                            <label for="languageID" class="">Language *</label>
-                            <select class="form-control language-options" model="event.languageID" ng-model="event.languageID" id="languageID" name="languageID" required>
-
-                            </select>
-                        </div>
+                    <div class="form-group" ng-class="{'has-error': agForm.agdescription.$dirty && agForm.agdescription.$invalid}">
+                        <label for="agdescription" class="">Description *</label>
+                        <textarea class="form-control" rows="10" id="agdescription" name="agdescription" ng-model="ag.description" required></textarea>
                     </div>
                 </div>
 
             </div>
-
-            <!--
-            <div class="row">
-                <div class="col-lg-12 pc-event-formcontrols">
-                    <div class="form-group pull-right">
-                        <button type="submit" ng-disabled="eventForm.$invalid" class="btn btn-default"
-                                ng-click="createEvent()"><span class="glyphicon glyphicon-floppy-disk"></span> Save
-                        </button>
-                    </div>
-                </div>
-            </div>
-            -->
         </form>
     </div>
 </div>
