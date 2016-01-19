@@ -1,0 +1,120 @@
+<div class="container">
+    <div class="content-header">
+        <h1 class="fonticon fonticon-ag">{{ ag.title }}</h1>
+
+        <div class="pc-visualization-formcontrols">
+            <div class="button-group">
+                <a type="button" class="btn btn-primary  btn-create" ng-if="userState.loggedIn && (userState.userPath == ag.creator_path || userState.isAdmin)"  href="#!/ags/{{ ag.id }}/edit">Edit</a>
+                <a type="button" class="btn btn-danger  btn-clear"  ng-if="userState.loggedIn && (userState.userPath == ag.creator_path || userState.isAdmin)"  ng-click="deleteAg(ag)" ng-disabled="true">Delete</a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="metadata metadata-ag metadata-ag-description">
+            <div class="form-group form-group-description" ngshow="ag.description">
+                <div class="field-label">Description</div>
+                <div class="field-content">{{ag.description}}</div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <div class="row">
+        <h3 class="legend-primary">Details</h3>
+
+
+        <!-- FIELDS START -->
+
+
+        <div class="metadata metadata-ag">
+
+            <div class="form-group form-group-keywords" ngshow="ag.keywords">
+                <div class="field-label">Keywords</div>
+                <div class="field-content">{{ag.keywords}}</div>
+            </div>
+
+            <div class="form-group form-group-date">
+                <div class="form-item" ngshow="ag.startAgDate">
+                    <div class="field-label">Ag start</div>
+                    <div class="field-content">{{ ag.startAgDate | date:'longDate' }}</div>
+                </div>
+
+                <div class="form-item" ng-show="ag.endAgDate">
+                    <div class="field-label">Ag end</div>
+                    <div class="field-content">{{ ag.endAgDate | date:'longDate' }}</div>
+                </div>
+            </div>
+            <div class="form-group form-group-modified">
+                <div class="form-item" ngshow="ag.dateAddedToPC">
+                    <div class="field-label">Added</div>
+                    <div class="field-content">{{ ag.dateAddedToPC | date:'longDate' }}</div>
+                </div>
+
+
+                <div class="form-item" ng-show="ag.dateIssuedByExternalResource">
+                    <div class="field-label">Issued</div>
+                    <div class="field-content">{{ ag.dateIssuedByExternalResource | date:'longDate' }}</div>
+                </div>
+
+
+                <div class="form-item" ng-show="ag.dateModified">
+                    <div class="field-label">Modified</div>
+                    <div class="field-content">{{ ag.dateModified | date:'longDate' }}</div>
+                </div>
+            </div>
+
+
+            <div class="form-group form-group-location">
+                <div class="form-item" ngshow="ag.geoLocation">
+                    <div class="field-label">Geolocation</div>
+                    <div class="field-content">{{ ag.geoLocation }}</div>
+                </div>
+
+
+                <div class="form-item" ng-show="language.title">
+                    <div class="field-label">Language</div>
+                    <div class="field-content">{{ language.title }}</div>
+                </div>
+            </div>
+            <div class="form-group form-group-link" ngshow="ag.detailsURL">
+                <div class="field-label">Details URL</div>
+                <div class="field-content"><a href="{{ ag.detailsURL }}" target="_blank">{{ ag.detailsURL }}</a>
+                </div>
+            </div>
+
+
+            <div class="form-group form-group-external" ngshow="ag.externalResourceID">
+                <div class="field-label">External Resource</div>
+                <div class="field-content">{{ ag.externalResourceID }}</div>
+            </div>
+
+
+            <div class="form-group form-group-rating">
+                <div class="form-item">
+                    <div class="field-label">Rating</div>
+                    <div class="field-content">
+                        <pc-rating ng-if="ag.id" rating-id="ag_{{ag.id}}"></pc-rating>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <!-- FIELDS END -->
+
+    </div>
+
+    <div class="row">
+        <h3 class="legend-primary">Discussion</h3>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <show-discussion ng-if="ag.id" data-key="ag_{{ ag.id }}"></show-discussion>
+        </div>
+    </div>
+
+
+</div>
