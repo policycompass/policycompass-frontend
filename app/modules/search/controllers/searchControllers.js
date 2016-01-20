@@ -237,6 +237,8 @@
             if (!facetsSelected.hasOwnProperty(bucket.facetCategory))
                 facetsSelected[bucket.facetCategory] = [];
             var idx = facetsSelected[bucket.facetCategory].indexOf(bucket.value);
+            if (idx == -1)
+                idx = facetsSelected[bucket.facetCategory].indexOf(""+bucket.value);
             if (idx != -1 && !bucket.selected)
                 facetsSelected[bucket.facetCategory].splice(idx, 1);
             if (idx == -1 && bucket.selected)
