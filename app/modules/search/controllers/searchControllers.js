@@ -124,22 +124,20 @@
 
         normalizeAggregationFilter = function () {
             var filters = [];
-            angular.forEach($scope.facetCategories, function (aggregation) {
+            angular.forEach(facetsSelected, function (values, facetCategory) {
                 var terms = [];
-                angular.forEach(aggregation.buckets, function (bucket) {
-                    if (bucket.selected) {
-                        var field = aggregations[aggregation.name].field;
-                        if (angular.isArray(field)) {
-                            angular.forEach(field, function (fld) {
-                                var term = {};
-                                term[fld] = bucket.value;
-                                terms.push({"term": term});
-                            });
-                        } else {
+                angular.forEach(values, function (val) {
+                    var field = aggregations[facetCategory].field;
+                    if (angular.isArray(field)) {
+                        angular.forEach(field, function (fld) {
                             var term = {};
-                            term[field] = bucket.value;
+                            term[fld] = val;
                             terms.push({"term": term});
-                        }
+                        });
+                    } else {
+                        var term = {};
+                        term[field] = bucket.value;
+                        terms.push({"term": term});
                     }
                 });
                 if (terms.length > 0) {
@@ -157,6 +155,8 @@
             return 0;
         };
         prepareAggregations = function () {
+            if ($scope.facetCategories.length > 0)
+                return;
             var request = {};
             angular.forEach(aggregations, function (aggregation, name) {
                 if (aggregation.disable) return;
@@ -181,7 +181,7 @@
                     var index = (aggregation.field.length > 1) ? name + '$' + (i++) : name;
                     request[index] = {
                         "terms": obj
-                    }
+                    };
                 });
             });
             requestAggs = request;
@@ -220,7 +220,7 @@
                             facetCategory.buckets[bucket.key].label = facetCategory.buckets[bucket.key].value;
 
                     }
-                    if (facetsSelected[key] && facetsSelected[key].indexOf(bucket.key) != -1)
+                    if (facetsSelected[key] && (facetsSelected[key].indexOf(bucket.key) != -1 || facetsSelected[key].indexOf(""+bucket.key) != -1))
                         facetCategory.buckets[bucket.key].selected = true;
                     if (resetCounters)
                         facetCategory.buckets[bucket.key].results = 0;
@@ -241,33 +241,42 @@
                 facetsSelected[bucket.facetCategory].splice(idx, 1);
             if (idx == -1 && bucket.selected)
                 facetsSelected[bucket.facetCategory].push(bucket.value);
+            $location.search("_"+bucket.facetCategory, facetsSelected[bucket.facetCategory]);
             goSearch();
         };
 
         // Set Search Fire Event
         goSearch = function () {
-            if ((typeof $scope.searchQuery == "undefined") || ($scope.searchQuery == "")) {
-                searchText = ""
+            if ((typeof $scope.searchQuery == "undefined") || ($scope.searchQuery === "")) {
+                searchText = "";
             } else {
-                searchText = $scope.searchQuery
+                searchText = $scope.searchQuery;
             }
-            $scope.search(searchText);
+            //$scope.search(searchText);
         };
 
         //Define function that fires search when page changes
         $scope.pageChanged = function () {
+            if (typeof $scope.totalItems === "undefined") {
+                if ($routeParams.hasOwnProperty("page") && $scope.currentPage != $routeParams.page)
+                    $scope.currentPage = $routeParams.page;
+                return;
+            }
+            $location.search('page', $scope.currentPage);
             goSearch();
         };
 
         //Define function that fires search when Items Per Page selection box changes
         $scope.itemsPerPageChanged = function () {
             $scope.itemsperPage = $scope.selectedItemPerPage.id;
+            $location.search('show', $scope.itemsperPage);
             goSearch();
         };
 
         //Define function that fires search when Sort By selection box changes
         $scope.sortItemsChanged = function () {
             $scope.sortByItem = $scope.selectedSortItem.id;
+            $location.search('sort', $scope.sortByItem);
             goSearch();
         };
 
@@ -315,11 +324,11 @@
         $scope.search = function (searchQuery) {
 
             if (typeof searchQuery == 'undefined') {
-                searchQuery = ""
+                searchQuery = "";
             }
-            ;
+            $location.search('q', (searchQuery==="")?null:searchQuery);
             //Get current result item offset depending on current page
-            itemOffset = ($scope.currentPage - 1) * $scope.itemsperPage
+            itemOffset = ($scope.currentPage - 1) * $scope.itemsperPage;
             //Build Sort
             if ($scope.sortByItem == 'Relevance') {
                 var sort = ["_score"];
@@ -344,7 +353,7 @@
             } else {
                 var query = {
                     match_all: {}
-                }
+                };
             }
             var request = {
                 index: API_CONF.ELASTIC_INDEX_NAME,
@@ -389,7 +398,7 @@
             //Default sort
             $scope.sortByItem = 'Relevance';
             //Default current page
-            $scope.currentPage = 1;
+            $scope.currentPage = $routeParams.page || 1;
 
             prepareAggregations();
 
@@ -404,13 +413,44 @@
             }
 
             //Default search query
-            searchQuery = "";
+            $scope.searchQuery = $routeParams.q || "";
+
+            var sortBy = $routeParams.sort;
+            angular.forEach($scope.sortOptions, function(option) {
+                if (option.id === sortBy){
+                    $scope.sortByItem = sortBy;
+                    $scope.selectedSortItem = option;
+                }
+            });
+
+            var showPerPage = $routeParams.show-0;
+            angular.forEach($scope.itemsPerPageChoices, function(option) {
+                if (option.id === showPerPage){
+                    $scope.itemsperPage = showPerPage;
+                    $scope.selectedItemPerPage = option;
+                }
+            });
+
+            facetsSelected = {};
+            angular.forEach(aggregations, function (aggregation, name) {
+                var queryParam = "_"+name;
+                if ($routeParams.hasOwnProperty(queryParam)) {
+                    if (angular.isArray($routeParams[queryParam])) {
+                        facetsSelected[name] = $routeParams[queryParam];
+                    } else {
+                        facetsSelected[name] = [];
+                        facetsSelected[name].push($routeParams[queryParam]);
+                    }
+                }
+            });
+
 
             //Search for first time
-            $scope.search(searchQuery);
-
-
+            $scope.search($scope.searchQuery);
         };
+        $scope.$on('$routeUpdate', function(){
+            $scope.init();
+        });
         // runs once per controller instantiation
         $scope.init();
     };
