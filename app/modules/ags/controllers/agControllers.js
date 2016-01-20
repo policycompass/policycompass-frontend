@@ -8,7 +8,7 @@ angular.module('pcApp.ags.controllers.ag', [
  */
     .controller('AgsController', [
         '$scope', 'Ag', '$routeParams', function ($scope, Ag, $routeParams) {
-            $scope.ags = Ag.query({page: $routeParams.page}, function (agList) {
+          $scope.ags = Ag.query({page: $routeParams.page}, function (agList) {
             }, function (error) {
                 throw {message: JSON.stringify(err.data)};
             });

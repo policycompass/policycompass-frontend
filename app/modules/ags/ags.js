@@ -1,6 +1,6 @@
 var ags = angular.module('pcApp.ags', [
     'pcApp.ags.controllers.ag',
-    //'pcApp.metrics.directives.pcDatagrid',
+    'pcApp.ags.directives.wellaged',
     'pcApp.references.directives.forms'
 ]);
 
