@@ -36,6 +36,7 @@
                 <button type="submit" ng-if="mode == 'edit'" class="btn btn-primary btn-save" ng-click="saveModel()" data-ng-disabled="isDisabled == true || !userState.loggedIn">Save As Model</button>
                 <button type="submit" data-intro="Cancel" data-position="top" class="btn btn-default btn-danger" ng-click="cancelModel(modeldetail.model.id)">Cancel</button>
             </div>
+            <a href="#!/login" ng-if="!userState.loggedIn" class="btn btn-primary btn-save" target="_blank">Login to Save</a>
         </div>
     </div>
 
