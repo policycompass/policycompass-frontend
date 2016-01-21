@@ -20,11 +20,13 @@ commonmanager.config(function ($routeProvider) {
         })
         .when('/browse', {
             controller: 'searchMainController',
-            templateUrl: 'modules/search/partials/browse.html'
+            templateUrl: 'modules/search/partials/browse.html',
+            reloadOnSearch: false
         })
         .when('/browse/:type', {
             controller: 'searchMainController',
-            templateUrl: 'modules/search/partials/browse.html'
+            templateUrl: 'modules/search/partials/browse.html',
+            reloadOnSearch: false
         })
         .when('/create', {
             controller: 'StaticController',
