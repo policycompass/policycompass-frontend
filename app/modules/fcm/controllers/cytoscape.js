@@ -478,6 +478,12 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 throw {message: "To run the simulation, please save the model"};
             }
             
+            angular.forEach($scope.Associations, function(value, key) {
+                if(value.weighted == "?") {
+                    throw {message: "Incomplete FCM model"};
+                }
+            });
+            
             var Activator = FCMActivatorDetail.getActivator();
             var jsonSimulation = {
                 model: FCMModelsDetail.getModels(),
