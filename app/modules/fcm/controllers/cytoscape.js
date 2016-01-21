@@ -146,6 +146,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         $scope.chartid = '2';
         $scope.hideyaxeunits = true;
         $scope.NodeID = 0;
+        $scope.isModelSaved = true;
 
 
         FCMModelsDetail.setModels($scope.Models);
@@ -472,7 +473,11 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         };
 
         $scope.runSimulation = function () {
-
+            
+            if(!$scope.isModelSaved) {
+                throw {message: "To run the simulation, please save the model"};
+            }
+            
             var Activator = FCMActivatorDetail.getActivator();
             var jsonSimulation = {
                 model: FCMModelsDetail.getModels(),
@@ -593,6 +598,8 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 if ($scope.Concepts.length > 1)
                     $scope.isDisabled = false; else
                     $scope.isDisabled = true;
+                
+                $scope.isModelSaved = false;
 
                 // broadcasting the event
                 $rootScope.$broadcast('appChanged');
@@ -625,6 +632,8 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 // adding the new edge object to the adges array
                 $scope.edgeData.push(newEdge);
                 $scope.Associations.push(user);
+                
+                $scope.isModelSaved = false;
                 // broadcasting the event
                 $rootScope.$broadcast('appChanged');
                 // resetting the form
@@ -682,7 +691,9 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
                         $scope.mapData[pos].name = user.title;
                     }
-
+                    
+                    $scope.isModelSaved = false;
+                    
                     // broadcasting the event
                     $rootScope.$broadcast('appChanged');
                 }, function () {
@@ -719,7 +730,9 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                         $scope.edgeData[pos].target = user.destination.Id;
                         $scope.edgeData[pos].weighted = user.weight;
                     }
-
+                    
+                    $scope.isModelSaved = false;
+                    
                     // broadcasting the event
                     $rootScope.$broadcast('appChanged');
                 }, function () {
