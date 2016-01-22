@@ -195,7 +195,7 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                             cy.load(scope.elements);
                             
                             
-                            if(scope.elements.nodes.length > 7) {
+                            if(scope.elements.nodes.length > 5) {
                                 cy.fit(window.defaults.fitPadding);
                             }
                         }
