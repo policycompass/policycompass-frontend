@@ -21,6 +21,8 @@
         zoomOutIcon: 'fa fa-minus',
         resetIcon: 'fa fa-expand'
     };
+    
+    window.defaults = defaults;
 
     $.fn.cytoscapePanzoom = function (params) {
         var options = $.extend(true, {}, defaults, params);
