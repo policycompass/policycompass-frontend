@@ -146,7 +146,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         $scope.chartid = '2';
         $scope.hideyaxeunits = true;
         $scope.NodeID = 0;
-
+        
 
         FCMModelsDetail.setModels($scope.Models);
         ConceptsDetail.setConcepts($scope.Concepts);
@@ -164,7 +164,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         }, function (error) {
             throw {message: JSON.stringify(error.data)};
         });
-
+        
         if ($routeParams.fcmId) {
             // Mode is editing
             $scope.mode = "edit";
@@ -487,7 +487,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         };
 
         $scope.runSimulation = function () {
-
+            
             var Activator = FCMActivatorDetail.getActivator();
             var jsonSimulation = {
                 model: FCMModelsDetail.getModels(),
@@ -604,11 +604,16 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 // adding the new Node to the nodes array
                 $scope.mapData.push(newNode);
                 $scope.Concepts.push(user);
+                
+                if($routeParams.fcmId) {
+                    user.metricTitle = "Link Datasets"
+                    $scope.SimulationConcepts.push(user);
+                }
 
                 if ($scope.Concepts.length > 1)
                     $scope.isDisabled = false; else
                     $scope.isDisabled = true;
-
+                    
                 // broadcasting the event
                 $rootScope.$broadcast('appChanged');
                 // resetting the form
@@ -640,6 +645,12 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 // adding the new edge object to the adges array
                 $scope.edgeData.push(newEdge);
                 $scope.Associations.push(user);
+                
+                if($routeParams.fcmId) {
+                    user.weighted = user.weight;
+                    $scope.SimulationAssociations.push(user);
+                }
+                
                 // broadcasting the event
                 $rootScope.$broadcast('appChanged');
                 // resetting the form
@@ -672,9 +683,11 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                                 for (j = i; j < $scope.Associations.length - 1; j++) {
                                     $scope.Associations[j] = $scope.Associations[j + 1];
                                     $scope.edgeData[j] = $scope.edgeData[j + 1];
+                                    $scope.SimulationAssociations[j] = $scope.SimulationAssociations[j + 1];
                                 }
                                 $scope.Associations.pop();
                                 $scope.edgeData.pop();
+                                $scope.SimulationAssociations.pop();
                                 i--;
                             }
                         }
@@ -682,9 +695,12 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                         for (i = pos; i < $scope.Concepts.length - 1; i++) {
                             $scope.Concepts[i] = $scope.Concepts[i + 1];
                             $scope.mapData[i] = $scope.mapData[i + 1];
+                            $scope.SimulationConcepts[i] = $scope.SimulationConcepts[i + 1];
                         }
+                        
                         $scope.Concepts.pop();
                         $scope.mapData.pop();
+                        $scope.SimulationConcepts.pop();
 
                         if ($scope.Concepts.length > 1)
                             $scope.isDisabled = false; else
@@ -696,8 +712,13 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                         $scope.Concepts[pos].scale = user.scale;
 
                         $scope.mapData[pos].name = user.title;
+                        
+                        // update bottom SimulationConcepts
+                        if($routeParams.fcmId) {
+                            $scope.SimulationConcepts[pos].title = user.title;
+                        }
                     }
-
+                    
                     // broadcasting the event
                     $rootScope.$broadcast('appChanged');
                 }, function () {
@@ -719,9 +740,11 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                         for (i = pos; i < $scope.Associations.length - 1; i++) {
                             $scope.Associations[i] = $scope.Associations[i + 1];
                             $scope.edgeData[i] = $scope.edgeData[i + 1];
+                            $scope.SimulationAssociations[i] = $scope.SimulationAssociations[i + 1];
                         }
                         $scope.Associations.pop();
                         $scope.edgeData.pop();
+                        $scope.SimulationAssociations.pop();
                     } else {
                         // collecting data from the form
                         $scope.Associations[pos].sourceID = user.source.Id;
@@ -733,8 +756,15 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                         $scope.edgeData[pos].source = user.source.Id;
                         $scope.edgeData[pos].target = user.destination.Id;
                         $scope.edgeData[pos].weighted = user.weight;
+                       
+                        // update relationships in bottom 
+                        if($routeParams.fcmId) {
+                            $scope.SimulationAssociations[pos].source = user.source;
+                            $scope.SimulationAssociations[pos].destination = user.destination;
+                            $scope.SimulationAssociations[pos].weighted = user.weight;
+                        }
                     }
-
+                    
                     // broadcasting the event
                     $rootScope.$broadcast('appChanged');
                 }, function () {
@@ -758,6 +788,16 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         $scope.reset = function () {
             $rootScope.$broadcast('appChanged');
         };
+        
+        $scope.updateEdge = function($index) {
+            var weight = $scope.SimulationAssociations[$index].weighted;
+            $scope.edgeData[$index].weighted = weight;
+            var assostions = AssociationsDetail.getAssociations();
+            assostions[$index].weighted = weight;
+            AssociationsDetail.setAssociations(assostions);
+            $rootScope.$broadcast('appChanged');
+        };
+        
     })
 
     .controller('helpController', function ($scope, $modalInstance, $log, $routeParams, data) {
@@ -793,7 +833,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
     }) // end ConceptController
 
     .controller('EditConceptController', function ($scope, $modalInstance, Metric, FcmActivator, $log, $routeParams, dialogs, data, EditConcept) {
-        $scope.user = {
+                $scope.user = {
             Id: -1,
             title: '',
             description: '',
@@ -855,7 +895,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
     }) // end AssociationController
 
     .controller('EditAssociationController', function ($scope, $modalInstance, dialogs, data, ConceptsDetail, EditAssociation) {
-        $scope.user = {
+                $scope.user = {
             Id: -1,
             sourceID: '',
             destinationID: '',
