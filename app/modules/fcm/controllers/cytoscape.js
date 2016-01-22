@@ -431,6 +431,16 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
 // **-*-****
         $scope.weightCalulation = function () {
+            $scope.conceptStyle = [];
+            $scope.relationShipStyle = [];
+            
+            $scope.SimulationConcepts.forEach(function(data) {
+                if(data.metricId == 0) {
+                    throw {message: "You need to link all the concepts to datasets"};
+                    return false;
+                }
+            });
+            
             for (i = 0; i < $scope.SimulationConcepts.length; i++) {
                 if ($scope.SimulationConcepts[i].metricId != 0) {
                     if ((i + 1) == 1)
@@ -440,6 +450,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                         $scope.SimulationConcepts[i].value = 0.6; else if ((i + 1) % 2 == 0)
                         $scope.SimulationConcepts[i].value = 0.2; else
                         $scope.SimulationConcepts[i].value = 0.8;
+                        $scope.conceptStyle[i] = {"color" : "#286090"};
                 }
             }
             for (i = 0; i < $scope.SimulationAssociations.length; i++) {
@@ -453,6 +464,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                                 $scope.SimulationAssociations[i].weighted = -0.5; else if ((i + 1) % 2 == 0)
                                 $scope.SimulationAssociations[i].weighted = 0.5; else
                                 $scope.SimulationAssociations[i].weighted = 1;
+                                $scope.relationShipStyle[i] = {"color" : "#286090"};
                         }
                     }
 
@@ -465,10 +477,13 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                                 $scope.SimulationAssociations[i].weighted = -0.5; else if ((i + 1) % 2 == 0)
                                 $scope.SimulationAssociations[i].weighted = 0.5; else
                                 $scope.SimulationAssociations[i].weighted = 1;
+                                $scope.relationShipStyle[i] = {"color" : "#286090"};    
                         }
                     }
                 }
             }
+            
+            throw {message: "weights are calculated!"};
         };
 
         $scope.runSimulation = function () {
