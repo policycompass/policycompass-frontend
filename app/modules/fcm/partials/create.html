@@ -125,11 +125,11 @@
                             <!--			    <td align="center" width="42%"><b>Metrics Manager</b></td>    -->
                         </tr>
                         <tr ng-show="Associations" ng-repeat="connection in SimulationAssociations track by $index">
-                            <td align="center">{{ connection.Sno }}</td>
+                            <td align="center">{{ $index + 1 }}</td>
                             <td align="center">{{ connection.source.title }}</td>
                             <td align="center">{{ connection.destination.title }}</td>
                             <td align="center">
-                                <select class="form-control" name="weight" id="weight" ng-model="SimulationAssociations[$index].weighted" required>
+                                <select data-ng-change="updateEdge($index)" class="form-control" name="weight" id="weight" ng-model="SimulationAssociations[$index].weighted" required>
                                     <option value="1">Very Strong Positive (1.0)</option>
                                     <option value="0.75">Strong Positive (0.75)</option>
                                     <option value="0.5">Weak Positive (0.5)</option>

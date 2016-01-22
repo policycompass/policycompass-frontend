@@ -631,6 +631,10 @@ policycompass.viz.line = function (options) {
         }
         while (cntpasadas <= 2) {
 
+			if (cntpasadas==2) {
+				plotEvents(eventsData, colorScaleForHE, getDate);
+			}
+
             self.legendText = "";
             var cntiMultiple = 0;
             var incremetY = 0;
@@ -1236,6 +1240,8 @@ policycompass.viz.line = function (options) {
             cntpasadas = cntpasadas + 1;
         }
 
+		
+
         if (showPoints) {
             lines.forEach(function (d, i) {
                 var keyCircle = d.Key;
@@ -1509,9 +1515,26 @@ policycompass.viz.line = function (options) {
             });
         }
 
+		
+		
+        
 
-        /*************Ini plot historical events *******/
+        //delete this trnsition because causes problems in chrome per linux
+        /*
+         self.svg
+         .attr("transform", "translate(0, "+self.height+") scale(1, 0)")
+         .transition().duration(500)
+         .attr("transform", "translate("+self.margin.left+", "+self.margin.top+") scale(1, 1)")
+         ;
+         */
 
+    }
+
+
+	var plotEvents = function (eventsData, colorScaleForHE, getDate) {
+		
+		/*************Ini plot historical events *******/
+		
         var dataForCircles = [];
 
         for (var i in eventsData) {
@@ -1623,19 +1646,8 @@ policycompass.viz.line = function (options) {
                 d3.select(this).style("stroke-width", 1);
             })
 
-        /******** end plot historical events ***********/
-
-        //delete this trnsition because causes problems in chrome per linux
-        /*
-         self.svg
-         .attr("transform", "translate(0, "+self.height+") scale(1, 0)")
-         .transition().duration(500)
-         .attr("transform", "translate("+self.margin.left+", "+self.margin.top+") scale(1, 1)")
-         ;
-         */
-
-    }
-
+        /******** end plot historical events ***********/		
+	}
 
     /* function to plot the pointer mouse */
     var handleMouseOverGraph = function (posMouse) {

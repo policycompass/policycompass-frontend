@@ -193,6 +193,11 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                             // use cy.add() / cy.remove() with passed data to add or remove nodes and edges without rebuilding the graph
                             // sample use can be adding a passed variable which will be broadcast on change
                             cy.load(scope.elements);
+                            
+                            
+                            if(scope.elements.nodes.length > 5) {
+                                cy.fit(window.defaults.fitPadding);
+                            }
                         }
                     });
 
