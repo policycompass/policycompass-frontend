@@ -472,7 +472,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 }
             }
         };
-
+        
         $scope.runSimulation = function () {
             
             var Activator = FCMActivatorDetail.getActivator();
@@ -552,6 +552,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             $scope.tabsel = {
                 results: true
             }
+            
         };
 
         $scope.impactAnalysis = function () {
@@ -784,6 +785,10 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             AssociationsDetail.setAssociations(assostions);
             $rootScope.$broadcast('appChanged');
         };
+        
+        $scope.loginToSave = function() {
+            $location.path('/login');
+        }
         
     })
 
