@@ -483,7 +483,9 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 }
             }
             
-            throw {message: "weights are calculated!"};
+            if ($scope.Concepts.length > 1) {
+                var dlg = dialogs.notify("Causal Model", "Weights are calculated!");
+            }
         };
 
         $scope.runSimulation = function () {
