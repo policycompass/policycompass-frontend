@@ -28,12 +28,12 @@
                 <button type="submit" class="btn btn-primary btn-concept" ng-click="addObj()">Add Concept</button>
                 <button type="submit" ng-if="isDisabled == true" class="btn btn-primary btn-association" ng-click="addEdge()" disabled>Create Relationship</button>
                 <button type="submit" ng-if="isDisabled == false" class="btn btn-primary btn-association" ng-click="addEdge()">Create Relationship</button>
-                <button type="submit" ng-if="mode == 'create'" class="btn btn-primary btn-save" ng-click="saveModel()" data-ng-disabled="isDisabled == true || !userState.loggedIn">Save Model</button>
-                <button type="submit" ng-if="mode == 'edit'" class="btn btn-primary btn-save" ng-click="updateModel()" data-ng-disabled="isDisabled == true || !userState.loggedIn">Save Model</button>
+                <button type="submit" ng-if="mode == 'create' && userState.loggedIn" class="btn btn-primary btn-save" ng-click="saveModel()" data-ng-disabled="isDisabled == true">Save Model</button>
+                <button type="submit" ng-if="mode == 'edit' && userState.loggedIn" class="btn btn-primary btn-save" ng-click="updateModel()" data-ng-disabled="isDisabled == true">Save Model</button>
 <!--                <button type="submit" ng-if="mode == 'create' && isDisabled == false && userState.loggedIn" class="btn btn-primary btn-save" ng-click="saveModel()">Save Model</button>
                 <button type="submit" ng-if="mode == 'edit' && isDisabled == false && userState.loggedIn" class="btn btn-primary btn-save" ng-click="updateModel()">Save Model</button>-->
-<button type="submit" ng-if="mode == 'create'" class="btn btn-primary btn-save" ng-click="saveModel()" disabled>Save As Model</button>
-                <button type="submit" ng-if="mode == 'edit'" class="btn btn-primary btn-save" ng-click="saveModel()" data-ng-disabled="isDisabled == true || !userState.loggedIn">Save As Model</button>
+<button type="submit" ng-if="mode == 'create' && userState.loggedIn" class="btn btn-primary btn-save" ng-click="saveModel()" disabled>Save As Model</button>
+                <button type="submit" ng-if="mode == 'edit' && userState.loggedIn" class="btn btn-primary btn-save" ng-click="saveModel()" data-ng-disabled="isDisabled == true || !userState.loggedIn">Save As Model</button>
                 <button type="submit" data-intro="Cancel" data-position="top" class="btn btn-default btn-danger" ng-click="cancelModel(modeldetail.model.id)">Cancel</button>
             </div>
             <a href="#!/login" ng-if="!userState.loggedIn" class="btn btn-primary btn-save" target="_blank">Login to Save</a>
