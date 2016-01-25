@@ -510,7 +510,12 @@ function wrap(text, width) {
         var incremetY = 0;
         var cnti = 0;
         //self.legendsColumn = 1;
-		xAxisData.forEach(function (d, i) {
+        
+        var xAxisDataClonned = self.clone(xAxisData);
+        
+        xAxisDataClonned.sort();
+                
+		xAxisDataClonned.forEach(function (d, i) {
 			if (showLegend) {
 				
                 var valueX = ((self.maxWidth / (xAxisDataColor.length / self.legendsColumn)) * (cntiMultiple));
@@ -536,7 +541,7 @@ function wrap(text, width) {
                 ;
 
 
-				var trimmedStringTmp = xAxisData[i].split("_");
+				var trimmedStringTmp = xAxisDataClonned[i].split("_");
 				
                 var trimmedString = trimmedStringTmp[0];
                 var fullString = trimmedStringTmp[0];
@@ -664,12 +669,8 @@ function wrap(text, width) {
         return temp;
     }
 
-    self.render = function (dataIn, eventsData) {
 
-        self.dataIn = dataIn;
-        self.eventsData = eventsData;
-
-        function alphabetical_sort_object_of_objects(data, attr) {
+		self.alphabetical_sort_object_of_objects = function(data, attr) {
             var arr = [];
             for (var prop in data) {
                 if (data.hasOwnProperty(prop)) {
@@ -700,6 +701,13 @@ function wrap(text, width) {
             return result;
         }
 
+    self.render = function (dataIn, eventsData) {
+
+        self.dataIn = dataIn;
+        self.eventsData = eventsData;
+
+        
+
         if (Object.keys(dataIn).length === 0) {
             self.svg.append("text")
             .text("No data to plot. Add datasets")
@@ -709,7 +717,7 @@ function wrap(text, width) {
         } else {
         	
             var dataToPlotUpdate = self.clone(dataIn);
-            dataToPlotUpdate = alphabetical_sort_object_of_objects(dataToPlotUpdate, 'To');
+            dataToPlotUpdate = self.alphabetical_sort_object_of_objects(dataToPlotUpdate, 'To');
             self.drawBarsMultiple(dataToPlotUpdate, eventsData);
         }
 
