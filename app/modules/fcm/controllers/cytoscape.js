@@ -474,9 +474,19 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
         $scope.runSimulation = function () {
             
+            if($scope.Concepts.length == 0) {
+                throw {message: "The model is incomplete"};
+            }
+            
             if(!$scope.isModelSaved) {
                 throw {message: "To run the simulation, please save the model"};
             }
+            
+            $scope.SimulationConcepts.forEach(function(data) {
+                if(data.value == 0) {
+                    throw {message: "Please set the initial value for all concepts"};
+                }
+            });
             
             angular.forEach($scope.Associations, function(value, key) {
                 if(value.weighted == "?") {
