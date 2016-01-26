@@ -160,6 +160,8 @@ policycompass.viz.line = function (options) {
 
     self.drawLines = function (lines, eventsData) {
 
+		lines = self.alphabetical_sort_object_of_objects_lines(lines, 'Key');
+		
         if (!self.showYAxesTogether) {
             var widthTempoarl = self.width - (self.distanceXaxes * (lines.length - 1));
             if (widthTempoarl < (self.width / 3)) {
@@ -690,7 +692,7 @@ policycompass.viz.line = function (options) {
             var incremetY = 0;
             var cnti = 0;
             
-            lines = self.alphabetical_sort_object_of_objects_lines(lines, 'Key');
+            //lines = self.alphabetical_sort_object_of_objects_lines(lines, 'Key');
             
             lines.forEach(function (d, i) {
                 self.cntLineasPintadas = i;
