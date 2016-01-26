@@ -146,6 +146,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         $scope.chartid = '2';
         $scope.hideyaxeunits = true;
         $scope.NodeID = 0;
+        $scope.isModelSaved = true;
         
 
         FCMModelsDetail.setModels($scope.Models);
@@ -488,6 +489,26 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
         $scope.runSimulation = function () {
             
+            if($scope.Concepts.length == 0) {
+                throw {message: "The model is incomplete"};
+            }
+            
+            if(!$scope.isModelSaved) {
+                throw {message: "To run the simulation, please save the model"};
+            }
+            
+            $scope.SimulationConcepts.forEach(function(data) {
+                if(data.value == 0) {
+                    throw {message: "Please set the initial value for all concepts"};
+                }
+            });
+            
+            angular.forEach($scope.Associations, function(value, key) {
+                if(value.weighted == "?") {
+                    throw {message: "Incomplete FCM model"};
+                }
+            });
+            
             var Activator = FCMActivatorDetail.getActivator();
             var jsonSimulation = {
                 model: FCMModelsDetail.getModels(),
@@ -613,7 +634,9 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 if ($scope.Concepts.length > 1)
                     $scope.isDisabled = false; else
                     $scope.isDisabled = true;
-                    
+                
+                $scope.isModelSaved = false;
+
                 // broadcasting the event
                 $rootScope.$broadcast('appChanged');
                 // resetting the form
@@ -646,6 +669,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 $scope.edgeData.push(newEdge);
                 $scope.Associations.push(user);
                 
+                $scope.isModelSaved = false;
                 if($routeParams.fcmId) {
                     user.weighted = user.weight;
                     $scope.SimulationAssociations.push(user);
@@ -719,6 +743,8 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                         }
                     }
                     
+                    $scope.isModelSaved = false;
+                    
                     // broadcasting the event
                     $rootScope.$broadcast('appChanged');
                 }, function () {
@@ -764,6 +790,8 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                             $scope.SimulationAssociations[pos].weighted = user.weight;
                         }
                     }
+                    
+                    $scope.isModelSaved = false;
                     
                     // broadcasting the event
                     $rootScope.$broadcast('appChanged');
