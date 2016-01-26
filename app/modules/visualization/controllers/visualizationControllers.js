@@ -3410,7 +3410,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
                 }
 
             }, function (error) {
-                throw {message: JSON.stringify(error.data.message)};
+                //throw {message: JSON.stringify(error.data.message)};                
+                $location.path('/visualizations');
             });
 
 
@@ -3546,7 +3547,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				
 				
             }, function (error) {
-                throw {message: JSON.stringify(error.data.message)};
+                //throw {message: JSON.stringify(error.data.message)};
+                //console.log (JSON.stringify(error.data.message));
             });
 
 
