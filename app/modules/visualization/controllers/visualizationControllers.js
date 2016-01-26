@@ -351,9 +351,11 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					
 					$scope.colorScale = function () {
 						
-						var randomColor = Math.floor(Math.random()*16777215).toString(16);						
+						var randomColor = Math.floor(Math.random()*16777215).toString(16);	
+						while (randomColor.length<6) {
+							randomColor = '0'+randomColor;
+						}	
 						return '#'+randomColor;
-						
 					}
 					
 					$scope.curPageDataset = 0;
