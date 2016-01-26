@@ -15,3 +15,5 @@ npm-debug.log
 # Vim swap files
 *.sw[op]
 .tern-port
+
+/nbproject/
