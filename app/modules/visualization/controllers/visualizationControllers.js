@@ -4120,6 +4120,13 @@ angular.module('pcApp.visualization.controllers.visualization', [
                     if (arrayMetricsURL[x] > 0) {
                         $scope.metric = Dataset.get({id: arrayMetricsURL[x]}, function (metric) {
                             if (metric.id > 0) {
+                            	
+                            	$scope.dataset_color_palete_[metric.id]=[];
+                            	
+                            	for (xj = 0; xj < metric.data.individuals.length; xj++) {                            		
+                            		 $scope.dataset_color_palete_[metric.id][metric.data.individuals[xj]]=$scope.colorScale(metric.data.individuals[xj]);
+                            	}
+                            	//$scope.dataset_color_palete_[metric.id]
                                 $scope.addFilterMetric(metric.id, metric.title, metric.issued);
                             }
                         }, function (err) {
@@ -4403,7 +4410,6 @@ angular.module('pcApp.visualization').filter('pagination', function () {
 
             $scope.historicalevent_color_palete = '#f7941e';
 
-
             $scope.metricslist = item.metricsArray;
             $scope.recomendationevents = [];
             $scope.curPage = 0;
@@ -4423,7 +4429,10 @@ angular.module('pcApp.visualization').filter('pagination', function () {
             if (!$scope.endDateToFilter) {
                 $scope.endDateToFilter = item.maxDateToSearch;
             }
-
+			
+			$scope.iniStartDateToFilter = $scope.startDateToFilter;
+			$scope.iniEndDateToFilter = $scope.endDateToFilter;
+			
             $scope.paginationEvents = 1;
             $scope.filterEvents = "";
             $scope.paginationEvents = "";
@@ -4495,7 +4504,7 @@ angular.module('pcApp.visualization').filter('pagination', function () {
                 };
 
                 if (startDateToSearch || endDateToSearch) {
-
+					/*
                     query.filtered['filter'] = {
                         "and": [
                             {
@@ -4509,6 +4518,20 @@ angular.module('pcApp.visualization').filter('pagination', function () {
                             }
                         ]
                     };
+					*/
+                    query.filtered['filter'] = {
+                        "bool": {
+                        	"must_not" : [
+                        	{ 
+								"range": {"endEventDate":{"lte": startDateToSearch}}
+							},
+							{
+								"range": {"startEventDate":{"gte": endDateToSearch}}
+							}
+                        	]                        	
+                        } 
+                    };
+
                 }
 
                 //Perform search through client and get a search Promise
@@ -4624,6 +4647,8 @@ angular.module('pcApp.visualization').filter('pagination', function () {
 
                 if (startDateToSearch || endDateToSearch) {
 
+					query.filtered['filter'] = {};
+					/*					
                     query.filtered['filter'] = {
                         "and": [
                             {
@@ -4637,8 +4662,21 @@ angular.module('pcApp.visualization').filter('pagination', function () {
                             }
                         ]
                     };
-                }
+					*/                   
+                    query.filtered['filter'] = {
+                        "bool": {
+                        	"must_not" : [
+                        	{ 
+								"range": {"endEventDate":{"lte": startDateToSearch}}
+							},
+							{
+								"range": {"startEventDate":{"gte": endDateToSearch}}
+							}
+                        	]                        	
+                        } 
+                    };
 
+                }
 
                 if ($scope.itemssearchfrom < 0) {
                     $scope.itemssearchfrom = 0;

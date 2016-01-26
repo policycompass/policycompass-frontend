@@ -34,6 +34,37 @@ policycompass.viz.line = function (options) {
         self.resolution = 'day';
     }
 
+	self.alphabetical_sort_object_of_objects = function(data, attr) {
+            var arr = [];
+            for (var prop in data) {
+                if (data.hasOwnProperty(prop)) {
+                    var obj = {};
+                    obj[prop] = data[prop];
+                    obj.tempSortName = data[prop][attr].toLowerCase();
+                    arr.push(obj);
+                }
+            }
+
+            arr.sort(function (a, b) {
+                var at = a.tempSortName, bt = b.tempSortName;
+                return at > bt ? 1 : ( at < bt ? -1 : 0 );
+            });
+
+            var result = [];
+            for (var i = 0, l = arr.length; i < l; i++) {
+                var obj = arr[i];
+                delete obj.tempSortName;
+                for (var prop in obj) {
+                    if (obj.hasOwnProperty(prop)) {
+                        var id = prop;
+                    }
+                }
+                var item = obj[id];
+                result.push(item);
+            }
+            return result;
+        }
+        
     function resize() {
         self.cntResizes = self.cntResizes + 1;
         if (self.cntResizes > 1) {
@@ -147,14 +178,20 @@ policycompass.viz.line = function (options) {
         self.arrayMinVy = [];
 
         if (showAsPercentatge) {
-            lines.forEach(function (d, i) {
-                var iniValue = lines[i].ValueY[0];
-                if (iniValue != 0) {
-                    lines[i].ValueX.forEach(function (d, j) {
-                        var valueTMP = ((lines[i].ValueY[j] - iniValue) / iniValue) * 100;
-                        lines[i].ValueY[j] = valueTMP;
-                    });
-                }
+            lines.forEach(function (d, i) {            	
+                var iniValue = lines[i].ValueY[0];                
+                if (!isNaN(iniValue)) {                	
+                	if (iniValue == null) {
+                		
+                	}
+                	else if (iniValue != 0) {
+                		
+                    	lines[i].ValueX.forEach(function (d, j) {
+                        	var valueTMP = ((lines[i].ValueY[j] - iniValue) / iniValue) * 100;
+                        	lines[i].ValueY[j] = valueTMP;
+                    	});
+                	}
+               	}
             });
         }
 
@@ -639,6 +676,9 @@ policycompass.viz.line = function (options) {
             var cntiMultiple = 0;
             var incremetY = 0;
             var cnti = 0;
+            
+            lines = self.alphabetical_sort_object_of_objects(lines, 'Key');
+            
             lines.forEach(function (d, i) {
                 self.cntLineasPintadas = i;
                 cnti = cnti + 1;

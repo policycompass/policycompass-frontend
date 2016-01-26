@@ -510,7 +510,19 @@ function wrap(text, width) {
         var incremetY = 0;
         var cnti = 0;
         //self.legendsColumn = 1;
-		xAxisData.forEach(function (d, i) {
+        
+        var xAxisDataForLegend = [];
+        xAxisData.forEach(function (d, i) {
+        	xAxisDataForLegend[i] = {'title':xAxisData[i], 'color':xAxisDataColor[i]};
+        });
+        
+		xAxisDataForLegend = self.alphabetical_sort_object_of_objects(xAxisDataForLegend, 'title');
+		
+		var xAxisDataClonned = self.clone(xAxisDataForLegend);
+        
+        
+		xAxisDataClonned.forEach(function (d, i) {
+			
 			if (showLegend) {
 				
                 var valueX = ((self.maxWidth / (xAxisDataColor.length / self.legendsColumn)) * (cntiMultiple));
@@ -532,11 +544,13 @@ function wrap(text, width) {
                 .attr("y", valueY - 5)
                 .attr("width", 5)
                 .attr("height", 5)
-                .style("fill", xAxisDataColor[i])
+                //.style("fill", xAxisDataColor[i])
+                .style("fill", xAxisDataClonned[i]['color'])
                 ;
 
 
-				var trimmedStringTmp = xAxisData[i].split("_");
+				//var trimmedStringTmp = xAxisDataClonned[i].split("_");
+				var trimmedStringTmp = xAxisDataClonned[i]['title'].split("_");
 				
                 var trimmedString = trimmedStringTmp[0];
                 var fullString = trimmedStringTmp[0];
@@ -566,8 +580,6 @@ function wrap(text, width) {
                     trimmedString = trimmedString.substring(0, length) + "...";
                 }
 
-                        				
-                			
                 self.svg.append("text")
                     .attr("x", function (d, i) {
                         return valueX;
@@ -578,7 +590,8 @@ function wrap(text, width) {
                     .attr("text-anchor", "center")
                     .attr("class", "link superior legend value")
                     .attr("font-size", self.font_size+1)
-                    .style("fill", xAxisDataColor[i])
+                    //.style("fill", xAxisDataColor[i])
+                    .style("fill", xAxisDataClonned[i]['color'])
                     .text(trimmedString)
 					.on("mouseover", function () {
 						var str = fullString;				
@@ -664,12 +677,8 @@ function wrap(text, width) {
         return temp;
     }
 
-    self.render = function (dataIn, eventsData) {
 
-        self.dataIn = dataIn;
-        self.eventsData = eventsData;
-
-        function alphabetical_sort_object_of_objects(data, attr) {
+		self.alphabetical_sort_object_of_objects = function(data, attr) {
             var arr = [];
             for (var prop in data) {
                 if (data.hasOwnProperty(prop)) {
@@ -700,6 +709,13 @@ function wrap(text, width) {
             return result;
         }
 
+    self.render = function (dataIn, eventsData) {
+
+        self.dataIn = dataIn;
+        self.eventsData = eventsData;
+
+        
+
         if (Object.keys(dataIn).length === 0) {
             self.svg.append("text")
             .text("No data to plot. Add datasets")
@@ -709,7 +725,7 @@ function wrap(text, width) {
         } else {
         	
             var dataToPlotUpdate = self.clone(dataIn);
-            dataToPlotUpdate = alphabetical_sort_object_of_objects(dataToPlotUpdate, 'To');
+            dataToPlotUpdate = self.alphabetical_sort_object_of_objects(dataToPlotUpdate, 'To');
             self.drawBarsMultiple(dataToPlotUpdate, eventsData);
         }
 

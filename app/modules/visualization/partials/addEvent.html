@@ -50,11 +50,19 @@
                 <div class="row"><br/></div>
                 <div>
                     <div>
-                        <form action="#" name="searchEventsForm" role="form" novalidate>
+                        <form action="#" name="searchEventsFormModal" role="form" novalidate>
                             <div class="row">
                                 <div class="col-sm-4">
-                                    <label for="">Search text</label>
-                                    <input placeholder="--all events--" ng-change="findEventsByFilter('ini', filterEvent, startDateToFilter, endDateToFilter)" type="text" id="filterEvent" ng-model="filterEvent" name="filterEvent">
+                                	<div class="form-group date-picker ng-scope">
+                                    	<label for="filterEvent">Search text</label>
+                                    	<p class="input-group">
+                                    		<input placeholder="--all events--" type="text" id="filterEvent" ng-model="filterEvent" name="filterEvent" class="form-control ng-isolate-scope ng-pristine ng-valid-required ng-valid">
+                                    
+                                    		<span class="input-group-btn">
+					                			<a type="button" class="btn btn-default" ng-click="findEventsByFilter('ini', filterEvent, startDateToFilter, endDateToFilter)"><i class="glyphicon glyphicon-search"></i></a>
+											</span>
+										</p>
+					                </div>
                                 </div>
 
                                 <div class="col-sm-4">
@@ -62,7 +70,7 @@
                                         <label for="retrievalDate">Start date</label>
 
                                         <p class="input-group">
-                                            <input type="text" id="startDateToFilter" name="startDateToFilter" class="form-control" datepicker-popup="" ng-model="startDateToFilter" is-open="opened" min-date-old="minDate" max-date-old="maxDate" min-date="startDateToFilter" max-date="endDateToFilter" datepicker-options="dateOptions" show-button-bar="false" ng-required="false" ng-disabled="true" ng-change="findEventsByFilter('ini', filterEvent, startDateToFilter, endDateToFilter)" close-text="Close"/>
+                                            <input type="text" id="startDateToFilter" name="startDateToFilter" class="form-control" datepicker-popup="" ng-model="startDateToFilter" is-open="opened" min-date-old="minDate" max-date-old="maxDate" min-date="iniStartDateToFilter" max-date="iniEndDateToFilter" datepicker-options="dateOptions" show-button-bar="false" ng-required="false" ng-disabled="true" ng-change="findEventsByFilter('ini', filterEvent, startDateToFilter, endDateToFilter)" close-text="Close"/>
 					                    	<span class="input-group-btn">
 					                        	<a type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></a>
 					                    	</span>
@@ -75,7 +83,7 @@
                                         <label for="retrievalDate">End date</label>
 
                                         <p class="input-group">
-                                            <input type="text" id="endDateToFilter" name="endDateToFilter" class="form-control" datepicker-popup="" ng-model="endDateToFilter" is-open="opened" min-date-old="minDate" max-date-old="maxDate" min-date="startDateToFilter" max-date="endDateToFilter" datepicker-options="dateOptions" show-button-bar="false" ng-required="false" ng-disabled="true" ng-change="findEventsByFilter('ini', filterEvent, startDateToFilter, endDateToFilter)" close-text="Close"/>
+                                            <input type="text" id="endDateToFilter" name="endDateToFilter" class="form-control" datepicker-popup="" ng-model="endDateToFilter" is-open="opened" min-date-old="minDate" max-date-old="maxDate" min-date="iniStartDateToFilter" max-date="iniEndDateToFilter" datepicker-options="dateOptions" show-button-bar="false" ng-required="false" ng-disabled="true" ng-change="findEventsByFilter('ini', filterEvent, startDateToFilter, endDateToFilter)" close-text="Close"/>
 											<span class="input-group-btn">
 						    		        	<a type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></a>
 											</span>
@@ -97,10 +105,10 @@
                         <div class="createvisualization ">
                             <div class="filterMetricsPagination" id="filterMetricsPaginationDirective">
                                 <div class="button-group">
-                                    <button ng-show="events.hits.total>1" ng-disabled="pagToSearch==1" class="btn" ng-click="findEventsByFilter('prev', filterEvent)">
+                                    <button ng-show="events.hits.total>1" ng-disabled="pagToSearch==1" class="btn" ng-click="findEventsByFilter('prev', filterEvent,  startDateToFilter, endDateToFilter)">
                                         <span class="glyphicon glyphicon-chevron-left"></span> Previous
                                     </button>
-                                    <button ng-show="events.hits.total>1" ng-disabled="events.hits.total<=pagToSearch*itemsperpagesize" class="btn" ng-click="findEventsByFilter('next', filterEvent)">
+                                    <button ng-show="events.hits.total>1" ng-disabled="events.hits.total<=pagToSearch*itemsperpagesize" class="btn" ng-click="findEventsByFilter('next', filterEvent, startDateToFilter, endDateToFilter)">
                                         Next <span class="glyphicon glyphicon-chevron-right"></span>
                                     </button>
                                 </div>
