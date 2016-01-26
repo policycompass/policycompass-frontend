@@ -511,11 +511,18 @@ function wrap(text, width) {
         var cnti = 0;
         //self.legendsColumn = 1;
         
-        var xAxisDataClonned = self.clone(xAxisData);
+        var xAxisDataForLegend = [];
+        xAxisData.forEach(function (d, i) {
+        	xAxisDataForLegend[i] = {'title':xAxisData[i], 'color':xAxisDataColor[i]};
+        });
         
-        xAxisDataClonned.sort();
-                
+		xAxisDataForLegend = self.alphabetical_sort_object_of_objects(xAxisDataForLegend, 'title');
+		
+		var xAxisDataClonned = self.clone(xAxisDataForLegend);
+        
+        
 		xAxisDataClonned.forEach(function (d, i) {
+			
 			if (showLegend) {
 				
                 var valueX = ((self.maxWidth / (xAxisDataColor.length / self.legendsColumn)) * (cntiMultiple));
@@ -537,11 +544,13 @@ function wrap(text, width) {
                 .attr("y", valueY - 5)
                 .attr("width", 5)
                 .attr("height", 5)
-                .style("fill", xAxisDataColor[i])
+                //.style("fill", xAxisDataColor[i])
+                .style("fill", xAxisDataClonned[i]['color'])
                 ;
 
 
-				var trimmedStringTmp = xAxisDataClonned[i].split("_");
+				//var trimmedStringTmp = xAxisDataClonned[i].split("_");
+				var trimmedStringTmp = xAxisDataClonned[i]['title'].split("_");
 				
                 var trimmedString = trimmedStringTmp[0];
                 var fullString = trimmedStringTmp[0];
@@ -571,8 +580,6 @@ function wrap(text, width) {
                     trimmedString = trimmedString.substring(0, length) + "...";
                 }
 
-                        				
-                			
                 self.svg.append("text")
                     .attr("x", function (d, i) {
                         return valueX;
@@ -583,7 +590,8 @@ function wrap(text, width) {
                     .attr("text-anchor", "center")
                     .attr("class", "link superior legend value")
                     .attr("font-size", self.font_size+1)
-                    .style("fill", xAxisDataColor[i])
+                    //.style("fill", xAxisDataColor[i])
+                    .style("fill", xAxisDataClonned[i]['color'])
                     .text(trimmedString)
 					.on("mouseover", function () {
 						var str = fullString;				
