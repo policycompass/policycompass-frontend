@@ -34,12 +34,16 @@ angular.module('pcApp.fcm.controllers.fcm', [
         'FcmSearchDelete',
         'dialogs',
         '$log',
-        function ($scope, $rootScope, $routeParams, $location, FcmModel, FcmActivator, FcmSearchDelete, dialogs, $log) {
+        'FcmSearchUpdate',
+        function ($scope, $rootScope, $routeParams, $location, FcmModel, FcmActivator, FcmSearchDelete, dialogs, $log, FcmSearchUpdate) {
             $scope.mapData = [];
             $scope.edgeData = [];
             $scope.Concepts = [];
+            $scope.updateModels = {};
+            $scope.updateAssociations = [];
+            $scope.updateConcepts = [];
             $scope.editorLayout;
-
+            
             $scope.models = FcmModel.get({id: $routeParams.fcmId}, function (fcmList) {
                 for (i = 0; i < $scope.models.concepts.length; i++) {
                     var newNode = {
@@ -71,7 +75,9 @@ angular.module('pcApp.fcm.controllers.fcm', [
                     };
                     $scope.edgeData.push(newEdge);
                 }
-
+                
+                $scope.setUpdateModelValues($scope.models);
+                
                 // broadcasting the event
                 $rootScope.$broadcast('appChanged');
             }, function (error) {
@@ -91,6 +97,80 @@ angular.module('pcApp.fcm.controllers.fcm', [
                     });
                 });
             };
+            
+            $scope.doMouseUp = function (value, posx, posy) {
+                for (i = 0; i < $scope.Concepts.length; i++) {
+                    if ($scope.updateConcepts[i].Id == value.substring(1, value.length)) {
+                        $scope.updateConcepts[i].x = posx;
+                        $scope.updateConcepts[i].y = posy;
+                    }
+                }
+            };
+            
+            $scope.setUpdateModelValues = function(model) {
+                $scope.updateModels = {
+                    ModelID : model.model.id.toString(),
+                    description : model.model.description,
+                    keywords : model.model.keywords,
+                    title : model.model.title
+                };
+                
+                for (i = 0; i < model.connections.length; i++) {
+                    var Association = {
+                        Id: model.connections[i].id.toString(),
+                        sourceID: model.connections[i].conceptFrom.toString(),
+                        source: '',
+                        destinationID: model.connections[i].conceptTo.toString(),
+                        destination: '',
+                        weighted: model.connections[i].weight.toString()
+                    };
+                    
+                    for (j = 0; j < $scope.Concepts.length; j++) {
+                        if (Association.sourceID == $scope.Concepts[j].Id)
+                            Association.source =$scope.Concepts[j];
+                        if (Association.destinationID == $scope.Concepts[j].Id)
+                            Association.destination = $scope.Concepts[j];
+                    }
+                    $scope.updateAssociations.push(Association);
+                }
+                
+                for (i = 0; i < model.concepts.length; i++) {
+                    var updateConcepts = {
+                        Id: model.concepts[i].id.toString(),
+                        dateAddedtoPC: model.concepts[i].dateAddedtoPC,
+                        dateModified: model.concepts[i].dateModified,
+                        description: model.concepts[i].description,
+                        metric_id : model.concepts[i].metric_id,
+                        scale: model.concepts[i].scale,
+                        title: model.concepts[i].title,
+                        value : model.concepts[i].value,
+                        x: model.concepts[i].positionX,
+                        y: model.concepts[i].positionY,
+                    };
+                    $scope.updateConcepts.push(updateConcepts);
+                }
+            }
+            
+            $scope.updateModel = function () {
+                
+                var jsonModel = {
+                    model : $scope.updateModels,
+                    userID: "1",
+                    concepts : $scope.updateConcepts,
+                    connections : $scope.updateAssociations
+                }
+                
+                $scope.fcmModelUpdate = new FcmModel();
+                $scope.fcmModelUpdate.data = jsonModel;
+                $scope.md = jsonModel;
+                FcmModel.update({id: $routeParams.fcmId}, $scope.fcmModelUpdate, function (value) {
+                    FcmSearchUpdate.update({id: $routeParams.fcmId}, function () {
+                        $location.path('/models/' + $routeParams.fcmId + '/edit');
+                    });
+                });
+            };
+            
+//            $scope.updateModel();
         }
     ])
 
