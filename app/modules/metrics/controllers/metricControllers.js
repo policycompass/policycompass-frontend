@@ -328,8 +328,8 @@ angular.module('pcApp.metrics.controllers.metric', [
                         },
                         function (err) {
                             throw {message: JSON.stringify(err.data)};
-                        };
-                    });
+                        }
+                    );
 
                 },
                 function (err) {
