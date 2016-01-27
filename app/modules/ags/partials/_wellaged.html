@@ -1,8 +1,20 @@
 <div class="wellaged-directive">
     <div class="wellaged-editor">
-        <div class="wellaged-paper" style="height: 768px" >
+        <div class="row">
+            <div class="button-group" ng-show="mode == 'edit'">
+                <a style="cursor: pointer;" class="btn btn-default" ng-click="clear()">Clear</a>
+                <a style="cursor: pointer;" class="btn btn-default" ng-click="runAutoLayout()">Autolayout</a>
+                <a style="cursor: pointer;" class="btn btn-default" ng-click="runCarneades()">Evaluate Argument Graph</a>
+            </div>
+            <div class="button-group" ng-show="mode == 'edit'">
+                <a style="cursor: pointer;" class="btn btn-default" ng-click="addStatement()">Add Statement</a>
+                <a style="cursor: pointer;" class="btn btn-default" ng-click="addIssue()">Add Issue</a>
+                <a style="cursor: pointer;" class="btn btn-default" ng-click="addArgument()">Add Argument</a>
+            </div>
+        </div>
+        <div class="wellaged-paper" style="height: 768px; background: white; border: 1px solid black;">
 
         </div>
-        
+
     </div>
 </div>

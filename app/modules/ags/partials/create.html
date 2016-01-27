@@ -4,10 +4,6 @@
         <h3 ng-if="mode == 'edit'" class="fonticon fonticon-ag">Edit argument graph</h3>
 
         <div class="subtitle-help">
-            <h4>
-                <div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div>
-                Argument graph data
-            </h4>
             <div ng-class="{active: help}" class="help-text">
                 <div class="fonticon fonticon-close" ng-click="help=!help"></div>
                 <p>You can create an argument graph using this form.</p>
@@ -20,7 +16,6 @@
             <a href="#!/login" ng-if="!userState || !userState.loggedIn" class="btn btn-default btn-save" target="_blank">Login to Save</a>
             <a href="" id="saveButton" data-ng-disabled="agForm.$invalid" ng-if="userState.loggedIn" class="btn btn-default btn-save" ng-click="createAg()">Save</a>
             <a type="button" class="btn btn-danger" href="#!/ags/{{ag.id}}">Cancel</a>
-            </button>
         </div>
     </div>
 
@@ -44,7 +39,11 @@
                         <textarea class="form-control" rows="10" id="agdescription" name="agdescription" ng-model="ag.description" required></textarea>
                     </div>
                 </div>
+            </div>
 
+            <div class="row">
+                <h3 class="legend-primary">Argument graph</h3>
+                <div wellaged graph="ag.data" mode="edit"></div>
             </div>
         </form>
     </div>

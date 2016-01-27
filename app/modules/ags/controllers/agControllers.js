@@ -38,7 +38,7 @@ angular.module('pcApp.ags.controllers.ag', [
                 // Open a confirmation dialog
                 var dlg = dialogs.confirm("Are you sure?", "Do you want to delete the Ag '" + ag.title + "' permanently?");
                 dlg.result.then(function () {
-                    // Delete the metric via the API
+                    // Delete the ag via the API
                     ag.$delete({}, function () {
                         $location.path('/ags');
                     });
@@ -49,7 +49,7 @@ angular.module('pcApp.ags.controllers.ag', [
         }
     ])
 /**
- * Controller to edit a metric
+ * Controller to edit a ag
  */
     .controller('AgEditController', [
         '$scope',
@@ -82,7 +82,7 @@ angular.module('pcApp.ags.controllers.ag', [
         }
     ])
 /**
- * Controller to create a metric
+ * Controller to create an ag
  */
     .controller('AgCreateController', [
         '$scope',
@@ -99,38 +99,18 @@ angular.module('pcApp.ags.controllers.ag', [
             $scope.mode = "create";
 
             if (angular.toJson(agservice.getAg()) != "[]") {
-                console.log(angular.toJson(agservice.getAg()));
-                $scope.ag = {
-                    title: angular.toJson(agservice.getAg()[0]['title']).replace(/\"/g, ""),
-                    keywords: angular.toJson(agservice.getAg()[0]['title']).replace(/\"/g, ""),
-                    detailsURL: angular.toJson(agservice.getAg()[0]['url']).replace(/\"/g, ""),
-                    description: angular.toJson(agservice.getAg()[0]['description']).replace(/\"/g, ""),
-                    startAgDate: angular.toJson(agservice.getAg()[0]['date']).replace(/\"/g, ""),
-                    endAgDate: angular.toJson(agservice.getAg()[0]['date']).replace(/\"/g, "")
-                }
+                $scope.ag = agservice.getAg()[0];
                 agservice.removeAg();
             }
 
-            var compareDates = function(){
-                if($scope.agForm.startAgDate.$modelValue > $scope.agForm.endAgDate.$modelValue){
-                    dialogs.error('Validation Error', 'Please provide a Start Date which is smaller than the End Date.');
-                    return false;
-                }
-                else return true;
-            };
-
-
             $scope.createAg = function () {
                 $scope.ag.userID = 1;
-                if(compareDates()) {
-                    $scope.ag.viewsCount = 1;
 
                     Ag.save($scope.ag, function (value, responseHeaders) {
                         $location.path('/ags/' + value.id);
                     }, function (err) {
                         throw {message: err.data};
                     });
-                }
             };
         }
     ])
@@ -168,7 +148,6 @@ angular.module('pcApp.ags.controllers.ag', [
                 $http.get(API_CONF.AGS_MANAGER_URL + '/getextractor').
 
                     success(function (data, status, headers, config) {
-                        //console.log(angular.toJson(data));
                         $scope.availableExtractors = data;
 
                     }).error(function (data, status, headers, config) {
@@ -202,16 +181,11 @@ angular.module('pcApp.ags.controllers.ag', [
                 }
             };
 
-            //Only for testing
-            //$scope.search.title = "war";
-            //$scope.search.startAgDate = "1947-05-05";
-            //$scope.search.endAgDate = "2010-05-05";
-
             $scope.searchAg = function () {
+                // FIXME
                 $http.get(API_CONF.AGS_MANAGER_URL + '/harvestags?keyword=' + $scope.search.title + '&extractors=' + $scope.selectedExtractors + '&start=' + $filter('date')($scope.search.startAgDate, "yyyy-MM-dd") + '&end=' + $filter('date')($scope.search.endAgDate, "yyyy-MM-dd")).
 
                     success(function (data, status, headers, config) {
-                        //console.log(angular.toJson(data));
                         $scope.searchResults = data;
                     }).error(function (data, status, headers, config) {
                         // called asynchronously if an error occurs
@@ -224,9 +198,7 @@ angular.module('pcApp.ags.controllers.ag', [
                 }
             };
             $scope.selectAg = function () {
-                //console.log(angular.toJson($scope.searchResults[$scope.search.selectedAg[0]]));
                 agservice.addAg($scope.searchResults[$scope.search.selectedAg[0]]);
-                //console.log("addAg:" + angular.toJson(agservice.getAg()));
                 $location.path('/ags/create');
             };
         }
