@@ -40,9 +40,9 @@ angular.module('pcApp.metrics.directives.functionsTable', [])
                         },
                         function (err)
                         {
-                            throw {message: JSON.stringify(err.data)
-                        };
-                    });
+                            throw {message: JSON.stringify(err.data)};
+                        }
+                    );
 
                 }
             };

@@ -18,7 +18,7 @@ angular.module('pcApp.fcm.controllers.fcm', [
 
             $scope.models = Fcm.query({page: $routeParams.page}, function (fcmList) {
 
-            }, function (error) {
+            }, function (err) {
                 throw {message: JSON.stringify(err.data)};
             });
         }
@@ -74,7 +74,7 @@ angular.module('pcApp.fcm.controllers.fcm', [
 
                 // broadcasting the event
                 $rootScope.$broadcast('appChanged');
-            }, function (error) {
+            }, function (err) {
                 throw {message: JSON.stringify(err.data)};
             });
 
