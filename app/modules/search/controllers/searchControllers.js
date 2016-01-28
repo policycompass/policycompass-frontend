@@ -2,46 +2,42 @@
  * Main Controller for the Search Manager.
  * Provides a search function with input a search query.
  */
-(function () {
+(function() {
 
     var searchmodule = angular.module('pcApp.search.controllers', [
         'pcApp.search.services.search', 'pcApp.config', 'pcApp.references.services.reference'
     ]);
 
-    var searchMainController = function ($scope, $location, searchclient, esFactory, API_CONF, Language, PolicyDomain, Individual, $routeParams, $timeout) {
+    var searchMainController = function($scope, $location, searchclient, esFactory, API_CONF, Language, PolicyDomain, Individual, $routeParams, $timeout) {
         //Init Selectable number of items per page
-        $scope.itemsPerPageChoices = [
-            {
-                id: 10,
-                name: '10'
-            }, {
-                id: 20,
-                name: '20'
-            }, {
-                id: 30,
-                name: '30'
-            }
-        ];
+        $scope.itemsPerPageChoices = [{
+            id: 10,
+            name: '10'
+        }, {
+            id: 20,
+            name: '20'
+        }, {
+            id: 30,
+            name: '30'
+        }];
 
         //Init Sort Options
-        $scope.sortOptions = [
-            {
-                id: 'Relevance',
-                name: 'Relevance'
-            }, {
-                id: 'Title',
-                name: 'Title'
-            }, {
-                id: 'Date',
-                name: 'Date Created'
-            }, {
-                id: 'CommentsDesc',
-                name: 'Comments Desc.'
-            }, {
-                id: 'CommentsAsc',
-                name: 'Comments Asc.'
-            }
-        ];
+        $scope.sortOptions = [{
+            id: 'Relevance',
+            name: 'Relevance'
+        }, {
+            id: 'Title',
+            name: 'Title'
+        }, {
+            id: 'Date',
+            name: 'Date Created'
+        }, {
+            id: 'CommentsDesc',
+            name: 'Comments Desc.'
+        }, {
+            id: 'CommentsAsc',
+            name: 'Comments Asc.'
+        }];
 
         var filters = {};
         var requestAggs = {};
@@ -54,9 +50,11 @@
                 label: 'Language',
                 field: ["language.id", "languageID"],
                 order: 1,
-                resolveLabel: function () {
+                resolveLabel: function() {
                     var that = this;
-                    Language.get({id: this.value}, function (response) {
+                    Language.get({
+                        id: this.value
+                    }, function(response) {
                         that.label = response.title;
                     });
                 },
@@ -66,9 +64,11 @@
                 label: 'Policy Domains',
                 field: ["policy_domains"],
                 order: 1,
-                resolveLabel: function () {
+                resolveLabel: function() {
                     var that = this;
-                    PolicyDomain.get({id: this.value}, function (response) {
+                    PolicyDomain.get({
+                        id: this.value
+                    }, function(response) {
                         that.label = response.title;
                     });
                 }
@@ -77,9 +77,11 @@
                 label: 'Location',
                 field: ["spatial", "location"],
                 order: 1,
-                resolveLabel: function () {
+                resolveLabel: function() {
                     var that = this;
-                    Individual.get({id: this.value}, function (response) {
+                    Individual.get({
+                        id: this.value
+                    }, function(response) {
                         that.label = response.title;
                     });
                 }
@@ -88,7 +90,7 @@
                 label: 'Content type',
                 field: ["_type"],
                 order: 0,
-                resolveLabel: function () {
+                resolveLabel: function() {
                     switch (this.value) {
                         case "metric":
                             this.label = "Metrics";
@@ -108,6 +110,9 @@
                         case "visualization":
                             this.label = "Visualizations";
                             break;
+                        case "ag":
+                            this.label = "Argument graph";
+                            break;
                         default:
                             this.label = this.value;
                             break;
@@ -122,7 +127,7 @@
             }
         };
 
-        normalizeAggregationFilter = function () {
+        normalizeAggregationFilter = function() {
             var filters = [];
             angular.forEach(facetsSelected, function (values, facetCategory) {
                 var terms = [];
@@ -141,14 +146,22 @@
                     }
                 });
                 if (terms.length > 0) {
-                    filters.push({"bool": {"should": terms}});
+                    filters.push({
+                        "bool": {
+                            "should": terms
+                        }
+                    });
                 }
             });
             if (filters.length > 0)
-                return {"bool": {"must": filters}};
+                return {
+                    "bool": {
+                        "must": filters
+                    }
+                };
             return {};
         };
-        $scope.facetCategoryResults = function (name) {
+        $scope.facetCategoryResults = function(name) {
             return 1;
             if ($scope.aggregationData[name])
                 return $scope.aggregationData[name].length;
@@ -158,7 +171,7 @@
             if ($scope.facetCategories.length > 0)
                 return;
             var request = {};
-            angular.forEach(aggregations, function (aggregation, name) {
+            angular.forEach(aggregations, function(aggregation, name) {
                 if (aggregation.disable) return;
                 $scope.facetCategories.push({
                     name: name,
@@ -173,7 +186,7 @@
                     aggregations[name].field = [aggregation.field];
 
                 var i = 0;
-                angular.forEach(aggregation.field, function (fld) {
+                angular.forEach(aggregation.field, function(fld) {
                     var obj = {};
                     obj.field = fld;
                     if (aggregation.size)
@@ -187,10 +200,10 @@
             requestAggs = request;
         };
 
-        normalizeAggregationResults = function (aggs) {
+        normalizeAggregationResults = function(aggs) {
             //console.log(aggs);
             var buckets = {};
-            angular.forEach(aggs, function (aggregation, key) {
+            angular.forEach(aggs, function(aggregation, key) {
                 var resetCounters = true;
                 if (_match = key.match(/(.*)\$(\d+)/i)) {
                     key = _match[1];
@@ -206,7 +219,7 @@
                     facetCategory.buckets = {};
                 }
 
-                angular.forEach(aggregation.buckets, function (bucket) {
+                angular.forEach(aggregation.buckets, function(bucket) {
                     if (!facetCategory.buckets[bucket.key]) {
                         facetCategory.buckets[bucket.key] = {
                             value: bucket.key,
@@ -216,7 +229,8 @@
                             results: 0
                         };
                         if (angular.isFunction(aggregations[key].resolveLabel))
-                            aggregations[key].resolveLabel.apply(facetCategory.buckets[bucket.key]); else
+                            aggregations[key].resolveLabel.apply(facetCategory.buckets[bucket.key]);
+                        else
                             facetCategory.buckets[bucket.key].label = facetCategory.buckets[bucket.key].value;
 
                     }
@@ -232,7 +246,7 @@
             //console.log($scope.facetCategories);
         };
 
-        $scope.facetChanged = function () {
+        $scope.facetChanged = function() {
             var bucket = this.bucket;
             if (!facetsSelected.hasOwnProperty(bucket.facetCategory))
                 facetsSelected[bucket.facetCategory] = [];
@@ -249,7 +263,7 @@
 
         // Set Search Fire Event
         goSearch = function () {
-            if ((typeof $scope.searchQuery == "undefined") || ($scope.searchQuery === "")) {
+            if ((typeof $scope.searchQuery === "undefined") || ($scope.searchQuery === "")) {
                 searchText = "";
             } else {
                 searchText = $scope.searchQuery;
@@ -269,14 +283,14 @@
         };
 
         //Define function that fires search when Items Per Page selection box changes
-        $scope.itemsPerPageChanged = function () {
+        $scope.itemsPerPageChanged = function() {
             $scope.itemsperPage = $scope.selectedItemPerPage.id;
             $location.search('show', $scope.itemsperPage);
             goSearch();
         };
 
         //Define function that fires search when Sort By selection box changes
-        $scope.sortItemsChanged = function () {
+        $scope.sortItemsChanged = function() {
             $scope.sortByItem = $scope.selectedSortItem.id;
             $location.search('sort', $scope.sortByItem);
             goSearch();
@@ -284,11 +298,11 @@
 
 
         //Define function that fires when Item Type is filtered (Metrics,Visualization, Events of Fuzzy Maps)
-        $scope.filterSearchType = function (searchItemType) {
+        $scope.filterSearchType = function(searchItemType) {
             $scope.searchItemType = searchItemType;
             switch (searchItemType) {
-                case 'metric,visualization,event,fuzzymap':
-                    $scope.searchItemTypeInfo = 'Search for metrics, visualizations, causal models, events, datasets, indicators';
+                case 'metric,visualization,event,fuzzymap,ag':
+                    $scope.searchItemTypeInfo = 'Search for metrics, visualizations, causal models, events, datasets, indicators, argument graphs';
                     $scope.searchItemTypeInfoDropDown = 'All';
                     break;
                 case 'metric':
@@ -315,15 +329,20 @@
                     $scope.searchItemTypeInfo = 'Search for indicators';
                     $scope.searchItemTypeInfoDropDown = 'Indicators';
                     break;
+                case 'ag':
+                    $scope.searchItemTypeInfo = 'Search for argument graphs';
+                    $scope.searchItemTypeInfoDropDown = 'Argument graphs';
+                    break;
+
                 default:
-                    $scope.searchItemTypeInfo = 'Search for metrics, visualizations, causal models, events, datasets, indicators';
+                    $scope.searchItemTypeInfo = 'Search for metrics, visualizations, causal models, events, datasets, indicators, argument graphs';
             }
             //Perform search based on new Item Type
             //goSearch();
         };
 
         //Define Main search function
-        $scope.search = function (searchQuery) {
+        $scope.search = function(searchQuery) {
 
             if (typeof searchQuery == 'undefined') {
                 searchQuery = "";
@@ -337,13 +356,23 @@
             } else if ($scope.sortByItem == 'Title') {
                 var sort = ["title.lower_case_sort"];
             } else if ($scope.sortByItem == 'CommentsDesc') {
-                var sort = [{"commentsCount": {"order": "desc"}}];
+                var sort = [{
+                    "commentsCount": {
+                        "order": "desc"
+                    }
+                }];
             } else if ($scope.sortByItem == 'CommentsAsc') {
-                var sort = [{"commentsCount": {"order": "asc"}}];
+                var sort = [{
+                    "commentsCount": {
+                        "order": "asc"
+                    }
+                }];
             } else {
-                var sort = [
-                    {"id": {"order": "desc"}}, "_score"
-                ];
+                var sort = [{
+                    "id": {
+                        "order": "desc"
+                    }
+                }, "_score"];
             }
             //Build query
             if (searchQuery != "") {
@@ -379,19 +408,19 @@
                 }
             }
             //Perform search through client and get a search Promise
-            searchclient.search(request).then(function (resp) {
+            searchclient.search(request).then(function(resp) {
                 //If search is successfull return results in searchResults objects
                 $scope.searchResults = resp.hits.hits;
                 $scope.searchResultsCount = resp.hits.total;
                 $scope.totalItems = $scope.searchResultsCount;
                 normalizeAggregationResults(resp.aggregations);
-            }, function (err) {
+            }, function(err) {
                 console.trace(err.message);
             });
 
         };
 
-        $scope.init = function () {
+        $scope.init = function() {
             //Set Pagination defaults
             //Default value for how many pages to show in the page navigation control
             $scope.paginationSize = 5;
@@ -409,8 +438,8 @@
                 $scope.filterSearchType(type);
             } else {
                 //Default search item type
-                $scope.searchItemType = 'metric,visualization,event,fuzzymap,dataset,indicator';
-                $scope.searchItemTypeInfo = 'Search for metrics, visualizations, causal models, events, datasets, indicators';
+                $scope.searchItemType = 'metric,visualization,event,fuzzymap,dataset,indicator,ag';
+                $scope.searchItemTypeInfo = 'Search for metrics, visualizations, causal models, events, datasets, indicators, argument graphs';
                 $scope.searchItemTypeInfoDropDown = 'All';
             }
 

@@ -19,12 +19,13 @@
                         <li><a href="#!/browse/event">Events</a></li>
                         <li><a href="#!/browse/dataset">Datasets</a></li>
                         <li><a href="#!/browse/indicator">Indicators</a></li>
+                        <li><a href="#!/browse/ag">Argument graph</a></li>
                         <li><a href="#!/browse">All</a></li>
                     </ul>
                 </div>
                 <!-- /btn-group -->
-                <input type="search" ng-keyup="$event.keyCode == 13 && search(searchQuery)" class="browse-input form-control" required="" placeholder="{{searchItemTypeInfo}}" ng-model="searchQuery"/>
-        <span class="input-group-btn">
+                <input type="search" ng-keyup="$event.keyCode == 13 && search(searchQuery)" class="browse-input form-control" required="" placeholder="{{searchItemTypeInfo}}" ng-model="searchQuery" />
+                <span class="input-group-btn">
         <button class="btn" type="button" ng-click="search(searchQuery)">Go!</button>
         </span></div>
             <div class="search-results-header">
@@ -39,7 +40,7 @@
                 </div>
                 <div class="num-results-wrap">
                     <div class="num-results">
-                <span><ng-pluralize count="searchResultsCount" when="{'0': 'No results found',
+                        <span><ng-pluralize count="searchResultsCount" when="{'0': 'No results found',
                                    '1': '1 result found',
                                    'other': '{} results found'}"></ng-pluralize></span>
                         <!--<div class="num-results" ng-hide="searchResults.length"><span>No results found</span></div>-->
@@ -100,6 +101,25 @@
 
 
                         <div ng-if="searchResult['_type']=='indicator'" class="search-result">
+                            <h5>
+                                <a href="#!/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}">{{ searchResult['_source']['name']}}</a>
+                            </h5>
+
+                            <div class="attributes">
+                                <p>{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
+
+                                <div class="key-field">
+                                    <label class="key-field-title">Comments: </label>
+                                    {{ searchResult['_source']['commentsCount']}}
+                                </div>
+                                <div class="key-field">
+                                    <label class="key-field-title">Rating: </label>
+                                    <pc-rating rating-id="{{searchResult['_type']}}_{{searchResult['_source']['id']}}" readonly="true"></pc-rating>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div ng-if="searchResult['_type']=='ag'" class="search-result">
                             <h5>
                                 <a href="#!/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}">{{ searchResult['_source']['name']}}</a>
                             </h5>

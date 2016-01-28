@@ -5,7 +5,7 @@
 angular.module('pcApp.common.controllers', [])
 
 /****
- Used to search metrics using ekasticsearch api
+ Used to search metrics using elasticsearch api
  ******//*
  .factory('SearchMetrics',  ['$resource', 'API_CONF', function($resource, API_CONF) {
  var url = "/"+API_CONF.ELASTIC_INDEX_NAME+'/:type/_search';

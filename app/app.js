@@ -16,6 +16,7 @@ var pcAppDependencies = [
     'pcApp.indicators',
     'pcApp.datasets',
     'pcApp.feedbacks',
+    'pcApp.ags',
     'pcApp.references.directives.resolve',
     'dialogs.main',
     'dialogs.default-translations',

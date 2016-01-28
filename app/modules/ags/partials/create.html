@@ -1,0 +1,50 @@
+<div class="container container-create-visualisation" id="container-create-visualisation">
+    <div class="content-header">
+        <h3 ng-if="mode == 'create'" class="fonticon fonticon-ag">Create a new argument graph</h3>
+        <h3 ng-if="mode == 'edit'" class="fonticon fonticon-ag">Edit argument graph</h3>
+
+        <div class="subtitle-help">
+            <div ng-class="{active: help}" class="help-text">
+                <div class="fonticon fonticon-close" ng-click="help=!help"></div>
+                <p>You can create an argument graph using this form.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="pc-visualization-formcontrols">
+        <div class="button-group">
+            <!--<a href="#!/login" ng-if="!userState || !userState.loggedIn" class="btn btn-default btn-save" target="_blank">Login to Save</a>-->
+            <!--<a href="" id="saveButton" data-ng-disabled="agForm.$invalid" ng-if="userState.loggedIn" class="btn btn-default btn-save" ng-click="createAg()">Save</a>-->
+            <a type="button" class="btn btn-danger" href="#!/ags/{{ag.id}}">Cancel</a>
+        </div>
+    </div>
+
+    <div class="content-body">
+        <form name="agForm" role="form" novalidate>
+            <div class="row">
+                <div class="col-lg-4">
+                    <h4>Main Details</h4>
+
+                    <div class="form-group" ng-class="{'has-error': agForm.title.$dirty && agForm.title.$invalid}">
+                        <label for="name">Title *</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Argumentation graph title" ng-model="ag.name" ng-minlength="10" required>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+
+                    <h4>&nbsp;</h4>
+
+                    <div class="form-group" ng-class="{'has-error': agForm.agdescription.$dirty && agForm.agdescription.$invalid}">
+                        <label for="agdescription" class="">Description *</label>
+                        <textarea class="form-control" rows="10" id="agdescription" name="agdescription" ng-model="ag.description" required></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <h3 class="legend-primary">Argument graph</h3>
+                <div wellaged graph="ag.data" mode="edit"></div>
+            </div>
+        </form>
+    </div>
+</div>
