@@ -402,11 +402,63 @@ angular.module('pcApp.common.directives.search', [])
 
                     $scope.findDatasetsByFilter(1);
                 },
-
+/*
                 template: '' + '<div ng-show="showerrormessage"><label for="">There is a problem in the search. No datasets found!!!</label></div>' + '<div ng-show="!showerrormessage">' + '<div ng-show="datasetsList.length<numberMaxDatasets">' + '<label for="">Search dataset by title</label> ' + '<div class="filterMetricsPagination" id="filterMetricsPaginationDirective">' + '<div class="button-group">' + '<button ng-show="datasetsFilter.hits.total>1" ng-disabled="pagToSearch==1"  class="btn" ng-click="findDatasetsByFilter(\'prev\')">' + '<span class="glyphicon glyphicon-chevron-left"></span>  Previous' + '</button>' + '<button ng-show="datasetsFilter.hits.total>1" ng-disabled="datasetsFilter.hits.total<=pagToSearch*itemsperpagesize" class="btn" ng-click="findDatasetsByFilter(\'next\')">' + 'Next <span class="glyphicon glyphicon-chevron-right"></span>' + '</button>' + '</div></div>' + '<input placeholder="--all datasets--" ng-model="searchtext" ng-change="findDatasetsByFilter(\'1\')" type="text" id="filterDatasetDirective" >' + '<div class="filterDatasetsPaginationHeader" id="filterDatasetsPaginationHeaderDirective">' + '<div>' + '<label ng-show="datasetsFilter.hits.total>1" for="">{{datasetsFilter.hits.total}} datasets found</label>' + '<label ng-show="datasetsFilter.hits.total==1" for="">{{datasetsFilter.hits.totalt}} dataset found</label>' + '<label ng-show="datasetsFilter.hits.total==0" for="">no datasets found</label>' + '</div>' + '</div>' +
 
                 '<div class="filterDatasetPaginationBody createvisualization" id="filterDatasetsPaginationBodyDirective">' + '<ul class="datasets-list metrics-list ">' + '<li ng-class="{\'metrics-list dataset-list active\':DatasetSelectediId_[dataset._source.id]>0,\'metrics-list dataset-list\':DatasetSelectediId_[dataset.id]}" name="designer-dataset-num-{{dataset.id}}" ng-repeat="dataset in datasetsFilter.hits.hits track by $index" >' + //'<a href="" x-ng-click="clickDataset(dataset._source.id, dataset._source.title, dataset._source.issued);"  title="{{ !DatasetSelectediId_[dataset._source.id]>0 && \'Add \' || \'Delete \' }} \'{{dataset._source.title}}\'">--> TO DELETE <-- {{dataset._source.title}} - {{ dataset._source.issued | date:\'longDate\' }} --> TO DELETE <--</a></br>'+
                 '<a ng-show="viewAll || arrayGranularitiesAvailable.indexOf(dataset._source.time.resolution)!=-1 || DatasetSelectediId_[dataset._source.id]>0" href="" x-ng-click="clickDataset(dataset._source.id, dataset._source.title, dataset._source.issued);"  title="{{ !DatasetSelectediId_[dataset._source.id]>0 && \'Add \' || \'Remove \' }} \'{{dataset._source.title}}\'">{{dataset._source.title}} - {{ dataset._source.issued | date:\'longDate\' }}</a>' + '<span ng-hide="viewAll || arrayGranularitiesAvailable.indexOf(dataset._source.time.resolution)!=-1  || DatasetSelectediId_[dataset._source.id]>0">{{dataset._source.title}} - {{ dataset._source.issued | date:\'longDate\' }}</span>' + '</li>' + '</ul>' + '</div>' + '</div>' + '</div>' + '<div class="createvisualization" ng-show="datasetsList.length>=numberMaxDatasets">' + '<ul class="datasets-list">' + '<li class="dataset-list active" ng-repeat="dataset in datasetsList track by $index" ><a href="" x-ng-click="clickDataset(dataset.id, dataset.title, dataset.issued);" title="Delete \'{{dataset.title}}\'">{{dataset.title}} - {{ dataset.issued | date:\'longDate\' }}</a></li>' + '</ul>' + '</div>' + '<div><hr></div>' + '</div>'
+                */
+
+                template: '' +
+                '<div ng-show="showerrormessage"><label for="">There is a problem in the search. No datasets found!!!</label></div>' +
+                '<div ng-show="!showerrormessage">' +
+                    '<div>' +
+                    	'<form name="searchDatasetsFormModal" role="form" novalidate>' +
+	                        '<div class="row">' +
+	                            '<div class="col-sm-4">' +
+	                            	'<div class="form-group ng-scope">' +
+	                                	'<label for="filterEvent">Search text</label>' +
+	                                	'<p class="input-group">' +                                    		
+	                                		'<input ng-keyup="$event.keyCode == 13 && findDatasetsByFilter(\'1\')" placeholder="--all datasets--" ng-model="searchtext" type="text" id="filterDatasetDirective" class="form-control ng-isolate-scope ng-pristine ng-valid-required ng-valid">' +                                    
+	                                		'<span class="input-group-btn">' +
+					                			'<a type="button" class="btn btn-default" ng-click="findDatasetsByFilter(\'1\')"><i class="glyphicon glyphicon-search"></i></a>' + 
+											'</span>' +
+										'</p>' +
+					                '</div>' +
+	                            '</div>'+
+	                        '</div>' +
+                        '</form>' +
+                    '</div>' +
+                    '<hr>' +
+                    '<div>' +                    
+                    	'<div>' + 
+                    		'<label ng-show="datasetsFilter.hits.total>1" for="">{{datasetsFilter.hits.total}} datasets found</label>' + 
+                    		'<label ng-show="datasetsFilter.hits.total==1" for="">{{datasetsFilter.hits.total}} dataset found</label>' + 
+                    		'<label ng-show="datasetsFilter.hits.total==0" for="">no datasets found</label>' + 
+                    	'</div>' +
+                        '<div class="createvisualization ">' +
+                            '<div class="filterMetricsPagination" id="filterMetricsPaginationDirective">' +
+                                '<div class="button-group">' +
+                                    '<button ng-show="datasetsFilter.hits.total>1" ng-disabled="pagToSearch==1" class="btn" ng-click="findDatasetsByFilter(\'prev\')">' +
+                                        '<span class="glyphicon glyphicon-chevron-left"></span> Previous'+
+                                    '</button>' +
+                                    '<button ng-show="datasetsFilter.hits.total>1" ng-disabled="datasetsFilter.hits.total<=pagToSearch*itemsperpagesize" class="btn" ng-click="findDatasetsByFilter(\'next\')">' +
+                                        'Next <span class="glyphicon glyphicon-chevron-right"></span>' +
+                                    '</button>' +
+                                '</div>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="row">' +
+                        	'<ul class="datasets-list metrics-list ">' + 
+                        		'<li ng-class="{\'metrics-list dataset-list active\':DatasetSelectediId_[dataset._source.id]>0,\'metrics-list dataset-list\':DatasetSelectediId_[dataset.id]}" name="designer-dataset-num-{{dataset.id}}" ng-repeat="dataset in datasetsFilter.hits.hits track by $index" >' + 
+                					'<a ng-show="viewAll || arrayGranularitiesAvailable.indexOf(dataset._source.time.resolution)!=-1 || DatasetSelectediId_[dataset._source.id]>0" href="" x-ng-click="clickDataset(dataset._source.id, dataset._source.title, dataset._source.issued);"  title="{{ !DatasetSelectediId_[dataset._source.id]>0 && \'Add \' || \'Remove \' }} \'{{dataset._source.title}}\'">{{dataset._source.title}} - {{ dataset._source.issued | date:\'longDate\' }}</a>' + 
+                					'<span ng-hide="viewAll || arrayGranularitiesAvailable.indexOf(dataset._source.time.resolution)!=-1  || DatasetSelectediId_[dataset._source.id]>0">{{dataset._source.title}} - {{ dataset._source.issued | date:\'longDate\' }}</span>' + 
+                				'</li>' + 
+                			'</ul>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>'
+               
             };
         }
     ])
