@@ -9,7 +9,7 @@ angular.module('pcApp.events.controllers.event', [
     .controller('EventsController', [
         '$scope', 'Event', '$routeParams', function ($scope, Event, $routeParams) {
             $scope.events = Event.query({page: $routeParams.page}, function (eventList) {
-            }, function (error) {
+            }, function (err) {
                 throw {message: JSON.stringify(err.data)};
             });
         }

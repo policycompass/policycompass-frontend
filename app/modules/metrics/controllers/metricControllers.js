@@ -327,9 +327,9 @@ angular.module('pcApp.metrics.controllers.metric', [
                             $scope.indicators = indicators.results;
                         },
                         function (err) {
-                            throw {message: JSON.stringify(err.data)
-                        };
-                    });
+                            throw {message: JSON.stringify(err.data)};
+                        }
+                    );
 
                 },
                 function (err) {
@@ -391,7 +391,7 @@ angular.module('pcApp.metrics.controllers.metric', [
 
             // Retrieve the metrics from the Metrics Service
             $scope.metrics = Metric.query({page: $routeParams.page}, function (metricList) {
-            }, function (error) {
+            }, function (err) {
                 throw {message: JSON.stringify(err.data)};
             });
 
