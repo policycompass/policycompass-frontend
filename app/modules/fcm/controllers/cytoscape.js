@@ -361,7 +361,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 concepts: ConceptsDetail.getConcepts(),
                 connections: AssociationsDetail.getAssociations()
             };
-
+            
             $scope.fcmModelUpdate = new FcmModel();
             $scope.fcmModelUpdate.data = jsonModel;
             $scope.md = jsonModel;
