@@ -21,7 +21,7 @@
             <a type="button" class="btn btn-default btn-map" href="#!/events/search">Import Event from External Resource</a>
             <a href="#!/login" ng-if="!userState.loggedIn" class="btn btn-default btn-save" target="_blank">Login to Save</a>
             <a href="" id="saveButton" data-ng-disabled="eventForm.$invalid" ng-if="userState.loggedIn" class="btn btn-default btn-save" ng-click="createEvent()">Save</a>
-            <a type="button" class="btn btn-danger" href="#!/events/{{event.id}}">Cancel</a>
+            <a type="button" id="cancelButton" class="btn btn-danger" ng-click="backToSearch()">Cancel</a>
             </button>
         </div>
     </div>
