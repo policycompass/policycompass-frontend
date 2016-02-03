@@ -56,7 +56,7 @@
                                 	<div class="form-group date-picker ng-scope">
                                     	<label for="filterEvent">Search text</label>
                                     	<p class="input-group">
-                                    		<input placeholder="--all events--" type="text" id="filterEvent" ng-model="filterEvent" name="filterEvent" class="form-control ng-isolate-scope ng-pristine ng-valid-required ng-valid">
+                                    		<input ng-keyup="$event.keyCode == 13 && findEventsByFilter('ini', filterEvent, startDateToFilter, endDateToFilter)" placeholder="--all events--" type="text" id="filterEvent" ng-model="filterEvent" name="filterEvent" class="form-control ng-isolate-scope ng-pristine ng-valid-required ng-valid">
                                     
                                     		<span class="input-group-btn">
 					                			<a type="button" class="btn btn-default" ng-click="findEventsByFilter('ini', filterEvent, startDateToFilter, endDateToFilter)"><i class="glyphicon glyphicon-search"></i></a>

@@ -351,9 +351,11 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					
 					$scope.colorScale = function () {
 						
-						var randomColor = Math.floor(Math.random()*16777215).toString(16);						
+						var randomColor = Math.floor(Math.random()*16777215).toString(16);	
+						while (randomColor.length<6) {
+							randomColor = '0'+randomColor;
+						}	
 						return '#'+randomColor;
-						
 					}
 					
 					$scope.curPageDataset = 0;
@@ -3410,7 +3412,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
                 }
 
             }, function (error) {
-                throw {message: JSON.stringify(error.data.message)};
+                //throw {message: JSON.stringify(error.data.message)};                
+                $location.path('/visualizations');
             });
 
 
@@ -3546,7 +3549,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				
 				
             }, function (error) {
-                throw {message: JSON.stringify(error.data.message)};
+                //throw {message: JSON.stringify(error.data.message)};
+                //console.log (JSON.stringify(error.data.message));
             });
 
 

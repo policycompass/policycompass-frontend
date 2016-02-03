@@ -34,20 +34,33 @@ policycompass.viz.line = function (options) {
         self.resolution = 'day';
     }
 
-	self.alphabetical_sort_object_of_objects = function(data, attr) {
+	self.alphabetical_sort_object_of_objects_lines = function(data, attr, sort) {
             var arr = [];
             for (var prop in data) {
                 if (data.hasOwnProperty(prop)) {
                     var obj = {};
                     obj[prop] = data[prop];
-                    obj.tempSortName = data[prop][attr].toLowerCase();
+
+                    if (isNaN(data[prop][attr])) {
+                    	obj.tempSortName = data[prop][attr].toLowerCase();
+                    }
+                    else {
+                    	obj.tempSortName = data[prop][attr];
+                    }
                     arr.push(obj);
                 }
             }
 
             arr.sort(function (a, b) {
-                var at = a.tempSortName, bt = b.tempSortName;
-                return at > bt ? 1 : ( at < bt ? -1 : 0 );
+            	if (sort=='desc') {
+                	var at = a.tempSortName, bt = b.tempSortName;
+                	return at < bt ? 1 : ( at > bt ? -1 : 0 );            		
+            	}
+            	else {
+                	var at = a.tempSortName, bt = b.tempSortName;
+                	return at > bt ? 1 : ( at < bt ? -1 : 0 );            		
+            	}
+
             });
 
             var result = [];
@@ -147,6 +160,8 @@ policycompass.viz.line = function (options) {
 
     self.drawLines = function (lines, eventsData) {
 
+		lines = self.alphabetical_sort_object_of_objects_lines(lines, 'Key');
+		
         if (!self.showYAxesTogether) {
             var widthTempoarl = self.width - (self.distanceXaxes * (lines.length - 1));
             if (widthTempoarl < (self.width / 3)) {
@@ -677,7 +692,7 @@ policycompass.viz.line = function (options) {
             var incremetY = 0;
             var cnti = 0;
             
-            lines = self.alphabetical_sort_object_of_objects(lines, 'Key');
+            //lines = self.alphabetical_sort_object_of_objects_lines(lines, 'Key');
             
             lines.forEach(function (d, i) {
                 self.cntLineasPintadas = i;
@@ -1831,7 +1846,28 @@ policycompass.viz.line = function (options) {
             } else {
 
                 var dataToPlotUpdate = self.clone(dataToPlot);
-                self.drawLines(dataToPlotUpdate, eventsData);
+                
+                var newEventData = [];
+                for (var i in eventsData) {
+                	
+                 	
+                 	
+                 	var date1 = new Date(eventsData[i].startDate);
+					var date2 = new Date(eventsData[i].endDate);
+					var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+                 	                 	
+                 	newEventData.push(eventsData[i]);
+                 	if (isNaN(timeDiff))
+                 	{
+                 		timeDiff = 0;
+                 	}
+                 	
+                 	newEventData[i].timediff = timeDiff;
+                }
+                
+                newEventData = self.alphabetical_sort_object_of_objects_lines(newEventData, 'timediff', 'desc');
+                
+                self.drawLines(dataToPlotUpdate, newEventData);
 
             }
         }
