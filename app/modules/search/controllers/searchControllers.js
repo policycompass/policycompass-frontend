@@ -134,11 +134,21 @@
                 angular.forEach(values, function (val) {
                     var field = aggregations[facetCategory].field;
                     if (angular.isArray(field)) {
+                        var sameFieldTerms = [];
                         angular.forEach(field, function (fld) {
                             var term = {};
                             term[fld] = val;
-                            terms.push({"term": term});
+                            sameFieldTerms.push({"term": term});
                         });
+                        if (sameFieldTerms.length > 1) {
+                            terms.push({
+                                "bool": {
+                                    "should": sameFieldTerms
+                                }
+                            });
+                        } else {
+                            terms = terms.concat(sameFieldTerms);
+                        }
                     } else {
                         var term = {};
                         term[field] = bucket.value;
@@ -148,7 +158,7 @@
                 if (terms.length > 0) {
                     filters.push({
                         "bool": {
-                            "should": terms
+                            "must": terms
                         }
                     });
                 }
