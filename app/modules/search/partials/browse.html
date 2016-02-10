@@ -9,21 +9,6 @@
     <div class="row">
         <div class="search-content">
             <div class="input-group">
-                <div class="input-group-btn dropdown" dropdown is-open="status.isopen">
-                    <button type="button" class="btn dropdown-toggle" dropdown-toggle ng-disabled="disabled">
-                        {{searchItemTypeInfoDropDown}} <span class="caret"></span></button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="#!/browse/metric">Metrics</a></li>
-                        <li><a href="#!/browse/fuzzymap">Causal Models</a></li>
-                        <li><a href="#!/browse/visualization">Visualisations</a></li>
-                        <li><a href="#!/browse/event">Events</a></li>
-                        <li><a href="#!/browse/dataset">Datasets</a></li>
-                        <li><a href="#!/browse/indicator">Indicators</a></li>
-                        <li><a href="#!/browse/ag">Argument graph</a></li>
-                        <li><a href="#!/browse">All</a></li>
-                    </ul>
-                </div>
-                <!-- /btn-group -->
                 <input type="search" ng-keyup="$event.keyCode == 13 && search(searchQuery)" class="browse-input form-control" required="" placeholder="{{searchItemTypeInfo}}" ng-model="searchQuery" />
                 <span class="input-group-btn">
         <button class="btn" type="button" ng-click="search(searchQuery)">Go!</button>

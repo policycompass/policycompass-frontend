@@ -258,17 +258,22 @@
 
         $scope.facetChanged = function() {
             var bucket = this.bucket;
-            if (!facetsSelected.hasOwnProperty(bucket.facetCategory))
-                facetsSelected[bucket.facetCategory] = [];
-            var idx = facetsSelected[bucket.facetCategory].indexOf(bucket.value);
-            if (idx == -1)
-                idx = facetsSelected[bucket.facetCategory].indexOf(""+bucket.value);
-            if (idx != -1 && !bucket.selected)
-                facetsSelected[bucket.facetCategory].splice(idx, 1);
-            if (idx == -1 && bucket.selected)
-                facetsSelected[bucket.facetCategory].push(bucket.value);
+            facetSet(bucket.facetCategory, bucket.value, bucket.selected);
             $location.search("_"+bucket.facetCategory, facetsSelected[bucket.facetCategory]);
             goSearch();
+        };
+
+        facetSet = function (category, value, enable) {
+            enable = typeof enable !== 'undefined' ?  enable : true;
+            if (!facetsSelected.hasOwnProperty(category))
+                facetsSelected[category] = [];
+            var idx = facetsSelected[category].indexOf(value);
+            if (idx == -1)
+                idx = facetsSelected[category].indexOf(""+value);
+            if (idx != -1 && !enable)
+                facetsSelected[category].splice(idx, 1);
+            if (idx == -1 && enable)
+                facetsSelected[category].push(value);
         };
 
         // Set Search Fire Event
@@ -309,6 +314,8 @@
 
         //Define function that fires when Item Type is filtered (Metrics,Visualization, Events of Fuzzy Maps)
         $scope.filterSearchType = function(searchItemType) {
+            if (searchItemType)
+                facetSet("type", searchItemType);
             $scope.searchItemType = searchItemType;
             switch (searchItemType) {
                 case 'metric,visualization,event,fuzzymap,ag':
@@ -398,7 +405,6 @@
             }
             var request = {
                 index: API_CONF.ELASTIC_INDEX_NAME,
-                type: $scope.searchItemType,
                 body: {
                     size: $scope.itemsperPage,
                     from: itemOffset,
@@ -431,6 +437,19 @@
         };
 
         $scope.init = function() {
+            var type = $routeParams.type;
+            //Check if the path is in form of /browse/:type
+            if (type) {
+                type = type.toLowerCase();
+                if ($routeParams._type !== type) {
+                    //make sure that the :type is reflected to the facet search parameter _type
+                    $location.search('_type', type).replace();
+                } else {
+                    //remove :type from the path
+                    $location.path('/browse').replace();
+                }
+                return;
+            }
             //Set Pagination defaults
             //Default value for how many pages to show in the page navigation control
             $scope.paginationSize = 5;
@@ -442,16 +461,6 @@
             $scope.currentPage = $routeParams.page || 1;
 
             prepareAggregations();
-
-            var type = $routeParams.type;
-            if (type) {
-                $scope.filterSearchType(type);
-            } else {
-                //Default search item type
-                $scope.searchItemType = 'metric,visualization,event,fuzzymap,dataset,indicator,ag';
-                $scope.searchItemTypeInfo = 'Search for metrics, visualizations, causal models, events, datasets, indicators, argument graphs';
-                $scope.searchItemTypeInfoDropDown = 'All';
-            }
 
             //Default search query
             $scope.searchQuery = $routeParams.q || "";
@@ -484,6 +493,15 @@
                     }
                 }
             });
+
+            if (type) {
+                $scope.filterSearchType(type);
+            } else {
+                //Default search item type
+                $scope.searchItemType = 'metric,visualization,event,fuzzymap,dataset,indicator,ag';
+                $scope.searchItemTypeInfo = 'Search content';
+                $scope.searchItemTypeInfoDropDown = 'All';
+            }
 
 
             //Search for first time
