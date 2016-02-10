@@ -1,5 +1,6 @@
 <div class="container">
     <div class="content-header">
+        <div id="top"></div>
         <h2 class="page-title">Search for an Event</h2>
 
         <!--<p class="subtitle"> Policy Compass will simplify the way to utilize, interact, mash-up, visualise and interpret the-->
@@ -16,35 +17,75 @@
 
     <div class="content-body">
         <div class="row">
-            <div class="search-content">
+            <div>
                 <div class="input-group">
                     <!-- /btn-group -->
-                    <input type="text" class="browse-input form-control" ng-keypress="checkIfEnterIsPressed($event)" id="title" ng-blur="saveParameters()" name="title"placeholder="Keyword" ng-model="search.title" ng-minlength="3" ng-required="true" required>
+                    <input type="text" class="browse-input form-control" ng-keyup="$event.keyCode == 13 && saveParameters() && searchEvent()" id="title" name="title"placeholder="Keyword" ng-model="search.title" ng-minlength="3" ng-required="true" required>
                     <span class="input-group-btn">
-                        <button class="btn" type="button" ng-click="searchEvent()">Go!</button>
+                        <button class="btn" type="button" ng-click="saveParameters() && searchEvent()">Go!</button>
                     </span>
                 </div>
                 <div class="search-results-header">
-                    <div class="filterbar">
-                        <!--a class="search-icon-btn" data-placement="left" data-canvas="#myNavmenuCanvas" data-target="#myNavmenu" type="button" data-toggle="offcanvas"><span class="filter-menu-icon glyphicon glyphicon-th-list"></span><span class="filter-menu-link">Filter</span></a-->
-                        <span class="text-show">Sort By</span>
-                        <select class="btn btn-show btn-sm dropdown-toggle" ng-model="selectedSortItem" ng-change="sortItemsChanged()" ng-init="selectedSortItem = selectedSortItem || sortOptions[0]" ng-options="sortOptionItem.name for sortOptionItem in sortOptions">
-                        </select>
-                        <span class="text-show">Show</span>
-                        <select class="btn btn-show btn-sm dropdown-toggle" ng-model="selectedItemPerPage" ng-change="itemsPerPageChanged()" ng-init="selectedItemPerPage = selectedItemPerPage || itemsPerPageChoices[0]" ng-options="itemIPP as itemIPP.name for itemIPP in itemsPerPageChoices">
-                        </select>
+                    <div class="filter-group">
+
+                        <div class="filter-group-left">
+                            <span class="text-show">Sort By</span>
+                            <select class="btn btn-show btn-sm dropdown-toggle" ng-model="selectedSortItem" ng-change="sortItemsChanged()" ng-init="selectedSortItem = selectedSortItem || sortOptions[0]" ng-options="sortOptionItem.name for sortOptionItem in sortOptions">
+                            </select>
+                        </div>
+
+                        <div class="filter-group-left">
+                            <span class="text-show">Show</span>
+                            <select class="btn btn-show btn-sm dropdown-toggle" ng-model="selectedItemPerPage" ng-change="itemsPerPageChanged()" ng-init="selectedItemPerPage = selectedItemPerPage || itemsPerPageChoices[0]" ng-options="itemIPP as itemIPP.name for itemIPP in itemsPerPageChoices">
+                            </select>
+                        </div>
+
+                        <div class="filter-group-right filter-input">
+                            <span class="form-group date-picker" ng-controller="DateController">
+                            <span class="input-group">
+                                <input type="text" id="search.endRange" name="search.endRange" class="form-control" datepicker-popup="{{ format }}" ng-model="search.endRange" is-open="opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" show-button-bar="false" close-text="Close"/>
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="open($event)">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </button>
+                                    </span>
+                                </span>
+                            </span>
+                        </div>
+                        <div class="filter-group-right filter-span">
+                            <span class="text-show">End Range</span>
+                        </div>
+
+
+                        <div class="filter-group-right filter-input">
+                            <span class="form-group date-picker" ng-controller="DateController">
+                                <span class="input-group">
+                                <input type="text" id="search.startRange" name="search.startRange" ng-bind="search.startRange | date:'yyyy/MM/dd'" class="form-control" datepicker-popup="{{ format }}" ng-model="search.startRange" is-open="opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" show-button-bar="false" close-text="Close"/>
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="open($event)">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </button>
+                                    </span>
+                                </span>
+                            </span>
+                        </div>
+                        <div class="filter-group-right filter-span">
+                            <span class="text-show">Start Range</span>
+                        </div>
+
                     </div>
-                    <div class="num-results-wrap">
-                        <div class="num-results">
-                    <span><ng-pluralize count="searchResultsTotal.length" when="{'0': 'No results found',
+
+                    <div class="number-results-wrap">
+                        <span><ng-pluralize count="searchResultsTotal.length" when="{'0': 'No results found',
                                        '1': '1 result found',
                                        'other': '{} results found'}"></ng-pluralize></span>
+                        <span ng-hide="search.title.length >= 0 && searchResultsTotal">Loading...</span>
                             <!--<div class="num-results" ng-hide="searchResults.length"><span>No results found</span></div>-->
                             <!--<div class="num-results" ng-show="searchResults.length"><span>{{searchResultsCount}} results found</span>-->
-                        </div>
                     </div>
                 </div>
 
+                <!-- /.search content  -->
                 <div class="search-results row-flex">
                       <div ng-repeat="resultEvent in searchResults"  value="{{$index}}" ng-model="searchResults" class="result-wrapper result-wrapper-{{'event'}}">
                         <div class="result-block searchItemIcon {{'event'}}Icon" ng-cloak>
@@ -55,7 +96,7 @@
 
                                 <div class="attributes">
 
-                                    <p>{{ resultEvent.description | limitTo:200 }}...</p>
+                                    <p>{{ resultEvent.description | limitTo:500 }}...</p>
 
                                     <div class="key-field">
                                         <label class="key-field-title">Start of Event: </label>
@@ -64,7 +105,7 @@
 
                                     <div class="key-field">
                                         <label class="key-field-title">URL: </label>
-                                        {{ resultEvent.url | limitTo:45}}
+                                        {{ resultEvent.url | limitTo:50}}
                                     </div>
                                 </div>
                             </div>
@@ -72,62 +113,15 @@
                         </div>
                      </div>
                 </div>
-                <!-- /.col-lg-12 result-wrapper -->
 
                 <div class="clearfix"></div>
                 <div style="text-align: center">
                     <pagination total-items="totalItems" ng-change="pageChanged()" items-per-page="itemsperPage" ng-model="currentPage" max-size="paginationSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
                 </div>
             </div>
-            <!-- /.search content  -->
 
-            <div class="browse-filters">
-                <!--
-                <div class="browse-filters-block">
-                    <h4>Source(s)</h4>
-                    <ul>
-                        <li ng-repeat="result in availableExtractors">
-                            <div ng-if="result.valid && result.active">
-                                <label><input type="checkbox" ng-model="bool" ng-change="sync(bool, result.name)" ng-checked="isChecked(result.name)">{{result.name}}</label>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                -->
-                <div class="browse-filters-block">
-                    <h4>Date</h4>
-                    <ul>
-                        <li>
-                            <div class="form-group date-picker" ng-controller="DateController">
-                                <label for="searchStartDate">Start Range of Event</label>
-                                <p class="input-group">
-                                <input type="text" id="search.startRange" name="search.startRange" ng-blur="saveParameters()" ng-bind="search.startRange | date:'yyyy/MM/dd'" class="form-control" datepicker-popup="{{ format }}" ng-model="search.startRange" is-open="opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" show-button-bar="false" close-text="Close"/>
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default" ng-click="open($event)">
-                                            <i class="glyphicon glyphicon-calendar"></i>
-                                        </button>
-                                    </span>
-                                </p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="form-group date-picker" ng-controller="DateController">
-                                <label for="searchEndDate">End Range of Event</label>
-                                <p class="input-group">
-                                <input type="text" id="search.endRange" name="search.endRange" ng-blur="saveParameters()" class="form-control" datepicker-popup="{{ format }}" ng-model="search.endRange" is-open="opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" show-button-bar="false" close-text="Close"/>
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default" ng-click="open($event)">
-                                            <i class="glyphicon glyphicon-calendar"></i>
-                                        </button>
-                                    </span>
-                                </p>
-                            </div>
-                        </li>
 
-                    </ul>
-                </div>
-            </div>
-            <!-- /.browse-filters  -->
+
         </div>
         <!-- /.row  -->
     </div>

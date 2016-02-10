@@ -201,7 +201,8 @@ angular.module('pcApp.events.controllers.event', [
         'Auth',
         'dialogs',
         '$routeParams',
-        function ($scope, $filter, Event, $location, $log, $http, API_CONF, eventService, Auth, dialogs, $routeParams) {
+        '$anchorScroll',
+        function ($scope, $filter, Event, $location, $log, $http, API_CONF, eventService, Auth, dialogs, $routeParams, $anchorScroll) {
 
             $scope.userState = Auth.state;
 
@@ -215,20 +216,21 @@ angular.module('pcApp.events.controllers.event', [
             };
 
             $scope.search = {};
-            $scope.searchResults = [];
             $scope.availableExtractors = [];
+
 
             var showPerPage;
 
 
             $scope.init = function () {
+                $scope.searched = false;
                 //Set Pagination defaults
                 //Default value for how many pages to show in the page navigation control
                 $scope.paginationSize = 5;
                 //Default values for how many items per page
                 $scope.itemsperPage = 10;
 
-                showPerPage = $routeParams.show-0 || 10;
+                //showPerPage = $routeParams.show-0 || 10;
 
                 //Default search query
                 $scope.search.title =  $routeParams.q || "";
@@ -236,6 +238,9 @@ angular.module('pcApp.events.controllers.event', [
                 $scope.search.endRange = $routeParams.end || "";
 
                 $scope.selectedExtractors = [];
+
+                $scope.searchResults = eventService.getSearchResults();
+
 
                 //Default sort
                 $scope.sortByItem = 'Relevance';
@@ -251,7 +256,7 @@ angular.module('pcApp.events.controllers.event', [
                 });
 
 
-                var showPerPage = $routeParams.show-0;
+                var showPerPage = $routeParams.show-0 || 10;
                 angular.forEach($scope.itemsPerPageChoices, function(option) {
                     if (option.id === showPerPage){
                         $scope.itemsperPage = showPerPage;
@@ -286,26 +291,31 @@ angular.module('pcApp.events.controllers.event', [
                     });
             };
 
-            $scope.saveParameters = function(){
-                if(!$scope.search.startRange){
-                    $scope.search.startRange = "0001-01-01";
-                }
-                if(!$scope.search.endRange){
-                    $scope.search.endRange = "2099-12-31";
+            $scope.saveParameters = function() {
+
+                if ($scope.search.startRange) {
+                    $scope.search.startRange = $filter('date')(new Date($scope.search.startRange), 'yyyy-MM-dd');
                 }
 
-                $scope.search.startRange = $filter('date')(new Date($scope.search.startRange), 'yyyy-MM-dd');
-                $scope.search.endRange = $filter('date')(new Date($scope.search.endRange), 'yyyy-MM-dd');
+                if($scope.search.endRange){
+                    $scope.search.endRange = $filter('date')(new Date($scope.search.endRange), 'yyyy-MM-dd');
+                }
 
                 $location.search('extractors' , $scope.selectedExtractors);
 
+                if($routeParams.q !== $scope.search.title){
+                    $location.search('page', 1);
+                }
+                else{
+                    $location.search('page', $scope.currentPage);
+                }
+
                 $location.search('q', $scope.search.title);
+
                 $location.search('start', $scope.search.startRange);
                 $location.search('end', $scope.search.endRange);
 
                 $location.search('show', $scope.itemsperPage);
-
-                $location.search('page', $scope.currentPage);
 
                 $location.search('sort', $scope.sortByItem);
             }
@@ -318,8 +328,8 @@ angular.module('pcApp.events.controllers.event', [
                     return;
                 }
                 $location.search('page', $scope.currentPage);
-                //goSearch();
                 $scope.searchEvent();
+                $scope.goToTop();
             };
 
             //Define function that fires search when Items Per Page selection box changes
@@ -379,6 +389,9 @@ angular.module('pcApp.events.controllers.event', [
                 $scope.searchResultsTotal = data;
                 $scope.searchResultsTotal = sortByKey($scope.searchResultsTotal, $scope.sortByItem);
 
+
+                var searchResults = [];
+
                 var length = itemOffset+$scope.itemsperPage;
 
                 if(length > $scope.searchResultsTotal.length){
@@ -386,25 +399,44 @@ angular.module('pcApp.events.controllers.event', [
                 }
 
                 for(var i = itemOffset; i < length; i++){
-                    $scope.searchResults[i-itemOffset] = $scope.searchResultsTotal[i];
+                    searchResults[i-itemOffset] = $scope.searchResultsTotal[i];
                 }
+
+                eventService.setSearchResults(searchResults);
+                $scope.searchResults = searchResults;
             }
 
 
             $scope.searchEvent = function () {
+                if($scope.search.title.length > 0) {
+                    $scope.searched = true;
+                    var startRange, endRange;
 
-                itemOffset = ($scope.currentPage-1 ) * $scope.itemsperPage;
+                    if (!$scope.search.startRange) {
+                        startRange = "0001-01-01";
+                    }
+                    else {
+                        startRange = $scope.search.startRange;
+                    }
+                    if (!$scope.search.endRange) {
+                        endRange = "2099-12-31";
+                    }
+                    else {
+                        endRange = $scope.search.endRange;
+                    }
 
-                $http.get(
-                    API_CONF.EVENTS_MANAGER_URL +
-                    '/harvestevents?keyword=' +
-                    $scope.search.title +
-                    '&extractors=' +
-                    $scope.selectedExtractors +
-                    '&start=' +
-                    $filter('date')($scope.search.startRange, "yyyy-MM-dd") +
-                    '&end=' +
-                    $filter('date')($scope.search.endRange, "yyyy-MM-dd")).
+                    itemOffset = ($scope.currentPage - 1 ) * $scope.itemsperPage;
+
+                    $http.get(
+                        API_CONF.EVENTS_MANAGER_URL +
+                        '/harvestevents?keyword=' +
+                        $scope.search.title +
+                        '&extractors=' +
+                        $scope.selectedExtractors +
+                        '&start=' +
+                        $filter('date')(startRange, "yyyy-MM-dd") +
+                        '&end=' +
+                        $filter('date')(endRange, "yyyy-MM-dd")).
 
                     success(function (data, status, headers, config) {
                         //console.log("data " + angular.toJson(data));
@@ -412,27 +444,30 @@ angular.module('pcApp.events.controllers.event', [
                         fillSearchResults(data);
 
                         $scope.totalItems = $scope.searchResultsTotal.length;
-                        $scope.paginationSize = $scope.totalItems / $scope.itemsperPage;
 
                     }).error(function (data, status, headers, config) {
                         // called asynchronously if an error occurs
                         // or server returns response with an error status.
                     });
 
+                }
+                else{
+                    $scope.searchResults = [];
+                }
+
             };
 
-            $scope.checkIfEnterIsPressed = function(event){
-                if(event.charCode == 13){
-                    $scope.saveParameters();
-                    $scope.searchEvent();
-                }
-            }
 
             $scope.selectEvent = function () {
                 //console.log(angular.toJson($scope.search.selectedEvent));
                 eventService.addEvent($scope.search.selectedEvent);
                 //console.log("addEvent:" + angular.toJson(eventService.getEvent()));
                 $location.path('/events/create');
+            };
+
+            $scope.goToTop = function(){
+                $location.hash('top');
+                $anchorScroll();
             };
 
 
