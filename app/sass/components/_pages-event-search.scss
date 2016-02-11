@@ -1,26 +1,6 @@
 .filter-group{
-    display:inline-block;
+    margin-top: 1%;
 }
-
-.filter-group-left{
-    float:left;
-    padding-left: 1%;
-}
-
-.filter-group-right{
-    float:right;
-    padding-left: 1%;
-}
-
-
-.filter-input{
-    width:20%;
-}
-
-.filter-span{
-    margin-top: 0.5%;
-}
-
 
 .number-results-wrap{
     margin: 0 auto;
@@ -32,3 +12,4 @@
 .search-result a{
     cursor:pointer;
 }
+
