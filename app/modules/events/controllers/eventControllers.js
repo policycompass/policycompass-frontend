@@ -28,11 +28,17 @@ angular.module('pcApp.events.controllers.event', [
         'dialogs',
         '$log',
         'Auth',
-        function ($scope, $routeParams, $location, Event, LinkedEventVisualization, Languages, dialogs, $log, Auth) {
+        'PolicyDomain',
+        function ($scope, $routeParams, $location, Event, LinkedEventVisualization, Languages, dialogs, $log, Auth, PolicyDomain) {
 
             $scope.userState = Auth.state;
 
             $scope.event = Event.get({id: $routeParams.eventId}, function (event) {
+                var domains = [];
+                event.policy_domains.forEach(function (p) {
+                    domains.push(PolicyDomain.getById(p))
+                });
+                event.policy_domains = domains;
             }, function (error) {
                 alert(error.data.message);
             });
@@ -91,7 +97,7 @@ angular.module('pcApp.events.controllers.event', [
                 Event.update($scope.event, function (value, responseHeaders) {
                     $location.path('/events/' + value.id);
                 }, function (err) {
-                    throw {message: err.data};
+                    throw {message: JSON.stringify(err.data)};
                 });
             };
 
@@ -165,7 +171,7 @@ angular.module('pcApp.events.controllers.event', [
                     Event.save($scope.event, function (value, responseHeaders) {
                         $location.path('/events/' + value.id);
                     }, function (err) {
-                        throw {message: err.data};
+                        throw {message: JSON.stringify(err.data)};
                     });
                 }
             };
@@ -543,4 +549,3 @@ angular.module('pcApp.events.controllers.event', [
             }
         };
     });
-
