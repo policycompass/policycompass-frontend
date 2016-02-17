@@ -18,10 +18,10 @@
 
     <div class="pc-visualization-formcontrols">
         <div class="button-group">
-            <a type="button" class="btn btn-default btn-map" href="#!/events/search">Import Event from External Resource</a>
+            <a type="button" class="btn btn-default btn-map" ng-click="saveParameters()" href="#!/events/search">Browse for Events</a>
             <a href="#!/login" ng-if="!userState.loggedIn" class="btn btn-default btn-save" target="_blank">Login to Save</a>
             <a href="" id="saveButton" data-ng-disabled="eventForm.$invalid" ng-if="userState.loggedIn" class="btn btn-default btn-save" ng-click="createEvent()">Save</a>
-            <a type="button" class="btn btn-danger" href="#!/events/{{event.id}}">Cancel</a>
+            <a type="button" id="cancelButton" class="btn btn-danger" ng-click="saveParameters();" href="#!/">Cancel</a>
             </button>
         </div>
     </div>
@@ -92,14 +92,25 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-6">
-                        <div class="form-group" ng-class="{'has-error': eventForm.languageID.$dirty && eventForm.languageID.$invalid}">
-                            <label for="languageID" class="">Language *</label>
-                            <select class="form-control language-options" model="event.languageID" ng-model="event.languageID" id="languageID" name="languageID" required>
-
-                            </select>
+                    <div class="form-group col-lg-6" ng-class="{'has-error': eventForm.languageID.$dirty && eventForm.languageID.$invalid}">
+                        <label for="languageID">Language *</label>
+                        <div id="languageID"
+                            class="reference-selection-form pc-reference-selection-full"
+                            resource="Language" selection-mode="single"
+                            ng-model="event.languageID" required>
                         </div>
                     </div>
+
+
+                    <div class="form-group col-lg-6" ng-class="{'has-error': eventForm.policyDomains.$dirty && eventForm.policyDomains.$invalid}">
+                        <label for="policyDomains">Policy Domains *</label>
+                        <div id="policyDomains"
+                            class="reference-selection-form pc-reference-selection-full"
+                            resource="PolicyDomain"
+                            ng-model="event.policy_domains" required>
+                        </div>
+                    </div>
+
                 </div>
 
             </div>
