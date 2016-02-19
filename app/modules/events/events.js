@@ -1,5 +1,6 @@
 var events = angular.module('pcApp.events', [
     'pcApp.events.controllers.event',
+    'pcApp.events.directives.eventDirectives',
     //'pcApp.metrics.directives.pcDatagrid',
     'pcApp.references.directives.forms'
 ]);
