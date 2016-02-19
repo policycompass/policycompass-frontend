@@ -118,7 +118,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         };
     })
 
-    .controller('CytoscapeCtrl', function ($scope, $rootScope, $window, $routeParams, $location, $translate, Fcm, FcmModel, FcmSimulation, FcmActivator, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, SimulationConceptsDetail, AssociationsDetail, SimulationAssociationsDetail, EditConcept, EditAssociation, FCMActivatorDetail, Dataset) {
+    .controller('CytoscapeCtrl', function ($scope, $rootScope, $window, $routeParams, $location, $translate, Fcm, FcmModel, FcmSimulation, FcmActivator, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, SimulationConceptsDetail, AssociationsDetail, SimulationAssociationsDetail, EditConcept, EditAssociation, FCMActivatorDetail, Dataset, Auth) {
         // container objects
         $scope.Models = [];
         $scope.mapData = [];
@@ -148,6 +148,8 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         $scope.NodeID = 0;
         $scope.isModelSaved = true;
         
+        // Authentication
+        $scope.userState = Auth.state;
 
         FCMModelsDetail.setModels($scope.Models);
         ConceptsDetail.setConcepts($scope.Concepts);
@@ -488,7 +490,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 var dlg = dialogs.notify("Causal Model", "Weights are calculated!");
             }
         };
-
+        
         $scope.runSimulation = function () {
             
             if($scope.Concepts.length == 0) {
@@ -588,6 +590,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             $scope.tabsel = {
                 results: true
             }
+            
         };
 
         $scope.impactAnalysis = function () {
@@ -827,6 +830,10 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             AssociationsDetail.setAssociations(assostions);
             $rootScope.$broadcast('appChanged');
         };
+        
+        $scope.loginToSave = function() {
+            $location.path('/login');
+        }
         
     })
 
