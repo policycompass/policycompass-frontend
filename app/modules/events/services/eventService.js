@@ -67,6 +67,8 @@ angular.module('pcApp.events.services.event', [
         var eventList = [];
         var isSet = false;
 
+        var searchResults = [];
+
         var addEvent = function (newObj) {
             eventList.push(newObj);
             isSet = true;
@@ -81,10 +83,21 @@ angular.module('pcApp.events.services.event', [
             //isSet = false;
         };
 
+        var setSearchResults = function(results){
+            searchResults = results;
+        }
+
+        var getSearchResults = function(){
+            return searchResults;
+        }
+
         return {
             addEvent: addEvent,
             removeEvent: removeEvent,
-            getEvent: getEvent
+            getEvent: getEvent,
+            setSearchResults: setSearchResults,
+            getSearchResults: getSearchResults
         };
 
-    });
+    })
+

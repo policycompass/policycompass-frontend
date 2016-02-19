@@ -1,93 +1,125 @@
-<div class="container main-content">
-    <legend>
-        <h3><span class="glyphicon"></span> Search for an Event</h3>
-    </legend>
+<div class="container">
+    <div class="content-header">
+        <div id="top"></div>
+        <h2 class="page-title">Search for an Event</h2>
 
-    <div class="pc-visualization-formcontrols">
-            <div class="button-group">
-                <a type="button" id="nextStepButton" ng-show="true" ng-disabled="eventForm.$invalid" class="btn btn-default" ng-click="searchEvent()">Search
-                    <span class="glyphicon glyphicon-chevron-right"></span>
-                </a>
-                <a type="button" class="btn btn-danger" href="#!/events/create">Cancel</a>
-            </div>
+        <!--<p class="subtitle"> Policy Compass will simplify the way to utilize, interact, mash-up, visualise and interpret the-->
+        <!--increasing amount of international open econonmic data and wealth indicators from reliable international data-->
+        <!--sources </p>-->
     </div>
 
-    <form name="eventForm" role="form" novalidate>
-        <div ng-switch="step">
-            <div class="row">
-                <div class="col-lg-5">
-                    <div class="form-group" ng-class="{'has-error': eventForm.title.$dirty && eventForm.title.$invalid}">
-                        <label for="title">Keyword *</label>
-                        <input type="text" class="form-control" id="title" name="title" placeholder="Keyword" ng-model="search.title" ng-minlength="3" ng-required="true" required>
-                    </div>
-                    <div>
-                        <div class="form-group date-picker" ng-class="{'has-error': eventForm.startEventDate.$dirty && eventForm.startEventDate.$invalid}" ng-controller="DateController">
-                            <label for="startEventDate">Start Range of Event *</label>
-
-                            <p class="input-group">
-                                <input type="text" id="startEventDate" name="startEventDate" class="form-control" datepicker-popup="{{ format }}" ng-model="search.startEventDate" is-open="opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" show-button-bar="false" ng-required="true"  close-text="Close" required/>
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default" ng-click="open($event)">
-                                            <i class="glyphicon glyphicon-calendar"></i></button>
-                                    </span>
-                            </p>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="form-group date-picker" ng-controller="DateController" ng-class="{'has-error': eventForm.endEventDate.$dirty && eventForm.endEventDate.$invalid}">
-                            <label for="endEventDate">End Range of Event *</label>
-
-                            <p class="input-group">
-                                <input type="text" id="endEventDate" name="endEventDate" class="form-control" datepicker-popup="{{ format }}" ng-model="search.endEventDate" is-open="opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" show-button-bar="false" ng-required="true" close-text="Close" required/>
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default" ng-click="open($event)">
-                                            <i class="glyphicon glyphicon-calendar"></i></button>
-                                    </span>
-                            </p>
-                        </div>
-                    </div>
-                    <label>Select Source(s):</label>
-
-                    <div ng-repeat="result in availableExtractors">
-                        <div ng-if="result.valid && result.active">
-                            <input type="checkbox" ng-model="bool" ng-change="sync(bool, result.name)" ng-checked="isChecked(result.name)"> {{result.name}}
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-5">
-                    <div ng-switch-when="second">
-                        <label>Results</label>
-                        <select multiple class="form-control" ng-model="search.selectedEvent" style="height: 200px">
-                            <option ng-repeat="result in searchResults" value="{{$index}}" ng-model="searchResults">{{
-                                result.title }}
-                            </option>
-                        </select><br>
-
-                        <div class="pc-event-formcontrols">
-                            <div class="form-group pull-right">
-                                <button type="submit" id="saveButton" ng-show="step=='second'" ng-disabled="eventForm.$invalid" class="btn btn-default" ng-click="selectEvent()">
-                                    <span class="glyphicon glyphicon-chevron-right"></span>
-                                    Continue
-                                </button>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div ng-show="search.selectedEvent">
-                        <br>
-                        <label>Title:</label> {{ searchResults[search.selectedEvent[0]].title }}<br>
-                        <label>Description:</label> {{ searchResults[search.selectedEvent[0]].description }}<br>
-                        <label>Year:</label> {{ searchResults[search.selectedEvent[0]].date.substring(0,4) }}<br>
-                        <label>URL:</label> {{ searchResults[search.selectedEvent[0]].url }}<br>
-                    </div>
-                </div>
-            </div>
+    <div class="pc-visualization-formcontrols">
+        <div class="button-group">
+            <!-- <a type="button" class="btn btn-default btn-create" ng-click="saveParameters()" href="#!/events/create">Create Event manually</a>-->
+            <open-configurations-modal></open-configurations-modal>
         </div>
-    </form>
+    </div>
 
+    <div class="content-body">
+        <div class="row">
+            <div>
+                <div class="input-group">
+                    <!-- /btn-group -->
+                    <input type="text" class="browse-input form-control" ng-keyup="$event.keyCode == 13 && saveParameters() && searchEvent()" id="title" name="title"placeholder="Keyword" ng-model="search.title" ng-minlength="3" ng-required="true" required>
+                    <span class="input-group-btn">
+                        <button class="btn" type="button" ng-click="saveParameters() && searchEvent()">Go!</button>
+                    </span>
+                </div>
+                    <div class="filter-group">
+                        <div class="row">
+
+                            <div class="col-md-2 col-xs-6">
+                                <div class="filter-group-item">
+                                    <span class="text-show">Sort By:</span>
+                                    <select class="btn btn-show btn-sm dropdown-toggle" ng-model="selectedSortItem" ng-change="sortItemsChanged()" ng-init="selectedSortItem = selectedSortItem || sortOptions[0]" ng-options="sortOptionItem.name for sortOptionItem in sortOptions">
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2 col-xs-6">
+                                <div class="filter-group-item">
+                                    <span class="text-show">Show:</span>
+                                    <select class="btn btn-show btn-sm dropdown-toggle" ng-model="selectedItemPerPage" ng-change="itemsPerPageChanged()" ng-init="selectedItemPerPage = selectedItemPerPage || itemsPerPageChoices[0]" ng-options="itemIPP as itemIPP.name for itemIPP in itemsPerPageChoices">
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4 col-xs-12 text-right" ng-controller="DateController">
+                                <form class="form-inline" role="form">
+
+                                    <span class="filter-span">
+                                        Start Range:
+                                    </span>
+                                    <input type="text" id="search.startRange" name="search.startRange" ng-bind="search.startRange | date:'yyyy/MM/dd'" class="form-control" datepicker-popup="{{ format }}" ng-model="search.startRange" is-open="opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" show-button-bar="false" close-text="Close"/>
+                                    <button type="button" class="btn btn-default" ng-click="open($event)">
+                                        <i class="glyphicon glyphicon-calendar"></i>
+                                    </button>
+                                </form>
+                            </div>
+
+                            <div class="form-group col-md-4 col-xs-12 text-right" ng-controller="DateController">
+                                <form class="form-inline" role="form">
+                                    <span class="filter-span">
+                                        End Range:
+                                    </span>
+                                    <input type="text" id="search.endRange" name="search.endRange" class="form-control" datepicker-popup="{{ format }}" ng-model="search.endRange" is-open="opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" show-button-bar="false" close-text="Close"/>
+                                    <button type="button" class="btn btn-default" ng-click="open($event)">
+                                        <i class="glyphicon glyphicon-calendar"></i>
+                                    </button>
+                                </form>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <div class="number-results-wrap">
+                        <span><ng-pluralize count="searchResultsTotal.length" when="{'0': 'No results found',
+                                       '1': '1 result found',
+                                       'other': '{} results found'}"></ng-pluralize></span>
+                        <!--<span ng-hide="searchResultsTotal">Loading...</span>
+                            <!--<div class="num-results" ng-hide="searchResults.length"><span>No results found</span></div>-->
+                            <!--<div class="num-results" ng-show="searchResults.length"><span>{{searchResultsCount}} results found</span>-->
+                    </div>
+                </div>
+
+                <!-- /.search content  -->
+                <div class="search-results row-flex">
+                      <div ng-repeat="resultEvent in searchResults"  value="{{$index}}" ng-model="searchResults" class="result-wrapper result-wrapper-{{'event'}}">
+                        <div class="result-block searchItemIcon {{'event'}}Icon" ng-cloak>
+                            <div class="search-result">
+                                <h5><a ng-click="search.selectedEvent = resultEvent; selectEvent()">
+                                    {{ resultEvent.title}}</a>
+                                </h5>
+
+                                <div class="attributes">
+
+                                    <p>{{ resultEvent.description | limitTo:500 }}...</p>
+
+                                    <div class="key-field">
+                                        <label class="key-field-title">Start of Event: </label>
+                                        {{ resultEvent.date|date:'dd-MM-yyyy'}}
+                                    </div>
+
+                                    <div class="key-field">
+                                        <label class="key-field-title">URL: </label>
+                                        {{ resultEvent.url | limitTo:50}}
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                     </div>
+                </div>
+
+                <div class="clearfix"></div>
+                <div style="text-align: center">
+                    <pagination total-items="totalItems" ng-change="pageChanged()" items-per-page="itemsperPage" ng-model="currentPage" max-size="paginationSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+                </div>
+
+        </div>
+        <!-- /.row  -->
+    </div>
 </div>
+
+<!-- /.container -->

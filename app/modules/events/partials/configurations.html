@@ -1,0 +1,36 @@
+<a type="button" class="btn btn-default btn-create" href="#!/events/create">Create Event manually</a>
+<a type="button" class="btn btn-default btn-add" ng-click="open()">Configuration</a>
+
+<script type="text/ng-template" id="configurations">
+    <div class="container-configurations" id="container-configurations">
+
+        <div class="content-header">
+            <h3>Configuration</h3>
+        </div>
+
+        <div class="pc-visualization-formcontrols">
+            <div class="button-group">
+                <a type="button" class="btn btn-default" ng-click="apply();saveParameters()">Apply</a>
+                <a type="button" class="btn btn-danger" ng-click="close()">Close</a>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="container-configurations-entries">
+                <div class="col-lg-4">
+                    <div class="browse-filters-block">
+                        <h4>Source(s)</h4>
+                        <ul>
+                            <li ng-repeat="result in availableExtractors">
+                                <div ng-if="result.valid && result.active">
+                                    <label><input type="checkbox" ng-model="bool" ng-change="sync(bool, result.name)" ng-checked="isChecked(result.name)" ng-init="checked=true">{{result.name}}</label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
