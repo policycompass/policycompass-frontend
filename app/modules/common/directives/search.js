@@ -253,7 +253,7 @@ angular.module('pcApp.common.directives.search', [])
                 controller: function ($scope, $element, $attrs, $location, dialogs) {
 
                     $scope.DatasetSelectediId_ = [];
-
+					$scope.paginationSize = 5;
 
                     $scope.arrayGranularitiesAvailable = [];
 
@@ -318,7 +318,7 @@ angular.module('pcApp.common.directives.search', [])
                             if ($scope.datasetsList[k].id == idDataset) {
                                 var kT = k;
                                 addDataset = false;
-                                var dlg = dialogs.confirm("Are you sure?", "Do you want to remove '" + title + "' from the list of datasets?");
+                                var dlg = dialogs.confirm("Are you sure?", "Do you want to unlink '" + title + "' from the list of datasets?");
                                 dlg.result.then(function (answer) {
                                     //console.log($scope.datasetsList);
                                     //console.log("idDataset="+idDataset);
@@ -346,13 +346,20 @@ angular.module('pcApp.common.directives.search', [])
                         }
 
                     };
-
+					
+					$scope.pageChanged = function () {
+						//console.log($scope.currentPage);
+            			$scope.findDatasetsByFilter($scope.currentPage);
+        			};
+        
                     $scope.findDatasetsByFilter = function (pagIn) {
 
                         if (pagIn == 'next') {
                             $scope.pagToSearch = $scope.pagToSearch + 1;
                         } else if (pagIn == 'prev') {
                             $scope.pagToSearch = $scope.pagToSearch - 1;
+                        } else if (!isNaN(pagIn)) {
+                            $scope.pagToSearch = pagIn;
                         } else {
                             $scope.pagToSearch = 1;
                         }
@@ -393,6 +400,13 @@ angular.module('pcApp.common.directives.search', [])
                             $scope.datasetsFilter = resp;
 
 
+							$scope.searchResults = resp.hits.hits;
+                			$scope.searchResultsCount = resp.hits.total;
+                			$scope.totalItems = $scope.searchResultsCount;
+                			
+                			
+                			
+
                         }, function (err) {
                             console.trace(err.message);
                             $scope.showerrormessage = true;
@@ -430,13 +444,14 @@ angular.module('pcApp.common.directives.search', [])
                         '</form>' +
                     '</div>' +
                     '<hr>' +
-                    '<div>' +                    
+                    '<div>' +                      
                     	'<div>' + 
                     		'<label ng-show="datasetsFilter.hits.total>1" for="">{{datasetsFilter.hits.total}} datasets found</label>' + 
                     		'<label ng-show="datasetsFilter.hits.total==1" for="">{{datasetsFilter.hits.total}} dataset found</label>' + 
                     		'<label ng-show="datasetsFilter.hits.total==0" for="">no datasets found</label>' + 
                     	'</div>' +
                         '<div class="createvisualization ">' +
+	                    	/*                        
                             '<div class="filterMetricsPagination" id="filterMetricsPaginationDirective">' +
                                 '<div class="button-group">' +
                                     '<button ng-show="datasetsFilter.hits.total>1" ng-disabled="pagToSearch==1" class="btn" ng-click="findDatasetsByFilter(\'prev\')">' +
@@ -447,6 +462,7 @@ angular.module('pcApp.common.directives.search', [])
                                     '</button>' +
                                 '</div>' +
                             '</div>' +
+                            */
                         '</div>' +
                         '<div class="row">' +
                         	'<ul class="datasets-list metrics-list ">' + 
@@ -456,6 +472,11 @@ angular.module('pcApp.common.directives.search', [])
                 				'</li>' + 
                 			'</ul>' +
                         '</div>' +
+                        '<div class="row">' +
+	                    	'<div style="text-align: center">' +
+	                    		'<pagination total-items="totalItems" ng-change="pageChanged()" items-per-page="itemsperpagesize" ng-model="currentPage" max-size="paginationSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"></pagination>' +
+	                    	'</div>' +
+                        '</div>' +                        
                     '</div>' +
                 '</div>'
                

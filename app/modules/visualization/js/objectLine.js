@@ -16,6 +16,7 @@ policycompass.viz.line = function (options) {
         self[key] = options[key];
     }
 	
+	
     self.parentSelect = "#" + self.idName;
     self.maxMargin = self.margin;
     self.maxWidth = self.width;
@@ -26,7 +27,8 @@ policycompass.viz.line = function (options) {
     self.maxOffsetYaxesR = self.offsetYaxesR;
     self.maxOffsetYaxesL = self.offsetYaxesL;
     self.maxDistanceXaxes = self.distanceXaxes;
-
+	self.he_bar_height = 10;
+	
     self.cntResizes = 0;
     d3.select(window).on('resize', resize);
 
@@ -1018,20 +1020,55 @@ policycompass.viz.line = function (options) {
 
                 self.legendText = self.legendText + '<div style="margin-top: 2px; width: 5px; background: ' + lineColor + '; height: 5px; float: left;"> </div>&nbsp;<font color="' + lineColor + '">' + resTRext[0] + '</font><br/>';
 
-                if (showLegend)
+                if (self.showLegend)
                 {
-                    var valueX = ((self.maxWidth / (lines.length / self.legendsColumn)) * (cntiMultiple));
+                	
+                	//var valueX = (self.margin.left);
+                	var valueX = 10;
+                	                	
+                	if (i==0) {                	
+						//add title of legend
+						self.svg.append("text")
+		                	.attr("x", function (d, i) {
+		                    	return valueX;
+		                	})
+		                	.attr("y", function (d, i) {
+		                    	var valueY = (self.height) + self.margin.top + 30 + (incremetY) * 20;
+								return valueY;
+		                	})
+		                	.attr("text-anchor", "center")
+		                		.attr("class", function() {
+		                	})
+		                	.attr("font-size", self.font_size+1)
+		                	.style("fill", function (d, i) {
+		                    	var colorToReturn = "black";
+		                    	return colorToReturn;
+		                	})
+		                	.text(function (d, i) {
+		                    	var resTRext = "Lines";                    
+		                    return resTRext;
+		                	});
+                	}
+                	
+                	/*
+                    var valueX = ((self.maxWidth / (lines.length / self.legendsColumn)) * (cntiMultiple));                    
                     if (cnti % self.legendsColumn == 0) {
                         cntiMultiple = cntiMultiple + 1;
                     }
-
+					*/
+                    
+                    var valueY = (self.height) + self.margin.top + 30 + (incremetY+1) * 20;
+                    
+                    /*
                     var valueY = (self.height) + self.margin.top + 50 + (incremetY) * 20;
                     if (cnti % self.legendsColumn == 0) {
                         incremetY = 0;
                     } else {
                         incremetY = incremetY + 1;
                     }
-
+                    */
+                    incremetY = incremetY + 1;
+					
                     self.svg.append("rect")
                     .attr("x", valueX - 10)
                     .attr("y", valueY - 5)
@@ -1048,8 +1085,6 @@ policycompass.viz.line = function (options) {
                         return colorToReturn;
 
                     });
-
-					
                     			
                     self.svg.append("text")
                         .attr("x", function (d, i) {
@@ -1160,7 +1195,7 @@ policycompass.viz.line = function (options) {
                             var resTRext = key.split("_");
                             var trimmedString = resTRext[0];
                             var length = 100;
-
+							/*
                             if (lines.length == 1) {
                                 length = 150;
                             } else if (lines.length == 2) {
@@ -1184,7 +1219,14 @@ policycompass.viz.line = function (options) {
                             if (trimmedString.length > length) {
                                 trimmedString = trimmedString.substring(0, length) + "...";
                             }
-
+							*/
+							//console.log(trimmedString.length);
+							if (eventsData.length>0) {							
+								var length = 100;
+								if (trimmedString.length > length) {
+                                	trimmedString = trimmedString.substring(0, length-3) + "...";
+                            	}
+                            }
                             return trimmedString;
                         })
                         .on("click", function () {
@@ -1607,8 +1649,114 @@ policycompass.viz.line = function (options) {
 
         var historicalEvents = self.svg.selectAll("rectagles").data(dataForCircles);
 
+		if (self.showLegend)
+		{		
+			var valueX = (self.margin.left)*2+((self.width/2));
+			//console.log(valueX);
+			//console.log(eventsData.length);
+			if (eventsData.length>0) {
+				//add title of legend			
+				self.svg.append("text")
+	                .attr("x", function (d, i) {
+	                    return valueX;
+	                })
+	                .attr("y", function (d, i) {
+	                    var valueY = (self.height) + self.margin.top + 30 ;
+						return valueY;
+	                })
+	                .attr("text-anchor", "center")
+	                .attr("class", function() {
+	                })
+	                .attr("font-size", self.font_size+1)
+	                .style("fill", function (d, i) {
+	                    var colorToReturn = "black";
+	                    return colorToReturn;
+	                })
+	                .text(function (d, i) {
+	                    var resTRext = "Events";
+	                    
+	                    return resTRext;
+	                });
+			
+	            //add legend events 				
+				historicalEvents.enter().append("rect")
+					.attr("x", valueX - 10)
+					.attr("y", function (d, i) {                    	
+						//var valueY = (self.height) + self.margin.top + 30 + (i) * 20 + (20 * self.dataToPlotLength );
+						var valueY = (self.height) + self.margin.top + 30 + (i+1) * 20;
+						return valueY - 5;
+					})		
+					.attr("width", 5)
+					.attr("height", 5)
+					.style("fill", function (d, i) {    				
+	    				var colorToReturn = d.color;
+	    				return colorToReturn;
+					});
 
-        historicalEvents.enter().append("rect").attr("class", "lineXDisco")                   
+
+				historicalEvents.enter().append("text")
+	                    .attr("x", function (d, i) {
+	                        return valueX;
+	                    })
+	                    .attr("y", function (d, i) {
+	                        //var valueY = (self.height) + self.margin.top + 30 + (i) * 20 + (20 * self.dataToPlotLength );
+	                        var valueY = (self.height) + self.margin.top + 30 + (i+1) * 20;
+							return valueY;
+	                    })
+	                    .attr("text-anchor", "center")
+	                    .attr("class", function() {
+	                    })
+	                    .attr("font-size", self.font_size+1)
+	                    .style("fill", function (d, i) {
+	                        var colorToReturn = d.color;
+	                        return colorToReturn;
+	                    })
+	                    .on("mouseover", function (d, i) {
+	                    	
+							var str = "Event: " + d.title;
+							var fromDate = "From: " +d.startDate;
+							var toDate = "To: " +d.endDate;
+							var desc = "Desc.: " +d.desc;
+							if ((self.modeGraph == 'view') || (self.xaxeformat == 'sequence')) { 
+								tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '<br/>'+fromDate+'<br/>'+toDate+'<br/>'+desc+'<br/></div>');
+							}
+							else {
+								tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '<br/>'+fromDate+'<br/>'+toDate+'<br/>'+desc+'</div>');
+							}
+							
+	                        
+	                        d3.selectAll(".event_" + d.index).style("stroke-width", 5);
+	                        
+	                    	
+	                    })
+	                    .on("mouseout", function (d, i) {
+							mouseout();
+							d3.selectAll(".event_" + d.index).style("stroke-width", 1);
+	                    })
+	                    .text(function (d, i) {
+	                        var resTRext = d.title;
+	                        
+	                        return resTRext;
+	                    })
+	                    .on("click", function () {
+	                        
+							if ((self.modeGraph == 'view') || (self.xaxeformat == 'sequence')) {
+								
+							} else {
+								if (self.xaxeformat == 'sequence') {
+
+                                } else {
+                                    document.getElementById("addHEbutton").click();
+                                }
+                            }
+	                        
+	                    });
+             }   
+		}
+
+
+        historicalEvents.enter().append("rect")
+        	//.attr("class", "lineXDisco")                   
             .style("stroke", function (d, i) {                
                 var colorToPlot = colorScaleForHE(d.index);
                 if (d.color) {
@@ -1616,20 +1764,53 @@ policycompass.viz.line = function (options) {
                 }
                 return colorToPlot;
             })
+            .attr("class", function (d, i) {
+                var className = "lineXDisco event_"+d.index;
+                return className;
+            })
             .style("fill", function (d, i) {
                 var colorToPlot = colorScaleForHE(d.index);
                 if (d.color) {
                     colorToPlot = d.color;
                 }
                 return colorToPlot;
-            }).attr("opacity", 0.5).attr("x", function (d, i) {
+            })
+            .attr("opacity", 0.5)
+            .attr("x", function (d, i) {
                 var posXToPlot = self.xScale(getDate(d.startDate));
 
                 if (isNaN(posXToPlot)) {
                     posXToPlot = 1;
                 }
                 return posXToPlot;
-            }).attr("y", 0).attr("width", function (d, i) {
+            })
+            //.attr("y", 0)
+            .attr("y", function (d, i) {
+            	
+            	
+            	var dif = "1";
+                if (d.endDate != "") {
+                    dif = self.xScale(getDate(d.endDate)) - self.xScale(getDate(d.startDate));
+                } else {
+                    dif = 1;
+                }
+
+                if (dif <= 0) {
+                    dif = 1;
+                }
+
+                if (isNaN(dif)) {
+                    dif = 1;
+                }
+                
+                //events of 1 day. vertical line
+                var vToReturn = (self.he_bar_height*i)
+                if (dif==1) {
+                	vToReturn = 0;                	
+                }
+            	return vToReturn;
+            })            
+            .attr("width", function (d, i) {
                 var dif = "1";
                 if (d.endDate != "") {
                     dif = self.xScale(getDate(d.endDate)) - self.xScale(getDate(d.startDate));
@@ -1645,8 +1826,35 @@ policycompass.viz.line = function (options) {
                     dif = 1;
                 }
                 return dif;
-            }).attr("height", self.height).on("mouseover", function (d, i) {
-                d3.select(this).style("stroke-width", 2);
+            })
+            //.attr("height", self.height)
+            //.attr("height", self.he_bar_height)
+            .attr("height", function (d, i) {
+                var dif = "1";
+                if (d.endDate != "") {
+                    dif = self.xScale(getDate(d.endDate)) - self.xScale(getDate(d.startDate));
+                } else {
+                    dif = 1;
+                }
+
+                if (dif <= 0) {
+                    dif = 1;
+                }
+
+                if (isNaN(dif)) {
+                    dif = 1;
+                }
+                //events of 1 day. vertical line
+                var vToReturn = self.he_bar_height
+                if (dif==1) {
+                	vToReturn = self.height;                	
+                }
+                
+                return vToReturn;
+            })
+            
+            .on("mouseover", function (d, i) {
+                d3.select(this).style("stroke-width", 5);
 
                 var textTooltip = "";
 
@@ -1793,7 +2001,10 @@ policycompass.viz.line = function (options) {
 // Zoom specific updates
 //************************************************************
 
-
+		if (!self.showLegend) {
+			self.margin.bottom = self.margin.top*2;
+		}
+		
         self.svg = d3.select(self.parentSelect)
         .append("svg").attr("class", "pc_chart")
         .attr("width", self.width + self.margin.left + self.margin.right)
@@ -1844,10 +2055,12 @@ policycompass.viz.line = function (options) {
 
                 self.svg.append("text").text("No data to plot. Add datasets").attr("class", "nodatatoplot").attr("x", self.margin.left).attr("y", self.margin.top)
             } else {
-
+				self.dataToPlotLength = Object.keys(dataToPlot).length;
+				
                 var dataToPlotUpdate = self.clone(dataToPlot);
                 
                 var newEventData = [];
+                /*
                 for (var i in eventsData) {
                 	
                  	
@@ -1865,9 +2078,14 @@ policycompass.viz.line = function (options) {
                  	newEventData[i].timediff = timeDiff;
                 }
                 
+                //order by time dif
                 newEventData = self.alphabetical_sort_object_of_objects_lines(newEventData, 'timediff', 'desc');
                 
                 self.drawLines(dataToPlotUpdate, newEventData);
+                */
+                
+                self.drawLines(dataToPlotUpdate, eventsData);
+                
 
             }
         }

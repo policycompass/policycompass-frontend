@@ -323,11 +323,23 @@ angular.module('pcApp.common.directives.linescharts', [])
                             if ($scope.small) {
                                 legendsColumn = 0;
                             }
-
+							
+							var maxLength = 0;
+							if ($scope.dataset.length>maxLength) {
+								maxLength = $scope.dataset.length;
+							}
+							if ($scope.events.length>maxLength) {
+								maxLength = $scope.events.length;
+							}
+							
+							maxLength = maxLength +1;
+							
                             var margin = {
                                     top: 20,
                                     right: 20,
-                                    bottom: 55 + (legendsColumn) * 20,
+                                    //bottom: 55 + (legendsColumn) * 20,
+                                    //bottom: ( 55 + ($scope.dataset.length*20) + ($scope.events.length*20)),
+                                    bottom: 55 + (maxLength) * 20,                                    
                                     left: 44
                                 }, //width = 700,
                                 width = 980, //width = 1050,
