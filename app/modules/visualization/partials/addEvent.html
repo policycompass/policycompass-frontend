@@ -5,16 +5,17 @@
 
 <div class="modal-body text-info ng-binding ng-scope">
     <div id="basic-modal-content-pc">
-        <tabset>
-            <tab heading="Recommended">
-                <div class="row"><br/></div>
+    	    	
+        <tabset ng-hide="hideTabs">
+            <tab heading="Recommended" active="tabRecommended">
+                <div class="row"><br/></div>                
                 <div>
                     <div>
                         <label ng-show="recomendationevents.length>1" for="">{{recomendationevents.length}} events found</label>
                         <label ng-show="recomendationevents.length==1" for="">{{recomendationevents.length}} event found</label>
                         <label ng-show="recomendationevents.length==0" for="">No events found</label>
                     </div>
-
+					<!--
                     <div class="createvisualization ">
                         <div class="filterMetricsPagination" id="filterMetricsPaginationDirective">
                             <div class="button-group">
@@ -27,26 +28,33 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="row">
-                        <ul class="metrics-list" id="metrics-list">
-                            <li ng-repeat="event in recomendationevents | orderBy:'title' | pagination: curPage * pageSize | limitTo: pageSize ">
+					-->
+                    <div class="filterDatasetPaginationBody createvisualization ">
+                        <ul class="datasets-list metrics-list ">
+                        	
+                            <li ng-class="{'metrics-list dataset-list active':idHE.indexOf(event.id) >= 0}" ng-repeat="event in recomendationevents | orderBy:'title' | pagination: (curPage-1) * pageSize | limitTo: pageSize ">
 								<span ng-show="idsEventsToPlot[event.id]">
-									{{event.title}} (It's assigned)
+									<a title="Unlink event {{event.title}} to the visualisation" href ng-click="deleteContainerHistoricalEvent('row_config_', idHE.indexOf(event.id) , event.title, event.id)">{{event.title}} (It's assigned)</a>
 								</span>
 								<span ng-hide="idsEventsToPlot[event.id]">
-									<a href ng-click="selectHE(event,'recomendation')">{{event.title}}</a>
+									<a title="Link event {{event.title}} to the visualisation" href ng-click="selectHE(event,'recomendation')">{{event.title}}</a>
 								</span>
                             </li>
                         </ul>
                     </div>
+                    
+                    <div class="row">
+						<div style="text-align: center">
+        					<pagination total-items="recomendationevents.length" ng-change="pageChangedHEt()" items-per-page="pageSize" ng-model="curPage" max-size="pagePagesSizeHE" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+        				</div>
+					</div>
 
                 </div>
 
             </tab>
 
 
-            <tab heading="Search">
+            <tab heading="Search" active="tabSearch">
                 <div class="row"><br/></div>
                 <div>
                     <div>
@@ -101,7 +109,8 @@
                             <label ng-show="events.hits.total==1" for="">{{events.hits.total}} event found</label>
                             <label ng-show="events.hits.total==0" for="">no events found</label>
                         </div>
-
+						
+						<!--
                         <div class="createvisualization ">
                             <div class="filterMetricsPagination" id="filterMetricsPaginationDirective">
                                 <div class="button-group">
@@ -114,23 +123,31 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <ul class="metrics-list" id="metrics-list">
-                                <li ng-repeat="event in events.hits.hits track by $index">
+                       -->
+                        <div class="filterDatasetPaginationBody createvisualization ">
+                        	<ul class="datasets-list metrics-list ">
+                                <li ng-class="{'metrics-list dataset-list active':idHE.indexOf(event._source.id)>=0}" ng-repeat="event in events.hits.hits track by $index">                                	
 									<span ng-show="idsEventsToPlot[event._id]">
-										{{event._source.title}} (It's assigned)
+										<a title="Unlink event {{event._source.title}} to the visualisation" href ng-click="deleteContainerHistoricalEvent('row_config_', '-1' , event._source.title, event._id)">{{event._source.title}} (It's assigned)</a>
 									</span>
 									<span ng-hide="idsEventsToPlot[event._id]">
-										<a href ng-click="selectHE(event,'search')">{{event._source.title}}</a>
+										<a title="Link event {{event._source.title}} to the visualisation" href ng-click="selectHE(event,'search')">{{event._source.title}}</a>
 									</span>
                                 </li>
                             </ul>
                         </div>
+                        
+                        <div class="row">
+							<div style="text-align: center">
+								<pagination total-items="events.hits.total" ng-change="pageChangedHESearch(pagToSearch, filterEvent, startDateToFilter, endDateToFilter)" items-per-page="pageSize" ng-model="pagToSearch" max-size="pagePagesSizeHE" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+        					</div>
+						</div>
+					
                     </div>
                 </div>
             </tab>
 
-            <tab heading="Historical Events Configuration">
+            <tab heading="Events Configuration" active="tabConfiguration">
 
                 <br/>
 
@@ -145,8 +162,9 @@
 
                         <div class="historicalevent-buttons active">
                             <a type="button" data-intro="Edit event main data" data-position="right" class="btn btn-primary btn-create" ng-click="vieweditHE[$index+1]=!vieweditHE[$index+1]">
-                                <span ng-show="vieweditHE[$index+1]">Collapse</span> Edit Mode</a>
-                            <button data-intro="Remove event from the list of related events" data-position="left" type="button" class="btn btn-danger btn-clear" ng-click="deleteContainerHistoricalEvent('row_config_',$index+1, event.title)" id="delete-he-button-{{event.id}}">Remove</button>
+                                <span ng-show="vieweditHE[$index+1]">Collapse</span> Configure event data</a>
+                            <button data-intro="Unlink event from the list of related events" data-position="left" type="button" class="btn btn-danger btn-clear" ng-click="deleteContainerHistoricalEvent('row_config_',$index+1, event.title, event.id)" id="delete-he-button-{{event.id}}">Unlink</button>
+                            <a type="button" data-intro="Access to the event data" data-position="right" class="btn btn-info btn-adddevent" href="#!/events/{{event.id}}" target="_blank" id="view-metric-button-{{event.id}}">View Event in detaill</a>
                         </div>
 
                         <div ng-show="vieweditHE[$index+1]" class="contentHE">
@@ -166,8 +184,8 @@
                             </div>
                             <div ng-if="event.endDate"><label for="">To:</label> {{event.endDate | date:'longDate'}}
                             </div>
-                            <div ng-if="event.desc"><label for="">Description:</label>
-                                <textarea ng-blur="updateDescriptionEvent($index);rePlotGraph()" rows="2" cols="50" ng-model="descHE[$index+1]" ng-trim="false" maxlength="150"></textarea>
+                            <div ng-if="event.desc"><label for="">Description (max. length 150 characters):</label>
+                                <textarea ng-change="enableRevertButton();" ng-blur="updateDescriptionEvent($index);rePlotGraph();" rows="2" cols="50" ng-model="descHE[$index+1]" ng-trim="false" maxlength="150"></textarea>
                                 <span>{{150 - descHE[$index+1].length}} left</span>
                             </div>
                         </div>
@@ -177,7 +195,8 @@
 
         </tabset>
 
-
+		
+		<div ng-hide="!hideTabs">
         <form action="#" name="neweventForm" role="form" ng-submit="submitFormAddEvent()" novalidate>
 
             <div ng-if="historicalevent_id>0" class="events-display-fields">
@@ -211,7 +230,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="Description" class="field-label">Colour:</label>
+                    <label for="Colour" class="field-label">Colour:</label>
 
                     <div class="field-content">
 
@@ -230,7 +249,7 @@
 
 
             <div ng-if="historicalevent_id>0" class="form-group">
-                <label for="Description">Description:</label>
+                <label for="Description">Description (max. length 150 characters):</label>
 
                 <div>
                     <textarea rows="2" cols="50" ng-model="historicalevent_description" ng-trim="false" maxlength="150" name="descriptionHEToAdd" id="descriptionHEToAdd"></textarea>
@@ -238,12 +257,15 @@
                 </div>
             </div>
 
-
+			<a href="" ng-click="hideTabsModal()" class="btn btn-default btn-cancel"><span class="glyphicon glyphicon-chevron-left"></span> Cancel selection</a>
         </form>
+        </div>
     </div>
 </div>
 <div class="modal-footer ng-scope">
-    <button ng-disabled="!historicalevent_id" href="" ng-click="addAnotherHistoricalEvent('dynamicContainer'); rePlotGraph(); ok();" class="btn" id="addmetric">Link event</button>
-    <button class="btn btn-primary" ng-click="cancel()">Close</button>
+    <button ng-show="hideTabs" ng-disabled="!historicalevent_id" href="" ng-click="addAnotherHistoricalEvent('dynamicContainer'); rePlotGraph(); enableRevertButton(); ok();" class="btn btn-validate" id="addmetric">Link event</button>
+    <button class="btn btn-primary btn-clear" ng-click="cancel()">Close</button>
+    <!--
     <a href="#!/events/create" target="_blank" class="btn btn-default btn-create" id="addmetric">Create a new event</a>
+    -->
 </div>

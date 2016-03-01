@@ -16,7 +16,7 @@
                 <p>
                     To create a visualisation you need to:
                 <ul>
-                    <li>Select which dataset (one or more) do you wish to use. Use the "Configure Datasets" button to do it.</li>
+                    <li>Select which dataset (one or more) do you wish to use. Use the "Link Datasets" button to do it.</li>
                     <li>Select the type of chart you want using the appropiate button:
                         <ul>
                             <li>"Map" To plot as a map chart.</li>
@@ -62,11 +62,12 @@
                     <span ng-hide="user.state.loggedIn">Login to </span>Save
                     <span ng-hide="user.state.userPath==visualization.creator_path"> a copy</button>
 
-                <button type="submit" data-intro="Revert data" data-position="top" class="btn btn-default btn-revert" ng-click="revertVisualization()">Revert</button>
-                <button data-intro="Helps you to configure datasets with this visualisation" data-position="top" type="submit" class="btn btn-default btn-adddataset" id="modaladddataset" ng-click="showModal('datasets')">Configure Datasets</button>
+                <button ng-show="mode=='edit'" ng-disabled="disableRevert" type="submit" data-intro="Revert data" data-position="top" class="btn btn-default btn-revert2" ng-click="revertVisualization()">Revert</button>
+                <button data-intro="Helps you to link datasets with this visualisation" data-position="top" type="submit" class="btn btn-default btn-adddataset" id="modaladddataset" ng-click="showModal('datasets')">Link Datasets</button>
                 <button ng-show="isSelectedSon('graph_line') && ListMetricsFilter.length>0" data-intro="Helps you to link this visualisation with events" data-position="top" type="submit" class="btn btn-primary btn-adddevent" id="addHEbutton" ng-click="showModal('events')">Link Events</button>
-                <button type="submit" data-intro="Cancel" data-position="top" class="btn btn-default btn-danger" ng-click="cancelVisualization()">Cancel</button>
+                <button type="submit" data-intro="Cancel" data-position="top" class="btn btn-default btn-danger btn-clear" ng-click="cancelVisualization()">Cancel</button>
             </div>
+            <!--
             <button ng-hide="ListMetricsFilter.length==0" type="button" data-intro="Plot data in a map" data-position="top" ng-class="{'btn btn-default btn-map':!isSelectedParent(1),'btn btn-info btn-map':isSelectedParent(1)}" ng-click="selectTabParent(1); selectTabSon('mercator');rePlotGraph();">Map</button>
 
             <div ng-hide="ListMetricsFilter.length==0" ng-class="{'form-group pull-left':!isSelectedParent(2),'button-group':isSelectedParent(2)}">
@@ -75,6 +76,14 @@
                 <button type="button" data-intro="Plot data as pie chart" data-position="top" ng-hide="!isSelectedParent(2)" ng-disabled="!isSelectedParent(2)" ng-class="{'btn btn-default':!isSelectedSon('graph_pie'),'btn btn-info':isSelectedSon('graph_pie')}" ng-click="selectTabParent(2);selectTabSon('graph_pie');rePlotGraph();" class="btn-pie">Pie</button>
                 <button type="button" data-intro="Plot data as bars chart" data-position="top" ng-hide="!isSelectedParent(2)" ng-disabled="!isSelectedParent(2)" ng-class="{'btn btn-default':!isSelectedSon('graph_bars'),'btn btn-info':isSelectedSon('graph_bars')}" ng-click="selectTabParent(2);selectTabSon('graph_bars');rePlotGraph();" class="btn-bars">Bars</button>
             </div>
+            -->
+            <div class="button-group">
+				<button type="button" data-intro="Plot data in a map" data-position="top" ng-class="{'btn btn-default btn-map':!isSelectedParent(1),'btn btn-info btn-map':isSelectedParent(1)}" ng-click="selectTabParent(1); selectTabSon('mercator');rePlotGraph();">Map</button>
+                <button type="button" data-intro="Plot data as line chart" data-position="top" ng-class="{'btn btn-default':!isSelectedSon('graph_line'),'btn btn-info':isSelectedSon('graph_line')}" ng-click="selectTabParent(2);selectTabSon('graph_line');rePlotGraph();" class="btn-line">Line</button>
+                <button type="button" data-intro="Plot data as pie chart" data-position="top" ng-class="{'btn btn-default':!isSelectedSon('graph_pie'),'btn btn-info':isSelectedSon('graph_pie')}" ng-click="selectTabParent(2);selectTabSon('graph_pie');rePlotGraph();" class="btn-pie">Pie</button>
+                <button type="button" data-intro="Plot data as bars chart" data-position="top" ng-class="{'btn btn-default':!isSelectedSon('graph_bars'),'btn btn-info':isSelectedSon('graph_bars')}" ng-click="selectTabParent(2);selectTabSon('graph_bars');rePlotGraph();" class="btn-bars">Bars</button>
+            </div>
+            
             <!--
             <span class="helpbutton" ></span>
             -->
@@ -83,7 +92,7 @@
 
     <div class="content-body">
 
-        <form name="visualizationForm" role="form" novalidate>
+        <form name="visualizationForm" role="form" novalidate="" form-on-change="formOnChange()">
             <div class="row createvisualization">
                 <div>
                     <div ng-switch="step">
@@ -190,7 +199,7 @@
                                 </div>
 
                                 <div id="div_showscaleColor" ng-show="isSelectedParent(1)" class="on_check">
-                                    <label class="checkbox-inline">
+                                    <label class="selectcomboconfigchart">
 
                                         <spectrum name='color' ng-model="scaleColor" ng-model-onblur ng-change="rePlotGraph()" options="{
 												showInput: true,
@@ -202,23 +211,30 @@
                                         Scale Colour
                                     </label>
                                 </div>
-
+							
                                 <div id="div_resolution" ng-show="TimeSelector.length>1" class="on_check">
-                                    <label class="checkbox-inline">
+                                    <label class="selectcomboconfigchart">
                                         Resolution
                                         <select id="resolution" ng-change="timeStart='';timeEnd='';rePlotGraph();" ng-model="resolution" ng-options="opt as opt.label for opt in resolutionoptions"></select>
                                     </label>
                                 </div>
 
+								<div id="div_resolution" ng-show="isSelectedSon('graph_line') && TimeSelector.length>1 && eventsToPlot.length>0 && resolution!='day'" class="on_check">
+                                    <label class="selectcomboconfigchart">
+                                        Plot data
+                                        <select id="plotdataoption" ng-change="rePlotGraph();" ng-model="plotdataoption" ng-options="opt as opt.label for opt in plotdataoptions"></select>
+                                    </label>
+                                </div>
+                                                                
                                 <div id="div_fromdate" ng-show="TimeSelector.length>1" class="on_check">
-                                    <label class="checkbox-inline">
+                                    <label class="selectcomboconfigchart">
                                         From
                                         <select id="fromDate" ng-change="rePlotGraph()" ng-model="timeStart" ng-options="opt for opt in TimeSelector"></select>
                                     </label>
                                 </div>
 
                                 <div id="div_todate" ng-show="TimeSelector.length>1" class="on_check">
-                                    <label class="checkbox-inline">
+                                    <label class="selectcomboconfigchart">
                                         To
                                         <select id="toDate" ng-change="rePlotGraph();" ng-model="timeEnd" ng-options="opt for opt in TimeSelector"></select>
                                     </label>
@@ -260,7 +276,6 @@
 
                                 <div class="form-group">
                                     <label for="policy_domains_data">Policy Domains *</label>
-
                                     <div id="policy_domains_data" class="reference-selection pc-reference-selection-full" resource="PolicyDomain" selection-mode="multiple" output="visualization.policy_domains_data.output" input="visualization.policy_domains_data.output"></div>
                                 </div>
 
