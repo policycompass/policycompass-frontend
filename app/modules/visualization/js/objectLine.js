@@ -29,6 +29,18 @@ policycompass.viz.line = function (options) {
     self.maxDistanceXaxes = self.distanceXaxes;
 	self.he_bar_height = 10;
 	
+	//this is to set where we wish to plot the data, at the begin or at the end of the period in granularity different of day
+	//possible values 'first' = the fist day of the period, 'end' = the last day of the period
+	//console.log("self.plotDataIn");
+	//self.plotDataIn = 'first';
+	//self.plotDataIn = 'middle';
+	//self.plotDataIn = 'last';
+		
+	if (self.plotDataIn) {
+		self.plotDataIn = self.plotDataIn.value;	
+	}
+	
+		
     self.cntResizes = 0;
     d3.select(window).on('resize', resize);
 
@@ -111,6 +123,7 @@ policycompass.viz.line = function (options) {
     }
 
     function mouseout() {
+    	tooltip.style("opacity", 1.0).html("");
         tooltip.style("opacity", 0.0);
     }
 
@@ -252,17 +265,78 @@ policycompass.viz.line = function (options) {
                             newMonth = "0" + newMonth;
                         }
 
-                        var dateToPush = arrayObjDate[0] + "-" + newMonth + "-01";
+                        //var dateToPush = arrayObjDate[0] + "-" + newMonth + "-01";
+                        if (self.plotDataIn=='first') {
+                        	var dateToPush = newMonth + "-01-" + arrayObjDate[0];
+                        }
+                        else if (self.plotDataIn=='middle') {
+                        	newMonth = 	parseInt(newMonth)+1;
+							if (newMonth < 10) {
+                            	newMonth = "0" + newMonth;
+                        	}
+                        	
+							var dateToPush = newMonth + "-15-" + arrayObjDate[0];
+						}
+						else if (self.plotDataIn=='last') {
+							var lastDay = 31;
+							newMonth = 	parseInt(newMonth)+2;
+							if (newMonth < 10) {
+                            	newMonth = "0" + newMonth;
+                        	}
+                        	
+							if ((newMonth==6) || (newMonth==9) ) {
+								lastDay = 30;
+							}			
+										
+							var dateToPush = newMonth + "-"+lastDay+"-" + arrayObjDate[0];
+						}
+						else {
+							var dateToPush = newMonth + "-01-" + arrayObjDate[0];
+						}
+						
                         valuesX_day.push(dateToPush);
                     }
 
                 } else if (self.resolution == 'year') {
-
-                    valuesX_day.push(("01-01-" + obj[i]));
+					if (self.plotDataIn=='first') {
+						valuesX_day.push(("01/01/" + obj[i]));	
+					}
+					else if (self.plotDataIn=='middle') {
+						valuesX_day.push(("07/01/" + obj[i]));
+					}
+					else if (self.plotDataIn=='last') {
+						valuesX_day.push(("12/31/" + obj[i]));
+					}
+					else {
+						valuesX_day.push(("01/01/" + obj[i]));
+					}
                 }
                 else if (self.resolution == 'month') {
                     var arrayObjDate = obj[i].split("-");
-                    valuesX_day.push((arrayObjDate[1] + "-01-" + arrayObjDate[0]));
+                    
+                    if (self.plotDataIn=='first') {
+						valuesX_day.push((arrayObjDate[1] + "-01-" + arrayObjDate[0]));
+					}
+					else if (self.plotDataIn=='middle') {
+						valuesX_day.push((arrayObjDate[1] + "-15-" + arrayObjDate[0]));
+					}
+					else if (self.plotDataIn=='last') {
+						
+						var lastDay = 31;
+						if (arrayObjDate[2]==2) {
+							lastDay = 28;
+						}
+						else if ((arrayObjDate[2]==4) || (arrayObjDate[2]==6) || (arrayObjDate[2]==8) || (arrayObjDate[2]==10) || (arrayObjDate[2]==12)) {
+							lastDay = 30;
+						} 
+						
+						//valuesX_day.push((arrayObjDate[1] + "-28-" + arrayObjDate[0]));
+						valuesX_day.push((arrayObjDate[1] + "-"+lastDay+"-" + arrayObjDate[0]));
+					}
+					else {
+						valuesX_day.push((arrayObjDate[1] + "-01-" + arrayObjDate[0]));
+					}
+                    
                 }
                 else if (self.resolution == 'day') {
                     var strDatTmp = obj[i];
@@ -285,7 +359,28 @@ policycompass.viz.line = function (options) {
         self.minVy = d3.min(d3.values(valuesY));
         self.minVx = d3.min(d3.values(valuesX_day));
         self.maxVx = d3.max(d3.values(valuesX_day));
-
+		
+		if (self.resolution == 'year') {
+			if (self.plotDataIn=='last') {
+				//console.log(self.maxVx);
+				var myDate = new Date(self.maxVx);
+				var nextDay = new Date(myDate);
+				nextDay.setDate(myDate.getDate()+1);
+				self.maxVx = (nextDay.getMonth() + 1) + "/" + nextDay.getDate() + "/" + nextDay.getFullYear();
+				//console.log(self.maxVx);
+			}
+		}
+		else if (self.resolution == 'quarter') {
+			if (self.plotDataIn=='last') {
+				//console.log(self.maxVx);
+				var myDate = new Date(self.maxVx);
+				var nextDay = new Date(myDate);
+				nextDay.setDate(myDate.getDate()+90);
+				self.maxVx = (nextDay.getMonth() + 1) + "/" + nextDay.getDate() + "/" + nextDay.getFullYear();
+				//console.log(self.maxVx);
+			}
+		}
+		
         function getDate(d) {
             return new Date(d);
         }
@@ -368,7 +463,22 @@ policycompass.viz.line = function (options) {
             }
 
         }
-
+		
+		//console.log("self.maxDate="+self.maxDate);
+		if (self.resolution == 'year') {
+			if (self.plotDataIn=='last') {
+				self.maxDate.setDate(self.maxDate.getDate()+1);
+			}
+		}
+		/*
+		else if (self.resolution == 'quarter') {
+			if (self.plotDataIn=='last') {
+				self.maxDate.setDate(self.maxDate.getDate()+90);
+			}
+		}
+		*/
+		//console.log("self.maxDate="+self.maxDate);
+		
         if (self.xaxeformat == 'sequence') {
             self.xScale = d3.scale.linear().domain([self.minVx, self.maxVx]).range([0, self.width]).clamp(true);
         } else {
@@ -454,9 +564,9 @@ policycompass.viz.line = function (options) {
         } else {
 
             if (self.resolution == 'quarter') {
-
+								
                 var xAxis = d3.svg.axis().scale(self.xScale).orient("bottom")
-                    .ticks(d3.time.month, 2)
+                    .ticks(d3.time.month, 3)
                     .tickFormat(function (x) {
                         var milli = (x.getTime());
                         var vanilli = new Date(milli);
@@ -477,7 +587,9 @@ policycompass.viz.line = function (options) {
             } else {
 
                 var xAxis = d3.svg.axis().scale(self.xScale).orient("bottom")
-                    .ticks(self.lengthArrayXaxesLabel).tickFormat(d3.time.format(formatXaxe));
+                    .ticks(self.lengthArrayXaxesLabel)
+                    .tickFormat(d3.time.format(formatXaxe))
+                    ;
             }
 
 
@@ -517,16 +629,81 @@ policycompass.viz.line = function (options) {
                             newMonth = "0" + newMonth;
                         }
 
-                        var dateToPush = arrayObjDate[0] + "-" + newMonth + "-01";
+                        //var dateToPush = arrayObjDate[0] + "-" + newMonth + "-01";
+                        //var dateToPush = newMonth + "-01-"+arrayObjDate[0];
+
+
+						if (self.plotDataIn=='first') {
+                        	var dateToPush = newMonth + "-01-" + arrayObjDate[0];
+                        }
+                        else if (self.plotDataIn=='middle') {
+                        	newMonth = 	parseInt(newMonth)+1;
+							if (newMonth < 10) {
+                            	newMonth = "0" + newMonth;
+                        	}
+                        	
+							var dateToPush = newMonth + "-15-" + arrayObjDate[0];
+						}
+						else if (self.plotDataIn=='last') {
+							var lastDay = 31;
+							newMonth = 	parseInt(newMonth)+2;
+							if (newMonth < 10) {
+                            	newMonth = "0" + newMonth;
+                        	}
+                        	
+							if ((newMonth==6) || (newMonth==9) ) {
+								lastDay = 30;
+							}			
+										
+							var dateToPush = newMonth + "-"+lastDay+"-" + arrayObjDate[0];
+						}
+						else {
+							var dateToPush = newMonth + "-01-" + arrayObjDate[0];
+						}
 
                         resX = dateToPush;
                     }
                 } else if (self.resolution == 'year') {
-                    resX = "01/01/" + resX;
+					if (self.plotDataIn=='first') {
+						resX = "01/01/" + resX;	
+					}
+					else if (self.plotDataIn=='middle') {
+						resX = "07/01/" + resX;
+					}
+					else if (self.plotDataIn=='last') {
+						resX = "12/31/" + resX;
+					}
+					else {
+						resX = "01/01/" + resX;
+					}                    
                 }
                 else if (self.resolution == 'month') {
                     var arrayObjDate = resX.split("-");
-                    resX = arrayObjDate[1] + "/01/" + arrayObjDate[0];
+
+                    if (self.plotDataIn=='first') {
+						resX = arrayObjDate[1] + "/01/" + arrayObjDate[0];
+					}
+					else if (self.plotDataIn=='middle') {
+						resX = arrayObjDate[1] + "/15/" + arrayObjDate[0];
+					}
+					else if (self.plotDataIn=='last') {
+						
+						
+						var lastDay = 31;
+						if (arrayObjDate[2]==2) {
+							lastDay = 28;
+						}
+						else if ((arrayObjDate[2]==4) || (arrayObjDate[2]==6) || (arrayObjDate[2]==8) || (arrayObjDate[2]==10) || (arrayObjDate[2]==12)) {
+							lastDay = 30;
+						}
+						
+						resX = arrayObjDate[1] + "/"+lastDay+"/" + arrayObjDate[0];
+					}
+					else {
+						resX = arrayObjDate[1] + "/01/" + arrayObjDate[0];
+					}
+                    
+                    
                 }
                 else if (self.resolution == 'day') {
                     resX = resX;
@@ -884,15 +1061,80 @@ policycompass.viz.line = function (options) {
                                         newMonth = "0" + newMonth;
                                     }
 
-                                    var dateToPush = arrayObjDate[0] + "-" + newMonth + "-01";
+                                    //var dateToPush = arrayObjDate[0] + "-" + newMonth + "-01";
+                                    //var dateToPush = newMonth + "-01-"+arrayObjDate[0];
+
+
+									if (self.plotDataIn=='first') {
+			                        	var dateToPush = newMonth + "-01-" + arrayObjDate[0];
+			                        }
+			                        else if (self.plotDataIn=='middle') {
+			                        	newMonth = 	parseInt(newMonth)+1;
+										if (newMonth < 10) {
+			                            	newMonth = "0" + newMonth;
+			                        	}
+			                        	
+										var dateToPush = newMonth + "-15-" + arrayObjDate[0];
+									}
+									else if (self.plotDataIn=='last') {
+										var lastDay = 31;
+										newMonth = 	parseInt(newMonth)+2;
+										if (newMonth < 10) {
+			                            	newMonth = "0" + newMonth;
+			                        	}
+			                        	
+										if ((newMonth==6) || (newMonth==9) ) {
+											lastDay = 30;
+										}			
+													
+										var dateToPush = newMonth + "-"+lastDay+"-" + arrayObjDate[0];
+									}
+									else {
+										var dateToPush = newMonth + "-01-" + arrayObjDate[0];
+									}
+                                    
                                     resX = dateToPush;
                                 }
                             } else if (self.resolution == 'year') {
-                                resX = "01/01/" + resX;
+								if (self.plotDataIn=='first') {
+									resX = "01/01/" + resX;	
+								}
+								else if (self.plotDataIn=='middle') {
+									resX = "07/01/" + resX;
+								}
+								else if (self.plotDataIn=='last') {
+									resX = "12/31/" + resX;
+								}
+								else {
+									resX = "01/01/" + resX;
+								}                                
                             }
                             else if (self.resolution == 'month') {
                                 var arrayObjDate = resX.split("-");
-                                resX = arrayObjDate[1] + "/01/" + arrayObjDate[0];
+                                //resX = arrayObjDate[1] + "/01/" + arrayObjDate[0];
+                                
+								if (self.plotDataIn=='first') {
+									resX = arrayObjDate[1] + "/01/" + arrayObjDate[0];
+								}
+								else if (self.plotDataIn=='middle') {
+									resX = arrayObjDate[1] + "/15/" + arrayObjDate[0];
+								}
+								else if (self.plotDataIn=='last') {
+									
+									var lastDay = 31;
+									if (arrayObjDate[2]==2) {
+										lastDay = 28;
+									}
+									else if ((arrayObjDate[2]==4) || (arrayObjDate[2]==6) || (arrayObjDate[2]==8) || (arrayObjDate[2]==10) || (arrayObjDate[2]==12)) {
+										lastDay = 30;
+									}
+						
+									//resX = arrayObjDate[1] + "/28/" + arrayObjDate[0];
+									resX = arrayObjDate[1] + "/"+lastDay+"/" + arrayObjDate[0];
+								}
+								else {
+									resX = arrayObjDate[1] + "/01/" + arrayObjDate[0];
+								}                                
                             }
                             else if (self.resolution == 'day') {
                                 var arrayObjDate = resX.split("-");
@@ -1408,16 +1650,84 @@ policycompass.viz.line = function (options) {
                                     newMonth = "0" + newMonth;
                                 }
 
-                                var dateToPush = arrayObjDate[0] + "-" + newMonth + "-01";
+                                //var dateToPush = arrayObjDate[0] + "-" + newMonth + "-01";
+                                //var dateToPush = newMonth + "-01-"+arrayObjDate[0];
+                                
+
+								if (self.plotDataIn=='first') {
+		                        	var dateToPush = newMonth + "-01-" + arrayObjDate[0];
+		                        }
+		                        else if (self.plotDataIn=='middle') {
+		                        	newMonth = 	parseInt(newMonth)+1;
+									if (newMonth < 10) {
+		                            	newMonth = "0" + newMonth;
+		                        	}
+		                        	
+									var dateToPush = newMonth + "-15-" + arrayObjDate[0];
+								}
+								else if (self.plotDataIn=='last') {
+									var lastDay = 31;
+									newMonth = 	parseInt(newMonth)+2;
+									if (newMonth < 10) {
+		                            	newMonth = "0" + newMonth;
+		                        	}
+		                        	
+									if ((newMonth==6) || (newMonth==9) ) {
+										lastDay = 30;
+									}			
+												
+									var dateToPush = newMonth + "-"+lastDay+"-" + arrayObjDate[0];
+								}
+								else {
+									var dateToPush = newMonth + "-01-" + arrayObjDate[0];
+								}
+                                
+                                
+                                
                                 resX = dateToPush;
                             }
 
                         } else if (self.resolution == 'year') {
-                            resX = "01/01/" + resX;
+							if (self.plotDataIn=='first') {
+								resX = "01/01/" + resX;	
+							}
+							else if (self.plotDataIn=='middle') {
+								resX = "07/01/" + resX;
+							}
+							else if (self.plotDataIn=='last') {
+								resX = "12/31/" + resX;
+							}
+							else {
+								resX = "01/01/" + resX;
+							}
                         }
                         else if (self.resolution == 'month') {
                             var arrayObjDate = resX.split("-");
-                            resX = arrayObjDate[1] + "/01/" + arrayObjDate[0];
+                            //resX = arrayObjDate[1] + "/01/" + arrayObjDate[0];
+
+							if (self.plotDataIn=='first') {
+								resX = arrayObjDate[1] + "/01/" + arrayObjDate[0];
+							}
+							else if (self.plotDataIn=='middle') {
+								resX = arrayObjDate[1] + "/15/" + arrayObjDate[0];
+							}
+							else if (self.plotDataIn=='last') {
+								
+								var lastDay = 31;
+								if (arrayObjDate[2]==2) {
+									lastDay = 28;
+								}
+								else if ((arrayObjDate[2]==4) || (arrayObjDate[2]==6) || (arrayObjDate[2]==8) || (arrayObjDate[2]==10) || (arrayObjDate[2]==12)) {
+									lastDay = 30;
+								}
+									
+								//resX = arrayObjDate[1] + "/28/" + arrayObjDate[0];
+								resX = arrayObjDate[1] + "/"+lastDay+"/" + arrayObjDate[0];
+							}
+							else {
+								resX = arrayObjDate[1] + "/01/" + arrayObjDate[0];
+							}
+                            
                         }
                         else if (self.resolution == 'day') {
                             var arrayObjDate = resX.split("-");
@@ -1476,14 +1786,83 @@ policycompass.viz.line = function (options) {
                                         newMonth = "0" + newMonth;
                                     }
 
-                                    var dateToPush = arrayObjDate[0] + "-" + newMonth + "-01";
+                                    //var dateToPush = arrayObjDate[0] + "-" + newMonth + "-01";
+                                    //var dateToPush = newMonth + "-01-"+arrayObjDate[0];
+
+
+									if (self.plotDataIn=='first') {
+			                        	var dateToPush = newMonth + "-01-" + arrayObjDate[0];
+			                        }
+			                        else if (self.plotDataIn=='middle') {
+			                        	newMonth = 	parseInt(newMonth)+1;
+										if (newMonth < 10) {
+			                            	newMonth = "0" + newMonth;
+			                        	}
+			                        	
+										var dateToPush = newMonth + "-15-" + arrayObjDate[0];
+									}
+									else if (self.plotDataIn=='last') {
+										var lastDay = 31;
+										newMonth = 	parseInt(newMonth)+2;
+										if (newMonth < 10) {
+			                            	newMonth = "0" + newMonth;
+			                        	}
+			                        	
+										if ((newMonth==6) || (newMonth==9) ) {
+											lastDay = 30;
+										}			
+													
+										var dateToPush = newMonth + "-"+lastDay+"-" + arrayObjDate[0];
+									}
+									else {
+										var dateToPush = newMonth + "-01-" + arrayObjDate[0];
+									}
+                                    
                                     resX = dateToPush;
                                 }
                             } else if (self.resolution == 'year') {
-                                resX = "01/01/" + resX;
+								if (self.plotDataIn=='first') {
+									resX = "01/01/" + resX;	
+								}
+								else if (self.plotDataIn=='middle') {
+									resX = "07/01/" + resX;
+								}
+								else if (self.plotDataIn=='last') {
+									resX = "12/31/" + resX;
+								}
+								else {
+									resX = "01/01/" + resX;
+								}                                
                             }
                             else if (self.resolution == 'month') {
-                                resX = resX + "/01";
+                                //resX = resX + "/01";
+
+								if (self.plotDataIn=='first') {
+									resX = resX + "/01";
+								}
+								else if (self.plotDataIn=='middle') {
+									resX = resX + "/15";
+								}
+								else if (self.plotDataIn=='last') {
+									
+									var arrayObjDate = resX.split("-");
+									
+									var lastDay = 31;
+									if (arrayObjDate[2]==2) {
+										lastDay = 28;
+									}
+									else if ((arrayObjDate[2]==4) || (arrayObjDate[2]==6) || (arrayObjDate[2]==8) || (arrayObjDate[2]==10) || (arrayObjDate[2]==12)) {
+										lastDay = 30;
+									}
+									
+									//resX = resX + "/28";
+									resX = resX + "/"+lastDay;
+									
+								}
+								else {
+									resX = resX + "/01";
+								}                                
+                                
                             }
                             else if (self.resolution == 'day') {
                                 resX = resX;
@@ -1523,16 +1902,16 @@ policycompass.viz.line = function (options) {
 
                                 else if (self.resolution == 'quarter') {
                                     var Q = "Q1";
-                                    if (resSplit[1] <= 3) {
+                                    if (resSplit[0] <= 3) {
                                         Q = "Q1";
-                                    } else if (resSplit[1] <= 6) {
+                                    } else if (resSplit[0] <= 6) {
                                         Q = "Q2";
-                                    } else if (resSplit[1] <= 9) {
+                                    } else if (resSplit[0] <= 9) {
                                         Q = "Q3";
                                     } else {
                                         Q = "Q4";
                                     }
-                                    endDateToPlot = Q + "-" + resSplit[0];
+                                    endDateToPlot = Q + "-" + resSplit[2];
                                 }
                             }
 
@@ -1560,8 +1939,27 @@ policycompass.viz.line = function (options) {
                             if (showAsPercentatge) {
                                 units = " %";
                             }
-
-                            tooltip.style("opacity", 1.0).html("<div class='tooltip-arrow'></div><div class='tooltip-inner ng-binding' ng-bind='content'><font color='" + colorCircle + "'>" + resSplit[0] + "<br/>" + endDateToPlot + " <br /> " + number + " " + units + "</font></div>");
+							
+							var extrastring ='';
+							
+							if (eventsData.length>0)
+							{						
+								if (self.resolution != 'day') {
+									
+									if (self.plotDataIn=='first') {
+										extrastring = 'Data at begin of ';
+									}
+									else if (self.plotDataIn=='middle') {
+										extrastring = 'Data at middle of ';
+									}
+									else if (self.plotDataIn=='last') {
+										extrastring = 'Data at end of ';
+									}								
+								}
+							}
+							extrastring = extrastring + endDateToPlot;
+														
+                            tooltip.style("opacity", 1.0).html("<div class='tooltip-arrow'></div><div class='tooltip-inner ng-binding' ng-bind='content'><font color='" + colorCircle + "'>" + resSplit[0] + "<br/>" + extrastring + " <br /> " + number + " " + units + "</font></div>");
 
                         }
                     })
@@ -2083,6 +2481,12 @@ policycompass.viz.line = function (options) {
                 
                 self.drawLines(dataToPlotUpdate, newEventData);
                 */
+                
+                
+                if (eventsData.length==0)
+                {
+                	self.plotDataIn = 'first';
+                }
                 
                 self.drawLines(dataToPlotUpdate, eventsData);
                 

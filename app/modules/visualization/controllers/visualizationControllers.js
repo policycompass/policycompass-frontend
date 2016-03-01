@@ -751,6 +751,20 @@ angular.module('pcApp.visualization.controllers.visualization', [
                     //used while dataset not return resolutions
                     $scope.onlyTheirResolution = false;
 
+					$scope.plotdataoptions = [
+                        {
+                            label: 'At beginning of the period',
+                            value: 'first'
+                        }, {
+                            label: 'At middle of the period',
+                            value: 'middle'
+                        }, {
+                            label: 'At end of the period',
+                            value: 'last'
+                        }
+                    ];
+					$scope.plotdataoption = $scope.plotdataoptions[0];
+
                     $scope.resolutionoptions = [
                         {
                             label: 'Day',
@@ -1571,7 +1585,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                     }
 
                                     $scope.minDateToSearch = arrayDateQuarterA[0] + "-" + qmonthA + "-01";
-                                    $scope.maxDateToSearch = arrayDateQuarterB[0] + "-" + (qmonthB + 1) + "-01";
+                                    $scope.maxDateToSearch = arrayDateQuarterB[0] + "-" + (parseInt(qmonthB) + 1) + "-01";
                                 } else if ($scope.resolution.value == 'month') {
                                     $scope.minDateToSearch = $scope.minDateToSearch + "-01";
                                     $scope.maxDateToSearch = $scope.maxDateToSearch + "-01";
@@ -2017,6 +2031,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                         if ($scope.resolution) {
                             $scope.FilterResolution = $scope.arrayResolutions[$scope.resolution.value];
                         }
+                        
                         var cntMetrics = 0;
                         var arrayJsonFiles = [];
                         var arrayKeys = [];
@@ -3119,7 +3134,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                                 'showGrid': $scope.showGrid,
                                                 'showAsPercentatge': $scope.showAsPercentatge,
                                                 'legendsColumn': legendsColumn,
-                                                'resolution': $scope.resolution.value
+                                                'resolution': $scope.resolution.value,
+                                                'plotDataIn': $scope.plotdataoption
                                             });
 
                                             if (numbers1.length > 0) {
@@ -3727,7 +3743,22 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                         $scope.resolution = $scope.resolutionoptions[endPos];
                         $scope.FilterResolution = $scope.arrayResolutions[endPos];
+					
+					} else if (dataFilter[0] == 'plotAt') {
+						
+						//console.log("polotAt")
+						//plotdataoption
+						
+						for (var i = 0; i < $scope.plotdataoptions.length; i++) {
 
+                            if (dataFilter[1] == $scope.plotdataoptions[i].value) {
+                                endPos = i;
+                            }
+                        };
+						
+						$scope.plotdataoption = $scope.plotdataoptions[endPos];
+						$scope.plotDataIn=$scope.plotdataoptions[endPos];
+					
                     } else if (dataFilter[0] == 'scaleColor') {
                         if (dataFilter[1]) {
                             $scope.scaleColor = dataFilter[1];
@@ -3975,6 +4006,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                 dataConfig['showAsPercentatge'] = $scope.showAsPercentatge;
                 dataConfig['resolution'] = $scope.resolution['value'];
+                dataConfig['plotAt'] = $scope.plotdataoption['value'];
 
                 if ($scope.timeStart != '----') {
                     dataConfig['timeStart'] = $scope.timeStart;
@@ -4356,7 +4388,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
                 }
                 dataConfig['showAsPercentatge'] = $scope.showAsPercentatge;
                 dataConfig['resolution'] = $scope.resolution['value'];
-
+				dataConfig['plotAt'] = $scope.plotdataoption['value'];
+				
                 if ($scope.timeStart != '----') {
                     dataConfig['timeStart'] = $scope.timeStart;
                 }
