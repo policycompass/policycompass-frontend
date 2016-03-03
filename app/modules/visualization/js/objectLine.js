@@ -2124,12 +2124,13 @@ policycompass.viz.line = function (options) {
 							
 	                        
 	                        d3.selectAll(".event_" + d.index).style("stroke-width", 5);
-	                        
+	                        d3.selectAll(".event_circle_" + d.index).style("stroke-width", 5);
 	                    	
 	                    })
 	                    .on("mouseout", function (d, i) {
 							mouseout();
 							d3.selectAll(".event_" + d.index).style("stroke-width", 1);
+							d3.selectAll(".event_circle_" + d.index).style("stroke-width", self.radius);
 	                    })
 	                    .text(function (d, i) {
 	                        var resTRext = d.title;
@@ -2152,7 +2153,8 @@ policycompass.viz.line = function (options) {
              }   
 		}
 
-
+		self.plot_as_top_lines = 1;
+		
         historicalEvents.enter().append("rect")
         	//.attr("class", "lineXDisco")                   
             .style("stroke", function (d, i) {                
@@ -2184,28 +2186,34 @@ policycompass.viz.line = function (options) {
             })
             //.attr("y", 0)
             .attr("y", function (d, i) {
-            	
-            	
-            	var dif = "1";
-                if (d.endDate != "") {
-                    dif = self.xScale(getDate(d.endDate)) - self.xScale(getDate(d.startDate));
-                } else {
-                    dif = 1;
-                }
+            	if (self.plot_as_top_lines==1) {
+            		var vToReturn = -10;	
+            	}
+            	else {
 
-                if (dif <= 0) {
-                    dif = 1;
-                }
-
-                if (isNaN(dif)) {
-                    dif = 1;
-                }
-                
-                //events of 1 day. vertical line
-                var vToReturn = (self.he_bar_height*i)
-                if (dif==1) {
-                	vToReturn = 0;                	
-                }
+	            	var dif = "1";
+	                if (d.endDate != "") {
+	                    dif = self.xScale(getDate(d.endDate)) - self.xScale(getDate(d.startDate));
+	                } else {
+	                    dif = 1;
+	                }
+	
+	                if (dif <= 0) {
+	                    dif = 1;
+	                }
+	
+	                if (isNaN(dif)) {
+	                    dif = 1;
+	                }
+	                
+	                //events of 1 day. vertical line
+	                var vToReturn = (self.he_bar_height*i)
+	                if (dif==1) {
+	                	vToReturn = 0;                	
+	                }
+            		
+            	}
+               
             	return vToReturn;
             })            
             .attr("width", function (d, i) {
@@ -2228,29 +2236,34 @@ policycompass.viz.line = function (options) {
             //.attr("height", self.height)
             //.attr("height", self.he_bar_height)
             .attr("height", function (d, i) {
-                var dif = "1";
-                if (d.endDate != "") {
-                    dif = self.xScale(getDate(d.endDate)) - self.xScale(getDate(d.startDate));
-                } else {
-                    dif = 1;
-                }
+            	if (self.plot_as_top_lines==1) {
+            		var vToReturn = 1;
+            	}
+            	else {
+            		
+	                var dif = "1";
+	                if (d.endDate != "") {
+	                    dif = self.xScale(getDate(d.endDate)) - self.xScale(getDate(d.startDate));
+	                } else {
+	                    dif = 1;
+	                }
+	
+	                if (dif <= 0) {
+	                    dif = 1;
+	                }
+	
+	                if (isNaN(dif)) {
+	                    dif = 1;
+	                }
+	                //events of 1 day. vertical line
+	                var vToReturn = self.he_bar_height
+	                if (dif==1) {
+	                	vToReturn = self.height;                	
+	                }
 
-                if (dif <= 0) {
-                    dif = 1;
-                }
-
-                if (isNaN(dif)) {
-                    dif = 1;
-                }
-                //events of 1 day. vertical line
-                var vToReturn = self.he_bar_height
-                if (dif==1) {
-                	vToReturn = self.height;                	
-                }
-                
+               	}
                 return vToReturn;
-            })
-            
+            })            
             .on("mouseover", function (d, i) {
                 d3.select(this).style("stroke-width", 5);
 
@@ -2306,6 +2319,69 @@ policycompass.viz.line = function (options) {
                 mouseout();
                 d3.select(this).style("stroke-width", 1);
             })
+
+
+			if (self.plot_as_top_lines==1) {			
+				var historicalEventsCircles = self.svg.selectAll("circles").data(dataForCircles);
+				
+				for (var iHE=1;iHE<=2; iHE=iHE+1) {
+					historicalEventsCircles.enter().append("circle")
+					.attr("cx", function (d, i) {
+						var retunrDate='';
+						if (iHE==1) {
+							retunrDate = d.startDate;
+						}
+						else if (iHE==2) {
+							retunrDate = d.endDate;
+						}
+	                    return self.xScale(getDate(retunrDate));		                    
+					})
+	                .style("opacity", 1)
+	                .attr("cy", function (d, i) {                    
+	                    return -10;
+	                })
+	                .attr("r", 0)
+	                .attr("class", function (d, i) {
+	                	var className = "lineXDisco event_circle_"+d.index;
+	                	return className;
+					})
+					.style("stroke-width", self.radius)
+					.style("stroke", function (d, i) {
+						var colorToReturn;
+	                    colorToReturn = d.color;	
+	                    return colorToReturn;
+					})
+					//.style("fill", function (d, i) {
+	                //	var colorToPlot = d.color;
+	        	    //    return colorToPlot;
+	            	//})
+					.on("mouseover", function (d, i) {
+						d3.selectAll(".event_" + d.index).style("stroke-width", 5);
+						d3.selectAll(".event_circle_" + d.index).style("stroke-width", 5);
+	
+						var str = "Event: " + d.title;
+						var fromDate = "From: " +d.startDate;
+						var toDate = "To: " +d.endDate;
+						var desc = "Desc.: " +d.desc;
+						if ((self.modeGraph == 'view') || (self.xaxeformat == 'sequence')) { 
+							tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '<br/>'+fromDate+'<br/>'+toDate+'<br/>'+desc+'<br/></div>');
+						}
+						else {
+							tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '<br/>'+fromDate+'<br/>'+toDate+'<br/>'+desc+'</div>');
+						}					
+					})
+					.on("mouseout", function (d, i) {
+						mouseout();
+						d3.selectAll(".event_" + d.index).style("stroke-width", 1);
+						d3.selectAll(".event_circle_" + d.index).style("stroke-width", self.radius);
+		             })
+					.transition().attr("r", self.radius).duration(2000)			
+				}
+			}
+			
+			/**********/
+			
+
 
         /******** end plot historical events ***********/		
 	}
@@ -2458,7 +2534,7 @@ policycompass.viz.line = function (options) {
                 var dataToPlotUpdate = self.clone(dataToPlot);
                 
                 var newEventData = [];
-                /*
+                
                 for (var i in eventsData) {
                 	
                  	
@@ -2476,19 +2552,18 @@ policycompass.viz.line = function (options) {
                  	newEventData[i].timediff = timeDiff;
                 }
                 
-                //order by time dif
-                newEventData = self.alphabetical_sort_object_of_objects_lines(newEventData, 'timediff', 'desc');
-                
-                self.drawLines(dataToPlotUpdate, newEventData);
-                */
                 
                 
                 if (eventsData.length==0)
                 {
                 	self.plotDataIn = 'first';
                 }
+
+				//order by time dif
+				newEventData = self.alphabetical_sort_object_of_objects_lines(newEventData, 'timediff', 'desc');                
+                self.drawLines(dataToPlotUpdate, newEventData);                
                 
-                self.drawLines(dataToPlotUpdate, eventsData);
+                //self.drawLines(dataToPlotUpdate, eventsData);
                 
 
             }
