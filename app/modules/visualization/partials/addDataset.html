@@ -13,7 +13,7 @@
  		-->
 
         <tabset>
-            <tab heading="Add Datasets" active="tab1" disabled="">
+            <tab heading="Search" active="tab1" disabled="">
             	
             	<div ng-hide="!disabledApplyButton">
             		<p class="text-danger">Loading data!!</p>	
@@ -28,7 +28,7 @@
 					<div indexdataset="indexdataset" id="filterDatasets" class="selectorDatasets" datasets-list="ListMetricsFilterModal" number-Max-Datasets="99" functionfordataset="rePlotGraphFromSearch(actionDone,position, 'modal')" disable-Row="arrayResolutionsFilter[resolution.value]"></div>
                 </div>
             </tab>
-            <tab heading="Datasets Configuration" active="tab2" disabled="">
+            <tab heading="Configure" active="tab2" disabled="">
                 <div class="row createvisualization">
                     <div ng-show="ListMetricsFilterModal.length==0">No dataset linked</div>
                     <div ng-show="metric.title" ng-controller="LoadCombosMetricModal" class="designer-metrics active" class="designer-metrics" id="designer-metrics-num-{{metric.id}}" ng-repeat="metric in ListMetricsFilterModal track by $index">
@@ -39,7 +39,7 @@
 
                         <div class="metric-buttons">
                             <button type="button" data-intro="Unlink dataset from the visualisation" data-position="top" class="btn btn-danger btn-clear" ng-click="deleteMetricFromList(metric.id, metric.title, ListMetricsFilterModal, $index, 'modal');" id="delete-metric-button-{{metric.id}}">Unlink</button>
-                            <a type="button" data-intro="Access to the dataset data" data-position="right" class="btn btn-info btn-adddataset" href="#!/datasets/{{metric.id}}" target="_blank" id="view-metric-button-{{metric.id}}">View Dataset in detaill</a>
+                            <a type="button" data-intro="Access to the dataset data" data-position="right" class="btn btn-info btn-adddataset" href="#!/datasets/{{metric.id}}" target="_blank" id="view-metric-button-{{metric.id}}">Open dataset details</a>
                         </div>
 
                         <div class="metric-forms">

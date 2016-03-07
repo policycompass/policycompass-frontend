@@ -240,6 +240,11 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                 });
 
                             }
+                            
+                                                        
+                            if (x>=arrayIndividualListDataset.length-1) {
+                            	$scope.setDisableLinkDataset(false);
+                            }
                         }
 
                         $scope.optionsCombo_value_[containerIndex] = $arrayComboValues_yaxe;
@@ -362,7 +367,11 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                     //$scope.colorScale = d3.scale.category20();				
 					$scope.disableRevert = true;
-					
+
+					$scope.setDisableLinkDataset = function(valueIn) {
+						$scope.disableLinkDataset = valueIn;	
+					}
+								
 					$scope.colorScale = function () {
 						
 						var randomColor = Math.floor(Math.random()*16777215).toString(16);	
@@ -1395,7 +1404,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							
                             metriclistIn.splice(indexIn, 1);
 
-                            $scope.individualCombo_value_[idMetric] = '';
+                            //$scope.individualCombo_value_[idMetric] = '';
 
                             if (metriclistIn.length == 0) {
                                 $scope.correctmetrics = "";
@@ -4288,8 +4297,12 @@ angular.module('pcApp.visualization.controllers.visualization', [
             
             var datasetsURL = $routeParams.datasets;
 			
+
 			
+			$scope.setDisableLinkDataset(false);
             if (datasetsURL) {
+            	$scope.disableLinkDataset = true;
+            	$scope.setDisableLinkDataset(true);
                 var arrayMetricsURL = datasetsURL.split(",");
                 for (x = 0; x < arrayMetricsURL.length; x++) {
                     if (arrayMetricsURL[x] > 0) {
