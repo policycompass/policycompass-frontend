@@ -61,9 +61,8 @@
                 <button ng-if="mode == 'edit'" type="submit" data-intro="Save data" data-position="top" ng-disabled="visualizationForm.$invalid || !user.state.loggedIn || visualization.policy_domains_data.output.length==0" class="btn btn-default btn-save" ng-click="createVisualization(ListMetricsFilter)">
                     <span ng-hide="user.state.loggedIn">Login to </span>Save
                     <span ng-hide="user.state.userPath==visualization.creator_path"> a copy</button>
-
                 <button ng-show="mode=='edit'" ng-disabled="disableRevert" type="submit" data-intro="Revert data" data-position="top" class="btn btn-default btn-revert2" ng-click="revertVisualization()">Revert</button>
-                <button data-intro="Helps you to link datasets with this visualisation" data-position="top" type="submit" class="btn btn-default btn-adddataset" id="modaladddataset" ng-click="showModal('datasets')">Link Datasets</button>
+                <button ng-disabled="disableLinkDataset" data-intro="Helps you to link datasets with this visualisation" data-position="top" type="submit" class="btn btn-default btn-adddataset" id="modaladddataset" ng-click="showModal('datasets')">Link Datasets</button>
                 <button ng-show="isSelectedSon('graph_line') && ListMetricsFilter.length>0" data-intro="Helps you to link this visualisation with events" data-position="top" type="submit" class="btn btn-primary btn-adddevent" id="addHEbutton" ng-click="showModal('events')">Link Events</button>
                 <button type="submit" data-intro="Cancel" data-position="top" class="btn btn-default btn-danger btn-clear" ng-click="cancelVisualization()">Cancel</button>
             </div>
