@@ -329,10 +329,11 @@ angular.module('pcApp.common.directives.linescharts', [])
 							if ($scope.dataset.length>maxLength) {
 								maxLength = $scope.dataset.length;
 							}
-							if ($scope.events.length>maxLength) {
-								maxLength = $scope.events.length;
+							if ($scope.events) {
+								if ($scope.events.length>maxLength) {
+									maxLength = $scope.events.length;
+								}
 							}
-							
 							maxLength = maxLength +1;
 							
                             var margin = {
