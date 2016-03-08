@@ -1389,8 +1389,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
                         var dlg = dialogs.confirm("Are you sure?", "Do you want to unlink '" + metrictitle + "' from the list of datasets?");
                         dlg.result.then(function () {
 
-                            $scope.timeStart = '';
-                            $scope.timeEnd = '';
+                            $scope.timeStart = '----';
+                            $scope.timeEnd = '----';
 							$scope.hideAdvice = false;
 							
                             metriclistIn.splice(indexIn, 1);
