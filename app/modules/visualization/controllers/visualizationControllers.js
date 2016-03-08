@@ -1395,7 +1395,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							
                             metriclistIn.splice(indexIn, 1);
 
-                            $scope.individualCombo_value_[idMetric] = '';
+                            //$scope.individualCombo_value_[idMetric] = '';
 
                             if (metriclistIn.length == 0) {
                                 $scope.correctmetrics = "";
