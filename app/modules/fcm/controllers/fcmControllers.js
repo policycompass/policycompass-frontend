@@ -43,7 +43,7 @@ angular.module('pcApp.fcm.controllers.fcm', [
             $scope.updateAssociations = [];
             $scope.updateConcepts = [];
             $scope.editorLayout;
-            
+
             $scope.models = FcmModel.get({id: $routeParams.fcmId}, function (fcmList) {
                 for (i = 0; i < $scope.models.concepts.length; i++) {
                     var newNode = {
@@ -75,9 +75,9 @@ angular.module('pcApp.fcm.controllers.fcm', [
                     };
                     $scope.edgeData.push(newEdge);
                 }
-                
+
                 $scope.setUpdateModelValues($scope.models);
-                
+
                 // broadcasting the event
                 $rootScope.$broadcast('appChanged');
             }, function (err) {
@@ -97,7 +97,7 @@ angular.module('pcApp.fcm.controllers.fcm', [
                     });
                 });
             };
-            
+
             $scope.doMouseUp = function (value, posx, posy) {
                 for (i = 0; i < $scope.Concepts.length; i++) {
                     if ($scope.updateConcepts[i].Id == value.substring(1, value.length)) {
@@ -106,7 +106,7 @@ angular.module('pcApp.fcm.controllers.fcm', [
                     }
                 }
             };
-            
+
             $scope.setUpdateModelValues = function(model) {
                 $scope.updateModels = {
                     ModelID : model.model.id.toString(),
@@ -114,7 +114,7 @@ angular.module('pcApp.fcm.controllers.fcm', [
                     keywords : model.model.keywords,
                     title : model.model.title
                 };
-                
+
                 for (i = 0; i < model.connections.length; i++) {
                     var Association = {
                         Id: model.connections[i].id.toString(),
@@ -124,7 +124,7 @@ angular.module('pcApp.fcm.controllers.fcm', [
                         destination: '',
                         weighted: model.connections[i].weight.toString()
                     };
-                    
+
                     for (j = 0; j < $scope.Concepts.length; j++) {
                         if (Association.sourceID == $scope.Concepts[j].Id)
                             Association.source =$scope.Concepts[j];
@@ -133,7 +133,7 @@ angular.module('pcApp.fcm.controllers.fcm', [
                     }
                     $scope.updateAssociations.push(Association);
                 }
-                
+
                 for (i = 0; i < model.concepts.length; i++) {
                     var updateConcepts = {
                         Id: model.concepts[i].id.toString(),
@@ -150,16 +150,16 @@ angular.module('pcApp.fcm.controllers.fcm', [
                     $scope.updateConcepts.push(updateConcepts);
                 }
             }
-            
+
             $scope.updateModel = function () {
-                
+
                 var jsonModel = {
                     model : $scope.updateModels,
                     userID: "1",
                     concepts : $scope.updateConcepts,
                     connections : $scope.updateAssociations
                 }
-                
+
                 $scope.fcmModelUpdate = new FcmModel();
                 $scope.fcmModelUpdate.data = jsonModel;
                 $scope.md = jsonModel;
@@ -169,7 +169,7 @@ angular.module('pcApp.fcm.controllers.fcm', [
                     });
                 });
             };
-            
+
 //            $scope.updateModel();
         }
     ])

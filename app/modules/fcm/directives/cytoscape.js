@@ -142,6 +142,23 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
 
                             // giddy up...
                             cy.elements().unselectify();
+                            // ##MOBA## this is to calculate the doubleClick trigger over a node in the Edit mode.
+                            var tappedBefore;
+                            var tappedTimeout;
+                            cy.on('tap', function(event) {
+
+                                var tappedNow = event.cyTarget;
+                                if (tappedTimeout && tappedBefore) {
+                                    clearTimeout(tappedTimeout);
+                                }
+                                if(tappedBefore === tappedNow) {
+                                    tappedNow.trigger('doubleTap');
+                                    tappedBefore = null;
+                                } else {
+                                    tappedTimeout = setTimeout(function(){ tappedBefore = null; }, 300);
+                                    tappedBefore = tappedNow;
+                                }
+                            });
 
                             // Event listeners
                             // with sample calling to the controller function as passed as an attribute
@@ -150,7 +167,7 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                                 nodes.css('background-color', 'gray');
                             });
 
-                            cy.on('click', 'node', function (e) {
+                            cy.on('doubleTap', 'node', function (e) {
                                 var nodes = cy.elements('node');
                                 nodes.css('background-color', 'gray');
                                 var evtTarget = e.cyTarget;
@@ -193,8 +210,8 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                             // use cy.add() / cy.remove() with passed data to add or remove nodes and edges without rebuilding the graph
                             // sample use can be adding a passed variable which will be broadcast on change
                             cy.load(scope.elements);
-                            
-                            
+
+
                             if(scope.elements.nodes.length > 5) {
                                 cy.fit(window.defaults.fitPadding);
                             }
