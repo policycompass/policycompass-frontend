@@ -1,19 +1,46 @@
 <div class="wellaged-directive">
     <div class="wellaged-editor">
         <div class="row">
-            <div class="button-group" ng-show="mode == 'edit'">
+            <div class="button-group" ng-if="mode === 'edit'">
                 <a style="cursor: pointer;" class="btn btn-default" ng-click="clear()">Clear</a>
                 <a style="cursor: pointer;" class="btn btn-default" ng-click="runAutoLayout()">Autolayout</a>
                 <a style="cursor: pointer;" class="btn btn-default" ng-click="runCarneades()">Evaluate Argument Graph</a>
             </div>
-            <div class="button-group" ng-show="mode == 'edit'">
+            <div class="button-group" ng-if="mode === 'edit'">
                 <a style="cursor: pointer;" class="btn btn-default" ng-click="addStatement()">Add Statement</a>
                 <a style="cursor: pointer;" class="btn btn-default" ng-click="addIssue()">Add Issue</a>
                 <a style="cursor: pointer;" class="btn btn-default" ng-click="addArgument()">Add Argument</a>
             </div>
         </div>
-        <div class="wellaged-paper" style="height: 768px; background: white; border: 1px solid black;">
+        <div class="row" style="margin-top: 1em">
+            <div ng-class="(mode === 'edit') ? 'col-md-8' : 'col-md-12'" style="overflow: scroll; border: 1px solid black; background: white; height: 500px;">
+                <div class="wellaged-paper" style="height: 2048px; width: 2048px" />
+            </div>
+            <div class="col-md-4" ng-if="mode === 'edit'">
+                <h1>Edit node:</h1>
+                <div ng-if="selectedNode">
 
+                    <div class="form-group" ng-class="{'has-error': agForm.title.$dirty && agForm.title.$invalid}">
+                        <label for="label">Label </label>
+                        <input type="text" class="form-control" id="label" name="label" placeholder="Statement title" ng-model="selectedNode.model.attributes.text" ng-change="selectedNode.model.trigger('change:text')" required>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error': agForm.title.$dirty && agForm.title.$invalid}">
+                        <label for="description">Description </label>
+                        <textarea class="form-control" rows="5" id="description" name="description" ng-model="selectedNode.model.attributes.description" ng-change="selectedNode.model.trigger('change:description')" "required></textarea>
+                    </div>
+
+                    <div class="form-group" ng-if="undefined !== selectedNode.model.attributes.assumed" ng-class="{ 'has-error': agForm.title.$dirty && agForm.title.$invalid}">
+                        <label for="assumed">Assumed </label>
+                        <input type="checkbox" class="form-control" id="assumed" name="assumed"
+                            ng-model="selectedNode.model.attributes.assumed"
+                            ng-change="selectedNode.model.trigger( 'change:assumed')"
+                            required>
+                    </div>
+                    <div class="button-group " ng-if="mode==='edit' ">
+                        <a style="cursor: pointer;" ng-click="deleteNode()" class="btn btn-warning ">Delete node</a>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>
