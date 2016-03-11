@@ -13,8 +13,8 @@
 
     <div class="pc-visualization-formcontrols">
         <div class="button-group">
-            <!--<a href="#!/login" ng-if="!userState || !userState.loggedIn" class="btn btn-default btn-save" target="_blank">Login to Save</a>-->
-            <!--<a href="" id="saveButton" data-ng-disabled="agForm.$invalid" ng-if="userState.loggedIn" class="btn btn-default btn-save" ng-click="createAg()">Save</a>-->
+            <a href="#!/login" ng-if="!userState || !userState.loggedIn" class="btn btn-default btn-save" target="_blank">Login to Save</a>
+            <a href="" id="saveButton" data-ng-disabled="agForm.$invalid" ng-if="userState.loggedIn" class="btn btn-default btn-save" ng-click="createAg()">Save</a>
             <a type="button" class="btn btn-danger" href="#!/ags/{{ag.id}}">Cancel</a>
         </div>
     </div>
@@ -43,7 +43,7 @@
 
             <div class="row">
                 <h3 class="legend-primary">Argument graph</h3>
-                <div wellaged graph="ag.data" mode="edit"></div>
+                <div wellaged graph="ag.data" editor="editor" mode="edit"></div>
             </div>
         </form>
     </div>

@@ -37,7 +37,7 @@
         "ngstorage": "=0.3.7",
         "angular-spectrum": "=0.0.1",
         "Leaflet.Pancontrol": "https://github.com/kartena/Leaflet.Pancontrol.git#~0.6.0",
-        "wellaged": "~0.0.1"
+        "wellaged": "~0.0.2"
     },
     "resolutions": {
         "angular-bootstrap": "=0.12.0",
