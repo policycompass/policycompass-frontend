@@ -198,7 +198,7 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                                 });
                             });
 
-                            cy.on('click', 'edge', function (e) {
+                            cy.on('doubleTap', 'edge', function (e) {
                                 var evtTarget = e.cyTarget;
                                 var nodeId = evtTarget.id();
                                 scope.cyClick({value: nodeId});
