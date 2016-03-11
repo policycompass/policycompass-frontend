@@ -76,6 +76,12 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                         var eId = "e" + scope.cyEdges[i].id;
                         // get edge weight
                         var eLabel = scope.cyEdges[i].weighted;
+                        // Change arrows colors against the weight value.
+                        var edgecolor = 'grey';
+                        if(eLabel>0)
+                            edgecolor = 'green';
+                        else if(eLabel<0)
+                            edgecolor = 'red';
 
                         // build the edge object
                         var edgeObj = {
@@ -83,7 +89,9 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                                 id: eId,
                                 source: eSource,
                                 target: eTarget,
-                                label: eLabel
+                                label: eLabel,
+                                edgecolor:edgecolor
+
                             }
                         };
                         // adding the edge object to the edges array
@@ -127,7 +135,9 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                             'text-outline-width': 2,
                             'text-valign': 'center',
                             'color': '#777777',
-                            'width': '2px'
+                            'width': '2px',
+                            'line-color': 'data(edgecolor)',
+                            'target-arrow-color': 'data(edgecolor)'
                         }).selector(':selected').css({
                             'background-color': '#C50C44',
                             'line-color': 'black',
@@ -198,7 +208,7 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                                 });
                             });
 
-                            cy.on('click', 'edge', function (e) {
+                            cy.on('doubleTap', 'edge', function (e) {
                                 var evtTarget = e.cyTarget;
                                 var nodeId = evtTarget.id();
                                 scope.cyClick({value: nodeId});
