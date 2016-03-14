@@ -1,0 +1,79 @@
+<section>
+    <h4>Import datasets from Eurostat:</h4>
+
+    <div class="input-group">
+        <input type="text" class="form-control" placeholder="Eurostat dataset code, e.g. 'for_remov'"
+               ng-keyup="$event.keyCode == 13 && search(searchTerm); $event.keyCode == 13 && loadResource(searchTerm)"
+               ng-model="searchTerm"/>
+        <span class="input-group-btn">
+        <button class="btn btn-default" type="button" ng-click="search(searchTerm);loadResource(searchTerm)">
+            <span class="glyphicon glyphicon-search"></span>
+        </button>
+         </span>
+    </div>
+
+
+    <form name="eurostatFiltersForm" id="eurostatFiltersForm">
+        <div class="search results">
+            <div class="eurostat-results">
+                <div ng-show="!eurostatFilters || eurostatFilters.length == 0">
+                    <h5>No results found.</h5>
+                </div>
+                <div ng-show="eurostatFilters" >
+                    <br>
+                    <h3>{{eurostatLabel}}</h3>
+                    <div class="row">
+                        <div class="form-group col-lg-4 eurostat-filters">
+                            <div class="pc-reference-selection-full">
+                                <h5>geo</h5>
+                                <div id="geo" ng-model="geo" class=""
+                                     isteven-multi-select
+                                     on-reset="onReset()"
+                                     on-close="saveFilter('geo',output); updateFilters()"
+                                     input-model="filterGeos"
+                                     output-model="output"
+                                     button-label="name"
+                                     item-label="name"
+                                     tick-property="ticked"
+                                >
+                                </div>
+                            </div>
+
+                            <div class="pc-reference-selection-full">
+                                <h5>time</h5>
+                                <div id="time" ng-model="time" class=""
+                                     isteven-multi-select
+                                     on-reset="onReset()"
+                                     on-close="saveFilter('time',output); updateFilters()"
+                                     input-model="filterTimes"
+                                     output-model="output"
+                                     button-label="name"
+                                     item-label="name"
+                                     tick-property="ticked"
+                                >
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-repeat="pair in eurostatValues" class="form-group col-lg-4 eurostat-filters">
+                            <div class="pc-reference-selection-full">
+                                <h5>{{pair[0]}}</h5>
+                                <div id="{{pair[0]}}" ng-model="pair[0]" class=""
+                                     isteven-multi-select
+                                     on-reset="onReset()"
+                                     on-close="saveFilter(pair[0],output); updateFilters()"
+                                     input-model="pair[1]"
+                                     output-model="output"
+                                     button-label="name"
+                                     item-label="name"
+                                     tick-property="ticked"
+                                     selection-mode="single"
+                                >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
