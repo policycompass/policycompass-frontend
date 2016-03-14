@@ -13,7 +13,7 @@
 
 #logo {
     margin: 10px 0;
-    width: $unidad * 6;
+    width: 30px;
     float: left;
 }
 
@@ -57,7 +57,7 @@
 
 @media (min-width: $device_4) {
     #logo {
-        width: $unidad * 4;
+        // width: $unidad * 4;
     }
 }
 
