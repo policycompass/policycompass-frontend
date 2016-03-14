@@ -130,7 +130,8 @@ angular.module('pcApp.metrics.services.metric', [
                             name: indicator.name,
                             acronym: indicator.acronym,
                             unit_category: indicator.unit_category,
-                            id: indicator.id
+                            id: indicator.id,
+                            date: indicator.modified
                         };
                     });
                 }, function (err) {
