@@ -403,6 +403,9 @@ policycompass.viz.mapLeaflet = function (options) {
 
         //map.attributionControl.addAttribution('Policy Compass &copy;');
 
+		geojson.eachLayer(function (layer) {
+			layer.bindPopup(layer.feature.properties.name+' ('+layer.feature.id+'): '+ layer.feature.properties.density);
+		});
 
         if (self.legend) {
             var legend = L.control({position: 'bottomright'});
