@@ -61,13 +61,25 @@
 
                 <div class="panel panel-default">
                     <div class="panel-heading formula-grey-panel-heading">
-                        <div class="input-group formula-input-group-padding">
-                            <input type="text" class="form-control" placeholder="Search for indicator..." ng-model="searchText">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="input-group formula-input-group-padding">
+                                    <label>Search</label>
+                                    <input type="text" class="form-control" placeholder="Search for indicator ..." ng-model="searchText">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group formula-input-group-padding">
+                                    <label>Sort by</label>
+                                    <select class="btn btn-show dropdown-toggle" ng-model="selectedSortItem" ng-init="selectedSortItem = selectedSortItem || sortOptions[0]" ng-options="sortOptionItem.name for sortOptionItem in sortOptions">
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <ul class="list-group formula-list-group">
-                        <li ng-repeat="indicator in metrics_controller_helper.indicators | filter:searchText" class="list-group-item">
+                        <li ng-repeat="indicator in metrics_controller_helper.indicators | filter:searchText | orderBy:selectedSortItem.sort" class="list-group-item">
                             <div class="row">
                                 <div class="col-md-10">
                                     {{ indicator.name }}</br>
@@ -79,6 +91,8 @@
                             </div>
                         </li>
                     </ul>
+
+                    </div>
 
                 </div>
 
