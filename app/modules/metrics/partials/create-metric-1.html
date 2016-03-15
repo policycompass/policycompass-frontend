@@ -7,7 +7,24 @@
                 <div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div>
                 Step 1 - Create Formula
             </h4>
-            <div ng-class="{active: help}" class="help-text"></div>
+            <div ng-class="{active: help}" class="help-text">
+                <div class="fonticon fonticon-close" ng-click="help=!help"></div>
+                <p>You can create a metric using this wizard.</p>
+
+                <p>
+                    To create a formular you need to:</br>
+                <b>In step 1:</b>
+                <ul>
+                    <li>Type in the formula in the textfield using the indicators from the table on the right habd side</li>
+                    <li>You can normalize your data by choosing a function from the normalisation functions. In the simplest cases normalisation functions are used to adjust values measured on different scales to a notionally common scale, often prior to averaging.</li>
+                </ul>
+                In step 2:
+                <ul>
+                    <li>Add some metadata to your metric</li>
+                    <li>save metric</li>
+                </ul>
+                </p>
+            </div>
         </div>
         <ul class="navigation-steps">
             <li><a href="#!/create-formula" class="btn btn-prev">Previous Step</a></li>
@@ -50,7 +67,7 @@
 
                         <p ng-show="servererror.formula" class="help-block">{{ servererror.formula }}</p>
 
-                        <p ng-hide="servererror.formula || (formulaForm.formula.$error.required && !formulaForm.formula.$pristine)" class="help-block">Type in formula here. Add indicators from the list on the right. To use one of the predefined formulas, use the acronym.</p>
+                        <p ng-hide="servererror.formula || (formulaForm.formula.$error.required && !formulaForm.formula.$pristine)" class="help-block">Type in formula here. Add indicators from the list on the right. To use one of the predefined normalizers, use the acronym.</p>
                     </div>
                 </form>
             </div>
@@ -83,7 +100,6 @@
                             <div class="row">
                                 <div class="col-md-10">
                                     {{ indicator.name }}</br>
-                                    <small>{{ indicator.acronym }}</small>
                                 </div>
                                 <div class="col-md-2">
                                     <a href="" ng-click="addIndicator(indicator)"><span class="label label-primary formula-span">add</span></a>
