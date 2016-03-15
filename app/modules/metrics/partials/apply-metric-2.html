@@ -40,7 +40,7 @@
                     <select class="form-control unit-options" ng-model="apply_metric_helper.data.unit_id" id="unit_id" required>
                     </select>
 
-                    <p ng-hide="servererror.acronym || (datasetForm.acronym.$error.required && !datasetForm.acronym.$pristine)" class="help-block">Please select the unit for the new dataset</p>
+                    <p ng-hide="servererror.unit_id || (datasetForm.unit_id.$error.required && !datasetForm.unit_id.$pristine)" class="help-block">Please select the unit for the new dataset</p>
                 </div>
             </div>
         </form>
