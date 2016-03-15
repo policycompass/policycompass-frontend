@@ -1,0 +1,34 @@
+<div class="well">
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Arguments</th>
+                        <th>Acronym</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="function in functions">
+                        <td>{{ function.name }}</td>
+                        <td>{{ function.description }}</td>
+                        <td>
+                            <p ng-repeat="argument in function.arguments">{{$index + 1}}. {{ argument.name }} ({{ argument.type }})</p>
+                        </td>
+                        <td>{{ function.acronym }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="normalisation-description">
+                <b>What is a normalisation function?</b>
+                <p>When comparing datasets the problem can occur that the values within those datasets are in different ranges. Imagine you have datasets from different sources containing the happyness-index for different coutries. Then the problem might be, that in one dataset the happyness-index ranges from 0 to 1 but in the other one it ranges from 0 to 100. A normalisation function can then be used to map values from one dataset to the range of the other dataset. For further information read the <a href="https://en.wikipedia.org/wiki/Normalization_(statistics)" target="_blank"> entry on wikipedia</a>.</p>
+            </div>
+        </div>
+    </div>
+</div>
