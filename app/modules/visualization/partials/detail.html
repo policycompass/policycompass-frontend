@@ -76,6 +76,12 @@
             </div>
 
             <div class="form-group form-group-modified">
+				<div class="form-item" ng-if="visualization.creator_path">
+					<div class="field-label">Added by</div>
+					<div class="field-content">
+							<username userpath="{{visualization.creator_path}}"></username>
+					</div>
+				</div>            	
                 <div class="form-item" ng-if="visualization.created_at">
                     <div class="field-label">Added</div>
                     <div class="field-content">{{ visualization.created_at | date:'longDate' }}</div>
