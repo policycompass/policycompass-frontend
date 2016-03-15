@@ -7,7 +7,24 @@
                 <div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div>
                 Step 2 - Add Metadata
             </h4>
-            <div ng-class="{active: help}" class="help-text"></div>
+            <div ng-class="{active: help}" class="help-text">
+                <div class="fonticon fonticon-close" ng-click="help=!help"></div>
+                <p>You can apply a metric using this wizard. The result will be a dataset.</p>
+
+                <p>
+                    To apply a metric you need to:</br>
+                In step 1:
+                <ul>
+                    <li>Choose a dataset for each indicator in your metric</li>
+                    <li>Posible Datasets are shown in the table underneath the formula </li>
+                </ul>
+                <b>In step 2:</b>
+                <ul>
+                    <li>Add some metadata to your new dataset</li>
+                    <li>save metric</li>
+                </ul>
+                </p>
+            </div>
         </div>
 
         <div class="pc-visualization-formcontrols">
