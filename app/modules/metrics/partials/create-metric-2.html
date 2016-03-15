@@ -41,20 +41,6 @@
                 </div>
             </div>
 
-            <div class="form-group" ng-class="{ 'has-error': (metadataForm.acronym.$invalid && !metadataForm.acronym.$pristine) || servererror.acronym }">
-                <label for="Acronym" class="field-label">Acronym</label>
-
-                <div class="field-content">
-                    <input ng-model="metrics_controller_helper.metricsdata.acronym" type="text" name="acronym" class="form-control" required>
-
-                    <p ng-show="metadataForm.acronym.$error.required && !metadataForm.acronym.$pristine" class="help-block">This field is required</p>
-
-                    <p ng-show="servererror.acronym" class="help-block">{{ servererror.acronym[0] }}</p>
-
-                    <p ng-hide="servererror.acronym || (metadataForm.acronym.$error.required && !metadataForm.acronym.$pristine)" class="help-block">Please add a acronym for your metric</p>
-                </div>
-            </div>
-
             <div class="form-group" ng-class="{ 'has-error': (metadataForm.indicator_id.$invalid && !metadataForm.indicator_id.$pristine) || servererror.indicator_id }">
                 <label for="indicator_id" class="field-label">Indicator</label>
 
