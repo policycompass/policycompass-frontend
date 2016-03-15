@@ -165,7 +165,9 @@
                     </div>
                     <div class="form-item" ng-if="dataset.resource.custom">
                         <div class="field-label">Name</div>
-                        <div class="field-content">{{ dataset.resource.custom | date:'longDate' }}</div>
+                        <a href="{{ dataset.resource.url }}" target="_blank">
+                            <div class="field-content">{{ dataset.resource.custom }}</div>
+                        </a>
                     </div>
                     <div class="form-item" ng-if="dataset.license">
                         <div class="field-label">Licence</div>
