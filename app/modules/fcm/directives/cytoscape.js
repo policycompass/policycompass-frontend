@@ -78,9 +78,9 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                         var eLabel = scope.cyEdges[i].weighted;
                         // Change arrows colors against the weight value.
                         var edgecolor = 'grey';
-                        if(eLabel>0)
+                        if (eLabel > 0)
                             edgecolor = 'green';
-                        else if(eLabel<0)
+                        else if (eLabel < 0)
                             edgecolor = 'red';
 
                         // build the edge object
@@ -90,11 +90,12 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                                 source: eSource,
                                 target: eTarget,
                                 label: eLabel,
-                                edgecolor:edgecolor
+                                edgecolor: edgecolor
 
                             }
                         };
                         // adding the edge object to the edges array
+                        console.log(edgeObj);
                         scope.elements.edges.push(edgeObj);
                     }
 
@@ -155,17 +156,17 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                             // ##MOBA## this is to calculate the doubleClick trigger over a node in the Edit mode.
                             var tappedBefore;
                             var tappedTimeout;
-                            cy.on('tap', function(event) {
+                            cy.on('tap', function (event) {
 
                                 var tappedNow = event.cyTarget;
                                 if (tappedTimeout && tappedBefore) {
                                     clearTimeout(tappedTimeout);
                                 }
-                                if(tappedBefore === tappedNow) {
+                                if (tappedBefore === tappedNow) {
                                     tappedNow.trigger('doubleTap');
                                     tappedBefore = null;
                                 } else {
-                                    tappedTimeout = setTimeout(function(){ tappedBefore = null; }, 300);
+                                    tappedTimeout = setTimeout(function () { tappedBefore = null; }, 300);
                                     tappedBefore = tappedNow;
                                 }
                             });
@@ -193,7 +194,7 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                                     var nodeParent = edgesTo[i].source();
                                     nodeParent.css('background-color', 'green');
                                 }
-                                scope.cyClick({value: nodeId});
+                                scope.cyClick({ value: nodeId });
                             });
 
                             cy.on('mouseup', 'node', function (e) {
@@ -211,8 +212,22 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                             cy.on('doubleTap', 'edge', function (e) {
                                 var evtTarget = e.cyTarget;
                                 var nodeId = evtTarget.id();
-                                scope.cyClick({value: nodeId});
+                                scope.cyClick({ value: nodeId });
                             });
+
+                            cy.on('mouseover', 'edge', function (e) {
+                                $(cy.container()).css('cursor', 'crosshair');
+                            });
+                            cy.on('mouseout', 'edge', function (e) {
+                                $(cy.container()).css('cursor', 'default');
+                            });
+                            cy.on('mouseover', 'node', function (e) {
+                                $(cy.container()).css('cursor', 'crosshair');
+                            });
+                            cy.on('mouseout', 'node', function (e) {
+                                $(cy.container()).css('cursor', 'default');
+                            });
+
                             cy.panzoom({
                                 // options go here
                             });
@@ -222,7 +237,7 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                             cy.load(scope.elements);
 
 
-                            if(scope.elements.nodes.length > 5) {
+                            if (scope.elements.nodes.length > 5) {
                                 cy.fit(window.defaults.fitPadding);
                             }
                         }
