@@ -6,8 +6,8 @@
             <button type="button" class="btn btn-file" ng-click="dropzone.isCollapsed = !dropzone.isCollapsed">
                 From File
             </button>
-            <button type="button" class="btn btn-import-ckan" ng-click="ckanImport.toggleVisibility()">
-                Import from EDP
+            <button type="button" class="btn btn-import-ckan" ng-click="ckanImport.toggleVisibility(); eurostatImport.toggleVisibility()">
+                Import from External Databases
             </button>
             <button type="submit" class="btn btn-rotate" ng-click="rotateData()">Rotate Data</button>
             <button type="submit" class="btn btn-clear" ng-click="clearGrid()">Clear Grid</button>
@@ -18,7 +18,9 @@
         <div id="pc-dropzone-container" ng-show="!dropzone.isCollapsed" class="well">
             <div class="ng-dropzone dropzone" id="pc-dropzone" dropzone-config="dropzone.config" dropzone="dropzone.dropzone" event-handlers="dropzone.handlers"></div>
         </div>
+
         <div ckan-import load-data='ckanImport.loadData' api-base="http://www.paneuropeandataportal.eu/data/api/3" id="pc-ckan-import-container" ng-show="ckanImport.isVisible" class="well"></div>
+        <div eurostat-import load-data='eurostatImport.loadData' api-base="http://www.paneuropeandataportal.eu/data/api/3" id="pc-eurostat-import-container" ng-show="eurostatImport.isVisible" class="well"></div>
 
         <hot-table settings="inputTable.settings" datarows="inputTable.items" height="500"></hot-table>
     </div>
