@@ -150,14 +150,22 @@ header .container {
     // position:relative;
     // background:linear-gradient(to bottom,$gris_50,$gris_70);
 }
-
+.submenu-bk {
+  background: linear-gradient(to bottom, $gris_50, $gris_70);
+}
 .submenu {
     width: 100%;
+   
     position: relative;
     overflow: hidden;
     // display:none;
     // position:relative;
     background: linear-gradient(to bottom, $gris_50, $gris_70);
+    
+    background: transparentize($gris_70,.1);
+    $medio:transparentize($gris_95,.4);
+    background: linear-gradient(to bottom, $medio, $medio 50px,  $medio 50px);
+    // background:$gris_70;
     ul {
         @include reset-list();
     }
@@ -209,9 +217,12 @@ header .container {
     }
     &.active {
         height: auto;
-        position: relative;
+        position: absolute;
         opacity: 1;
         // top:auto;
+        height:100%;
+        height:calc(100% - 50px);
+        
     }
     &.submenu-share {
         ul li a:before {
@@ -286,8 +297,11 @@ header .container {
     .submenu {
         position: absolute;
         top: 50px;
+        // padding-top:50px;
         &.active {
             z-index: 3000;
+            // top:0;
+            // padding-top:50px;
         }
     }
 
