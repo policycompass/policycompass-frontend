@@ -37,8 +37,9 @@
         <!-- /.logo-wrapper -->
     </div>
 
-    <div class="submenu submenu-create" id="submenu-create" ng-class="{active: i==1}">
-        <div class="fonticon fonticon-close" ng-click="i=0"></div>
+    <div class="submenu submenu-create" id="submenu-create" ng-class="{active: i==1}" ng-click="i=0">
+      <div class="submenu-bk">
+        
         <ul>
             <li><a href="#!/datasets/create" class="fonticon font-icon-datasets" ng-click="i=0">Upload Datasets</a></li>
             <li>
@@ -56,11 +57,12 @@
             </li>
         </ul>
 
-    </div>
+    </div></div>
 
 
-    <div class="submenu submenu-user" id="submenu-user" ng-class="{active: i==6}">
-        <div class="fonticon fonticon-close" ng-click="i=0"></div>
+    <div class="submenu submenu-user" id="submenu-user" ng-class="{active: i==6}" ng-click="i=0">
+      <div class="submenu-bk">
+        
         <ul ng-click="i=0">
             <li ng-if="!authState.loggedIn" ng-cloak>
                 <a href="#!/register" data-hover="Sign Up" class="fonticon font-icon-sign_up" ng-click="i=0">Sign Up</a>
@@ -71,9 +73,10 @@
                 <a href="#!/logout" class="fonticon font-icon-log_out" ng-click="i=0">Logout ({{ authState.userData.name }})</a>
             </li>
         </ul>
-    </div>
-    <div class="submenu submenu-share" id="submenu-share" ng-class="{active: i==7}">
-        <div class="fonticon fonticon-close" ng-click="i=0"></div>
+    </div></div>
+    <div class="submenu submenu-share" id="submenu-share" ng-class="{active: i==7}" ng-click="i=0">
+      <div class="submenu-bk">
+        
         <ul>
             <li>
                 <a href="" class="fonticon fonticon-facebook" ng-click="i=0">Facebook</a>
@@ -91,7 +94,7 @@
                 <a href="" class="fonticon fonticon-google" ng-click="i=0">Google +</a>
             </li>
         </ul>
-    </div>
+    </div></div>
 
 
     <open-feedback-modal></open-feedback-modal>
