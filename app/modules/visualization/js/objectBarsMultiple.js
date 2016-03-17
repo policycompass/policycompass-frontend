@@ -10,6 +10,11 @@ policycompass.viz.barsMultiple = function (options) {
 
     var self = {};
 
+    function mouseout() {
+    	tooltip.style("opacity", 1.0).html("");
+        tooltip.style("opacity", 0.0);
+    }
+    
     for (var key in options) {
         self[key] = options[key];
     }
@@ -41,6 +46,223 @@ policycompass.viz.barsMultiple = function (options) {
             self.init();
         }
     }
+
+
+	var plotEventsBarChart = function (eventsData) {
+		
+		/*************Ini plot historical events *******/	
+		
+		if (self.showLegend)
+		{		
+			var historicalEvents = self.svg.selectAll("rectagles").data(eventsData);
+			
+			var valueX = (self.margin.left)*2+((self.width/2));
+			//console.log(valueX);
+			//console.log(eventsData.length);
+			if (eventsData.length>0) {
+				//add title of legend			
+				self.svg.append("text")
+	                .attr("x", function (d, i) {
+	                    return valueX;
+	                })
+	                .attr("y", function (d, i) {
+	                    var valueY = (self.height) + self.margin.top + 30 ;
+						return valueY;
+	                })
+	                .attr("text-anchor", "center")
+	                .attr("class", function() {
+	                })
+	                .attr("font-size", self.font_size+1)
+	                .style("fill", function (d, i) {
+	                    var colorToReturn = "black";
+	                    return colorToReturn;
+	                })
+	                .text(function (d, i) {
+	                    var resTRext = "Events";
+	                    
+	                    return resTRext;
+	                });
+			
+	            //add legend events 				
+				historicalEvents.enter().append("rect")
+					.attr("x", valueX - 10)
+					.attr("y", function (d, i) {                    	
+						//var valueY = (self.height) + self.margin.top + 30 + (i) * 20 + (20 * self.dataToPlotLength );
+						var valueY = (self.height) + self.margin.top + 30 + (i+1) * 20;
+						return valueY - 5;
+					})		
+					.attr("width", 5)
+					.attr("height", 5)
+					.style("fill", function (d, i) {    				
+	    				var colorToReturn = d.color;
+	    				return colorToReturn;
+					});
+
+
+				historicalEvents.enter().append("text")
+	                    .attr("x", function (d, i) {
+	                        return valueX;
+	                    })
+	                    .attr("y", function (d, i) {
+	                        //var valueY = (self.height) + self.margin.top + 30 + (i) * 20 + (20 * self.dataToPlotLength );
+	                        var valueY = (self.height) + self.margin.top + 30 + (i+1) * 20;
+							return valueY;
+	                    })
+	                    .attr("text-anchor", "center")
+	                    .attr("class", function() {
+	                    })
+	                    .attr("font-size", self.font_size+1)
+	                    .style("fill", function (d, i) {
+	                        var colorToReturn = d.color;
+	                        return colorToReturn;
+	                    })
+	                    .on("mouseover", function (d, i) {
+	                    	
+							var str = "Event: " + d.title;
+							var fromDate = "From: " +d.startDate;
+							var toDate = "To: " +d.endDate;
+							var desc = "Desc.: " +d.desc;
+							
+							tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '<br/>'+fromDate+'<br/>'+toDate+'<br/>'+desc+'</div>');
+	                        d3.selectAll(".event_circle_"+i).style("stroke-width", self.radius+1);
+	                    	
+	                    })
+	                    .on("mouseout", function (d, i) {
+							mouseout();
+							d3.selectAll(".event_circle_"+i).style("stroke-width", self.radius);
+	                    })
+	                    .text(function (d, i) {
+	                        //var resTRext = d.title;	                        
+	                        //return resTRext;
+
+							var trimmedString = d.title;
+            				var length = 80;
+            				if (trimmedString.length > length) {
+								trimmedString = trimmedString.substring(0, length) + "...";
+							}
+            
+            				return trimmedString;
+	                        
+	                    })
+	                    .on("click", function () {
+	                        if (document.getElementById("addHEbutton")) {
+	                        	document.getElementById("addHEbutton").click();
+	                        }	                        
+	                    });
+             }   
+		}
+
+			
+		var dataForCircles = [];
+		for (var i in eventsData) {
+			
+			if (eventsData[i].startDate) {			
+				var arrayObjDateStart = eventsData[i].startDate.split("-");
+							
+	            var arrayTemporal = [];
+	            arrayTemporal['index'] = i;
+	            arrayTemporal['color'] = eventsData[i].color;
+	            arrayTemporal['title'] = eventsData[i].title;
+	            arrayTemporal['startDate'] = eventsData[i].startDate;
+	            arrayTemporal['endDate'] = eventsData[i].endDate;
+	            
+	            //console.log(eventsData[i].startDate);
+	            
+	            if (self.resolution=='day') {
+	            	arrayTemporal['posx'] = eventsData[i].startDate;            	
+	            }
+	            else if (self.resolution=='month') {
+	            	arrayTemporal['posx'] = arrayObjDateStart[0]+"-"+arrayObjDateStart[1];           	
+	            }
+	            else if (self.resolution=='year') {            	
+	            	arrayTemporal['posx'] = arrayObjDateStart[0];           	
+	            }
+	            else if (self.resolution == 'quarter') {
+	            	var extraString = "";
+	            	if (arrayObjDateStart[1]<=3) {
+	            		extraString = "Q1"
+	            	}
+	            	else if (arrayObjDateStart[1]<=6) {
+	            		extraString = "Q2"
+	            	}
+	            	else if (arrayObjDateStart[1]<=9) {
+	            		extraString = "Q3"
+	            	}
+	            	else if (arrayObjDateStart[1]<=12) {
+	            		extraString = "Q4"
+	            	}
+	            	arrayTemporal['posx'] = arrayObjDateStart[0]+"-"+extraString;
+	            }
+	
+	            arrayTemporal['posY'] = 0;
+	            arrayTemporal['desc'] = eventsData[i].desc;
+	            dataForCircles[i] = arrayTemporal;
+            
+           }
+        }
+		
+		var historicalEventsCircles = self.svg.selectAll("circles").data(dataForCircles);
+		
+		//self.radius = 4;
+		
+		var offset = (self.labelY.length * self.x1.rangeBand()/2);
+		
+		var cnt_events_by_period = [];
+		
+		historicalEventsCircles.enter().append("circle")
+			.attr("cx", function (d, i) {
+					var retunrDate='';					
+					retunrDate = self.x0(d.posx) + offset;					
+					//console.log(retunrDate);					
+					return retunrDate;					
+					//return x0(resTRext[0]) + x1(d.Key);
+							                    
+			})
+			.style("opacity", 1)
+			.attr("cy", function (d, i) {								
+				var a = cnt_events_by_period.indexOf(d.posx);				
+				if (cnt_events_by_period[d.posx]) {
+					cnt_events_by_period[d.posx] = cnt_events_by_period[d.posx] +1;
+				}
+				else {					
+					cnt_events_by_period[d.posx] = 1;	
+				}
+				var returnValue = -10 + (self.radius*4)*(cnt_events_by_period[d.posx]-1); 				
+				//console.log(returnValue);
+				return returnValue;
+			})
+			.attr("r", 0)
+			.attr("class", function (d, i) {
+				var className = "lineXDisco event_circle_"+d.index;
+				return className;
+			})
+			.style("stroke-width", self.radius)
+			.style("stroke", function (d, i) {
+				var colorToReturn;
+				colorToReturn = d.color;	
+				return colorToReturn;
+			})
+			.on("mouseover", function (d, i) {			
+				d3.selectAll(".event_circle_"+d.index).style("stroke-width", self.radius+1);				
+				var str = "Event: " + d.title;
+						var fromDate = "From: " +d.startDate;
+						var toDate = "To: " +d.endDate;
+						var desc = "Desc.: " +d.desc;
+						if ((self.modeGraph == 'view') || (self.xaxeformat == 'sequence')) { 
+							tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '<br/>'+fromDate+'<br/>'+toDate+'<br/>'+desc+'<br/></div>');
+						}
+						else {
+							tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '<br/>'+fromDate+'<br/>'+toDate+'<br/>'+desc+'</div>');
+						}					
+					})
+					.on("mouseout", function (d, i) {
+						mouseout();
+						d3.selectAll(".event_circle_"+d.index).style("stroke-width", self.radius);
+		             })
+					.transition().attr("r", self.radius).duration(2000)	
+
+        /******** end plot historical events ***********/		
+	}
 
     self.drawBarsMultiple = function (bars, eventsData) {
 
@@ -97,31 +319,31 @@ policycompass.viz.barsMultiple = function (options) {
         var xAxis = d3.svg.axis().scale(x0).orient("bottom");
         var yAxis = d3.svg.axis().scale(y).orient("left").tickFormat(d3.format(".2s"));
 
-function wrap(text, width) {
-
-
-  text.each(function() {
-    var text = d3.select(this),
-        words = text.text().split(/\s+/).reverse(),
-        word,
-        line = [],
-        lineNumber = 0,
-        lineHeight = 1.1, // ems
-        y = text.attr("y"),
-        dy = parseFloat(text.attr("dy")),
-        tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
-    while (word = words.pop()) {
-      line.push(word);
-      tspan.text(line.join(" "));
-      if (tspan.node().getComputedTextLength() > width) {
-        line.pop();
-        tspan.text(line.join(" "));
-        line = [word];
-        tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
-      }
-    }
-  });
-}
+		function wrap(text, width) {
+		
+		
+		  text.each(function() {
+		    var text = d3.select(this),
+		        words = text.text().split(/\s+/).reverse(),
+		        word,
+		        line = [],
+		        lineNumber = 0,
+		        lineHeight = 1.1, // ems
+		        y = text.attr("y"),
+		        dy = parseFloat(text.attr("dy")),
+		        tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
+		    while (word = words.pop()) {
+		      line.push(word);
+		      tspan.text(line.join(" "));
+		      if (tspan.node().getComputedTextLength() > width) {
+		        line.pop();
+		        tspan.text(line.join(" "));
+		        line = [word];
+		        tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+		      }
+		    }
+		  });
+		}
 
         var xAxisData = d3.set(bars.map(function (line) {
         	//console.log(line.ValueX);
@@ -153,29 +375,32 @@ function wrap(text, width) {
             
             return trimmedString;
         }));
-
+		/*
 		var legendsColumn = 0;
 		if (self.showLegend) {
 			legendsColumn = Math.ceil(xAxisData.length / 9);
 		} else {
 			legendsColumn = 0;
-		}
-		
+		}		
 		
 		self.margin.bottom = 55 + (legendsColumn+1) * 20;
-		self.legendsColumn = legendsColumn;
+		*/		
+		//console.log(self.margin.bottom);
+		//self.legendsColumn = legendsColumn;
 		
         self.svg = d3.select(self.parentSelect)
         .append("svg")
         .attr("class", "pc_chart")
         .attr("width", self.width + self.margin.left + self.margin.right + self.extraWidth)
-        .attr("height", self.height + self.margin.top + self.margin.bottom)
+        .attr("height", self.height + self.margin.top + self.margin.bottom)        
         .on("mousemove", mousemove)
         .append("g")
         .attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
         
         x1.domain(xAxisData).rangeRoundBands([0, x0.rangeBand()]);
-
+		self.x0 = x0;
+		self.x1 = x1;
+		
         var valueYmin = 0;
         if (minVy < 0) {
             valueYmin = minVy;
@@ -256,11 +481,31 @@ function wrap(text, width) {
         	//var range = 10;
         	return range;
         })
+		.attr("class", function (d, i) {
+			
+			var find = d.Key;
+			/*
+			var res = find.split("_");
+			var re = '';
+			if (res.length>0) {
+				re = res[res.length-1];
+			}				
+			*/
+			var re = find.replace(/ /g, '_');
+			re = re.replace(/\'/g, '_');
+			re = re.replace(/"/g, '_');
+			re = re.replace(/,/g, '_');
+			re = re.replace(/\[/g, '_');
+			re = re.replace(/\]/g, '_');
+			
+			//var re = i;
+			var className = "bar bar_line_"+re;
+			return className;
+		})        
         .attr("x", function (d,i) {
         	//var resTRext = d.Key.split("_");
-        	var resTRext = d.To.split("_");
-       	
-        	//return x0(resTRext[0]) + x1(d.ValueX);
+        	var resTRext = d.To.split("_");       	
+        	//return x0(resTRext[0]) + x1(d.ValueX);        	
         	return x0(resTRext[0]) + x1(d.Key);
         })
         .attr("y", function (d) {
@@ -269,16 +514,60 @@ function wrap(text, width) {
         .attr("height", function (d) {
             return 0;
         })
-        .style("fill", function (d) {                    
+        .attr("fill", function (d) {                    
             //return color(d.ValueX);
             //var resTRext = d.Key.split("_");
-            //return color(resTRext[0]);            
-            return (d.Color);
+            //return color(resTRext[0]);           
+            return d.Color;
         })
         .on("mouseout", function (d, i) {
-            tooltip.style("opacity", 0.0);
+            //tooltip.style("opacity", 0.0);
+           	//d3.select(this).attr("fill", d.Color);
+           	
+           	var find = d.Key;
+           	/*
+			var res = find.split("_");
+			var re = '';
+			if (res.length>0) {
+				re = res[res.length-1];
+			}
+			*/
+			var re = find.replace(/ /g, '_');
+			re = re.replace(/\'/g, '_');
+			re = re.replace(/"/g, '_');
+			re = re.replace(/,/g, '_');
+			re = re.replace(/\[/g, '_');
+			re = re.replace(/\]/g, '_');
+			
+			d3.selectAll(".bar_line_"+re).attr("stroke","white").attr("stroke-width",0.0);
+			//d3.select(this).attr("stroke","white").attr("stroke-width",0.0);
+			
+
+            mouseout();
         })
         .on("mouseover", function (d, i) {
+        	
+        	//d3.select(this).attr("fill", "red");
+            
+            var find = d.Key;
+            /*
+			var res = find.split("_");
+			var re = '';
+			if (res.length>0) {
+				re = res[res.length-1];
+			}
+			*/
+			var re = find.replace(/ /g, '_');
+			re = re.replace(/\'/g, '_');
+			re = re.replace(/"/g, '_');
+			re = re.replace(/,/g, '_');
+			re = re.replace(/\[/g, '_');
+			re = re.replace(/\]/g, '_');
+			
+			d3.selectAll(".bar_line_"+re).attr("stroke","red").attr("stroke-width",0.8);
+            //d3.select(this).attr("stroke","red").attr("stroke-width",0.8);	
+        	        	
+						
             var resolution = 'day';
             var formatXaxe = "%d-%m-%Y";
 
@@ -322,7 +611,7 @@ function wrap(text, width) {
             if (self.resolution == 'day') {
                 startDateToPlot = monthNames[parseInt(resSplit[1])] + " " + parseInt(resSplit[2]) + ", " + resSplit[0];
             } else if (self.resolution == 'month') {
-                startDateToPlot = monthNames[parseInt(resSplit[0])] + ", " + parseInt(resSplit[1]);
+                startDateToPlot = monthNames[parseInt(resSplit[1])] + ", " + parseInt(resSplit[0]);
             } else if (self.resolution == 'year') {
                 startDateToPlot = +parseInt(resSplit[0]);
             } else if (self.resolution == 'quarter') {
@@ -373,7 +662,7 @@ function wrap(text, width) {
 			}
 			return returnValue;
 		});
-
+/*
         var dataForCircles = [];
         for (var i in eventsData) {
             var arrayTemporal = [];
@@ -439,70 +728,11 @@ function wrap(text, width) {
             }).on("click", function (d, i) {
                 
             });
-
+*/
         var cnti = 1;
         var cntiMultiple = 0;
         var incremetY = 0;
-		/*
-		// to plot legend at right
 		
-        xAxisData.forEach(function (d, i) {
-        	
-            var valueX = ((self.width / (xAxisData.length / self.legendsColumn)) * (cntiMultiple));
-            if (cnti % self.legendsColumn == 0) {
-                cntiMultiple = cntiMultiple + 1;
-            }
-
-            var valueY = (self.height) + self.margin.top + 30 + (incremetY) * 20;
-            
-            if (cnti % self.legendsColumn == 0) {
-                incremetY = 0;
-            } else {
-                incremetY = incremetY + 1;
-            }
-			
-            if (self.showLegend) {
-                self.svg.append("rect")
-                //.attr("x", valueX - 10)
-                .attr("x", self.width+7)
-                //.attr("y", valueY - 5)
-                .attr("y", (15*(cnti-1)+8))
-                .attr("width", 5)
-                .attr("height", 5)
-                //.style("fill", color(xAxisData[i]));
-                .style("fill", xAxisDataColor[i]);
-                
-                var trimmedString = xAxisData[i];
-                   var length = 10;
-
-                    if (trimmedString.length > length) {
-                        trimmedString = trimmedString.substring(0, length) + "...";
-                    }
-                   
-                    
-                self.svg.append("text")
-                //.attr("x", function (d, i) {
-                //	return valueX;
-                //})
-                .attr("x", self.width+14)
-                //.attr("y", function (d, i) {
-                //	return valueY;
-                //})
-                .attr("y", (15*(cnti-1)+15))
-                .attr("text-anchor", "center")
-                .attr("text-decoration", "none")
-                .attr("class", "link superior legend value")
-                .attr("font-size", self.font_size)
-                //.style("fill", color(xAxisData[i]))
-                .style("fill", xAxisDataColor[i])
-                //.text(xAxisData[i]);
-                .text(trimmedString);
-            }
-            
-            cnti = cnti + 1;
-            
-		});
-		*/
 	
 		//to plot leggent at bottom
 		 
@@ -525,19 +755,49 @@ function wrap(text, width) {
 			
 			if (showLegend) {
 				
-                var valueX = ((self.maxWidth / (xAxisDataColor.length / self.legendsColumn)) * (cntiMultiple));
-                
+                //var valueX = ((self.maxWidth / (xAxisDataColor.length / self.legendsColumn)) * (cntiMultiple));
+                var valueX = 10;
+
+				if (i==0) {                	
+						//add title of legend
+						self.svg.append("text")
+		                	.attr("x", function (d, i) {
+		                    	return valueX;
+		                	})
+		                	.attr("y", function (d, i) {
+		                    	var valueY = (self.height) + self.margin.top + 30 + (incremetY) * 20;
+								return valueY;
+		                	})
+		                	.attr("text-anchor", "center")
+		                		.attr("class", function() {
+		                	})
+		                	.attr("font-size", self.font_size+1)
+		                	.style("fill", function (d, i) {
+		                    	var colorToReturn = "black";
+		                    	return colorToReturn;
+		                	})
+		                	.text(function (d, i) {
+		                    	var resTRext = "Bars";                    
+		                    return resTRext;
+		                	});
+                	}
                 
                 if ((i+1) % self.legendsColumn == 0) {
                     cntiMultiple = cntiMultiple + 1;
                 }
-
+				/*
                 var valueY = (self.height) + self.margin.top + 50 + (incremetY) * 20;
+                */
+                var valueY = (self.height) + self.margin.top + 30 + (incremetY+1) * 20;
+               
+                /*
                 if ((i+1) % self.legendsColumn == 0) {
                     incremetY = 0;
                 } else {
                     incremetY = incremetY + 1;
                 }
+                */
+               incremetY = incremetY + 1;
 				
                 self.svg.append("rect")
                 .attr("x", valueX - 10)
@@ -555,7 +815,7 @@ function wrap(text, width) {
                 var trimmedString = trimmedStringTmp[0];
                 var fullString = trimmedStringTmp[0];
                 var length = 100;
-
+				/*
                 if (xAxisDataColor.length == 1) {
                     length = 150;
                 } else if (xAxisDataColor.length == 2) {
@@ -575,11 +835,18 @@ function wrap(text, width) {
                 } else {
                     length = 6;
                 }
-
+				
                 if (trimmedString.length > length) {
                     trimmedString = trimmedString.substring(0, length) + "...";
                 }
-
+				*/
+				if (eventsData.length>0) {							
+					var length = 100;
+					if (trimmedString.length > length) {
+						trimmedString = trimmedString.substring(0, length-3) + "...";
+					}
+				}
+                            
                 self.svg.append("text")
                     .attr("x", function (d, i) {
                         return valueX;
@@ -594,11 +861,48 @@ function wrap(text, width) {
                     .style("fill", xAxisDataClonned[i]['color'])
                     .text(trimmedString)
 					.on("mouseover", function () {
+						
+						var find = d.title;
+						/*
+						var res = find.split("_");
+						var re = '';
+						if (res.length>0) {
+							re = res[res.length-1];
+						}
+						*/
+						var re = find.replace(/ /g, '_');
+						re = re.replace(/\'/g, '_');
+						re = re.replace(/"/g, '_');
+						re = re.replace(/,/g, '_');
+						re = re.replace(/\[/g, '_');
+						re = re.replace(/\]/g, '_');
+			
+						d3.selectAll(".bar_line_"+re).attr("stroke","red").attr("stroke-width",0.8);
+			
 						var str = fullString;				
 						tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '</div>');
 					})
 					.on("mouseout", function () {
-						tooltip.style("opacity", 0.0);
+						//tooltip.style("opacity", 0.0);
+						
+						var find = d.title;
+						/*
+						var res = find.split("_");
+						var re = '';
+						if (res.length>0) {
+							re = res[res.length-1];
+						}
+						*/
+						var re = find.replace(/ /g, '_');
+						re = re.replace(/\'/g, '_');
+						re = re.replace(/"/g, '_');
+						re = re.replace(/,/g, '_');
+						re = re.replace(/\[/g, '_');
+						re = re.replace(/\]/g, '_');
+			
+						d3.selectAll(".bar_line_"+re).attr("stroke","white").attr("stroke-width",0.0);
+						
+						mouseout();
                     })					
                     ;
 
@@ -607,6 +911,12 @@ function wrap(text, width) {
             
             
         });
+                
+        if (eventsData.length>0) {
+        	plotEventsBarChart(eventsData);	
+        }
+        
+        
     }
 
 
@@ -713,8 +1023,6 @@ function wrap(text, width) {
 
         self.dataIn = dataIn;
         self.eventsData = eventsData;
-
-        
 
         if (Object.keys(dataIn).length === 0) {
             self.svg.append("text")
