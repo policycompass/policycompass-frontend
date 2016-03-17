@@ -225,6 +225,16 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                                 $(cy.container()).css('cursor', 'default');
                             });
 
+                            //##MOBA## mouse cursor change over an arrow
+                            cy.on('mouseover', 'edge', function (e) {
+                                $(cy.container()).css('cursor', 'pointer');
+                            });
+                            cy.on('mousedown', 'edge', function (e) {
+                                $(cy.container()).css('cursor', 'move');
+                            });
+                            cy.on('mouseout', 'edge', function (e) {
+                                $(cy.container()).css('cursor', 'default');
+                            });
 
 
 
