@@ -972,7 +972,6 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
                 payload.policy_domains = $scope.policy_domains.output;
                 payload.title = $scope.dataset.title;
-                payload.acronym = $scope.dataset.acronym;
                 payload.keywords = $scope.dataset.keywords;
                 payload.license = $scope.dataset.license;
                 payload.description = $scope.dataset.description;
@@ -1123,7 +1122,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
             $scope.deleteDataset = function (dataset) {
                 // Open a confirmation dialog
-                var dlg = dialogs.confirm("Are you sure?", "Do you want to delete the Dataset " + dataset.acronym + " permanently?");
+                var dlg = dialogs.confirm("Are you sure?", "Do you want to delete the Dataset " + dataset.title + " permanently?");
                 dlg.result.then(function () {
                     // Delete the dataset via the API
                     dataset.$delete({}, function () {

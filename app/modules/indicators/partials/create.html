@@ -37,11 +37,6 @@
                             <input type="text" class="form-control" id="title" name="title" placeholder="Indicator Name" ng-model="indicator.name" ng-minlength="3" required>
                         </div>
 
-                        <div class="form-group" ng-class="{'has-error': indicatorForm.acronym.$dirty && indicatorForm.acronym.$invalid}" ng-if="mode == 'create'">
-                            <label for="acronym">Acronym *</label>
-                            <input type="text" class="form-control" id="acronym" name="name" placeholder="Short Name" ng-model="indicator.acronym" ng-minlength="1" required>
-                        </div>
-
                         <div class="form-group" ng-class="{'has-error': indicatorForm.unitCategory.$dirty && indicatorForm.unitCategory.$invalid}">
                             <label for="unitCategory">Unit Category *</label>
                             <div id="unitCategory"
