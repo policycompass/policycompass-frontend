@@ -37,30 +37,22 @@
 
     <link rel="icon" type="image/ico" href="img/favicon.png"/>
 </head>
-<body class="page" scroll ng-class="{fix:CreateMenu}">
+<body onload="showPage()" class="page" scroll ng-class="{fix:CreateMenu}">
+
+    <div class="loading-container loading-container-center" id="loading-container-div">
+        <div class="loading"></div>
+        <div id="loading-text">loading</div>
+    </div>
+
+    <div style="display: none" id="hideAll">
 
     <div ng-include="'header.html'"></div>
-
-    <!--
-    <div class="loadingHome" ng-controller='loadController' ng-init='loadPage()' >
-      <div class="loading-wrap">
-          <div class="loading-container">
-          <div class="loading"></div>
-          <div id="loading-text">loading</div>
-        </div>
-        <div id="loading-logo-wrap">
-          <img src="img/logo-neg.svg" alt="Policy Compass's Logo" id="loading-logo">
-        </div>
-      </div>
-    </div>
-    -->
-
     <div ng-view="" id="main-content"></div>
     <div class="wizardbar" show-Wizard="wizard_help"></div>
     <div ng-include="'footer.html'"></div>
 
-
     <adh-cross-window-channel></adh-cross-window-channel>
+    <script type="text/javascript" src="showPage.js"></script>
 
     <!--  Vendor Libs -->
     <script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
@@ -185,8 +177,7 @@
     <script type="text/javascript" src="modules/feedbacks/controllers/feedbacksController.js"></script>
 
 
-    <!--Multiple inclusions of jquery caused errors with handsontable, so I commented it out (Alan)-->
-
+    </div>
 
 </body>
 </html>
