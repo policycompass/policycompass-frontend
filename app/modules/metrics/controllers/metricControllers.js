@@ -23,6 +23,7 @@ angular.module('pcApp.metrics.controllers.metric', [
 
             $scope.user = Auth;
             $scope.FormulaHelper = FormulaHelper;
+            $scope.sortOptions = [{"name": "Title", "sort": "name"}, {"name": "Date updated", "sort": "-date"}]
 
             if (!$scope.user.state.loggedIn) {
                 $location.path("/login");

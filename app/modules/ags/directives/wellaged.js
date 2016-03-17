@@ -9,14 +9,24 @@ angular.module('pcApp.ags.directives.wellaged', [])
                 restrict: 'AEC',
                 scope: {
                     graph: '=',
+                    editor: '=?',
+                    model: '@',
                     mode: '@'
                 },
                 controller: function($scope) {
-                    window.ssss = $scope;
                     $scope.editor = WellAgEd.createEditor(".wellaged-editor");
 
+                    $scope.editor.on('node:pointerclick', (nodeView) => {
+                        $scope.selectedNode = nodeView;
+
+                        // Need to force $scope update here.
+                        $scope.$apply();
+                    });
+
                     $scope.$watch('graph', function(newGraph, oldGraph) {
-                        $scope.editor.graphFromYAML(newGraph);
+                        if ($scope.editor && newGraph) {
+                            $scope.editor.graphFromYAML(newGraph);
+                        }
                     });
 
                     $scope.addArgument = function() {
@@ -36,6 +46,10 @@ angular.module('pcApp.ags.directives.wellaged', [])
 
                     $scope.runCarneades = function() {
                         $scope.editor.runCarneades();
+                    };
+
+                    $scope.deleteNode = function() {
+                        $scope.editor.deleteNode($scope.selectedNode);
                     };
 
                     $scope.clear = function() {

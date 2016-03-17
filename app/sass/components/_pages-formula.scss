@@ -102,6 +102,16 @@ $text-color: lighten($bk_3_2, 20);
 .input-group {
     &.formula-input-group-padding {
         padding: 5px;
+
+        label {
+            color: gray;
+            font-weight: normal;
+        }
+
+        .btn {
+            height: 34px;
+            width: 100%;
+        }
     }
 }
 
