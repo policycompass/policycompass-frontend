@@ -5,13 +5,13 @@
  */
 
 angular.module('pcApp.fcm.services.fcm', [
-    'ngResource',
-    'pcApp.config'
-])
+        'ngResource',
+        'pcApp.config'
+    ])
 
-/**
- * Factory for the Resource for FCM
- */
+    /**
+     * Factory for the Resource for FCM
+     */
     .factory('Fcm', [
         '$resource', 'API_CONF', function ($resource, API_CONF) {
             // Get the base URL from the configuration
@@ -19,7 +19,7 @@ angular.module('pcApp.fcm.services.fcm', [
 
             return $resource(url, {}, {
                 // Add support for create
-                'create': {method: 'POST'}
+                'create': { method: 'POST' }
             });
         }
     ])
@@ -33,20 +33,20 @@ angular.module('pcApp.fcm.services.fcm', [
                 id: "@id"
             }, {
                 // Array is false due to additional pagination data
-                'show': {method: 'GET'}, // Add support for create
+                'show': { method: 'GET' }, // Add support for create
                 'update': {
                     method: 'PUT',
-                    params: {id: '@id'}
+                    params: { id: '@id' }
                 },
                 'delete': {
                     method: 'DELETE',
-                    params: {id: '@id'}
+                    params: { id: '@id' }
                 }
             });
         }
     ])
 
-// **-*-****
+    // **-*-****
     .factory('FcmSimulation', [
         '$resource', 'API_CONF', function ($resource, API_CONF) {
             // Get the base URL from the configuration
@@ -54,12 +54,12 @@ angular.module('pcApp.fcm.services.fcm', [
 
             return $resource(url, {}, {
                 // Add support for create
-                'create': {method: 'POST'}
+                'create': { method: 'POST' }
             });
         }
     ])
 
-// **-*-****
+    // **-*-****
     .factory('FcmImpactAnalysis', [
         '$resource', 'API_CONF', function ($resource, API_CONF) {
             // Get the base URL from the configuration
@@ -71,16 +71,16 @@ angular.module('pcApp.fcm.services.fcm', [
                 // Add support for create
                 'create': {
                     method: 'POST',
-                    params: {id: '@id'}
+                    params: { id: '@id' }
                 }
             });
         }
     ])
 
 
-/**
- * Factory for the Resource for FCM Concept Activator
- */
+    /**
+     * Factory for the Resource for FCM Concept Activator
+     */
     .factory('FcmActivator', [
         '$resource', 'API_CONF', function ($resource, API_CONF) {
             // Get the base URL from the configuration
@@ -88,7 +88,7 @@ angular.module('pcApp.fcm.services.fcm', [
 
             return $resource(url, {}, {
                 // Add support for create
-                'create': {method: 'POST'}
+                'create': { method: 'POST' }
             });
 
 
@@ -104,11 +104,11 @@ angular.module('pcApp.fcm.services.fcm', [
             }, {
                 'create': {
                     method: 'POST',
-                    params: {id: '@id'}
+                    params: { id: '@id' }
                 },
                 'update': {
                     method: 'POST',
-                    params: {id: '@id'}
+                    params: { id: '@id' }
                 }
             });
 
@@ -125,7 +125,7 @@ angular.module('pcApp.fcm.services.fcm', [
             }, {
                 'delete': {
                     method: 'POST',
-                    params: {id: '@id'}
+                    params: { id: '@id' }
                 }
             });
 
@@ -143,7 +143,7 @@ angular.module('pcApp.fcm.services.fcm', [
                 id: "@id"
             }, {
                 // Add support for update
-                'update': {method: 'PUT'}, // Array is false due to additional pagination data
+                'update': { method: 'PUT' }, // Array is false due to additional pagination data
                 'query': {
                     method: 'GET',
                     isArray: false
@@ -156,9 +156,9 @@ angular.module('pcApp.fcm.services.fcm', [
     ])
 
 
-/**
- * Factory for the Resource for metrics
- */
+    /**
+     * Factory for the Resource for metrics
+     */
     .factory('Metric', [
         '$resource', 'API_CONF', function ($resource, API_CONF) {
             // Get the base URL from the configuration
@@ -172,7 +172,20 @@ angular.module('pcApp.fcm.services.fcm', [
             })
             return Metric;
         }
+    ])
+
+    /**
+     * Factory for the indicator
+     */
+    .factory('FcmIndicator', [
+        '$resource', 'API_CONF', function ($resource, API_CONF) {
+            // Get the base URL from the configuration
+            var url = API_CONF.INDICATOR_SERVICE_URL + "/indicators/:id";
+
+            return $resource(url, {
+                id: "@id"
+            }, {
+                'show': { method: 'GET' },
+            });
+        }
     ]);
-
-
-
