@@ -1,6 +1,6 @@
 <div class="container">
     <div class="content-header">
-        <h1><span class="glyphicon glyphicon-list-alt"></span> {{ models.model.title }}</h1>
+        <h1><span class="glyphicon glyphicon-list-alt"></span>{{ models.model.title }}</h1>
 
         <div class="pc-visualization-formcontrols">
             <a type="button" class="btn btn-primary" data-ng-click="updateModel()" href="#!/models/{{ models.model.id }}/edit">Run Simulation</a>
@@ -30,34 +30,44 @@
             <hr>
             <tabset justified="true">
                 <tab heading="Model Detail">
-                    <table class="table table-hover">
-                        <tr ng-show="models.model.title">
-                            <td><b>Title:</b></td>
-                            <td>{{ models.model.title }}</td>
-                        </tr>
-                        <tr ng-show="models.model.description">
-                            <td><b>Description:</b></td>
-                            <td>{{ models.model.description }}</td>
-                        </tr>
-                        <tr ng-show="models.model.keywords">
-                            <td><b>Keywords:</b></td>
-                            <td>{{ models.model.keywords }}</td>
-                        </tr>
-                        <tr ng-show="models.model.dateAddedtoPC">
-                            <td><b>Issued:</b></td>
-                            <td>{{ models.model.dateAddedtoPC | date:'longDate' }}</td>
-                        </tr>
-                        <tr ng-show="mmodels.model.dateModified">
-                            <td><b>Last Modified:</b></td>
-                            <td>{{ models.model.dateModified | date:'longDate' }}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Rating:</b></td>
-                            <td>
-                                <pc-rating ng-if="models.model.id" rating-id="fuzzymap_{{models.model.id}}"></pc-rating>
-                            </td>
-                        </tr>
-                    </table>
+                    <div class="metadata metadata-event">
+                        <div class="form-group form-group-datasets" ng-if="models.model.title || models.model.description">
+                            <div class="form-item" ng-if="models.model.title">
+                                <div class="field-label">Title</div>
+                                <div class="field-content">{{models.model.title}}</div>
+                            </div>
+                            <div class="form-item" ng-if="models.model.description">
+                                <div class="field-label">Description</div>
+                                <div class="field-content">{{models.model.description}}</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group form-group-modified">
+                            <div class="form-item" ng-if="models.model.dateAddedtoPC">
+                                <div class="field-label">Added</div>
+                                <div class="field-content">{{ models.model.dateAddedtoPC | date:'longDate' }}</div>
+                            </div>
+                            <div class="form-item" ng-if="mmodels.model.dateModified">
+                                <div class="field-label">Modified</div>
+                                <div class="field-content">{{ mmodels.model.dateModified | date:'longDate' }}</div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="metadata metadata-event">
+                        <div class="form-group form-group-keywords" ng-if="models.model.keywords">
+                            <div class="field-label">Keywords</div>
+                            <div class="field-content">{{models.model.keywords}}</div>
+                        </div>
+                        <div class="form-group form-group-rating">
+                            <div class="form-item">
+                                <div class="field-label">Rating</div>
+                                <div class="field-content">
+                                    <pc-rating ng-if="models.model.id" rating-id="visualization_{{models.model.id}}"></pc-rating>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </tab>
 
                 <tab heading="Show Concepts">
