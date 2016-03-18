@@ -484,21 +484,8 @@ policycompass.viz.barsMultiple = function (options) {
 		.attr("class", function (d, i) {
 			
 			var find = d.Key;
-			/*
-			var res = find.split("_");
-			var re = '';
-			if (res.length>0) {
-				re = res[res.length-1];
-			}				
-			*/
-			var re = find.replace(/ /g, '_');
-			re = re.replace(/\'/g, '_');
-			re = re.replace(/"/g, '_');
-			re = re.replace(/,/g, '_');
-			re = re.replace(/\[/g, '_');
-			re = re.replace(/\]/g, '_');
-			
-			//var re = i;
+			var re = find.replace(/[^\w\-\u00A0-\uFFFF]/g,"_");
+
 			var className = "bar bar_line_"+re;
 			return className;
 		})        
@@ -521,52 +508,20 @@ policycompass.viz.barsMultiple = function (options) {
             return d.Color;
         })
         .on("mouseout", function (d, i) {
-            //tooltip.style("opacity", 0.0);
-           	//d3.select(this).attr("fill", d.Color);
            	
-           	var find = d.Key;
-           	/*
-			var res = find.split("_");
-			var re = '';
-			if (res.length>0) {
-				re = res[res.length-1];
-			}
-			*/
-			var re = find.replace(/ /g, '_');
-			re = re.replace(/\'/g, '_');
-			re = re.replace(/"/g, '_');
-			re = re.replace(/,/g, '_');
-			re = re.replace(/\[/g, '_');
-			re = re.replace(/\]/g, '_');
+           	var find = d.Key;           	
+			var re = find.replace(/[^\w\-\u00A0-\uFFFF]/g,"_");
 			
-			d3.selectAll(".bar_line_"+re).attr("stroke","white").attr("stroke-width",0.0);
-			//d3.select(this).attr("stroke","white").attr("stroke-width",0.0);
-			
+			d3.selectAll(".bar_line_"+re).attr("stroke","white").attr("stroke-width",0.0);		
 
             mouseout();
         })
         .on("mouseover", function (d, i) {
-        	
-        	//d3.select(this).attr("fill", "red");
             
-            var find = d.Key;
-            /*
-			var res = find.split("_");
-			var re = '';
-			if (res.length>0) {
-				re = res[res.length-1];
-			}
-			*/
-			var re = find.replace(/ /g, '_');
-			re = re.replace(/\'/g, '_');
-			re = re.replace(/"/g, '_');
-			re = re.replace(/,/g, '_');
-			re = re.replace(/\[/g, '_');
-			re = re.replace(/\]/g, '_');
+            var find = d.Key;            
+			var re = find.replace(/[^\w\-\u00A0-\uFFFF]/g,"_");
 			
-			d3.selectAll(".bar_line_"+re).attr("stroke","red").attr("stroke-width",0.8);
-            //d3.select(this).attr("stroke","red").attr("stroke-width",0.8);	
-        	        	
+			d3.selectAll(".bar_line_"+re).attr("stroke","red").attr("stroke-width",0.8);       	        	
 						
             var resolution = 'day';
             var formatXaxe = "%d-%m-%Y";
@@ -862,44 +817,19 @@ policycompass.viz.barsMultiple = function (options) {
                     .text(trimmedString)
 					.on("mouseover", function () {
 						
-						var find = d.title;
-						/*
-						var res = find.split("_");
-						var re = '';
-						if (res.length>0) {
-							re = res[res.length-1];
-						}
-						*/
-						var re = find.replace(/ /g, '_');
-						re = re.replace(/\'/g, '_');
-						re = re.replace(/"/g, '_');
-						re = re.replace(/,/g, '_');
-						re = re.replace(/\[/g, '_');
-						re = re.replace(/\]/g, '_');
-			
+						var find = d.title;						
+						var re = find.replace(/[^\w\-\u00A0-\uFFFF]/g,"_");
+						
 						d3.selectAll(".bar_line_"+re).attr("stroke","red").attr("stroke-width",0.8);
 			
 						var str = fullString;				
 						tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '</div>');
 					})
 					.on("mouseout", function () {
-						//tooltip.style("opacity", 0.0);
 						
-						var find = d.title;
-						/*
-						var res = find.split("_");
-						var re = '';
-						if (res.length>0) {
-							re = res[res.length-1];
-						}
-						*/
-						var re = find.replace(/ /g, '_');
-						re = re.replace(/\'/g, '_');
-						re = re.replace(/"/g, '_');
-						re = re.replace(/,/g, '_');
-						re = re.replace(/\[/g, '_');
-						re = re.replace(/\]/g, '_');
-			
+						var find = d.title;						
+						var re = find.replace(/[^\w\-\u00A0-\uFFFF]/g,"_");
+						
 						d3.selectAll(".bar_line_"+re).attr("stroke","white").attr("stroke-width",0.0);
 						
 						mouseout();
