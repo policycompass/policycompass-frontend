@@ -139,7 +139,7 @@ angular.module('pcApp.indicators.controllers.indicator', [
             // Function for deleting the indicator
             $scope.deleteIndicator = function (indicator) {
                 // Open a confirmation dialog
-                var dlg = dialogs.confirm("Are you sure?", "Do you want to delete the Indicator " + indicator.acronym + " permanently?");
+                var dlg = dialogs.confirm("Are you sure?", "Do you want to delete the Indicator " + indicator.name + " permanently?");
                 dlg.result.then(function () {
                     // Delete the metric via the API
                     indicator.$delete({}, function () {
