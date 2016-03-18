@@ -314,6 +314,24 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 key: false,
                 back: 'static'
             });
+
+            // muti policydomain selection
+            setTimeout(function () {
+                $("#policyDomain").mousedown(function (e) {
+                    e.preventDefault();
+                    var select = this;
+                    var scroll = select.scrollTop;
+
+                    e.target.selected = !e.target.selected;
+
+                    setTimeout(function () { select.scrollTop = scroll; }, 0);
+
+                    $(select).focus();
+                    $(this).trigger('change');
+                }).mousemove(function (e) { e.preventDefault() });
+            }, 300);
+
+
             dlg.result.then(function (user) {
                 $scope.Models.push(user);
 
