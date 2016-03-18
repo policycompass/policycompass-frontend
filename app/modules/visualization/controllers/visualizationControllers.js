@@ -14,7 +14,6 @@ angular.module('pcApp.visualization.controllers.visualization', [
                             var data = {
                                 id: metricId,
                                 title: metric.title,
-                                acronym: metric.acronym,
                                 issued: metric.issued,
                                 indicator: metric.indicator_id,
                             };
@@ -492,13 +491,15 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
 					$scope.plotdataoptions = [
                         {
-                            label: 'At beginning of the period',
+                            label: 'at the beginning of period',
                             value: 'first'
-                        }, {
-                            label: 'At middle of the period',
-                            value: 'middle'
-                        }, {
-                            label: 'At end of the period',
+                        },
+                        {
+                    		label: 'in the middle of period',
+                        	value: 'middle'
+                    	},
+                        {
+                            label: 'at the end of period',
                             value: 'last'
                         }
                     ];
@@ -949,7 +950,6 @@ angular.module('pcApp.visualization.controllers.visualization', [
                             var data = {
                                 id: metric.id,
                                 title: metric.title,
-                                acronym: metric.acronym,
                                 issued: metric.issued,
                             };
 
@@ -2483,7 +2483,6 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                                             if ($scope.TitleIndividuals[arguments[i]['data']['table'][j].individual] != arguments[i]['data']['table'][j].individual) {
 																/*
 																if (arguments.length>2) {
-                                                                	//var str = arguments[i].acronym;
                                                                 	var str = arguments[i].title;
                                                                 	var key = $scope.TitleIndividuals[arguments[i]['data']['table'][j].individual] + " [" + str + "] _" + j;
 																}
@@ -2498,7 +2497,6 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                                         $sem = $sem + 1;
 
                                                         if ($sem > 100000) {
-                                                            //var str = arguments[i].acronym;
                                                             var str = arguments[i].title;
                                                             var key = arguments[i]['data']['table'][j].individual + " [" + str + "] _" + j;
                                                         }
@@ -2548,7 +2546,6 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                                     $sem = 0;
                                                     while (label == "") {
                                                         if ($scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]) {
-                                                            //var str = arguments[i].acronym;
                                                             
                                                             if (arguments.length>2) {
 																var str = arguments[i].title;
@@ -2561,7 +2558,6 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                                         $sem = $sem + 1;
 
                                                         if ($sem > 100000) {
-                                                            var str = arguments[i].acronym;
                                                             var str = arguments[i].title;
                                                             var label = arguments[i]['data']['table'][j].individual + " [" + str + "]";
                                                         }
@@ -2626,19 +2622,21 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                                     $sem = 0;
                                                     while (key == "") {
                                                         if ($scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]) {
+                                                        	/*
                                                         	if (arguments.length>2) {
-                                                            	//var str = arguments[i].acronym;
 																var str = arguments[i].title;
                                                             	var key = $scope.TitleIndividuals[arguments[i]['data']['table'][j].individual] + " [" + str + "]_" + j;
                                                            	}
                                                            	else {
                                                            		var key = $scope.TitleIndividuals[arguments[i]['data']['table'][j].individual] + " _" + j;
                                                            	}
+                                                           	*/
+                                                           	var str = arguments[i].title;
+                                                            var key = $scope.TitleIndividuals[arguments[i]['data']['table'][j].individual] + " [" + str + "]_" + j;
                                                         }
                                                         $sem = $sem + 1;
 
                                                         if ($sem > 100000) {
-                                                            //var str = arguments[i].acronym;
 															var str = arguments[i].title;
                                                             var key = arguments[i]['data']['table'][j].individual + " [" + str + "]_" + j;
 
@@ -2953,17 +2951,38 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                                 numbers1 = arrayDataset;
                                 var datasetToSend = numbers1;
+                                
+                                /*
                                 var legendsColumn = 0;
                                 if ($scope.showLegend) {
                                     legendsColumn = Math.ceil(numbers1.length / 9);
                                 } else {
                                     legendsColumn = 0;
                                 }
-
-                                if ($scope.list) {
+								*/                                
+								
+								legendsColumn = 0	
+								if ($scope.showLegend) {							
+									var arrayKeys = [];
+									angular.forEach(numbers1, function(value, key) {
+	  									var a = arrayKeys.indexOf(value.Key);
+	  									if (a<0) {
+	  										arrayKeys.push(value.Key);
+	  										legendsColumn = legendsColumn + 1; 
+	  									}
+									});
+									
+									if ($scope.eventsToPlot.length>legendsColumn) {
+										legendsColumn = $scope.eventsToPlot.length;
+									}
+									
+									legendsColumn = legendsColumn + 1;
+								}
+								if ($scope.list) {
                                     legendsColumn = 0;
                                 }
-								
+                                
+                                //console.log("legendsColumn="+legendsColumn);
 								
                                 var margin = {
                                     top: 20,
@@ -2971,11 +2990,15 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                     bottom: 55 + (legendsColumn) * 20,
                                     left: 44
                                 };
+                                
+                                //console.log(margin)
+                                
                                 var width = 980;// - margin.left - margin.right;
                                 var height = 326;
 
                                 var font_size = 11;
-
+								var radiouspoint = 4;
+								
                                 if ($scope.list) {
                                     width = width / 5;
                                     height = height / 5;
@@ -2984,6 +3007,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                     margin.bottom = margin.bottom / 5;
                                     margin.left = margin.left / 5;
                                     font_size = font_size / 5;
+                                    radiouspoint = radiouspoint / 5;
                                     $scope.showLegend = false;
                                 }
 
@@ -3006,8 +3030,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                         'margin': margin,
                                         'labelX': "",
                                         'labelY': labelYAxe,
-                                        'radius': 4,
                                         'font_size': font_size,
+                                        'radius': radiouspoint,
                                         'showLegend': $scope.showLegend,
                                         'showLines': $scope.showLines,
                                         'showAreas': $scope.showAreas,
@@ -3018,7 +3042,36 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                         'resolution': $scope.resolution.value,
                                         'showAsPercentatge': $scope.showAsPercentatge,
                                     });
-                                    barObj.render(datasetToSend, eventsArray);
+                                    //barObj.render(datasetToSend, eventsArray);
+                                    
+                                    if ($scope.eventsToPlot.length==0) {
+                                    	barObj.render(datasetToSend, $scope.eventsToPlot);	
+                                    }
+                                    else {
+										$scope.$watchCollection('eventsToPlot', function (eventsToPlot) {                        
+											
+											var plotChart = true;
+											angular.forEach($scope.eventsToPlot, function(value, key) {
+  												if (!value.startDate) {
+  													plotChart = false;
+  												}
+											});
+											
+											if (plotChart) {
+												
+												if (document.getElementById("container_graph_" + $scope.visualization.id) != null) {
+                                        			document.getElementById("container_graph_" + $scope.visualization.id).innerHTML = "";
+                                    			} else {
+                                        			document.getElementById("container_graph_").innerHTML = "";
+                                    			}
+												
+												barObj.render(datasetToSend, $scope.eventsToPlot);
+											}											
+											
+										});                                    	
+                                    }
+                                    
+                                    
                                 }
                             }
                         }

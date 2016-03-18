@@ -1947,13 +1947,13 @@ policycompass.viz.line = function (options) {
 								if (self.resolution != 'day') {
 									
 									if (self.plotDataIn=='first') {
-										extrastring = 'Data at begin of ';
+										extrastring = 'Data at the beginning of ';
 									}
 									else if (self.plotDataIn=='middle') {
-										extrastring = 'Data at middle of ';
+										extrastring = 'Data in the middle of ';
 									}
 									else if (self.plotDataIn=='last') {
-										extrastring = 'Data at end of ';
+										extrastring = 'Data at the end of ';
 									}								
 								}
 							}
@@ -2133,9 +2133,18 @@ policycompass.viz.line = function (options) {
 							d3.selectAll(".event_circle_" + d.index).style("stroke-width", self.radius);
 	                    })
 	                    .text(function (d, i) {
-	                        var resTRext = d.title;
-	                        
+	                    	/*
+	                        var resTRext = d.title;	                        
 	                        return resTRext;
+	                        */
+	                        var trimmedString = d.title;
+            				var length = 80;
+            				if (trimmedString.length > length) {
+								trimmedString = trimmedString.substring(0, length) + "...";
+							}
+            
+            				return trimmedString;
+            				
 	                    })
 	                    .on("click", function () {
 	                        
