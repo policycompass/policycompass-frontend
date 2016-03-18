@@ -628,10 +628,11 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             // resetting the form
         };
         if ($routeParams.indicator != null) {
-            angular.forEach($routeParams.indicator, function (indicator) {
+            var indicators = (angular.isArray($routeParams.indicator)) ? $routeParams.indicator : [$routeParams.indicator];
+            angular.forEach(indicators, function (indicator) {
                 console.log(indicator);
                 FcmIndicator.show({ id: indicator }, function (res) {
-                    $scope.addObjAutomatic(res.name, res.description)
+                    $scope.addObjAutomatic(res.name, res.description);
                     console.log(res);
                 }, function (err) {
                     throw { message: err.data };
