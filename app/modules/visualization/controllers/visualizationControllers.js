@@ -212,7 +212,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	                        }
 	
 	                    }, function (error) {
-	                        throw {message: JSON.stringify(error.data.message)};
+	                        throw {message: error.data.message || JSON.stringify(error.data)};
 	                    });
                 	};
 
@@ -1008,7 +1008,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                             }
 
                         }, function (error) {
-                            throw {message: JSON.stringify(error.data.message)};
+                            throw {message: error.data.message || JSON.stringify(error.data)};
                         });
                     };
 
@@ -1654,7 +1654,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	                				}
 									
             					}, function (error) {
-                					throw {message: JSON.stringify(error.data.message)};
+                					throw {message: error.data.message || JSON.stringify(error.data)};
             					});
 							}
 							else {
@@ -3267,7 +3267,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                 }
 
             }, function (error) {
-                //throw {message: JSON.stringify(error.data.message)};                
+                //throw {message: error.data.message || JSON.stringify(error.data)};                
                 $location.path('/visualizations');
             });
 
@@ -3299,7 +3299,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                 page: $routeParams.page
             }, function (visualizationList) {
             }, function (error) {
-                throw {message: JSON.stringify(error.data.message)};
+                throw {message: error.data.message || JSON.stringify(error.data)};
             });
 
         }
@@ -3315,7 +3315,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
             $scope.visualization = Visualization.get({id: $routeParams.visualizationId}, function (visualizationList) {
             }, function (error) {
-                throw {message: JSON.stringify(error.data.message)};
+                throw {message: error.data.message || JSON.stringify(error.data)};
             });
 
             $scope.deleteVisualization = function (visualization) {
@@ -3442,8 +3442,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 								
 				
             }, function (error) {
-                //throw {message: JSON.stringify(error.data.message)};
-                //console.log (JSON.stringify(error.data.message));
+                //throw {message: error.data.message || JSON.stringify(error.data)};
+                //console.log (JSON.stringify(error.data));
             });
 
 
@@ -4427,7 +4427,7 @@ angular.module('pcApp.visualization').filter('pagination', function () {
                                         var eventId = visualizationList.historical_events_in_visualization[i].historical_event_id;
                                         $scope.herec = Event.get({id: eventId}, function (herec) {
 
-                                            var arrayDatos = []
+                                            var arrayDatos = [];
                                             arrayDatos['_source'] = herec;
 
                                             if ($scope.arrayHE.indexOf(herec.id) == -1) {
@@ -4443,10 +4443,10 @@ angular.module('pcApp.visualization').filter('pagination', function () {
                                     } else {
                                     	//element not found
                                     }
-                                };
+                                }
                             }
                         }, function (error) {
-                            throw {message: JSON.stringify(error.data.message)};
+                            throw {message: error.data.message || JSON.stringify(error.data)};
                         });
                     }
                     $scope.showLoading = false;

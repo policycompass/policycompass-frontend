@@ -90,7 +90,7 @@ angular.module('pcApp.ags.controllers.ag', [
                     $location.path('/ags/' + value.id);
                 }, function(err) {
                     throw {
-                        message: err.data
+                        message: JSON.stringify(err.data)
                     };
                 });
             };
@@ -127,7 +127,7 @@ angular.module('pcApp.ags.controllers.ag', [
                     $location.path('/ags/' + value.id);
                 }, function(err) {
                     throw {
-                        message: err.data
+                        message: JSON.stringify(err.data)
                     };
                 });
             };
