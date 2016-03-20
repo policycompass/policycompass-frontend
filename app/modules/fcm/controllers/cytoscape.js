@@ -333,12 +333,12 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                     FcmSearchUpdate.create({ id: value.model.id }, function () {
                         var dlg = dialogs.notify("Causal Model", "'" + user.title + "' Casual Model has been saved!");
                     }, function (err) {
-                        throw { message: err.data };
+                        throw { message: JSON.stringify(err.data) };
                     });
                     $scope.md = value;
                     $location.path('/models/' + value.model.id + '/edit');
                 }, function (err) {
-                    throw { message: err.data };
+                    throw { message: JSON.stringify(err.data) };
                 });
             }, function () {
                 $scope.name = 'You decided not to enter in your name, that makes me sad.';
@@ -369,12 +369,12 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 FcmSearchUpdate.update({ id: $routeParams.fcmId }, function () {
                     var dlg = dialogs.notify("Causal Model", "'" + value.model.title + "' Casual Model has been saved!");
                 }, function (err) {
-                    throw { message: err.data };
+                    throw { message: JSON.stringify(err.data) };
                 });
                 //			$scope.md = value;
                 $window.location.reload();
             }, function (err) {
-                throw { message: err.data };
+                throw { message: JSON.stringify(err.data) };
             });
         };
 
@@ -438,7 +438,6 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             $scope.SimulationConcepts.forEach(function (data) {
                 if (data.metricId == 0) {
                     throw { message: "You need to link all the concepts to datasets" };
-                    return false;
                 }
             });
 
@@ -574,7 +573,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
                 //	$scope.md = $scope.dataset;
             }, function (err) {
-                throw { message: err.data };
+                throw { message: JSON.stringify(err.data) };
             });
 
             //dlg = dialogs.create('/dialogs/runsimulation.html','RunSimulationController',{},{key: false,back: 'static'});
@@ -635,7 +634,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                     $scope.addObjAutomatic(res.name, res.description);
                     console.log(res);
                 }, function (err) {
-                    throw { message: err.data };
+                    throw { message: JSON.stringify(err.data) };
                 });
             });
         }
@@ -1376,7 +1375,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                     $scope.ImpactAnalysisResults.push(ConceptResults);
                 }
             }, function (err) {
-                throw { message: err.data };
+                throw { message: JSON.stringify(err.data) };
             });
 
         }; // end Single Impact Analysis
@@ -1460,7 +1459,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 };
                 $scope.selectedConceptOutput.push(IterationResults);
             }, function (err) {
-                throw { message: err.data };
+                throw { message: JSON.stringify(err.data) };
             });
 
         }; // end Impact of Two Concepts
@@ -1569,7 +1568,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
                 }, function (error) {
                     //alert(error.data.message);
-                    throw { message: JSON.stringify(error.data.message) };
+                    throw { message: error.data.message || JSON.stringify(error.data) };
                 });
             };
 
