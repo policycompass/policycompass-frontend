@@ -1011,6 +1011,21 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             $rootScope.$broadcast('appChanged');
         };
 
+        // The help text should be open when user click the question mark and should be closed if user click outside
+        $('body').unbind('mouseup');
+        $('body').mouseup(function (e) {
+            for (var i = 0; i < 10; i++) {
+                i = i == 0 ? '' : i;
+                var container = $('[ng-class="{active: help' + i + '}"]');
+                var click = $('[ng-click="help' + i + '=!help' + i + '"]');
+                if (container.length > 0 && click.length > 0)
+                    if ((!container.is(e.target) || !click.is(e.target)) && container.has(e.target).length === 0) {
+                        if (container.attr('class').indexOf(' active') != -1)
+                            $(click[0]).trigger('click');
+                    }
+                i = i == '' ? 0 : i;
+            }
+        });
     })
 
     .controller('helpController', function ($scope, $modalInstance, $log, $routeParams, data) {
@@ -1613,4 +1628,4 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
             $scope.loadDataCombos($scope.metric.id, "", "");
         }
-    ])
+    ]);
