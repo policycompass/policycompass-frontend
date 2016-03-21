@@ -1,0 +1,13 @@
+<div class="modal-header">
+    <h4 class="modal-title">Edit Metrics</h4>
+</div>
+<div class="modal-body">
+    <ng-form name="nameDialog" novalidate role="form">
+        <div class="form-group input-group-lg" ng-class="{true: 'has-error'}[nameDialog.username.$dirty && nameDialog.username.$invalid]">
+            <div id="filterMetrics" class="selectorMetrics" metrics-list="user.ListMetricsFilter" number-Max-Metrics="1" functionformetric="save()"></div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
+        </div>
+    </ng-form>
+</div>
