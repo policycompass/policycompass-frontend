@@ -31,6 +31,8 @@ angular.module('pcApp.common.controllers', [])
 
     .controller('CommonController', [
         '$scope', '$location', function ($scope, $location) {
+            $scope.hideLoader = true;
+
             $scope.isActive = function (viewLocation) {
                 return viewLocation === $location.path();
             };

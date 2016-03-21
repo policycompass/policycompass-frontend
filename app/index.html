@@ -38,29 +38,25 @@
     <link rel="icon" type="image/ico" href="img/favicon.png"/>
 </head>
 <body class="page" scroll ng-class="{fix:CreateMenu}">
-
-    <div ng-include="'header.html'"></div>
-
-    <!--
-    <div class="loadingHome" ng-controller='loadController' ng-init='loadPage()' >
-      <div class="loading-wrap">
-          <div class="loading-container">
-          <div class="loading"></div>
-          <div id="loading-text">loading</div>
+    <noscript>
+        <div class="alert alert-danger">
+            <p class="text-center"><strong>No Javascript detected!</strong> Your browser does not support JavaScript and Policy Compass requires it.</p>
         </div>
-        <div id="loading-logo-wrap">
-          <img src="img/logo-neg.svg" alt="Policy Compass's Logo" id="loading-logo">
-        </div>
-      </div>
+    </noscript>
+
+    <div class="loading-container loading-container-center" id="loading-container-div" ng-hide="hideLoader">
+        <div class="loading"></div>
+        <div id="loading-text">loading</div>
     </div>
-    -->
 
-    <div ng-view="" id="main-content"></div>
-    <div class="wizardbar" show-Wizard="wizard_help"></div>
-    <div ng-include="'footer.html'"></div>
+    <div id="page-container" class="ng-hide" ng-show="hideLoader">
+        <div ng-include="'header.html'"></div>
+        <div ng-view="" id="main-content"></div>
+        <div class="wizardbar" show-Wizard="wizard_help"></div>
+        <div ng-include="'footer.html'"></div>
 
-
-    <adh-cross-window-channel></adh-cross-window-channel>
+        <adh-cross-window-channel></adh-cross-window-channel>
+    </div>
 
     <!--  Vendor Libs -->
     <script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
@@ -183,10 +179,5 @@
     <script type="text/javascript" src="modules/feedbacks/services/feedbacksService.js"></script>
     <script type="text/javascript" src="modules/feedbacks/directives/feedbacksDirectives.js"></script>
     <script type="text/javascript" src="modules/feedbacks/controllers/feedbacksController.js"></script>
-
-
-    <!--Multiple inclusions of jquery caused errors with handsontable, so I commented it out (Alan)-->
-
-
 </body>
 </html>
