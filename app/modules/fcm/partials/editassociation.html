@@ -1,0 +1,31 @@
+<div class="modal-header">
+    <h4 class="modal-title">Edit Relationship</h4>
+</div>
+<div class="modal-body">
+    <ng-form name="nameDialog" novalidate role="form">
+        <div class="form-group" ng-class="{true: 'has-error'}[nameDialog.username.$dirty && nameDialog.username.$invalid]">
+            <label class="control-label" for="source">Source Concept *</label>
+            <select class="form-control" name="source" id="source" ng-model="user.source" ng-options="concept.title for concept in Concepts" required></select>
+            <br/>
+            <label class="control-label" for="destination">Destination Concept *</label>
+            <select class="form-control" name="destination" id="destination" ng-model="user.destination" ng-options="concept.title for concept in Concepts" required></select>
+            <br/>
+            <label class="control-label" for="destination">Weight</label>
+            <select class="form-control" name="weight" id="weight" ng-model="user.weight" required>
+                <option value="1">Very Strong Positive (1.0)</option>
+                <option value="0.75">Strong Positive (0.75)</option>
+                <option value="0.5">Weak Positive (0.5)</option>
+                <option value="0.25">Very Weak Positive (0.25)</option>
+                <option value="-0.25">Very Weak Negative (-0.25)</option>
+                <option value="-0.5">Weak Negative (-0.5)</option>
+                <option value="-0.75">Strong Negative (-0.75)</option>
+                <option value="-1">Very Strong Negative (-1.0)</option>
+            </select>
+        </div>
+    </ng-form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
+    <button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button>
+    <button type="button" class="btn btn-danger" ng-click="delete()">Delete</button>
+</div>
