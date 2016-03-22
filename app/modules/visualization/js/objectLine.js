@@ -48,6 +48,13 @@ policycompass.viz.line = function (options) {
         self.resolution = 'day';
     }
 
+	if (self.resolution=='day') {
+		self.plotDataIn = '';
+		self.tickposition = '';
+	}
+	
+	//console.log(self.tickposition);
+
 	self.alphabetical_sort_object_of_objects_lines = function(data, attr, sort) {
             var arr = [];
             for (var prop in data) {
@@ -104,11 +111,12 @@ policycompass.viz.line = function (options) {
         }
     }
 
-
+	/*
     function make_x_axis() {
         return d3.svg.axis().scale(self.xScale).orient("bottom").ticks(20)
     }
-
+	*/
+	
     function make_y_axis() {
         return d3.svg.axis().scale(self.y).orient("left").ticks(20)
     }
@@ -347,8 +355,13 @@ policycompass.viz.line = function (options) {
             }
 
             self.lengthArrayXaxesLabel = arrayXaxesLabel.length;
+            self.arrayXaxesLabel = arrayXaxesLabel;
         });
 
+
+    	function make_x_axis() {
+        	return d3.svg.axis().scale(self.xScale).orient("bottom").ticks(self.lengthArrayXaxesLabel-1)
+    	}
 
         if (!lines[0].ValueY) {
             lines[0].ValueY = 1;
@@ -566,30 +579,47 @@ policycompass.viz.line = function (options) {
             if (self.resolution == 'quarter') {
 								
                 var xAxis = d3.svg.axis().scale(self.xScale).orient("bottom")
-                    .ticks(d3.time.month, 3)
+                    //.ticks(d3.time.month, 3)
+                    .ticks(self.lengthArrayXaxesLabel-1)
                     .tickFormat(function (x) {
-                        var milli = (x.getTime());
-                        var vanilli = new Date(milli);
-                        var mon = vanilli.getMonth();
-                        var yr = vanilli.getFullYear();
-
-                        if (mon <= 2) {
-                            return "Q1 " + yr;
-                        } else if (mon <= 5) {
-                            return "Q2 " + yr;
-                        } else if (mon <= 8) {
-                            return "Q3 " + yr;
-                        } else {
-                            return "Q4 " + yr;
+                    	
+                    	if (self.tickposition.value=='middle') {
+                    		return '';
+                    	}
+                    	else {
+	                        var milli = (x.getTime());
+	                        var vanilli = new Date(milli);
+	                        var mon = vanilli.getMonth();
+	                        var yr = vanilli.getFullYear();
+	
+	                        if (mon <= 2) {
+	                            return "Q1 " + yr;
+	                        } else if (mon <= 5) {
+	                            return "Q2 " + yr;
+	                        } else if (mon <= 8) {
+	                            return "Q3 " + yr;
+	                        } else {
+	                            return "Q4 " + yr;
+	                        }
                         }
                     });
 
             } else {
-
-                var xAxis = d3.svg.axis().scale(self.xScale).orient("bottom")
-                    .ticks(self.lengthArrayXaxesLabel)
-                    .tickFormat(d3.time.format(formatXaxe))
+				
+				var xAxis = d3.svg.axis().scale(self.xScale).orient("bottom")
+                    .ticks(self.lengthArrayXaxesLabel-1)
+                    .tickFormat(d3.time.format(formatXaxe))                    
                     ;
+                    
+                if (self.tickposition) {                
+					if (self.tickposition.value=='middle') {
+                		var xAxis = d3.svg.axis().scale(self.xScale).orient("bottom")
+                    	.ticks(self.lengthArrayXaxesLabel-1)
+                    	.tickFormat(function (d) { return ''; })
+                    	;
+					}
+				}
+
             }
 
 
@@ -864,6 +894,14 @@ policycompass.viz.line = function (options) {
 
 			if (cntpasadas==2) {
 				plotEvents(eventsData, colorScaleForHE, getDate);
+				
+				if (showLabels) {
+					if (self.tickposition) {
+						if (self.tickposition.value=='middle') {
+							plotNewXAxe(getDate);
+						}
+					}
+				}
 			}
 
             self.legendText = "";
@@ -1890,7 +1928,7 @@ policycompass.viz.line = function (options) {
 
                             var endDateToPlot = "";
                             if (self.xaxeformat == 'sequence') {
-                                endDateToPlot = resX;
+                                endDateToPlot = parseInt(resX);
                             } else {
                                 if (self.resolution == 'day') {
                                     endDateToPlot = monthNames[parseInt(resSplit[1])] + " " + parseInt(resSplit[2]) + ", " + resSplit[0];
@@ -2025,7 +2063,155 @@ policycompass.viz.line = function (options) {
 
     }
 
+	var plotNewXAxe = function (getDate) {
+		
+		var newXLabel = self.svg.selectAll("rectangles").data(self.arrayXaxesLabel);
 
+		newXLabel.enter().append("text")
+			.attr("class", "x axis")
+			.attr("font-size", self.font_size)
+			.text(function (d, i) {
+				var textToReturn = '';
+				
+				var resSplit = d.split("-");
+				
+				if (self.resolution == 'year') {
+					textToReturn = resSplit[0];
+				}
+				else if (self.resolution == 'month') {
+					textToReturn = resSplit[1]+"-"+resSplit[0];
+				}
+				else if (self.resolution == 'day') {
+					textToReturn = resSplit[2]+"-"+resSplit[1]+"-"+resSplit[0];
+				}
+				else if (self.resolution == 'quarter') {
+					textToReturn = resSplit[1]+" "+resSplit[0]
+				}
+				return textToReturn;	
+			})
+			.style("text-anchor", "end")
+			.attr("transform", function (d, i) {
+				
+				var newDate = d;
+				var posXToPlot_ini = self.xScale(getDate(newDate));
+				
+				//var posXToPlot_ini = self.xScale((d));
+				if (self.resolution == 'quarter') 
+				{
+					var resX = d;
+					var arrayObjDateIni = resX.split("-");
+
+					if (self.arrayXaxesLabel.length>(i+1)) {
+						var resX2 = self.arrayXaxesLabel[parseInt(i)+1];
+						var arrayObjDateFin = resX2.split("-");
+                   	}
+                   	else {
+                   		//var resX2 = self.arrayXaxesLabel[parseInt(i)-1];
+						//var arrayObjDateFin = resX2.split("-");
+						var arrayObjDateFin = [];
+                   	}
+                    
+                    
+                    for (j=1; j<=2; j++) {
+                    	var arrayObjDate = [];
+                    	if (j==1) {
+                    		arrayObjDate = arrayObjDateIni;	
+                    	}
+                    	else {
+                    		arrayObjDate = arrayObjDateFin;
+                    	}
+                    	
+	                    var newMonth = 1;
+
+	                    if ((arrayObjDate[1] == 'Q1') || (arrayObjDate[1] == 'Q2') || (arrayObjDate[1] == 'Q3') || (arrayObjDate[1] == 'Q4')) {
+	                        var Q = arrayObjDate[1].replace("Q", "");
+	
+	                        newMonth = parseInt((Q * 3) - 2);
+	                        if (newMonth < 10) {
+	                            newMonth = "0" + newMonth;
+	                        }
+	
+							if (self.plotDataIn=='first') {
+	                        	var dateToPush = newMonth + "-01-" + arrayObjDate[0];
+	                        }
+	                        else if (self.plotDataIn=='middle') {
+	                        	newMonth = 	parseInt(newMonth)+1;
+								if (newMonth < 10) {
+	                            	newMonth = "0" + newMonth;
+	                        	}
+	                        	
+								var dateToPush = newMonth + "-15-" + arrayObjDate[0];
+							}
+							else if (self.plotDataIn=='last') {
+								var lastDay = 31;
+								newMonth = 	parseInt(newMonth)+2;
+								if (newMonth < 10) {
+	                            	newMonth = "0" + newMonth;
+	                        	}
+	                        	
+								if ((newMonth==6) || (newMonth==9) ) {
+									lastDay = 30;
+								}			
+											
+								var dateToPush = newMonth + "-"+lastDay+"-" + arrayObjDate[0];
+							}
+							else {
+								var dateToPush = newMonth + "-01-" + arrayObjDate[0];
+							}
+							
+							if (j==1) {
+                    			
+                    			var posXToPlot_ini = self.xScale(getDate(dateToPush));	
+                    		}
+                    		else {
+                    			
+                    			var posXToPlot_fin = self.xScale(getDate(dateToPush));
+                    		}
+							
+							//posXToPlot_fin = 300 * i;
+							//posXToPlot_ini = 1;
+							
+	                    }
+	                    else {
+	                    	posXToPlot_fin = 10000;
+	                    }
+					}
+					
+					posXToPlot_ini = posXToPlot_ini + (posXToPlot_fin-posXToPlot_ini)/2;
+					
+                }
+				else {
+				
+					if (self.arrayXaxesLabel.length>(parseInt(i)+1)) {
+						//console.log(i);
+						var newDate2 = self.arrayXaxesLabel[parseInt(i)+1];
+						var posXToPlot_fin = self.xScale(getDate(newDate2));
+						//var posXToPlot_fin = self.xScale((self.arrayXaxesLabel[parseInt(i)+1]));
+						posXToPlot_ini = posXToPlot_ini + (posXToPlot_fin-posXToPlot_ini)/2;
+					}
+					else {
+						var newDate2 = self.arrayXaxesLabel[parseInt(i)-1];
+						var posXToPlot_fin = self.xScale(getDate(newDate2));
+						posXToPlot_ini = posXToPlot_ini + (posXToPlot_ini-posXToPlot_fin)/2;
+						//var posXToPlot_fin = self.width*2;
+					}
+
+					if (posXToPlot_ini<5) {
+						posXToPlot_ini = -100;
+					}
+					else if (posXToPlot_ini>self.width+self.margin.left) {
+						posXToPlot_ini = self.width*2;
+					}
+				}
+				var posY = self.height+15;
+				return "translate("+posXToPlot_ini+","+posY+") rotate(-25)"
+			})
+			;
+            		
+		
+		
+	}
+	
 	var plotEvents = function (eventsData, colorScaleForHE, getDate) {
 		
 		/*************Ini plot historical events *******/
@@ -2562,11 +2748,13 @@ policycompass.viz.line = function (options) {
                 }
                 
                 
-                
-                if (eventsData.length==0)
-                {
-                	self.plotDataIn = 'first';
+                if (eventsData) {
+	                if (eventsData.length==0)
+	                {
+	                	self.plotDataIn = 'first';
+	                }                	
                 }
+
 
 				//order by time dif
 				newEventData = self.alphabetical_sort_object_of_objects_lines(newEventData, 'timediff', 'desc');                
