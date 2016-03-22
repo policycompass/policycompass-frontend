@@ -34,12 +34,6 @@ angular.module('pcApp.datasets.directives.eurostatImport', []).directive('eurost
                     var start = (scope.currentPage - 1) * scope.itemsPerPage;
                     scope.eurostatStart = start;
                     handlePageResults(scope.eurostatTotalSearchResults);
-                    goToTop();
-                };
-
-                var goToTop = function(){
-                    $location.hash('eurostat_search');
-                    $anchorScroll();
                 };
 
                 scope.loadResource = function (dataset, filters) {
@@ -107,7 +101,6 @@ angular.module('pcApp.datasets.directives.eurostatImport', []).directive('eurost
                     for(var i = scope.eurostatStart; i<length; i++){
                         scope.eurostatSearchResults[i-scope.eurostatStart] = result[i];
                     }
-
                 }
 
                 scope.searchForDatabase = function (term) {
