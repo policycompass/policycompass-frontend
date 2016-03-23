@@ -360,6 +360,15 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 }
             };
 
+            $scope.databaseSelection = {
+                isVisible: false,
+                toggleVisibility: function () {
+                    $scope.databaseSelection.isVisible = !$scope.databaseSelection.isVisible;
+                    if ($scope.databaseSelection.isVisible)
+                        $scope.dropzone.isCollapsed = true;
+                }
+            };
+
 
             $scope.clearGrid = function () {
                 var dlg = dialogs.confirm("Are you sure?", "Do you really want to clear the Dataset Content?");

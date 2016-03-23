@@ -8,7 +8,7 @@
                     <button type="button" class="btn btn-file" ng-click="dropzone.isCollapsed = !dropzone.isCollapsed">
                         From File
                     </button>
-                    <button type="button" class="btn btn-import-ckan" ng-click="ckanImport.toggleVisibility(); eurostatImport.toggleVisibility()">
+                    <button type="button" class="btn btn-import-ckan" ng-click="databaseSelection.toggleVisibility(); ckanImport.isVisible = false; eurostatImport.isVisible = false;">
                         Import From External Resources
                     </button>
                 </div>
@@ -26,6 +26,36 @@
         <div id="pc-dropzone-container" ng-show="!dropzone.isCollapsed" class="well">
             <div class="ng-dropzone dropzone" id="pc-dropzone" dropzone-config="dropzone.config" dropzone="dropzone.dropzone" event-handlers="dropzone.handlers"></div>
         </div>
+
+        <div id="databaseSelection" class="input-group" ng-show="databaseSelection.isVisible">
+            <div class="row">
+                <div id="edp_selection" class="well col-md-4 col-xs-10 col-md-offset-1 col-xs-offset-1 text-center" style="height:300px;">
+                    <div class="attributes">
+                        <h4>
+                            <a href ng-click="databaseSelection.toggleVisibility(); ckanImport.toggleVisibility(); eurostatImport.isVisible = false;">European Data Portal</a>
+                        </h4>
+                        <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+                            invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
+                            accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata
+                            sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing
+                            elitr, sed diam.</p>
+                    </div>
+                </div>
+                <div id="estat_selection" class="well col-md-4 col-xs-10 col-md-offset-2 col-xs-offset-1 text-center" style="height:300px;">
+                    <div class="attributes">
+                        <h4>
+                            <a href ng-click="databaseSelection.toggleVisibility(); eurostatImport.toggleVisibility(); ckanImport.isVisible = false;">Eurostat</a>
+                        </h4>
+                        <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+                            invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
+                            accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata
+                            sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing
+                            elitr, sed diam.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div ckan-import load-data='ckanImport.loadData' api-base="http://www.europeandataportal.eu/data/api/3" id="pc-ckan-import-container" ng-show="ckanImport.isVisible" class="well"></div>
         <div eurostat-import load-data='eurostatImport.loadData' id="pc-eurostat-import-container" ng-show="eurostatImport.isVisible" class="well"></div>
 
