@@ -1018,7 +1018,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
                         var dlg = dialogs.confirm("Are you sure?", "Do you want to exit without saving this visualization?");
                         dlg.result.then(function () {
                             if ($scope.mode == 'create') {
-                                window.history.back();
+                                $timeout(function(){
+                                    window.history.back();
+                                });
                             } else {
                                 //window.history.back();
                                 $location.path('/visualizations/'+$scope.visualization.id);
