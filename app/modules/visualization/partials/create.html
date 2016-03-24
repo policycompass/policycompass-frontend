@@ -219,13 +219,20 @@
                                     </label>
                                 </div>
 
-								<div id="div_resolution" ng-show="isSelectedSon('graph_line') && TimeSelector.length>1 && eventsToPlot.length>0 && resolution!='day'" class="on_check">
+								<div id="div_resolution" ng-show="isSelectedSon('graph_line') && TimeSelector.length>1 && eventsToPlot.length>0 && resolution.value!='day'" class="on_check">
                                     <label class="selectcomboconfigchart">
                                         Plot data
                                         <select id="plotdataoption" ng-change="rePlotGraph();" ng-model="plotdataoption" ng-options="opt as opt.label for opt in plotdataoptions"></select>
                                     </label>
                                 </div>
-                                                                
+
+								<div id="div_resolution" ng-show="isSelectedSon('graph_line') && TimeSelector.length>1 && eventsToPlot.length>0 && resolution.value!='day'" class="on_check">
+                                    <label class="selectcomboconfigchart">
+                                        Plot x legend
+                                        <select id="plotdataoptionxaxis" ng-change="rePlotGraph();" ng-model="plotxaxislegend" ng-options="opt as opt.label for opt in plotxaxislegendoptions"></select>
+                                    </label>
+                                </div>
+
                                 <div id="div_fromdate" ng-show="TimeSelector.length>1" class="on_check">
                                     <label class="selectcomboconfigchart">
                                         From
