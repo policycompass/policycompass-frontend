@@ -127,7 +127,6 @@ angular.module('pcApp.metrics.services.metric', [
                     helper.indicators = _.map(indicators.results, function (indicator) {
                         return {
                             name: indicator.name,
-                            acronym: indicator.acronym,
                             unit_category: indicator.unit_category,
                             id: indicator.id,
                             date: indicator.modified
@@ -159,7 +158,6 @@ angular.module('pcApp.metrics.services.metric', [
             datasets.clear = function () {
                 datasets.data = {
                     title: "",
-                    acronym: "",
                     unit_id: "",
                     datasets: []
                 };
