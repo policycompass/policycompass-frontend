@@ -57,6 +57,7 @@ angular.module('pcApp.common.directives.linescharts', [])
                     hideyaxeunits: '=hideyaxeunits',
                     resolution: '=resolution',
                     plotdatain: '=plotdatain',
+                    tickposition: '=tickposition',
                 },
                 compile: function (element, attributes) {
                     return {
@@ -423,6 +424,7 @@ angular.module('pcApp.common.directives.linescharts', [])
                                         'hideyaxeunits': $scope.hideyaxeunits,
                                         'resolution': $scope.resolution,
                                         'plotDataIn': $scope.plotdatain,
+                                        'tickposition': $scope.tickposition,
                                     });
 
                                     barLine.render(dataToSend2, $scope.events, $scope.mode);

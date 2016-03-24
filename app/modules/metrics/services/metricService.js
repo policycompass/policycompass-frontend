@@ -114,7 +114,6 @@ angular.module('pcApp.metrics.services.metric', [
                 helper.metricsdata = {
                     title: "",
                     formula: "",
-                    acronym: "",
                     description: "",
                     keywords: "",
                     variables: {}

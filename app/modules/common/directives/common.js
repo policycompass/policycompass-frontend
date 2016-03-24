@@ -50,6 +50,29 @@ angular.module('pcApp.common.directives.common', [])
         }
     ])
 
+    .directive('username', [
+        '$http', function ($http) {
+            return {
+                restrict: 'E',
+                scope: {
+                    userpath: '@'
+                },
+                template: '{{ username }}',
+                link: function (scope) {
+                    var url = scope.userpath;
+                    $http({
+                            url: url,
+                            method: 'get',
+                        }).then(function (response) {
+                            scope.username = response.data.data["adhocracy_core.sheets.principal.IUserBasic"].name;
+                        }, function (response) {
+                            scope.username = "";
+                    });
+                }
+            };
+        }
+    ])
+
     .directive('customTabs', function () {
         return {
             restrict: 'A',

@@ -16,7 +16,7 @@ angular.module('pcApp.ags.directives.wellaged', [])
                 controller: function($scope) {
                     $scope.editor = WellAgEd.createEditor(".wellaged-editor");
 
-                    $scope.editor.on('node:pointerclick', (nodeView) => {
+                    $scope.editor.on('node:pointerclick', function(nodeView) {
                         $scope.selectedNode = nodeView;
 
                         // Need to force $scope update here.

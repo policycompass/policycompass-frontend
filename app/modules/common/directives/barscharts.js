@@ -15,6 +15,7 @@ angular.module('pcApp.common.directives.barscharts', [])
                 restrict: 'C',
                 scope: {
                     dataset: '=dataset',
+                    events: '=events',
                     chartid: '=chartid',
                     small: '=small',
                     showLabels: '=showLabels',
@@ -132,6 +133,16 @@ angular.module('pcApp.common.directives.barscharts', [])
 
                     });
 
+					$scope.watcherEvents = false;
+                    $scope.$watchCollection('events', function (dataset) {                        
+                        $scope.watcherEvents = true;
+
+                        if (($scope.dataset) && ($scope.chartid)) {
+                            $scope.directivePlotBarChart('events');
+                        }
+
+                    });
+                    
                     /*
                      setTimeout(function () {
 
@@ -148,103 +159,137 @@ angular.module('pcApp.common.directives.barscharts', [])
 
                     $scope.directivePlotBarChart = function (origin) {
 
-
-                        $scope.iddiv = "";
-                        if (document.getElementById("directive_container_barschart_" + $scope.chartid) != null) {
-                            document.getElementById("directive_container_barschart_" + $scope.chartid).innerHTML = "";
-                            $scope.iddiv = "directive_container_barschart_" + $scope.chartid;
-                        }
-                        //else if ($scope.chartid)
-                        //{
-                        //	document.getElementById("directive_container_barschart_"+$scope.chartid).innerHTML = "";
-                        //}
-                        else {
-                            document.getElementById("directive_container_barschart_").innerHTML = "";
-                            $scope.iddiv = "directive_container_barschart_";
-                        }
-
-                        //var datasetToSend = $scope.numbers1;
-                        var datasetToSend = $scope.dataset;
-                        //console.log("----numbers1----");
-                        //console.log(numbers1);
-                        var legendsColumn = 0;
-
-                        //console.log($scope.dataset);
-
-                        if ($scope.showLegend) {
-                            //legendsColumn = Math.ceil($scope.numbers1.length/9);
-                            legendsColumn = Math.ceil($scope.dataset.length / 9);
-                        } else {
-                            legendsColumn = 0;
-                        }
-                        //legendsColumn = 10;
-                        //console.log(datasetToSend);
-
-                        if ($scope.list) {
-                            legendsColumn = 0;
-                        }
-
-                        var margin = {
-                            top: 20,
-                            right: 20,
-                            bottom: 55 + (legendsColumn) * 20,
-                            left: 44
-                        };
-                        var width = 980;// - margin.left - margin.right;
-                        //var width = 400 - margin.left - margin.right;
-                        //var height = 300 - margin.top - margin.bottom;
-                        var height = 326;
-
-                        var font_size = 11;
-
-                        //if ($scope.list)
-                        if ($scope.small) {
-                            width = width / 5;
-                            height = height / 5;
-                            margin.top = margin.top / 5;
-                            margin.right = margin.right / 5;
-                            margin.bottom = margin.bottom / 5;
-                            margin.left = margin.left / 5;
-                            font_size = font_size / 5;
-                            $scope.showLegend = false;
-                        }
-
-                        if (datasetToSend) {
-                            if (datasetToSend.length > 0) {
-                                //console.log("origin="+origin);
-                                //console.log("scope.cntloading="+$scope.cntloading);
-
-                                if (($scope.watcherDataset) && ($scope.watcherLabel) && ($scope.watcherLegend) && ($scope.watcherGrid) && ($scope.watcherDataset) && ($scope.watcherPercentatge)) {
-                                    var barObj = policycompass.viz.barsMultiple({
-                                        'idName': $scope.iddiv,
-                                        'width': width,
-                                        'height': height,
-                                        'margin': margin,
-                                        'labelX': "", //'labelY': labelYAxe,
-                                        //'radius': 4,
-                                        'font_size': font_size,
-                                        'showLegend': $scope.showLegend,
-                                        'showLabels': $scope.showLabels,
-                                        'showGrid': $scope.showGrid,
-                                        'legendsColumn': legendsColumn,
-                                        'resolution': $scope.resolution,
-                                        'labelY': $scope.labelyaxe,
-                                        'showAsPercentatge': $scope.showPercentatge,
-                                    });
-
-                                    var eventsArray = [];
-                                    //barObj.render(datasetToSend, $scope.eventsToPlot);
-                                    barObj.render(datasetToSend, eventsArray);
-
-                                    //$scope.cntloading = $scope.cntloading+1;
-                                }
-
-                            }
-                        }
-
-                        $scope.loading = false;
-                    }
-
+						var plotChart = false;
+						if ($scope.events.length==0) {
+							plotChart = true;
+						}
+						else {
+							plotChart = true;
+							angular.forEach($scope.events, function(value, key) {
+  								if (!value.startDate) {
+  									plotChart = false;
+  								}
+							});
+						}
+						if (plotChart) {
+	                        $scope.iddiv = "";
+	                        if (document.getElementById("directive_container_barschart_" + $scope.chartid) != null) {
+	                            document.getElementById("directive_container_barschart_" + $scope.chartid).innerHTML = "";
+	                            $scope.iddiv = "directive_container_barschart_" + $scope.chartid;
+	                        }
+	                        //else if ($scope.chartid)
+	                        //{
+	                        //	document.getElementById("directive_container_barschart_"+$scope.chartid).innerHTML = "";
+	                        //}
+	                        else {
+	                            document.getElementById("directive_container_barschart_").innerHTML = "";
+	                            $scope.iddiv = "directive_container_barschart_";
+	                        }
+	
+	                        //var datasetToSend = $scope.numbers1;
+	                        var datasetToSend = $scope.dataset;
+	                        //console.log("----numbers1----");
+	                        //console.log(numbers1);
+	                        /*
+	                        var legendsColumn = 0;
+	
+	                        //console.log($scope.dataset);
+	
+	                        if ($scope.showLegend) {
+	                            //legendsColumn = Math.ceil($scope.numbers1.length/9);
+	                            legendsColumn = Math.ceil($scope.dataset.length / 9);
+	                        } else {
+	                            legendsColumn = 0;
+	                        }
+	                        */
+	                        //legendsColumn = 10;
+	                        //console.log(datasetToSend);
+	
+							legendsColumn = 0	
+							if ($scope.showLegend) {							
+								var arrayKeys = [];
+								angular.forEach($scope.dataset, function(value, key) {
+	  								var a = arrayKeys.indexOf(value.Key);
+	  								if (a<0) {
+	  									arrayKeys.push(value.Key);
+	  									legendsColumn = legendsColumn + 1; 
+	  								}
+								});
+									
+								if ($scope.events.length>legendsColumn) {
+									legendsColumn = $scope.events.length;
+								}
+									
+								legendsColumn = legendsColumn + 1;
+							}
+	                        if ($scope.list) {
+	                            legendsColumn = 0;
+	                        }
+	
+	                        var margin = {
+	                            top: 20,
+	                            right: 20,
+	                            bottom: 55 + (legendsColumn) * 20,
+	                            left: 44
+	                        };
+	                        var width = 980;// - margin.left - margin.right;
+	                        //var width = 400 - margin.left - margin.right;
+	                        //var height = 300 - margin.top - margin.bottom;
+	                        var height = 326;
+	
+	                        var font_size = 11;
+	                        var radiouspoint = 4;
+	
+	                        //if ($scope.list)
+	                        if ($scope.small) {
+	                            width = width / 5;
+	                            height = height / 5;
+	                            margin.top = margin.top / 5;
+	                            margin.right = margin.right / 5;
+	                            margin.bottom = margin.bottom / 5;
+	                            margin.left = margin.left / 5;
+	                            font_size = font_size / 5;
+	                            radiouspoint = radiouspoint / 5;
+	                            $scope.showLegend = false;
+	                        }
+	
+	                        if (datasetToSend) {
+	                            if (datasetToSend.length > 0) {
+	                                //console.log("origin="+origin);
+	                                //console.log("scope.cntloading="+$scope.cntloading);
+	
+	                                if (($scope.watcherDataset) && ($scope.watcherLabel) && ($scope.watcherLegend) && ($scope.watcherGrid) && ($scope.watcherDataset) && ($scope.watcherPercentatge)) {
+	                                    var barObj = policycompass.viz.barsMultiple({
+	                                        'idName': $scope.iddiv,
+	                                        'width': width,
+	                                        'height': height,
+	                                        'margin': margin,
+	                                        'labelX': "", //'labelY': labelYAxe,
+	                                        'font_size': font_size,
+	                                        'radius': radiouspoint,
+	                                        'showLegend': $scope.showLegend,
+	                                        'showLabels': $scope.showLabels,
+	                                        'showGrid': $scope.showGrid,
+	                                        'legendsColumn': legendsColumn,
+	                                        'resolution': $scope.resolution,
+	                                        'labelY': $scope.labelyaxe,
+	                                        'showAsPercentatge': $scope.showPercentatge,
+	                                    });
+	
+	                                    var eventsArray = [];
+	                                    //barObj.render(datasetToSend, $scope.eventsToPlot);
+	                                    //barObj.render(datasetToSend, eventsArray);
+	                                    barObj.render(datasetToSend, $scope.events);
+	
+	                                    //$scope.cntloading = $scope.cntloading+1;
+	                                }
+	
+	                            }
+	                        }
+	
+	                        $scope.loading = false;
+	                    }
+					}
                 },
 
                 template: '' + '<div id="directive_container_barschart_{{chartid}}" class="container_graph directive_container_chart_{{chartid}}">' + '<div class="loading-container">' + '<div ng-hide="small">' + '<div class="loading"></div>' + '<div id="loading-text">loading</div>' + '</div>' + '<div ng-show="small">' + '<div class="loading loading-small"></div>' + '<div id="loading-small-text">loading</div>' + '</div>' + '</div>' + '</div>' + '<div ng-hide="small" id="showFilterContainer" class="showFilterContainer">' + '<div id="showFilter" class="showFilter on_check">' + '<label class="checkbox-inline"><input ng-model="showLegend" type="checkbox" name="showLegend" class="checkbox filterCheckBox"> Show Legend</label>' + '<label class="checkbox-inline"><input ng-model="showLabels" type="checkbox" name="showLabels" class="checkbox filterCheckBox"> Show Labels</label>' + '<label class="checkbox-inline"><input ng-model="showGrid"   type="checkbox" name="showGrid"   class="checkbox filterCheckBox"> Show Grid</label>' + '<label class="checkbox-inline"><input ng-model="showPercentatge" type="checkbox" name="showPercentatge" class="checkbox filterCheckBox"> Show as %</label>' + '</div>' + '</div>'

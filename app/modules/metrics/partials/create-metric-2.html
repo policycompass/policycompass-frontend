@@ -8,7 +8,24 @@
                 <div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div>
                 Step 2 - Enter Metadata for your Metric
             </h4>
-            <div ng-class="{active: help}" class="help-text"></div>
+            <div ng-class="{active: help}" class="help-text">
+                <div class="fonticon fonticon-close" ng-click="help=!help"></div>
+                <p>You can create a metric using this wizard.</p>
+
+                <p>
+                    To create a formular you need to:</br>
+                In step 1:
+                <ul>
+                    <li>Type in the formula in the textfield using the indicators from the table on the right habd side</li>
+                    <li>You can normalize your data by choosing a function from the normalisation functions. In the simplest cases normalisation functions are used to adjust values measured on different scales to a notionally common scale, often prior to averaging.</li>
+                </ul>
+                <b>In step 2:</b>
+                <ul>
+                    <li>Add some metadata to your metric</li>
+                    <li>save metric</li>
+                </ul>
+                </p>
+            </div>
         </div>
 
         <div class="pc-visualization-formcontrols">
@@ -38,20 +55,6 @@
                     <p ng-show="servererror.title" class="help-block">{{ servererror.title[0] }}</p>
 
                     <p ng-hide="servererror.title || (metadataForm.title.$error.required && !metadataForm.title.$pristine)" class="help-block">Please add a title for your metric</p>
-                </div>
-            </div>
-
-            <div class="form-group" ng-class="{ 'has-error': (metadataForm.acronym.$invalid && !metadataForm.acronym.$pristine) || servererror.acronym }">
-                <label for="Acronym" class="field-label">Acronym</label>
-
-                <div class="field-content">
-                    <input ng-model="metrics_controller_helper.metricsdata.acronym" type="text" name="acronym" class="form-control" required>
-
-                    <p ng-show="metadataForm.acronym.$error.required && !metadataForm.acronym.$pristine" class="help-block">This field is required</p>
-
-                    <p ng-show="servererror.acronym" class="help-block">{{ servererror.acronym[0] }}</p>
-
-                    <p ng-hide="servererror.acronym || (metadataForm.acronym.$error.required && !metadataForm.acronym.$pristine)" class="help-block">Please add a acronym for your metric</p>
                 </div>
             </div>
 

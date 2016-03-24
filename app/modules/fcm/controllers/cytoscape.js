@@ -118,7 +118,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         };
     })
 
-    .controller('CytoscapeCtrl', function ($scope, $rootScope, $window, $routeParams, $location, $translate, Fcm, FcmModel, FcmSimulation, FcmActivator, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, SimulationConceptsDetail, AssociationsDetail, SimulationAssociationsDetail, EditConcept, EditAssociation, FCMActivatorDetail, Dataset) {
+    .controller('CytoscapeCtrl', function ($scope, $rootScope, $window, $routeParams, $location, $translate, Fcm, FcmModel, FcmSimulation, FcmActivator, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, SimulationConceptsDetail, AssociationsDetail, SimulationAssociationsDetail, EditConcept, EditAssociation, FCMActivatorDetail, Dataset, FcmIndicator) {
         // container objects
         $scope.Models = [];
         $scope.mapData = [];
@@ -163,14 +163,14 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 }
             }
         }, function (error) {
-            throw {message: JSON.stringify(error.data)};
+            throw { message: JSON.stringify(error.data) };
         });
 
         if ($routeParams.fcmId) {
             // Mode is editing
             $scope.mode = "edit";
 
-            $scope.modeldetail = FcmModel.get({id: $routeParams.fcmId}, function (fcmList) {
+            $scope.modeldetail = FcmModel.get({ id: $routeParams.fcmId }, function (fcmList) {
                 var model = {
                     ModelID: $scope.modeldetail.model.id.toString(),
                     title: $scope.modeldetail.model.title.toString(),
@@ -262,11 +262,11 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
                     if ($scope.SimulationConcepts[i].metricId != 0) {
                         metricVal.push(i);
-                        Dataset.get({id: $scope.SimulationConcepts[i].metricId}, function (dataset) {
+                        Dataset.get({ id: $scope.SimulationConcepts[i].metricId }, function (dataset) {
                             $scope.SimulationConcepts[metricVal[val]].metricTitle = dataset.title;
                             val = val + 1;
                         }, function (error) {
-                            throw {message: JSON.stringify(error.data)};
+                            throw { message: JSON.stringify(error.data) };
                         });
                     }
                 }
@@ -278,7 +278,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 // broadcasting the event
                 $rootScope.$broadcast('appChanged');
             }, function (error) {
-                throw {message: JSON.stringify(error.data)};
+                throw { message: JSON.stringify(error.data) };
             });
 
         } else {
@@ -291,7 +291,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             if (helpId == 1) {
                 $scope.helpContents = "First, add appropriate concepts for you causal model (click \"Add Concept\"),<br>Second, create relationship (causal relationship) among concepts you added (click \"Create Relationship\"),<br>Then save your model (click \"Save Model\").<br>After saving you model, you can run simulation for your model!";
             }
-            dlg = dialogs.create('/dialogs/help.html', 'helpController', {}, {
+            dlg = dialogs.create('modules/fcm/partials/help.html', 'helpController', {}, {
                 key: false,
                 back: 'static'
             });
@@ -310,10 +310,27 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         };
 
         $scope.saveModel = function () {
-            dlg = dialogs.create('/dialogs/savemodel.html', 'ModelController', {}, {
+            dlg = dialogs.create('modules/fcm/partials/savemodel.html', 'ModelController', {}, {
                 key: false,
                 back: 'static'
             });
+
+            /*Commenting old code*/
+            //setTimeout(function () {
+            //    $("#policyDomain").mousedown(function (e) {
+            //        e.preventDefault();
+            //        var select = this;
+            //        var scroll = select.scrollTop;
+
+            //        e.target.selected = !e.target.selected;
+
+            //        setTimeout(function () { select.scrollTop = scroll; }, 0);
+
+            //        $(select).focus();
+            //        $(this).trigger('change');
+            //    }).mousemove(function (e) { e.preventDefault() });
+            //}, 300);
+
             dlg.result.then(function (user) {
                 $scope.Models.push(user);
 
@@ -330,15 +347,15 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 $scope.fcmModel.data = jsonModel;
 
                 Fcm.save($scope.fcmModel, function (value) {
-                    FcmSearchUpdate.create({id: value.model.id}, function () {
+                    FcmSearchUpdate.create({ id: value.model.id }, function () {
                         var dlg = dialogs.notify("Causal Model", "'" + user.title + "' Casual Model has been saved!");
                     }, function (err) {
-                        throw {message: err.data};
+                        throw { message: JSON.stringify(err.data) };
                     });
                     $scope.md = value;
                     $location.path('/models/' + value.model.id + '/edit');
                 }, function (err) {
-                    throw {message: err.data};
+                    throw { message: JSON.stringify(err.data) };
                 });
             }, function () {
                 $scope.name = 'You decided not to enter in your name, that makes me sad.';
@@ -365,21 +382,21 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             $scope.fcmModelUpdate = new FcmModel();
             $scope.fcmModelUpdate.data = jsonModel;
             $scope.md = jsonModel;
-            FcmModel.update({id: $routeParams.fcmId}, $scope.fcmModelUpdate, function (value) {
-                FcmSearchUpdate.update({id: $routeParams.fcmId}, function () {
+            FcmModel.update({ id: $routeParams.fcmId }, $scope.fcmModelUpdate, function (value) {
+                FcmSearchUpdate.update({ id: $routeParams.fcmId }, function () {
                     var dlg = dialogs.notify("Causal Model", "'" + value.model.title + "' Casual Model has been saved!");
                 }, function (err) {
-                    throw {message: err.data};
+                    throw { message: JSON.stringify(err.data) };
                 });
-//			$scope.md = value;
+                //			$scope.md = value;
                 $window.location.reload();
             }, function (err) {
-                throw {message: err.data};
+                throw { message: JSON.stringify(err.data) };
             });
         };
 
         $scope.advanceSettings = function () {
-            dlg = dialogs.create('/dialogs/advancesettings.html', 'AdvanceSettingsController', {}, {
+            dlg = dialogs.create('modules/fcm/partials/advancesettings.html', 'AdvanceSettingsController', {}, {
                 key: false,
                 back: 'static'
             });
@@ -392,7 +409,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         };
 
         $scope.editMetrics = function (index) {
-            dlg = dialogs.create('/dialogs/editmetrics.html', 'EditMetricsController', {}, {
+            dlg = dialogs.create('modules/fcm/partials/editmetrics.html', 'EditMetricsController', {}, {
                 key: false,
                 back: 'static'
             });
@@ -408,7 +425,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         };
 
         $scope.metricsManager = function () {
-            dlg = dialogs.create('/dialogs/metricsmanager.html', 'MetricsManagerController', {}, {
+            dlg = dialogs.create('modules/fcm/partials/metricsmanager.html', 'MetricsManagerController', {}, {
                 key: false,
                 back: 'static'
             });
@@ -419,7 +436,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         };
 
         $scope.correlationMatrix = function () {
-            dlg = dialogs.create('/dialogs/correlationmatrix.html', 'CorrelationMatrixController', {}, {
+            dlg = dialogs.create('modules/fcm/partials/correlationmatrix.html', 'CorrelationMatrixController', {}, {
                 key: false,
                 back: 'static'
             });
@@ -430,15 +447,14 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         };
 
 
-// **-*-****
+        // **-*-****
         $scope.weightCalulation = function () {
             $scope.conceptStyle = [];
             $scope.relationShipStyle = [];
 
-            $scope.SimulationConcepts.forEach(function(data) {
-                if(data.metricId == 0) {
-                    throw {message: "You need to link all the concepts to datasets"};
-                    return false;
+            $scope.SimulationConcepts.forEach(function (data) {
+                if (data.metricId == 0) {
+                    throw { message: "You need to link all the concepts to datasets" };
                 }
             });
 
@@ -451,7 +467,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                         $scope.SimulationConcepts[i].value = 0.6; else if ((i + 1) % 2 == 0)
                         $scope.SimulationConcepts[i].value = 0.2; else
                         $scope.SimulationConcepts[i].value = 0.8;
-                        $scope.conceptStyle[i] = {"color" : "#286090"};
+                    $scope.conceptStyle[i] = { "color": "#286090" };
                 }
             }
             for (i = 0; i < $scope.SimulationAssociations.length; i++) {
@@ -465,7 +481,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                                 $scope.SimulationAssociations[i].weighted = -0.5; else if ((i + 1) % 2 == 0)
                                 $scope.SimulationAssociations[i].weighted = 0.5; else
                                 $scope.SimulationAssociations[i].weighted = 1;
-                                $scope.relationShipStyle[i] = {"color" : "#286090"};
+                            $scope.relationShipStyle[i] = { "color": "#286090" };
                         }
                     }
 
@@ -478,7 +494,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                                 $scope.SimulationAssociations[i].weighted = -0.5; else if ((i + 1) % 2 == 0)
                                 $scope.SimulationAssociations[i].weighted = 0.5; else
                                 $scope.SimulationAssociations[i].weighted = 1;
-                                $scope.relationShipStyle[i] = {"color" : "#286090"};
+                            $scope.relationShipStyle[i] = { "color": "#286090" };
                         }
                     }
                 }
@@ -491,23 +507,23 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
         $scope.runSimulation = function () {
 
-            if($scope.Concepts.length == 0) {
-                throw {message: "The model is incomplete"};
+            if ($scope.Concepts.length == 0) {
+                throw { message: "The model is incomplete" };
             }
 
-            if(!$scope.isModelSaved) {
-                throw {message: "To run the simulation, please save the model"};
+            if (!$scope.isModelSaved) {
+                throw { message: "To run the simulation, please save the model" };
             }
 
-            $scope.SimulationConcepts.forEach(function(data) {
-                if(data.value == 0) {
-                    throw {message: "Please set the initial value for all concepts"};
+            $scope.SimulationConcepts.forEach(function (data) {
+                if (data.value == 0) {
+                    throw { message: "Please set the initial value for all concepts" };
                 }
             });
 
-            angular.forEach($scope.Associations, function(value, key) {
-                if(value.weighted == "?") {
-                    throw {message: "Incomplete FCM model"};
+            angular.forEach($scope.Associations, function (value, key) {
+                if (value.weighted == "?") {
+                    throw { message: "Incomplete FCM model" };
                 }
             });
 
@@ -572,9 +588,9 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                     $scope.labels.push("");
                 }
 
-//	$scope.md = $scope.dataset;
+                //	$scope.md = $scope.dataset;
             }, function (err) {
-                throw {message: err.data};
+                throw { message: JSON.stringify(err.data) };
             });
 
             //dlg = dialogs.create('/dialogs/runsimulation.html','RunSimulationController',{},{key: false,back: 'static'});
@@ -591,7 +607,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         };
 
         $scope.impactAnalysis = function () {
-            dlg = dialogs.create('/dialogs/impactanalysis.html', 'ImpactAnalysisController', {}, {
+            dlg = dialogs.create('modules/fcm/partials/impactanalysis.html', 'ImpactAnalysisController', {}, {
                 key: false,
                 back: 'static'
             });
@@ -601,10 +617,50 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             });
         };
 
+        $scope.addObjAutomatic = function (title, description) {
+            var user = {};
+            var newObj = title;
+            user.Id = 'n' + $scope.NodeID;
+            user.x = $scope.NodeID * 30 + 200 + ($scope.NodeID > 0 ? 30 : 0);
+            user.y = $scope.NodeID * 30 + 100 + ($scope.NodeID > 0 ? 50 : 0);
+            user.scale = 5;
+            user.title = title;
+            user.description = description;
+            var newNode = {
+                id: 'n' + ($scope.NodeID),
+                name: newObj,
+                posX: user.x,
+                posY: user.y
+            };
+            $scope.NodeID = $scope.NodeID + 1;
+            // adding the new Node to the nodes array
+            $scope.mapData.push(newNode);
+            $scope.Concepts.push(user);
+            $scope.isDisabled = false;
+            $scope.isModelSaved = false;
+
+            // broadcasting the event
+            $rootScope.$broadcast('appChanged');
+            // resetting the form
+        };
+        if ($routeParams.indicator != null) {
+            var indicators = (angular.isArray($routeParams.indicator)) ? $routeParams.indicator : [$routeParams.indicator];
+            angular.forEach(indicators, function (indicator) {
+                console.log(indicator);
+                FcmIndicator.show({ id: indicator }, function (res) {
+                    $scope.addObjAutomatic(res.name, res.description);
+                    console.log(res);
+                }, function (err) {
+                    throw { message: JSON.stringify(err.data) };
+                });
+            });
+        }
+
+
         // add object from the form then broadcast event which triggers the directive redrawing of the chart
         // you can pass values and add them without redrawing the entire chart, but this is the simplest way
         $scope.addObj = function () {
-            dlg = dialogs.create('/dialogs/addconcept.html', 'ConceptController', {}, {
+            dlg = dialogs.create('modules/fcm/partials/addconcept.html', 'ConceptController', {}, {
                 key: false,
                 back: 'static'
             });
@@ -628,7 +684,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 $scope.mapData.push(newNode);
                 $scope.Concepts.push(user);
 
-                if($routeParams.fcmId) {
+                if ($routeParams.fcmId) {
                     user.metricTitle = "Link Datasets"
                     $scope.SimulationConcepts.push(user);
                 }
@@ -649,7 +705,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
         // add Edges to the edges object, then broadcast the change event
         $scope.addEdge = function () {
-            dlg = dialogs.create('/dialogs/addassociation.html', 'AssociationController', {}, {
+            dlg = dialogs.create('modules/fcm/partials/addassociation.html', 'AssociationController', {}, {
                 key: false,
                 back: 'static'
             });
@@ -672,7 +728,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 $scope.Associations.push(user);
 
                 $scope.isModelSaved = false;
-                if($routeParams.fcmId) {
+                if ($routeParams.fcmId) {
                     user.weighted = user.weight;
                     $scope.SimulationAssociations.push(user);
                 }
@@ -688,7 +744,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         // sample function to be called when clicking on an object in the chart
         $scope.doClick = function (value) {
 
-            console.log('clicked '+ value);
+            console.log('clicked ' + value);
             var pos;
             // sample just passes the object's ID then output it to the console and to an alert
             EditConcept.setEditMode($scope.mode);
@@ -700,7 +756,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                         pos = i;
                     }
                 }
-                dlg = dialogs.create('/dialogs/editconcept.html', 'EditConceptController', {}, {
+                dlg = dialogs.create('modules/fcm/partials/editconcept.html', 'EditConceptController', {}, {
                     key: false,
                     back: 'static'
                 });
@@ -742,7 +798,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                         $scope.mapData[pos].name = user.title;
 
                         // update bottom SimulationConcepts
-                        if($routeParams.fcmId) {
+                        if ($routeParams.fcmId) {
                             $scope.SimulationConcepts[pos].title = user.title;
                         }
                     }
@@ -761,7 +817,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                         pos = i;
                     }
                 }
-                dlg = dialogs.create('/dialogs/editassociation.html', 'EditAssociationController', {}, {
+                dlg = dialogs.create('modules/fcm/partials/editassociation.html', 'EditAssociationController', {}, {
                     key: false,
                     back: 'static'
                 });
@@ -788,7 +844,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                         $scope.edgeData[pos].weighted = user.weight;
 
                         // update relationships in bottom
-                        if($routeParams.fcmId) {
+                        if ($routeParams.fcmId) {
                             $scope.SimulationAssociations[pos].source = user.source;
                             $scope.SimulationAssociations[pos].destination = user.destination;
                             $scope.SimulationAssociations[pos].weighted = user.weight;
@@ -812,7 +868,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         // sample function to be called when clicking on an object in the chart
         $scope.doDblClick = function (value) {
 
-            console.log('clicked '+ value);
+            console.log('clicked ' + value);
             var pos;
             // sample just passes the object's ID then output it to the console and to an alert
             EditConcept.setEditMode($scope.mode);
@@ -824,7 +880,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                         pos = i;
                     }
                 }
-                dlg = dialogs.create('/dialogs/editconcept.html', 'EditConceptController', {}, {
+                dlg = dialogs.create('modules/fcm/partials/editconcept.html', 'EditConceptController', {}, {
                     key: false,
                     back: 'static'
                 });
@@ -866,7 +922,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                         $scope.mapData[pos].name = user.title;
 
                         // update bottom SimulationConcepts
-                        if($routeParams.fcmId) {
+                        if ($routeParams.fcmId) {
                             $scope.SimulationConcepts[pos].title = user.title;
                         }
                     }
@@ -885,7 +941,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                         pos = i;
                     }
                 }
-                dlg = dialogs.create('/dialogs/editassociation.html', 'EditAssociationController', {}, {
+                dlg = dialogs.create('modules/fcm/partials/editassociation.html', 'EditAssociationController', {}, {
                     key: false,
                     back: 'static'
                 });
@@ -912,7 +968,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                         $scope.edgeData[pos].weighted = user.weight;
 
                         // update relationships in bottom
-                        if($routeParams.fcmId) {
+                        if ($routeParams.fcmId) {
                             $scope.SimulationAssociations[pos].source = user.source;
                             $scope.SimulationAssociations[pos].destination = user.destination;
                             $scope.SimulationAssociations[pos].weighted = user.weight;
@@ -946,7 +1002,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             $rootScope.$broadcast('appChanged');
         };
 
-        $scope.updateEdge = function($index) {
+        $scope.updateEdge = function ($index) {
             var weight = $scope.SimulationAssociations[$index].weighted;
             $scope.edgeData[$index].weighted = weight;
             var assostions = AssociationsDetail.getAssociations();
@@ -990,7 +1046,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
     }) // end ConceptController
 
     .controller('EditConceptController', function ($scope, $modalInstance, Metric, FcmActivator, $log, $routeParams, dialogs, data, EditConcept) {
-                $scope.user = {
+        $scope.user = {
             Id: -1,
             title: '',
             description: '',
@@ -1052,7 +1108,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
     }) // end AssociationController
 
     .controller('EditAssociationController', function ($scope, $modalInstance, dialogs, data, ConceptsDetail, EditAssociation) {
-                $scope.user = {
+        $scope.user = {
             Id: -1,
             sourceID: '',
             destinationID: '',
@@ -1099,7 +1155,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
     .controller('ModelController', function ($scope, $modalInstance, data, FCMModelsDetail) {
         $scope.user = [
-            {FCMModelId: -1}, {title: ''}, {description: ''}, {keywords: ''}
+            { FCMModelId: -1 }, { title: '' }, { description: '' }, { keywords: '' }
         ];
 
         $scope.Models = [];
@@ -1118,7 +1174,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
     .controller('AdvanceSettingsController', function ($scope, $modalInstance, data, FcmActivator, FCMActivatorDetail) {
         $scope.Fcmactivators = FcmActivator.query({}, function (activatorList) {
         }, function (error) {
-            throw {message: JSON.stringify(error.data)};
+            throw { message: JSON.stringify(error.data) };
         });
 
         $scope.activator1 = FCMActivatorDetail.getActivator();
@@ -1173,7 +1229,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
     .controller('EditMetricsController', function ($scope, $modalInstance, data, FCMModelsDetail) {
         $scope.user = [
-            {FCMModelId: -1}, {title: ''}, {description: ''}, {keywords: ''}
+            { FCMModelId: -1 }, { title: '' }, { description: '' }, { keywords: '' }
         ];
 
         $scope.Models = [];
@@ -1219,40 +1275,40 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         $scope.values3 = [];
         $scope.values4 = [];
 
-        var val = {Id: "1"};
+        var val = { Id: "1" };
         $scope.values1.push(val);
-        val = {Id: ""};
+        val = { Id: "" };
         $scope.values1.push(val);
-        val = {Id: ""};
+        val = { Id: "" };
         $scope.values1.push(val);
-        val = {Id: ""};
+        val = { Id: "" };
         $scope.values1.push(val);
         $scope.Concepts[0].values = $scope.values1;
-        val = {Id: "0.6"};
+        val = { Id: "0.6" };
         $scope.values2.push(val);
-        val = {Id: "1"};
+        val = { Id: "1" };
         $scope.values2.push(val);
-        val = {Id: ""};
+        val = { Id: "" };
         $scope.values2.push(val);
-        val = {Id: ""};
+        val = { Id: "" };
         $scope.values2.push(val);
         $scope.Concepts[1].values = $scope.values2;
-        val = {Id: "0.32"};
+        val = { Id: "0.32" };
         $scope.values3.push(val);
-        val = {Id: "-0.65"};
+        val = { Id: "-0.65" };
         $scope.values3.push(val);
-        val = {Id: "1"};
+        val = { Id: "1" };
         $scope.values3.push(val);
-        val = {Id: ""};
+        val = { Id: "" };
         $scope.values3.push(val);
         $scope.Concepts[2].values = $scope.values3;
-        val = {Id: "-0.54"};
+        val = { Id: "-0.54" };
         $scope.values4.push(val);
-        val = {Id: "0.41"};
+        val = { Id: "0.41" };
         $scope.values4.push(val);
-        val = {Id: "0.23"};
+        val = { Id: "0.23" };
         $scope.values4.push(val);
-        val = {Id: "1"};
+        val = { Id: "1" };
         $scope.values4.push(val);
         $scope.Concepts[3].values = $scope.values4;
 
@@ -1278,7 +1334,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
     }) // end RunSimulationController
 
     .controller('ImpactAnalysisController', function ($scope, $modalInstance, data, FcmImpactAnalysis, FCMModelsDetail, ConceptsDetail, SimulationConceptsDetail, SimulationAssociationsDetail) {
-        $scope.user = [{selectConcept: ''}, {selectConcept1: ''}, {selectConcept2: ''}, {selectConcept3: ''}];
+        $scope.user = [{ selectConcept: '' }, { selectConcept1: '' }, { selectConcept2: '' }, { selectConcept3: '' }];
         $scope.Concepts = [];
         $scope.ImpactAnalysisResults = [];
         $scope.twoImpactAnalysisResults = [];
@@ -1322,7 +1378,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
             $scope.ImpactAnalysisResults.splice(0, $scope.ImpactAnalysisResults.length);
 
-            FcmImpactAnalysis.save({id: 1}, $scope.fcmImpactAnalysis, function (value) {
+            FcmImpactAnalysis.save({ id: 1 }, $scope.fcmImpactAnalysis, function (value) {
                 $scope.res = value;
                 for (i = 0; i < value.result.length; i++) {
                     var ConceptResults = {
@@ -1336,7 +1392,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                     $scope.ImpactAnalysisResults.push(ConceptResults);
                 }
             }, function (err) {
-                throw {message: err.data};
+                throw { message: JSON.stringify(err.data) };
             });
 
         }; // end Single Impact Analysis
@@ -1362,7 +1418,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             $scope.selectedConcept2Input.splice(0, $scope.selectedConcept2Input.length);
             $scope.selectedConceptOutput.splice(0, $scope.selectedConceptOutput.length);
 
-            FcmImpactAnalysis.save({id: 2}, $scope.fcmImpactAnalysis, function (value) {
+            FcmImpactAnalysis.save({ id: 2 }, $scope.fcmImpactAnalysis, function (value) {
                 $scope.res = value;
                 for (i = 0; i < value.result.length; i++) {
                     var ConceptResults = {
@@ -1420,7 +1476,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 };
                 $scope.selectedConceptOutput.push(IterationResults);
             }, function (err) {
-                throw {message: err.data};
+                throw { message: JSON.stringify(err.data) };
             });
 
         }; // end Impact of Two Concepts
@@ -1448,7 +1504,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
                 id = idMetric;
                 //$scope.metricSelected = Metric.get({id: idMetric},
-                $scope.metricSelected = Dataset.get({id: idMetric}, function (getMetric) {
+                $scope.metricSelected = Dataset.get({ id: idMetric }, function (getMetric) {
 
                     //console.log("idMetric="+idMetric);
                     $scope.correctmetrics = "1";
@@ -1529,7 +1585,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
                 }, function (error) {
                     //alert(error.data.message);
-                    throw {message: JSON.stringify(error.data.message)};
+                    throw { message: error.data.message || JSON.stringify(error.data) };
                 });
             };
 
@@ -1558,35 +1614,3 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             $scope.loadDataCombos($scope.metric.id, "", "");
         }
     ])
-
-    .run([
-        '$templateCache', function ($templateCache) {
-            $templateCache.put('/dialogs/addconcept.html', '<div class="modal-header"><h4 class="modal-title">Add Concept</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="title">Title *</label><input type="text" class="form-control" name="title" id="title" ng-model="user.title" text="Vale here" required><br /><label class="control-label" for="description">Description</label><textarea class="form-control" rows="5" name="description" id="description" ng-model="user.description"></textarea><br /></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Add</button></div>');
-
-            $templateCache.put('/dialogs/editconcept.html', '<div class="modal-header"><h4 class="modal-title">Edit Concept</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="title">Title *</label><input type="text" class="form-control" name="title" id="title" ng-model="user.title" text="Vale here" required><br /><label class="control-label" for="description">Description</label><textarea class="form-control" rows="5" name="description" id="description" ng-model="user.description"></textarea><br /></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button><button type="button" class="btn btn-danger" ng-click="delete()">Delete</button></div>');
-
-            $templateCache.put('/dialogs/addassociation.html', '<div class="modal-header"><h4 class="modal-title">Create Relationship</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="source">Source Concept *</label><select class="form-control" name="source" id="source" ng-model="user.source" ng-options="concept.title for concept in Concepts" required></select><br /><label class="control-label" for="destination">Destination Concept *</label><select class="form-control" name="destination" id="destination" ng-model="user.destination" ng-options="concept.title for concept in Concepts" required></select><br /><label class="control-label" for="destination">Weight</label><select class="form-control" name="weight" id="weight" ng-model="user.weight" required><option value="1">Very Strong Positive (1.0)</option><option value="0.75">Strong Positive (0.75)</option><option value="0.5">Weak Positive (0.5)</option><option value="0.25">Very Weak Positive (0.25)</option><option value="-0.25">Very Weak Negative (-0.25)</option><option value="-0.5">Weak Negative (-0.5)</option><option value="-0.75">Strong Negative (-0.75)</option><option value="-1">Very Strong Negative (-1.0)</option></select></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Add</button></div>');
-
-            $templateCache.put('/dialogs/editassociation.html', '<div class="modal-header"><h4 class="modal-title">Edit Relationship</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="source">Source Concept *</label><select class="form-control" name="source" id="source" ng-model="user.source" ng-options="concept.title for concept in Concepts" required></select><br /><label class="control-label" for="destination">Destination Concept *</label><select class="form-control" name="destination" id="destination" ng-model="user.destination" ng-options="concept.title for concept in Concepts" required></select><br /><label class="control-label" for="destination">Weight</label><select class="form-control" name="weight" id="weight" ng-model="user.weight" required><option value="1">Very Strong Positive (1.0)</option><option value="0.75">Strong Positive (0.75)</option><option value="0.5">Weak Positive (0.5)</option><option value="0.25">Very Weak Positive (0.25)</option><option value="-0.25">Very Weak Negative (-0.25)</option><option value="-0.5">Weak Negative (-0.5)</option><option value="-0.75">Strong Negative (-0.75)</option><option value="-1">Very Strong Negative (-1.0)</option></select></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button><button type="button" class="btn btn-danger" ng-click="delete()">Delete</button></div>');
-
-            $templateCache.put('/dialogs/savemodel.html', '<div class="modal-header"><h4 class="modal-title">Causal Model</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="title">Title *</label><input type="text" class="form-control" name="title" id="title" ng-model="user.title" text="Vale here" required><br /><label class="control-label" for="description">Description *</label><textarea class="form-control" rows="5" name="description" id="description" ng-model="user.description" required></textarea><br /><label class="control-label" for="keywords">Keywords : *</label><input type="text" class="form-control" name="keywords" id="keywords" ng-model="user.keywords" required><br /><label class="control-label" for="policyDomain">Policy Domain : *</label><select multiple class="form-control policydomain-options" size="5" id="policyDomain" name="policyDomain" ng-model="metric.policy_domains" required></select></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button></div></div></div></div>');
-
-            $templateCache.put('/dialogs/advancesettings.html', '<div class="modal-header"><h4 class="modal-title">Advanced Settings</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><label class="control-label" for="title">Activator *</label><select class="form-control" name="activator" id="activator" value="user.title" ng-model="user" ng-options="activator.title for activator in Fcmactivators" required></select><label class="control-label" for="title">Scale *</label><select class="form-control" name="scale" id="scale" ng-model="user.scale" required><option value="3">3</option><option value="5">5</option><option value="7">7</option><option value="9">9</option></select></div></ng-form></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button></div>');
-
-            $templateCache.put('/dialogs/editmetrics.html', '<div class="modal-header"><h1 class="ng-binding"><span class="glyphicon glyphicon-list-alt"></span> Link datasets</h1></div><div class="modal-body"><div id="basic-modal-content-pc"><tabset><tab heading="Search Datasets"><div class="row createvisualization"><div indexdataset="indexdataset" id="filterDatasets"  class="selectorDatasets" datasets-list="user.ListMetricsFilter" number-Max-Datasets="1"></div></div></tab><tab heading="Datasets Configuration"><div class="row createvisualization"><div ng-show="ListMetricsFilter.length==0">No dataset linked</div><div ng-show="metric.title" ng-controller="LoadCombosMetricInFCM" class="designer-metrics active" class="designer-metrics" id="designer-metrics-num-{{metric.id}}" ng-repeat="metric in user.ListMetricsFilter track by $index" ><h4>{{metric.title}} -- {{metric.issued | date:"longDate" }}</h4><input type="hidden" ng-model="MetricSelectediId_[metric.id]" id="MetricSelectediId_{{metric.id}}" name="MetricSelectedId[]" value=""><input type="hidden" ng-model="MetricSelectediIndex_[metric.id]" ng-init="MetricSelectediIndex_[metric.id]=metric.id" id="MetricSelectediIndex_{{metric.id}}" name="MetricSelectediIndex[]" value="{{metric.id}}"><div class="metric-buttons"><a type="button" data-intro="Edit dataset view properties" data-position="top" class="btn btn-primary btn-create" ng-click="displaycontentMetricModal(metric.id);collapsetFilterDataset=!collapsetFilterDataset;" id="modal-edit-metric-button-{{metric.id}}"><span ng-hide="collapsetFilterDataset">Open</span><span ng-show="collapsetFilterDataset">Collapse</span> Edit Mode</a><a type="button" data-intro="Access to the dataset data" data-position="right" class="btn btn-info btn-adddataset" href="#!/datasets/{{metric.id}}" target="_blank" id="view-metric-button-{{metric.id}}">View Dataset in detaill</a></div><div class="metric-forms" style="display: none;"><div class="metric-form-item"><br><table><thead><th><label for="color">Individual</label></th></thead><body><tr ng-repeat="option in individualCombo_value"><td><label ng-click="validateCheckboxes();"><input type="checkbox" checklist-model="IndividualDatasetCheckboxes" checklist-value="option.id"> {{option.title}}</label></td></tr></body></table></div></div></div></div></tab></tabset></div><div class="modal-footer"><button class="btn btn-primary btn-close" ng-click="save()">Close</button><a href="#!/datasets/create"  target="_blank" class="btn btn-default btn-create" id="adddataset">Create a new dataset</a></div></div>');
-
-            $templateCache.put('/dialogs/editmetrics1.html', '<div class="modal-header"><h4 class="modal-title">Edit Metrics</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group input-group-lg" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><div id="filterMetrics" class="selectorMetrics" metrics-list="user.ListMetricsFilter" number-Max-Metrics="1" functionformetric="save()"></div></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button></div>');
-
-            $templateCache.put('/dialogs/metricsmanager.html', '<div class="modal-header"><h4 class="modal-title">Metrics Manager</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><tabset justified="false"><tab heading="Source"><div id="filterMetrics" class="selectorMetrics" metrics-list="ListMetricsFilter" number-Max-Metrics="1"></div></tab><tab heading="Sink"><div id="filterMetrics" class="selectorMetrics" metrics-list="ListMetricsFilter" number-Max-Metrics="1"></div></tab></tabset></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button><button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(nameDialog.$dirty && nameDialog.$invalid) || nameDialog.$pristine">Save</button></div>');
-
-            $templateCache.put('/dialogs/correlationmatrix.html', '<div class="modal-header"><h4 class="modal-title">Correlation Matrix between Concepts</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><p>Matrix below shows the correlation between selected concepts.<br>This can be the reference data for determining the weights between concepts if you want to insert the weight value manaully.</p></div><table class="table table-hover"><tr><td></td><td  align="center" ng-repeat="concept in Concepts">{{ concept.title }}</td></tr><tr ng-repeat="concept in Concepts"><td>{{ concept.title }}</td align="center"><td ng-repeat="val in concept.values">{{ val.Id }}</td></tr></table><div class="modal-footer"><button type="button" class="btn btn-primary" ng-click="save()">Use the Correlations for Weight</button><button type="button" class="btn btn-default" ng-click="cancel()">Close</button></div>');
-
-            $templateCache.put('/dialogs/runsimulation.html', '<div class="modal-header"><h4 class="modal-title">Simulation job has submitted successfully.</h4></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Close</button></div>');
-
-            $templateCache.put('/dialogs/help.html', '<div class="modal-header"><p class="modal-title">{{ helpContents }}</p></div>');
-
-            $templateCache.put('/dialogs/impactanalysis.html', '<div class="modal-header"><div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div><div ng-class="{active: help}" class="help-text"><p>Impact analysis shows the change of final concept values with regard to the change of initial concept value. One dimensional impact analysis shows the impact of changes in selected concept value on the other concepts’ final value. Two dimensional impact analysis enables users adjust initial value of two concepts simultaneously then user can check the final value of selected target concept accordingly.</p></div><h4 class="modal-title">Impact Analysis</h4></div><div class="modal-body"><ng-form name="nameDialog" novalidate role="form"><div class="form-group" ng-class="{true: \'has-error\'}[nameDialog.username.$dirty && nameDialog.username.$invalid]"><tabset justified="false"><tab heading="Impact of Single Concept"><label class="control-label" for="impactanalysis">Impact of Change in</label><select class="form-control" name="source" id="source" ng-model="user.selectConcept" ng-options="concept.title for concept in Concepts"></select>(initial concept value)<br /><div class="modal-footer"><button type="button" class="btn btn-primary" ng-click="single()">Calculate</button></div><table class="table table-hover"><tr><td width="20%"><b>Initial Value of {{ user.selectConcept.title }}</b></td><td align="center" ng-repeat="result in ImpactAnalysisResults" ng-if="result.conceptID == user.selectConcept.Id"><b>{{ result.input }}</b></td></tr><tr ng-show="Concepts" ng-repeat="concept in Concepts"><td>{{ concept.title }}</td><td align="center" ng-repeat="result in ImpactAnalysisResults" ng-if="concept.Id == result.conceptID">{{ result.output }}</td></tr></table>* Value of each cell indicate the final value of simulation with given initial value of <b>{{ user.selectConcept.title }}</b>.</tab><tab heading="Impact of Two Concepts"><label class="control-label" for="impactanalysis">Impact of Change in</label><select class="form-control" name="source" id="source" ng-model="user.selectConcept1" ng-options="concept.title for concept in Concepts" required></select><label class="control-label" for="impactanalysis">and</label><select class="form-control" name="source" id="source" ng-model="user.selectConcept2" ng-options="concept.title for concept in Concepts" required></select>(initial concept value)<br /><label class="control-label" for="impactanalysis">on</label><select class="form-control" name="source" id="source" ng-model="user.selectConcept3" ng-options="concept.title for concept in Concepts" required></select><br /><div class="modal-footer"><button type="button" class="btn btn-primary" ng-click="two()">Calculate</button></div><table class="table table-hover"><tr><td width="20%"></td><td width="10%"></td><td align="center" colspan=5><b>{{ user.selectConcept1.title }}</b></td></tr><tr><td></td><td></td><td align="center" ng-repeat="input in selectedConcept1Input"><b>{{ input }}</b></td></tr><tr ng-repeat="input in selectedConcept2Input"><td rowspan="5" align="center" valign="middle" ng-if="input == 0.2"><b>{{ user.selectConcept2.title }}</b></td><td align="center"><b>{{ input }}</b></td><td align="center" ng-repeat="output in selectedConceptOutput" ng-if="output.concept2Input == input">{{ output.conceptOutput }}</td></tr></table>* Value of each cell indicate the final value of <b>{{ user.selectConcept3.title }}</b> with regards to the change of <b>{{ user.selectConcept1.title }}</b> & <b>{{ user.selectConcept2.title }}</b>.</tab></tabset></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="cancel()">Close</button></div>');
-
-        }
-    ]); // end run / module
-

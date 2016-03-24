@@ -21,24 +21,14 @@ angular.module('pcApp.feedbacks.directives.feedbacksDirectives', [])
                                 $scope.submitted = true;
                                 $scope.feedback.saveFeedback($scope.name_text, $scope.email_address, $scope.subject_text, $scope.message_text, $location.absUrl());
                             }
+                            $scope.close = function(){
+                                $modalInstance.close();
+                            }
                         }
                     });
                 }
             },
             templateUrl:'modules/feedbacks/partials/feedbackModal.html'
-        };
-    })
-       .directive('cancelButton', function(){
-        return {
-            restrict: 'E',
-            scope: false,
-            link: function(scope){
-                scope.cancel = function(){
-                    $modalInstance.close();
-                }
-
-            },
-            template:"<a type='button' class='btn btn-danger' ng-click='cancel()'>Cancel</a>"
         };
     });
 
