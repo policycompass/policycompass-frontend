@@ -64,9 +64,14 @@ angular.module('pcApp.common.directives.common', [])
                             url: url,
                             method: 'get',
                         }).then(function (response) {
-                            scope.username = response.data.data["adhocracy_core.sheets.principal.IUserBasic"].name;
+                            if(response.status === 200){
+                                scope.username = response.data.data["adhocracy_core.sheets.principal.IUserBasic"].name;
+                            }
+                            else{
+                                scope.username = "";
+                            }
                         }, function (response) {
-                            scope.username = "";
+                            scope.username = "Deleted User";
                     });
                 }
             };
