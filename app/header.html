@@ -9,90 +9,97 @@
 
         <div class="logo-wrapper" id="logo-wrapper">
             <a href="#!/" ng-click="collapseCreateMenu()" id="logo"><img src="img/logo_small.svg" alt="Policy Compass's Logo"></a>
-
             <div collapse="navCollapsed" class=" collapse sign-in-wrapper ng-cloak main-menu-wrap" ng-cloak>
                 <ul class="main-menu" id="main-menu">
                     <li>
-                        <a id="createLink" href="" ng-click="i=1" data-hover="Create" class="fonticon fonticon-create">Create</a>
+                        <a id="createLink" href="" ng-click="i=1" data-hover="Create" class="fonticon fonticon-create normal">Create</a>
                     </li>
                     <li>
-                        <a href="#!/browse" data-hover="Browse" ng-click="i=0" class="fonticon fonticon-search">Browse</a>
+                        <a href="#!/browse" data-hover="Browse" ng-click="i=0" class="fonticon fonticon-search normal">Browse</a>
                     </li>
                     <li>
-                        <a href="#!/i-want-to" data-hover="I want to" ng-click="i=0" class="fonticon fonticon-want">I want to</a>
+                        <a href="#!/i-want-to" data-hover="I want to" ng-click="i=0" class="fonticon fonticon-want normal">I want to</a>
                     </li>
                     <li>
-                        <a href="#!/request" data-hover="Request" ng-click="i=0" class="fonticon fonticon-request">Request</a>
+                        <a href="#!/request" data-hover="Request" ng-click="i=0" class="fonticon fonticon-request normal">Request</a>
                     </li>
                     <li>
-                        <a href="#!/how-it-works" data-hover="How It Works" ng-click="i=0" class="fonticon fonticon-how">How It Works</a>
+                        <a href="#!/how-it-works" data-hover="How It Works" ng-click="i=0" class="fonticon fonticon-how normal">How It Works</a>
                     </li>
-                    <li ng-click="i=6">
-                        <a ng-if="authState.loggedIn!==undefined" href="" data-hover="" class="fonticon fonticon-user"><span ng-if="!authState.loggedIn">Login/signup</span><span ng-if="authState.loggedIn">{{authState.userData.name}}</span></a>
+                    <li ng-show="authState.loggedIn!==undefined && !authState.loggedIn">
+                        <a href="#!/login"class="fonticon fonticon-user left">Login/</a>
+                        <a href="#!/register" class="right">Signup</a>
                     </li>
-                    <li><a href="" data-hover="" class="fonticon fonticon-share" ng-click="i=7"></a></li>
+                    <li ng-show="authState.loggedIn!==undefined && authState.loggedIn">
+                        <a ng-click="i=6" href="" data-hover="" class="fonticon fonticon-user normal">
+                            <span>{{authState.userData.name}}</span>
+                        </a>
+                    </li>
+                    <li><a href="" data-hover="" class="fonticon fonticon-share normal" ng-click="i=7"></a></li>
                 </ul>
             </div>
         </div>
         <!-- /.logo-wrapper -->
     </div>
 
-    <div class="submenu submenu-create" id="submenu-create" ng-class="{active: i==1}">
-        <div class="fonticon fonticon-close" ng-click="i=0"></div>
-        <ul>
-            <li><a href="#!/datasets/create" class="fonticon font-icon-datasets" ng-click="i=0">Upload Datasets</a></li>
-            <li>
-                <a href="#!/indicators/create" class="fonticon font-icon-properties" ng-click="i=0">Define Indicators</a>
-            </li>
-            <li><a href="#!/metrics/create-1" class="fonticon font-icon-metrics" ng-click="i=0">Define Metrics</a></li>
-            <li>
-                <a href="#!/events/search" class="fonticon font-icon-historical_events" ng-click="i=0">Register Historical Events</a>
-            </li>
-            <li>
-                <a href="#!/visualizations/create" class="fonticon font-icon-visualisation" ng-click="i=0">Visualise Data</a>
-            </li>
-            <li>
-                <a href="#!/models/create" class="fonticon font-icon-causal_models" ng-click="i=0">Create Causal Models</a>
-            </li>
-        </ul>
 
+    <div class="submenu submenu-create" id="submenu-create" ng-class="{active: i==1}" ng-click="i=0">
+        <div class="submenu-bk">
+            <ul>
+                <li><a href="#!/datasets/create" class="fonticon font-icon-datasets" ng-click="i=0">Upload Datasets</a></li>
+                <li>
+                    <a href="#!/indicators/create" class="fonticon font-icon-properties" ng-click="i=0">Define Indicators</a>
+                </li>
+                <li><a href="#!/metrics/create-1" class="fonticon font-icon-metrics" ng-click="i=0">Define Metrics</a></li>
+                <li>
+                    <a href="#!/events/search" class="fonticon font-icon-historical_events" ng-click="i=0">Register Historical Events</a>
+                </li>
+                <li>
+                    <a href="#!/visualizations/create" class="fonticon font-icon-visualisation" ng-click="i=0">Visualise Data</a>
+                </li>
+                <li>
+                    <a href="#!/models/create" class="fonticon font-icon-causal_models" ng-click="i=0">Create Causal Models</a>
+                </li>
+            </ul>
+        </div>
     </div>
 
-
-    <div class="submenu submenu-user" id="submenu-user" ng-class="{active: i==6}">
-        <div class="fonticon fonticon-close" ng-click="i=0"></div>
-        <ul ng-click="i=0">
-            <li ng-if="!authState.loggedIn" ng-cloak>
+    <div class="submenu submenu-user" id="submenu-user" ng-class="{active: i==6}" ng-click="i=0">
+        <div class="submenu-bk">
+            <ul ng-click="i=0">
+                <li ng-if="!authState.loggedIn" ng-cloak>
                 <a href="#!/register" data-hover="Sign Up" class="fonticon font-icon-sign_up" ng-click="i=0">Sign Up</a>
-            </li>
-            <li id="btn-login" ng-if="!authState.loggedIn" ng-cloak>
+                </li>
+                <li id="btn-login" ng-if="!authState.loggedIn" ng-cloak>
                 <a href="#!/login" class="fonticon font-icon-log_in" ng-click="i=0">Log In</a></li>
-            <li ng-if="authState.loggedIn" ng-cloak>
+                <li ng-if="authState.loggedIn" ng-cloak>
                 <a href="#!/logout" class="fonticon font-icon-log_out" ng-click="i=0">Logout ({{ authState.userData.name }})</a>
-            </li>
-        </ul>
-    </div>
-    <div class="submenu submenu-share" id="submenu-share" ng-class="{active: i==7}">
-        <div class="fonticon fonticon-close" ng-click="i=0"></div>
-        <ul>
-            <li>
-                <a href="" class="fonticon fonticon-facebook" ng-click="i=0">Facebook</a>
-            </li>
-            <li>
-                <a href="" class="fonticon fonticon-twitter" ng-click="i=0">Twitter</a>
-            </li>
-            <li>
-                <a href="" class="fonticon fonticon-vk" ng-click="i=0">VKontakte</a>
-            </li>
-            <li>
-                <a href="" class="fonticon fonticon-linkedin" ng-click="i=0">Linkedin</a>
-            </li>
-            <li>
-                <a href="" class="fonticon fonticon-google" ng-click="i=0">Google +</a>
-            </li>
-        </ul>
+                </li>
+            </ul>
+        </div>
     </div>
 
+    <div class="submenu submenu-share" id="submenu-share" ng-class="{active: i==7}" ng-click="i=0">
+        <div class="submenu-bk">
+            <ul>
+                <li>
+                    <a href="" class="fonticon fonticon-facebook" ng-click="i=0">Facebook</a>
+                </li>
+                <li>
+                    <a href="" class="fonticon fonticon-twitter" ng-click="i=0">Twitter</a>
+                </li>
+                <li>
+                    <a href="" class="fonticon fonticon-vk" ng-click="i=0">VKontakte</a>
+                </li>
+                <li>
+                    <a href="" class="fonticon fonticon-linkedin" ng-click="i=0">Linkedin</a>
+                </li>
+                <li>
+                    <a href="" class="fonticon fonticon-google" ng-click="i=0">Google +</a>
+                </li>
+            </ul>
+        </div>
+    </div>
 
     <open-feedback-modal></open-feedback-modal>
 
