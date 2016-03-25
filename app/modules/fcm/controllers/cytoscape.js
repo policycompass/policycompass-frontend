@@ -380,6 +380,11 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 connections: AssociationsDetail.getAssociations()
             };
 
+            jsonModel.model.title = $scope.modeldetail.model.title;
+            jsonModel.model.description = $scope.modeldetail.model.description;
+            jsonModel.model.keywords = $scope.modeldetail.model.keywords;
+            //jsonModel.model.title = $scope.modeldetail.model.title;
+
             $scope.fcmModelUpdate = new FcmModel();
             $scope.fcmModelUpdate.data = jsonModel;
             FcmModel.update({ id: $routeParams.fcmId }, $scope.fcmModelUpdate, function (value) {
