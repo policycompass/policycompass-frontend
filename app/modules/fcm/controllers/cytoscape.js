@@ -338,6 +338,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                     ModelTitle: user.title,
                     ModelDesc: user.description,
                     ModelKeywords: user.keywords,
+                    domains: user.domains,
                     userID: "1",
                     concepts: ConceptsDetail.getConcepts(),
                     connections: AssociationsDetail.getAssociations()
