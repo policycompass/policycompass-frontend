@@ -381,7 +381,6 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
             $scope.fcmModelUpdate = new FcmModel();
             $scope.fcmModelUpdate.data = jsonModel;
-            $scope.md = jsonModel;
             FcmModel.update({ id: $routeParams.fcmId }, $scope.fcmModelUpdate, function (value) {
                 FcmSearchUpdate.update({ id: $routeParams.fcmId }, function () {
                     var dlg = dialogs.notify("Causal Model", "'" + value.model.title + "' Casual Model has been saved!");
@@ -389,10 +388,23 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                     throw { message: JSON.stringify(err.data) };
                 });
                 //			$scope.md = value;
-                $window.location.reload();
+                //$window.location.reload();
             }, function (err) {
                 throw { message: JSON.stringify(err.data) };
             });
+        };
+
+
+        //Open help menu
+        $scope.openHelpModel = function (event, helpModelId) {
+            $scope[helpModelId] = !$scope[helpModelId];
+
+            var thisControl = $(event.target);
+            var posX = (event.pageX), posY = (event.pageY + 10);
+
+            var model = $('div[ng-class="{active: ' + helpModelId + '}"]');
+            model.css('left', posX + 'px');
+            model.css('top', posY + 'px');
         };
 
         $scope.advanceSettings = function () {
@@ -1613,4 +1625,4 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
             $scope.loadDataCombos($scope.metric.id, "", "");
         }
-    ])
+    ]);
