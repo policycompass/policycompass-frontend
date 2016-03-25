@@ -116,10 +116,9 @@
                 <div class="form-item">
                     <div class="field-label">Datasets</div>
                     <div class="field-content">
-                        <div ng-repeat="metric in meticsRelated"><a ng-href="#!/datasets/{{metric.id}}">{{metric.title}}
-                    </div>
-                </div>
-
+                        <div ng-repeat="metric in meticsRelated"><a ng-href="#!/datasets/{{metric.id}}">{{metric.title}}</a></div>
+                	</div>
+				</div>
             </div>
             <div class="form-group form-group-events form-group-external" ng-if="visualization.historical_events_in_visualization">
                 <div class="form-item">

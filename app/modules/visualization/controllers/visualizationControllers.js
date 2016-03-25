@@ -505,6 +505,18 @@ angular.module('pcApp.visualization.controllers.visualization', [
                     ];
 					$scope.plotdataoption = $scope.plotdataoptions[0];
 
+					$scope.plotxaxislegendoptions = [
+                        {
+                            label: 'at the beginning of period',
+                            value: 'first'
+                        },
+                        {
+                    		label: 'in the middle of period',
+                        	value: 'middle'
+                    	}
+                    ];
+					$scope.plotxaxislegend = $scope.plotxaxislegendoptions[0];
+
                     $scope.resolutionoptions = [
                         {
                             label: 'Day',
@@ -1018,7 +1030,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
                         var dlg = dialogs.confirm("Are you sure?", "Do you want to exit without saving this visualization?");
                         dlg.result.then(function () {
                             if ($scope.mode == 'create') {
-                                window.history.back();
+                                $timeout(function(){
+                                    window.history.back();
+                                });
                             } else {
                                 //window.history.back();
                                 $location.path('/visualizations/'+$scope.visualization.id);
@@ -2830,7 +2844,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                                 'showAsPercentatge': $scope.showAsPercentatge,
                                                 'legendsColumn': legendsColumn,
                                                 'resolution': $scope.resolution.value,
-                                                'plotDataIn': $scope.plotdataoption
+                                                'plotDataIn': $scope.plotdataoption,
+                                                'tickposition': $scope.plotxaxislegend,
                                             });
 
                                             if (numbers1.length > 0) {
@@ -3495,7 +3510,20 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						
 						$scope.plotdataoption = $scope.plotdataoptions[endPos];
 						$scope.plotDataIn=$scope.plotdataoptions[endPos];
-					
+
+					} else if (dataFilter[0] == 'xLegend') {
+												
+						for (var i = 0; i < $scope.plotxaxislegendoptions.length; i++) {
+
+                            if (dataFilter[1] == $scope.plotxaxislegendoptions[i].value) {
+                                endPos = i;
+                            }
+                        };
+						
+						$scope.plotxaxislegend = $scope.plotxaxislegendoptions[endPos];
+						
+                    
+                    
                     } else if (dataFilter[0] == 'scaleColor') {
                         if (dataFilter[1]) {
                             $scope.scaleColor = dataFilter[1];
@@ -3789,6 +3817,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                 dataConfig['showAsPercentatge'] = $scope.showAsPercentatge;
                 dataConfig['resolution'] = $scope.resolution['value'];
                 dataConfig['plotAt'] = $scope.plotdataoption['value'];
+                dataConfig['xLegend'] = $scope.plotxaxislegend['value'];
 
                 if ($scope.timeStart != '----') {
                     dataConfig['timeStart'] = $scope.timeStart;
@@ -4176,6 +4205,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                 dataConfig['showAsPercentatge'] = $scope.showAsPercentatge;
                 dataConfig['resolution'] = $scope.resolution['value'];
 				dataConfig['plotAt'] = $scope.plotdataoption['value'];
+				dataConfig['xLegend'] = $scope.plotxaxislegend['value'];
 				
                 if ($scope.timeStart != '----') {
                     dataConfig['timeStart'] = $scope.timeStart;

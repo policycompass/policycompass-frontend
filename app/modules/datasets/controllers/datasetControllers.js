@@ -292,7 +292,8 @@ angular.module('pcApp.datasets.controllers.dataset', [
         '$routeParams',
         'creationService',
         'API_CONF',
-        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService, API_CONF) {
+        '$http',
+        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService, API_CONF, $http) {
             $scope.inputTable = creationService.data.inputTable;
 
             $scope.inputTable.settings.readOnly = false;
@@ -341,7 +342,21 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
                     creationService.data.dataset.title = (dataset.title && dataset.title.length > 0) ? dataset.title : dataset.notes;
                     creationService.data.dataset.description = (resource.name && resource.name.length > 0) ? resource.name : resource.description;
+                }
+            };
 
+
+            $scope.eurostatImport = {
+                isVisible: false,
+                toggleVisibility: function () {
+                    $scope.eurostatImport.isVisible = !$scope.eurostatImport.isVisible;
+                    if ($scope.eurostatImport.isVisible)
+                        $scope.dropzone.isCollapsed = true;
+
+                },
+                loadData: function (dataset, resource, data) {
+                    $scope.inputTable.items = data.result;
+                    $scope.inputInstance.loadData(data.result);
                 }
             };
 
@@ -972,6 +987,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
                 payload.policy_domains = $scope.policy_domains.output;
                 payload.title = $scope.dataset.title;
+                payload.acronym = $scope.dataset.acronym;
                 payload.keywords = $scope.dataset.keywords;
                 payload.license = $scope.dataset.license;
                 payload.description = $scope.dataset.description;
@@ -1122,7 +1138,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
             $scope.deleteDataset = function (dataset) {
                 // Open a confirmation dialog
-                var dlg = dialogs.confirm("Are you sure?", "Do you want to delete the Dataset " + dataset.title + " permanently?");
+                var dlg = dialogs.confirm("Are you sure?", "Do you want to delete the Dataset " + dataset.acronym + " permanently?");
                 dlg.result.then(function () {
                     // Delete the dataset via the API
                     dataset.$delete({}, function () {
