@@ -62,11 +62,15 @@ angular.module('pcApp.common.directives.common', [])
                     var url = scope.userpath;
                     $http({
                             url: url,
-                            method: 'get',
+                            method: 'get'
                         }).then(function (response) {
-                            scope.username = response.data.data["adhocracy_core.sheets.principal.IUserBasic"].name;
+                            if(response.data && response.data.content_type == "adhocracy_core.resources.principal.IUser") {
+                                scope.username = response.data.data["adhocracy_core.sheets.principal.IUserBasic"].name;
+                            } else {
+                                scope.username = "Unknown User";
+                            }
                         }, function (response) {
-                            scope.username = "";
+                            scope.username = "Deleted User";
                     });
                 }
             };
