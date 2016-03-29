@@ -66,7 +66,7 @@ policycompass.viz.barsMultiple = function (options) {
 	                    return valueX;
 	                })
 	                .attr("y", function (d, i) {
-	                    var valueY = (self.height) + self.margin.top + 30 ;
+	                    var valueY = (self.height) + self.margin.topIni + 30 ;
 						return valueY;
 	                })
 	                .attr("text-anchor", "center")
@@ -87,8 +87,8 @@ policycompass.viz.barsMultiple = function (options) {
 				historicalEvents.enter().append("rect")
 					.attr("x", valueX - 10)
 					.attr("y", function (d, i) {                    	
-						//var valueY = (self.height) + self.margin.top + 30 + (i) * 20 + (20 * self.dataToPlotLength );
-						var valueY = (self.height) + self.margin.top + 30 + (i+1) * 20;
+						//var valueY = (self.height) + self.margin.topIni + 30 + (i) * 20 + (20 * self.dataToPlotLength );
+						var valueY = (self.height) + self.margin.topIni + 30 + (i+1) * 20;
 						return valueY - 5;
 					})		
 					.attr("width", 5)
@@ -104,8 +104,8 @@ policycompass.viz.barsMultiple = function (options) {
 	                        return valueX;
 	                    })
 	                    .attr("y", function (d, i) {
-	                        //var valueY = (self.height) + self.margin.top + 30 + (i) * 20 + (20 * self.dataToPlotLength );
-	                        var valueY = (self.height) + self.margin.top + 30 + (i+1) * 20;
+	                        //var valueY = (self.height) + self.margin.topIni + 30 + (i) * 20 + (20 * self.dataToPlotLength );
+	                        var valueY = (self.height) + self.margin.topIni + 30 + (i+1) * 20;
 							return valueY;
 	                    })
 	                    .attr("text-anchor", "center")
@@ -154,6 +154,9 @@ policycompass.viz.barsMultiple = function (options) {
 
 			
 		var dataForCircles = [];
+		
+		dataForCircles = eventsData;
+		/*
 		for (var i in eventsData) {
 			
 			if (eventsData[i].startDate) {			
@@ -200,26 +203,60 @@ policycompass.viz.barsMultiple = function (options) {
             
            }
         }
-		
+		*/
 		var historicalEventsCircles = self.svg.selectAll("circles").data(dataForCircles);
 		
 		//self.radius = 4;
+
+		var rectangle = self.svg.append("rect")
+			.style("stroke", "black")
+  			.style("fill", "none")
+  			.style("stroke-width", 1)
+  			.attr("x", 0)
+  			.attr("y", -((self.maxEventsByPeriod+1) * self.spaceBetweenEvents)+(self.spaceBetweenEvents/2))
+  			.attr("width", self.width)
+  			.attr("height", ((self.maxEventsByPeriod) * self.spaceBetweenEvents));
+
+		self.svg.append("text")
+			.attr("x", 2)
+			.attr("y", -((self.maxEventsByPeriod+1) * self.spaceBetweenEvents)+(self.spaceBetweenEvents/2)-2)
+			.attr("text-anchor", "center")
+			.attr("font-size", self.font_size+1)
+			.style("fill", function (d, i) {
+				var colorToReturn = "black";
+				return colorToReturn;
+			})
+			.text(function (d, i) {
+				var resTRext = "Events";
+				return resTRext;
+			});
 		
 		var offset = (self.labelY.length * self.x1.rangeBand()/2);
+		var range = (self.labelY.length * self.x1.rangeBand()/2)*2;
 		
 		var cnt_events_by_period = [];
-		
-		historicalEventsCircles.enter().append("circle")
-			.attr("cx", function (d, i) {
-					var retunrDate='';					
-					retunrDate = self.x0(d.posx) + offset;					
-					//console.log(retunrDate);					
-					return retunrDate;					
-					//return x0(resTRext[0]) + x1(d.Key);
-							                    
+		historicalEventsCircles.enter().append("rect")
+			.attr("class", function (d, i) {
+				var className = "lineXDisco event_circle_"+d.index;
+				return className;
 			})
-			.style("opacity", 1)
-			.attr("cy", function (d, i) {								
+			.style("stroke", function (d, i) {
+				var colorToReturn;
+				colorToReturn = d.color;	
+				return colorToReturn;
+			})	
+			.style("stroke-width", function (d, i) {
+				return self.radius+1;
+			})				
+			.style("fill", function (d, i) {
+                var colorToPlot = d.color;
+                return colorToPlot;
+            })
+            .attr("x", function (d, i) {				
+				var returnValue = self.x0(d.posx);									
+				return returnValue;					
+            })
+            .attr("y", function (d, i) {            	
 				var a = cnt_events_by_period.indexOf(d.posx);				
 				if (cnt_events_by_period[d.posx]) {
 					cnt_events_by_period[d.posx] = cnt_events_by_period[d.posx] +1;
@@ -227,40 +264,103 @@ policycompass.viz.barsMultiple = function (options) {
 				else {					
 					cnt_events_by_period[d.posx] = 1;	
 				}
-				var returnValue = -10 + (self.radius*4)*(cnt_events_by_period[d.posx]-1); 				
+				//var returnValue = -10 + (self.radius*4)*(cnt_events_by_period[d.posx]-1);
+				
+				var returnValue = -(self.maxEventsByPeriod * self.spaceBetweenEvents) + (self.spaceBetweenEvents)*(cnt_events_by_period[d.posx]-1);
+				 				
 				//console.log(returnValue);
-				return returnValue;
-			})
-			.attr("r", 0)
-			.attr("class", function (d, i) {
-				var className = "lineXDisco event_circle_"+d.index;
-				return className;
-			})
-			.style("stroke-width", self.radius)
-			.style("stroke", function (d, i) {
-				var colorToReturn;
-				colorToReturn = d.color;	
-				return colorToReturn;
-			})
-			.on("mouseover", function (d, i) {			
+				return returnValue;	
+            })
+            .attr("width", function (d, i) {
+            	return range;
+            })
+            .attr("height", function (d, i) {
+            	return 1;
+            })
+            .on("mouseover", function (d, i) {			
 				d3.selectAll(".event_circle_"+d.index).style("stroke-width", self.radius+1);				
 				var str = "Event: " + d.title;
-						var fromDate = "From: " +d.startDate;
+				var fromDate = "From: " +d.startDate;
 						var toDate = "To: " +d.endDate;
 						var desc = "Desc.: " +d.desc;
 						if ((self.modeGraph == 'view') || (self.xaxeformat == 'sequence')) { 
 							tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '<br/>'+fromDate+'<br/>'+toDate+'<br/>'+desc+'<br/></div>');
-						}
-						else {
-							tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '<br/>'+fromDate+'<br/>'+toDate+'<br/>'+desc+'</div>');
-						}					
-					})
-					.on("mouseout", function (d, i) {
-						mouseout();
-						d3.selectAll(".event_circle_"+d.index).style("stroke-width", self.radius);
-		             })
-					.transition().attr("r", self.radius).duration(2000)	
-
+				}
+				else {
+					tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '<br/>'+fromDate+'<br/>'+toDate+'<br/>'+desc+'</div>');
+				}					
+			})
+            .on("mouseout", function (d, i) {
+				mouseout();
+				d3.selectAll(".event_circle_"+d.index).style("stroke-width", self.radius);
+			})
+            ;
+		
+		/*
+		//plot a circle in the beggin and in the end of the "event" line		
+		for (var iHE=1;iHE<=2; iHE=iHE+1) {
+			var cnt_events_by_period = [];	
+		
+		
+			historicalEventsCircles.enter().append("circle")
+				.attr("cx", function (d, i) {
+					var retunrDate='';
+					if (iHE==1) {
+						retunrDate = self.x0(d.posx);	
+					}
+					else {
+						retunrDate = self.x0(d.posx) + (range);
+					}
+										
+					//console.log(retunrDate);					
+					return retunrDate;					
+					//return x0(resTRext[0]) + x1(d.Key);
+				})
+				.style("opacity", 1)
+				.attr("cy", function (d, i) {								
+					var a = cnt_events_by_period.indexOf(d.posx);				
+					if (cnt_events_by_period[d.posx]) {
+						cnt_events_by_period[d.posx] = cnt_events_by_period[d.posx] +1;
+					}
+					else {					
+						cnt_events_by_period[d.posx] = 1;	
+					}
+					//var returnValue = -10 + (self.radius*4)*(cnt_events_by_period[d.posx]-1);
+					var returnValue = -(self.maxEventsByPeriod * self.spaceBetweenEvents) + (self.spaceBetweenEvents)*(cnt_events_by_period[d.posx]-1);
+					return returnValue;
+				})
+				//.attr("r", 0)
+				.attr("r", self.radius)
+				.attr("class", function (d, i) {
+					var className = "lineXDisco event_circle_"+d.index;
+					return className;
+				})
+				.style("stroke-width", self.radius)
+				.style("stroke", function (d, i) {
+					var colorToReturn;
+					colorToReturn = d.color;	
+					return colorToReturn;
+				})
+				.on("mouseover", function (d, i) {			
+					d3.selectAll(".event_circle_"+d.index).style("stroke-width", self.radius+1);				
+					var str = "Event: " + d.title;
+					var fromDate = "From: " +d.startDate;
+					var toDate = "To: " +d.endDate;
+					var desc = "Desc.: " +d.desc;
+					if ((self.modeGraph == 'view') || (self.xaxeformat == 'sequence')) { 
+						tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '<br/>'+fromDate+'<br/>'+toDate+'<br/>'+desc+'<br/></div>');
+					}
+					else {
+						tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '<br/>'+fromDate+'<br/>'+toDate+'<br/>'+desc+'</div>');
+					}					
+				})
+				.on("mouseout", function (d, i) {
+					mouseout();
+					d3.selectAll(".event_circle_"+d.index).style("stroke-width", self.radius);
+				})
+				//.transition().attr("r", self.radius).duration(2000)	
+		}
+		*/
         /******** end plot historical events ***********/		
 	}
 
@@ -720,7 +820,7 @@ policycompass.viz.barsMultiple = function (options) {
 		                    	return valueX;
 		                	})
 		                	.attr("y", function (d, i) {
-		                    	var valueY = (self.height) + self.margin.top + 30 + (incremetY) * 20;
+		                    	var valueY = (self.height) + self.margin.topIni + 30 + (incremetY) * 20;
 								return valueY;
 		                	})
 		                	.attr("text-anchor", "center")
@@ -741,9 +841,9 @@ policycompass.viz.barsMultiple = function (options) {
                     cntiMultiple = cntiMultiple + 1;
                 }
 				/*
-                var valueY = (self.height) + self.margin.top + 50 + (incremetY) * 20;
+                var valueY = (self.height) + self.margin.topIni + 50 + (incremetY) * 20;
                 */
-                var valueY = (self.height) + self.margin.top + 30 + (incremetY+1) * 20;
+                var valueY = (self.height) + self.margin.topIni + 30 + (incremetY+1) * 20;
                
                 /*
                 if ((i+1) % self.legendsColumn == 0) {
@@ -961,10 +1061,82 @@ policycompass.viz.barsMultiple = function (options) {
             .attr("x", self.margin.left)
             .attr("y", self.margin.top)
         } else {
-        	
+
+
+			var dataForCircles =[];
+			var cnt_events_by_period = [];
+			var maxEventsByPeriod = 0;
+			for (var i in eventsData) {
+			
+				if (eventsData[i].startDate) {			
+					var arrayObjDateStart = eventsData[i].startDate.split("-");
+								
+		            var arrayTemporal = [];
+		            arrayTemporal['index'] = i;
+		            arrayTemporal['color'] = eventsData[i].color;
+		            arrayTemporal['title'] = eventsData[i].title;
+		            arrayTemporal['startDate'] = eventsData[i].startDate;
+		            arrayTemporal['endDate'] = eventsData[i].endDate;
+		            
+		            //console.log(eventsData[i].startDate);
+		            
+		            if (self.resolution=='day') {
+		            	arrayTemporal['posx'] = eventsData[i].startDate;            	
+		            }
+		            else if (self.resolution=='month') {
+		            	arrayTemporal['posx'] = arrayObjDateStart[0]+"-"+arrayObjDateStart[1];           	
+		            }
+		            else if (self.resolution=='year') {            	
+		            	arrayTemporal['posx'] = arrayObjDateStart[0];           	
+		            }
+		            else if (self.resolution == 'quarter') {
+		            	var extraString = "";
+		            	if (arrayObjDateStart[1]<=3) {
+		            		extraString = "Q1"
+		            	}
+		            	else if (arrayObjDateStart[1]<=6) {
+		            		extraString = "Q2"
+		            	}
+		            	else if (arrayObjDateStart[1]<=9) {
+		            		extraString = "Q3"
+		            	}
+		            	else if (arrayObjDateStart[1]<=12) {
+		            		extraString = "Q4"
+		            	}
+		            	arrayTemporal['posx'] = arrayObjDateStart[0]+"-"+extraString;
+		            }
+		
+		            arrayTemporal['posY'] = 0;
+		            arrayTemporal['desc'] = eventsData[i].desc;
+		            dataForCircles[i] = arrayTemporal;
+	
+					var a = cnt_events_by_period.indexOf(arrayTemporal.posx);				
+					if (cnt_events_by_period[arrayTemporal.posx]) {
+						cnt_events_by_period[arrayTemporal.posx] = cnt_events_by_period[arrayTemporal.posx] +1;
+					}
+					else {					
+						cnt_events_by_period[arrayTemporal.posx] = 1;	
+					}
+					
+					if (maxEventsByPeriod<cnt_events_by_period[arrayTemporal.posx]) {
+						maxEventsByPeriod=cnt_events_by_period[arrayTemporal.posx]
+					}
+					            
+	           }
+        	}
+
+			self.margin.topIni = self.margin.top;
+		
+			self.spaceBetweenEvents = 20;
+			if (maxEventsByPeriod>0)
+			{
+				self.margin.top = self.margin.top + (self.spaceBetweenEvents*(maxEventsByPeriod+1));
+				self.maxEventsByPeriod = maxEventsByPeriod;
+			}
+                	
             var dataToPlotUpdate = self.clone(dataIn);
             dataToPlotUpdate = self.alphabetical_sort_object_of_objects(dataToPlotUpdate, 'To');
-            self.drawBarsMultiple(dataToPlotUpdate, eventsData);
+            self.drawBarsMultiple(dataToPlotUpdate, dataForCircles);
         }
 
     }
