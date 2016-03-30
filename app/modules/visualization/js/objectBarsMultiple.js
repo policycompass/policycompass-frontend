@@ -406,7 +406,8 @@ policycompass.viz.barsMultiple = function (options) {
         var valuesY = [];
 
         bars.forEach(function (d, i) {
-            valuesY.push(parseInt(d.ValueY));
+            //valuesY.push(parseInt(d.ValueY));
+            valuesY.push((d.ValueY));
         });
 
         var maxV = d3.max(d3.values(valuesY));
