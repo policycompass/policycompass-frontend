@@ -338,6 +338,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                     ModelTitle: user.title,
                     ModelDesc: user.description,
                     ModelKeywords: user.keywords,
+                    domains: user.domains,
                     userID: "1",
                     concepts: ConceptsDetail.getConcepts(),
                     connections: AssociationsDetail.getAssociations()
@@ -379,9 +380,13 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 connections: AssociationsDetail.getAssociations()
             };
 
+            jsonModel.model.title = $scope.modeldetail.model.title;
+            jsonModel.model.description = $scope.modeldetail.model.description;
+            jsonModel.model.keywords = $scope.modeldetail.model.keywords;
+            //jsonModel.model.title = $scope.modeldetail.model.title;
+
             $scope.fcmModelUpdate = new FcmModel();
             $scope.fcmModelUpdate.data = jsonModel;
-            $scope.md = jsonModel;
             FcmModel.update({ id: $routeParams.fcmId }, $scope.fcmModelUpdate, function (value) {
                 FcmSearchUpdate.update({ id: $routeParams.fcmId }, function () {
                     var dlg = dialogs.notify("Causal Model", "'" + value.model.title + "' Casual Model has been saved!");
@@ -389,10 +394,23 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                     throw { message: JSON.stringify(err.data) };
                 });
                 //			$scope.md = value;
-                $window.location.reload();
+                //$window.location.reload();
             }, function (err) {
                 throw { message: JSON.stringify(err.data) };
             });
+        };
+
+
+        //Open help menu
+        $scope.openHelpModel = function (event, helpModelId) {
+            $scope[helpModelId] = !$scope[helpModelId];
+
+            var thisControl = $(event.target);
+            var posX = (event.pageX), posY = (event.pageY + 10);
+
+            var model = $('div[ng-class="{active: ' + helpModelId + '}"]');
+            model.css('left', posX + 'px');
+            model.css('top', posY + 'px');
         };
 
         $scope.advanceSettings = function () {
@@ -1011,6 +1029,21 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             $rootScope.$broadcast('appChanged');
         };
 
+        // The help text should be open when user click the question mark and should be closed if user click outside
+        $('body').unbind('mouseup');
+        $('body').mouseup(function (e) {
+            for (var i = 0; i < 10; i++) {
+                i = i == 0 ? '' : i;
+                var container = $('[ng-class="{active: help' + i + '}"]');
+                var click = $('[ng-click="help' + i + '=!help' + i + '"]');
+                if (container.length > 0 && click.length > 0)
+                    if ((!container.is(e.target) || !click.is(e.target)) && container.has(e.target).length === 0) {
+                        if (container.attr('class').indexOf(' active') != -1)
+                            $(click[0]).trigger('click');
+                    }
+                i = i == '' ? 0 : i;
+            }
+        });
     })
 
     .controller('helpController', function ($scope, $modalInstance, $log, $routeParams, data) {
@@ -1613,4 +1646,4 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
             $scope.loadDataCombos($scope.metric.id, "", "");
         }
-    ])
+    ]);
