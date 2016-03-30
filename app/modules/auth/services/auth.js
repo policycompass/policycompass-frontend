@@ -20,7 +20,7 @@ angular.module('pcApp.auth.services.auth', [
                     var next = nextUrl.split("#!")[1];
                     var prev = prevUrl.split("#!")[1];
 
-                    if ((next == "/login" || next == "/register")
+                    if ((next == "/login" || next == "/register" || next == "/logout")
                         && typeof prev !== "undefined"
                         && prev !== "/login"
                         && prev !== "/register"
@@ -95,7 +95,7 @@ angular.module('pcApp.auth.services.auth', [
                     Auth._logout();
 
                     if ($location.path() === '/logout') {
-                        $location.path('/');
+                        $location.path(last || '/');
                     }
                 });
             });
