@@ -86,7 +86,7 @@ angular.module('pcApp.auth.services.auth', [
                     Auth._login(data.userData, data.token, data.userPath).then(function (ready) {
 
                         if (($location.path() === '/login') || ($location.path() === '/register')) {
-                            $location.path(last || '/');
+                            $location.url(last || '/');
                             last = undefined;
                         }
                     });
