@@ -16,48 +16,35 @@
                 <hr/>
                 <h5>No results found.</h5>
             </div>
-            <div ng-show="ckan.results">
+            <div ng-show="ckan.results" class="row">
                 <hr/>
-                <div ng-repeat="dataset in ckan.results | filter:byNumResourcesGtZero" class="ckan-results">
-                    <div class="well">
-
-                        <div class="attributes">
-
-                            <h3>{{dataset.title}}</h3>
-
-                            <p>{{dataset.notes}}</p>
-
-                            <div ng-repeat="resource in dataset.resources | filter:byResourceTypeIn(['xls','tsv','csv','xlsx'])">
-                                <!-- FIXME: if no name or description -->
-
-                                <div ng-if="resource.name">
-                                    <h5>
-                                        <a href ng-click="loadResource(dataset, resource)">{{resource.name}}</a>
-                                    </h5>
-
-                                    <p>
-                                        {{resource.description}} </p>
-                                    <br ng-show="resource.description > 0 && resource.name"/>
-                                </div>
-                                <div ng-if="!resource.name && resource.description.length > 0">
-                                    <h5>
-                                        <a href ng-click="loadResource(dataset, resource)">{{resource.description}}</a>
-                                    </h5>
-                                </div>
-                                <div ng-if="!resource.name && (!resource.description || resource.description.length ==0)">
-                                    <h5>
-                                        <a href ng-click="loadResource(dataset, resource)">Unlabeled
-                                            dataset resource</a>
-                                    </h5>
-                                </div>
-                                Type: {{resource.format}}<br/>
-                            </div>
-                        </div>
+                <div ng-repeat="dataset in ckanSearchResults | filter:byNumResourcesGtZero" class="ckan-results">
+                    <div class="attributes well col-md-10 col-xs-3 dataset-search">
+                        <h5>
+                            {{dataset.title | limitTo:60}}
+                        </h5>
+                        <button class="btn" dropdown class="dropdown-toggle" dropdown-toggle>
+                                Select Resource
+                            <span class="caret"></span>
+                            <ul class="dropdown-menu">
+                                <li ng-repeat="resource in dataset.resources | filter:byResourceTypeIn(['xls','tsv','csv','xlsx'])">
+                                    <a ng-if="resource.name" ng-click="loadResource(dataset, resource)">
+                                        {{ resource.name }} ({{resource.format}})
+                                    </a>
+                                    <a ng-if="!resource.name && resource.description.length > 0" ng-click="loadResource(dataset, resource)">
+                                        {{ resource.description }} ({{resource.format}})
+                                    </a>
+                                    <a ng-if="!resource.name && (!resource.description || resource.description.length ==0)" ng-click="loadResource(dataset, resource)">
+                                        Unlabeled dataset resource ({{resource.format}})
+                                    </a>
+                                </li>
+                            </ul>
+                       </button>
                     </div>
                 </div>
-                <div style="text-align: center">
-                    <pagination total-items="ckan.count" ng-change="onPageChange()" items-per-page="itemsPerPage" ng-model="currentPage" max-size="4" class="pagination-sm" style="float: inherit;" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
-                </div>
+            </div>
+            <div style="text-align: center">
+                <pagination ng-show="ckan.results" total-items="ckan.results.length" ng-change="onPageChange()" items-per-page="itemsPerPage" ng-model="currentPage" max-size="5" class="pagination-sm" style="float: inherit;" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
             </div>
         </div>
     </div>

@@ -106,3 +106,26 @@
 .pc-er-button {
     margin-top: 28px;
 }
+
+.dataset-dropdown{
+    left: auto;
+    right: auto;
+    width: 240px;
+}
+
+.open > .dataset-dropdown >li >a{
+    background-color: white;
+}
+
+.dataset-dropdown-image{
+    width:15%;
+    height:15%;
+}
+
+.dataset-search{
+    background-color:#f9f9f9;
+    height:120px;
+    width:30%;
+    min-width: 280px;
+    margin-left: 2.5%;
+}
