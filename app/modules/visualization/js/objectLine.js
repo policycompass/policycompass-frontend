@@ -2181,12 +2181,20 @@ policycompass.viz.line = function (options) {
 					
                 }
 				else {
-				
+					//console.log("----------");
+					//console.log("newDate="+newDate);
 					if (self.arrayXaxesLabel.length>(parseInt(i)+1)) {
 						//console.log(i);
 						var newDate2 = self.arrayXaxesLabel[parseInt(i)+1];
+						//console.log("newDate2="+newDate2);						
 						var posXToPlot_fin = self.xScale(getDate(newDate2));
+						//console.log("posXToPlot_fin="+posXToPlot_fin);
 						//var posXToPlot_fin = self.xScale((self.arrayXaxesLabel[parseInt(i)+1]));
+						
+						if (posXToPlot_fin<posXToPlot_ini) {
+							posXToPlot_fin = 1000;
+						}
+						
 						posXToPlot_ini = posXToPlot_ini + (posXToPlot_fin-posXToPlot_ini)/2;
 					}
 					else {
@@ -2196,6 +2204,7 @@ policycompass.viz.line = function (options) {
 						//var posXToPlot_fin = self.width*2;
 					}
 
+					//console.log("posXToPlot_ini="+posXToPlot_ini)
 					if (posXToPlot_ini<5) {
 						posXToPlot_ini = -100;
 					}
@@ -2203,6 +2212,7 @@ policycompass.viz.line = function (options) {
 						posXToPlot_ini = self.width*2;
 					}
 				}
+				
 				var posY = self.height+15;
 				return "translate("+posXToPlot_ini+","+posY+") rotate(-25)"
 			})
@@ -2529,7 +2539,10 @@ policycompass.viz.line = function (options) {
 						else if (iHE==2) {
 							retunrDate = d.endDate;
 						}
-	                    return self.xScale(getDate(retunrDate));		                    
+						
+						var returnValue = self.xScale(getDate(retunrDate));
+	                    //return self.xScale(getDate(retunrDate));
+	                    return returnValue;                   
 					})
 	                .style("opacity", 1)
 	                .attr("cy", function (d, i) {                    
