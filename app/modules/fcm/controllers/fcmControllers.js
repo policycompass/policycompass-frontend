@@ -1,6 +1,6 @@
 angular.module('pcApp.fcm.controllers.fcm', [
-    'pcApp.fcm.services.fcm'
-])
+        'pcApp.fcm.services.fcm'
+    ])
 
     .factory('FcmControllerHelper', [
         function () {
@@ -35,7 +35,8 @@ angular.module('pcApp.fcm.controllers.fcm', [
         'dialogs',
         '$log',
         'FcmSearchUpdate',
-        function ($scope, $rootScope, $routeParams, $location, FcmModel, FcmActivator, FcmSearchDelete, dialogs, $log, FcmSearchUpdate) {
+        'Auth',
+        function ($scope, $rootScope, $routeParams, $location, FcmModel, FcmActivator, FcmSearchDelete, dialogs, $log, FcmSearchUpdate, Auth) {
             $scope.mapData = [];
             $scope.edgeData = [];
             $scope.Concepts = [];
@@ -43,6 +44,8 @@ angular.module('pcApp.fcm.controllers.fcm', [
             $scope.updateAssociations = [];
             $scope.updateConcepts = [];
             $scope.editorLayout;
+
+            $scope.user = Auth;
 
             $scope.models = FcmModel.get({id: $routeParams.fcmId}, function (fcmList) {
                 for (i = 0; i < $scope.models.concepts.length; i++) {
@@ -200,5 +203,4 @@ angular.module('pcApp.fcm.controllers.fcm', [
 
         }
     ]);
-
 
