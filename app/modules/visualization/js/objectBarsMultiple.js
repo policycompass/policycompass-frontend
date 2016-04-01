@@ -252,8 +252,8 @@ policycompass.viz.barsMultiple = function (options) {
                 var colorToPlot = d.color;
                 return colorToPlot;
             })
-            .attr("x", function (d, i) {				
-				var returnValue = self.x0(d.posx);									
+            .attr("x", function (d, i) {            					
+				var returnValue = self.x0(d.posx);							
 				return returnValue;					
             })
             .attr("y", function (d, i) {            	
@@ -272,7 +272,17 @@ policycompass.viz.barsMultiple = function (options) {
 				return returnValue;	
             })
             .attr("width", function (d, i) {
-            	return range;
+            	var returnValue = self.x0(d.posx);
+            	//to avoid plot events out of the range
+            	if (returnValue>0)
+            	{
+            		returnValue = range;
+            	}
+            	else
+            	{
+            		returnValue = 0;
+            	}
+            	return returnValue;
             })
             .attr("height", function (d, i) {
             	return 1;
@@ -449,7 +459,13 @@ policycompass.viz.barsMultiple = function (options) {
         var xAxisData = d3.set(bars.map(function (line) {
         	//console.log(line.ValueX);
             //return line.ValueX;
-            return line.Key;
+            if (self.groupby=='date') {
+            	return line.Key;            	
+            }
+            else {
+            	return line.ValueX;
+            	//return line.Key; 
+            }
         })).values();
 
 		var xAxisDataColor = d3.set(bars.map(function (line) {
@@ -466,14 +482,22 @@ policycompass.viz.barsMultiple = function (options) {
 
         x0.domain(bars.map(function (d) {
             //var resTRext = .split("_");
-            var resTRext = d.To.split("_");
-            
+            //var resTRext = d.Key.split("_");
+            if (self.groupby=='date') {
+            	var resTRext = d.To.split("_");	
+            }
+            else {
+            	var resTRext = d.Key.split("_");
+            }            
+            //console.log(resTRext);
             var trimmedString = resTRext[0];
+            
             var length = 120;
             if (trimmedString.length > length) {
 				trimmedString = trimmedString.substring(0, length) + "...";
 			}
-            
+			
+            //console.log(trimmedString);
             return trimmedString;
         }));
 		/*
@@ -559,11 +583,19 @@ policycompass.viz.barsMultiple = function (options) {
         }
 
         if (showGrid) {
+        	
+        	//console.log(self.maxEventsByPeriod)
+        	var tickPosition = self.height;
+        	if (self.maxEventsByPeriod>0) {
+        		tickPosition = tickPosition + (self.maxEventsByPeriod*self.spaceBetweenEvents)+10;
+        	}
+        	
+        	
             self.svg.append("g")
             .attr("class", "grid")
             .attr("transform", "translate(0," + self.height + ")")
             .call(make_x_axis()
-            .tickSize(-self.height, 0, 0)
+            .tickSize(-tickPosition, 0, 0)
             .tickFormat(""));
             
             self.svg.append("g")
@@ -584,7 +616,12 @@ policycompass.viz.barsMultiple = function (options) {
         })
 		.attr("class", function (d, i) {
 			
-			var find = d.Key;
+			if (self.groupby=='date') {
+				var find = d.Key;
+			}
+			else {
+				var find = d.To;
+			}
 			var re = find.replace(/[^\w\-\u00A0-\uFFFF]/g,"_");
 
 			var className = "bar bar_line_"+re;
@@ -592,9 +629,19 @@ policycompass.viz.barsMultiple = function (options) {
 		})        
         .attr("x", function (d,i) {
         	//var resTRext = d.Key.split("_");
-        	var resTRext = d.To.split("_");       	
-        	//return x0(resTRext[0]) + x1(d.ValueX);        	
-        	return x0(resTRext[0]) + x1(d.Key);
+        	if (self.groupby=='date') {
+        		var resTRext = d.To.split("_");
+        	}
+        	else {
+        		var resTRext = d.Key.split("_");
+        	}       	
+        	//return x0(resTRext[0]) + x1(d.ValueX);
+        	if (self.groupby=='date') {
+        		return x0(resTRext[0]) + x1(d.Key);
+        	}
+        	else {
+        		return x0(resTRext[0]) + x1(d.ValueX);
+        	}
         })
         .attr("y", function (d) {
         	return self.height;
@@ -606,11 +653,23 @@ policycompass.viz.barsMultiple = function (options) {
             //return color(d.ValueX);
             //var resTRext = d.Key.split("_");
             //return color(resTRext[0]);           
-            return d.Color;
+            if (self.groupby=='date') {
+            	return d.Color;
+            }
+            else {
+            	return color(d.ValueX);
+            	//return d.Color;
+            }
         })
         .on("mouseout", function (d, i) {
            	
-           	var find = d.Key;           	
+           	if (self.groupby=='date') {
+				var find = d.Key;
+			}
+			else {
+				var find = d.To;
+			}
+			          	
 			var re = find.replace(/[^\w\-\u00A0-\uFFFF]/g,"_");
 			
 			d3.selectAll(".bar_line_"+re).attr("stroke","white").attr("stroke-width",0.0);		
@@ -618,8 +677,14 @@ policycompass.viz.barsMultiple = function (options) {
             mouseout();
         })
         .on("mouseover", function (d, i) {
-            
-            var find = d.Key;            
+                        
+            if (self.groupby=='date') {
+				var find = d.Key;
+			}
+			else {
+				var find = d.To;
+			}
+			           
 			var re = find.replace(/[^\w\-\u00A0-\uFFFF]/g,"_");
 			
 			d3.selectAll(".bar_line_"+re).attr("stroke","red").attr("stroke-width",0.8);       	        	
@@ -861,7 +926,15 @@ policycompass.viz.barsMultiple = function (options) {
                 .attr("width", 5)
                 .attr("height", 5)
                 //.style("fill", xAxisDataColor[i])
-                .style("fill", xAxisDataClonned[i]['color'])
+                .style("fill", function () {
+                    	if (self.groupby=='date') {
+                    		return xAxisDataClonned[i]['color'];
+                    	}
+                    	else {
+                    		//return '#000';
+                    		return color(d.title);
+                    	}
+                    })
                 ;
 
 
@@ -914,7 +987,15 @@ policycompass.viz.barsMultiple = function (options) {
                     .attr("class", "link superior legend value")
                     .attr("font-size", self.font_size+1)
                     //.style("fill", xAxisDataColor[i])
-                    .style("fill", xAxisDataClonned[i]['color'])
+                    .style("fill", function () {
+                    	if (self.groupby=='date') {
+                    		return xAxisDataClonned[i]['color'];
+                    	}
+                    	else {
+                    		//return '#000';
+                    		return color(d.title);
+                    	}
+                    })
                     .text(trimmedString)
 					.on("mouseover", function () {
 						
@@ -957,6 +1038,9 @@ policycompass.viz.barsMultiple = function (options) {
         if (self.showLegend) {
             self.extraWidth = 60;
         }
+        
+        self.groupby = 'date';
+        //self.groupby = 'individual';
 
         self.parentSelect = self.parentSelect.replace("undefined", "");
 
@@ -1052,6 +1136,11 @@ policycompass.viz.barsMultiple = function (options) {
 
     self.render = function (dataIn, eventsData) {
 
+		if (self.groupby=='date') {
+		}
+		else {
+			eventsData = [];
+		}
         self.dataIn = dataIn;
         self.eventsData = eventsData;
 
