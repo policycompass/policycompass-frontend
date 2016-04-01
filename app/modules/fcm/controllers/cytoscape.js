@@ -383,7 +383,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             jsonModel.model.title = $scope.modeldetail.model.title;
             jsonModel.model.description = $scope.modeldetail.model.description;
             jsonModel.model.keywords = $scope.modeldetail.model.keywords;
-            //jsonModel.model.title = $scope.modeldetail.model.title;
+            jsonModel.domains = $scope.modeldetail.domains;
 
             $scope.fcmModelUpdate = new FcmModel();
             $scope.fcmModelUpdate.data = jsonModel;
@@ -399,6 +399,34 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 throw { message: JSON.stringify(err.data) };
             });
         };
+
+        //$scope.updateModel = function () {
+        //    var jsonModel = {
+        //        model: FCMModelsDetail.getModels(),
+        //        userID: "1",
+        //        concepts: ConceptsDetail.getConcepts(),
+        //        connections: AssociationsDetail.getAssociations()
+        //    };
+
+        //    jsonModel.model.title = $scope.modeldetail.model.title;
+        //    jsonModel.model.description = $scope.modeldetail.model.description;
+        //    jsonModel.model.keywords = $scope.modeldetail.model.keywords;
+        //    //jsonModel.model.title = $scope.modeldetail.model.title;
+
+        //    $scope.fcmModelUpdate = new FcmModel();
+        //    $scope.fcmModelUpdate.data = jsonModel;
+        //    FcmModel.update({ id: $routeParams.fcmId }, $scope.fcmModelUpdate, function (value) {
+        //        FcmSearchUpdate.update({ id: $routeParams.fcmId }, function () {
+        //            var dlg = dialogs.notify("Causal Model", "'" + value.model.title + "' Casual Model has been saved!");
+        //        }, function (err) {
+        //            throw { message: JSON.stringify(err.data) };
+        //        });
+        //        //			$scope.md = value;
+        //        //$window.location.reload();
+        //    }, function (err) {
+        //        throw { message: JSON.stringify(err.data) };
+        //    });
+        //};
 
 
         //Open help menu
@@ -1187,9 +1215,19 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
     }) // end AssociationController
 
     .controller('ModelController', function ($scope, $modalInstance, data, FCMModelsDetail) {
-        $scope.user = [
-            { FCMModelId: -1 }, { title: '' }, { description: '' }, { keywords: '' }
-        ];
+        if ($.isEmptyObject(data)) {
+            $scope.user = [
+                { FCMModelId: -1 }, { title: '' }, { description: '' }, { keywords: '' }
+            ];
+        }
+        else {
+            $scope.user = {
+                title: data.title, description: data.description, keywords: data.keywords, domains: data.domains
+            };
+
+
+        }
+
 
         $scope.Models = [];
         $scope.Models = FCMModelsDetail.getModels();
