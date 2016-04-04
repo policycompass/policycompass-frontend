@@ -118,8 +118,9 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         };
     })
 
-    .controller('CytoscapeCtrl', function ($scope, $rootScope, $window, $routeParams, $location, $translate, Fcm, FcmModel, FcmSimulation, FcmActivator, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, SimulationConceptsDetail, AssociationsDetail, SimulationAssociationsDetail, EditConcept, EditAssociation, FCMActivatorDetail, Dataset, FcmIndicator) {
+    .controller('CytoscapeCtrl', function ($scope, $rootScope, $window, $routeParams, $location, $translate, Fcm, FcmModel, FcmSimulation, FcmActivator, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, SimulationConceptsDetail, AssociationsDetail, SimulationAssociationsDetail, EditConcept, EditAssociation, FCMActivatorDetail, Dataset, FcmIndicator, Auth) {
         // container objects
+        $scope.user = Auth;
         $scope.Models = [];
         $scope.mapData = [];
         $scope.edgeData = [];
