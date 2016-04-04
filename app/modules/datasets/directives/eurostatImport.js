@@ -89,14 +89,6 @@ angular.module('pcApp.datasets.directives.eurostatImport', []).directive('eurost
                     });
                 };
 
-                scope.getLimitedString = function(string){
-                    if(string.length >= 50){
-                        string = string.substring(0,50);
-                        string.append("...");
-                    }
-                    return string;
-                }
-
                 var handlePageResults = function(result){
                     scope.eurostatSearchResults = [];
                     var length = scope.eurostatStart + scope.itemsPerPage;

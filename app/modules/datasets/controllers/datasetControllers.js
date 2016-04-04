@@ -339,7 +339,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     $scope.ckanImport.isVisible = false;
                     $scope.inputTable.items = data.result;
                     $scope.inputInstance.loadData(data.result);
-                    
+
                     creationService.data.dataset.url = resource.access_url;
                     creationService.data.dataset.title = (dataset.title && dataset.title.length > 0) ? dataset.title : dataset.notes;
                     creationService.data.dataset.description = (resource.name && resource.name.length > 0) ? resource.name : resource.description;
@@ -373,30 +373,6 @@ angular.module('pcApp.datasets.controllers.dataset', [
                         $scope.dropzone.isCollapsed = true;
                 }
             };
-
-            $scope.items = [
-            'The first choice!',
-            'And another choice for you.',
-            'but wait! A third!'
-          ];
-
-          $scope.status = {
-            isopen: false
-          };
-
-          $scope.toggled = function(open) {
-            $log.log('Dropdown is now: ', open);
-          };
-
-          $scope.toggleDropdown = function($event) {
-            $event.preventDefault();
-            $event.stopPropagation();
-            $scope.status.isopen = !$scope.status.isopen;
-          };
-
-          $scope.appendToEl = angular.element(document.querySelector('#dropdown-long-content'));
-
-
 
             $scope.clearGrid = function () {
                 var dlg = dialogs.confirm("Are you sure?", "Do you really want to clear the Dataset Content?");
