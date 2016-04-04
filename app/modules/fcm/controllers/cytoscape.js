@@ -350,7 +350,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                     ModelDesc: user.description,
                     ModelKeywords: user.keywords,
                     domains: user.domains,
-                    userID: "1",
+                    userID: $scope.getUserId(),
                     concepts: ConceptsDetail.getConcepts(),
                     connections: AssociationsDetail.getAssociations()
                 };
