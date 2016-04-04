@@ -310,6 +310,16 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             return input;
         };
 
+        $scope.getUserId = function () {
+            var userId = '';
+            if ($scope.user != null || $scope.user != '') {
+                var userPathArray = $scope.user.state.userPath.split('/');
+                if (userPathArray.length > 2)
+                    userId = parseInt(userPathArray[userPathArray.length - 2], 10);
+            }
+            return userId;
+        };
+
         $scope.saveModel = function () {
             dlg = dialogs.create('modules/fcm/partials/savemodel.html', 'ModelController', {}, {
                 key: false,
