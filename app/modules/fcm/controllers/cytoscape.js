@@ -1215,19 +1215,9 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
     }) // end AssociationController
 
     .controller('ModelController', function ($scope, $modalInstance, data, FCMModelsDetail) {
-        if ($.isEmptyObject(data)) {
-            $scope.user = [
-                { FCMModelId: -1 }, { title: '' }, { description: '' }, { keywords: '' }
-            ];
-        }
-        else {
-            $scope.user = {
-                title: data.title, description: data.description, keywords: data.keywords, domains: data.domains
-            };
-
-
-        }
-
+        $scope.user = [
+            { FCMModelId: -1 }, { title: '' }, { description: '' }, { keywords: '' }
+        ];
 
         $scope.Models = [];
         $scope.Models = FCMModelsDetail.getModels();
