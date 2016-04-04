@@ -346,12 +346,12 @@ angular.module('pcApp.common.directives.search', [])
                         }
 
                     };
-					
+
 					$scope.pageChanged = function () {
 						//console.log($scope.currentPage);
             			$scope.findDatasetsByFilter($scope.currentPage);
         			};
-        
+
                     $scope.findDatasetsByFilter = function (pagIn) {
 
                         if (pagIn == 'next') {
@@ -403,9 +403,9 @@ angular.module('pcApp.common.directives.search', [])
 							$scope.searchResults = resp.hits.hits;
                 			$scope.searchResultsCount = resp.hits.total;
                 			$scope.totalItems = $scope.searchResultsCount;
-                			
-                			
-                			
+
+
+
 
                         }, function (err) {
                             console.trace(err.message);
@@ -432,10 +432,10 @@ angular.module('pcApp.common.directives.search', [])
 	                            '<div class="col-sm-4">' +
 	                            	'<div class="form-group ng-scope">' +
 	                                	'<label for="filterEvent">Search text</label>' +
-	                                	'<p class="input-group">' +                                    		
-	                                		'<input ng-keyup="$event.keyCode == 13 && findDatasetsByFilter(\'1\')" placeholder="--all datasets--" ng-model="searchtext" type="text" id="filterDatasetDirective" class="form-control ng-isolate-scope ng-pristine ng-valid-required ng-valid">' +                                    
+	                                	'<p class="input-group">' +
+	                                		'<input ng-keyup="$event.keyCode == 13 && findDatasetsByFilter(\'1\')" placeholder="--all datasets--" ng-model="searchtext" type="text" id="filterDatasetDirective" class="form-control ng-isolate-scope ng-pristine ng-valid-required ng-valid">' +
 	                                		'<span class="input-group-btn">' +
-					                			'<a type="button" class="btn btn-default" ng-click="findDatasetsByFilter(\'1\')"><i class="glyphicon glyphicon-search"></i></a>' + 
+					                			'<a type="button" class="btn btn-default" ng-click="findDatasetsByFilter(\'1\')"><i class="glyphicon glyphicon-search"></i></a>' +
 											'</span>' +
 										'</p>' +
 					                '</div>' +
@@ -444,14 +444,14 @@ angular.module('pcApp.common.directives.search', [])
                         '</form>' +
                     '</div>' +
                     '<hr>' +
-                    '<div>' +                      
-                    	'<div>' + 
-                    		'<label ng-show="datasetsFilter.hits.total>1" for="">{{datasetsFilter.hits.total}} datasets found</label>' + 
-                    		'<label ng-show="datasetsFilter.hits.total==1" for="">{{datasetsFilter.hits.total}} dataset found</label>' + 
-                    		'<label ng-show="datasetsFilter.hits.total==0" for="">no datasets found</label>' + 
+                    '<div>' +
+                    	'<div>' +
+                    		'<label ng-show="datasetsFilter.hits.total>1" for="">{{datasetsFilter.hits.total}} datasets found</label>' +
+                    		'<label ng-show="datasetsFilter.hits.total==1" for="">{{datasetsFilter.hits.total}} dataset found</label>' +
+                    		'<label ng-show="datasetsFilter.hits.total==0" for="">no datasets found</label>' +
                     	'</div>' +
                         '<div class="createvisualization ">' +
-	                    	/*                        
+	                    	/*
                             '<div class="filterMetricsPagination" id="filterMetricsPaginationDirective">' +
                                 '<div class="button-group">' +
                                     '<button ng-show="datasetsFilter.hits.total>1" ng-disabled="pagToSearch==1" class="btn" ng-click="findDatasetsByFilter(\'prev\')">' +
@@ -465,21 +465,21 @@ angular.module('pcApp.common.directives.search', [])
                             */
                         '</div>' +
                         '<div class="row">' +
-                        	'<ul class="datasets-list metrics-list ">' + 
-                        		'<li ng-class="{\'metrics-list dataset-list active\':DatasetSelectediId_[dataset._source.id]>0,\'metrics-list dataset-list\':DatasetSelectediId_[dataset.id]}" name="designer-dataset-num-{{dataset.id}}" ng-repeat="dataset in datasetsFilter.hits.hits track by $index" >' + 
-                					'<a ng-show="viewAll || arrayGranularitiesAvailable.indexOf(dataset._source.time.resolution)!=-1 || DatasetSelectediId_[dataset._source.id]>0" href="" x-ng-click="clickDataset(dataset._source.id, dataset._source.title, dataset._source.issued);"  title="{{ !DatasetSelectediId_[dataset._source.id]>0 && \'Add \' || \'Remove \' }} \'{{dataset._source.title}}\'">{{dataset._source.title}} - {{ dataset._source.issued | date:\'longDate\' }}</a>' + 
-                					'<span ng-hide="viewAll || arrayGranularitiesAvailable.indexOf(dataset._source.time.resolution)!=-1  || DatasetSelectediId_[dataset._source.id]>0">{{dataset._source.title}} - {{ dataset._source.issued | date:\'longDate\' }}</span>' + 
-                				'</li>' + 
+                        	'<ul class="datasets-list metrics-list ">' +
+                        		'<li ng-class="{\'metrics-list dataset-list active\':DatasetSelectediId_[dataset._source.id]>0,\'metrics-list dataset-list\':DatasetSelectediId_[dataset.id]}" name="designer-dataset-num-{{dataset.id}}" ng-repeat="dataset in datasetsFilter.hits.hits track by $index" >' +
+                					'<a ng-show="viewAll || arrayGranularitiesAvailable.indexOf(dataset._source.time.resolution)!=-1 || DatasetSelectediId_[dataset._source.id]>0" href="" x-ng-click="clickDataset(dataset._source.id, dataset._source.title, dataset._source.issued);"  title="{{ !DatasetSelectediId_[dataset._source.id]>0 && \'Add \' || \'Remove \' }} \'{{dataset._source.title}}\'">{{dataset._source.title}} - {{ dataset._source.issued | date:\'longDate\' }}</a>' +
+                					'<span ng-hide="viewAll || arrayGranularitiesAvailable.indexOf(dataset._source.time.resolution)!=-1  || DatasetSelectediId_[dataset._source.id]>0">{{dataset._source.title}} - {{ dataset._source.issued | date:\'longDate\' }}</span>' +
+                				'</li>' +
                 			'</ul>' +
                         '</div>' +
                         '<div class="row">' +
 	                    	'<div style="text-align: center">' +
 	                    		'<pagination total-items="totalItems" ng-change="pageChanged()" items-per-page="itemsperpagesize" ng-model="currentPage" max-size="paginationSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"></pagination>' +
 	                    	'</div>' +
-                        '</div>' +                        
+                        '</div>' +
                     '</div>' +
                 '</div>'
-               
+
             };
         }
     ])
@@ -601,9 +601,103 @@ angular.module('pcApp.common.directives.search', [])
                         });
 
                     };
+
                     $scope.findDatasetsByFilter(1);
                 },
                 templateUrl: 'modules/common/partials/searchIndicator.html'
+            };
+        }
+    ])
+
+    .directive('selectorIndicatorsDataset', [
+        '$log', 'searchclient', 'API_CONF', '$http','ngProgress', 'IndicatorService', function ($log, searchclient, API_CONF, $http, ngProgress, IndicatorService) {
+            return {
+                restrict: 'C',
+                scope: {
+                    datasetsList: '=',
+                    numberMaxDatasets: '@',
+                    functionfordataset: "&"
+                },
+                controller: function ($scope, $element, $attrs, $location, dialogs) {
+                    $scope.selection = [];
+
+                    $scope.searchtext = '';
+                    $scope.itemsPerPage = 10;
+                    $scope.itemsSearchFrom = 0;
+                    $scope.currentPage = 1;
+
+                    $scope.clickDataset = function (idDataset, title, issued, unit_category) {
+                        var addDataset = true;
+                        if (idDataset > 0) {
+                            addDataset = true;
+                        } else {
+                            addDataset = false;
+                        }
+
+                        if (!$scope.datasetsList) {
+                            $scope.datasetsList = [];
+                        }
+                        var k;
+
+                        for (k = 0; k < $scope.datasetsList.length; k++) {
+                            if ($scope.datasetsList[k].id == idDataset) {
+                                addDataset = false;
+                                $scope.datasetsList.splice(k, 1);
+                                $scope.selection[idDataset] = '';
+                                $scope.functionfordataset();
+                            }
+                        }
+
+                        if (addDataset && $scope.datasetsList.length < $scope.numberMaxDatasets) {
+                            var myObject = {
+                                'id': idDataset,
+                                'title': title,
+                                'issued': issued,
+                                'unit_category': unit_category
+                            };
+                            $scope.datasetsList.push(myObject);
+                            $scope.functionfordataset();
+                        }
+
+                        for (k in $scope.datasetsList) {
+                            $scope.selection[$scope.datasetsList[k].id] = $scope.datasetsList[k].id;
+                        }
+                    };
+
+                    var loadIndicators = function () {
+                        IndicatorService.query(function(indicators){
+                            $scope.indicatorsTotal = indicators.results;
+                            handlePageResults($scope.indicatorsTotal);
+                        },
+                            function(err){
+                                throw {message: JSON.stringify(err.data)}
+                            }
+                        );
+                    };
+
+                    $scope.onPageChange = function () {
+                        var start = ($scope.currentPage - 1) * $scope.itemsPerPage;
+                        $scope.itemsSearchFrom = start;
+                        loadIndicators();
+                    };
+                    var handlePageResults = function(result){
+                        $scope.indicatorList = [];
+                        var length = $scope.itemsSearchFrom + $scope.itemsPerPage;
+
+                        if(length > result.length){
+                            length = result.length;
+                        }
+
+                        for(var i = $scope.itemsSearchFrom; i<length; i++){
+                            $scope.indicatorList[i-$scope.itemsSearchFrom] = result[i];
+                        }
+
+                    }
+
+                    loadIndicators();
+
+                },
+                templateUrl: 'modules/common/partials/searchIndicatorDataset.html'
             };
         }
     ]);
