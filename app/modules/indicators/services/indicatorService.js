@@ -18,7 +18,11 @@ angular.module('pcApp.indicators.services.indicator', [
             var Indicator = $resource(url, {
                 id: "@id"
             }, {
-                'update': {method: 'PUT'}
+                'update': {method: 'PUT'},
+                'query' : {
+                    method: 'GET',
+                    isArray: false
+                }
             });
             return Indicator;
         }
