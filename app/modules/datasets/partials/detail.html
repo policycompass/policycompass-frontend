@@ -109,6 +109,12 @@
                 </div>
 
                 <div class="form-group form-group-modified">
+                    <div class="form-item" ng-if="dataset.creator_path">
+                        <div class="field-label">User</div>
+                        <div class="field-content">
+                            <username userpath="{{ dataset.creator_path }}"></username>
+                        </div>
+                    </div>
                     <div class="form-item" ng-if="dataset.issued">
                         <div class="field-label">Added</div>
                         <div class="field-content">{{ dataset.issued | date:'longDate' }}</div>
