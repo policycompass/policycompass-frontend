@@ -1,0 +1,17 @@
+<div ng-show="showerrormessage"><label>There is a problem with the connection to the search service.</label></div>
+<div ng-show="!showerrormessage">
+
+    <div class="filterDatasetPaginationBody createvisualization" id="filterDatasetsPaginationBodyDirective">
+        <ul class="datasets-list metrics-list ">
+            <li class="metrics-list dataset-list'" ng-class="{'active':selection[dataset.id]>0}" name="designer-dataset-num-{{dataset.id}}" ng-repeat="dataset in indicatorList track by $index">
+
+                <a href="" ng-click="clickDataset(dataset.id, dataset.name, dataset.issued, dataset.unit_category);" title="{{ !selection[dataset.id]>0 && 'Add' || 'Delete' }} {{dataset.name}}">{{dataset.name}}
+                    - {{ dataset.issued | date:'longDate' }}</a>
+            </li>
+        </ul>
+    </div>
+
+    <div style="text-align: center">
+        <pagination total-items="indicatorsTotal.length" ng-change="onPageChange()" items-per-page="itemsPerPage" ng-model="currentPage" max-size="5" class="pagination-sm" style="float: inherit;" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+    </div>
+</div></div>
