@@ -1,13 +1,29 @@
 <dataset-create-wrapper>
     <dataset-create-header step="1" before-next-step="nextStep()"></dataset-create-header>
 
-    <div class="pc-visualization-formcontrols">
+    <div>
         <div class="row">
             <div class="col-md-5">
-                <div class="button-group">
                     <button type="button" class="btn btn-file" ng-click="dropzone.isCollapsed = !dropzone.isCollapsed; databaseSelection.isVisible = false">
                         From File
                     </button>
+                    <div class="dropdown-datasets">
+                          <button class="btn btn-import-ckan dropdown-button">
+                            Import from External Resources
+                            <span class="caret"></span>
+                          </button>
+                          <div class="dropdown-content">
+                                <a ng-click="ckanImport.isVisible = true; eurostatImport.isVisible = false; databaseSelection.isVisible = true; dropzone.isCollapsed = true;">
+                                    <img src="img/edp_logo.jpg" class="dataset-dropdown-image">
+                                    European Data Portal
+                                </a>
+                                <a ng-click="ckanImport.isVisible = false; eurostatImport.isVisible = true; databaseSelection.isVisible = true; dropzone.isCollapsed = true;">
+                                    <img src="img/eurostat_logo.jpg" class="dataset-dropdown-image">
+                                    Eurostat
+                                </a>
+                          </div>
+                    </div>
+                    <!--
                    <button class="btn btn-import-ckan" dropdown class="dropdown-toggle" dropdown-toggle>
                             Import from External Resources
                        <span class="caret"></span>
@@ -26,8 +42,10 @@
                             </li>
                         </ul>
                    </button>
+                   -->
                 </div>
-            </div>
+
+
             <div class="col-md-3 col-md-offset-4 text-right">
                 <div class="button-group">
                     <button type="submit" class="btn btn-rotate" ng-click="rotateData()">Rotate Data</button>
@@ -36,6 +54,7 @@
             </div>
         </div>
     </div>
+
 
     <div class="content-body">
         <div id="pc-dropzone-container" ng-show="!dropzone.isCollapsed" class="well">
