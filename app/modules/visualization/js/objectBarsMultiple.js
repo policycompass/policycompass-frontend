@@ -233,79 +233,163 @@ policycompass.viz.barsMultiple = function (options) {
 		
 		var offset = (self.labelY.length * self.x1.rangeBand()/2);
 		var range = (self.labelY.length * self.x1.rangeBand()/2)*2;
-		
-		var cnt_events_by_period = [];
-		historicalEventsCircles.enter().append("rect")
-			.attr("class", function (d, i) {
-				var className = "lineXDisco event_circle_"+d.index;
-				return className;
-			})
-			.style("stroke", function (d, i) {
-				var colorToReturn;
-				colorToReturn = d.color;	
-				return colorToReturn;
-			})	
-			.style("stroke-width", function (d, i) {
-				return self.radius+1;
-			})				
-			.style("fill", function (d, i) {
-                var colorToPlot = d.color;
-                return colorToPlot;
-            })
-            .attr("x", function (d, i) {            					
-				var returnValue = self.x0(d.posx);							
-				return returnValue;					
-            })
-            .attr("y", function (d, i) {            	
-				var a = cnt_events_by_period.indexOf(d.posx);				
-				if (cnt_events_by_period[d.posx]) {
-					cnt_events_by_period[d.posx] = cnt_events_by_period[d.posx] +1;
-				}
-				else {					
-					cnt_events_by_period[d.posx] = 1;	
-				}
-				//var returnValue = -10 + (self.radius*4)*(cnt_events_by_period[d.posx]-1);
-				
-				var returnValue = -(self.maxEventsByPeriod * self.spaceBetweenEvents) + (self.spaceBetweenEvents)*(cnt_events_by_period[d.posx]-1);
-				 				
-				//console.log(returnValue);
-				return returnValue;	
-            })
-            .attr("width", function (d, i) {
-            	var returnValue = self.x0(d.posx);
-            	//to avoid plot events out of the range
-            	if (returnValue>0)
-            	{
-            		returnValue = range;
-            	}
-            	else
-            	{
-            		returnValue = 0;
-            	}
-            	return returnValue;
-            })
-            .attr("height", function (d, i) {
-            	return 1;
-            })
-            .on("mouseover", function (d, i) {			
-				d3.selectAll(".event_circle_"+d.index).style("stroke-width", self.radius+1);				
-				var str = "Event: " + d.title;
-				var fromDate = "From: " +d.startDate;
+
+		if (self.groupby == 'Individual') {
+			
+			range = range / self.xAxisDataToIndividuals.length;
+			
+			self.xAxisDataToIndividuals.forEach(function (d, i) {
+
+				var resTRext = d.split("_");
+				var posXEvent = self.x0(resTRext[0]);
+	
+				var cnt_events_by_period = [];
+	
+				historicalEventsCircles.enter().append("rect")
+					.attr("class", function (d, i) {
+						var className = "lineXDisco event_circle_"+d.index;
+						return className;
+					})
+					.style("stroke", function (d, i) {
+						var colorToReturn;
+						colorToReturn = d.color;	
+						return colorToReturn;
+					})	
+					.style("stroke-width", function (d, i) {
+						return self.radius;
+					})				
+					.style("fill", function (d, i) {
+                		var colorToPlot = d.color;
+                		return colorToPlot;
+            		})
+            		.attr("x", function (d, i) {
+						//var returnValue = self.x0(d.posx);						
+						//return x0(resTRext[0]) + x1(d.ValueX);						
+						var returnValue = posXEvent+self.x1(d.posx);
+						return returnValue;					
+            		})
+            		.attr("y", function (d, i) {            	
+						var a = cnt_events_by_period.indexOf(d.posx);				
+						if (cnt_events_by_period[d.posx]) {
+							cnt_events_by_period[d.posx] = cnt_events_by_period[d.posx] +1;
+						}
+						else {					
+							cnt_events_by_period[d.posx] = 1;	
+						}
+						//var returnValue = -10 + (self.radius*4)*(cnt_events_by_period[d.posx]-1);				
+						var returnValue = -(self.maxEventsByPeriod * self.spaceBetweenEvents) + (self.spaceBetweenEvents)*(cnt_events_by_period[d.posx]-1);
+						//console.log(returnValue);
+						return returnValue;	
+            		})
+            		.attr("width", function (d, i) {
+            			//var returnValue = self.x0(d.posx);
+            			var returnValue = 10;
+            			//to avoid plot events out of the range
+            			returnValue = range;
+            			/*
+            			if (returnValue>0) {
+            				returnValue = range;
+            			}
+            			else {
+            				returnValue = 0;
+            			}
+            			*/
+            			return returnValue;
+            		})
+            		.attr("height", function (d, i) {
+            			return 1;
+            		})
+            		.on("mouseover", function (d, i) {			
+						d3.selectAll(".event_circle_"+d.index).style("stroke-width", self.radius+1);				
+						var str = "Event: " + d.title;
+						var fromDate = "From: " +d.startDate;
 						var toDate = "To: " +d.endDate;
 						var desc = "Desc.: " +d.desc;
 						if ((self.modeGraph == 'view') || (self.xaxeformat == 'sequence')) { 
 							tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '<br/>'+fromDate+'<br/>'+toDate+'<br/>'+desc+'<br/></div>');
-				}
-				else {
-					tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '<br/>'+fromDate+'<br/>'+toDate+'<br/>'+desc+'</div>');
-				}					
-			})
-            .on("mouseout", function (d, i) {
-				mouseout();
-				d3.selectAll(".event_circle_"+d.index).style("stroke-width", self.radius);
-			})
-            ;
-		
+						}
+						else {
+							tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '<br/>'+fromDate+'<br/>'+toDate+'<br/>'+desc+'</div>');
+						}					
+					})
+            		.on("mouseout", function (d, i) {
+						mouseout();
+						d3.selectAll(".event_circle_"+d.index).style("stroke-width", self.radius);
+					})
+            		;
+			});
+		}
+		else {
+			//plot gouped by date
+			var cnt_events_by_period = [];
+			
+			historicalEventsCircles.enter().append("rect")
+				.attr("class", function (d, i) {
+					var className = "lineXDisco event_circle_"+d.index;
+					return className;
+				})
+				.style("stroke", function (d, i) {
+					var colorToReturn;
+					colorToReturn = d.color;	
+					return colorToReturn;
+				})	
+				.style("stroke-width", function (d, i) {
+					return self.radius;
+				})
+				.style("fill", function (d, i) {
+                	var colorToPlot = d.color;
+                	return colorToPlot;
+            	})
+            	.attr("x", function (d, i) {
+					var returnValue = self.x0(d.posx);						
+					return returnValue;					
+            	})
+            	.attr("y", function (d, i) {            	
+					var a = cnt_events_by_period.indexOf(d.posx);				
+					if (cnt_events_by_period[d.posx]) {
+						cnt_events_by_period[d.posx] = cnt_events_by_period[d.posx] +1;
+					}
+					else {					
+						cnt_events_by_period[d.posx] = 1;	
+					}
+					//var returnValue = -10 + (self.radius*4)*(cnt_events_by_period[d.posx]-1);				
+					var returnValue = -(self.maxEventsByPeriod * self.spaceBetweenEvents) + (self.spaceBetweenEvents)*(cnt_events_by_period[d.posx]-1);
+					//console.log(returnValue);
+					return returnValue;	
+            	})
+            	.attr("width", function (d, i) {
+            		var returnValue = self.x0(d.posx);
+            		//to avoid plot events out of the range
+            		if (returnValue>0) {
+            			returnValue = range;
+            		}
+            		else {
+            			returnValue = 0;
+            		}
+            		return returnValue;
+            	})
+            	.attr("height", function (d, i) {
+            		return 1;
+            	})
+            	.on("mouseover", function (d, i) {			
+					d3.selectAll(".event_circle_"+d.index).style("stroke-width", self.radius+1);				
+					var str = "Event: " + d.title;
+					var fromDate = "From: " +d.startDate;
+					var toDate = "To: " +d.endDate;
+					var desc = "Desc.: " +d.desc;
+					if ((self.modeGraph == 'view') || (self.xaxeformat == 'sequence')) { 
+						tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '<br/>'+fromDate+'<br/>'+toDate+'<br/>'+desc+'<br/></div>');
+					}
+					else {
+						tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '<br/>'+fromDate+'<br/>'+toDate+'<br/>'+desc+'</div>');
+					}					
+				})
+            	.on("mouseout", function (d, i) {
+					mouseout();
+					d3.selectAll(".event_circle_"+d.index).style("stroke-width", self.radius);
+				})
+            	;
+		}		
 		/*
 		//plot a circle in the beggin and in the end of the "event" line		
 		for (var iHE=1;iHE<=2; iHE=iHE+1) {
@@ -431,43 +515,61 @@ policycompass.viz.barsMultiple = function (options) {
         var yAxis = d3.svg.axis().scale(y).orient("left").tickFormat(d3.format(".2s"));
 
 		function wrap(text, width) {
-		
-		
-		  text.each(function() {
-		    var text = d3.select(this),
+
+			text.each(function() {
+		    	var text = d3.select(this),
 		        words = text.text().split(/\s+/).reverse(),
 		        word,
 		        line = [],
 		        lineNumber = 0,
 		        lineHeight = 1.1, // ems
 		        y = text.attr("y"),
-		        dy = parseFloat(text.attr("dy")),
-		        tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
-		    while (word = words.pop()) {
-		      line.push(word);
-		      tspan.text(line.join(" "));
-		      if (tspan.node().getComputedTextLength() > width) {
-		        line.pop();
-		        tspan.text(line.join(" "));
-		        line = [word];
-		        tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
-		      }
-		    }
-		  });
+		        dy = parseFloat(text.attr("dy"));
+
+		        var colorLegend = '#000';
+
+		        self.dataIn.forEach(function (d, i) {
+
+            		var resTRext = d.Key.split("_");
+
+            		if (resTRext[0]==text[0][0]['__data__']) {
+            			colorLegend = d.Color;
+            		}
+        		});
+		        
+		        var tspan = text.style("fill",colorLegend).text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
+		    
+		    	while (word = words.pop()) {
+					line.push(word);
+		      		tspan.text(line.join(" "));
+		      		if (tspan.node().getComputedTextLength() > width) {
+		        		line.pop();
+		        		tspan.text(line.join(" "));
+		        		line = [word];
+		        		tspan = text.style("fill", colorLegend).append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+		      		}
+		    	}
+		  	});
 		}
 
         var xAxisData = d3.set(bars.map(function (line) {
         	//console.log(line.ValueX);
             //return line.ValueX;
-            if (self.groupby=='date') {
-            	return line.Key;            	
+            if (self.groupby == 'Individual') {
+            	return line.ValueX;
             }
             else {
-            	return line.ValueX;
-            	//return line.Key; 
+            	return line.Key;
             }
+            
         })).values();
 
+
+        self.xAxisDataToIndividuals = d3.set(bars.map(function (line) {
+            	return line.Key;
+        })).values();
+        		
+		
 		var xAxisDataColor = d3.set(bars.map(function (line) {
             return line.Color;
         })).values();
@@ -483,12 +585,13 @@ policycompass.viz.barsMultiple = function (options) {
         x0.domain(bars.map(function (d) {
             //var resTRext = .split("_");
             //var resTRext = d.Key.split("_");
-            if (self.groupby=='date') {
-            	var resTRext = d.To.split("_");	
+            if (self.groupby == 'Individual') {
+            	var resTRext = d.Key.split("_");
             }
             else {
-            	var resTRext = d.Key.split("_");
-            }            
+            	var resTRext = d.To.split("_");
+            }
+                                  
             //console.log(resTRext);
             var trimmedString = resTRext[0];
             
@@ -512,7 +615,7 @@ policycompass.viz.barsMultiple = function (options) {
 		*/		
 		//console.log(self.margin.bottom);
 		//self.legendsColumn = legendsColumn;
-		
+		//console.log(self.margin.bottom);
         self.svg = d3.select(self.parentSelect)
         .append("svg")
         .attr("class", "pc_chart")
@@ -616,12 +719,13 @@ policycompass.viz.barsMultiple = function (options) {
         })
 		.attr("class", function (d, i) {
 			
-			if (self.groupby=='date') {
-				var find = d.Key;
-			}
-			else {
+			if (self.groupby == 'Individual') {
 				var find = d.To;
 			}
+			else {
+				var find = d.Key;
+			}
+			
 			var re = find.replace(/[^\w\-\u00A0-\uFFFF]/g,"_");
 
 			var className = "bar bar_line_"+re;
@@ -629,19 +733,20 @@ policycompass.viz.barsMultiple = function (options) {
 		})        
         .attr("x", function (d,i) {
         	//var resTRext = d.Key.split("_");
-        	if (self.groupby=='date') {
+        	if (self.groupby == 'Individual') {
+        		var resTRext = d.Key.split("_");
+        	}
+        	else {
         		var resTRext = d.To.split("_");
         	}
-        	else {
-        		var resTRext = d.Key.split("_");
-        	}       	
-        	//return x0(resTRext[0]) + x1(d.ValueX);
-        	if (self.groupby=='date') {
-        		return x0(resTRext[0]) + x1(d.Key);
-        	}
-        	else {
+        	
+        	if (self.groupby == 'Individual') {
         		return x0(resTRext[0]) + x1(d.ValueX);
         	}
+        	else {
+        		return x0(resTRext[0]) + x1(d.Key);
+        	}
+
         })
         .attr("y", function (d) {
         	return self.height;
@@ -652,24 +757,25 @@ policycompass.viz.barsMultiple = function (options) {
         .attr("fill", function (d) {                    
             //return color(d.ValueX);
             //var resTRext = d.Key.split("_");
-            //return color(resTRext[0]);           
-            if (self.groupby=='date') {
-            	return d.Color;
+            //return color(resTRext[0]);    
+            
+            if (self.groupby == 'Individual') {
+            	return color(d.ValueX);
             }
             else {
-            	return color(d.ValueX);
-            	//return d.Color;
+            	return d.Color;
             }
+            
         })
         .on("mouseout", function (d, i) {
            	
-           	if (self.groupby=='date') {
-				var find = d.Key;
-			}
-			else {
-				var find = d.To;
-			}
-			          	
+           	if (self.groupby == 'Individual') {
+           		var find = d.To;
+           	}
+           	else {
+           		var find = d.Key;
+           	}
+           	       	
 			var re = find.replace(/[^\w\-\u00A0-\uFFFF]/g,"_");
 			
 			d3.selectAll(".bar_line_"+re).attr("stroke","white").attr("stroke-width",0.0);		
@@ -677,14 +783,14 @@ policycompass.viz.barsMultiple = function (options) {
             mouseout();
         })
         .on("mouseover", function (d, i) {
-                        
-            if (self.groupby=='date') {
-				var find = d.Key;
-			}
-			else {
-				var find = d.To;
-			}
-			           
+            
+            if (self.groupby == 'Individual') {
+            	var find = d.To;
+            }
+            else {
+            	var find = d.Key;
+            }
+                    
 			var re = find.replace(/[^\w\-\u00A0-\uFFFF]/g,"_");
 			
 			d3.selectAll(".bar_line_"+re).attr("stroke","red").attr("stroke-width",0.8);       	        	
@@ -927,15 +1033,14 @@ policycompass.viz.barsMultiple = function (options) {
                 .attr("height", 5)
                 //.style("fill", xAxisDataColor[i])
                 .style("fill", function () {
-                    	if (self.groupby=='date') {
-                    		return xAxisDataClonned[i]['color'];
-                    	}
-                    	else {
-                    		//return '#000';
-                    		return color(d.title);
-                    	}
-                    })
-                ;
+                	if (self.groupby == 'Individual') {
+                		return color(d.title);
+                	}
+                	else {
+                		return xAxisDataClonned[i]['color'];
+                	}
+                  	
+				});
 
 
 				//var trimmedStringTmp = xAxisDataClonned[i].split("_");
@@ -988,13 +1093,14 @@ policycompass.viz.barsMultiple = function (options) {
                     .attr("font-size", self.font_size+1)
                     //.style("fill", xAxisDataColor[i])
                     .style("fill", function () {
-                    	if (self.groupby=='date') {
-                    		return xAxisDataClonned[i]['color'];
+                    	if (self.groupby == 'Individual') {
+                    		//return '#000';
+                    		return color(d.title);                    		
                     	}
                     	else {
-                    		//return '#000';
-                    		return color(d.title);
+                    		return xAxisDataClonned[i]['color'];
                     	}
+                    	
                     })
                     .text(trimmedString)
 					.on("mouseover", function () {
@@ -1038,23 +1144,21 @@ policycompass.viz.barsMultiple = function (options) {
         if (self.showLegend) {
             self.extraWidth = 60;
         }
-        
-        self.groupby = 'date';
-        //self.groupby = 'individual';
+
+        //self.groupby = 'Date';
+        //self.groupby = 'Individual';
 
         self.parentSelect = self.parentSelect.replace("undefined", "");
 
         var selection = d3.select(self.parentSelect);
-        
-        if (selection[0][0])
-        {
+
+        if (selection[0][0]) {
         	var clientwidth = selection[0][0].clientWidth;
         }
-        else
-        {
+        else {
         	var clientwidth = self.maxWidth;
         }
-        
+
         if (self.maxWidth < clientwidth) {
             self.width = self.maxWidth;
             self.height = self.maxHeight;
@@ -1103,44 +1207,43 @@ policycompass.viz.barsMultiple = function (options) {
     }
 
 
-		self.alphabetical_sort_object_of_objects = function(data, attr) {
-            var arr = [];
-            for (var prop in data) {
-                if (data.hasOwnProperty(prop)) {
-                    var obj = {};
-                    obj[prop] = data[prop];
-                    obj.tempSortName = data[prop][attr].toLowerCase();
-                    arr.push(obj);
-                }
+	self.alphabetical_sort_object_of_objects = function(data, attr) {
+        var arr = [];
+        for (var prop in data) {
+            if (data.hasOwnProperty(prop)) {
+                var obj = {};
+                obj[prop] = data[prop];
+                obj.tempSortName = data[prop][attr].toLowerCase();
+                arr.push(obj);
             }
-
-            arr.sort(function (a, b) {
-                var at = a.tempSortName, bt = b.tempSortName;
-                return at > bt ? 1 : ( at < bt ? -1 : 0 );
-            });
-
-            var result = [];
-            for (var i = 0, l = arr.length; i < l; i++) {
-                var obj = arr[i];
-                delete obj.tempSortName;
-                for (var prop in obj) {
-                    if (obj.hasOwnProperty(prop)) {
-                        var id = prop;
-                    }
-                }
-                var item = obj[id];
-                result.push(item);
-            }
-            return result;
         }
 
-    self.render = function (dataIn, eventsData) {
+        arr.sort(function (a, b) {
+            var at = a.tempSortName, bt = b.tempSortName;
+            return at > bt ? 1 : ( at < bt ? -1 : 0 );
+        });
 
-		if (self.groupby=='date') {
+        var result = [];
+        for (var i = 0, l = arr.length; i < l; i++) {
+            var obj = arr[i];
+            delete obj.tempSortName;
+            for (var prop in obj) {
+                if (obj.hasOwnProperty(prop)) {
+                    var id = prop;
+                }
+            }
+            var item = obj[id];
+            result.push(item);
+        }
+        return result;
+    }
+
+    self.render = function (dataIn, eventsData) {		
+		
+		if (self.groupby == 'Individual') {
+			//eventsData = [];
 		}
-		else {
-			eventsData = [];
-		}
+		
         self.dataIn = dataIn;
         self.eventsData = eventsData;
 

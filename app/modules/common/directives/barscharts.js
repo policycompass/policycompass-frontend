@@ -24,6 +24,7 @@ angular.module('pcApp.common.directives.barscharts', [])
                     resolution: '=resolution',
                     labelyaxe: '=labelyaxe',
                     showPercentatge: '=showPercentatge',
+                    groupedby: '=groupedby',
                 },
                 compile: function (element, attributes) {
                     return {
@@ -209,10 +210,19 @@ angular.module('pcApp.common.directives.barscharts', [])
 							if ($scope.showLegend) {							
 								var arrayKeys = [];
 								angular.forEach($scope.dataset, function(value, key) {
-	  								var a = arrayKeys.indexOf(value.Key);
-	  								if (a<0) {
-	  									arrayKeys.push(value.Key);
-	  									legendsColumn = legendsColumn + 1; 
+									if ($scope.groupedby=='Individual') {
+	  									var a = arrayKeys.indexOf(value.To);
+	  									if (a<0) {
+	  										arrayKeys.push(value.To);
+	  										legendsColumn = legendsColumn + 1; 
+	  									}
+									}
+									else {
+	  									var a = arrayKeys.indexOf(value.Key);
+	  									if (a<0) {
+	  										arrayKeys.push(value.Key);
+	  										legendsColumn = legendsColumn + 1; 
+	  									}
 	  								}
 								});
 									
@@ -274,6 +284,7 @@ angular.module('pcApp.common.directives.barscharts', [])
 	                                        'resolution': $scope.resolution,
 	                                        'labelY': $scope.labelyaxe,
 	                                        'showAsPercentatge': $scope.showPercentatge,
+	                                        'groupby':$scope.groupedby,
 	                                    });
 	
 	                                    var eventsArray = [];
