@@ -3,48 +3,34 @@
 
     <div>
         <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-5" dropdown>
+                <div class="col-md-2">
                     <button type="button" class="btn btn-file" ng-click="dropzone.isCollapsed = !dropzone.isCollapsed; databaseSelection.isVisible = false">
                         From File
                     </button>
-                    <div class="dropdown-datasets">
-                          <button class="btn btn-import-ckan dropdown-button">
-                            Import from External Resources
-                            <span class="caret"></span>
-                          </button>
-                          <div class="dropdown-content">
-                                <a ng-click="ckanImport.isVisible = true; eurostatImport.isVisible = false; databaseSelection.isVisible = true; dropzone.isCollapsed = true;">
-                                    <img src="img/edp_logo.jpg" class="dataset-dropdown-image">
-                                    European Data Portal
-                                </a>
-                                <a ng-click="ckanImport.isVisible = false; eurostatImport.isVisible = true; databaseSelection.isVisible = true; dropzone.isCollapsed = true;">
-                                    <img src="img/eurostat_logo.jpg" class="dataset-dropdown-image">
-                                    Eurostat
-                                </a>
-                          </div>
-                    </div>
-                    <!--
-                   <button class="btn btn-import-ckan" dropdown class="dropdown-toggle" dropdown-toggle>
-                            Import from External Resources
-                       <span class="caret"></span>
-                        <ul class="dropdown-menu dataset-dropdown">
-                            <li>
-                                <a ng-click="ckanImport.isVisible = true; eurostatImport.isVisible = false; databaseSelection.isVisible = true; dropzone.isCollapsed = true;">
-                                    <img src="img/edp_logo.jpg" class="dataset-dropdown-image">
-                                    European Data Portal
-                                </a>
-                            </li>
-                            <li>
-                                <a ng-click="ckanImport.isVisible = false; eurostatImport.isVisible = true; databaseSelection.isVisible = true; dropzone.isCollapsed = true;">
-                                    <img src="img/eurostat_logo.jpg" class="dataset-dropdown-image">
-                                    Eurostat
-                                </a>
-                            </li>
-                        </ul>
-                   </button>
-                   -->
                 </div>
 
+                <div class="dropdown col-md-offset-4" dropdown>
+                    <button class="btn btn-import-ckan dropdown-toggle dropdown-button " dropdown-toggle>
+                        Import from External Resources
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dataset-dropdown">
+                        <li>
+                            <a ng-click="ckanImport.isVisible = true; eurostatImport.isVisible = false; databaseSelection.isVisible = true; dropzone.isCollapsed = true;">
+                                <img src="img/edp_logo.png" class="dataset-dropdown-image">
+                                European Data Portal
+                            </a>
+                        </li>
+                        <li>
+                            <a ng-click="ckanImport.isVisible = false; eurostatImport.isVisible = true; databaseSelection.isVisible = true; dropzone.isCollapsed = true;">
+                                <img src="img/eurostat_logo.png" class="dataset-dropdown-image">
+                                Eurostat
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
             <div class="col-md-3 col-md-offset-4 text-right">
                 <div class="button-group">

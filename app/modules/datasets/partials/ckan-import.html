@@ -23,6 +23,7 @@
                         <h5>
                             {{dataset.title | limitTo:60}}
                         </h5>
+                        <!--
                         <button class="btn" dropdown class="dropdown-toggle" dropdown-toggle>
                                 Select Resource
                             <span class="caret"></span>
@@ -40,6 +41,27 @@
                                 </li>
                             </ul>
                        </button>
+                       -->
+                        <div class="dropdown" dropdown>
+                            <button class="btn dropdown-toggle dropdown-button " dropdown-toggle>
+                                Select Resource
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" style="cursor:pointer">
+                                <li ng-repeat="resource in dataset.resources | filter:byResourceTypeIn(['xls','tsv','csv','xlsx'])">
+                                    <a ng-if="resource.name" ng-click="loadResource(dataset, resource)">
+                                        {{ resource.name }} ({{resource.format}})
+                                    </a>
+                                    <a ng-if="!resource.name && resource.description.length > 0" ng-click="loadResource(dataset, resource)">
+                                        {{ resource.description }} ({{resource.format}})
+                                    </a>
+                                    <a ng-if="!resource.name && (!resource.description || resource.description.length ==0)" ng-click="loadResource(dataset, resource)">
+                                        Unlabeled dataset resource ({{resource.format}})
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
                     </div>
                 </div>
             </div>
