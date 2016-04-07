@@ -13,23 +13,23 @@
             <div collapse="navCollapsed" class=" collapse sign-in-wrapper ng-cloak main-menu-wrap" ng-cloak>
                 <ul class="main-menu" id="main-menu">
                     <li>
-                        <a id="createLink" href="" ng-click="i=1" data-hover="Create" class="fonticon fonticon-create normal">Create</a>
+                        <a id="createLink" href="" ng-click="i=1" data-hover="Create" class="fonticon fonticon-create">Create</a>
                     </li>
                     <li>
-                        <a href="#!/browse" data-hover="Browse" ng-click="i=0" class="fonticon fonticon-search normal">Browse</a>
+                        <a href="#!/browse" data-hover="Browse" ng-click="i=0" class="fonticon fonticon-search">Browse</a>
                     </li>
                     <li>
-                        <a href="#!/i-want-to" data-hover="I want to" ng-click="i=0" class="fonticon fonticon-want normal">I want to</a>
+                        <a href="#!/i-want-to" data-hover="I want to" ng-click="i=0" class="fonticon fonticon-want">I want to</a>
                     </li>
                     <li>
-                        <a href="#!/request" data-hover="Request" ng-click="i=0" class="fonticon fonticon-request normal">Request</a>
+                        <a href="#!/request" data-hover="Request" ng-click="i=0" class="fonticon fonticon-request">Request</a>
                     </li>
                     <li>
-                        <a href="#!/how-it-works" data-hover="How It Works" ng-click="i=0" class="fonticon fonticon-how normal">How It Works</a>
+                        <a href="#!/how-it-works" data-hover="How It Works" ng-click="i=0" class="fonticon fonticon-how">How It Works</a>
                     </li>
                     <li ng-show="authState.loggedIn!==undefined && !authState.loggedIn">
-                        <a href="#!/login"class="fonticon fonticon-user left">Login/</a>
-                        <a href="#!/register" class="right">Signup</a>
+                        <a href="#!/login">Login</a>
+                        <a href="#!/register">Signup</a>
                     </li>
                     <li ng-show="authState.loggedIn!==undefined && authState.loggedIn">
                         <a ng-click="i=6" href="" data-hover="" class="fonticon fonticon-user normal">

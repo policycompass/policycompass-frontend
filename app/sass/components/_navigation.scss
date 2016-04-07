@@ -101,15 +101,7 @@
 
             // background:linear-gradient(to top,$gris_90,white);
         }
-        &.left {
-            padding: 15px 0px 14px 15px;
-        }
-        &.right {
-            padding: 15px 15px 14px 0px;
-        }
-        &.normal {
-            padding: 15px 15px 14px;
-        }
+        padding: 15px 15px 14px;
         &.fonticon-share {
             color: $gris_70;
             // background:transparentize($gris_80,.9);
