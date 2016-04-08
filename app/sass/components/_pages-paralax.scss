@@ -1,0 +1,90 @@
+#paralax-links {
+ position:fixed;
+  top:100px;
+  right:20px;
+ 
+  @include reset-list();
+ 
+  a {
+    display:block;
+    width:2em;
+    height:2em;
+    background:white;
+    border:1px solid $gris_80;
+    border-radius:50%;
+    margin-bottom:15px;
+  }
+ 
+  
+}
+
+#paralax {
+  .paralax {
+    // background:#fcd9ae;
+    padding:5em 0;
+  }
+  .comic {
+
+    }
+    .paralax-05,
+    .paralax-03,
+  .paralax-01 {
+    background-color:#fcd9ae;
+    background-image:url(../img/front/bk_01.jpg);
+    background-position:100% 200%;
+    background-repeat:no-repeat;
+    background-size:1080px;
+    h3 {
+      text-align:center;
+    }
+    
+    
+    
+  }
+   .paralax-05  {
+   background-image:url(../img/front/bk_05.jpg);
+   background-position:0% 0%;
+   background-size:100%;
+   }
+   .paralax-03 {
+   background-image:url(../img/front/bk_03.jpg);
+   }
+  .paralax-04,
+  .paralax-02 {
+     background-image:url(../img/front/bk_02.jpg);
+    // background-position:100% 200%;
+    background-repeat:no-repeat;
+    background-size:600px;
+     background-position:30% 120% ;
+    }
+    .paralax-04 {
+     background-image:url(../img/front/bk_04.jpg);
+     background-position:100% 80% ;
+      background-size:700px;
+    }
+  h3 {
+    font-weight:bold;
+    
+  }
+  .par-buttons {
+      // text-align:center;
+      // padding-top:.5em;
+  }
+   .paralax-05  {
+    text-align:center;
+   }
+}
+
+.front-btn {
+  display:inline-block;
+  padding:.8em 1.3em;
+  background:white;
+  background:$bk_1_3;
+  
+
+  border:1px solid $bk;
+  border-radius:6px;
+}
+
+
+

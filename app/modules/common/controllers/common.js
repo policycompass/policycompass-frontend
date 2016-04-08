@@ -68,6 +68,22 @@ angular.module('pcApp.common.controllers', [])
         }
     ])
 
+    .controller('ControllerScroller', [
+        '$scope', '$document', function ($scope, $document) {
+
+            $scope.toTheTop = function() {
+                $document.scrollTopAnimated(0, 5000).then(function() {        		
+                });
+            }
+    		
+            $scope.toSection = function(sectionId) {
+                var sectionToScroll = angular.element(document.getElementById(sectionId));
+                $document.scrollToElementAnimated(sectionToScroll, 0, 5000);
+            }
+
+        }
+    ])
+    
     .controller('wanttoController', [
         '$scope', '$rootScope', '$modal', function ($scope, $rootScope, $modal) {
             $rootScope.wizard_help = false;
