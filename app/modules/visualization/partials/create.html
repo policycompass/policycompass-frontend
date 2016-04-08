@@ -311,7 +311,12 @@
 	                                	<div class="col-xs-6 configureoptionchartlabel">Resolution</div>
 	                                	<div class="col-xs-6 configureoptionchartfield"><select id="resolution" ng-change="timeStart='';timeEnd='';rePlotGraph();" ng-model="resolution" ng-options="opt as opt.label for opt in resolutionoptions"></select></div>
 	                                </div>
-	
+
+									<div id="div_resolution" ng-show="isSelectedSon('graph_bars')" class="">                                	
+	                                	<div class="col-xs-6 configureoptionchartlabel">Grouped by</div>
+	                                	<div class="col-xs-6 configureoptionchartfield"><select id="resolution" ng-change="rePlotGraph();" ng-model="groupedby" ng-options="opt as opt.label for opt in barchartgroupoptions"></select></div>
+	                                </div>
+	                                
 									<div id="div_resolution" ng-show="isSelectedSon('graph_line') && TimeSelector.length>1 && resolution.value!='day'" class="">                                    
 	                                    <div class="col-xs-6 configureoptionchartlabel">Plot data</div>
 	                                    <div class="col-xs-6 configureoptionchartfield"><select id="plotdataoption" ng-change="rePlotGraph();" ng-model="plotdataoption" ng-options="opt as opt.label for opt in plotdataoptions"></select></div>
