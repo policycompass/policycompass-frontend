@@ -285,6 +285,14 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         } else {
             // Mode is creation
             $scope.mode = "create";
+            $scope.modeldetail = {
+                model: {
+                    ModelID: '',
+                    title: '',
+                    description: '',
+                    keywords: ''
+                }
+            };
         }
 
 
@@ -310,68 +318,32 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             return input;
         };
 
-        $scope.getUserId = function () {
-            var userId = '';
-            if ($scope.user != null || $scope.user != '') {
-                var userPathArray = $scope.user.state.userPath.split('/');
-                if (userPathArray.length > 2)
-                    userId = parseInt(userPathArray[userPathArray.length - 2], 10);
-            }
-            return userId;
-        };
-
         $scope.saveModel = function () {
-            dlg = dialogs.create('modules/fcm/partials/savemodel.html', 'ModelController', {}, {
-                key: false,
-                back: 'static'
-            });
+            var jsonModel = {
+                ModelTitle: $scope.modeldetail.model.title,
+                ModelDesc: $scope.modeldetail.model.description,
+                ModelKeywords: $scope.modeldetail.model.keywords,
+                domains: $scope.modeldetail.model.domains,
+                userID: "1",
+                concepts: ConceptsDetail.getConcepts(),
+                connections: AssociationsDetail.getAssociations()
+            };
 
-            /*Commenting old code*/
-            //setTimeout(function () {
-            //    $("#policyDomain").mousedown(function (e) {
-            //        e.preventDefault();
-            //        var select = this;
-            //        var scroll = select.scrollTop;
+            $scope.fcmModel = new Fcm();
+            $scope.fcmModel.data = jsonModel;
 
-            //        e.target.selected = !e.target.selected;
-
-            //        setTimeout(function () { select.scrollTop = scroll; }, 0);
-
-            //        $(select).focus();
-            //        $(this).trigger('change');
-            //    }).mousemove(function (e) { e.preventDefault() });
-            //}, 300);
-
-            dlg.result.then(function (user) {
-                $scope.Models.push(user);
-
-                var jsonModel = {
-                    ModelTitle: user.title,
-                    ModelDesc: user.description,
-                    ModelKeywords: user.keywords,
-                    domains: user.domains,
-                    userID: $scope.getUserId(),
-                    concepts: ConceptsDetail.getConcepts(),
-                    connections: AssociationsDetail.getAssociations()
-                };
-
-                $scope.fcmModel = new Fcm();
-                $scope.fcmModel.data = jsonModel;
-
-                Fcm.save($scope.fcmModel, function (value) {
-                    FcmSearchUpdate.create({ id: value.model.id }, function () {
-                        var dlg = dialogs.notify("Causal Model", "'" + user.title + "' Casual Model has been saved!");
-                    }, function (err) {
-                        throw { message: JSON.stringify(err.data) };
-                    });
-                    $scope.md = value;
-                    $location.path('/models/' + value.model.id + '/edit');
+            Fcm.save($scope.fcmModel, function (value) {
+                FcmSearchUpdate.create({ id: value.model.id }, function () {
+                    var dlg = dialogs.notify("Causal Model", "'" + $scope.modeldetail.model.title + "' Casual Model has been saved!");
                 }, function (err) {
                     throw { message: JSON.stringify(err.data) };
                 });
-            }, function () {
-                $scope.name = 'You decided not to enter in your name, that makes me sad.';
+                $scope.md = value;
+                $location.path('/models/' + value.model.id + '/edit');
+            }, function (err) {
+                throw { message: JSON.stringify(err.data) };
             });
+
         };
 
         $scope.cancelModel = function (id) {
