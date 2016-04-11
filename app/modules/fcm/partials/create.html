@@ -72,9 +72,10 @@
             <button type="submit" class="btn btn-primary btn-concept" ng-click="addObj()">Add Concept</button>
             <button type="submit" ng-if="isDisabled == true" class="btn btn-primary btn-association" ng-click="addEdge()" disabled>Create Relationship</button>
             <button type="submit" ng-if="isDisabled == false" class="btn btn-primary btn-association" ng-click="addEdge()">Create Relationship</button>
-            <button type="submit" ng-if="mode == 'create' && isDisabled == true" class="btn btn-primary btn-save" ng-click="saveModel()" disabled><span ng-hide="user.state.loggedIn">Login to </span>Save Model</button>
+            <button type="submit" ng-if="mode == 'create' && isDisabled == true && user.state.loggedIn" class="btn btn-primary btn-save" ng-click="saveModel()" disabled>Save Model</button>
+            <a href="#!/login"    ng-if="mode == 'create' && !user.state.loggedIn" class="btn btn-default btn-save ng-scope" target="_blank">Login to Save</a>
             <button type="submit" ng-if="mode == 'edit' && isDisabled == true" class="btn btn-primary btn-save" ng-click="updateModel()" disabled>Save Model</button>
-            <button type="submit" ng-if="mode == 'create' && isDisabled == false" class="btn btn-primary btn-save" ng-click="saveModel()" ng-disabled="!user.state.loggedIn" ><span ng-hide="user.state.loggedIn">Login to </span>Save Model</button>
+            <button type="submit" ng-if="mode == 'create' && isDisabled == false && user.state.loggedIn" class="btn btn-primary btn-save" ng-click="saveModel()" ng-disabled="modeldetail.model.title.length==0 || modeldetail.model.description.length==0 || modeldetail.domains.length==0" >Save Model</button>
             <button type="submit" ng-if="mode == 'edit' && isDisabled == false" class="btn btn-primary btn-save" ng-click="updateModel()">Save Model</button>
             <button type="submit" ng-if="mode == 'create'" class="btn btn-primary btn-save" ng-click="saveModel()" disabled><span ng-hide="user.state.loggedIn">Login to </span>Save As Model</button>
             <button type="submit" ng-if="mode == 'edit'" class="btn btn-primary btn-save" ng-click="saveModel()">Save As Model</button>
@@ -126,29 +127,6 @@
                         <label for="policy_domains_data">Policy Domains *</label>
                         <div id="policy_domains_data" class="reference-selection pc-reference-selection-full" resource="PolicyDomain" selection-mode="multiple" output="modeldetail.domains" input="modeldetail.domains"></div>
                     </div>
-
-                    <!--<table class="table table-hover">
-                        <tr>
-                            <td><b>Title:</b></td>
-                            <td>{{ modeldetail.model.title }}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Description:</b></td>
-                            <td>{{ modeldetail.model.description }}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Keywords:</b></td>
-                            <td>{{ modeldetail.model.keywords }}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Issued:</b></td>
-                            <td>{{ modeldetail.model.dateAddedtoPC | date:'longDate' }}</td>
-                        </tr>
-                        <tr ng-show="modeldetail.model.dateModified">
-                            <td><b>Last Modified:</b></td>
-                            <td>{{ modeldetail.model.dateModified | date:'longDate' }}</td>
-                        </tr>
-                    </table>-->
                 </tab>
 
                 <tab heading="Run Simulation">
