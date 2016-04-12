@@ -14,8 +14,17 @@
     border-radius:50%;
     margin-bottom:15px;
   }
- 
-  
+ a.active {
+   background-color:#F7941E;
+ }
+ a:hover {
+   background-color:#fff2ca;
+ }
+   
+}
+
+.paralax-05 .container {
+  min-height: 500px;  
 }
 
 #paralax {
