@@ -106,3 +106,64 @@
 .pc-er-button {
     margin-top: 28px;
 }
+
+.dataset-dropdown{
+    left: auto;
+    right: auto;
+    width: 240px;
+}
+
+.open > .dataset-dropdown >li >a{
+    background-color: white;
+    text-decoration:none;
+    display: block;
+    cursor:pointer;
+}
+
+.open > .dataset-dropdown{
+    display: block;
+}
+
+.dataset-dropdown-image{
+    width:15%;
+    height:15%;
+}
+
+.dataset-search{
+    background-color:#f9f9f9;
+    height:120px;
+    width:30%;
+    min-width: 280px;
+    margin-left: 2.5%;
+}
+
+.dropdown-datasets{
+    position:absolute;
+    display: inline-block;
+    z-index: 1000;
+}
+
+.dropdown-button{
+    cursor: pointer;
+}
+
+.dropdown-content{
+    display:none;
+    position: absolute;
+    min-width:160px;
+    background-color: white;
+    border: 2px;
+    cursor: pointer;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+
+.dropdown-content a{
+    text-decoration:none;
+    padding: 7px;
+    display:block;
+}
+
+.dropdown-datasets:hover .dropdown-content{
+    display:block;
+}

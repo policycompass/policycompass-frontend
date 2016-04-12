@@ -15,9 +15,16 @@ angular.module('pcApp.datasets.directives.ckanImport', []).directive('ckanImport
                 'loadData': '='
             },
             link: function (scope, element, attrs, ctrls) {
-                scope.itemsPerPage = 10;
+                scope.itemsPerPage = 9;
+                scope.ckanStart = 0;
                 scope.byNumResourcesGtZero = function (result) {
-                    return result.num_resources > 0;
+                    if(result){
+                        return result.num_resources > 0;
+                    }
+                    else if(scope.ckan){
+                        return scope.ckan.num_resources > 0;
+                    }
+
                 };
 
                 scope.byResourceTypeIn = function (types) {
@@ -33,8 +40,22 @@ angular.module('pcApp.datasets.directives.ckanImport', []).directive('ckanImport
 
                 scope.onPageChange = function () {
                     var start = (scope.currentPage - 1) * scope.itemsPerPage;
-                    scope.search(scope.lastTerm, start);
+                    scope.ckanStart = start;
+                    handlePageResults(scope.ckan);
                 };
+
+                var handlePageResults = function(result){
+                    scope.ckanSearchResults = [];
+                    var length = scope.ckanStart + scope.itemsPerPage;
+
+                    if(length > result.results.length){
+                        length = result.results.length;
+                    }
+
+                    for(var i = scope.ckanStart; i<length; i++){
+                        scope.ckanSearchResults[i-scope.ckanStart] = result.results[i];
+                    }
+                }
 
                 scope.loadResource = function (dataset, resource) {
                     ngProgress.start();
@@ -54,6 +75,7 @@ angular.module('pcApp.datasets.directives.ckanImport', []).directive('ckanImport
                 scope.search = function (term, start) {
                     ngProgress.start();
                     scope.lastTerm = term;
+                    scope.eurostatStart = 0;
                     $http({
                         url: API_CONF.DATASETS_MANAGER_URL + '/ckan/search',
                         params: {
@@ -64,6 +86,7 @@ angular.module('pcApp.datasets.directives.ckanImport', []).directive('ckanImport
                     }).then(function (response) {
                         ngProgress.complete();
                         scope.ckan = response.data.result;
+                        handlePageResults(response.data.result);
                     });
                 };
             }

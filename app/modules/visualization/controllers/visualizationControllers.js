@@ -516,7 +516,19 @@ angular.module('pcApp.visualization.controllers.visualization', [
                     	}
                     ];
 					$scope.plotxaxislegend = $scope.plotxaxislegendoptions[0];
-
+					
+					$scope.barchartgroupoptions = [
+                        {
+                            label: 'Time',
+                            value: 'Time'
+                        },
+                        {
+                            label: 'Individual',
+                            value: 'Individual'
+                        }                        
+					];
+					$scope.groupedby=$scope.barchartgroupoptions[0];
+					
                     $scope.resolutionoptions = [
                         {
                             label: 'Day',
@@ -2979,11 +2991,20 @@ angular.module('pcApp.visualization.controllers.visualization', [
 								legendsColumn = 0	
 								if ($scope.showLegend) {							
 									var arrayKeys = [];
-									angular.forEach(numbers1, function(value, key) {
-	  									var a = arrayKeys.indexOf(value.Key);
-	  									if (a<0) {
-	  										arrayKeys.push(value.Key);
-	  										legendsColumn = legendsColumn + 1; 
+									angular.forEach(numbers1, function(value, key) {										
+										if ($scope.groupedby.value=='Individual') {
+	  										var a = arrayKeys.indexOf(value.To);
+	  										if (a<0) {	  										
+	  											arrayKeys.push(value.To);
+	  											legendsColumn = legendsColumn + 1; 
+	  										}											
+										}
+										else {
+	  										var a = arrayKeys.indexOf(value.Key);
+	  										if (a<0) {	  										
+	  											arrayKeys.push(value.Key);
+	  											legendsColumn = legendsColumn + 1; 
+	  										}
 	  									}
 									});
 									
@@ -3056,6 +3077,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                         'legendsColumn': legendsColumn,
                                         'resolution': $scope.resolution.value,
                                         'showAsPercentatge': $scope.showAsPercentatge,
+                                        'groupby':$scope.groupedby.value,
                                     });
                                     //barObj.render(datasetToSend, eventsArray);
                                     
@@ -3499,7 +3521,27 @@ angular.module('pcApp.visualization.controllers.visualization', [
                         $scope.resolution = $scope.resolutionoptions[endPos];
                         $scope.FilterResolution = $scope.arrayResolutions[endPos];
 					
-					} else if (dataFilter[0] == 'plotAt') {
+					} 
+
+					else if (dataFilter[0] == 'groupedby') {
+
+                        var endPos = $scope.barchartgroupoptions.length - 1;
+
+                        for (var i = 0; i < $scope.barchartgroupoptions.length; i++) {
+
+                            if (dataFilter[1] == $scope.barchartgroupoptions[i].value) {
+                                endPos = i;
+                            }
+                        };
+
+
+                        $scope.groupedby = $scope.barchartgroupoptions[endPos];
+                        
+					
+					} 					
+					
+					
+					else if (dataFilter[0] == 'plotAt') {
 												
 						for (var i = 0; i < $scope.plotdataoptions.length; i++) {
 
@@ -3816,6 +3858,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                 dataConfig['showAsPercentatge'] = $scope.showAsPercentatge;
                 dataConfig['resolution'] = $scope.resolution['value'];
+				dataConfig['groupedby'] = $scope.groupedby['value'];
                 dataConfig['plotAt'] = $scope.plotdataoption['value'];
                 dataConfig['xLegend'] = $scope.plotxaxislegend['value'];
 
@@ -4204,6 +4247,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                 }
                 dataConfig['showAsPercentatge'] = $scope.showAsPercentatge;
                 dataConfig['resolution'] = $scope.resolution['value'];
+                dataConfig['groupedby'] = $scope.groupedby['value'];
 				dataConfig['plotAt'] = $scope.plotdataoption['value'];
 				dataConfig['xLegend'] = $scope.plotxaxislegend['value'];
 				

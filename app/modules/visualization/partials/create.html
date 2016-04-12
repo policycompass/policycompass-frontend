@@ -20,12 +20,12 @@
                     <li>Select the type of chart you want using the appropiate button:
                         <ul>
                             <li>"Map" To plot as a map chart.</li>
-                            <li>"Line chart" To plot as a line chart.</li>
-                            <li>"Pie chart" To plot as pie chart.</li>
-                            <li>"Bars chart" To plot as a bar chart.</li>
+                            <li>"Line" To plot as a line chart.</li>
+                            <li>"Pie" To plot as pie chart.</li>
+                            <li>"Bars" To plot as a bar chart.</li>
                         </ul>
                     </li>
-                    <li>In case you select a "Line chart", then you can related historical events with the chart using the "Link Events" button.</li>
+                    <li>In case you select a "Line" or "Bars", then you can related historical events with the chart using the "Link Events" button.</li>
                     <li>Fulfil the mandatory fields that are marked with an asterisk.</li>
                     <li>Click over the button "Save" to save the visualisation.</li>
                 </ul>
@@ -55,17 +55,21 @@
             <canvas ng-show="false" id="canvas" width="800" height="400"></canvas>
             <div id="png-container"></div>
             <div class="button-group">
-                <button ng-if="mode == 'create'" type="submit" data-intro="Save data" data-position="top" ng-disabled="visualizationForm.$invalid || !user.state.loggedIn || visualization.policy_domains_data.output.length==0" class="btn btn-default btn-save" ng-click="createVisualization(ListMetricsFilter)">
-                    <span ng-hide="user.state.loggedIn">Login to </span>Save
-                </button>
-                <button ng-if="mode == 'edit'" type="submit" data-intro="Save data" data-position="top" ng-disabled="visualizationForm.$invalid || !user.state.loggedIn || visualization.policy_domains_data.output.length==0" class="btn btn-default btn-save" ng-click="createVisualization(ListMetricsFilter)">
-                    <span ng-hide="user.state.loggedIn">Login to </span>Save
-                    <span ng-hide="user.state.userPath==visualization.creator_path"> a copy</button>
 
-                <button ng-show="mode=='edit'" ng-disabled="disableRevert" type="submit" data-intro="Revert data" data-position="top" class="btn btn-default btn-revert2" ng-click="revertVisualization()">Revert</button>
-                <button data-intro="Helps you to link datasets with this visualisation" data-position="top" type="submit" class="btn btn-default btn-adddataset" id="modaladddataset" ng-click="showModal('datasets')">Link Datasets</button>
-                <button ng-show="(isSelectedSon('graph_line') || isSelectedSon('graph_bars')) && ListMetricsFilter.length>0" data-intro="Helps you to link this visualisation with events" data-position="top" type="submit" class="btn btn-primary btn-adddevent" id="addHEbutton" ng-click="showModal('events')">Link Events</button>
-                <button type="submit" data-intro="Cancel" data-position="top" class="btn btn-default btn-danger btn-clear" ng-click="cancelVisualization()">Cancel</button>
+				<a href="#!/login" ng-if="!user.state.loggedIn" class="btn btn-default btn-save" target="_blank">Login to Save</a>
+                <a href="" ng-if="mode == 'create' && user.state.loggedIn" type="submit" data-intro="Save data" data-position="top" ng-disabled="visualizationForm.$invalid || visualization.policy_domains_data.output.length==0" class="btn btn-default btn-save" ng-click="createVisualization(ListMetricsFilter)">
+                    Save
+                </a>
+                <a href="" ng-if="mode == 'edit' && user.state.loggedIn" type="submit" data-intro="Save data" data-position="top" ng-disabled="visualizationForm.$invalid || visualization.policy_domains_data.output.length==0" class="btn btn-default btn-save" ng-click="createVisualization(ListMetricsFilter)">
+                    Save
+                    <span ng-hide="user.state.userPath==visualization.creator_path"> a copy
+                </a>
+
+                <a href="" ng-show="mode=='edit'" ng-disabled="disableRevert" type="submit" data-intro="Revert data" data-position="top" class="btn btn-default btn-revert2" ng-click="revertVisualization()">Revert</a>
+                <a href="" data-intro="Helps you to link datasets with this visualisation" data-position="top" type="submit" class="btn btn-default btn-adddataset" id="modaladddataset" ng-click="showModal('datasets')">Link Datasets</a>
+                <a href="" ng-show="(isSelectedSon('graph_line') || isSelectedSon('graph_bars')) && ListMetricsFilter.length>0" data-intro="Helps you to link this visualisation with events" data-position="top" type="submit" class="btn btn-primary btn-adddevent" id="addHEbutton" ng-click="showModal('events')">Link Events</a>
+                
+                <a href="" type="submit" data-intro="Cancel" data-position="top" class="btn btn-default btn-danger btn-clear" ng-click="cancelVisualization()">Cancel</a>
             </div>
             <!--
             <button ng-hide="ListMetricsFilter.length==0" type="button" data-intro="Plot data in a map" data-position="top" ng-class="{'btn btn-default btn-map':!isSelectedParent(1),'btn btn-info btn-map':isSelectedParent(1)}" ng-click="selectTabParent(1); selectTabSon('mercator');rePlotGraph();">Map</button>
@@ -311,7 +315,12 @@
 	                                	<div class="col-xs-6 configureoptionchartlabel">Resolution</div>
 	                                	<div class="col-xs-6 configureoptionchartfield"><select id="resolution" ng-change="timeStart='';timeEnd='';rePlotGraph();" ng-model="resolution" ng-options="opt as opt.label for opt in resolutionoptions"></select></div>
 	                                </div>
-	
+
+									<div id="div_resolution" ng-show="isSelectedSon('graph_bars')" class="">                                	
+	                                	<div class="col-xs-6 configureoptionchartlabel">Grouped by</div>
+	                                	<div class="col-xs-6 configureoptionchartfield"><select id="resolution" ng-change="rePlotGraph();" ng-model="groupedby" ng-options="opt as opt.label for opt in barchartgroupoptions"></select></div>
+	                                </div>
+	                                
 									<div id="div_resolution" ng-show="isSelectedSon('graph_line') && TimeSelector.length>1 && resolution.value!='day'" class="">                                    
 	                                    <div class="col-xs-6 configureoptionchartlabel">Plot data</div>
 	                                    <div class="col-xs-6 configureoptionchartfield"><select id="plotdataoption" ng-change="rePlotGraph();" ng-model="plotdataoption" ng-options="opt as opt.label for opt in plotdataoptions"></select></div>
@@ -366,7 +375,7 @@
 	
 	                                <div class="form-group" ng-class="{'has-error': visualizationForm.description.$dirty && visualizationForm.description.$invalid}">
 	                                    <label for="metricdescription" class="">Description *</label>
-	                                    <textarea class="form-control" rows="10" id="description" name="description" ng-model="visualization.description" required></textarea>
+	                                    <textarea class="form-control" rows="10" id="description"  placeholder="Description" name="description" ng-model="visualization.description" required></textarea>
 	                                </div>
 	                                <div class="form-group">
 	                                    <label for="keywords">Keywords</label>
