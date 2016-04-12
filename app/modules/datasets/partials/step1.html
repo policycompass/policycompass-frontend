@@ -1,19 +1,38 @@
 <dataset-create-wrapper>
     <dataset-create-header step="1" before-next-step="nextStep()"></dataset-create-header>
 
-    <div class="pc-visualization-formcontrols">
+    <div>
         <div class="row">
-            <div class="col-md-5">
-                <div class="button-group">
-                    <button type="button" class="btn btn-file" ng-click="dropzone.isCollapsed = !dropzone.isCollapsed">
+            <div class="col-md-5" dropdown>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-file" ng-click="dropzone.isCollapsed = !dropzone.isCollapsed; databaseSelection.isVisible = false">
                         From File
                     </button>
-                    <button type="button" class="btn btn-import-ckan" ng-click="ckanImport.toggleVisibility(); eurostatImport.toggleVisibility()">
-                        Import From External Resources
+                </div>
+
+                <div class="dropdown col-md-offset-4" dropdown>
+                    <button class="btn btn-import-ckan dropdown-toggle dropdown-button " dropdown-toggle>
+                        Import from External Resources
+                        <span class="caret"></span>
                     </button>
+                    <ul class="dropdown-menu dataset-dropdown">
+                        <li>
+                            <a ng-click="ckanImport.isVisible = true; eurostatImport.isVisible = false; databaseSelection.isVisible = true; dropzone.isCollapsed = true;">
+                                <img src="img/edp_logo.png" class="dataset-dropdown-image">
+                                European Data Portal
+                            </a>
+                        </li>
+                        <li>
+                            <a ng-click="ckanImport.isVisible = false; eurostatImport.isVisible = true; databaseSelection.isVisible = true; dropzone.isCollapsed = true;">
+                                <img src="img/eurostat_logo.png" class="dataset-dropdown-image">
+                                Eurostat
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
-            <div class="col-md-4">
+
+            <div class="col-md-3 col-md-offset-4 text-right">
                 <div class="button-group">
                     <button type="submit" class="btn btn-rotate" ng-click="rotateData()">Rotate Data</button>
                     <button type="submit" class="btn btn-clear" ng-click="clearGrid()">Clear Grid</button>
@@ -22,12 +41,20 @@
         </div>
     </div>
 
+
     <div class="content-body">
         <div id="pc-dropzone-container" ng-show="!dropzone.isCollapsed" class="well">
             <div class="ng-dropzone dropzone" id="pc-dropzone" dropzone-config="dropzone.config" dropzone="dropzone.dropzone" event-handlers="dropzone.handlers"></div>
         </div>
-        <div ckan-import load-data='ckanImport.loadData' api-base="http://www.europeandataportal.eu/data/api/3" id="pc-ckan-import-container" ng-show="ckanImport.isVisible" class="well"></div>
-        <div eurostat-import load-data='eurostatImport.loadData' id="pc-eurostat-import-container" ng-show="eurostatImport.isVisible" class="well"></div>
+
+        <div id="import-selection" ng-show="databaseSelection.isVisible">
+            <div ng-show="ckanImport.isVisible">
+                <div ckan-import load-data='ckanImport.loadData' api-base="http://www.europeandataportal.eu/data/api/3" id="pc-ckan-import-container" class="well"></div>
+            </div>
+            <div ng-show="eurostatImport.isVisible">
+                <div eurostat-import load-data='eurostatImport.loadData' id="pc-eurostat-import-container" class="well"></div>
+            </div>
+        </div>
 
         <hot-table settings="inputTable.settings" datarows="inputTable.items" height="500"></hot-table>
     </div>
