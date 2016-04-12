@@ -12,41 +12,41 @@
          </span>
     </div>
 
-    <hr/>
-
     <form name="eurostatFiltersForm" id="eurostatFiltersForm">
-        <div class="row" ng-show="eurostatFilters">
-            <div class="col-md-12 col-xs-12 text-center">
-                <h3 name="database_header" id="database_header">{{ databaseName }}</h3>
-            </div>
+        <div class="row text-center" ng-show="eurostatFilters">
+            <hr/>
+            <h3 name="dataset_header" id="dataset_header">{{ datasetName }}</h3>
         </div>
 
-        <br>
-
-        <div class="search results">
-            <div ng-show="eurostatSearchResults.length == 0">
+        <div class="search results" id="eurostat_searchResults">
+            <div ng-show="eurostatSearchResults.length == 0" class="row text-center">
+                <hr/>
+                <br>
                 <h5>No results found.</h5>
             </div>
             <div ng-show="eurostatSearchResults && !eurostatFilters">
+                <br>
+                <hr/>
                 <div class="row">
                     <div ng-repeat="dataset in eurostatSearchResults" class="eurostat-searchResult">
-                        <div class="well col-md-4" style="height:120px;">
+                        <div class="well col-md-10 col-xs-3 dataset-search">
                             <div class="attributes">
                                 <h5>
-                                    <a href ng-click="searchForDatabase(dataset[0]); updateFilters(); saveDatabaseName(dataset[1]);">{{dataset[1]}}</a>
+                                    <a href ng-click="searchForDataset(dataset[0]); updateFilters(); saveDatasetName(dataset);">{{dataset[1] | limitTo:80}}</a>
                                 </h5>
-                                <p>{{dataset[0]}}</p>
+                                <p>Eurostat data code: {{dataset[0]}}</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div style="text-align: center">
+                <div style="text-align: center" ng-show="eurostatSearchResults.length != 0">
                     <pagination total-items="eurostatTotalSearchResults.length" ng-change="onPageChange()" items-per-page="itemsPerPage" ng-model="currentPage" max-size="5" class="pagination-sm" style="float: inherit;" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
                 </div>
             </div>
 
-
             <div ng-show="eurostatFilters" >
+                <br>
+                <br>
                 <div class="row">
                     <div class="form-group col-lg-4 eurostat-filters">
                         <div class="pc-reference-selection-full">
@@ -101,8 +101,9 @@
                     </div>
                 </div>
             </div>
-            <br>
+
             <div class="row" ng-show="moreFilters && eurostatFilters">
+                <br>
                 <div class="col-md-4 col-xs-12 col-md-offset-4 text-center">
                     <span name="message_filters" id="message_filters">Please select more filters.</span>
                 </div>
