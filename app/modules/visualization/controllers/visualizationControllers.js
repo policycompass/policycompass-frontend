@@ -18,14 +18,14 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                 indicator: metric.indicator_id,
                             };
 
-                            $scope.meticsRelated.push(data);
-                                                        
+                            $scope.metricsRelated.push(data);
+
                             if (!$scope.arrayListIndicators) {
                             	$scope.arrayListIndicators= [];
                             	$scope.urlListIndicators = '';
                             }
                             if (!$scope.arrayListIndicators[metric.indicator_id]) {
-                            	                                                        
+
                             	if ($scope.urlListIndicators) {
                             		$scope.urlListIndicators += '&';
                             	}
@@ -64,7 +64,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                     };
 
 
-                    $scope.meticsRelated = [];
+                    $scope.metricsRelated = [];
                     $scope.historicalEventsRelated = [];
 
 
@@ -100,10 +100,10 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	  return {
 	    require: "form",
 	    link: function(scope, element, attrs, form){
-	      
+
 	      element.on("change", function(){
 	      	scope.disableRevert = false;
-	        
+
 	      });
 	    }
 	  };
@@ -117,37 +117,37 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
 
 					$scope.loadDataCombosHelper = function (idMetric, valueColumTemp, valueGroupTemp) {
-				
+
 						id = idMetric;
-										
+
 	                	$scope.metricSelectedArray[idMetric] = Dataset.get({id: idMetric}, function (getMetric) {
-	
+
 							$scope.correctmetrics = "1";
-	
+
 	                    	var containerIndex = idMetric;
-	
+
 	                        myText = "grouping column";
 	                        $arrayComboValues_yaxe = [];
 	                        $arrayComboValues = [];
-	
+
 	                        var posValue = -1;
 	                        var posGroup = -1;
-	
+
 	                        if ($scope.metricSelectedArray[idMetric].data) {
 	                            arrayIndividualListDataset = $scope.metricSelectedArray[idMetric].data['table'];
 	                        } else {
 	                            arrayIndividualListDataset = [];
 	                        }
-	
+
 	                        $arrayComboValues_Individuals = [];
 	                        $arrayComboValuesChecked = [];
-	
+
 	                        $scope.individualCombo_value_[idMetric] = [];
 	                        for (x = 0; x < arrayIndividualListDataset.length; x++) {
-	                        	
+
 	                            if (arrayIndividualListDataset[x].individual) {
 	                                $dataIndividual = Individual.getById(arrayIndividualListDataset[x].individual);
-						
+
 	                                $dataIndividual.$promise.then(function (indivudual) {
 	                                	var iscountry=false;
 	                                	if (indivudual.code) {
@@ -158,84 +158,84 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	                                        "title": indivudual.title,
 	                                        "iscountry": iscountry
 	                                    };
-	                                    
+
 	                                    $arrayComboValues_Individuals.push($arrayValores);
 	                                    $arrayComboValuesChecked.push($arrayValores['id']);
-	
+
 	                                    var TMP1 = [];
 	                                    if ($scope.individualCombo_value_[containerIndex]) {
 	                                        TMP1 = $scope.individualCombo_value_[containerIndex];
 	                                    }
-	
+
 	                                    TMP1.push($arrayValores);
 	                                    $scope.individualCombo_value_[containerIndex] = TMP1;
-	
+
 	                                    if ($scope.mode == 'create') {
 	                                        var TMP2 = [];
-	                                        
+
 	                                        if ($scope.IndividualDatasetCheckboxes_[containerIndex]) {
 	                                            TMP2 = $scope.IndividualDatasetCheckboxes_[containerIndex];
 	                                        }
-											
-											if ($scope.IndividualDatasetCheckboxes_.indexOf(containerIndex)<0) {											
+
+											if ($scope.IndividualDatasetCheckboxes_.indexOf(containerIndex)<0) {
 												$scope.IndividualDatasetCheckboxes_[containerIndex] = [];
-											}									
-											
+											}
+
 	                                       	TMP2.push($arrayValores['id']);
 	                                       	$scope.IndividualDatasetCheckboxes_[containerIndex] = TMP2;
 	                                       	$scope.ModalIndividualDatasetCheckboxes_[containerIndex] = TMP2;
-	                                       	
+
 	                                       	if (arrayIndividualListDataset.length==$scope.ModalIndividualDatasetCheckboxes_[containerIndex].length) {
 	                                       		$scope.showListIndividuals[containerIndex] = true;
 	                                       	}
-	                                       	
+
 	                                    }
 	                                    else {
 	                                    	$scope.showListIndividuals[containerIndex] = true;
-	
+
 	                                    }
-	
+
 	                                });
-	
+
 	                            }
 	                        }
-	
+
 	                        $scope.optionsCombo_value_[containerIndex] = $arrayComboValues_yaxe;
 	                        $scope.optionsCombo_[containerIndex] = $arrayComboValues;
-	
+
 	                        if (posValue >= 0) {
 	                            $scope.MetricSelectorDataColumn_[containerIndex] = $scope.optionsCombo_value_[containerIndex][posValue];
 	                        }
-	
+
 	                        if (posGroup > 0) {
 	                            $scope.MetricSelectorGroupingData_[containerIndex] = $scope.optionsCombo_[containerIndex][posGroup];
 	                        }
-	
+
 	                    }, function (error) {
 	                        throw {message: error.data.message || JSON.stringify(error.data)};
 	                    });
                 	};
 
-                    //$scope.colorScale = d3.scale.category20();				
+                    //$scope.colorScale = d3.scale.category20();
 					$scope.disableRevert = true;
-					
+
 					$scope.colorScale = function () {
-						
-						var randomColor = Math.floor(Math.random()*16777215).toString(16);	
+
+						var randomColor = Math.floor(Math.random()*16777215).toString(16);
 						while (randomColor.length<6) {
 							randomColor = '0'+randomColor;
-						}	
+						}
 						return '#'+randomColor;
 					}
-					
+
 					$scope.curPageDataset = 1;
 					$scope.pageSizeDataset = 6;
 					$scope.pagePagesSizeDataset = 10;
-					
+
 					$scope.pageChangedDataset = function() {
-							
+
 					}
-					
+
                     $scope.posSliderMap = 0;
                     $scope.rangeDatesSliderMin = 0;
                     $scope.rangeDatesSliderMax = 0;
@@ -254,7 +254,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                         $scope.playBar();
                     }
-                    
+
                     $scope.playBar = function () {
 
                         $timeout(function () {
@@ -278,8 +278,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                         stop = $interval(function () {
 
-                            if (i < (max - 1)) {                                
-                                $scope.rangeDatesSliderMin = i + 1;                                
+                            if (i < (max - 1)) {
+                                $scope.rangeDatesSliderMin = i + 1;
                             } else {
                                 if (angular.isDefined(stop)) {
                                     $interval.cancel(stop);
@@ -350,13 +350,13 @@ angular.module('pcApp.visualization.controllers.visualization', [
                     $scope.translateCountryValue = function (value) {
                         return $scope.translateCountryDataValue(value);
                     }
-					
-					
+
+
                     $scope.translateCountrySlider = function (value) {
                         return $scope.translateCountryDataValue(value);
                     }
-					
-					
+
+
                     $scope.translatePieValue = function (value) {
                         var returnValue = 0;
                         if (($scope.numbers2) && (parseInt(value) >= 0)) {
@@ -370,9 +370,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
                     }
 
 					$scope.$watch('rangeDatesSliderMin', function (dataset) {
-						
+
 						var value = $scope.rangeDatesSliderMin;
-                        
+
                         var arrayLabelsDataPie = [];
                         var arrayValuesDataPie = [];
                         var arrayUnitsDataPie = [];
@@ -433,7 +433,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                 }
                                 icnt = icnt + 1;
                             }
-                        } 
+                        }
 
                         if (plotChart) {
                             $scope.change_slider_value = value;
@@ -447,19 +447,19 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                 'Units': arrayUnitsDataPie,
                                 'Colors': arrayColorsDataPie
                             };
-                            
-                            
+
+
                             $scope.dataset = [];
                             $scope.dataset.push(ObjectData);
-                            
+
                             if (($scope.mode == 'create') || ($scope.mode == 'edit')) {
-                            	
+
                             	if ($scope.rangeDatesSliderMin == value) {
 	                                $scope.plotPieChart();
 
                                	}
                             }
-                            
+
                          }
 
 
@@ -473,19 +473,19 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                 }
                             }
                         }
-						
+
 						//$scope.dataset = [];
 						//$scope.dataset = angular.copy($scope.dataset_pie_chart);
 					});
-					
+
                     $scope.translateFunction = function (value) {
-						
+
                         var returnValue = 0;
-                        returnValue = $scope.translatePieValue(value);                             
+                        returnValue = $scope.translatePieValue(value);
                         return returnValue;
                     }
-					
-					
+
+
                     //used while dataset not return resolutions
                     $scope.onlyTheirResolution = false;
 
@@ -516,7 +516,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                     	}
                     ];
 					$scope.plotxaxislegend = $scope.plotxaxislegendoptions[0];
-					
+
 					$scope.barchartgroupoptions = [
                         {
                             label: 'Time',
@@ -525,10 +525,10 @@ angular.module('pcApp.visualization.controllers.visualization', [
                         {
                             label: 'Individual',
                             value: 'Individual'
-                        }                        
+                        }
 					];
 					$scope.groupedby=$scope.barchartgroupoptions[0];
-					
+
                     $scope.resolutionoptions = [
                         {
                             label: 'Day',
@@ -728,7 +728,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
 
                     $scope.plotMapChart = function () {
-                    	
+
                         if (document.getElementById("container_graph_" + $scope.visualization.id) != null) {
                             document.getElementById("container_graph_" + $scope.visualization.id).innerHTML = "";
                         } else {
@@ -800,7 +800,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                     }
 
 
-                    $scope.plotPieChart = function () {                    	
+                    $scope.plotPieChart = function () {
                         if ($scope.typeToPlot === 'graph_pie') {
 
                             var margin = {
@@ -932,7 +932,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                 }
                             }
                         };
-                        
+
                         var ObjectData = {
                             'Key': position,
                             'Labels': arrayLabelsDataPie,
@@ -964,7 +964,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                     };
 
 
-                    $scope.meticsRelated = [];
+                    $scope.metricsRelated = [];
 
 
                     $scope.getMetricData = function (posI, metricId, column, value, group) {
@@ -977,7 +977,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                 issued: metric.issued,
                             };
 
-                            $scope.meticsRelated.push(data);
+                            $scope.metricsRelated.push(data);
 
                         }, function (err) {
                             throw {message: JSON.stringify(err.data)};
@@ -1000,8 +1000,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                     $scope.loadDataCombos = function (idMetric, valueColumTemp, valueGroupTemp) {
                         id = idMetric;
-                        
-                        
+
+
                         var tmp = Dataset.get({id: idMetric}, function (getMetric) {
                             var containerIndex = idMetric;
 
@@ -1110,8 +1110,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
                         var containerId = idMetric;
                         var containerIndex = idMetric;
 
-                        $scope.MetricSelectediId_[idMetric] = idMetric;
-                        $scope.MetricSelectediIndex_[idMetric] = idMetric;
+                        $scope.MetricSelectedId_[idMetric] = idMetric;
+                        $scope.MetricSelectedIndex_[idMetric] = idMetric;
 
                         var myText = "from";
                         $scope.MetricSelectorLabelColumn_[containerIndex] = myText;
@@ -1131,7 +1131,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                         $scope.ListMetricsFilter.push(myObject);
 						$scope.ListMetricsFilterModal.push(myObject);
-						
+
                         $scope.correctmetrics = 1;
 
                         $scope.rePlotGraph();
@@ -1153,7 +1153,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                             $scope.timeStart = '----';
                             $scope.timeEnd = '----';
 							$scope.hideAdvice = false;
-							
+
                             metriclistIn.splice(indexIn, 1);
 
                             //$scope.individualCombo_value_[idMetric] = '';
@@ -1161,41 +1161,41 @@ angular.module('pcApp.visualization.controllers.visualization', [
                             if (metriclistIn.length == 0) {
                                 $scope.correctmetrics = "";
                             }
-							
+
 							if (source=='modal')
 							{
-								
+
 							}
 							else
 							{
-								$scope.rePlotGraph();	
+								$scope.rePlotGraph();
 							}
-                            
+
 
                         });
                     };
-					
+
 					$scope.pagePagesSizeHE = 10;
                     //funtion to delete an historical event of the array
                     $scope.deleteContainerHistoricalEvent = function (divNameIn, index, historicaleventtitle, eventId) {
                         // Open a confirmation dialog
-                        
+
                         if (index<0) {
 
 
                         	for (var i in $scope.idHE) {
-                        		
+
                         		if ($scope.idHE[i]==eventId) {
                         			index = i;
                         		}
-                        		
+
                         	}
-                        	
+
                         }
-                        
+
                         var dlg = dialogs.confirm("Are you sure?", "Do you want to unlink the event '" + historicaleventtitle + "' from the list of events to plot in this visualization?");
                         dlg.result.then(function () {
-														
+
 							$scope.enableRevertButton();
 
                             $scope.idHE.splice((index), 1);
@@ -1213,13 +1213,13 @@ angular.module('pcApp.visualization.controllers.visualization', [
                     $scope.name = 'Link an event';
 
                     $scope.showModal = function (action) {
-						
+
 						$scope.hideTabs = false;
 						$scope.hideAdvice = true;
 						$scope.ModalIndividualDatasetCheckboxes_ = angular.copy($scope.IndividualDatasetCheckboxes_);
 						$scope.ModalListMetricsFilter = angular.copy($scope.ListMetricsFilter);
 						$scope.ListMetricsFilterModal  = angular.copy($scope.ListMetricsFilter);
-						
+
                         if (action == 'datasets') {
                             if ($scope.ListMetricsFilter.length > 0) {
                                 $scope.tab1 = false;
@@ -1259,12 +1259,12 @@ angular.module('pcApp.visualization.controllers.visualization', [
                             $scope.tabRecommended = false;
 
 							if ($scope.eventsToPlot.length>0) {
-								$scope.tabConfiguration = true;	
+								$scope.tabConfiguration = true;
 							}
 							else {
 								$scope.tabSearch = true;
                             }
-                                                 	
+
                             $scope.name = 'Link an event';
                             $scope.historicalevent_id = '';
                             var s = document.getElementById("startDatePosX");
@@ -1414,15 +1414,15 @@ angular.module('pcApp.visualization.controllers.visualization', [
                         $scope.isOpened = !$scope.isOpened;
                     }
 
-					
+
                     $scope.hideTabsModal = function () {
                     	$scope.hideTabs = false;
                     }
-                    
+
                     $scope.selectHE = function (idselected, source) {
 
                     	$scope.hideTabs = true;
-                    	
+
                         $scope.isOpened = false;
                         if (source == 'search') {
                             $scope.historicalevent_id = idselected['_source']['id'];
@@ -1480,7 +1480,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                         $scope.colorHE[posI] = colorRec;
                         //$scope.descHE[posI] = $scope.historicalevent_description;
 						$scope.descHE[posI] = $('#descriptionHEToAdd').val();
-						
+
                         var datosInT = {
                             id: idRec,
                             title: titleRec,
@@ -1505,18 +1505,18 @@ angular.module('pcApp.visualization.controllers.visualization', [
                     $scope.optionToPlot = [];
 
 					$scope.clickIndividual= function (datasetId, individualId) {
-						
+
 						$scope.hideAdvice = false;
-						
+
 						var indexData = $scope.ModalIndividualDatasetCheckboxes_[datasetId].indexOf(individualId);
-						
-						
+
+
 						if (indexData<0) {
 							$scope.ModalIndividualDatasetCheckboxes_[datasetId].push(individualId);
 						}
 						else {
 							$scope.ModalIndividualDatasetCheckboxes_[datasetId].splice(indexData, 1);
-							
+
 							if ($scope.ModalIndividualDatasetCheckboxes_[datasetId].length == 0) {
                             	$scope.ModalIndividualDatasetCheckboxes_[datasetId] = [];
                                 for (j in $scope.individualCombo_value_[datasetId]) {
@@ -1524,33 +1524,33 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                 }
                             }
 						}
-						
+
 						$scope.disabledApplyButton = false;
-						
+
 					}
-					
+
                     $scope.validateCheckboxes = function (idIn, source) {
 
                         if (source == 'modal') {
                         	$scope.hideAdvice = false;
-                        	
+
                             if ($scope.ModalIndividualDatasetCheckboxes_[idIn].length == 0) {
                             	$scope.ModalIndividualDatasetCheckboxes_[idIn] = [];
                                 for (j in $scope.individualCombo_value_[idIn]) {
                                     $scope.ModalIndividualDatasetCheckboxes_[idIn].push($scope.individualCombo_value_[idIn][j].id);
                                 }
                             }
-                        } 
-                        else {                        	
+                        }
+                        else {
                         	if ($scope.IndividualDatasetCheckboxes_[idIn].length == 0) {
                             	for (j in $scope.individualCombo_value_[idIn]) {
                             	    $scope.IndividualDatasetCheckboxes_[idIn].push($scope.individualCombo_value_[idIn][j].id);
-                            	    
+
                             	    $scope.ModalIndividualDatasetCheckboxes_[idIn].push($scope.individualCombo_value_[idIn][j].id);
-                            	    
+
                             	}
                         	}
-                        
+
                             $scope.rePlotGraph();
                         }
 
@@ -1565,27 +1565,27 @@ angular.module('pcApp.visualization.controllers.visualization', [
                     }
 
                     $scope.indexdataset = -1;
-                    
+
                     $scope.changeColourIndividual = function () {
-                    	
+
                     	$scope.hideAdvice = false;
                     }
-                    
+
                     $scope.showListIndividuals = [];
                     $scope.disabledApplyButton = false;
                     $scope.rePlotGraphFromSearch = function () {
-                    	
+
                     	$scope.hideAdvice = false;
-                    	
+
                         if ($scope.indexdataset >= 0) {
                             //$scope.IndividualDatasetCheckboxes_.splice($scope.indexdataset, 1);
                             $scope.ModalIndividualDatasetCheckboxes_.splice($scope.indexdataset, 1);
                         }
-                        
-                        if ($scope.ListMetricsFilterModal.length==0) {                        	
+
+                        if ($scope.ListMetricsFilterModal.length==0) {
                         	$scope.resolution = {};
                         }
-                        			
+
                         $scope.indexdataset = -1;
 
 						String.prototype.ucfirst = function()
@@ -1601,9 +1601,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							if (i==0) {
 								$scope.disabledApplyButton = true;
 							}
-							
-							var containerIndex = $scope.ListMetricsFilterModal[i].id; 
-							
+
+							var containerIndex = $scope.ListMetricsFilterModal[i].id;
+
 							if (!$scope.showListIndividuals[containerIndex]) {
 
 								$scope.showListIndividuals[containerIndex]=false;
@@ -1615,13 +1615,13 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	                					$scope.resolution = {
 	   	                        			label: arrayDatasetRec.time.resolution.ucfirst(),
 	       	                    			value: arrayDatasetRec.time.resolution
-	           	            			};            	            			
-	               					}              					
-										
+	           	            			};
+	               					}
+
 									//we only need to recover data if we didn't do it before
 									if (!$scope.individualCombo_value_.hasOwnProperty(arrayDatasetRec.id)) {
 	               						arrayIndividualListDataset = arrayDatasetRec.data['table'];
-	                					
+
 	               						$arrayComboValues_Individuals = [];
 			                        	$arrayComboValuesChecked = [];
 
@@ -1629,56 +1629,56 @@ angular.module('pcApp.visualization.controllers.visualization', [
 										for (x = 0; x < arrayIndividualListDataset.length; x++) {
 	                            			if (arrayIndividualListDataset[x].individual) {
 												$dataIndividual = Individual.get({id: arrayIndividualListDataset[x].individual}, function (indivudual) {
-													 													
+
 													var iscountry=false;
 		                               				if (indivudual.code) {
 		                             					iscountry=true;
 		                               				}
-			                                				
+
 		                                   			$arrayValores = {
 														"id": indivudual.id,
 		                                       			"title": indivudual.title,
 		                                       			"iscountry": iscountry
 		                                   			};
-			                                    			
+
 		                                   			$arrayComboValues_Individuals.push($arrayValores);
 		                                   			$arrayComboValuesChecked.push($arrayValores['id']);
-			
+
 		                                   			var TMP1 = [];
 		                                   			if ($scope.individualCombo_value_[containerIndex]) {
 		                                       			TMP1 = $scope.individualCombo_value_[containerIndex];
 		                                   			}
-			
-		                                   			TMP1.push($arrayValores);                                    			
-			                                    			
+
+		                                   			TMP1.push($arrayValores);
+
 		                                   			$scope.individualCombo_value_[containerIndex] = TMP1;
-			
-			                                    			
+
+
 		                                       		var TMP2 = [];
-															
+
 		                                       		if ($scope.ModalIndividualDatasetCheckboxes_[containerIndex]) {
 		                                           		TMP2 = $scope.ModalIndividualDatasetCheckboxes_[containerIndex];
-		                                       		}							
-			                                        							
+		                                       		}
+
 		                                       		TMP2.push($arrayValores['id']);
 		                                       		$scope.ModalIndividualDatasetCheckboxes_[containerIndex] = TMP2;
-															
+
 													if (arrayIndividualListDataset.length==$scope.ModalIndividualDatasetCheckboxes_[containerIndex].length)
 													{
 														$scope.showListIndividuals[containerIndex]=true;
 														$scope.disabledApplyButton = false;
 													}
-														
+
 												});
-													
+
 		                            		}
-	                        			}                					
+	                        			}
 	                				}
 	                				else {
 	                					$scope.showListIndividuals[arrayDatasetRec.id]=true;
 	                					$scope.disabledApplyButton = false;
 	                				}
-									
+
             					}, function (error) {
                 					throw {message: error.data.message || JSON.stringify(error.data)};
             					});
@@ -1689,7 +1689,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                 				$scope.disabledApplyButton = false;
 							}
 						}
-                        
+
                     }
 
                     $scope.manualCheckoxesSelected = [];
@@ -1713,20 +1713,20 @@ angular.module('pcApp.visualization.controllers.visualization', [
                         }
 
                     }
-										
+
 					$scope.copyDatasets = function (dataIn) {
 						$scope.ListMetricsFilter = angular.copy(dataIn);
 					}
-					
+
 					$scope.copyIndividuals = function (dataIn) {
 						$scope.IndividualDatasetCheckboxes_ = angular.copy(dataIn);
 					}
 
-					$scope.enableRevertButton = function() {						
-						$scope.disableRevert = false;						
+					$scope.enableRevertButton = function() {
+						$scope.disableRevert = false;
 					}
-					
-					
+
+
                     $scope.rePlotGraph = function () {
 
                         $scope.validateStartEndDate();
@@ -1747,15 +1747,15 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                         var arrayJsonFiles = [];
                         var datosTemporales = new Object();
-                                                
+
                         var elems = $scope.ListMetricsFilter;
-                        
-                        var elemsIndex = $scope.MetricSelectediIndex_;
+
+                        var elemsIndex = $scope.MetricSelectedIndex_;
 
                         if ($scope.resolution) {
                             $scope.FilterResolution = $scope.arrayResolutions[$scope.resolution.value];
                         }
-                        
+
                         var cntMetrics = 0;
                         var arrayJsonFiles = [];
                         var arrayKeys = [];
@@ -1768,7 +1768,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                         var arrayColorsDatasets = [];
 
                         $scope.canPlotGarph = true;
-						
+
                         for (j in elems) {
                             i = elems[j]['id'];
                             if (!isNaN(i)) {
@@ -1781,13 +1781,13 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                     var timeresolution = '';
                                     if ($scope.resolution) {
                                         timeresolution = $scope.resolution.value;
-                                    }                                    
+                                    }
 
                                     var identities = "";
                                     var identityColors = [];
 
                                     if (($scope.mode == 'create') || ($scope.mode == 'edit')) {
-                                    	
+
                                         if ($scope.IndividualDatasetCheckboxes_[i]) {
                                             identities = $scope.IndividualDatasetCheckboxes_[i];
                                             identityColors = $scope.dataset_color_palete_[i];
@@ -1817,7 +1817,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                     if (strIdentities) {
                                         strIdentities = "&individuals=" + strIdentities;
                                     }
-                                    
+
                                     if (timeresolution) {
                                         jsonFile = API_CONF.DATASETS_MANAGER_URL + "/datasets/" + resIdMetric + '?time_resolution=' + timeresolution;
                                     } else {
@@ -1834,7 +1834,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                             jsonFile = jsonFile + "&time_end=" + $scope.timeEnd;
                                         }
                                     }
-                                    
+
                                     if (jsonFile) {
                                         var str = i;
                                         var puntero = i;
@@ -1852,10 +1852,10 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                         }
 
                                         var identitiesvalues = "";
-                                        
-                                        
+
+
                                         identitiesvalues = $scope.IndividualDatasetCheckboxes_[puntero];
-										
+
                                         res = $scope.MetricSelectorGroupingData_[puntero];
                                         var valueGroup = res;
 
@@ -2347,17 +2347,17 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                                                             var a = $scope.mapTimeSlider.indexOf(ii);
                                                                             if (a < 0) {
                                                                                 $scope.mapTimeSlider.push(ii);
-																				
-																																		
+
+
 																				$scope.slider_translate_map = {
 									    											options: {
 									    												ceil: $scope.mapTimeSlider.length-1,
 									    												floor: 0,
-									    												showTicksValues: true,									    												
+									    												showTicksValues: true,
 									    												//ticksValuesTooltip: function(v) {
 									        											//	return 'Tooltip for ' + v;
-									      												//},									      												
-									      												translate: $scope.translateCountrySlider									      												
+									      												//},
+									      												translate: $scope.translateCountrySlider
 									    											}
 																				};
 
@@ -2572,7 +2572,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                                     $sem = 0;
                                                     while (label == "") {
                                                         if ($scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]) {
-                                                            
+
                                                             if (arguments.length>2) {
 																var str = arguments[i].title;
                                                             	var label = $scope.TitleIndividuals[arguments[i]['data']['table'][j].individual] + " [" + str + "]";
@@ -2593,7 +2593,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                                                     for (value in obj_[j]) {
                                                         var pieColor = '#000000';
-														
+
 														/*
                                                         if (colorsIdentities) {
 
@@ -2671,7 +2671,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                                                     }
 
-													
+
 													var lineColor = '#000000';
 
 
@@ -2680,9 +2680,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                                     } else {
                                                         lineColor = $scope.colorScale($scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]);
                                                     }
-                                                    
-                                                    
-                                                    
+
+
+
                                                     for (value in obj_[j]) {
 
 
@@ -2730,13 +2730,13 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                                         data: ""
                                                     }
                                                 ];
-                                            }                                            
+                                            }
                                             $scope.plotMapChart();
                                         }
 
 
                                     });
-                                } 
+                                }
                                 else {
 
                                     $scope.$watch('semCountries', function (semCountries) {
@@ -2761,7 +2761,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                 $scope.numbers1 = $scope.arrayDataset;
 
                                 if ($scope.arrayDataset.length == 0) {
-                                    
+
                                     $scope.numbers1 = [];
                                     if ($scope.mode == "create") {
                                         if ($scope.autoreplot != 1) {
@@ -2781,7 +2781,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                         if ($scope.list) {
                                             legendsColumn = 0;
                                         }
-										
+
 										var maxLength = 0;
 										if (numbers1.length>maxLength) {
 											maxLength = numbers1.length;
@@ -2789,9 +2789,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
 										if ($scope.eventsToPlot.length>maxLength) {
 											maxLength = $scope.eventsToPlot.length;
 										}
-										
+
 										maxLength = maxLength +1;
-										
+
                                         var margin = {
                                                 top: 20,
                                                 right: 20,
@@ -2936,9 +2936,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                                     $scope.dataset = numbers2;
                                     $scope.numbers2 = numbers2;
-									
-									
-									
+
+
+
 									$scope.slider_translate_pie = {
 									    options: {
 									    	ceil: $scope.numbers2.length-1,
@@ -2946,11 +2946,11 @@ angular.module('pcApp.visualization.controllers.visualization', [
 									    	showTicksValues: true,
 									    	//ticksValuesTooltip: function(v) {
 									        //	return 'Tooltip for ' + v;
-									      	//},      
-									      	translate: $scope.translateFunction,								      	
+									      	//},
+									      	translate: $scope.translateFunction,
 									    }
 									};
-									
+
                                     $scope.rangeDatesSliderMax = $scope.numbers2.length - 1;
 
                                     $scope.selectedAll = false;
@@ -2971,14 +2971,14 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                     }
 
                                     $scope.plotPieChart();
-                                    
+
 
                                 }
                             } else if ($scope.typeToPlot === 'graph_bars') {
 
                                 numbers1 = arrayDataset;
                                 var datasetToSend = numbers1;
-                                
+
                                 /*
                                 var legendsColumn = 0;
                                 if ($scope.showLegend) {
@@ -2986,55 +2986,55 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                 } else {
                                     legendsColumn = 0;
                                 }
-								*/                                
-								
-								legendsColumn = 0	
-								if ($scope.showLegend) {							
+								*/
+
+								legendsColumn = 0
+								if ($scope.showLegend) {
 									var arrayKeys = [];
-									angular.forEach(numbers1, function(value, key) {										
+									angular.forEach(numbers1, function(value, key) {
 										if ($scope.groupedby.value=='Individual') {
 	  										var a = arrayKeys.indexOf(value.To);
-	  										if (a<0) {	  										
+	  										if (a<0) {
 	  											arrayKeys.push(value.To);
-	  											legendsColumn = legendsColumn + 1; 
-	  										}											
+	  											legendsColumn = legendsColumn + 1;
+	  										}
 										}
 										else {
 	  										var a = arrayKeys.indexOf(value.Key);
-	  										if (a<0) {	  										
+	  										if (a<0) {
 	  											arrayKeys.push(value.Key);
-	  											legendsColumn = legendsColumn + 1; 
+	  											legendsColumn = legendsColumn + 1;
 	  										}
 	  									}
 									});
-									
+
 									if ($scope.eventsToPlot.length>legendsColumn) {
 										legendsColumn = $scope.eventsToPlot.length;
 									}
-									
+
 									legendsColumn = legendsColumn + 1;
 								}
 								if ($scope.list) {
                                     legendsColumn = 0;
                                 }
-                                
+
                                 //console.log("legendsColumn="+legendsColumn);
-								
+
                                 var margin = {
                                     top: 20,
                                     right: 20,
                                     bottom: 55 + (legendsColumn) * 20,
                                     left: 44
                                 };
-                                
+
                                 //console.log(margin)
-                                
+
                                 var width = 980;// - margin.left - margin.right;
                                 var height = 326;
 
                                 var font_size = 11;
 								var radiouspoint = 4;
-								
+
                                 if ($scope.list) {
                                     width = width / 5;
                                     height = height / 5;
@@ -3080,35 +3080,35 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                         'groupby':$scope.groupedby.value,
                                     });
                                     //barObj.render(datasetToSend, eventsArray);
-                                    
+
                                     if ($scope.eventsToPlot.length==0) {
-                                    	barObj.render(datasetToSend, $scope.eventsToPlot);	
+                                    	barObj.render(datasetToSend, $scope.eventsToPlot);
                                     }
                                     else {
-										$scope.$watchCollection('eventsToPlot', function (eventsToPlot) {                        
-											
+										$scope.$watchCollection('eventsToPlot', function (eventsToPlot) {
+
 											var plotChart = true;
 											angular.forEach($scope.eventsToPlot, function(value, key) {
   												if (!value.startDate) {
   													plotChart = false;
   												}
 											});
-											
+
 											if (plotChart) {
-												
+
 												if (document.getElementById("container_graph_" + $scope.visualization.id) != null) {
                                         			document.getElementById("container_graph_" + $scope.visualization.id).innerHTML = "";
                                     			} else {
                                         			document.getElementById("container_graph_").innerHTML = "";
                                     			}
-												
+
 												barObj.render(datasetToSend, $scope.eventsToPlot);
-											}											
-											
-										});                                    	
+											}
+
+										});
                                     }
-                                    
-                                    
+
+
                                 }
                             }
                         }
@@ -3141,13 +3141,13 @@ angular.module('pcApp.visualization.controllers.visualization', [
         function ($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualization, VisualizationByDataset, VisualizationByEvent, FCMByIndividualSelected, FCMByDatasetSelected, $location, helper, dialogs, $log, API_CONF, Auth) {
 
             $scope.user = Auth;
-    
+
             helper.baseGetRelatedDataController($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualization, $location, helper, $log, API_CONF);
 
             $scope.imageVisu = '/media/visualization_' + $routeParams.visualizationId + '.png';
             $scope.arrayIndividualsUsed = [];
 
-			
+
             $scope.visualization = Visualization.get({id: $routeParams.visualizationId}, function (visualizationList) {
                 var id_visu = $routeParams.visualizationId;
                 $scope.relatedVisualizations = [];
@@ -3167,7 +3167,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                             for (xi = 0; xi < dataIndividuos.length; xi++) {
                                 if (!$scope.arrayIndividualsUsed[dataIndividuos[xi]]) {
-                                    
+
                                     $scope.arrayIndividualsUsed[dataIndividuos[xi]] = dataIndividuos[xi];
                                 }
                             }
@@ -3304,7 +3304,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                 }
 
             }, function (error) {
-                //throw {message: error.data.message || JSON.stringify(error.data)};                
+                //throw {message: error.data.message || JSON.stringify(error.data)};
                 $location.path('/visualizations');
             });
 
@@ -3418,7 +3418,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
             $scope.ListMetricsFilter = [];
             $scope.ListMetricsFilterModal = [];
-            
+
             $scope.visualization = Visualization.get({id: $routeParams.visualizationId}, function (visualization) {
 
                 $scope.visualization.language_data = {
@@ -3428,12 +3428,12 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
 				$scope.$watchCollection(
 				"visualization.language_data",
-				function( newValue, oldValue ) 
+				function( newValue, oldValue )
 				{
 					if (newValue.output[0]!=oldValue.output[0]) {
 						$scope.disableRevert = false;
 					}
-					else if (newValue.output.length!=oldValue.output.length) {						
+					else if (newValue.output.length!=oldValue.output.length) {
 						$scope.disableRevert = false;
 					}
 				}
@@ -3447,12 +3447,12 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
 				$scope.$watchCollection(
 				"visualization.location_data",
-				function( newValue, oldValue ) 
+				function( newValue, oldValue )
 				{
 					if (newValue.output[0]!=oldValue.output[0]) {
 						$scope.disableRevert = false;
 					}
-					else if (newValue.output.length!=oldValue.output.length) {						
+					else if (newValue.output.length!=oldValue.output.length) {
 						$scope.disableRevert = false;
 					}
 				}
@@ -3466,18 +3466,18 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
 				$scope.$watchCollection(
 				"visualization.policy_domains_data",
-				function( newValue, oldValue ) 
+				function( newValue, oldValue )
 				{
 					if (newValue.output[0]!=oldValue.output[0]) {
 						$scope.disableRevert = false;
 					}
-					else if (newValue.output.length!=oldValue.output.length) {						
+					else if (newValue.output.length!=oldValue.output.length) {
 						$scope.disableRevert = false;
 					}
 				}
 				);
-								
-				
+
+
             }, function (error) {
                 //throw {message: error.data.message || JSON.stringify(error.data)};
                 //console.log (JSON.stringify(error.data));
@@ -3520,8 +3520,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                         $scope.resolution = $scope.resolutionoptions[endPos];
                         $scope.FilterResolution = $scope.arrayResolutions[endPos];
-					
-					} 
+
+					}
 
 					else if (dataFilter[0] == 'groupedby') {
 
@@ -3536,36 +3536,36 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
 
                         $scope.groupedby = $scope.barchartgroupoptions[endPos];
-                        
-					
-					} 					
-					
-					
+
+
+					}
+
+
 					else if (dataFilter[0] == 'plotAt') {
-												
+
 						for (var i = 0; i < $scope.plotdataoptions.length; i++) {
 
                             if (dataFilter[1] == $scope.plotdataoptions[i].value) {
                                 endPos = i;
                             }
                         };
-						
+
 						$scope.plotdataoption = $scope.plotdataoptions[endPos];
 						$scope.plotDataIn=$scope.plotdataoptions[endPos];
 
 					} else if (dataFilter[0] == 'xLegend') {
-												
+
 						for (var i = 0; i < $scope.plotxaxislegendoptions.length; i++) {
 
                             if (dataFilter[1] == $scope.plotxaxislegendoptions[i].value) {
                                 endPos = i;
                             }
                         };
-						
+
 						$scope.plotxaxislegend = $scope.plotxaxislegendoptions[endPos];
-						
-                    
-                    
+
+
+
                     } else if (dataFilter[0] == 'scaleColor') {
                         if (dataFilter[1]) {
                             $scope.scaleColor = dataFilter[1];
@@ -3607,9 +3607,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
                     $scope.colorHE[(parseInt(i) + 1)] = $scope.visualization.historical_events_in_visualization[i].color;
 
                     var datosInT = {
-                        id: $scope.visualization.historical_events_in_visualization[i].historical_event_id, 
-                        title: titleEvent, 
-                        startDate: startEventDate, 
+                        id: $scope.visualization.historical_events_in_visualization[i].historical_event_id,
+                        title: titleEvent,
+                        startDate: startEventDate,
                         endDate: endEventDate,
                         desc: $scope.visualization.historical_events_in_visualization[i].description,
                         color: $scope.visualization.historical_events_in_visualization[i].color
@@ -3629,11 +3629,11 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                 $scope.ListMetricsFilter = [];
                 $scope.ListMetricsFilterModal = [];
-                
+
                 $scope.metricsFilter = $scope.ListMetricsFilter;
 
-                $scope.MetricSelectediId_ = [];
-                $scope.MetricSelectediIndex_ = [];
+                $scope.MetricSelectedId_ = [];
+                $scope.MetricSelectedIndex_ = [];
                 $scope.MetricSelectorLabelColumn_ = [];
                 $scope.MetricSelectorDataColumn_ = [];
                 $scope.MetricSelectorGroupingData_ = [];
@@ -3657,8 +3657,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                     var id = $scope.visualization.datasets_in_visualization[i].dataset_id;
 
-                    $scope.MetricSelectediId_[id] = id;
-                    $scope.MetricSelectediIndex_[id] = id;
+                    $scope.MetricSelectedId_[id] = id;
+                    $scope.MetricSelectedIndex_[id] = id;
 
                     var configurationMetricsFilters = $scope.visualization.datasets_in_visualization[i].visualization_query;
 
@@ -3704,7 +3704,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                     selectedText = " ";
 
                     var myObject = {
-                        'id': $scope.MetricSelectediId_[id], //'name': $scope.visualization.metrics_in_visualization[i].title,
+                        'id': $scope.MetricSelectedId_[id], //'name': $scope.visualization.metrics_in_visualization[i].title,
                         'name': $scope.visualization.datasets_in_visualization[i].title, //'title': $scope.visualization.metrics_in_visualization[i].title,
                         'title': $scope.visualization.datasets_in_visualization[i].title, //'issued': $scope.visualization.metrics_in_visualization[i].issued,
                         'issued': $scope.visualization.datasets_in_visualization[i].issued,
@@ -3719,23 +3719,23 @@ angular.module('pcApp.visualization.controllers.visualization', [
                     $scope.getMetricDataDetail(i, id, $scope.MetricSelectorLabelColumn_[id], $scope.MetricSelectorDataColumn_[id], $scope.MetricSelectorGroupingData_[id], $scope.ListIndividualDatasetCheckboxes_[id], $scope.dataset_color_palete_[id]);
 
 					//edit controller
-					
+
 					configurationMetricsFilters = $scope.visualization.datasets_in_visualization[i].visualization_query;
-                    
+
                     var arrayConfigMetricsFilters = configurationMetricsFilters.split(",");
 
-					$scope.IndividualSelectorLabelColumn_[id] = [];  
+					$scope.IndividualSelectorLabelColumn_[id] = [];
 
 					var pushData = false;
                     if ($scope.IndividualDatasetCheckboxes_[id]) {
-                    	
+
                     }
                     else {
                     	$scope.IndividualDatasetCheckboxes_[id] = [];
                     	$scope.ModalIndividualDatasetCheckboxes_[id] = [];
                     	pushData = true;
                     }
-                                          
+
 					for (x = 0; x < arrayConfigMetricsFilters.length; x++) {
                         var dataFilter = arrayConfigMetricsFilters[x].split(":");
 
@@ -3761,10 +3761,10 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                 }
                             }
                         }
-                    }                        
-                        
+                    }
+
 					$scope.loadDataCombosHelper(id, valueColumTemp, valueGroupTemp);
-					
+
                     $scope.correctmetrics = "1";
                 }
 
@@ -3782,7 +3782,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                     var myObject = {
                         id: her.id,
-                        title: her.title, 
+                        title: her.title,
                         startDate: tmp_startDate,
                         endDate: tmp_endDate,
                         desc: datIn.description,
@@ -3874,10 +3874,10 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                 for (j in metricListIn) {
                     i = metricListIn[j].id;
-                    $scope.MetricSelectediId_[i] = i;
+                    $scope.MetricSelectedId_[i] = i;
 
-                    if (!isNaN($scope.MetricSelectediId_[i])) {
-                        var myindex = $scope.MetricSelectediIndex_[i];
+                    if (!isNaN($scope.MetricSelectedId_[i])) {
+                        var myindex = $scope.MetricSelectedIndex_[i];
 
 
                         value = '';
@@ -3885,7 +3885,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                         var arrayValuesInString = [];
                         if ($scope.IndividualDatasetCheckboxes_[myindex]) {
 	                        for (var i = 0; i < $scope.IndividualDatasetCheckboxes_[myindex].length; i++) {
-	
+
 	                            if (!isNaN(i)) {
 	                                if ($scope.IndividualDatasetCheckboxes_[myindex][i] > 0) {
 	                                    var a = arrayValuesInString.indexOf($scope.IndividualDatasetCheckboxes_[myindex][i]);
@@ -3912,7 +3912,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                             value = value + $scope.dataset_color_palete_[metricListIn[j].id][arrayValuesInString[i]];
 
                         }
-                        
+
                         var selectorIndividualColorData = value;
 
                         var visualization_query_data = 'Individual:' + selectorIndividualData + ',Colors:' + selectorIndividualColorData;
@@ -4038,7 +4038,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
         'API_CONF',
         function ($scope, $route, $routeParams, $modal, Event, Metric, Visualization, $location, helper, $log, API_CONF) {
 
-            
+
 
 
         }
@@ -4065,7 +4065,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
         function ($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualization, $location, helper, $log, dialogs, API_CONF, Individual, Unit, Auth) {
 
 			$scope.hideTabs = false;
-			
+
             $scope.user = Auth;
 
             $scope.DatasetsLoaded = [];
@@ -4085,8 +4085,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
             $scope.eventsToPlot = [];
 
-            $scope.MetricSelectediId_ = [];
-            $scope.MetricSelectediIndex_ = [];
+            $scope.MetricSelectedId_ = [];
+            $scope.MetricSelectedIndex_ = [];
             $scope.MetricSelectorLabelColumn_ = [];
             $scope.MetricSelectorDataColumn_ = [];
             $scope.MetricSelectorGroupingData_ = [];
@@ -4139,29 +4139,29 @@ angular.module('pcApp.visualization.controllers.visualization', [
             this.historicalevent_he_startdate = '';
             this.historicalevent_he_enddate = '';
             this.historicalevent_he_description = '';
-            
+
             var datasetsURL = $routeParams.datasets;
-			
-			
+
+
             if (datasetsURL) {
                 var arrayMetricsURL = datasetsURL.split(",");
                 for (x = 0; x < arrayMetricsURL.length; x++) {
                     if (arrayMetricsURL[x] > 0) {
                         $scope.metric = Dataset.get({id: arrayMetricsURL[x]}, function (metric) {
                             if (metric.id > 0) {
-                            	
+
                             	$scope.dataset_color_palete_[metric.id]=[];
-                            	
-                            	for (xj = 0; xj < metric.data.individuals.length; xj++) {                            		
+
+                            	for (xj = 0; xj < metric.data.individuals.length; xj++) {
                             		 $scope.dataset_color_palete_[metric.id][metric.data.individuals[xj]]=$scope.colorScale(metric.data.individuals[xj]);
                             	}
                             	//$scope.dataset_color_palete_[metric.id]
                                 $scope.addFilterMetric(metric.id, metric.title, metric.issued);
-                                
+
 								//create controller
                     			$scope.loadDataCombosHelper(metric.id, "", "");
-                              
-                                
+
+
                             }
                         }, function (err) {
                             throw {message: JSON.stringify(err.data)};
@@ -4205,7 +4205,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                 }
             }
-            
+
 
 
             $scope.createVisualization = function (metricListIn) {
@@ -4250,7 +4250,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                 dataConfig['groupedby'] = $scope.groupedby['value'];
 				dataConfig['plotAt'] = $scope.plotdataoption['value'];
 				dataConfig['xLegend'] = $scope.plotxaxislegend['value'];
-				
+
                 if ($scope.timeStart != '----') {
                     dataConfig['timeStart'] = $scope.timeStart;
                 }
@@ -4264,9 +4264,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
                 for (j in metricListIn) {
                     i = metricListIn[j].id;
 
-                    if (!isNaN($scope.MetricSelectediIndex_[i])) {
+                    if (!isNaN($scope.MetricSelectedIndex_[i])) {
 
-                        var myindex = $scope.MetricSelectediIndex_[i];
+                        var myindex = $scope.MetricSelectedIndex_[i];
                         value = '';
 
                         arrayValuesInString = [];
@@ -4369,7 +4369,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
             $scope.metricsFilter = $scope.ListMetricsFilter;
 
         }
-        
+
     ])
 
 
@@ -4409,17 +4409,17 @@ angular.module('pcApp.visualization').filter('pagination', function () {
             };
 
             $scope.okModalWindowDataset = function () {
-            	
+
             	$scope.enableRevertButton();
             	$scope.copyDatasets($scope.ListMetricsFilterModal);
-            	
+
             	$scope.copyIndividuals($scope.ModalIndividualDatasetCheckboxes_);
-            	
+
             	$scope.rePlotGraph();
                 $modalInstance.close();
             };
-					
-            $scope.cancelModalWindowDataset = function () {            	
+
+            $scope.cancelModalWindowDataset = function () {
                 $modalInstance.dismiss('cancel');
             };
 
@@ -4457,7 +4457,7 @@ angular.module('pcApp.visualization').filter('pagination', function () {
             $scope.recomendationevents = [];
             //$scope.curPage = 0;
             $scope.curPage = 1;
-            
+
             $scope.pageSize = 10;
             $scope.numberOfPages = function () {
                 return Math.ceil($scope.recomendationevents.length / $scope.pageSize);
@@ -4474,10 +4474,10 @@ angular.module('pcApp.visualization').filter('pagination', function () {
             if (!$scope.endDateToFilter) {
                 $scope.endDateToFilter = item.maxDateToSearch;
             }
-			
+
 			$scope.iniStartDateToFilter = $scope.startDateToFilter;
 			$scope.iniEndDateToFilter = $scope.endDateToFilter;
-			
+
             $scope.paginationEvents = 1;
             $scope.filterEvents = "";
             $scope.paginationEvents = "";
@@ -4567,14 +4567,14 @@ angular.module('pcApp.visualization').filter('pagination', function () {
                     query.filtered['filter'] = {
                         "bool": {
                         	"must_not" : [
-                        	{ 
+                        	{
 								"range": {"endEventDate":{"lte": startDateToSearch}}
 							},
 							{
 								"range": {"startEventDate":{"gte": endDateToSearch}}
 							}
-                        	]                        	
-                        } 
+                        	]
+                        }
                     };
 
                 }
@@ -4609,12 +4609,12 @@ angular.module('pcApp.visualization').filter('pagination', function () {
                 $scope.recommendedEvents(item.arrayIndividuals, item.minDateToSearch, item.maxDateToSearch);
             }
 
-			$scope.pageChangedHESearch = function (pagIn, textIn, text_startDateToFilter, text_endDateToFilter) {				
-				$scope.findEventsByFilter(pagIn, textIn, text_startDateToFilter, text_endDateToFilter);	
+			$scope.pageChangedHESearch = function (pagIn, textIn, text_startDateToFilter, text_endDateToFilter) {
+				$scope.findEventsByFilter(pagIn, textIn, text_startDateToFilter, text_endDateToFilter);
 			}
-			
+
             $scope.findEventsByFilter = function (pagIn, textIn, text_startDateToFilter, text_endDateToFilter) {
-				
+
                 var endDateToSearch = "";
                 var startDateToSearch = "";
 
@@ -4698,7 +4698,7 @@ angular.module('pcApp.visualization').filter('pagination', function () {
                 if (startDateToSearch || endDateToSearch) {
 
 					query.filtered['filter'] = {};
-					/*					
+					/*
                     query.filtered['filter'] = {
                         "and": [
                             {
@@ -4712,18 +4712,18 @@ angular.module('pcApp.visualization').filter('pagination', function () {
                             }
                         ]
                     };
-					*/                   
+					*/
                     query.filtered['filter'] = {
                         "bool": {
                         	"must_not" : [
-                        	{ 
+                        	{
 								"range": {"endEventDate":{"lte": startDateToSearch}}
 							},
 							{
 								"range": {"startEventDate":{"gte": endDateToSearch}}
 							}
-                        	]                        	
-                        } 
+                        	]
+                        }
                     };
 
                 }
