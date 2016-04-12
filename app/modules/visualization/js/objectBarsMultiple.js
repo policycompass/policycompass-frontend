@@ -876,7 +876,7 @@ policycompass.viz.barsMultiple = function (options) {
             var posMouse = d3.mouse(this);
             var posX = posMouse[0];
             var posY = posMouse[1];
-            $('input[name="startDatePosX"]').val(posX);                    
+            //$('input[name="startDatePosX"]').val(posX);                    
 		})
 		.transition().duration(3000)
 		.attr("y", function (d) {
