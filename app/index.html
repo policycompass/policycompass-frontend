@@ -47,6 +47,8 @@
         <div id="loading-text">loading</div>
     </div>
 
+
+    <!--[if gt IE 9]><!-->
     <div id="page-container" class="ng-hide" ng-show="hideLoader">
         <div ng-include="'header.html'"></div>
         <div ng-view="" id="main-content"></div>
@@ -55,6 +57,13 @@
 
         <adh-cross-window-channel></adh-cross-window-channel>
     </div>
+    <!--<![endif]-->
+    <!--[if lt IE 10]>
+    <div class="unsupported-browser">
+      <h1>Non-supported browser!</h1>
+      <p>We're sorry your browser is unsupported. Please either upgrade your Internet Explorer or switch to another up-to-date browser.</p>
+    </div>
+    <![endif]-->
 
     <!--  Vendor Libs -->
     <script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
