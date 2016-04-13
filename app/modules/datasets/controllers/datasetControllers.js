@@ -340,7 +340,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     $scope.inputTable.items = data.result;
                     $scope.inputInstance.loadData(data.result);
 
-                    creationService.data.dataset.url = resource.access_url;
+                    creationService.data.dataset.resource.url = resource.access_url;
                     creationService.data.dataset.title = (dataset.title && dataset.title.length > 0) ? dataset.title : dataset.notes;
                     creationService.data.dataset.description = (resource.name && resource.name.length > 0) ? resource.name : resource.description;
                 }
@@ -359,7 +359,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     $scope.inputTable.items = data.result;
                     $scope.inputInstance.loadData(data.result);
 
-                    creationService.data.dataset.url = "http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=" + datasetCode+ "&lang=en";
+                    creationService.data.dataset.resource.url = "http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=" + datasetCode+ "&lang=en";
                     creationService.data.dataset.title = datasetName;
                     creationService.data.dataset.description = datasetName;
                 }
@@ -1011,6 +1011,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 payload.user_id = 1;
                 payload.unit_id = $scope.dataset.unit[0];
                 payload.data = buildData();
+
                 return payload;
             };
 
