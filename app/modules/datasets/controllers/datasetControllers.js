@@ -998,6 +998,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                         payload.resource.external_resource = $scope.external_resource.output[0];
                 }
 
+                if(!payload.resource.url) payload.resource.url = creationService.data.dataset.url;
                 payload.policy_domains = $scope.policy_domains.output;
                 payload.title = $scope.dataset.title;
                 payload.acronym = $scope.dataset.acronym;
