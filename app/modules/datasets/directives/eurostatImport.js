@@ -14,6 +14,7 @@ angular.module('pcApp.datasets.directives.eurostatImport', []).directive('eurost
             link: function (scope, element, attrs, ctrls) {
                 scope.itemsPerPage = 9;
                 scope.eurostatStart = 0;
+                var firstVisit = true;
                 scope.byNumResourcesGtZero = function (result) {
                     return result.num_resources > 0;
                 };
@@ -52,6 +53,7 @@ angular.module('pcApp.datasets.directives.eurostatImport', []).directive('eurost
                         }
 
                         if(response.data.result == 416){
+                            if(!firstVisit) ngProgress.complete();
                             scope.moreFilters = true;
                         }
                         else{
@@ -60,12 +62,13 @@ angular.module('pcApp.datasets.directives.eurostatImport', []).directive('eurost
 
                         if(response.data.result == 400){
                             scope.wrongFilterValues = true;
+                            ngProgress.complete();
                         }
                         else{
                             scope.wrongFilterValues = false;
                         }
 
-                        ngProgress.complete();
+                        firstVisit = false;
                     });
                 };
 
@@ -82,8 +85,8 @@ angular.module('pcApp.datasets.directives.eurostatImport', []).directive('eurost
                             q: term
                         }
                     }).then(function (response) {
-                        ngProgress.complete();
                         resetFilters();
+                        firstVisit = true;
                         scope.eurostatTotalSearchResults = response.data.result;
                         handlePageResults(response.data.result);
                     });
@@ -100,6 +103,7 @@ angular.module('pcApp.datasets.directives.eurostatImport', []).directive('eurost
                     for(var i = scope.eurostatStart; i<length; i++){
                         scope.eurostatSearchResults[i-scope.eurostatStart] = result[i];
                     }
+                    ngProgress.complete();
                 }
 
                 scope.searchForDataset = function (term) {
@@ -114,7 +118,6 @@ angular.module('pcApp.datasets.directives.eurostatImport', []).directive('eurost
                             q: term
                         }
                     }).then(function (response) {
-                        ngProgress.complete();
                         prepareFilters(response);
                     });
                 };
@@ -157,6 +160,7 @@ angular.module('pcApp.datasets.directives.eurostatImport', []).directive('eurost
                     for(var i = 1980; i<2099 ; i++){
                         scope.filterTimes.push({icon:"", name: i.toString(), maker: i.toString(), ticked:false});
                     }
+                    ngProgress.complete();
                 }
 
                 scope.updateFilters = function(){
