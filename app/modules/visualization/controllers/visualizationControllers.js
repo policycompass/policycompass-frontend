@@ -1267,8 +1267,17 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                                  	
                             $scope.name = 'Link an event';
                             $scope.historicalevent_id = '';
-                            var s = document.getElementById("startDatePosX");
-                            var e = document.getElementById("endDatePosX");
+                                                        
+                            if ($scope.isSelectedSon('graph_line'))
+                            {
+                            	var s = document.getElementById("startDatePosX");
+                            	var e = document.getElementById("endDatePosX");	
+                            }
+                            else {
+                            	var s = "";
+                            	var e = "";
+                            }
+                            
 
                             dateRec = s.value;
                             dateRecEnd = e.value;
