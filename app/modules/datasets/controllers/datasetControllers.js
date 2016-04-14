@@ -362,6 +362,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     creationService.data.dataset.url = "http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=" + datasetCode+ "&lang=en";
                     creationService.data.dataset.title = datasetName;
                     creationService.data.dataset.description = datasetName;
+                    ngProgress.complete();
                 }
             };
 
