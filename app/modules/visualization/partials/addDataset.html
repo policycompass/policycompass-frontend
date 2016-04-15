@@ -5,26 +5,26 @@
 
 <div class="modal-body text-info ng-binding ng-scope">
     <div id="basic-modal-content-pc">
-    	
+
     	<!--
  		<div ng-hide="hideAdvice" class="form-instructions">
- 			<p class="text-danger">Changes will not be applied until you click over the "Apply" button!</p> 			
+ 			<p class="text-danger">Changes will not be applied until you click over the "Apply" button!</p>
  		</div>
  		-->
 
         <tabset>
             <tab heading="Search" active="tab1" disabled="">
-            	
+
             	<div ng-hide="!disabledApplyButton">
-            		<p class="text-danger">Loading data.</p>	
+            		<p class="text-danger">Loading data.</p>
             	</div>
-            	
-            	
+
+
                 <div ng-hide="disabledApplyButton" class="row createvisualization">
 					<!--
                     <div indexdataset="indexdataset" id="filterDatasets" class="selectorDatasets" datasets-list="ListMetricsFilter" number-Max-Datasets="99" functionfordataset="rePlotGraphFromSearch(actionDone,position)" disable-Row="arrayResolutionsFilter[resolution.value]"></div>
                     -->
-                    
+
 					<div indexdataset="indexdataset" id="filterDatasets" class="selectorDatasets" datasets-list="ListMetricsFilterModal" number-Max-Datasets="99" functionfordataset="rePlotGraphFromSearch(actionDone,position, 'modal')" disable-Row="arrayResolutionsFilter[resolution.value]"></div>
                 </div>
             </tab>
@@ -34,8 +34,8 @@
                     <div ng-show="metric.title" class="designer-metrics active" class="designer-metrics" id="designer-metrics-num-{{metric.id}}" ng-repeat="metric in ListMetricsFilterModal track by $index">
                         <h4>{{metric.title}} -- {{metric.issued | date:'longDate' }}</h4>
 
-                        <input type="hidden" ng-model="MetricSelectediId_[metric.id]" id="MetricSelectediId_{{metric.id}}" name="MetricSelectedId[]" value="">
-                        <input type="hidden" ng-model="MetricSelectediIndex_[metric.id]" ng-init="MetricSelectediIndex_[metric.id]=metric.id" id="MetricSelectediIndex_{{metric.id}}" name="MetricSelectediIndex[]" value="{{metric.id}}">
+                        <input type="hidden" ng-model="MetricSelectedId_[metric.id]" id="MetricSelectedId_{{metric.id}}" name="MetricSelectedId[]" value="">
+                        <input type="hidden" ng-model="MetricSelectedIndex_[metric.id]" ng-init="MetricSelectedIndex_[metric.id]=metric.id" id="MetricSelectedIndex_{{metric.id}}" name="MetricSelectedIndex[]" value="{{metric.id}}">
 
                         <div class="metric-buttons">
                             <button type="button" data-intro="Unlink dataset from the visualisation" data-position="top" class="btn btn-danger btn-clear" ng-click="deleteMetricFromList(metric.id, metric.title, ListMetricsFilterModal, $index, 'modal');" id="delete-metric-button-{{metric.id}}">Unlink</button>
@@ -59,7 +59,7 @@
                                     </div>
                                 </div>
 								-->
-																
+
 								<div ng-hide="showListIndividuals[metric.id]" class="loading-container">
 									<div class="loading"></div>
 									<div id="loading-text">loading {{individualCombo_value_[metric.id].length}}/{{sizeIndividualsArray[metric.id]}}</div>
@@ -79,25 +79,25 @@
 								            </div>
 										</div>
 										-->
-										
-	                    	
+
+
 										<div class="filterDatasetsPaginationHeader" id="filterDatasetsPaginationHeaderDirective">
-											
+
 											<div>
-												
+
 												<label ng-show="individualCombo_value_[metric.id].length>1" for="">{{individualCombo_value_[metric.id].length}} individuals found</label>
 												<label ng-show="individualCombo_value_[metric.id].length==1" for="">{{individualCombo_value_[metric.id].length}} individual found</label>
 												<label ng-show="individualCombo_value_[metric.id].length==0" for="">No individuals found</label>
-												
+
 											</div>
-											
+
 										</div>
-										
+
 										<div class="filterDatasetPaginationBody createvisualization" id="filterDatasetsPaginationBodyDirective">
 											<ul class="datasets-list metrics-list ">
 												<li ng-class="{'metrics-list dataset-list active':ModalIndividualDatasetCheckboxes_[metric.id].indexOf(option.id) >= 0}" name="designer-dataset-num-{{dataset.id}}" ng-repeat="option in individualCombo_value_[metric.id] | orderBy: 'title' | pagination: (curPageDataset-1) * pageSizeDataset | limitTo: pageSizeDataset " >
-													<a ng-hide="isSelectedSon('mercator') && !option.iscountry" href="" x-ng-click="clickIndividual(metric.id, option.id);"  title="{{ ModalIndividualDatasetCheckboxes_[metric.id].indexOf(option.id) == -1 && 'Add ' || 'Remove ' }} '{{option.title}}'">					
-														<spectrum 
+													<a ng-hide="isSelectedSon('mercator') && !option.iscountry" href="" x-ng-click="clickIndividual(metric.id, option.id);"  title="{{ ModalIndividualDatasetCheckboxes_[metric.id].indexOf(option.id) == -1 && 'Add ' || 'Remove ' }} '{{option.title}}'">
+														<spectrum
 															ng-show="isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')"
 															ng-init=" dataset_color_palete_[metric.id][option.id] = dataset_color_palete_[metric.id][option.id] == null ? colorScale(option.title) : dataset_color_palete_[metric.id][option.id] " ng-model="dataset_color_palete_[metric.id][option.id]" ng-model-onblur ng-change="changeColourIndividual()" options="{
 																						showInput: true,
@@ -111,13 +111,13 @@
 												</li>
 											</ul>
 										</div>
-										
+
 										<div class="row">
 											<div style="text-align: center">
 		                    					<pagination total-items="individualCombo_value_[metric.id].length" ng-change="pageChangedDataset()" items-per-page="pageSizeDataset" ng-model="curPageDataset" max-size="pagePagesSizeDataset" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
 		                    				</div>
 	                    				</div>
-	                    				
+
 									</div>
 								</div>
 

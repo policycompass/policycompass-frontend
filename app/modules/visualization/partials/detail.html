@@ -81,7 +81,7 @@
 					<div class="field-content">
 							<username userpath="{{visualization.creator_path}}"></username>
 					</div>
-				</div>            	
+				</div>
                 <div class="form-item" ng-if="visualization.created_at">
                     <div class="field-label">Added</div>
                     <div class="field-content">{{ visualization.created_at | date:'longDate' }}</div>
@@ -116,7 +116,7 @@
                 <div class="form-item">
                     <div class="field-label">Datasets</div>
                     <div class="field-content">
-                        <div ng-repeat="metric in meticsRelated"><a ng-href="#!/datasets/{{metric.id}}">{{metric.title}}</a></div>
+                        <div ng-repeat="metric in metricsRelated"><a ng-href="#!/datasets/{{metric.id}}">{{metric.title}}</a></div>
                 	</div>
 				</div>
             </div>
