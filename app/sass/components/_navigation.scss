@@ -85,7 +85,9 @@
 .font-icon-log_in:before {
     content: "\e61b";
 }
-
+.font-icon-story:before {
+    content: "\e900";
+}
 #main-menu {
     // margin-top:1.5em;
     a {
@@ -101,6 +103,7 @@
 
             // background:linear-gradient(to top,$gris_90,white);
         }
+
         padding: 15px 15px 14px;
         &.fonticon-share {
             color: $gris_70;
@@ -220,7 +223,7 @@ header .container {
         opacity: 1;
         // top:auto;
         height:100%;
-        height:calc(100% - 50px);
+        // height:calc(100% - 50px);
         
     }
     &.submenu-share {
@@ -299,8 +302,10 @@ header .container {
         // padding-top:50px;
         &.active {
             z-index: 3000;
-            // top:0;
+            top:0;
+            padding-top:50px;
             // padding-top:50px;
+            position: fixed;
         }
     }
 

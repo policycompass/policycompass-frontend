@@ -25,7 +25,8 @@ var pcAppDependencies = [
     'ngProgress',
     'isteven-multi-select',
     'rzModule',
-    'checklist-model'
+    'checklist-model',
+    'duScroll'
     //'nvd3ChartDirectives'
 ];
 
