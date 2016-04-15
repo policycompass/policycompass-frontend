@@ -1,0 +1,139 @@
+$border-color: lighten($bk_3_1, 30);
+
+// $border-color:$bk_3_2;
+$text-color: #9d8b54;
+$text-color: lighten($bk_3_2, 20);
+// $text-color:red;
+.calculation-formula {
+    background: $bk_1_3;
+    padding: 1em;
+    box-shadow: inset 5px 5px 10px transparentize($bk_3_1, .9);
+    border: 1px solid $bk_3_1;
+    border-radius: $radius;
+    line-height: 2em;
+    font-size: 1.26666em; // 19/ 15
+    color: $text-color;
+    font-family: $mono;
+}
+
+.calculation-formula-3,
+.calculation-formula-2 {
+    background: darken($gris_98, 1);
+    border-color: $gris_80;
+    box-shadow: none;
+}
+
+.calculation-formula-3 {
+
+}
+
+.indicator-formula,
+.metrics-formula {
+    // display:inline-block;
+    font-weight: bold;
+    // font-style:italic;
+    padding: 0 5px;
+
+    border: 1px solid $bk_4_1;
+    border: 1px solid darken($bk_1_3, 20);
+
+    min-height: inherit !important;
+    font-size: 1em;
+    border-radius: $radius;
+    &:hover {
+        background: linear-gradient(to bottom, $bk_4_3, $bk_4_4);
+        background: linear-gradient(to bottom, $bk_4_4, $bk_4_3);
+        color: white;
+        border-color: $bk_4_1;
+    }
+}
+
+.metrics-formula {
+    &:hover {
+        background: linear-gradient(to bottom, $bk_2_2, $bk_2);
+        border-color: $bk_2_1;
+    }
+}
+
+.field-label {
+    font-weight: bold;
+    // color:$claro;
+}
+
+.metadata {
+    background: $gris_95;
+    padding: 15px;
+    border-radius: $radius;
+    border: 1px solid $gris_90;
+    .form-group {
+        overflow: hidden;
+    }
+    .field-label,
+    .field-content {
+        line-height: 2em;
+    }
+
+    .field-label {
+        $ancho: $unidad * 2;
+        width: $ancho;
+        float: left;
+        margin-right: - $ancho;
+        text-align: right;
+        padding-right: 10px;
+
+    }
+    .field-content {
+        margin-left: $ancho;
+        padding-left: 10px;
+    }
+    .dataset-select {
+        float: left;
+        margin-right: 20px;
+    }
+
+}
+
+.panel-heading {
+    &.formula-grey-panel-heading {
+        background: #e5e5e5;
+    }
+}
+
+.input-group {
+    &.formula-input-group-padding {
+        padding: 5px;
+
+        label {
+            color: gray;
+            font-weight: normal;
+        }
+
+        .btn {
+            height: 34px;
+            width: 100%;
+        }
+    }
+}
+
+.list-group {
+    &.formula-list-group {
+        margin-top: 0px;
+        height: 300px;
+        overflow: auto;
+    }
+}
+
+.label {
+    &.label-primary {
+        &.formula-span {
+            background-color: #F27711;
+        }
+    }
+}
+
+.row {
+    &.formula-row {
+        margin-top: 40px;
+    }
+}
+

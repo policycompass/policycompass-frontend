@@ -1,0 +1,64 @@
+
+html {
+    font-size: 15px;
+}
+
+body {
+    font-family: $open;
+    font-size: 100%;
+    line-height: 1.4;
+}
+
+img {
+    max-width: 100%;
+}
+
+p,
+ul,
+ol {
+    margin: .5em 0;
+}
+
+h1, h2, h3, h4 {
+    color: $bk_3;
+
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+}
+
+h6 {
+    font-size: 1em;
+}
+
+h5 {
+    font-weight: bold;
+}
+
+.legend-primary {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    border-bottom: 1px solid $bk_4_3;
+}
+
+h2.page-title {
+
+    padding-top: 0;
+    margin-top: 0;
+}
+
+h2.page-title,
+.subtitle {
+    @include paddings();
+}
+
+h1, h2 {
+    font-weight: 200;
+    font-family: "open sans";
+}
+
+h1 {
+    font-size: 30px;
+}

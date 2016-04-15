@@ -1,0 +1,91 @@
+@media (min-width: $device) {
+    .modal-dialog {
+        width: 720px;
+    }
+}
+
+.modal-body {
+    max-height: calc(100vh - 210px);
+    overflow-y: auto;
+}
+
+.modal-content {
+    h1 {
+        // font-weight:bold;
+        // font-size:1em;
+    }
+    background: $gris_98;
+    textarea {
+        width: 100%;
+    }
+    .metrics-list {
+        @include reset-list();
+        margin: 10px 0;
+
+        li {
+            background: $gris_98;
+            padding: 5px 10px;
+            border-bottom: $gris_80;
+            margin: 5px 0;
+        }
+    }
+    // .form-group {
+    // background:green;
+    // }
+    // label {
+    // background:red;
+    // width:10em;
+    // text-align:right;
+    // float:left;
+
+    // }
+
+    form[name='searchEventsForm'] {
+        // background:black;
+        .col-sm-4:first-of-type {
+            input {
+                margin-top: 8px;
+                width: 90%;
+                // background:$gris_90;
+            }
+        }
+    }
+    /*
+    form[name='neweventForm'] {
+      .form-group.ng-binding {
+        background:red;
+        overflow:hidden;
+        label {
+
+        }
+        p {
+
+        }
+
+      }
+    }
+    */
+
+}
+
+.display-fields,
+.events-display-fields {
+    $labelWidth: 25%;
+    .form-group {
+        overflow: hidden;
+        padding: 5px;
+        background: $gris_95;
+        // border:1px solid $gris_80;
+        margin: 5px 0;
+    }
+    .field-label {
+        width: $labelWidth;
+        float: left;
+        margin-right: -$labelWidth;
+        text-align: right;
+        font-weight: bold;
+    }
+    .field-content {
+        padding-left: $labelWidth + 2;
+    }
+}

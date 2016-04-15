@@ -1,0 +1,126 @@
+.fonticon-facebook:before {
+    content: "\e622";
+    content: "\e629";
+}
+
+.fonticon-twitter:before {
+    content: "\e623";
+    content: "\e62a";
+}
+
+.fonticon-google:before {
+    content: "\e621";
+    content: "\e628";
+}
+
+.fonticon-vk:before {
+    content: "\e62b";
+}
+
+.fonticon-linkedin:before {
+    content: "\e62c";
+}
+
+#share-window {
+    // background:red;
+    a {
+
+    }
+    overflow: hidden;
+    .share-menu {
+        @include reset-list();
+        overflow: hidden;
+        li {
+            float: left;
+            padding: 5px 10px;
+            border-right: 1px solid $gris_70;
+            &:last-of-type {
+                border-right: none;
+            }
+        }
+    }
+    .share-submenu {
+        display: none;
+        &.active {
+            display: block;
+        }
+        input {
+            width: 32em;
+            border-radius: $radius;
+            padding: 2px 10px;
+            box-shadow: inset 3px 3px 5px transparentize($gris_80, .8);
+            border: 1px solid $gris_60;
+        }
+    }
+
+    .social-share {
+
+        @include reset-list();
+        overflow: hidden;
+        font-size: 1.3em;
+        margin-top: 1em;
+        margin-bottom: 1em;
+        a {
+
+            width: 1.7em;
+            padding-top: 2px;
+            border-radius: $radius;
+
+            display: block;
+            float: left;
+            color: $bk_3;
+            color: $bk_4_1;
+            background: $bk_4_3;
+            color: white;
+            border: 1px solid $gris_70;
+            background: linear-gradient(to bottom, $gris_98 0%, $gris_90 100%);
+            color: $general;
+
+            &:hover {
+                color: $bk_4_2;
+                background: $bk_4_2;
+                color: white;
+            }
+
+            margin: 5px;
+        }
+    }
+
+    overflow: hidden;
+    ul.share-menu {
+
+        a {
+            color: $claro;
+            &.active {
+                color: black;
+            }
+
+        }
+
+        text-transform: uppercase;
+        @include reset-list();
+
+    }
+
+    position: relative;
+    .fonticon-close {
+        color: black;
+    }
+    // top:auto;
+    // bottom:0px;
+    // left:0px;
+    padding: 20px;
+    // margin-top:-10px;
+    background: white;
+    border: 2px solid $bk;
+    // box-shadow:5px 5px 10px transparentize($gris_50,.5);
+    border-radius: $radius;
+    display: none;
+    // position:absolute;
+    &.active {
+        // background:green;
+        display: block;
+        z-index: 2;
+    }
+
+}

@@ -1,7 +1,24 @@
 <div class="container main-content main-content-landing">
 	<div ng-controller="ControllerScroller">
 		
-
+		<div class="scrollbarButtonHome">
+			<nav>
+				<ul id="paralax-links" >	
+					<!--
+					<li><a href="" ng-click="toSection('paralax-00')" du-smooth-scroll du-scrollspy></a></li>
+					-->
+					<li><a href="#paralax-00" du-smooth-scroll du-scrollspy></a></li>
+		  			<li><a href="#paralax-01" du-smooth-scroll du-scrollspy></a></li>
+		  			<li><a href="#paralax-02" du-smooth-scroll du-scrollspy></a></li>
+		  			<li><a href="#paralax-03" du-smooth-scroll du-scrollspy></a></li>
+		  			<li><a href="#paralax-04" du-smooth-scroll du-scrollspy></a></li>
+		  			<li><a href="#paralax-05" du-smooth-scroll du-scrollspy></a></li>
+		  			<!--
+		  			<li><a href="" ng-click="toTheTop()"></a></li>
+		  			-->
+				</ul>
+			</nav>
+		</div>
 
 		<section id="paralax-00">
 			<div class="content-header content-header-presentation">
@@ -61,11 +78,11 @@
 		<div class="paralax paralax-01">
 			<div class="container">
           		<h3>Data Discovery and Processing</h3>
-				
-				<div class="col-md-3">
+				<div class="col-md-2"></div>
+				<div class="col-md-2">
 					<img src="img/front/front_char_01.png" alt="" class="comic">
 				</div>
-				<div class="col-md-6">
+				<div class="col-md-4">
 					<p>
 						You may use the Policy Compass Browser and faceted search to find the appropriate data of what you are interested in.
 					</p>
@@ -74,7 +91,7 @@
 					</p>
 				</div>
 
-				<div class="col-md-3 par-buttons">
+				<div class="col-md-4 par-buttons">
 					<p>
 						<a href="#!/browse#maintop" class="front-btn fonticon fonticon-search">Browse Existing Data</a>
 					</p>
@@ -88,8 +105,7 @@
 	<section id="paralax-02">
 		<div class="paralax paralax-02">
 			<div class="container">
-      
-    			<div class="col-md-3">
+    			<div class="col-md-5">
       				<h3>Annotate Visualisations with Events</h3>
       				<p>
       					Register Historical Events which can later be used to annotate visualisation graphs to better support arguments.
@@ -98,23 +114,18 @@
         				<a href="#!/events/search#maintop" class="front-btn fonticon font-icon-historical_events">Register Historical Events</a>
       				</p>
     			</div>
-    			<div class="col-md-3">
+    			<div class="col-md-2">
       				<img src="img/front/front_char_02.png" alt="" class="comic">
       			</div>
-      			<div class="col-md-6">
+      			<div class="col-md-5">
         			<h3>Data Visualisation</h3>
         			<p>                				
-        				Applying datasets to metrics describes a real world situation. The selection of metrics and their construction or the specific selection of data already contains implications on the reasons or the processes behind it. However, you need ways to finding events that could have (had) a causal effect on the real world situation represented by the data.
-        			</p>
-       				<p>
-       					In Policy Compass you can visualise datasets using different graphical forms, such as line graphs, pie, bar or map charts..
+        				Applying datasets to metrics describes a real world situation. The selection of metrics and their construction or the specific selection of data (depending on the starting point) already contains implications on the reasons or the processes behind it. However, you need ways to finding events that could have (had) a causal effect on the real world situation represented by the data. First, searching for possible explanations you could concentrate first on incidents, political decisions, developments in society, etc. that are within the subject area of study. Second, you would look for events that occurred around time points where data shows abnormalities. In Policy Compass, the connection between events and data is made by annotating graph time line with selected events.
         			</p>
         			<p>
           				<a href="#!/visualizations/create#maintop" class="front-btn font-icon-visualisation">Create New Visualisation</a>
         			</p>
       			</div>
-            <img src="img/front/arrow-right.svg" alt="" class="arrow arrow-01">
-            <img src="img/front/arrow-left.svg" alt="" class="arrow arrow-02">
     		</div>
   		</div>
  	</section>
@@ -122,22 +133,23 @@
 		<div class="paralax paralax-03">
 			<div class="container">
       			<h3>Create Causal Models</h3>
-      			
-      			<div class="col-md-3">
+      			<div class="col-md-2"></div>
+      			<div class="col-md-2">
         			<img src="img/front/front_char_03.png" alt="" class="comic">
         		</div>
-        		<div class="col-md-6">
+        		<div class="col-md-4">
           			<p>
-          				You can create a causal policy model using the graphical model editor in the Policy Compass Platform, by adding concepts and their relationships to form a directed graph.
+          				Assuming you have the necessary data at hand that is related to policies of interest (Evaluate Performance of Policies), you can create a causal policy model using the graphical model editor in the Policy Compass Platform, by adding concepts and their relationships to form a directed graph.
+          			</p>
+          			<p>
+          				In a causal policy model concepts have underlying datasets related to policies. The relationships can be determined based on your knowledge as well as the data at hand. Another way to develop a causal model is to copy an existing one and modify it. Policy Compass provides a powerful search tool to browse existing user generated content.
           			</p>
         		</div>
-				<div class="col-md-3 par-buttons">
+				<div class="col-md-4 par-buttons">
           			<p>
             			<a href="#!/models/create#maintop" class="front-btn fonticon font-icon-causal_models">Create New Causal Model</a>
           			</p>
         		</div>
-             
-            <img src="img/front/arrow-left.svg" alt="" class="arrow arrow-03">
       		</div>
     	</div>
 	</section>
@@ -150,17 +162,15 @@
 						Initiate or participate in active discussions an debates around metrics, policy models and visualisations.
 					</p>
             	</div>
-				<div class="col-md-3">
+				<div class="col-md-2">
 					<img src="img/front/front_char_04.png" alt="" class="comic">
 				</div>
-				<div class="col-md-4">
+				<div class="col-md-5">
 					<h3>Share your Results</h3>
 					<p>
 						Shared Policy Compass content into social networks.
 					</p>							
 				</div>
-        <img src="img/front/arrow-right.svg" alt="" class="arrow arrow-04">
-            <img src="img/front/arrow-left.svg" alt="" class="arrow arrow-05">
 			</div>
 		</div>
 	</section>
@@ -168,39 +178,18 @@
 		<div class="paralax paralax-05">
 			<div class="container">
 				<h3>Dig Deeper!</h3>
-          		<div class="col-md-1"></div>
-          		<div class="col-md-5">
+          		<div class="col-md-2"></div>
+          		<div class="col-md-4">
             		<p>
               			<a href="#!/metrics/create-1#maintop" class="front-btn fonticon font-icon-metrics">Create New Metric</a>
             		</p>
           		</div>
-          		<div class="col-md-5 par-buttons">
+          		<div class="col-md-4 par-buttons">
             		<p>
               			<a href="" class="front-btn fonticon font-icon-historical_events">Comming soon: Create New Argumentation Graph</a>
             		</p>
           		</div>
         	</div>
-           <img src="img/front/arrow-left.svg" alt="" class="arrow arrow-06">
 		</div>
 	</section>			
 </div> <!-- div paralax  -->
-
-
-		<div class="scrollbarButtonHome">
-			<nav>
-				<ul id="paralax-links" >	
-					<!--
-					<li><a href="" ng-click="toSection('paralax-00')" du-smooth-scroll du-scrollspy></a></li>
-					-->
-					<li><a href="#paralax-00" du-smooth-scroll du-scrollspy></a></li>
-		  			<li><a href="#paralax-01" du-smooth-scroll du-scrollspy></a></li>
-		  			<li><a href="#paralax-02" du-smooth-scroll du-scrollspy></a></li>
-		  			<li><a href="#paralax-03" du-smooth-scroll du-scrollspy></a></li>
-		  			<li><a href="#paralax-04" du-smooth-scroll du-scrollspy></a></li>
-		  			<li><a href="#paralax-05" du-smooth-scroll du-scrollspy></a></li>
-		  			<!--
-		  			<li><a href="" ng-click="toTheTop()"></a></li>
-		  			-->
-				</ul>
-			</nav>
-		</div>

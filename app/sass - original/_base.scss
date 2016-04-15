@@ -1,0 +1,152 @@
+@font-face {
+    font-family: 'policy';
+    src: url('../fonts/policy.eot?rqnk2q');
+    src: url('../fonts/policy.eot?#iefixrqnk2q') format('embedded-opentype'),
+    url('../fonts/policy.woff?rqnk2q') format('woff'),
+    url('../fonts/policy.ttf?rqnk2q') format('truetype'),
+    url('../fonts/policy.svg?rqnk2q#policy') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+// @import url(https://fonts.googleapis.com/css?family=Open+Sans:700,300,600,400);
+
+@font-face {
+    font-family: 'open sans';
+    src: url(../fonts/OpenSans-Semibold.ttf);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: 'open sans';
+    src: url(../fonts/OpenSans-Bold.ttf);
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: 'open sans';
+    src: url(../fonts/OpenSans-Light.ttf);
+    font-weight: 200;
+}
+
+@font-face {
+    font-family: 'open sans';
+    src: url(../fonts/OpenSans-Regular.ttf);
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'open sans';
+    src: url(../fonts/OpenSans-Italic.ttf);
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'open sans';
+    src: url(../fonts/OpenSans-Semibold.ttf);
+    font-weight: 600;
+    font-style: regular;
+}
+
+/*Other browsers*/
+
+/*Other browsers*/
+h4,
+.btn,
+.row-view-create .view-item-wrap,
+.searchItemIcon a,
+.columns-create-submenu-icon,
+.fonticon,
+.designer-metrics,
+.button,
+li,
+.metric-button,
+.field-content li,
+.field-content,
+.star,
+.home-action,
+.parent,
+a {
+    &:before {
+        padding: 0 0.3em;
+        font-family: 'policy', 'FontAwesome';
+        line-height: 1em;
+    }
+}
+
+.btn-next,
+.btn-parent {
+    &:after {
+        padding-left: 0.5em;
+        font-family: 'policy', 'FontAwesome';
+        line-height: 1em;
+    }
+
+}
+
+.pc-visualization-formcontrols {
+    .btn:before {
+        padding-right: .6em;
+    }
+}
+
+$helvetica: Helvetica, Arial, "Nimbus Sans L", sans-serif;
+$open: 'open sans', Helvetica, Arial, "Nimbus Sans L", sans-serif;
+$mono: consolas, curier;
+
+$device: 992px;
+$device_4: 480px;
+$device_7: 768px;
+$device_max: 1200px;
+$gutter: 10px;
+$radius: 6px;
+$unidad: 8.3333333333333%;
+
+@import "compass/support";
+// Add Compass' IE and vendor prefix support variables.
+// @import "compass/utilities/general/clearfix"; // Better than Drupal's clearfix.
+@import "compass/utilities/sprites";
+// See http://compass-style.org/help/tutorials/spriting/
+@import "compass/css3";
+// Use one CSS3 mixin instead of multiple vendor prefixes.
+@import "compass/typography/vertical_rhythm";
+// Helps set up a vertical rhythm.
+// @import "zen";              // Add the Zen Grids responsive layout mixins.
+
+// @import "custom";
+
+.clearfix-min,
+.clearfix {
+    &:after {
+        content: ".";
+        display: block;
+        clear: both;
+        visibility: hidden;
+        line-height: 0;
+        height: 0;
+    }
+}
+
+.clearfix {
+    display: inline-block;
+
+}
+
+.cf:before,
+.cf:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.cf:after {
+    clear: both;
+}
+
+html[xmlns] .clearfix {
+    display: block;
+}
+
+* html .clearfix {
+    height: 1%;
+}

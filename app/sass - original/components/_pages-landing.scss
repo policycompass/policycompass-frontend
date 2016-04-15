@@ -26,25 +26,20 @@
     margin: 0 auto;
 }
 
-.main-content-landing {
-  padding-top:5em;
-  padding-bottom:10em;
-}
-
 .row-view-main {
     padding-top: 10px;
     padding-bottom: 10px;
     .view-item {
-        width: 100%;
-        // text-align: center;
+        width: 50%;
+        text-align: center;
 
         @media (min-width: $device_4) {
 
-           
+            width: 33%;
         }
         @media (min-width: $device_7) {
 
-             width: 50%;
+            width: 25%;
         }
         @media (min-width: $device) {
 
@@ -52,16 +47,9 @@
         }
 
     }
-    h3 {
-      margin-bottom:0em;
-      margin-top:0;
-    }
-    p {
-      padding-left:70px;
-    }
     h3.fonticon {
         position: relative;
-        padding-left: 70px;
+        padding-top: 70px;
     }
     h3.fonticon:before {
         text-decoration: none;
@@ -80,7 +68,7 @@
         font-size: 30px;
         position: absolute;
         top: 0;
-        left: 0%;
+        left: 40%;
         color: #fff;
         // line-height: 40px;
         line-height: 1.6em;
@@ -154,4 +142,3 @@
 .fonticon-export:before {
     content: "\e170";
 }
-

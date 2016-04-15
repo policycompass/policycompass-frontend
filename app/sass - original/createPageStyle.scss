@@ -1,0 +1,77 @@
+.create-statement-phrase > p:first-child {
+    margin-bottom: 0px;
+    margin-top: 25px;
+    text-align: center;
+    font-weight: 200;
+    font-size: 2em;
+    color: #285e8e;
+}
+
+.create-statement-phrase > p:last-child {
+    margin-bottom: 0px;
+    text-align: center;
+    font-weight: 200;
+    font-size: 1.3em;
+    color: #58595b !important;
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+}
+
+.section-content {
+    border-bottom: 1px solid #CCCCCC;
+    padding: 20px;
+}
+
+.last-section-content {
+    padding-left: 20px;
+    padding-top: 20px;
+    padding-right: 20px;
+}
+
+.first-content {
+    border-right: 1px solid #CCCCCC;
+}
+
+.text-content {
+    padding: 10px;
+}
+
+.text-content > a > h3 {
+    font-weight: 300;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+.text-content > a > p {
+    font-size: 1.1em;
+    font-weight: 300;
+    color: #58595b;
+    margin-top: 0;
+    text-decoration: none;
+
+}
+
+.text-content > a:hover, .text-content > a:focus {
+    cursor: pointer;
+    text-decoration: none !important;
+}
+
+.metric-img-content {
+    background: url(../img/icon/bevorIconMetric.png) no-repeat center;
+    height: 150px;
+}
+
+.event-img-content {
+    background: url(../img/icon/bevorHistoricalEvents.png) no-repeat center;
+    height: 150px;
+}
+
+.visualisation-img-content {
+    background: url(../img/icon/bevorVisualisation.png) no-repeat center;
+    height: 150px;
+}
+
+.fcm-img-content {
+    background: url(../img/icon/bevorMap.png) no-repeat center;
+    height: 150px;
+}

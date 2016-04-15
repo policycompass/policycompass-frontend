@@ -1,0 +1,120 @@
+/* layout overrides */
+
+#container-create-dataset {
+
+    /*layout */
+
+    .content-column-main {
+        width: 75%;
+
+    }
+    .content-column-second {
+        width: 25%;
+
+    }
+    .compressed {
+        .content-column-main {
+            width: 95%;
+            // padding-right:5em;
+
+        }
+        .content-column-second {
+            width: 5%;
+
+        }
+    }
+
+    .dataset-filters-bottom {
+        margin-top: 1.5em;
+    }
+
+    .fonticon-dataset:before {
+        content: "\e611";
+    }
+    .content-header {
+        position: relative;
+    }
+
+}
+
+.help-switch {
+    float: left;
+    font-size: 20px;
+    &:before {
+        content: "\e30f";
+    }
+
+}
+
+.dataset-create-table {
+    background: white;
+    font-size: .875em;
+    width: 100%;
+    border: 1px solid $gris_70;
+    td:nth-child(1),
+    th {
+        text-align: center;
+        background: $gris_95;
+    }
+
+    td,
+    th {
+        padding: 3px 6px;
+    }
+    td {
+        border: 1px solid $gris_90;
+    }
+    tbody tr:nth-child(odd) {
+        background: transparentize($gris_95, .5);
+    }
+    td:nth-child(odd) {
+        background: transparentize($gris_95, .7);
+    }
+
+}
+
+.create-dataset-result {
+    background: $bk_1_3;
+    background: lighten($bk_1_3, 6);
+    // background:white;
+    font-size: .875em;
+    width: 100%;
+    // border:1px solid $gris_60;
+
+    td,
+    th {
+        padding: 3px 6px;
+    }
+    td {
+        border: 1px solid lighten($bk_1_2, 15);
+    }
+    tbody tr:nth-child(odd) {
+        background: transparentize($bk_1_3, .7);
+    }
+    td:nth-child(odd) {
+        // background:transparentize($bk_1_3,.7);
+    }
+
+}
+
+.dataset-filter {
+    width: 100%;
+    margin: 5px 0;
+    h5 {
+        width: $unidad;
+        text-align: right;
+        float: left;
+        margin-right: 20px;
+    }
+    .dataset-select {
+        float: left;
+        margin-right: 20px;
+        // width:10em;
+    }
+    .dataset-select-buttonbar {
+        float: left;
+    }
+
+    @include secondary-box();
+}
+

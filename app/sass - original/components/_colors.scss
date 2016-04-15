@@ -1,0 +1,161 @@
+// $main:$bk_4_1;
+// $main_2:#aee0f0;
+// $main_3:$gris_95;
+// $main_bk:$gris_98;
+// $main_bk_2:$gris_90;
+
+// $main:$bk_2;
+// $main_2:#d2de9c;
+// $main_3:#f5f3e3;
+// $main_bk:#fffdf2;
+// $main_bk_2:#dee8d9;
+
+$main: black;
+
+$main_2: $bk_1_2;
+
+$main_3: $gris_96;
+$main_bk: $gris_98;
+$main_bk_2: $gris_90;
+
+$main_4: $gris_50;
+$help_icon: $bk_1_2;
+
+.pagination > li > a, .pagination > li > span,
+    // #main-menu a,
+a,
+h1, h2, h3, h4 {
+    color: $main;
+}
+
+h1:before {
+    color: $gris_40;
+    color: $bk_3;
+}
+
+.fonticon-help:before {
+    color: $help_icon;
+}
+
+h3:before,
+h4:before,
+.glyphicon,
+.row-view-create .view-item-wrap:before,
+.searchItemIcon a:before {
+    color: $main_4;
+}
+
+.metricIcon a:before {
+    color: $bk_2;
+}
+
+.result-wrapper-metric {
+    // border-color:$bk_2;
+    // h5 a,
+    .searchItemIcon a:before {
+        color: $bk_2;
+        color: $bk_3;
+    }
+}
+
+.result-wrapper-event {
+    // border-color:$bk_3;
+    // h5 a,
+    .searchItemIcon a:before {
+        color: $bk_3;
+        color: $bk_2;
+    }
+
+}
+
+.result-wrapper-fuzzymap {
+    // border-color:$bk_4_1;
+    // h5 a,
+    .searchItemIcon a:before {
+        color: $bk_4_1;
+    }
+}
+
+.result-wrapper-dataset {
+    // border-color:$bk_4;
+    // h5 a,
+    .searchItemIcon a:before {
+        color: $bk_4;
+    }
+}
+
+.result-wrapper-indicator {
+    // border-color:$bk_1_2;
+    // h5 a,
+    .searchItemIcon a:before {
+        color: $bk_1_2;
+    }
+}
+
+.result-wrapper-visualization {
+    // border-color:#9b589d;
+    // h5 a,
+    .searchItemIcon a:before {
+        color: #9b589d;
+    }
+}
+
+.row-view-main h3.fonticon:before {
+    background: $main_4;
+}
+
+#main-menu a:focus, #main-menu a:hover {
+    // background:$main;
+}
+
+.submenu {
+    // background:linear-gradient(to bottom,$main,$main_2);
+
+}
+
+.subtitle {
+    color: $main_2;
+}
+
+.result-wrapper {
+    background: $main_3;
+
+}
+
+header {
+    background: linear-gradient(to bottom, $main_bk 0%, $main_3 99.5%, $main_bk_2);
+}
+
+#main-content {
+    background: $main_bk;
+}
+
+body {
+    background: $main_3;
+}
+
+footer {
+    background: linear-gradient(to bottom, $main_bk_2, $main_3 10px);
+}
+
+.tooltip-inner {
+    background-color: white;
+    color: $general;
+    border: 1px solid $main_2;
+}
+
+.tooltip.top .tooltip-arrow {
+    border-top-color: $main_2;
+}
+
+.tooltip.right .tooltip-arrow {
+    border-right-color: $main_2;
+}
+
+.tooltip.bottom .tooltip-arrow {
+    border-bottom-color: $main_2;
+}
+
+.tooltip.left .tooltip-arrow {
+    border-left-color: $main_2;
+}
