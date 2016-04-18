@@ -134,10 +134,12 @@
                         </div>
                     </div>
 
-                    <div class="form-item" ng-if="dataset.spatial">
-                        <div class="field-label">Location</div>
+                    <div class="form-item" ng-if="dataset.spatials">
+                        <div class="field-label">Locations</div>
                         <div class="field-content">
-                            <span ng-if="dataset.spatial" resolve-individual id="dataset.spatial"></span>
+                            <div ng-repeat="spatial in dataset.spatials"
+                                <span ng-if="spatial" resolve-individual id="spatial"></span>
+                            </div>
                         </div>
                     </div>
                 </div>

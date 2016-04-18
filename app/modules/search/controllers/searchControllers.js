@@ -75,7 +75,7 @@
             },
             location: {
                 label: 'Location',
-                field: ["spatial", "location"],
+                field: ["spatials", "location"],
                 order: 1,
                 resolveLabel: function() {
                     var that = this;
