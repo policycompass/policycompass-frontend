@@ -194,8 +194,22 @@
                         <div class="field-content">{{ dataset.version }}</div>
                     </div>
                 </div>
+
+
+                <div class="form-group form-group-visualisations form-group-external">
+                    <div class="form-item">
+                        <div class="field-label">Visualizations</div>
+                        <div class="field-content">
+                            <div ng-repeat="visualization in relatedVisualizations">
+                                <a ng-href="#!/visualizations/{{ visualization.id }}">{{ visualization.title }}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+
         </div>
+
 
 
         <div class="row">

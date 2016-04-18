@@ -362,7 +362,6 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     creationService.data.dataset.url = "http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=" + datasetCode+ "&lang=en";
                     creationService.data.dataset.title = datasetName;
                     creationService.data.dataset.description = datasetName;
-                    ngProgress.complete();
                 }
             };
 
@@ -999,7 +998,6 @@ angular.module('pcApp.datasets.controllers.dataset', [
                         payload.resource.external_resource = $scope.external_resource.output[0];
                 }
 
-                if(!payload.resource.url) payload.resource.url = creationService.data.dataset.url;
                 payload.policy_domains = $scope.policy_domains.output;
                 payload.title = $scope.dataset.title;
                 payload.acronym = $scope.dataset.acronym;
@@ -1069,7 +1067,8 @@ angular.module('pcApp.datasets.controllers.dataset', [
         'Indicator',
         '$location',
         'Auth',
-        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, $filter, Dataset, Individual, $q, Indicator, $location, Auth) {
+        'VisualizationByDataset',
+        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, $filter, Dataset, Individual, $q, Indicator, $location, Auth, VisualizationByDataset) {
 
             $scope.userState = Auth.state;
 
@@ -1162,5 +1161,17 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 });
             };
 
+            $scope.relatedVisualizations = [];
+
+            $scope.visualizationByMetricList = VisualizationByDataset.get({id: $routeParams.datasetId},
+                function(VisualizationByDatasetList){
+                    for(i in VisualizationByDatasetList.results){
+                        var Tmp = {
+                            "id": VisualizationByDatasetList.results[i]['visualization'],
+                            "title": VisualizationByDatasetList.results[i]['title']
+                        }
+                        $scope.relatedVisualizations.push(Tmp);
+                    }
+                });
         }
     ]);
