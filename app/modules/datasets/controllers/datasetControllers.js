@@ -912,8 +912,8 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
             var init = function () {
                 $scope.dataset = creationService.data.dataset;
-                $scope.spatial = {
-                    input: creationService.data.dataset.spatial,
+                $scope.spatials = {
+                    input: creationService.data.dataset.spatials,
                     output: []
                 };
                 $scope.language = {
@@ -935,7 +935,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
             init();
 
             $scope.prevStep = function () {
-                creationService.data.dataset.spatial = $scope.spatial.output;
+                creationService.data.dataset.spatials = $scope.spatials.output;
                 creationService.data.dataset.language = $scope.language.output;
                 creationService.data.dataset.policy_domains = $scope.policy_domains.output;
                 creationService.data.dataset.external_resource = $scope.external_resource.output;
@@ -1006,7 +1006,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 payload.keywords = $scope.dataset.keywords;
                 payload.license = $scope.dataset.license;
                 payload.description = $scope.dataset.description;
-                payload.spatial = $scope.spatial.output[0];
+                payload.spatials = $scope.spatials.output;
                 payload.language_id = $scope.language.output[0];
                 payload.indicator_id = creationService.data.indicator[0].id;
                 payload.class_id = creationService.data.classPreSelection[0];
