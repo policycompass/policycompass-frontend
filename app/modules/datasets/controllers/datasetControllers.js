@@ -362,6 +362,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     creationService.data.dataset.url = "http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=" + datasetCode+ "&lang=en";
                     creationService.data.dataset.title = datasetName;
                     creationService.data.dataset.description = datasetName;
+                    ngProgress.complete();
                 }
             };
 
@@ -998,6 +999,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                         payload.resource.external_resource = $scope.external_resource.output[0];
                 }
 
+                if(!payload.resource.url) payload.resource.url = creationService.data.dataset.url;
                 payload.policy_domains = $scope.policy_domains.output;
                 payload.title = $scope.dataset.title;
                 payload.acronym = $scope.dataset.acronym;
