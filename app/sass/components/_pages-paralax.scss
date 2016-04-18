@@ -1,3 +1,5 @@
+
+
 .main-content-landing {
   // min-height:960px;
   // min-height:660px;
@@ -34,10 +36,16 @@
 .paralax-05 .container {
   min-height: 300px;  
 }
-
+ #paralax-00 {
+    padding-bottom:5em;
+  }
 #paralax {
 
-
+  .comic-wrap {
+    margin-right:5em;
+    margin-left:5em;
+    // display:block;
+  }
     color:black;
   
   margin-bottom:-2em;
@@ -53,19 +61,15 @@
     // background:#fcd9ae;
     padding:5em 0;
   }
+ 
   .comic {
 
     }
-    .paralax-05,
-    .paralax-03,
+  .paralax-05,
+  .paralax-03,
   .paralax-01 {
     background-color:#f6b145;
-    background-image:url(../img/front/bk_01.jpg);
-    background-position:100% 100%;
-    background-repeat:no-repeat;
-    background-size:1080px;
-    // background-size:800px;
-    background-attachment:fixed;
+
 
     h3 {
       text-align:center;
@@ -75,37 +79,18 @@
     
   }
   
-  .paralax-01 {
-    // background-size:400px;
-    // background-attachment:scroll;
-  }
-   .paralax-05  {
-   background-image:url(../img/front/bk_05.jpg);
-   background-position:0% 0%;
-   background-size:100%;
-   }
-   .paralax-03 {
-   background-image:url(../img/front/bk_03.jpg);
-     background-size:720px;
-   }
+ 
+ .paralax-06,
   .paralax-04,
   .paralax-02 {
   background-color:$gris_90;
-     background-image:url(../img/front/bk_02.jpg);
-     background-position:100% 100%;
-    background-repeat:no-repeat;
-      background-size:1080px;
-      background-size:700px;
-       background-attachment: fixed;
-      
-    // background-size:600px;
-     // background-position:30% 120% ;
+
     }
-    .paralax-04 {
-     background-image:url(../img/front/bk_04.jpg);
-     background-position:100% 80% ;
-      background-size:700px;
-    }
+    .paralax-05  {
+        text-align:center;
+
+      }
+
   h3 {
     font-weight:bold;
     
@@ -114,16 +99,11 @@
       // text-align:center;
       // padding-top:.5em;
   }
-   .paralax-05  {
-    text-align:center;
-     background-position:0% 120%;
-      background-size:100%;
-   }
-   
+
    
   .arrow {
     position:absolute;
-    
+    display:none;
     width:200px;
    
   }
@@ -157,6 +137,68 @@
    left:38%;
      transform: rotate(270deg);
   }
+  
+  
+  @media all and (min-width:$device_max) {
+     .arrow {
+    // position:absolute;
+      display:block;
+    // width:200px;q
+   
+    }
+    .paralax-01 {
+        .comic-wrap {
+          margin-top:-5em;
+          }
+      }
+    .paralax-05,
+    .paralax-03,
+    .paralax-01 {
+      background-image:url(../img/front/bk_01.jpg);
+      background-position:100% 100%;
+      background-repeat:no-repeat;
+      background-size:1080px;
+      background-attachment:fixed;
+
+    }
+   .paralax-04,
+    .paralax-02 {
+  
+     background-image:url(../img/front/bk_02.jpg);
+     background-position:100% 100%;
+    background-repeat:no-repeat;
+      background-size:1080px;
+      background-size:700px;
+       background-attachment: fixed;
+
+    }
+    .paralax-02 {
+      padding-bottom:7em;
+    }
+    
+      .paralax-05  {
+        background-image:url(../img/front/bk_05.jpg);
+ 
+                background-position:0% 120%;
+        background-size:100%;
+               background-position:0% 0%;
+        background-size:100%;
+      }
+      .paralax-03 {
+        background-image:url(../img/front/bk_03.jpg);
+        background-size:720px;
+      }
+      .paralax-04 {
+        background-image:url(../img/front/bk_04.jpg);
+        background-position:100% 80% ;
+        background-size:700px;
+      }   
+    .comic-wrap {
+      margin-right:0em;
+      margin-left:0;
+        // display:block;
+    }
+  }
 }
 
 .front-btn {
@@ -167,6 +209,9 @@
   background:$red;
   background:linear-gradient(to top,$red, #af5e3b);
   color:$bk_1_1;
+  
+  
+  background:$gris_30;
   color:#fff59d;
   position:relative;
   
