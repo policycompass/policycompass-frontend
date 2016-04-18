@@ -908,14 +908,29 @@ angular.module('pcApp.datasets.controllers.dataset', [
         '$filter',
         'Dataset',
         '$location',
-        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService, $filter, Dataset, $location) {
+        'Individual',
+        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService, $filter, Dataset, $location, Individual) {
 
             var init = function () {
-                $scope.dataset = creationService.data.dataset;
+                $scope.selectedIndividuals = [];
+                var individualsList = Individual.query(null, function(){
+                    individualsList.forEach(function(individual){
+                        creationService.data.individualSelection.forEach(function(selectedIndividual){
+                            if(individual.title == selectedIndividual){
+                                $scope.selectedIndividuals.push(individual.id);
+                            }
+                        });
+                    });
+                });
+
                 $scope.spatials = {
-                    input: creationService.data.dataset.spatials,
+                    input: $scope.selectedIndividuals,
                     output: []
                 };
+
+                $scope.dataset = creationService.data.dataset;
+
+
                 $scope.language = {
                     input: creationService.data.dataset.language,
                     output: []
