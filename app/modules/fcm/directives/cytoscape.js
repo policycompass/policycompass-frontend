@@ -11,7 +11,9 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                 cyData: '=',
                 cyEdges: '=', // controller function to be triggered when clicking on a node
                 cyClick: '&',
-                cyMouseup: '&'
+                cyMouseup: '&',
+                cyMouseover: '&', //adding mouseover functionality
+                cyMouseout: '&'//adding mouseour functionality
             },
             link: function (scope, element, attrs, fn) {
                 // dictionary of colors by types. Just to show some design options
