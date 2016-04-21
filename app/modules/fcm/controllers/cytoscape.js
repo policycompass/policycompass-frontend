@@ -1037,6 +1037,21 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 }
             }
         };
+
+        //Showing tooltip message
+        $scope.doMouseOver = function (value, posx, posy) {
+            for (i = 0; i < $scope.Concepts.length; i++) {
+                if ($scope.Concepts[i].Id == value.substring(1, value.length) && $scope.Concepts[i].title.length > 24) {
+                    $('#tooltipTarget').trigger('customEvent');
+                    $('.tooltip-inner').html($scope.Concepts[i].title);//changing text of tooltip
+                    $('.tooltip-inner').css('max-width', 'none');
+                    $('.tooltip.top').css({ top: (posy - 50), left: (posx - 100) })
+                }
+            }
+        };
+
+
+
         // Fit the nodes in the Editor
         $scope.reset = function () {
             $rootScope.$broadcast('appChanged');
