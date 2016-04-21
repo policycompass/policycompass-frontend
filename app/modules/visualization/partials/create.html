@@ -232,7 +232,7 @@
 	                                    </label>
 	                                    -->
 	                                </div>
-	                                <div id="div_showYaxes" ng-show="isSelectedSon('graph_line')" class="">
+	                                <div id="div_showYaxes" ng-show="isSelectedSon('graph_line') || isSelectedSon('graph_bars')" class="">
 	                                	<div class="col-xs-6 configureoptionchartlabel">
 	                                    	 
 	                                    </div>
@@ -358,7 +358,7 @@
 	  										}"></spectrum>
 	  									</div>
 	  									<div class="col-xs-2 configureoptionchartfield">
-	  										<button data-intro="Unlink event from the list of related events" data-position="left" type="button" class="btn btn-danger btn-clear" ng-click="deleteContainerHistoricalEvent('row_config_',$index+1, event.title, event.id)">
+	  										<button title="Unlink event from the list of related events" type="button" class="btn btn-danger btn-clear" ng-click="deleteContainerHistoricalEvent('row_config_',$index+1, event.title, event.id)">
 	  									</div>	
                     					
                						</div>

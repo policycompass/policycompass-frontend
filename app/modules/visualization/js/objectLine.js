@@ -382,6 +382,7 @@ policycompass.viz.line = function (options) {
 
     	function make_x_axis() {
         	return d3.svg.axis().scale(self.xScale).orient("bottom").ticks(self.lengthArrayXaxesLabel-1)
+        	//return d3.svg.axis().scale(self.xScale).orient("bottom").ticks(20)
     	}
 
         if (!lines[0].ValueY) {
@@ -901,12 +902,18 @@ policycompass.viz.line = function (options) {
         }
 
 
-        if (showGrid) {
+        if (showGrid) {        	
+        	
+        	var tickPosition = self.height;
+        	if (eventsData.length>0) {
+        		tickPosition = tickPosition + (self.spaceBetweenEvents)+10;
+        	}
+        	
             self.svg.append("g")
             .attr("class", "grid")
             .attr("transform", "translate(0," + self.height + ")")
             .call(make_x_axis()
-            .tickSize(-self.height, 0, 0)
+            .tickSize(-tickPosition, 0, 0)
             .tickFormat(""))
 
             self.svg.append("g")
@@ -2658,7 +2665,7 @@ policycompass.viz.line = function (options) {
 						else if (iHE==2) {
 							retunrDate = d.endDate;
 						}
-						
+
 						var returnValue = self.xScale(getDate(retunrDate));
 	                    //return self.xScale(getDate(retunrDate));
 	                    return returnValue;                   

@@ -3159,6 +3159,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                         'showPoints': $scope.showPoints,
                                         'showLabels': $scope.showLabels,
                                         'showGrid': $scope.showGrid,
+                                        'showYAxesTogether': $scope.showYAxes,
                                         'legendsColumn': legendsColumn,
                                         'resolution': $scope.resolution.value,
                                         'showAsPercentatge': $scope.showAsPercentatge,
