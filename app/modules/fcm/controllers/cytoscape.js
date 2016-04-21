@@ -1050,7 +1050,11 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             }
         };
 
-
+        //Hiding tooltip message
+        $scope.doMouseOut = function (value, posx, posy) {
+            if ($('.tooltip-inner').length != 0)//check is tooltip is showing or not
+                $('#tooltipTarget').trigger('customEvent');
+        };
 
         // Fit the nodes in the Editor
         $scope.reset = function () {
