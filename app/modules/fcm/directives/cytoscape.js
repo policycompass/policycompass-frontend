@@ -211,6 +211,26 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                                 });
                             });
 
+                            //Binding mouseover event
+                            cy.on('mouseover', 'node', function (e) {
+                                var evtTarget = e.cyTarget;
+                                var nodeId = evtTarget.id();
+                                var posX = evtTarget.position("x") + $('#cy').position().left;
+                                var posY = evtTarget.position("y") + $('#cy').position().top;
+                                scope.cyMouseover({
+                                    value: nodeId,
+                                    x: posX,
+                                    y: posY
+                                });
+                                //$('#tooltipTarget').trigger('customEvent');
+                                //$('.tooltip.top').css({ top: (posY - 50), left: posX })
+
+                                //console.log('Over ' + nodeId);
+                            });
+
+
+
+
                             cy.on('doubleTap', 'edge', function (e) {
                                 var evtTarget = e.cyTarget;
                                 var nodeId = evtTarget.id();
