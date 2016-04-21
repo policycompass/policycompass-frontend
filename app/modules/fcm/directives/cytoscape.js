@@ -228,7 +228,18 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                                 //console.log('Over ' + nodeId);
                             });
 
-
+                            //Binding mouseout event
+                            cy.on('mouseout', 'node', function (e) {
+                                var evtTarget = e.cyTarget;
+                                var nodeId = evtTarget.id();
+                                var posX = evtTarget.position("x");
+                                var posY = evtTarget.position("y");
+                                scope.cyMouseout({
+                                    value: nodeId,
+                                    x: posX,
+                                    y: posY
+                                });
+                            });
 
 
                             cy.on('doubleTap', 'edge', function (e) {
