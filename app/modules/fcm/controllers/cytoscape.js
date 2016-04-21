@@ -176,9 +176,17 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                     ModelID: $scope.modeldetail.model.id.toString(),
                     title: $scope.modeldetail.model.title.toString(),
                     description: $scope.modeldetail.model.description.toString(),
-                    keywords: $scope.modeldetail.model.keywords.toString()
+                    keywords: $scope.modeldetail.model.keywords.toString(),
+
                 };
                 FCMModelsDetail.setModels(model);
+
+                var domains = JSON.parse(JSON.stringify($scope.modeldetail.domains));
+                $scope.modeldetail.domains = [];
+                for (i = 0; i < domains.length; i++) {
+                    $scope.modeldetail.domains.push(domains[i].domainID);
+                }
+                console.log($scope.modeldetail.domains);
                 for (i = 0; i < $scope.modeldetail.concepts.length; i++) {
                     var newNode = {
                         id: $scope.modeldetail.concepts[i].id.toString(),
@@ -323,7 +331,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 ModelTitle: $scope.modeldetail.model.title,
                 ModelDesc: $scope.modeldetail.model.description,
                 ModelKeywords: $scope.modeldetail.model.keywords,
-                domains: $scope.modeldetail.model.domains,
+                domains: $scope.modeldetail.domains,
                 userID: "1",
                 concepts: ConceptsDetail.getConcepts(),
                 connections: AssociationsDetail.getAssociations()
@@ -374,12 +382,12 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 FcmSearchUpdate.update({ id: $routeParams.fcmId }, function () {
                     var dlg = dialogs.notify("Causal Model", "'" + value.model.title + "' Casual Model has been saved!");
                 }, function (err) {
-                    throw { message: JSON.stringify(err.data) };
+                    throw { message: err.statusText + "<br/><br/>" + (err.data == "" ? "" : JSON.stringify(err.data)) };
                 });
                 //			$scope.md = value;
                 //$window.location.reload();
             }, function (err) {
-                throw { message: JSON.stringify(err.data) };
+                throw { message: err.statusText + "<br/><br/>" + (err.data == "" ? "" : JSON.stringify(err.data)) };
             });
         };
 
