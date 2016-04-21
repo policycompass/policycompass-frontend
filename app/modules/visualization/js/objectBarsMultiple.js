@@ -1321,6 +1321,11 @@ policycompass.viz.barsMultiple = function (options) {
 			self.margin.topIni = self.margin.top;
 		
 			self.spaceBetweenEvents = 20;
+
+			if (self.height<=150) {
+				self.spaceBetweenEvents = self.spaceBetweenEvents /5;	
+			}
+							
 			if (maxEventsByPeriod>0)
 			{
 				self.margin.top = self.margin.top + (self.spaceBetweenEvents*(maxEventsByPeriod+1));

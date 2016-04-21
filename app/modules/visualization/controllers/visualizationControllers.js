@@ -1979,7 +1979,16 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	                        arrayJsonFiles.forEach(function (d, i) {
 	                            var pathToJson = d;
 	
-	    						
+	    						d3.json(pathToJson, function (error, json) {
+    								if (error) {
+        								//console.log("error!!!")        
+    								}
+    								else {
+    									q = q.defer(d3.json, pathToJson);
+										q2 = q2.defer(d3.json, pathToJson);
+    								}
+								});
+								/*	    						
 							    $http.get(pathToJson)
 							    .success(function(data) {						    	
 							      	q = q.defer(d3.json, pathToJson);
@@ -1988,7 +1997,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 							    .error(function(error) {
 							    	//console.log("error");						    	
 							    })
-							    ;	
+							    ;
+							    */	
 	                        });
 	
 	                        $scope.recoverDataEnds = false;

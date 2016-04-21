@@ -182,7 +182,28 @@ policycompass.viz.line = function (options) {
     }
 
     self.drawLines = function (lines, eventsData) {
-
+		
+        self.svg = d3.select(self.parentSelect)
+        	.append("svg")
+        	.attr("class", "pc_chart")
+        	.attr("width", self.width + self.margin.left + self.margin.right)
+        	.attr("height", self.height + self.margin.top + self.margin.bottom)
+        	//.call(d3.behavior.zoom().on("zoom", redraw))
+			.on("mousemove", function (d, i) {
+            	var posMouse = d3.mouse(this);
+            	var posX = posMouse[0];
+            	var posY = posMouse[1];
+            	handleMouseOverGraph(posMouse);
+            	mousemove();
+			})
+			.on("click", function (d, i) {
+            	if (self.xaxeformat == 'sequence') {
+            	} else {
+            	}
+			})
+			.append("g")
+			.attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
+		
 		lines = self.alphabetical_sort_object_of_objects_lines(lines, 'Key');
 		
         if (!self.showYAxesTogether) {
@@ -372,7 +393,12 @@ policycompass.viz.line = function (options) {
         self.minVy = d3.min(d3.values(valuesY));
         self.minVx = d3.min(d3.values(valuesX_day));
         self.maxVx = d3.max(d3.values(valuesX_day));
-		
+
+		if (self.maxVy==self.minVy) {
+			self.maxVy = self.maxVy + (self.maxVy/2);
+			self.minVy = self.minVy - (self.minVy/2);
+		}
+				
 		if (self.resolution == 'year') {
 			if (self.plotDataIn=='last') {
 				//console.log(self.maxVx);
@@ -544,6 +570,12 @@ policycompass.viz.line = function (options) {
             } else {
                 minYToPlot = self.arrayMinVy[i];
                 maxYToPlot = self.arrayMaxVy[i];
+                
+                if (minYToPlot==maxYToPlot) {
+                	maxYToPlot = maxYToPlot + (maxYToPlot/2)
+                	minYToPlot = minYToPlot - (minYToPlot/2)
+                }
+                
             }
 
             self.yArray.push(d3.scale.linear().domain([minYToPlot, maxYToPlot]).range([self.height, 0]).clamp(true));
@@ -955,13 +987,14 @@ policycompass.viz.line = function (options) {
 
                         transform = "translate(0,0)";
 
-                        if (self.hideyaxeunits == true) {
+                        if ((self.hideyaxeunits == true) || (self.yArray.length<=1)) {
                             var yAxisLeft = d3.svg.axis().scale(self.yArray[i])
                                 .orient(orientText);
                         } else {
                             var yAxisLeft = d3.svg.axis().scale(self.yArray[i])
                                 .orient(orientText)
-                                .tickFormat(d3.format(".2s"));
+                                .tickFormat(d3.format(".2s"))
+                                ;
                         }
                     } else {
                         formatdecimal = parseInt(self.arrayMaxVy[i].toString().length);
@@ -1313,7 +1346,9 @@ policycompass.viz.line = function (options) {
 		                    	return valueX;
 		                	})
 		                	.attr("y", function (d, i) {
-		                    	var valueY = (self.height) + self.margin.top + 30 + (incremetY) * 20;
+		                    	//var valueY = (self.height) + self.margin.top + 30 + (incremetY) * 20;
+		                    	var valueY = (self.height) + self.margin.topIni + 30 + (incremetY) * 20;
+		                    	
 								return valueY;
 		                	})
 		                	.attr("text-anchor", "center")
@@ -1337,7 +1372,8 @@ policycompass.viz.line = function (options) {
                     }
 					*/
                     
-                    var valueY = (self.height) + self.margin.top + 30 + (incremetY+1) * 20;
+                    //var valueY = (self.height) + self.margin.top + 30 + (incremetY+1) * 20;
+                    var valueY = (self.height) + self.margin.topIni + 30 + (incremetY+1) * 20;
                     
                     /*
                     var valueY = (self.height) + self.margin.top + 50 + (incremetY) * 20;
@@ -2223,7 +2259,6 @@ policycompass.viz.line = function (options) {
 	}
 	
 	var plotEvents = function (eventsData, colorScaleForHE, getDate) {
-		
 		/*************Ini plot historical events *******/
 		
         var dataForCircles = [];
@@ -2255,7 +2290,8 @@ policycompass.viz.line = function (options) {
 	                    return valueX;
 	                })
 	                .attr("y", function (d, i) {
-	                    var valueY = (self.height) + self.margin.top + 30 ;
+	                    //var valueY = (self.height) + self.margin.top + 30 ;
+	                    var valueY = (self.height) + self.margin.topIni + 30 ;
 						return valueY;
 	                })
 	                .attr("text-anchor", "center")
@@ -2277,7 +2313,8 @@ policycompass.viz.line = function (options) {
 					.attr("x", valueX - 10)
 					.attr("y", function (d, i) {                    	
 						//var valueY = (self.height) + self.margin.top + 30 + (i) * 20 + (20 * self.dataToPlotLength );
-						var valueY = (self.height) + self.margin.top + 30 + (i+1) * 20;
+						//var valueY = (self.height) + self.margin.top + 30 + (i+1) * 20;
+						var valueY = (self.height) + self.margin.topIni + 30 + (i+1) * 20;
 						return valueY - 5;
 					})		
 					.attr("width", 5)
@@ -2294,7 +2331,8 @@ policycompass.viz.line = function (options) {
 	                    })
 	                    .attr("y", function (d, i) {
 	                        //var valueY = (self.height) + self.margin.top + 30 + (i) * 20 + (20 * self.dataToPlotLength );
-	                        var valueY = (self.height) + self.margin.top + 30 + (i+1) * 20;
+	                        //var valueY = (self.height) + self.margin.top + 30 + (i+1) * 20;
+	                        var valueY = (self.height) + self.margin.topIni + 30 + (i+1) * 20;
 							return valueY;
 	                    })
 	                    .attr("text-anchor", "center")
@@ -2355,11 +2393,38 @@ policycompass.viz.line = function (options) {
                             }
 	                        
 	                    });
+	                    
              }   
 		}
 
 		self.plot_as_top_lines = 1;
-		
+
+		if (self.plot_as_top_lines==1 && eventsData.length>0) {
+			var rectangle = self.svg.append("rect")
+				.style("stroke", "black")
+	  			.style("fill", "none")
+	  			.style("stroke-width", 1)
+	  			//.attr("x", 0)
+	  			.attr("x", -(self.radius*2))	  			
+	  			.attr("y", -((self.maxEventsByPeriod+1) * self.spaceBetweenEvents)+(self.spaceBetweenEvents/2))
+	  			.attr("width", self.width + (self.radius*2)*2)
+	  			.attr("height", ((self.maxEventsByPeriod) * self.spaceBetweenEvents));
+
+			self.svg.append("text")
+				.attr("x", 2)
+				.attr("y", -((self.maxEventsByPeriod+1) * self.spaceBetweenEvents)+(self.spaceBetweenEvents/2)-2)
+				.attr("text-anchor", "center")
+				.attr("font-size", self.font_size+1)
+				.style("fill", function (d, i) {
+					var colorToReturn = "black";
+					return colorToReturn;
+				})
+				.text(function (d, i) {
+					var resTRext = "Events";
+					return resTRext;
+				});
+		}
+							
         historicalEvents.enter().append("rect")
         	//.attr("class", "lineXDisco")                   
             .style("stroke", function (d, i) {                
@@ -2391,8 +2456,10 @@ policycompass.viz.line = function (options) {
             })
             //.attr("y", 0)
             .attr("y", function (d, i) {
-            	if (self.plot_as_top_lines==1) {
-            		var vToReturn = -10;	
+            	if (self.plot_as_top_lines==1) {            		
+            		//var vToReturn = -10;	
+            		var vToReturn = -(self.maxEventsByPeriod * self.spaceBetweenEvents);	                    
+            		return vToReturn;
             	}
             	else {
 
@@ -2530,6 +2597,58 @@ policycompass.viz.line = function (options) {
 				var historicalEventsCircles = self.svg.selectAll("circles").data(dataForCircles);
 				
 				for (var iHE=1;iHE<=2; iHE=iHE+1) {
+					
+					/*
+					historicalEventsCircles.enter()
+						.append('image')
+            			.attr('class', 'datamaps-pin')
+            			.attr('xlink:href', 'http://a.tiles.mapbox.com/v3/marker/pin-m+7e7e7e@2x.png')
+            			.style("stroke", function (d, i) {
+							var colorToReturn;
+	                    	colorToReturn = d.color;	
+	                    	return colorToReturn;
+						})
+            			.attr('height', self.spaceBetweenEvents)
+            			.attr('width', self.spaceBetweenEvents)
+            			.attr("x", function (d, i) {
+							var retunrDate='';
+							if (iHE==1) {
+								retunrDate = d.startDate;
+							}
+							else if (iHE==2) {
+								retunrDate = d.endDate;
+							}						
+							var returnValue = self.xScale(getDate(retunrDate))-(self.spaceBetweenEvents/2);
+	                    	//return self.xScale(getDate(retunrDate));
+	                    	return returnValue;                   
+						})
+						.attr("y", function (d, i) {                    
+	                    	//return -10;
+	                    	var vToReturn = -(self.maxEventsByPeriod * self.spaceBetweenEvents)-(self.spaceBetweenEvents/2);	                    
+            				return vToReturn;
+	                	})
+						.on("mouseover", function (d, i) {
+						d3.selectAll(".event_" + d.index).style("stroke-width", 5);
+						d3.selectAll(".event_circle_" + d.index).style("stroke-width", 5);
+	
+						var str = "Event: " + d.title;
+						var fromDate = "From: " +d.startDate;
+						var toDate = "To: " +d.endDate;
+						var desc = "Desc.: " +d.desc;
+						if ((self.modeGraph == 'view') || (self.xaxeformat == 'sequence')) { 
+							tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '<br/>'+fromDate+'<br/>'+toDate+'<br/>'+desc+'<br/></div>');
+						}
+						else {
+							tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '<br/>'+fromDate+'<br/>'+toDate+'<br/>'+desc+'</div>');
+						}					
+					})
+					.on("mouseout", function (d, i) {
+						mouseout();
+						d3.selectAll(".event_" + d.index).style("stroke-width", 1);
+						d3.selectAll(".event_circle_" + d.index).style("stroke-width", self.radius);
+		             })
+					*/
+					
 					historicalEventsCircles.enter().append("circle")
 					.attr("cx", function (d, i) {
 						var retunrDate='';
@@ -2546,7 +2665,9 @@ policycompass.viz.line = function (options) {
 					})
 	                .style("opacity", 1)
 	                .attr("cy", function (d, i) {                    
-	                    return -10;
+	                    //return -10;
+	                    var vToReturn = -(self.maxEventsByPeriod * self.spaceBetweenEvents);	                    
+            			return vToReturn;
 	                })
 	                .attr("r", 0)
 	                .attr("class", function (d, i) {
@@ -2583,7 +2704,8 @@ policycompass.viz.line = function (options) {
 						d3.selectAll(".event_" + d.index).style("stroke-width", 1);
 						d3.selectAll(".event_circle_" + d.index).style("stroke-width", self.radius);
 		             })
-					.transition().attr("r", self.radius).duration(2000)			
+					.transition().attr("r", self.radius).duration(2000)	
+							
 				}
 			}
 			
@@ -2686,7 +2808,7 @@ policycompass.viz.line = function (options) {
 		if (!self.showLegend) {
 			self.margin.bottom = self.margin.top*2;
 		}
-		
+		/*
         self.svg = d3.select(self.parentSelect)
         .append("svg").attr("class", "pc_chart")
         .attr("width", self.width + self.margin.left + self.margin.right)
@@ -2707,6 +2829,7 @@ policycompass.viz.line = function (options) {
 		})
 		.append("g")
 		.attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
+		*/
     }
 
     //function to clone an object
@@ -2768,6 +2891,20 @@ policycompass.viz.line = function (options) {
 	                }                	
                 }
 
+        		self.margin.topIni = self.margin.top;
+				self.spaceBetweenEvents = 20;
+
+				if (self.height<=150) {
+					self.spaceBetweenEvents = self.spaceBetweenEvents /5;	
+				}
+
+				var maxEventsByPeriod = 1;
+
+				if (eventsData.length>0) {
+					self.margin.top = self.margin.top + (self.spaceBetweenEvents*(maxEventsByPeriod+1));	
+				}
+
+				self.maxEventsByPeriod = maxEventsByPeriod;
 
 				//order by time dif
 				newEventData = self.alphabetical_sort_object_of_objects_lines(newEventData, 'timediff', 'desc');                
@@ -2778,12 +2915,11 @@ policycompass.viz.line = function (options) {
 
             }
         }
+        
     }
-
 
     self.init();
 
     return self;
-
 
 }
