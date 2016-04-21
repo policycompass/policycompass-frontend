@@ -97,7 +97,6 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                             }
                         };
                         // adding the edge object to the edges array
-                        console.log(edgeObj);
                         scope.elements.edges.push(edgeObj);
                     }
 
@@ -247,31 +246,6 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                                 var nodeId = evtTarget.id();
                                 scope.cyClick({ value: nodeId });
                             });
-                            //##MOBA## mouse cursor change over a node
-                            cy.on('mouseover', 'node', function (e) {
-                                $(cy.container()).css('cursor', 'pointer');
-                            });
-                            cy.on('mousedown', 'node', function (e) {
-                                $(cy.container()).css('cursor', 'move');
-                            });
-                            cy.on('mouseout', 'node', function (e) {
-                                $(cy.container()).css('cursor', 'default');
-                            });
-
-                            //##MOBA## mouse cursor change over an arrow
-                            cy.on('mouseover', 'edge', function (e) {
-                                $(cy.container()).css('cursor', 'pointer');
-                            });
-                            cy.on('mousedown', 'edge', function (e) {
-                                $(cy.container()).css('cursor', 'move');
-                            });
-                            cy.on('mouseout', 'edge', function (e) {
-                                $(cy.container()).css('cursor', 'default');
-                            });
-
-
-
-
                             cy.panzoom({
                                 // options go here
                             });
