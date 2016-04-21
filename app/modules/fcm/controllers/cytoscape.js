@@ -190,7 +190,9 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 for (i = 0; i < $scope.modeldetail.concepts.length; i++) {
                     var newNode = {
                         id: $scope.modeldetail.concepts[i].id.toString(),
-                        name: $scope.modeldetail.concepts[i].title,
+                        name: $scope.modeldetail.concepts[i].title.length > 24 ? //Showing ... if text exceeds the limit to show
+                            ($scope.modeldetail.concepts[i].title.substring(0, 21) + '...') :
+                            $scope.modeldetail.concepts[i].title,
                         posX: $scope.modeldetail.concepts[i].positionX,
                         posY: $scope.modeldetail.concepts[i].positionY
                     };
@@ -679,6 +681,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             // broadcasting the event
             $rootScope.$broadcast('appChanged');
             // resetting the form
+
         };
         if ($routeParams.indicator != null) {
             var indicators = (angular.isArray($routeParams.indicator)) ? $routeParams.indicator : [$routeParams.indicator];
