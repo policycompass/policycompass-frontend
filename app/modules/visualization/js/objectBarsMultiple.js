@@ -212,9 +212,11 @@ policycompass.viz.barsMultiple = function (options) {
 			.style("stroke", "black")
   			.style("fill", "none")
   			.style("stroke-width", 1)
-  			.attr("x", 0)
+  			//.attr("x", 0)
+  			.attr("x", -(self.radius*2))
   			.attr("y", -((self.maxEventsByPeriod+1) * self.spaceBetweenEvents)+(self.spaceBetweenEvents/2))
-  			.attr("width", self.width)
+  			//.attr("width", self.width)
+  			.attr("width", self.width + (self.radius*2)*2)
   			.attr("height", ((self.maxEventsByPeriod) * self.spaceBetweenEvents));
 
 		self.svg.append("text")
@@ -264,8 +266,17 @@ policycompass.viz.barsMultiple = function (options) {
             		})
             		.attr("x", function (d, i) {
 						//var returnValue = self.x0(d.posx);						
-						//return x0(resTRext[0]) + x1(d.ValueX);						
-						var returnValue = posXEvent+self.x1(d.posx);
+						//return x0(resTRext[0]) + x1(d.ValueX);
+						var returnValue = 0;
+
+						if (self.x1(d.posx))
+						{
+							returnValue = posXEvent+self.x1(d.posx);
+						}
+						else {
+							returnValue = -100;
+						}
+						
 						return returnValue;					
             		})
             		.attr("y", function (d, i) {            	
@@ -498,33 +509,43 @@ policycompass.viz.barsMultiple = function (options) {
 
         var colorScale = d3.scale.category20();
         var valuesY = [];
-
+		
+		var valuesByGroup = [];
+		
         bars.forEach(function (d, i) {
             //valuesY.push(parseInt(d.ValueY));
             valuesY.push((d.ValueY));
-        });
 
-        var maxV = d3.max(d3.values(valuesY));
-        var minVy = d3.min(d3.values(valuesY));
-        var x0 = d3.scale.ordinal().rangeRoundBands([0, self.width], .1);
-        var x1 = d3.scale.ordinal();
-        var y = d3.scale.linear().range([self.height, 0]);
-        var yInversa = d3.scale.linear().range([0, self.height]);
-        var color = d3.scale.category20();
-        var xAxis = d3.svg.axis().scale(x0).orient("bottom");
-        var yAxis = d3.svg.axis().scale(y).orient("left").tickFormat(d3.format(".2s"));
+            if (self.groupby == 'Individual') {
+            	if (!valuesByGroup[d.To]) {
+            		valuesByGroup[d.To] = [];
+            	}
+            	valuesByGroup[d.To].push((d.ValueY))
+            }
+            else {
+            	if (!valuesByGroup[d.Key]) {
+            		valuesByGroup[d.Key] = [];
+            	}
+            	valuesByGroup[d.Key].push((d.ValueY))            	
+            }
+            
+        });
+		
+		//console.log(valuesByGroup);
+
 
 		function wrap(text, width) {
 
 			text.each(function() {
-		    	var text = d3.select(this),
-		        words = text.text().split(/\s+/).reverse(),
-		        word,
-		        line = [],
-		        lineNumber = 0,
-		        lineHeight = 1.1, // ems
-		        y = text.attr("y"),
-		        dy = parseFloat(text.attr("dy"));
+				
+		    	var text = d3.select(this);
+		        var words = text.text().split(/\s+/).reverse();
+		        var word;
+		        var line = [];
+		        var lineNumber = 0;
+		        var lineHeight = 1.1;
+		        var y = text.attr("y");
+		        var dy = parseFloat(text.attr("dy"));
 
 		        var colorLegend = '#000';
 
@@ -538,21 +559,42 @@ policycompass.viz.barsMultiple = function (options) {
         		});
 		        
 		        var tspan = text.style("fill",colorLegend).text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
-		    
+		    	
+		    	var cntsaltosLinea = 0;
 		    	while (word = words.pop()) {
-					line.push(word);
-		      		tspan.text(line.join(" "));
-		      		if (tspan.node().getComputedTextLength() > width) {
-		        		line.pop();
-		        		tspan.text(line.join(" "));
-		        		line = [word];
-		        		tspan = text.style("fill", colorLegend).append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+					
+					if (cntsaltosLinea<=1)
+		      		{
+						if (cntsaltosLinea==1) {
+							word = ' ...';
+							cntsaltosLinea = cntsaltosLinea + 1;
+						}
+						
+						line.push(word);
+			      		tspan.text(line.join(" "));
+			      		if (tspan.node().getComputedTextLength() > width) {
+		      			
+		        			line.pop();
+		        			tspan.text(line.join(" "));
+							
+							line = [word];
+		        			
+		        			tspan = text.style("fill", colorLegend).append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+		        			
+		        			cntsaltosLinea = cntsaltosLinea + 1;
+
+		      			}
+		      				      		
 		      		}
+		      		
+		      		
 		    	}
+		    	
 		  	});
 		}
 
         var xAxisData = d3.set(bars.map(function (line) {
+        	//console.log(line);
         	//console.log(line.ValueX);
             //return line.ValueX;
             if (self.groupby == 'Individual') {
@@ -582,27 +624,7 @@ policycompass.viz.barsMultiple = function (options) {
             return d3.svg.axis().scale(y).orient("left").ticks(20)
         }
 
-        x0.domain(bars.map(function (d) {
-            //var resTRext = .split("_");
-            //var resTRext = d.Key.split("_");
-            if (self.groupby == 'Individual') {
-            	var resTRext = d.Key.split("_");
-            }
-            else {
-            	var resTRext = d.To.split("_");
-            }
-                                  
-            //console.log(resTRext);
-            var trimmedString = resTRext[0];
-            
-            var length = 120;
-            if (trimmedString.length > length) {
-				trimmedString = trimmedString.substring(0, length) + "...";
-			}
-			
-            //console.log(trimmedString);
-            return trimmedString;
-        }));
+
 		/*
 		var legendsColumn = 0;
 		if (self.showLegend) {
@@ -624,17 +646,200 @@ policycompass.viz.barsMultiple = function (options) {
         .on("mousemove", mousemove)
         .append("g")
         .attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
-        
-        x1.domain(xAxisData).rangeRoundBands([0, x0.rangeBand()]);
-		self.x0 = x0;
-		self.x1 = x1;
 		
+
+		//console.log(xAxisData.length);
+		 
+		self.distanceXaxes = 45;
+		
+		if (self.height<=200) {
+			self.distanceXaxes = self.distanceXaxes / 5;
+		}
+		
+		
+ 		if (!self.showYAxesTogether) {
+            var widthTempoarl = self.width - (self.distanceXaxes * (xAxisData.length - 1));
+            if (widthTempoarl < (self.width / 3)) {
+                self.width = self.width / 3;
+            } else {
+                self.width = widthTempoarl;
+            }
+            //console.log(self.width);
+            self.svg.attr("width", self.width + self.margin.left + self.margin.right + self.extraWidth);
+        }
+		
+        var maxV = d3.max(d3.values(valuesY));
+        var minVy = d3.min(d3.values(valuesY));
+        var x0 = d3.scale.ordinal().rangeRoundBands([0, self.width], .1);
+        var x1 = d3.scale.ordinal();
+        var y = d3.scale.linear().range([self.height, 0]);
+        var yInversa = d3.scale.linear().range([0, self.height]);
+        var color = d3.scale.category20();
+        var xAxis = d3.svg.axis().scale(x0).orient("bottom");
+        var yAxis = d3.svg.axis().scale(y).orient("left").tickFormat(d3.format(".2s"));
+        var yAxisRight = d3.svg.axis().scale(y).orient("right").tickFormat(d3.format(".2s"));
+
         var valueYmin = 0;
         if (minVy < 0) {
             valueYmin = minVy;
         }
 
         y.domain([valueYmin, maxV]);
+
+		var cntYAxes = 0;
+		
+		var xAxisDataForLegend = [];
+        xAxisData.forEach(function (d, i) {
+        	xAxisDataForLegend[i] = {'title':xAxisData[i], 'color':xAxisDataColor[i]};
+        });
+        
+		xAxisDataForLegend = self.alphabetical_sort_object_of_objects(xAxisDataForLegend, 'title');
+		var yAxisArray = [];
+		var yScales = [];
+
+		for (keyIndex in xAxisDataForLegend) {
+			//valuesByGroup
+			
+			var maxV = d3.max(d3.values(valuesByGroup[xAxisData[keyIndex]]));
+        	var minVy = d3.min(d3.values(valuesByGroup[xAxisData[keyIndex]]));
+			var valueYmin = 0;
+        	if (minVy < 0) {
+            	valueYmin = minVy;
+        	}
+        	     
+        	     
+        	       	
+        	if (maxV==valueYmin) {
+        		if (maxV==0) {
+        			maxV = 1;
+        		}
+        		else {
+        			maxV = maxV + (maxV/2);
+        			valueYmin = valueYmin - (valueYmin/2);        			
+        		}
+        	}
+        	
+        	yScales[xAxisData[keyIndex]] = d3.scale.linear().range([self.height, 0]);
+			yScales[xAxisData[keyIndex]].domain([valueYmin, maxV]);
+			
+			var formatdecimal = 10
+			var posFinalXAxeY = 0;
+			var orintationtext = "left";
+			var offsetYaxes ='';
+			
+			if (cntYAxes>0) {				
+				posFinalXAxeY = self.width;
+				posFinalXAxeY = posFinalXAxeY + (self.distanceXaxes + formatdecimal) * (keyIndex - 1);
+				orintationtext = "right";
+				offsetYaxes = -10;
+			}
+			else {
+				offsetYaxes = 20;
+			}
+			
+			var transform = "translate(" + posFinalXAxeY + ",0)";
+			
+			yAxisArray[keyIndex] = d3.svg.axis().scale(yScales[xAxisData[keyIndex]]).orient(orintationtext).tickFormat(d3.format(".2s"));
+
+			if (!self.showYAxesTogether) {		
+				self.dymarging = 15;
+				
+				var paddingText = '';
+				/*
+				if (cntYAxes == 1) {
+					paddingText = self.dymarging + "px";
+                } else {
+					paddingText = "0px";
+                }
+				*/
+				paddingText = "0px";
+				self.svg.append("g")
+        		.attr("class", "y axis")
+        		.attr("font-size", self.font_size)
+        		.style("stroke-width", 1)
+        		.attr("transform", transform)
+				.style("fill", function (d, i) {
+					var colorToReturn;
+					if (self.groupby == 'Individual') {
+           				colorToReturn = color(xAxisDataForLegend[cntYAxes]['title']);
+           			}
+           			else {
+           				colorToReturn = xAxisDataForLegend[cntYAxes]['color'];
+           			}	
+            		return colorToReturn;			
+			
+               	})            
+            	.call(yAxisArray[keyIndex])
+	                    .append("text")
+	                    .attr("font-size", self.font_size)
+	                    .attr("transform", "rotate(-90)")
+                    	.attr("dy", paddingText)
+                    	.attr("y", offsetYaxes)
+                    	.style("text-anchor", "end")                  
+	                    .text(function () {
+	                    	
+	                        var returnValue = "";
+	                        
+	                        if (self.groupby == 'Individual') {
+	                        	
+	                        	var textToCheck = self.labelY[0];
+	                        	returnValue = textToCheck;
+	                        	for (var ilab in self.labelY) {
+	                        		if (textToCheck!=self.labelY[ilab]) {
+	                        			returnValue = "No valid label";
+	                        		}
+	                        	}
+	                        	
+	                        	if (self.showAsPercentatge) {
+	                            	returnValue = "As % (" + returnValue + ")";
+	                            }
+	                        }
+	                        else {
+	                        	if (self.showAsPercentatge) {
+	                            	returnValue = "As % (" + self.labelY[cntYAxes] + ")";
+	                        	} else {
+	                            	returnValue = self.labelY[cntYAxes];
+	                        	}
+	                        }
+	                        return returnValue;
+	                    });
+	                    
+	               
+
+            	           	
+          }
+            	
+           
+			cntYAxes = cntYAxes + 1;
+		}
+
+        x0.domain(bars.map(function (d) {
+            //var resTRext = .split("_");
+            //var resTRext = d.Key.split("_");
+            if (self.groupby == 'Individual') {
+            	var resTRext = d.Key.split("_");
+            }
+            else {
+            	var resTRext = d.To.split("_");
+            }
+                                  
+            //console.log(resTRext);
+            var trimmedString = resTRext[0];
+            /*
+            var length = 120;
+            if (trimmedString.length > length) {
+				trimmedString = trimmedString.substring(0, length) + "...";
+			}
+			*/
+            //console.log(trimmedString);
+            return trimmedString;
+        }));
+        
+        x1.domain(xAxisData).rangeRoundBands([0, x0.rangeBand()]);
+		self.x0 = x0;
+		self.x1 = x1;
+		
+
 
         if (showLabels) {
         	
@@ -646,42 +851,53 @@ policycompass.viz.barsMultiple = function (options) {
             .call(xAxis)
             //.append("text")
             .selectAll(".tick text")
-      		.call(wrap, x0.rangeBand());
+      		.call(wrap, x0.rangeBand())      		
+        	.on("mouseout", function (d, i) {
+            	mouseout();
+        	})
+        	.on("mouseover", function (d, i) {
+        		//if (self.groupby == 'Individual') {
+            		tooltip.style("opacity", 1.0).html("<div class='tooltip-arrow'></div><div class='tooltip-inner ng-binding' ng-bind='content'>"+d+"</div>");
+            	//}
+        	})            
+      		;
 
             var keyIndex;
             var arrayYaxisProcessed = [];
             var cnt_keyIndex = 0;
-
-            self.svg.append("g")
-            .attr("class", "y axis")
-            .attr("font-size", self.font_size)
-            .style("stroke-width", 1)
-            .call(yAxis);
-
-            for (keyIndex in self.labelY) {
-
-                if (arrayYaxisProcessed[self.labelY[keyIndex]]) {
-                    // Exists
-                } else {
-                    // Does not exist
-                    arrayYaxisProcessed[self.labelY[keyIndex]] = self.labelY[keyIndex];
-                    self.svg.append("g")
-                    .append("text")
-                    .attr("font-size", self.font_size)
-                    .attr("transform", "rotate(-90)")
-                    .attr("y", 15 * (cnt_keyIndex))
-                    .attr("dy", "15px").style("text-anchor", "end")
-                    .text(function () {
-                        var returnValue = "";
-                        if (self.showAsPercentatge) {
-                            returnValue = "As % (" + self.labelY[keyIndex] + ")";
-                        } else {
-                            returnValue = self.labelY[keyIndex];
-                        }
-                        return returnValue;
-                    });
-                    cnt_keyIndex = cnt_keyIndex + 1;
-                }
+			
+			if (self.showYAxesTogether) {
+	            self.svg.append("g")
+	            .attr("class", "y axis")
+	            .attr("font-size", self.font_size)
+	            .style("stroke-width", 1)
+	            .call(yAxis);
+						
+	            for (keyIndex in self.labelY) {
+	
+	                if (arrayYaxisProcessed[self.labelY[keyIndex]]) {
+	                    // Exists
+	                } else {
+	                    // Does not exist
+	                    arrayYaxisProcessed[self.labelY[keyIndex]] = self.labelY[keyIndex];
+	                    self.svg.append("g")
+	                    .append("text")
+	                    .attr("font-size", self.font_size)
+	                    .attr("transform", "rotate(-90)")
+	                    .attr("y", 15 * (cnt_keyIndex))
+	                    .attr("dy", "15px").style("text-anchor", "end")
+	                    .text(function () {
+	                        var returnValue = "";
+	                        if (self.showAsPercentatge) {
+	                            returnValue = "As % (" + self.labelY[keyIndex] + ")";
+	                        } else {
+	                            returnValue = self.labelY[keyIndex];
+	                        }
+	                        return returnValue;
+	                    });
+	                    cnt_keyIndex = cnt_keyIndex + 1;
+	                }
+	            }
             }
         }
 
@@ -758,7 +974,7 @@ policycompass.viz.barsMultiple = function (options) {
             //return color(d.ValueX);
             //var resTRext = d.Key.split("_");
             //return color(resTRext[0]);    
-            
+
             if (self.groupby == 'Individual') {
             	return color(d.ValueX);
             }
@@ -880,10 +1096,43 @@ policycompass.viz.barsMultiple = function (options) {
 		})
 		.transition().duration(3000)
 		.attr("y", function (d) {
-			return y(d.ValueY);
+			//return y(d.ValueY);
+			var returnValue = '';
+			//yScales[xAxisData[keyIndex]]
+			if (self.groupby == 'Individual') {
+				returnValue = d.To;
+			}
+			else {
+				returnValue = d.Key;
+			}
+			
+			if (self.showYAxesTogether) {
+				return y(d.ValueY);
+			}
+			else {
+				return yScales[returnValue](d.ValueY);
+			}
+			
+			
 		})
 		.attr("height", function (d) {
-			var returnValue = self.height - y(+d.ValueY);
+			//var returnValue = self.height - y(+d.ValueY);
+			var returnValue = '';
+			//yScales[xAxisData[keyIndex]]
+			if (self.groupby == 'Individual') {
+				returnValue = d.To;
+			}
+			else {
+				returnValue = d.Key;
+			}
+
+			if (self.showYAxesTogether) {
+				var returnValue = self.height - y(d.ValueY);
+			}
+			else {
+				var returnValue = self.height - yScales[returnValue](d.ValueY);
+			}
+
 			if (returnValue < 0) {
 				returnValue = 0;
 			}
@@ -967,14 +1216,14 @@ policycompass.viz.barsMultiple = function (options) {
         var incremetY = 0;
         var cnti = 0;
         //self.legendsColumn = 1;
-        
+        /*
         var xAxisDataForLegend = [];
         xAxisData.forEach(function (d, i) {
         	xAxisDataForLegend[i] = {'title':xAxisData[i], 'color':xAxisDataColor[i]};
         });
         
 		xAxisDataForLegend = self.alphabetical_sort_object_of_objects(xAxisDataForLegend, 'title');
-		
+		*/
 		var xAxisDataClonned = self.clone(xAxisDataForLegend);
         
         
@@ -1321,6 +1570,11 @@ policycompass.viz.barsMultiple = function (options) {
 			self.margin.topIni = self.margin.top;
 		
 			self.spaceBetweenEvents = 20;
+
+			if (self.height<=150) {
+				self.spaceBetweenEvents = self.spaceBetweenEvents /5;	
+			}
+							
 			if (maxEventsByPeriod>0)
 			{
 				self.margin.top = self.margin.top + (self.spaceBetweenEvents*(maxEventsByPeriod+1));

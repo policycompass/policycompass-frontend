@@ -21,6 +21,7 @@ angular.module('pcApp.common.directives.barscharts', [])
                     showLabels: '=showLabels',
                     showLegend: '=showLegend',
                     showGrid: '=showGrid',
+                    showTogether: '=showTogether',
                     resolution: '=resolution',
                     labelyaxe: '=labelyaxe',
                     showPercentatge: '=showPercentatge',
@@ -118,6 +119,15 @@ angular.module('pcApp.common.directives.barscharts', [])
                         $scope.watcherGrid = true;
                         if (($scope.dataset) && ($scope.chartid)) {
                             $scope.directivePlotBarChart('showGrid');
+                        }
+                    });
+					
+					$scope.watcherTogether = false;
+					$scope.$watch('showTogether', function (showLegend) {
+                        //console.log("whatch showTogether");
+                        $scope.watcherTogether = true;
+                        if (($scope.dataset) && ($scope.chartid)) {
+                            $scope.directivePlotBarChart('showTogether');
                         }
                     });
 
@@ -268,7 +278,7 @@ angular.module('pcApp.common.directives.barscharts', [])
 	                                //console.log("origin="+origin);
 	                                //console.log("scope.cntloading="+$scope.cntloading);
 	
-	                                if (($scope.watcherDataset) && ($scope.watcherLabel) && ($scope.watcherLegend) && ($scope.watcherGrid) && ($scope.watcherDataset) && ($scope.watcherPercentatge)) {
+	                                if (($scope.watcherDataset) && ($scope.watcherLabel) && ($scope.watcherLegend) && ($scope.watcherGrid) && ($scope.watcherTogether) && ($scope.watcherDataset) && ($scope.watcherPercentatge)) {
 	                                    var barObj = policycompass.viz.barsMultiple({
 	                                        'idName': $scope.iddiv,
 	                                        'width': width,
@@ -280,6 +290,7 @@ angular.module('pcApp.common.directives.barscharts', [])
 	                                        'showLegend': $scope.showLegend,
 	                                        'showLabels': $scope.showLabels,
 	                                        'showGrid': $scope.showGrid,
+	                                        'showYAxesTogether': $scope.showTogether,
 	                                        'legendsColumn': legendsColumn,
 	                                        'resolution': $scope.resolution,
 	                                        'labelY': $scope.labelyaxe,
@@ -303,7 +314,7 @@ angular.module('pcApp.common.directives.barscharts', [])
 					}
                 },
 
-                template: '' + '<div id="directive_container_barschart_{{chartid}}" class="container_graph directive_container_chart_{{chartid}}">' + '<div class="loading-container">' + '<div ng-hide="small">' + '<div class="loading"></div>' + '<div id="loading-text">loading</div>' + '</div>' + '<div ng-show="small">' + '<div class="loading loading-small"></div>' + '<div id="loading-small-text">loading</div>' + '</div>' + '</div>' + '</div>' + '<div ng-hide="small" id="showFilterContainer" class="showFilterContainer">' + '<div id="showFilter" class="showFilter on_check">' + '<label class="checkbox-inline"><input ng-model="showLegend" type="checkbox" name="showLegend" class="checkbox filterCheckBox"> Show Legend</label>' + '<label class="checkbox-inline"><input ng-model="showLabels" type="checkbox" name="showLabels" class="checkbox filterCheckBox"> Show Labels</label>' + '<label class="checkbox-inline"><input ng-model="showGrid"   type="checkbox" name="showGrid"   class="checkbox filterCheckBox"> Show Grid</label>' + '<label class="checkbox-inline"><input ng-model="showPercentatge" type="checkbox" name="showPercentatge" class="checkbox filterCheckBox"> Show as %</label>' + '</div>' + '</div>'
+                template: '' + '<div id="directive_container_barschart_{{chartid}}" class="container_graph directive_container_chart_{{chartid}}">' + '<div class="loading-container">' + '<div ng-hide="small">' + '<div class="loading"></div>' + '<div id="loading-text">loading</div>' + '</div>' + '<div ng-show="small">' + '<div class="loading loading-small"></div>' + '<div id="loading-small-text">loading</div>' + '</div>' + '</div>' + '</div>' + '<div ng-hide="small" id="showFilterContainer" class="showFilterContainer">' + '<div id="showFilter" class="showFilter on_check">' + '<label class="checkbox-inline"><input ng-model="showLegend" type="checkbox" name="showLegend" class="checkbox filterCheckBox"> Show Legend</label>' + '<label class="checkbox-inline"><input ng-model="showLabels" type="checkbox" name="showLabels" class="checkbox filterCheckBox"> Show Labels</label>' + '<label class="checkbox-inline"><input ng-model="showGrid"   type="checkbox" name="showGrid"   class="checkbox filterCheckBox"> Show Grid</label>' + '<label class="checkbox-inline"><input ng-model="showTogether"  type="checkbox" name="showTogether"  class="checkbox filterCheckBox"> Show only one Y axe</label>' + '<label class="checkbox-inline"><input ng-model="showPercentatge" type="checkbox" name="showPercentatge" class="checkbox filterCheckBox"> Show as %</label>' + '</div>' + '</div>'
             };
         }
     ])
