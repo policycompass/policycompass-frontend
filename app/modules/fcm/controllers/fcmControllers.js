@@ -51,7 +51,8 @@ angular.module('pcApp.fcm.controllers.fcm', [
                 for (i = 0; i < $scope.models.concepts.length; i++) {
                     var newNode = {
                         id: $scope.models.concepts[i].id.toString(),
-                        name: $scope.models.concepts[i].title,
+                        name: $scope.models.concepts[i].title.length > 24 ? //Showing ... if text exceeds the limit to show
+                            ($scope.models.concepts[i].title.substring(0, 21) + '...') : $scope.models.concepts[i].title,
                         posX: $scope.models.concepts[i].positionX,
                         posY: $scope.models.concepts[i].positionY
                     };
