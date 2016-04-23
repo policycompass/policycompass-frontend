@@ -111,6 +111,24 @@ angular.module('pcApp.fcm.controllers.fcm', [
                 }
             };
 
+            //Showing tooltip message
+            $scope.doMouseOver = function (value, posx, posy) {
+                for (i = 0; i < $scope.Concepts.length; i++) {
+                    if ($scope.Concepts[i].Id == value.substring(1, value.length) && $scope.Concepts[i].title.length > 24) {
+                        $('#tooltipTarget').trigger('customEvent');
+                        $('.tooltip-inner').html($scope.Concepts[i].title);//changing text of tooltip
+                        $('.tooltip-inner').css('max-width', 'none');
+                        $('.tooltip.top').css({ top: (posy - 50), left: (posx - 100) })
+                    }
+                }
+            };
+
+            //Hiding tooltip message
+            $scope.doMouseOut = function (value, posx, posy) {
+                if ($('.tooltip-inner').length != 0)//check is tooltip is showing or not
+                    $('#tooltipTarget').trigger('customEvent');
+            };
+
             $scope.setUpdateModelValues = function(model) {
                 $scope.updateModels = {
                     ModelID : model.model.id.toString(),
@@ -184,8 +202,9 @@ angular.module('pcApp.fcm.controllers.fcm', [
         '$location',
         '$log',
         'FcmControllerHelper',
-        function ($scope, Metric, $location, $log, helper) {
-
+        'Auth',
+        function ($scope, Metric, $location, $log, helper, Auth) {
+            $scope.user = Auth;
             helper.baseCreateEditController($scope);
 
         }
@@ -198,8 +217,9 @@ angular.module('pcApp.fcm.controllers.fcm', [
         '$location',
         '$log',
         'FcmControllerHelper',
-        function ($scope, $routeParams, Metric, $location, $log, helper) {
-
+        'Auth',
+        function ($scope, $routeParams, Metric, $location, $log, helper, Auth) {
+            $scope.user = Auth;
             helper.baseCreateEditController($scope);
 
         }
