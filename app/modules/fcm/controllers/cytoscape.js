@@ -638,7 +638,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             user.description = description;
             var newNode = {
                 id: 'n' + ($scope.NodeID),
-                name: newObj,
+                name: newObj.length > 24 ? (newObj.substring(0, 21) + '...') : newObj,//Showing ... if text exceeds the limit to show
                 posX: user.x,
                 posY: user.y
             };
@@ -677,7 +677,8 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             });
             dlg.result.then(function (user) {
                 // collecting data from the form
-                var newObj = user.title;
+                var newObj = user.title.length > 24 ? //Showing ... if text exceeds the limit to show
+                    (user.title.substring(0, 21) + '...') : user.title;
                 user.Id = 'n' + $scope.NodeID;
                 user.x = $scope.NodeID * 30 + 200;
                 user.y = $scope.NodeID * 30 + 100;
