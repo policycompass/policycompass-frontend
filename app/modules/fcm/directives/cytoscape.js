@@ -214,17 +214,14 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                             cy.on('mouseover', 'node', function (e) {
                                 var evtTarget = e.cyTarget;
                                 var nodeId = evtTarget.id();
-                                var posX = evtTarget.position("x") + $('#cy').position().left;
-                                var posY = evtTarget.position("y") + $('#cy').position().top;
+                                var posX = evtTarget.renderedPosition("x") + $('#cy').position().left;
+                                var posY = evtTarget.renderedPosition("y") + $('#cy').position().top;
                                 scope.cyMouseover({
                                     value: nodeId,
                                     x: posX,
                                     y: posY
                                 });
-                                //$('#tooltipTarget').trigger('customEvent');
-                                //$('.tooltip.top').css({ top: (posY - 50), left: posX })
-
-                                //console.log('Over ' + nodeId);
+                                console.log(evtTarget.position("y") + '-' + $('#cy').position().top + '-' + posY);
                             });
 
                             //Binding mouseout event
@@ -239,7 +236,6 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                                     y: posY
                                 });
                             });
-
 
                             cy.on('doubleTap', 'edge', function (e) {
                                 var evtTarget = e.cyTarget;
