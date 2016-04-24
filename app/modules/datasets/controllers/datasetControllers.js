@@ -229,7 +229,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     $scope.timeSeries = DatasetsControllerHelper.generateTimeSeries(dataset.time.resolution, dataset.time.start, dataset.time.end);
                     $scope.table.settings.colHeaders = [' '].concat($scope.timeSeries);
 
-                    $scope.table.settings.height = getHeight(table.length);
+                    $scope.table.settings.height = getHeight(table.length+1);
                     // Show the table
                     $scope.showTable = true;
                     $scope.indicator = Indicator.get({id: dataset.indicator_id});
@@ -1152,7 +1152,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     $scope.timeSeries = DatasetsControllerHelper.generateTimeSeries(dataset.time.resolution, dataset.time.start, dataset.time.end);
                     $scope.table.settings.colHeaders = [' '].concat($scope.timeSeries);
 
-                    $scope.table.settings.height = getHeight(table.length);
+                    $scope.table.settings.height = getHeight(table.length+1);
                     // Show the table
                     $scope.showTable = true;
 
