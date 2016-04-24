@@ -176,13 +176,23 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                     ModelID: $scope.modeldetail.model.id.toString(),
                     title: $scope.modeldetail.model.title.toString(),
                     description: $scope.modeldetail.model.description.toString(),
-                    keywords: $scope.modeldetail.model.keywords.toString()
+                    keywords: $scope.modeldetail.model.keywords.toString(),
+
                 };
                 FCMModelsDetail.setModels(model);
+
+                var domains = JSON.parse(JSON.stringify($scope.modeldetail.domains));
+                $scope.modeldetail.domains = [];
+                for (i = 0; i < domains.length; i++) {
+                    $scope.modeldetail.domains.push(domains[i].domainID);
+                }
+                console.log($scope.modeldetail.domains);
                 for (i = 0; i < $scope.modeldetail.concepts.length; i++) {
                     var newNode = {
                         id: $scope.modeldetail.concepts[i].id.toString(),
-                        name: $scope.modeldetail.concepts[i].title,
+                        name: $scope.modeldetail.concepts[i].title.length > 24 ? //Showing ... if text exceeds the limit to show
+                            ($scope.modeldetail.concepts[i].title.substring(0, 21) + '...') :
+                            $scope.modeldetail.concepts[i].title,
                         posX: $scope.modeldetail.concepts[i].positionX,
                         posY: $scope.modeldetail.concepts[i].positionY
                     };
@@ -323,7 +333,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 ModelTitle: $scope.modeldetail.model.title,
                 ModelDesc: $scope.modeldetail.model.description,
                 ModelKeywords: $scope.modeldetail.model.keywords,
-                domains: $scope.modeldetail.model.domains,
+                domains: $scope.modeldetail.domains,
                 userID: "1",
                 concepts: ConceptsDetail.getConcepts(),
                 connections: AssociationsDetail.getAssociations()
@@ -374,43 +384,14 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 FcmSearchUpdate.update({ id: $routeParams.fcmId }, function () {
                     var dlg = dialogs.notify("Causal Model", "'" + value.model.title + "' Casual Model has been saved!");
                 }, function (err) {
-                    throw { message: JSON.stringify(err.data) };
+                    throw { message: err.statusText + "<br/><br/>" + (err.data == "" ? "" : JSON.stringify(err.data)) };
                 });
                 //			$scope.md = value;
                 //$window.location.reload();
             }, function (err) {
-                throw { message: JSON.stringify(err.data) };
+                throw { message: err.statusText + "<br/><br/>" + (err.data == "" ? "" : JSON.stringify(err.data)) };
             });
         };
-
-        //$scope.updateModel = function () {
-        //    var jsonModel = {
-        //        model: FCMModelsDetail.getModels(),
-        //        userID: "1",
-        //        concepts: ConceptsDetail.getConcepts(),
-        //        connections: AssociationsDetail.getAssociations()
-        //    };
-
-        //    jsonModel.model.title = $scope.modeldetail.model.title;
-        //    jsonModel.model.description = $scope.modeldetail.model.description;
-        //    jsonModel.model.keywords = $scope.modeldetail.model.keywords;
-        //    //jsonModel.model.title = $scope.modeldetail.model.title;
-
-        //    $scope.fcmModelUpdate = new FcmModel();
-        //    $scope.fcmModelUpdate.data = jsonModel;
-        //    FcmModel.update({ id: $routeParams.fcmId }, $scope.fcmModelUpdate, function (value) {
-        //        FcmSearchUpdate.update({ id: $routeParams.fcmId }, function () {
-        //            var dlg = dialogs.notify("Causal Model", "'" + value.model.title + "' Casual Model has been saved!");
-        //        }, function (err) {
-        //            throw { message: JSON.stringify(err.data) };
-        //        });
-        //        //			$scope.md = value;
-        //        //$window.location.reload();
-        //    }, function (err) {
-        //        throw { message: JSON.stringify(err.data) };
-        //    });
-        //};
-
 
         //Open help menu
         $scope.openHelpModel = function (event, helpModelId) {
@@ -657,7 +638,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             user.description = description;
             var newNode = {
                 id: 'n' + ($scope.NodeID),
-                name: newObj,
+                name: newObj.length > 24 ? (newObj.substring(0, 21) + '...') : newObj,//Showing ... if text exceeds the limit to show
                 posX: user.x,
                 posY: user.y
             };
@@ -671,6 +652,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             // broadcasting the event
             $rootScope.$broadcast('appChanged');
             // resetting the form
+
         };
         if ($routeParams.indicator != null) {
             var indicators = (angular.isArray($routeParams.indicator)) ? $routeParams.indicator : [$routeParams.indicator];
@@ -695,7 +677,8 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             });
             dlg.result.then(function (user) {
                 // collecting data from the form
-                var newObj = user.title;
+                var newObj = user.title.length > 24 ? //Showing ... if text exceeds the limit to show
+                    (user.title.substring(0, 21) + '...') : user.title;
                 user.Id = 'n' + $scope.NodeID;
                 user.x = $scope.NodeID * 30 + 200;
                 user.y = $scope.NodeID * 30 + 100;
@@ -1026,6 +1009,25 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 }
             }
         };
+
+        //Showing tooltip message
+        $scope.doMouseOver = function (value, posx, posy) {
+            for (i = 0; i < $scope.Concepts.length; i++) {
+                if ($scope.Concepts[i].Id == value.substring(1, value.length) && $scope.Concepts[i].title.length > 24) {
+                    $('#tooltipTarget').trigger('customEvent');
+                    $('.tooltip-inner').html($scope.Concepts[i].title);//changing text of tooltip
+                    $('.tooltip-inner').css('max-width', 'none');
+                    $('.tooltip.top').css({ top: (posy - 50), left: (posx - 100 - (($('.tooltip-inner').width() - 200) / 2)) })
+                }
+            }
+        };
+
+        //Hiding tooltip message
+        $scope.doMouseOut = function (value, posx, posy) {
+            if ($('.tooltip-inner').length != 0)//check is tooltip is showing or not
+                $('#tooltipTarget').trigger('customEvent');
+        };
+
         // Fit the nodes in the Editor
         $scope.reset = function () {
             $rootScope.$broadcast('appChanged');

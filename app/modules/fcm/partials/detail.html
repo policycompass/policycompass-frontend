@@ -18,7 +18,8 @@
         <div class="col-lg-12">
             <div class="row">
                 <div class="col-lg-12 col-md-10 col-sm-10 col-xs-10">
-                    <cytoscape cy-data="mapData" cy-edges="edgeData" cy-click="doClick(value)" cy-mouseup="doMouseUp(value,x,y)"></cytoscape>
+                    <span id="tooltipTarget" tooltip-html-unsafe="t" tooltip-trigger="customEvent"></span>
+                    <cytoscape cy-data="mapData" cy-edges="edgeData" cy-click="doClick(value)" cy-mouseup="doMouseUp(value,x,y)" cy-mouseover="doMouseOver(value,x,y)" cy-mouseout="doMouseOut(value,x,y)"></cytoscape>
                 </div>
                 <!-- /.col-lg-9  -->
             </div>

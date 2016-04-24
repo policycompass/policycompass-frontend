@@ -11,7 +11,9 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                 cyData: '=',
                 cyEdges: '=', // controller function to be triggered when clicking on a node
                 cyClick: '&',
-                cyMouseup: '&'
+                cyMouseup: '&',
+                cyMouseover: '&', //adding mouseover functionality
+                cyMouseout: '&'//adding mouseour functionality
             },
             link: function (scope, element, attrs, fn) {
                 // dictionary of colors by types. Just to show some design options
@@ -95,7 +97,6 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                             }
                         };
                         // adding the edge object to the edges array
-                        console.log(edgeObj);
                         scope.elements.edges.push(edgeObj);
                     }
 
@@ -209,36 +210,38 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                                 });
                             });
 
+                            //Binding mouseover event
+                            cy.on('mouseover', 'node', function (e) {
+                                var evtTarget = e.cyTarget;
+                                var nodeId = evtTarget.id();
+                                var posX = evtTarget.renderedPosition("x") + $('#cy').position().left;
+                                var posY = evtTarget.renderedPosition("y") + $('#cy').position().top;
+                                scope.cyMouseover({
+                                    value: nodeId,
+                                    x: posX,
+                                    y: posY
+                                });
+                                console.log(evtTarget.position("y") + '-' + $('#cy').position().top + '-' + posY);
+                            });
+
+                            //Binding mouseout event
+                            cy.on('mouseout', 'node', function (e) {
+                                var evtTarget = e.cyTarget;
+                                var nodeId = evtTarget.id();
+                                var posX = evtTarget.position("x");
+                                var posY = evtTarget.position("y");
+                                scope.cyMouseout({
+                                    value: nodeId,
+                                    x: posX,
+                                    y: posY
+                                });
+                            });
+
                             cy.on('doubleTap', 'edge', function (e) {
                                 var evtTarget = e.cyTarget;
                                 var nodeId = evtTarget.id();
                                 scope.cyClick({ value: nodeId });
                             });
-                            //##MOBA## mouse cursor change over a node
-                            cy.on('mouseover', 'node', function (e) {
-                                $(cy.container()).css('cursor', 'pointer');
-                            });
-                            cy.on('mousedown', 'node', function (e) {
-                                $(cy.container()).css('cursor', 'move');
-                            });
-                            cy.on('mouseout', 'node', function (e) {
-                                $(cy.container()).css('cursor', 'default');
-                            });
-
-                            //##MOBA## mouse cursor change over an arrow
-                            cy.on('mouseover', 'edge', function (e) {
-                                $(cy.container()).css('cursor', 'pointer');
-                            });
-                            cy.on('mousedown', 'edge', function (e) {
-                                $(cy.container()).css('cursor', 'move');
-                            });
-                            cy.on('mouseout', 'edge', function (e) {
-                                $(cy.container()).css('cursor', 'default');
-                            });
-
-
-
-
                             cy.panzoom({
                                 // options go here
                             });

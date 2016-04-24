@@ -51,7 +51,8 @@ angular.module('pcApp.fcm.controllers.fcm', [
                 for (i = 0; i < $scope.models.concepts.length; i++) {
                     var newNode = {
                         id: $scope.models.concepts[i].id.toString(),
-                        name: $scope.models.concepts[i].title,
+                        name: $scope.models.concepts[i].title.length > 24 ? //Showing ... if text exceeds the limit to show
+                            ($scope.models.concepts[i].title.substring(0, 21) + '...') : $scope.models.concepts[i].title,
                         posX: $scope.models.concepts[i].positionX,
                         posY: $scope.models.concepts[i].positionY
                     };
@@ -108,6 +109,24 @@ angular.module('pcApp.fcm.controllers.fcm', [
                         $scope.updateConcepts[i].y = posy;
                     }
                 }
+            };
+
+            //Showing tooltip message
+            $scope.doMouseOver = function (value, posx, posy) {
+                for (i = 0; i < $scope.Concepts.length; i++) {
+                    if ($scope.Concepts[i].Id == value.substring(1, value.length) && $scope.Concepts[i].title.length > 24) {
+                        $('#tooltipTarget').trigger('customEvent');
+                        $('.tooltip-inner').html($scope.Concepts[i].title);//changing text of tooltip
+                        $('.tooltip-inner').css('max-width', 'none');
+                        $('.tooltip.top').css({ top: (posy - 50), left: (posx - 100) })
+                    }
+                }
+            };
+
+            //Hiding tooltip message
+            $scope.doMouseOut = function (value, posx, posy) {
+                if ($('.tooltip-inner').length != 0)//check is tooltip is showing or not
+                    $('#tooltipTarget').trigger('customEvent');
             };
 
             $scope.setUpdateModelValues = function(model) {
@@ -183,8 +202,9 @@ angular.module('pcApp.fcm.controllers.fcm', [
         '$location',
         '$log',
         'FcmControllerHelper',
-        function ($scope, Metric, $location, $log, helper) {
-
+        'Auth',
+        function ($scope, Metric, $location, $log, helper, Auth) {
+            $scope.user = Auth;
             helper.baseCreateEditController($scope);
 
         }
@@ -197,8 +217,9 @@ angular.module('pcApp.fcm.controllers.fcm', [
         '$location',
         '$log',
         'FcmControllerHelper',
-        function ($scope, $routeParams, Metric, $location, $log, helper) {
-
+        'Auth',
+        function ($scope, $routeParams, Metric, $location, $log, helper, Auth) {
+            $scope.user = Auth;
             helper.baseCreateEditController($scope);
 
         }
