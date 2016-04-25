@@ -162,7 +162,7 @@ angular.module('pcApp.events.controllers.event', [
                     description: angular.toJson(eventService.getEvent()[0]['description']).replace(/\"/g, ""),
                     startEventDate: angular.toJson(eventService.getEvent()[0]['date']).replace(/\"/g, ""),
                     endEventDate: angular.toJson(eventService.getEvent()[0]['date']).replace(/\"/g, ""),
-                    spatials: $scope.spatials.output,
+                    //spatials: $scope.spatials.output,
                     languageID: "38"
                 }
                 eventService.removeEvent();
