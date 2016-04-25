@@ -20,15 +20,18 @@
     width:20px;
     height:20px;
     background:white;
-    border:1px solid $gris_80;
+    //border:1px solid $gris_80;
+    border:1px solid $bk_1_2;
     border-radius:50%;
     margin-bottom:15px;
   }
  a.active {
-   background-color:#F7941E;
+   //background-color:#F7941E;
+   background-color:$bk;
  }
  a:hover {
-   background-color:#fff2ca;
+   //background-color:#fff2ca;
+   background-color:$bk_1_3;
  }
    
 }
@@ -37,7 +40,7 @@
   min-height: 300px;  
 }
  #paralax-00 {
-    padding-bottom:5em;
+    padding-bottom:2em;
   }
 #paralax {
 
@@ -55,7 +58,7 @@
     position:relative;
   }
   p {
-    margin:1.5em 0;
+    margin:1em 0;
   }
   .paralax {
     // background:#fcd9ae;
