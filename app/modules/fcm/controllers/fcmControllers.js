@@ -118,7 +118,7 @@ angular.module('pcApp.fcm.controllers.fcm', [
                         $('#tooltipTarget').trigger('customEvent');
                         $('.tooltip-inner').html($scope.Concepts[i].title);//changing text of tooltip
                         $('.tooltip-inner').css('max-width', 'none');
-                        $('.tooltip.top').css({ top: (posy - 50), left: (posx - 100) })
+                        $('.tooltip.top').css({ top: (posy - 50), left: (posx - 100 - (($('.tooltip-inner').width() - 200) / 2)) })
                     }
                 }
             };
