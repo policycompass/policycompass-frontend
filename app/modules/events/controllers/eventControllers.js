@@ -29,16 +29,22 @@ angular.module('pcApp.events.controllers.event', [
         '$log',
         'Auth',
         'PolicyDomain',
-        function ($scope, $routeParams, $location, Event, LinkedEventVisualization, Languages, dialogs, $log, Auth, PolicyDomain) {
+        'Individual',
+        function ($scope, $routeParams, $location, Event, LinkedEventVisualization, Languages, dialogs, $log, Auth, PolicyDomain, Individual) {
 
             $scope.userState = Auth.state;
 
             $scope.event = Event.get({id: $routeParams.eventId}, function (event) {
                 var domains = [];
+                var individuals = [];
                 event.policy_domains.forEach(function (p) {
                     domains.push(PolicyDomain.getById(p))
                 });
                 event.policy_domains = domains;
+
+                event.spatials.forEach(function(i){
+                    individuals.push(Individual.getById(i))
+                });
             }, function (error) {
                 alert(error.data.message);
             });
@@ -86,13 +92,21 @@ angular.module('pcApp.events.controllers.event', [
             $scope.mode = "edit";
 
             $scope.event = Event.get({id: $routeParams.eventId}, function (event) {
+                $scope.spatials = {
+                    input: $scope.event.spatials,
+                    output: []
+                };
             }, function (err) {
                 throw {message: JSON.stringify(err.data)};
             });
 
+
+
             $scope.createEvent = function () {
                 $scope.event.userID = 1;
                 $scope.event.viewsCount = 1;
+
+                $scope.event.spatials = $scope.spatials.output;
 
                 Event.update($scope.event, function (value, responseHeaders) {
                     $location.path('/events/' + value.id);
@@ -122,14 +136,13 @@ angular.module('pcApp.events.controllers.event', [
 
             $scope.mode = "create";
 
-
             $scope.init = function () {
                 //Default search query
                 if(typeof $scope.event === 'undefined'){
                     $scope.event = {};
                     $scope.event.title =  $routeParams.title || "";
                     $scope.event.keywords = $routeParams.keywords || "";
-                    $scope.event.geoLocation = $routeParams.geoLocation || "";
+                    $scope.event.spatials = $routeParams.spatials || "";
                     $scope.event.detailsURL = $routeParams.detailsURL || "";
                     $scope.event.description = $routeParams.description || "";
                     $scope.event.startEventDate = $routeParams.start || "";
@@ -149,6 +162,7 @@ angular.module('pcApp.events.controllers.event', [
                     description: angular.toJson(eventService.getEvent()[0]['description']).replace(/\"/g, ""),
                     startEventDate: angular.toJson(eventService.getEvent()[0]['date']).replace(/\"/g, ""),
                     endEventDate: angular.toJson(eventService.getEvent()[0]['date']).replace(/\"/g, ""),
+                    //spatials: $scope.spatials.output,
                     languageID: "38"
                 }
                 eventService.removeEvent();
@@ -167,7 +181,7 @@ angular.module('pcApp.events.controllers.event', [
                 $scope.event.userID = 1;
                 if(compareDates()) {
                     $scope.event.viewsCount = 1;
-
+                    $scope.event.spatials = $scope.spatials.output;
                     Event.save($scope.event, function (value, responseHeaders) {
                         $location.path('/events/' + value.id);
                     }, function (err) {
@@ -181,7 +195,7 @@ angular.module('pcApp.events.controllers.event', [
                 $location.search('keywords', $scope.event.keywords);
                 $location.search('detailsURL', $scope.event.detailsURL);
                 $location.search('description', $scope.event.descritption);
-                $location.search('geoLocation', $scope.event.geoLocation);
+                $location.search('spatials', $scope.event.spatials);
                 $location.search('start', $scope.event.startEventDate);
                 $location.search('end', $scope.event.endEventDate);
                 $location.search('language', $scope.event.languageID)

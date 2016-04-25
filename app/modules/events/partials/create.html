@@ -43,8 +43,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="geoLocation">Geolocation</label>
-                        <input type="text" class="form-control" id="geoLocation" name="geoLocation" placeholder="Geolocation" ng-model="event.geoLocation">
+                        <label for="spatials">Locations</label>
+                        <div id="spatials" class="reference-selection pc-reference-selection-full" resource="Individual" selection-mode="multiple" output="spatials.output" input="spatials.input" parameters="{ class: 'Country' }"></div>
                     </div>
 
                     <div class="form-group" ng-class="{'has-error': eventForm.detailsURL.$dirty && eventForm.detailsURL.$invalid}">

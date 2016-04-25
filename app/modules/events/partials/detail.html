@@ -83,10 +83,14 @@
 
 
             <div class="form-group form-group-location">
-                <div class="form-item" ngshow="event.geoLocation">
-                    <div class="field-label">Geolocation</div>
-                    <div class="field-content">{{ event.geoLocation }}</div>
-                </div>
+                <div class="form-item" ng-if="event.spatials">
+                        <div class="field-label">Locations</div>
+                        <div class="field-content">
+                            <div ng-repeat="spatial in event.spatials"
+                                <span ng-if="spatial" resolve-individual id="spatial"></span>
+                            </div>
+                        </div>
+                    </div>
 
 
                 <div class="form-item" ng-show="language.title">
