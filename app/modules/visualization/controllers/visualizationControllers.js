@@ -4628,30 +4628,17 @@ angular.module('pcApp.visualization').filter('pagination', function () {
                     "filtered": {
                         "filter": {
                             "terms": {
-                                "geoLocation": item.arrayIndividuals
+                                "spatials": item.arrayIndividuals
                             }
                         }
                     }
                 };
 
                 if (startDateToSearch || endDateToSearch) {
-					/*
-                    query.filtered['filter'] = {
-                        "and": [
-                            {
-                                "range": {
-                                    "startEventDate": {"gte": startDateToSearch,}
-                                }
-                            }, {
-                                "range": {
-                                    "endEventDate": {"lte": endDateToSearch,}
-                                }
-                            }
-                        ]
-                    };
-					*/
+
                     query.filtered['filter'] = {
                         "bool": {
+                        	"must": { "terms": { "spatials": item.arrayIndividuals}},
                         	"must_not" : [
                         	{ 
 								"range": {"endEventDate":{"lte": startDateToSearch}}
@@ -4663,6 +4650,13 @@ angular.module('pcApp.visualization').filter('pagination', function () {
                         } 
                     };
 
+                }
+                else {
+                    query.filtered['filter'] = {
+                        "bool": {
+                        	"must": { "terms": { "spatials": item.arrayIndividuals}}                        	
+                        } 
+                    };                	
                 }
 
                 //Perform search through client and get a search Promise
