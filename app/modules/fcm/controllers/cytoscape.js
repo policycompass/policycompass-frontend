@@ -1572,6 +1572,17 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                     conceptOutput: ConceptOutput
                 };
                 $scope.selectedConceptOutput.push(IterationResults);
+
+                //Prepare data to populate chart
+                var data = {
+                    Key: $scope.user.selectConcept.title,
+                    ValueX: iteration,
+                    ValueY: output,
+                    Type: "FCM"
+                };
+                $scope.dataset2.push(data);
+                $scope.labels2.push("");
+
             }, function (err) {
                 throw { message: JSON.stringify(err.data) };
             });
