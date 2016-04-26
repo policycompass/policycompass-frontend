@@ -12,8 +12,8 @@
                 <tab heading="Impact of Single Concept">
                     <label class="control-label" for="impactanalysis">Impact of Change in</label><select class="form-control" name="source" id="source" ng-model="user.selectConcept" ng-options="concept.title for concept in Concepts"></select>(initial concept value)<br/>
 
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" ng-click="single()">Calculate</button>
+                    <div class="modal-footer" style="padding-right: 0px;">
+                        <button type="button" class="btn btn-primary pull-right" ng-click="single()">Calculate</button>
                     </div>
                     <table class="table table-hover">
                         <tr>
@@ -64,6 +64,6 @@
                 </tab>
             </tabset>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer" style="padding-right: 30px;">
             <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
         </div>
