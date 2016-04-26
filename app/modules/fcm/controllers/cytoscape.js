@@ -1446,6 +1446,10 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
             FcmImpactAnalysis.save({ id: 1 }, $scope.fcmImpactAnalysis, function (value) {
                 $scope.res = value;
+
+                //declare iteration  and  output
+                var iteration = [];
+                var output = [];
                 for (i = 0; i < value.result.length; i++) {
                     var ConceptResults = {
                         Id: value.result[i].id.toString(),
@@ -1456,6 +1460,12 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                     };
 
                     $scope.ImpactAnalysisResults.push(ConceptResults);
+
+                    if (value.result[i].iteration_id < 10)
+                        iteration.push("0" + value.result[i].iteration_id.toString());
+                    else
+                        iteration.push(value.result[i].iteration_id.toString());
+                    output.push(value.result[i].output);
                 }
             }, function (err) {
                 throw { message: JSON.stringify(err.data) };
