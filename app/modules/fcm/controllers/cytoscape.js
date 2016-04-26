@@ -1394,6 +1394,26 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         $scope.user.selectConcept2 = $scope.Concepts[1];
         $scope.user.selectConcept3 = $scope.Concepts[2];
 
+        //Variables required to bind chart properties
+        $scope.dataset = [];
+        $scope.labels = [];
+        $scope.dataset2 = [];
+        $scope.labels2 = [];
+        $scope.showLegend = true;
+        $scope.showLabels = true;
+        $scope.showLines = true;
+        $scope.showAreas = true;
+        $scope.showPoints = true;
+        $scope.showGrid = true;
+        $scope.showXAxes = true;
+        $scope.showYAxes = true;
+        $scope.showAsPercentatge = false;
+        $scope.xaxeformat = 'sequence';
+        $scope.mode = 'view';
+        $scope.hideyaxeunits = true;
+        $scope.NodeID = 0;
+        $scope.isModelSaved = true;
+
         $scope.range = function (min, max, step) {
             step = step || 1;
             var input = [];
