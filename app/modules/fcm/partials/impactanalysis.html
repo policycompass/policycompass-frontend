@@ -3,7 +3,8 @@
     <div ng-class="{active: help}" class="help-text">
         <p>Impact analysis shows the change of final concept values with regard to the change of initial concept value. One dimensional impact analysis shows the impact of changes in selected concept value on the other concepts’ final value. Two dimensional impact analysis enables users adjust initial value of two concepts simultaneously then user can check the final value of selected target concept accordingly.</p>
     </div>
-    <h4 class="modal-title">Impact Analysis</h4></div>
+    <h4 class="modal-title">Impact Analysis</h4>
+</div>
 <div class="modal-body">
     <ng-form name="nameDialog" novalidate role="form">
         <div class="form-group" ng-class="{true: 'has-error'}[nameDialog.username.$dirty && nameDialog.username.$invalid]">
@@ -27,6 +28,10 @@
                     </table>
                     * Value of each cell indicate the final value of simulation with given initial value of
                     <b>{{ user.selectConcept.title }}</b>.
+                    <br />
+
+                    <div class="pcLinesChart" dataset="dataset" labels="labels" small="list" mode="modeg" hideyaxeunits="hideyaxeunits" chartid="3" show-Legend="showLegend" show-Labels="showLabels" show-Lines="showLines" show-Areas="showAreas" show-Points="showPoints" show-Grid="showGrid" show-Together="showYAxes" show-Percentatge="showAsPercentatge" xaxeformat="xaxeformat"></div>
+                    <br />
                 </tab>
                 <tab heading="Impact of Two Concepts">
                     <label class="control-label" for="impactanalysis">Impact of Change in</label><select class="form-control" name="source" id="source" ng-model="user.selectConcept1" ng-options="concept.title for concept in Concepts" required></select><label class="control-label" for="impactanalysis">and</label><select class="form-control" name="source" id="source" ng-model="user.selectConcept2" ng-options="concept.title for concept in Concepts" required></select>(initial concept value)<br/><label class="control-label" for="impactanalysis">on</label><select class="form-control" name="source" id="source" ng-model="user.selectConcept3" ng-options="concept.title for concept in Concepts" required></select><br/>
@@ -55,6 +60,7 @@
                     * Value of each cell indicate the final value of
                     <b>{{ user.selectConcept3.title }}</b> with regards to the change of
                     <b>{{ user.selectConcept1.title }}</b> & <b>{{ user.selectConcept2.title }}</b>.
+                    <div class="pcLinesChart" dataset="dataset2" labels="labels2" small="list" mode="modeg" hideyaxeunits="hideyaxeunits" chartid="4" show-Legend="showLegend" show-Labels="showLabels" show-Lines="showLines" show-Areas="showAreas" show-Points="showPoints" show-Grid="showGrid" show-Together="showYAxes" show-Percentatge="showAsPercentatge" xaxeformat="xaxeformat"></div>
                 </tab>
             </tabset>
         </div>
