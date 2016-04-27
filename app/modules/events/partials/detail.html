@@ -3,7 +3,7 @@
         <h1 class="fonticon fonticon-event">{{ event.title }}</h1>
 
         <div class="pc-visualization-formcontrols">
-            <div class="button-group">
+            <div>
                 <a type="button" class="btn btn-primary  btn-create" ng-if="userState.loggedIn && (userState.userPath == event.creator_path || userState.isAdmin)"  href="#!/events/{{ event.id }}/edit">Edit</a>
                 <a type="button" class="btn btn-danger  btn-clear"  ng-if="userState.loggedIn && userState.isAdmin"  ng-click="deleteEvent(event)">Delete</a>
             </div>
