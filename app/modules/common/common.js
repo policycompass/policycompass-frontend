@@ -44,8 +44,11 @@ commonmanager.config(function ($routeProvider) {
             controller: 'StaticController',
             templateUrl: 'modules/common/partials/request.html'
         })
-        .when('/publishingNotes', {
-            templateUrl: 'modules/common/partials/publishingNotes.html'
+        .when('/imprint', {
+            templateUrl: 'modules/common/partials/imprint.html'
+        })
+        .when('/dataProtection', {
+            templateUrl: 'modules/common/partials/dataprotection.html'
         })
         .when('/login', {
             templateUrl: 'modules/common/partials/login.html'
