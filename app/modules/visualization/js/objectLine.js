@@ -2906,10 +2906,12 @@ policycompass.viz.line = function (options) {
 				}
 
 				var maxEventsByPeriod = 1;
-
-				if (eventsData.length>0) {
+				
+				
+				if (eventsData!=null && eventsData.length > 0) {
 					self.margin.top = self.margin.top + (self.spaceBetweenEvents*(maxEventsByPeriod+1));	
 				}
+				
 
 				self.maxEventsByPeriod = maxEventsByPeriod;
 
