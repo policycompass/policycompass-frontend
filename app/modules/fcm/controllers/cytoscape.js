@@ -1394,6 +1394,26 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         $scope.user.selectConcept2 = $scope.Concepts[1];
         $scope.user.selectConcept3 = $scope.Concepts[2];
 
+        //Variables required to bind chart properties
+        $scope.dataset = [];
+        $scope.labels = [];
+        $scope.dataset2 = [];
+        $scope.labels2 = [];
+        $scope.showLegend = true;
+        $scope.showLabels = true;
+        $scope.showLines = true;
+        $scope.showAreas = true;
+        $scope.showPoints = true;
+        $scope.showGrid = true;
+        $scope.showXAxes = true;
+        $scope.showYAxes = true;
+        $scope.showAsPercentatge = false;
+        $scope.xaxeformat = 'sequence';
+        $scope.mode = 'view';
+        $scope.hideyaxeunits = true;
+        $scope.NodeID = 0;
+        $scope.isModelSaved = true;
+
         $scope.range = function (min, max, step) {
             step = step || 1;
             var input = [];
@@ -1426,6 +1446,10 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
             FcmImpactAnalysis.save({ id: 1 }, $scope.fcmImpactAnalysis, function (value) {
                 $scope.res = value;
+
+                //declare iteration  and  output
+                var iteration = [];
+                var output = [];
                 for (i = 0; i < value.result.length; i++) {
                     var ConceptResults = {
                         Id: value.result[i].id.toString(),
@@ -1436,7 +1460,24 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                     };
 
                     $scope.ImpactAnalysisResults.push(ConceptResults);
+
+                    if (value.result[i].iteration_id < 10)
+                        iteration.push("0" + value.result[i].iteration_id.toString());
+                    else
+                        iteration.push(value.result[i].iteration_id.toString());
+                    output.push(value.result[i].output);
                 }
+
+                //Prepare data to populate chart
+                var data = {
+                    Key: $scope.user.selectConcept.title,
+                    ValueX: iteration,
+                    ValueY: output,
+                    Type: "FCM"
+                };
+                $scope.dataset.push(data);
+                $scope.labels.push("");
+
             }, function (err) {
                 throw { message: JSON.stringify(err.data) };
             });
@@ -1466,6 +1507,9 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
             FcmImpactAnalysis.save({ id: 2 }, $scope.fcmImpactAnalysis, function (value) {
                 $scope.res = value;
+                //declare iteration  and  output
+                var iteration = [];
+                var output = [];
                 for (i = 0; i < value.result.length; i++) {
                     var ConceptResults = {
                         Id: value.result[i].id.toString(),
@@ -1485,6 +1529,13 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                         $scope.selectedConceptOutput.push(IterationResults);
                         IterationID = value.result[i].iteration_id;
                     }
+
+                    if (value.result[i].iteration_id < 10)
+                        iteration.push("0" + value.result[i].iteration_id.toString());
+                    else
+                        iteration.push(value.result[i].iteration_id.toString());
+                    output.push(value.result[i].output);
+
 
                     if (value.result[i].conceptID == $scope.user.selectConcept1.Id) {
                         for (j = 0; j < $scope.selectedConcept1Input.length; j++) {
@@ -1521,6 +1572,17 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                     conceptOutput: ConceptOutput
                 };
                 $scope.selectedConceptOutput.push(IterationResults);
+
+                //Prepare data to populate chart
+                var data = {
+                    Key: $scope.user.selectConcept.title,
+                    ValueX: iteration,
+                    ValueY: output,
+                    Type: "FCM"
+                };
+                $scope.dataset2.push(data);
+                $scope.labels2.push("");
+
             }, function (err) {
                 throw { message: JSON.stringify(err.data) };
             });

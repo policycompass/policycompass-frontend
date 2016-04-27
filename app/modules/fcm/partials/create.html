@@ -168,88 +168,88 @@
                             <td align="center">
                                 <button data-intro="Helps you to link datasets with this Concept" data-position="top" type="submit" class="btn btn-default btn-adddataset" id="modaladddataset" ng-click="editMetrics($index)">{{ concept.metricTitle }}</button>
 
-                                <!--			    <button  type="submit" class="btn btn-primary button-metrics" id="addmetricsbutton" ng-click="editMetrics($index);findMetricsByFilter();">{{ concept.metricTitle }}</button>  -->
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </table>
-                    <h4>Relationships :</h4>
-                    <table class="table table-hover">
-                        <tr>
-                            <td align="center" width="10%"><b>Relation ID</b></td>
-                            <td align="center" width="33%"><b>Source Concept</b></td>
-                            <td align="center" width="33%"><b>Sink Concept</b></td>
-                            <td align="center" width="24%">
-                                <div class="subtitle-help">
-                                    <span class="fonticon fonticon-help help-switch" style="font-size:15px;" ng-click="openHelpModel($event,'help3')"><b>Weight</b></span>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr ng-show="Associations" ng-repeat="connection in SimulationAssociations track by $index">
-                            <td align="center">{{ $index + 1 }}</td>
-                            <td align="center">{{ connection.source.title }}</td>
-                            <td align="center">{{ connection.destination.title }}</td>
-                            <td align="center">
-                                <select data-ng-style="relationShipStyle[$index]" data-ng-change="updateEdge($index)" class="form-control" name="weight" id="weight" ng-model="SimulationAssociations[$index].weighted" required>
-                                    <option value="1">Very Strong Positive (1.0)</option>
-                                    <option value="0.75">Strong Positive (0.75)</option>
-                                    <option value="0.5">Weak Positive (0.5)</option>
-                                    <option value="0.25">Very Weak Positive (0.25)</option>
-                                    <option value="-0.25">Very Weak Negative (-0.25)</option>
-                                    <option value="-0.5">Weak Negative (-0.5)</option>
-                                    <option value="-0.75">Strong Negative (-0.75)</option>
-                                    <option value="-1">Very Strong Negative (-1.0)</option>
-                                </select>
-                            </td>
-                            <!--			    <td align="center"><input type="text" class="form-control" name="weight" id="weight" ng-model="SimulationAssociations[$index].weighted" required></td>
-                                            <td align="center">
-                                            <button  type="submit" class="btn btn-primary button-metrics" id="metricsmanagerbutton" ng-click="metricsManager();findMetricsByFilter();">Add metric, Add metric</button>
-                                            </td>   --->
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </table>
-                    <div class="subtitle-help">
-                        <span class="fonticon fonticon-help help-switch" ng-click="openHelpModel($event,'help4')"></span>
-                    </div>
-                    <button type="submit" class="btn btn-default" ng-click="weightCalulation();">Weight Calculation using the Historical Data</button>
-                    <!--		     <button type="submit" class="btn btn-default">Reset Weights</button>    -->
-                    <button type="submit" class="btn btn-default" ng-click="runSimulation();">Run Simulation</button>
-                </tab>
+                        <!--			    <button  type="submit" class="btn btn-primary button-metrics" id="addmetricsbutton" ng-click="editMetrics($index);findMetricsByFilter();">{{ concept.metricTitle }}</button>  -->
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+            <h4>Relationships :</h4>
+            <table class="table table-hover">
+                <tr>
+                    <td align="center" width="10%"><b>Relation ID</b></td>
+                    <td align="center" width="33%"><b>Source Concept</b></td>
+                    <td align="center" width="33%"><b>Sink Concept</b></td>
+                    <td align="center" width="24%">
+                        <div class="subtitle-help">
+                            <span class="fonticon fonticon-help help-switch" style="font-size:15px;" ng-click="openHelpModel($event,'help3')"><b>Weight</b></span>
+                        </div>
+                    </td>
+                </tr>
+                <tr ng-show="Associations" ng-repeat="connection in SimulationAssociations track by $index">
+                    <td align="center">{{ $index + 1 }}</td>
+                    <td align="center">{{ connection.source.title }}</td>
+                    <td align="center">{{ connection.destination.title }}</td>
+                    <td align="center">
+                        <select data-ng-style="relationShipStyle[$index]" data-ng-change="updateEdge($index)" class="form-control" name="weight" id="weight" ng-model="SimulationAssociations[$index].weighted" required>
+                            <option value="1">Very Strong Positive (1.0)</option>
+                            <option value="0.75">Strong Positive (0.75)</option>
+                            <option value="0.5">Weak Positive (0.5)</option>
+                            <option value="0.25">Very Weak Positive (0.25)</option>
+                            <option value="-0.25">Very Weak Negative (-0.25)</option>
+                            <option value="-0.5">Weak Negative (-0.5)</option>
+                            <option value="-0.75">Strong Negative (-0.75)</option>
+                            <option value="-1">Very Strong Negative (-1.0)</option>
+                        </select>
+                    </td>
+                    <!--			    <td align="center"><input type="text" class="form-control" name="weight" id="weight" ng-model="SimulationAssociations[$index].weighted" required></td>
+                                    <td align="center">
+                                    <button  type="submit" class="btn btn-primary button-metrics" id="metricsmanagerbutton" ng-click="metricsManager();findMetricsByFilter();">Add metric, Add metric</button>
+                                    </td>   --->
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+            <div class="subtitle-help">
+                <span class="fonticon fonticon-help help-switch" ng-click="openHelpModel($event,'help4')"></span>
+            </div>
+            <button type="submit" class="btn btn-default" ng-click="weightCalulation();">Weight Calculation using the Historical Data</button>
+            <button ng-if="1==2" type="submit" class="btn btn-default" ng-click="runSimulation();">Run Simulation</button>
+            <button type="submit" class="btn btn-default" ng-click="impactAnalysis();">Impact Analysis</button>
+        </tab>
 
-                <tab heading="Simulation Results" active="tabsel.results">
-                    <h4>Changes of Concept Values</h4>
-                    <table class="table table-hover">
-                        <tr>
-                            <td align="center" width="20%"><b># of Iteration</b></td>
-                            <td align="center" ng-repeat="n in range(1,totalIteration,1)"><b>{{ n }}</b></td>
-                        </tr>
-                        <tr ng-show="Concepts" ng-repeat="concept in Concepts">
-                            <td>{{ concept.title }}</td>
-                            <td align="center" ng-repeat="result in SimulationResults" ng-if="concept.Id == result.conceptID">
-                                <b>{{ result.output }}</b></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td align="center" ng-repeat="n in range(1,15,1)"></td>
-                        </tr>
-                    </table>
-                    <button type="submit" class="btn btn-default" ng-click="impactAnalysis();">Impact Analysis</button>
-                </tab>
+        <tab heading="Simulation Results" active="tabsel.results"  ng-if="1==2">
+            <h4>Changes of Concept Values</h4>
+            <table class="table table-hover">
+                <tr>
+                    <td align="center" width="20%"><b># of Iteration</b></td>
+                    <td align="center" ng-repeat="n in range(1,totalIteration,1)"><b>{{ n }}</b></td>
+                </tr>
+                <tr ng-show="Concepts" ng-repeat="concept in Concepts">
+                    <td>{{ concept.title }}</td>
+                    <td align="center" ng-repeat="result in SimulationResults" ng-if="concept.Id == result.conceptID">
+                        <b>{{ result.output }}</b></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td align="center" ng-repeat="n in range(1,15,1)"></td>
+                </tr>
+            </table>
+            <button type="submit" class="btn btn-default" ng-click="impactAnalysis();">Impact Analysis</button>
+        </tab>
 
-                <tab heading="Graph">
-                    <div class="pcLinesChart" dataset="dataset" labels="labels" small="list" mode="modeg" hideyaxeunits="hideyaxeunits" chartid="2" show-Legend="showLegend" show-Labels="showLabels" show-Lines="showLines" show-Areas="showAreas" show-Points="showPoints" show-Grid="showGrid" show-Together="showYAxes" show-Percentatge="showAsPercentatge" xaxeformat="xaxeformat"></div>
-                </tab>
-            </tabset>
-        </div>
-    </div>
+        <tab heading="Graph"  ng-if="1==2">
+            <div class="pcLinesChart" dataset="dataset" labels="labels" small="list" mode="modeg" hideyaxeunits="hideyaxeunits" chartid="2" show-Legend="showLegend" show-Labels="showLabels" show-Lines="showLines" show-Areas="showAreas" show-Points="showPoints" show-Grid="showGrid" show-Together="showYAxes" show-Percentatge="showAsPercentatge" xaxeformat="xaxeformat"></div>
+        </tab>
+    </tabset>
+</div>
+</div>
 </div>
