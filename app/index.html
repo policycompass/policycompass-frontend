@@ -41,14 +41,24 @@
             <p class="text-center"><strong>No Javascript detected!</strong> Your browser does not support JavaScript and Policy Compass requires it.</p>
         </div>
     </noscript>
+    <!--[if lte IE 9]>
+    <div class="alert alert-warning">
+        <p>
+            <strong>Warning!</strong> You are using an outdated Internet Explorer version. <br />
+            <a href="https://project.policycompass.eu/" target="_blank">Policy Compass</a> platform is designed to work
+            on modern browsers. You can
+            <a href="http://www.whatbrowser.org/intl/en/" target="_blank">visit this website</a> in order to find more
+            information about your browser's current version and availability of newer and improved versions.
+        </p>
+    </div>
+    <![endif]-->
 
+    <!--[if gt IE 9]><!-->
     <div class="loading-container loading-container-center" id="loading-container-div" ng-hide="hideLoader">
         <div class="loading"></div>
         <div id="loading-text">loading</div>
     </div>
 
-
-    <!--[if gt IE 9]><!-->
     <div id="page-container" class="ng-hide" ng-show="hideLoader">
         <div ng-include="'header.html'"></div>
         <div ng-view="" id="main-content"></div>
@@ -57,13 +67,6 @@
 
         <adh-cross-window-channel></adh-cross-window-channel>
     </div>
-    <!--<![endif]-->
-    <!--[if lt IE 10]>
-    <div class="unsupported-browser">
-      <h1>Non-supported browser!</h1>
-      <p>We're sorry your browser is unsupported. Please either upgrade your Internet Explorer or switch to another up-to-date browser.</p>
-    </div>
-    <![endif]-->
 
     <!--  Vendor Libs -->
     <script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
@@ -188,5 +191,7 @@
     <script type="text/javascript" src="modules/feedbacks/services/feedbacksService.js"></script>
     <script type="text/javascript" src="modules/feedbacks/directives/feedbacksDirectives.js"></script>
     <script type="text/javascript" src="modules/feedbacks/controllers/feedbacksController.js"></script>
+
+    <!--<![endif]-->
 </body>
 </html>
