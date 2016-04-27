@@ -5,7 +5,7 @@
  * But implemented again, because source are not maintained
  */
 angular.module('pcApp.datasets.directives.ckanImport', []).directive('ckanImport', [
-    '$http', 'ngProgress', 'API_CONF', function ($http, ngProgress, API_CONF) {
+    '$http', 'ngProgress', 'API_CONF', 'dialogs', function ($http, ngProgress, API_CONF, dialogs) {
         return {
             restrict: 'A',
             templateUrl: function (el, attrs) {
@@ -67,8 +67,14 @@ angular.module('pcApp.datasets.directives.ckanImport', []).directive('ckanImport
                             convert: true
                         }
                     }).then(function (response) {
-                        scope.loadData(dataset, resource, response.data);
-                        ngProgress.complete();
+                        if(response.data.result == 500){
+                            ngProgress.complete();
+                            dialogs.notify('Selected dataset cannot be displayed', 'Please choose another one.');
+                        }
+                        else{
+                            scope.loadData(dataset, resource, response.data);
+                            ngProgress.complete();
+                        }
                     });
                 };
 
