@@ -44,8 +44,9 @@ commonmanager.config(function ($routeProvider) {
             controller: 'StaticController',
             templateUrl: 'modules/common/partials/request.html'
         })
+        //old version of the imprint. New version partials/imprint.html
         .when('/imprint', {
-            templateUrl: 'modules/common/partials/imprint.html'
+            templateUrl: 'modules/common/partials/publishingNotes.html'
         })
         .when('/dataProtection', {
             templateUrl: 'modules/common/partials/dataprotection.html'
