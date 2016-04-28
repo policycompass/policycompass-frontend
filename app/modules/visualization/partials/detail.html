@@ -6,14 +6,11 @@
 
             <edit-buttons data-userpath="{{visualization.creator_path}}" data-editurl="#!/visualizations/{{visualization.id}}/edit" data-deletefunction="deleteCurrentVisualisation"></edit-buttons>
 
-            <div class="button-group">
-                <a type="button" class="btn btn-primary btn-addCausalModel" href="#!/models/create?{{urlListIndicators}}">Create Causal Model</a>
-                <a type="button" class="btn btn-share" ng-click="share=!share" ng-class="{active: share}">Share</a>
-            </div>
+            <a type="button" ng-if="user.state.loggedIn && !user.state.isAdmin && user.state.userPath!=visualization.creator_path" class="btn btn-primary btn-create" href="#!/visualizations/{{ visualization.id }}/edit">Edit</a>
 
-            <div nf-if="user.state.loggedIn" ng-show="!user.state.isAdmin" class="button">
-                <a type="button" ng-hide="user.state.userPath==visualization.creator_path" class="btn btn-primary btn-create" href="#!/visualizations/{{ visualization.id }}/edit">Edit</a>
-            </div>
+            <a type="button" class="btn btn-primary btn-addCausalModel" href="#!/models/create?{{urlListIndicators}}">Create Causal Model</a>
+
+            <a type="button" class="btn btn-share" ng-click="share=!share" ng-class="{active: share}" ng-if="!1">Share</a>
 
         </div>
         <div ng-class="{active: share}" class="share-window" id="share-window" ng-init="e=1">
@@ -81,7 +78,7 @@
 					<div class="field-content">
 							<username userpath="{{visualization.creator_path}}"></username>
 					</div>
-				</div>            	
+				</div>
                 <div class="form-item" ng-if="visualization.created_at">
                     <div class="field-label">Added</div>
                     <div class="field-content">{{ visualization.created_at | date:'longDate' }}</div>
