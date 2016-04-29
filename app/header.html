@@ -46,7 +46,6 @@
                             <span>{{authState.userData.name}}</span>
                         </a>
                     </li>
-                    <li><a href="" data-hover="" class="fonticon fonticon-share normal" ng-click="i=7"></a></li>
                 </ul>
             </div>
         </div>
@@ -84,28 +83,6 @@
                 <a href="#!/login" class="fonticon font-icon-log_in" ng-click="i=0">Log In</a></li>
                 <li ng-if="authState.loggedIn" ng-cloak>
                 <a href="#!/logout" class="fonticon font-icon-log_out" ng-click="i=0">Logout ({{ authState.userData.name }})</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="submenu submenu-share" id="submenu-share" ng-class="{active: i==7}" ng-click="i=0">
-        <div class="submenu-bk">
-            <ul>
-                <li>
-                    <a href="" class="fonticon fonticon-facebook" ng-click="i=0">Facebook</a>
-                </li>
-                <li>
-                    <a href="" class="fonticon fonticon-twitter" ng-click="i=0">Twitter</a>
-                </li>
-                <li>
-                    <a href="" class="fonticon fonticon-vk" ng-click="i=0">VKontakte</a>
-                </li>
-                <li>
-                    <a href="" class="fonticon fonticon-linkedin" ng-click="i=0">Linkedin</a>
-                </li>
-                <li>
-                    <a href="" class="fonticon fonticon-google" ng-click="i=0">Google +</a>
                 </li>
             </ul>
         </div>

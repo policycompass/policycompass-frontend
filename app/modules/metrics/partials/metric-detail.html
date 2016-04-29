@@ -10,7 +10,8 @@
             </div>
 
 
-            <a type="button" class="btn btn-share" ng-click="share=!share" ng-class="{active: share}">Share</a></div>
+            <a type="button" class="btn btn-share" ng-click="share=!share" ng-class="{active: share}" ng-if="!1">Share</a>
+        </div>
         <div ng-class="{active: share}" class="share-window" id="share-window" ng-init="e=1">
             <ul class="share-menu">
                 <div class="fonticon fonticon-close" ng-click="share=!share"></div>
