@@ -319,9 +319,16 @@ angular.module('pcApp.datasets.controllers.dataset', [
                         this.removeAllFiles();
                         $scope.$apply();
                         // Load the data into the grid
-                        $scope.inputTable.items = response['result'];
-                        $scope.dropzone.isCollapsed = true;
-                        $scope.inputInstance.loadData($scope.inputTable.items);
+                        if(response['result'] == 500){
+                            ngProgress.complete();
+                            dialogs.notify('Selected dataset cannot be displayed', 'Please choose another one.');
+                        }
+                        else{
+                            $scope.inputTable.items = response['result'];
+                            $scope.dropzone.isCollapsed = true;
+                            $scope.inputInstance.loadData($scope.inputTable.items);
+                        }
+
                     }
                 },
                 isCollapsed: true
