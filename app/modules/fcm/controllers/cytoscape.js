@@ -1447,9 +1447,6 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             FcmImpactAnalysis.save({ id: 1 }, $scope.fcmImpactAnalysis, function (value) {
                 $scope.res = value;
 
-                //declare iteration  and  output
-                var iteration = [];
-                var output = [];
                 for (i = 0; i < value.result.length; i++) {
                     var ConceptResults = {
                         Id: value.result[i].id.toString(),
@@ -1460,23 +1457,33 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                     };
 
                     $scope.ImpactAnalysisResults.push(ConceptResults);
-
-                    if (value.result[i].iteration_id < 10)
-                        iteration.push("0" + value.result[i].iteration_id.toString());
-                    else
-                        iteration.push(value.result[i].iteration_id.toString());
-                    output.push(value.result[i].output);
                 }
 
                 //Prepare data to populate chart
-                var data = {
-                    Key: $scope.user.selectConcept.title,
-                    ValueX: iteration,
-                    ValueY: output,
-                    Type: "FCM"
-                };
-                $scope.dataset.push(data);
-                $scope.labels.push("");
+                var data = [];
+                angular.forEach($scope.fcmImpactAnalysis.data.concepts, function (item) {
+                    data.push({
+                        Key: item.Id,
+                        ValueX: [],
+                        ValueY: [],
+                        Type: "FCM"
+                    });
+
+                    angular.forEach(value.result, function (outItem) {
+                        if (outItem.conceptID == item.Id) {
+                            if (outItem.iteration_id < 10)
+                                data[data.length - 1].ValueX.push("0" + outItem.iteration_id.toString());
+                            else
+                                data[data.length - 1].ValueX.push(outItem.iteration_id.toString());
+                            data[data.length - 1].ValueY.push(outItem.output);
+                        }
+                    });
+
+                });
+                angular.forEach(data, function (item) {
+                    $scope.dataset.push(item);
+                    $scope.labels.push("");
+                });
 
             }, function (err) {
                 throw { message: JSON.stringify(err.data) };
@@ -1508,8 +1515,6 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             FcmImpactAnalysis.save({ id: 2 }, $scope.fcmImpactAnalysis, function (value) {
                 $scope.res = value;
                 //declare iteration  and  output
-                var iteration = [];
-                var output = [];
                 for (i = 0; i < value.result.length; i++) {
                     var ConceptResults = {
                         Id: value.result[i].id.toString(),
@@ -1529,13 +1534,6 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                         $scope.selectedConceptOutput.push(IterationResults);
                         IterationID = value.result[i].iteration_id;
                     }
-
-                    if (value.result[i].iteration_id < 10)
-                        iteration.push("0" + value.result[i].iteration_id.toString());
-                    else
-                        iteration.push(value.result[i].iteration_id.toString());
-                    output.push(value.result[i].output);
-
 
                     if (value.result[i].conceptID == $scope.user.selectConcept1.Id) {
                         for (j = 0; j < $scope.selectedConcept1Input.length; j++) {
@@ -1573,15 +1571,28 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 };
                 $scope.selectedConceptOutput.push(IterationResults);
 
+
                 //Prepare data to populate chart
-                var data = {
-                    Key: $scope.user.selectConcept.title,
-                    ValueX: iteration,
-                    ValueY: output,
-                    Type: "FCM"
-                };
-                $scope.dataset2.push(data);
-                $scope.labels2.push("");
+                var data = [];
+                angular.forEach($scope.selectedConcept2Input, function (Concept2InputValue) {
+                    data.push({
+                        Key: "" + (data.length + 1),
+                        ValueX: ["01", "02", "03", "04", "05"],
+                        ValueY: [],
+                        Type: "FCM"
+                    });
+
+                    angular.forEach($scope.selectedConceptOutput, function (item) {
+                        if (item.concept2Input == Concept2InputValue)
+                            data[data.length - 1].ValueY.push(item.conceptOutput);
+                    });
+                });
+
+                console.log(data);
+                angular.forEach(data, function (item) {
+                    $scope.dataset2.push(item);
+                    $scope.labels2.push("");
+                });
 
             }, function (err) {
                 throw { message: JSON.stringify(err.data) };
