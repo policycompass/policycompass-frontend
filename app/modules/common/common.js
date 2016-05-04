@@ -9,7 +9,8 @@ var commonmanager = angular.module('pcApp.common', [
     'pcApp.common.directives.mapscharts',
     'pcApp.common.directives.wizard',
     'pcApp.common.directives.helpbutton',
-    'pcApp.common.directives.loadpcimage'
+    'pcApp.common.directives.loadpcimage',
+    'pcApp.common.directives.cookieLaw'
 ])
 
 commonmanager.config(function ($routeProvider) {

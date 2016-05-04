@@ -36,6 +36,7 @@
     <link rel="icon" type="image/ico" href="img/favicon.png"/>
 </head>
 <body class="page" scroll ng-class="{fix:CreateMenu}">
+
     <noscript>
         <div class="alert alert-danger">
             <p class="text-center"><strong>No Javascript detected!</strong> Your browser does not support JavaScript and Policy Compass requires it.</p>
@@ -60,6 +61,9 @@
     </div>
 
     <div id="page-container" class="ng-hide" ng-show="hideLoader">
+
+        <div cookie-law ng-hide="hideCookieLaw"></div>
+
         <div ng-include="'header.html'"></div>
         <div ng-view="" id="main-content"></div>
         <div class="wizardbar" show-Wizard="wizard_help"></div>
@@ -103,6 +107,7 @@
     <script type="text/javascript" src="../bower_components/ngstorage/ngStorage.min.js"></script>
     <script type="text/javascript" src="../bower_components/wellaged/dist/wellaged.min.js"></script>
     <script type="text/javascript" src="../bower_components/angular-scroll/angular-scroll.min.js"></script>
+    <script type="text/javascript" src="../bower_components/angular-cookies/angular-cookies.min.js"></script>
 
     <!--  App Libs -->
     <script type="text/javascript" src="config.js"></script>
@@ -121,6 +126,7 @@
     <script type="text/javascript" src="modules/common/directives/loadpcimage.js"></script>
     <script type="text/javascript" src="modules/common/directives/mapscharts.js"></script>
     <script type="text/javascript" src="modules/common/directives/wizard.js"></script>
+    <script type="text/javascript" src="modules/common/directives/cookieLaw.js"></script>
     <script type="text/javascript" src="modules/references/services/referenceService.js"></script>
     <script type="text/javascript" src="modules/references/directives/forms.js"></script>
     <script type="text/javascript" src="modules/references/directives/resolve.js"></script>

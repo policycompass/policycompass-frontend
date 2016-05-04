@@ -1,0 +1,22 @@
+.cookielaw{
+    background-color: #F7941E;
+}
+
+.cookielaw-text{
+    color:white;
+}
+
+.cookielaw-close-icon{
+    display:inline-block;
+    padding-top: 5%;
+    color: white;
+    cursor: pointer;
+}
+
+.cookielaw-close-icon:before{
+    content:"\f00d";
+}
+
+.cookielaw-close-icon:hover{
+    color: black;
+}
