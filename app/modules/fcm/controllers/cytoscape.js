@@ -1017,6 +1017,9 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                     $('#tooltipTarget').trigger('customEvent');
                     $('.tooltip-inner').html($scope.Concepts[i].title);//changing text of tooltip
                     $('.tooltip-inner').css('max-width', 'none');
+                    if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1)//Setting tooltip position for firefox browser
+                        $('.tooltip.top').css({ top: (posy - 50), left: posx });
+
                     $('.tooltip.top').css({ top: (posy - 50), left: (posx - 100 - (($('.tooltip-inner').width() - 200) / 2)) })
                 }
             }
