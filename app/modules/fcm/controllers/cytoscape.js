@@ -366,6 +366,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         };
 
         $scope.updateModel = function () {
+            $scope.runSimulation();
             var jsonModel = {
                 model: FCMModelsDetail.getModels(),
                 userID: "1",
