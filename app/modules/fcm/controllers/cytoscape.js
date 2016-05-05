@@ -1602,6 +1602,18 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             });
 
         }; // end Impact of Two Concepts
+
+        //Open help menu for impact analysis window
+        $scope.openHelpModel = function (event, helpModelId) {
+            $scope[helpModelId] = !$scope[helpModelId];
+            var thisControl = $(event.target);
+            var posX = (thisControl.position().left), posY = (thisControl.position().top + 40);
+
+            var model = $('div[ng-class="{active: ' + helpModelId + '}"]');
+            model.css('left', posX + 'px');
+            model.css('top', posY + 'px');
+        };
+
     }) // end ImpactAnalysisController
 
 
