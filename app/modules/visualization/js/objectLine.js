@@ -1379,9 +1379,14 @@ policycompass.viz.line = function (options) {
                     }
 					*/
                     
+                    if (isNaN(self.newScale))
+                    {
+                    	self.newScale =1;
+                    }
+                                        
                     //var valueY = (self.height) + self.margin.top + 30 + (incremetY+1) * 20;
-                    var valueY = (self.height) + self.margin.topIni + 30 + (incremetY+1) * 20;
-                    
+                    var valueY = (self.height) + self.margin.topIni + 30 + (incremetY+1) * 20*self.newScale;
+                                        
                     /*
                     var valueY = (self.height) + self.margin.top + 50 + (incremetY) * 20;
                     if (cnti % self.legendsColumn == 0) {
@@ -1394,7 +1399,7 @@ policycompass.viz.line = function (options) {
 					
                     self.svg.append("rect")
                     .attr("x", valueX - 10)
-                    .attr("y", valueY - 5)
+                    .attr("y", valueY - 5*self.newScale)
                     .attr("width", 5)
                     .attr("height", 5)
                     .style("fill", function (d, i) {
@@ -2315,13 +2320,18 @@ policycompass.viz.line = function (options) {
 	                    return resTRext;
 	                });
 			
+				if (isNaN(self.newScale))
+                {
+                	self.newScale =1;
+                }
+                
 	            //add legend events 				
 				historicalEvents.enter().append("rect")
 					.attr("x", valueX - 10)
 					.attr("y", function (d, i) {                    	
 						//var valueY = (self.height) + self.margin.top + 30 + (i) * 20 + (20 * self.dataToPlotLength );
 						//var valueY = (self.height) + self.margin.top + 30 + (i+1) * 20;
-						var valueY = (self.height) + self.margin.topIni + 30 + (i+1) * 20;
+						var valueY = (self.height) + self.margin.topIni + 30 + (i+1) * 20*self.newScale;
 						return valueY - 5;
 					})		
 					.attr("width", 5)
@@ -2339,7 +2349,7 @@ policycompass.viz.line = function (options) {
 	                    .attr("y", function (d, i) {
 	                        //var valueY = (self.height) + self.margin.top + 30 + (i) * 20 + (20 * self.dataToPlotLength );
 	                        //var valueY = (self.height) + self.margin.top + 30 + (i+1) * 20;
-	                        var valueY = (self.height) + self.margin.topIni + 30 + (i+1) * 20;
+	                        var valueY = (self.height) + self.margin.topIni + 30 + (i+1) * 20*self.newScale;
 							return valueY;
 	                    })
 	                    .attr("text-anchor", "center")
@@ -2786,7 +2796,9 @@ policycompass.viz.line = function (options) {
             }
 
             var newScale = (self.width) / self.maxWidth;
-
+			
+			self.newScale = newScale;
+			
             self.margin = {
                 'top': self.maxMargin.top * newScale,
                 'right': self.maxMargin.right * newScale,
