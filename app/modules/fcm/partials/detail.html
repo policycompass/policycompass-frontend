@@ -7,7 +7,7 @@
 
             <div class="button-group">
                 <a type="button" class="btn btn-primary  btn-create" href="#!/models/{{ models.model.id }}/edit">Edit</a>
-                <a type="button" class="btn btn-danger  btn-clear" ng-click="deleteModel(models.model)">Delete</a>
+                <a type="button" class="btn btn-danger  btn-clear" ng-click="deleteModel(models.model)" ng-if="user.state.isAdmin==true || models.model.userPath==user.state.userPath">Delete</a>
             </div>
         </div>
     </div>
