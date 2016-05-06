@@ -1,6 +1,7 @@
 <div class="modal-header">
-    <div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div>
-    <div ng-class="{active: help}" class="help-text">
+    <div class="fonticon fonticon-help help-switch" ng-click="openHelpModel($event,'help5')"></div>
+    <div ng-class="{active: help5}" class="help-text">
+        <div class="fonticon fonticon-close" ng-click="help5=!help5"></div>
         <p>Impact analysis shows the change of final concept values with regard to the change of initial concept value. One dimensional impact analysis shows the impact of changes in selected concept value on the other concepts’ final value. Two dimensional impact analysis enables users adjust initial value of two concepts simultaneously then user can check the final value of selected target concept accordingly.</p>
     </div>
     <h4 class="modal-title">Impact Analysis</h4>
