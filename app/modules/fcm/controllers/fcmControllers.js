@@ -94,10 +94,14 @@ angular.module('pcApp.fcm.controllers.fcm', [
                 var dlg = dialogs.confirm("Are you sure?", "Do you want to delete the FCM model '" + model.title + "' permanently?");
                 dlg.result.then(function () {
                     // Delete the model via the API
-                    FcmSearchDelete.delete({id: $routeParams.fcmId}, function () {
+                    FcmSearchDelete.delete({ id: $routeParams.fcmId }, function () {
+                    }, function (err) {
+                        throw { message: err.statusText + "<br/><br/>" + (err.data == "" ? "" : JSON.stringify(err.data)) };
                     });
-                    FcmModel.delete({id: $routeParams.fcmId}, function () {
+                    FcmModel.delete({ id: $routeParams.fcmId }, function () {
                         $location.path('/browse');
+                    }, function (err) {
+                        throw { message: err.statusText + "<br/><br/>" + (err.data == "" ? "" : JSON.stringify(err.data)) };
                     });
                 });
             };
@@ -227,4 +231,3 @@ angular.module('pcApp.fcm.controllers.fcm', [
 
         }
     ]);
-
