@@ -39,7 +39,6 @@
         "Leaflet.Pancontrol": "https://github.com/kartena/Leaflet.Pancontrol.git#~0.6.0",
         "wellaged": "~0.0.3",
         "angular-scroll": "=1.0.0",
-        "angular-cookies": "=1.2.0"
     },
     "resolutions": {
         "angular-bootstrap": "=0.12.0",

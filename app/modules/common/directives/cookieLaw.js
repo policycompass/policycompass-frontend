@@ -2,14 +2,14 @@
  * Directives for Cookie Law
  */
 
-angular.module('pcApp.common.directives.cookieLaw', ['ngCookies'])
+angular.module('pcApp.common.directives.cookieLaw', ['ngStorage'])
 
-    .directive('cookieLaw', ['$cookies', function($cookies){
+    .directive('cookieLaw', ['$localStorage', function($localStorage){
         return{
             restrict: 'A',
             templateUrl:'modules/common/partials/cookieLaw.html',
             link: function(scope){
-                if(!$cookies.closedCookieLaw){
+                if(!$localStorage.closedCookieLaw){
                     scope.hideCookieLaw  = false;
                 }
                 else{
@@ -18,8 +18,7 @@ angular.module('pcApp.common.directives.cookieLaw', ['ngCookies'])
 
                 scope.closeCookieLaw = function(){
                     scope.hideCookieLaw  = true;
-                    $cookies.closedCookieLaw = 'true';
-                    console.log("$cookies.closedCookieLaw " + $cookies.closedCookieLaw);
+                    $localStorage.closedCookieLaw = 'true';
                 }
             },
 
