@@ -91,7 +91,7 @@ angular.module('pcApp.indicators.controllers.indicator', [
             $scope.mode = "edit";
             $scope.indicator = Indicator.get({id: $routeParams.indicatorId}, function (indicator) {
             }, function (err) {
-                throw {message: JSON.stringify(err.data)};
+                $location.path('/browse');
             });
 
             $scope.indicator.$promise.then(function (indicator) {
@@ -133,7 +133,7 @@ angular.module('pcApp.indicators.controllers.indicator', [
                 });
                 indicator.policy_domains = domains;
             }, function (err) {
-                throw {message: JSON.stringify(err.data)};
+                $location.path('/browse');
             });
 
             // Function for deleting the indicator

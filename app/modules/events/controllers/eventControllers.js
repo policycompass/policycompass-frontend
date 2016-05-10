@@ -46,7 +46,7 @@ angular.module('pcApp.events.controllers.event', [
                     individuals.push(Individual.getById(i))
                 });
             }, function (error) {
-                alert(error.data.message);
+                $location.path('/browse');
             });
 
             $scope.deleteEvent = function (event) {
@@ -97,7 +97,7 @@ angular.module('pcApp.events.controllers.event', [
                     output: []
                 };
             }, function (err) {
-                throw {message: JSON.stringify(err.data)};
+                $location.path('/browse');
             });
 
 
