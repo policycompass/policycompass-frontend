@@ -52,6 +52,9 @@ commonmanager.config(function ($routeProvider) {
         .when('/dataProtection', {
             templateUrl: 'modules/common/partials/dataprotection.html'
         })
+        .when('/glossary', {
+            templateUrl: 'modules/common/partials/glossary.html'
+        })
         .when('/login', {
             templateUrl: 'modules/common/partials/login.html'
         })
