@@ -1301,7 +1301,17 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                         promises.push(Individual.getById(row).$promise);
                     });
 
-
+                    // All Promises have to be resolved
+                    $q.all(promises).then(function (individuals) {
+                        angular.forEach(individuals, function (v) {
+                            $scope.user.ListMetricsFilter[0].country.push({
+                                code: v.code,
+                                data_class: v.data_class,
+                                id: v.id,
+                                title: v.title
+                            });
+                        });
+                    });
 
                     //console.log($scope.user.ListMetricsFilter);
                 }
