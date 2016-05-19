@@ -1292,6 +1292,19 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                     $scope.user.ListMetricsFilter.splice(0, 1);
                 }
 
+                //to populate all country list
+                if ($scope.user.ListMetricsFilter != null && $scope.user.ListMetricsFilter.length > 0 && $scope.user.ListMetricsFilter[0].spatials != null && $scope.user.ListMetricsFilter[0].spatials.length > 0) {
+                    $scope.user.ListMetricsFilter[0].country = [];
+                    var promises = [];
+                    // Resolve all Individuals first
+                    angular.forEach($scope.user.ListMetricsFilter[0].spatials, function (row) {
+                        promises.push(Individual.getById(row).$promise);
+                    });
+
+
+
+                    //console.log($scope.user.ListMetricsFilter);
+                }
             }
         });
 
