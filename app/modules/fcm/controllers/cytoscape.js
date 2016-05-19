@@ -1285,6 +1285,20 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         $scope.Models = [];
         $scope.Models = FCMModelsDetail.getModels();
 
+        //Allow only one dataset selection
+        $scope.$watchCollection('user.ListMetricsFilter', function (datasetsList) {
+            if ($scope.user != null) {
+                if ($scope.user.ListMetricsFilter != null && $scope.user.ListMetricsFilter.length > 1) {
+                    $scope.user.ListMetricsFilter.splice(0, 1);
+                }
+
+            }
+        });
+
+        $scope.selectCountry = function (countryId) {
+            $scope.user.ListMetricsFilter[0].countryId = countryId;
+        };
+
         $scope.displaycontentMetricModal = function (idMetric) {
             var containerLink = document.getElementById("modal-edit-metric-button-" + idMetric);
             $(containerLink).parent().next().toggle(200);
