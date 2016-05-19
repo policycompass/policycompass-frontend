@@ -1337,7 +1337,13 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         }; // end cancel
 
         $scope.save = function () {
-            $modalInstance.close($scope.user);
+            //show validation error if country is not selected
+            if ($scope.user.ListMetricsFilter.length > 0 && $scope.user.ListMetricsFilter[0].country.length > 0
+                && $scope.user.ListMetricsFilter[0].country[0].data_class == 'Country' && $scope.user.ListMetricsFilter[0].countryId == null) {
+                dialogs.error('Validation Error', 'Please select a country.');
+            }
+            else
+                $modalInstance.close($scope.user);
         }; // end save
 
     }) // end EditMatricController
