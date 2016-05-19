@@ -1277,7 +1277,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
     ])
 
 
-    .controller('EditMetricsController', function ($scope, $modalInstance, data, FCMModelsDetail) {
+    .controller('EditMetricsController', function ($scope, Individual, $q, dialogs, $modalInstance, data, FCMModelsDetail) {
         $scope.user = [
             { FCMModelId: -1 }, { title: '' }, { description: '' }, { keywords: '' }
         ];
