@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h1 class="ng-binding"><span class="glyphicon glyphicon-list-alt"></span> Link datasets</h1>
+    <h1 class="ng-binding"><span class="glyphicon glyphicon-list-alt"></span>Link datasets</h1>
 </div>
 <div class="modal-body">
     <div id="basic-modal-content-pc">
@@ -43,7 +43,17 @@
         </tabset>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary btn-close" ng-click="save()">Close</button>
-        <a href="#!/datasets/create" target="_blank" class="btn btn-default btn-create" id="adddataset">Create a new dataset</a>
+        <div class="btn-group dropup" style="margin-right: 10px;" dropdown ng-if="user.ListMetricsFilter.length>0 && user.ListMetricsFilter[0].country.length>0 && user.ListMetricsFilter[0].country[0].data_class=='Country'">
+            <a href="" class="btn dropdown-toggle" dropdown-toggle>Select Country
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" dropdown-menu>
+                <li ng-repeat="country in user.ListMetricsFilter[0].country">
+                    <a ng-click="selectCountry(country.id)" ng-bind="country.title"></a>
+                </li>
+            </ul>
+        </div>
+        <button class="btn btn-primary btn-close" ng-click="save()">Save</button>
+        <button class="btn btn-primary btn-close" ng-click="cancel()">Close</button>
     </div>
 </div>

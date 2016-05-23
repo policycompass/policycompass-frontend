@@ -1277,13 +1277,50 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
     ])
 
 
-    .controller('EditMetricsController', function ($scope, $modalInstance, data, FCMModelsDetail) {
+    .controller('EditMetricsController', function ($scope, Individual, $q, dialogs, $modalInstance, data, FCMModelsDetail) {
         $scope.user = [
             { FCMModelId: -1 }, { title: '' }, { description: '' }, { keywords: '' }
         ];
 
         $scope.Models = [];
         $scope.Models = FCMModelsDetail.getModels();
+
+        //Allow only one dataset selection
+        $scope.$watchCollection('user.ListMetricsFilter', function (datasetsList) {
+            if ($scope.user != null) {
+                if ($scope.user.ListMetricsFilter != null && $scope.user.ListMetricsFilter.length > 1) {
+                    $scope.user.ListMetricsFilter.splice(0, 1);
+                }
+
+                //to populate all country list
+                if ($scope.user.ListMetricsFilter != null && $scope.user.ListMetricsFilter.length > 0 && $scope.user.ListMetricsFilter[0].spatials != null && $scope.user.ListMetricsFilter[0].spatials.length > 0) {
+                    $scope.user.ListMetricsFilter[0].country = [];
+                    var promises = [];
+                    // Resolve all Individuals first
+                    angular.forEach($scope.user.ListMetricsFilter[0].spatials, function (row) {
+                        promises.push(Individual.getById(row).$promise);
+                    });
+
+                    // All Promises have to be resolved
+                    $q.all(promises).then(function (individuals) {
+                        angular.forEach(individuals, function (v) {
+                            $scope.user.ListMetricsFilter[0].country.push({
+                                code: v.code,
+                                data_class: v.data_class,
+                                id: v.id,
+                                title: v.title
+                            });
+                        });
+                    });
+
+                    //console.log($scope.user.ListMetricsFilter);
+                }
+            }
+        });
+
+        $scope.selectCountry = function (countryId) {
+            $scope.user.ListMetricsFilter[0].countryId = countryId;
+        };
 
         $scope.displaycontentMetricModal = function (idMetric) {
             var containerLink = document.getElementById("modal-edit-metric-button-" + idMetric);
@@ -1300,7 +1337,13 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         }; // end cancel
 
         $scope.save = function () {
-            $modalInstance.close($scope.user);
+            //show validation error if country is not selected
+            if ($scope.user.ListMetricsFilter.length > 0 && $scope.user.ListMetricsFilter[0].country.length > 0
+                && $scope.user.ListMetricsFilter[0].country[0].data_class == 'Country' && $scope.user.ListMetricsFilter[0].countryId == null) {
+                dialogs.error('Validation Error', 'Please select a country.');
+            }
+            else
+                $modalInstance.close($scope.user);
         }; // end save
 
     }) // end EditMatricController

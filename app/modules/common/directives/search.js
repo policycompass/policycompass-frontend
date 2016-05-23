@@ -297,7 +297,7 @@ angular.module('pcApp.common.directives.search', [])
                     $scope.itemssearchfrom = 0;
                     $scope.pagToSearch = 1;
 
-                    $scope.clickDataset = function (idDataset, title, issued) {
+                    $scope.clickDataset = function (spatials, idDataset, title, issued) {
                         //console.log("idDataset="+idDataset);
                         var addDataset = true;
                         if (idDataset > 0) {
@@ -335,7 +335,8 @@ angular.module('pcApp.common.directives.search', [])
                             var myObject = {
                                 'id': idDataset,
                                 'title': title,
-                                'issued': issued
+                                'issued': issued,
+                                'spatials': spatials //addding country list
                             };
                             $scope.datasetsList.push(myObject);
                             $scope.functionfordataset();
