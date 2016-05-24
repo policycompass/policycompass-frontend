@@ -468,7 +468,7 @@ angular.module('pcApp.common.directives.search', [])
                         '<div class="row">' +
                         	'<ul class="datasets-list metrics-list ">' +
                         		'<li ng-class="{\'metrics-list dataset-list active\':DatasetSelectediId_[dataset._source.id]>0,\'metrics-list dataset-list\':DatasetSelectediId_[dataset.id]}" name="designer-dataset-num-{{dataset.id}}" ng-repeat="dataset in datasetsFilter.hits.hits track by $index" >' +
-                					'<a ng-show="viewAll || arrayGranularitiesAvailable.indexOf(dataset._source.time.resolution)!=-1 || DatasetSelectediId_[dataset._source.id]>0" href="" x-ng-click="clickDataset(dataset._source.id, dataset._source.title, dataset._source.issued);"  title="{{ !DatasetSelectediId_[dataset._source.id]>0 && \'Add \' || \'Remove \' }} \'{{dataset._source.title}}\'">{{dataset._source.title}} - {{ dataset._source.issued | date:\'longDate\' }}</a>' +
+                					'<a ng-show="viewAll || arrayGranularitiesAvailable.indexOf(dataset._source.time.resolution)!=-1 || DatasetSelectediId_[dataset._source.id]>0" href="" x-ng-click="clickDataset(dataset.source.spatials, dataset.source.id, dataset._source.title, dataset._source.issued);"  title="{{ !DatasetSelectediId_[dataset._source.id]>0 && \'Add \' || \'Remove \' }} \'{{dataset._source.title}}\'">{{dataset._source.title}} - {{ dataset._source.issued | date:\'longDate\' }}</a>' +
                 					'<span ng-hide="viewAll || arrayGranularitiesAvailable.indexOf(dataset._source.time.resolution)!=-1  || DatasetSelectediId_[dataset._source.id]>0">{{dataset._source.title}} - {{ dataset._source.issued | date:\'longDate\' }}</span>' +
                 				'</li>' +
                 			'</ul>' +
