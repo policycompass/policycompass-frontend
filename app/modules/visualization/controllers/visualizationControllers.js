@@ -1737,6 +1737,10 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						$scope.IndividualDatasetCheckboxes_ = angular.copy(dataIn);
 					}
 
+					$scope.copyfinalScales = function (dataIn) {
+						$scope.datasetsFinalScales = angular.copy(dataIn);
+					}
+					
 					$scope.enableRevertButton = function() {						
 						$scope.disableRevert = false;						
 					}
@@ -2033,7 +2037,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                     $scope.TitleUnits = [];
                     $scope.TitleIndividuals = [];
-
+					$scope.TitleUnitsByDataset = [];
+					$scope.TitleIndividuals = [];
 
                     $scope.recoverRelatedData = function () {
                         $scope.recoverDataEnds = false;
@@ -2054,7 +2059,16 @@ angular.module('pcApp.visualization.controllers.visualization', [
                             $scope.numberOfArguments = $scope.numberOfArguments + 1;
                         }
 
+						$scope.TitleUnitsByDataset = [];
                         for (var i = 1; i < arguments.length; i++) {
+                        	
+
+							if ($scope.datasetsFinalScales) {
+								if ($scope.datasetsFinalScales[arguments[i]['id']]) {
+									$scope.TitleUnitsByDataset[arguments[i]['id']] = $scope.datasetsFinalScales[arguments[i]['id']]['unit'];
+								}
+							}
+                        	
                             if ($scope.TitleUnits[arguments[i]['unit_id']]) {
                                 $scope.cntYLabels = $scope.cntYLabels + 1;
 
@@ -2435,7 +2449,27 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                                                 for (var jj = 0; jj < arguments2['data']['table'].length; jj++) {
 
                                                                     if (arguments2['data']['table'][jj].individual == countryData.id) {
-                                                                        var obj = arguments2['data']['table'][jj].values;
+                                                                        //var obj = arguments2['data']['table'][jj].values;
+
+																		var multiplicador = 1;
+
+																		if ($scope.datasetsFinalScales) {
+																			if ($scope.datasetsFinalScales[arguments2['id']]) {																			
+																				var obj = {};
+																				multiplicador = $scope.datasetsFinalScales[arguments2['id']].scale;
+																				angular.forEach(arguments2['data']['table'][jj].values, function(value, key) {										
+																					var newValue = value * multiplicador;
+																					obj[key]=newValue;
+																				});
+																			}
+																			else {
+																				var obj = arguments2['data']['table'][jj].values;
+																			}
+																		}
+																		else {
+																			var obj = arguments2['data']['table'][jj].values;
+																		}
+
 
                                                                         for (ii in obj) {
 
@@ -2530,7 +2564,11 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                                         $sem = 0;
                                         while (labelTemporalYAxes == "") {
-                                            if (arguments[i]['unit_id'] == 0) {
+                                        	
+											if ($scope.TitleUnitsByDataset[arguments[i]['id']]) {
+												var labelTemporalYAxes = $scope.TitleUnitsByDataset[arguments[i]['id']];
+											}
+                                            else if (arguments[i]['unit_id'] == 0) {
                                                 var labelTemporalYAxes = "No unit";
                                             } else if ($scope.TitleUnits[arguments[i]['unit_id']]) {
                                                 var labelTemporalYAxes = $scope.TitleUnits[arguments[i]['unit_id']];
@@ -2590,8 +2628,30 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                                             if (plotindividual) {
 
-                                                var obj = arguments[i]['data']['table'][j].values;
-                                                obj_[j] = arguments[i]['data']['table'][j].values;
+                                            	var newDataObject = {};
+												var multiplicador = 1;
+
+												if ($scope.datasetsFinalScales) {
+													if ($scope.datasetsFinalScales[arguments[i]['id']]) {													
+														multiplicador = $scope.datasetsFinalScales[arguments[i]['id']].scale;
+														angular.forEach(arguments[i]['data']['table'][j].values, function(value, key) {										
+															var newValue = value * multiplicador;
+											 				newDataObject[key]=newValue;
+														});
+													}
+													else {
+														newDataObject = arguments[i]['data']['table'][j].values;
+													}			
+												}
+												else {
+													newDataObject = arguments[i]['data']['table'][j].values;
+												}			
+
+												//var obj = arguments[i]['data']['table'][j].values;
+												//obj_[j] = arguments[i]['data']['table'][j].values;
+
+												var obj = newDataObject;
+												obj_[j] = newDataObject;
 
                                                 var ordered = {};
 
@@ -2666,6 +2726,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                                         'Color': lineColor,
                                                         'Type': type
                                                     }
+
                                                     arrayDataset.push(arrayDatasetTmp);
                                                     $scope.arrayDataset.push(arrayDatasetTmp);
 
@@ -3756,7 +3817,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                 $scope.optionsCombo_ = [];
                 $scope.optionsCombo_value_ = [];
-
+				$scope.datasetsFinalScales = [];
 
                 for (i in $scope.visualization.datasets_in_visualization) {
 
@@ -3769,9 +3830,15 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                     var arrayConfigMetricsFilters = configurationMetricsFilters.split(",");
 
-
                     var valueColumTemp = "";
                     var valueGroupTemp = "";
+                    
+                    
+					var semaforoUnit = false;
+					var semaforoScale = false;
+					var valueTmpUnit = '';
+					var valueTmpScale = '';
+
                     for (x = 0; x < arrayConfigMetricsFilters.length; x++) {
                         var dataFilter = arrayConfigMetricsFilters[x].split(":");
 
@@ -3805,6 +3872,14 @@ angular.module('pcApp.visualization.controllers.visualization', [
                         }
 
                     }
+
+					if (($scope.visualization.datasets_in_visualization[i].scale) && ($scope.visualization.datasets_in_visualization[i].unit)) {
+						var valueTmpUnit = $scope.visualization.datasets_in_visualization[i].unit;
+						var valueTmpScale = $scope.visualization.datasets_in_visualization[i].scale;
+						$scope.datasetsFinalScales[id] = {'unit':valueTmpUnit, scale: valueTmpScale}
+						//console.log($scope.datasetsFinalScales[id]);
+					}
+					
 
                     selectedText = " ";
 
@@ -4021,11 +4096,24 @@ angular.module('pcApp.visualization.controllers.visualization', [
                         var selectorIndividualColorData = value;
 
                         var visualization_query_data = 'Individual:' + selectorIndividualData + ',Colors:' + selectorIndividualColorData;
+						
+						var scaleDataset = null;
+						var unitDataset = null;
 
+						angular.forEach($scope.datasetsFinalScales, function(value, key) {
+							if (value) {
+								if (myindex==key) {
+									scaleDataset = value.scale;
+									unitDataset = value.unit;
+								}
+							}
+						});
 
                         var rowMetric = {
                             dataset: myindex,
-                            visualization_query: visualization_query_data
+                            visualization_query: visualization_query_data,
+                            scale: scaleDataset,
+                            unit: unitDataset
                         };
 
                         dataMetrics.push(rowMetric);
@@ -4108,7 +4196,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                     if ($cntHE == 0) {
                         delete $scope.visualization.historical_events_in_visualization;
                     }
-
+					
 
                     Visualization.save($scope.visualization, function (value, responseHeaders) {
                         $location.path('/visualizations/' + value.id);
@@ -4404,9 +4492,24 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                         var visualization_query_data = 'Individual:' + selectorIndividualData + ',Colors:' + selectorIndividualColorData;
 
+						var scaleDataset = null;
+						var unitDataset = null;
+
+						angular.forEach($scope.datasetsFinalScales, function(value, key) {
+							if (value) {
+								if (myindex==key) {
+									scaleDataset = value.scale;
+									unitDataset = value.unit;
+								}
+							}
+						});
+
+
                         var rowMetric = {
                             dataset: myindex,
-                            visualization_query: visualization_query_data
+                            visualization_query: visualization_query_data,
+                            scale: scaleDataset,
+                            unit: unitDataset
                         };
 
                         dataMetrics.push(rowMetric);
@@ -4506,23 +4609,84 @@ angular.module('pcApp.visualization').filter('pagination', function () {
         '$location',
         '$log',
         'API_CONF',
-        function ($scope, VisualizationByDataset, Visualization, Event, $filter, $route, $routeParams, $modalInstance, $modal, item, searchclient, $location, $log, API_CONF) {
+		'Dataset',
+		'dialogs',
+        function ($scope, VisualizationByDataset, Visualization, Event, $filter, $route, $routeParams, $modalInstance, $modal, item, searchclient, $location, $log, API_CONF, Dataset, dialogs) {
+
+			if (!$scope.datasetsUnits) {
+				$scope.datasetsUnits = [];
+			}
+
+			$scope.applayscale = [];
+			$scope.scaleperDataset = [];
+			$scope.unitperDataset = [];
+			if ($scope.datasetsFinalScales) {
+				angular.forEach($scope.datasetsFinalScales, function(value, key) {
+					if (value) {
+						$scope.applayscale[key] = true;
+						$scope.scaleperDataset[key]=value.scale;
+						$scope.unitperDataset[key]=value.unit;
+					}
+				});
+			}
+			
+			$scope.finalScales = [];
+			
+			$scope.$watchCollection('ListMetricsFilterModal', function () {
+				angular.forEach($scope.ListMetricsFilterModal, function (item) {
+					$scope.tmpdataset = Dataset.get({id: item.id}, function (tmpdataset) {
+						$scope.datasetsUnits[tmpdataset.id] = tmpdataset.unit_id;
+					}, function (err) {
+						console.log(err.data)
+						//throw {message: JSON.stringify(err.data)};
+					});
+				});
+			});
+
 
             $scope.displaycontentMetricModal = function (idMetric) {
                 var containerLink = document.getElementById("modal-edit-metric-button-" + idMetric);
                 $(containerLink).parent().next().toggle(200);
             };
 
-            $scope.okModalWindowDataset = function () {
-            	
-            	$scope.enableRevertButton();
-            	$scope.copyDatasets($scope.ListMetricsFilterModal);
-            	
-            	$scope.copyIndividuals($scope.ModalIndividualDatasetCheckboxes_);
-            	
-            	$scope.rePlotGraph();
-                $modalInstance.close();
-            };
+
+			$scope.okModalWindowDataset = function () {
+				var acceptApply = true;
+				var extraAlertMessage = '<ul>';
+
+				angular.forEach($scope.applayscale, function (value, item) {  
+					//console.log(value);
+					//console.log(item);
+					if (value==true) {
+						if (!$scope.scaleperDataset[item] || !$scope.unitperDataset[item]) {
+							angular.forEach($scope.ListMetricsFilterModal, function (valueDataset, itemDataset) {
+								if (valueDataset.id==item) {
+									acceptApply = false
+									extraAlertMessage = extraAlertMessage +"<li>"+valueDataset.title+"</li>"; 
+								}
+							});
+						}
+						else {
+							$scope.finalScales[item] = {'scale':$scope.scaleperDataset[item], 'unit':$scope.unitperDataset[item]}
+						}
+					}
+				});
+
+				extraAlertMessage = extraAlertMessage +'</ul>';
+
+				if (acceptApply) {
+					$scope.enableRevertButton();
+					$scope.copyDatasets($scope.ListMetricsFilterModal);
+					$scope.copyIndividuals($scope.ModalIndividualDatasetCheckboxes_);
+					$scope.copyfinalScales($scope.finalScales);
+					$scope.rePlotGraph();
+					$modalInstance.close();
+				}
+				else {
+					dialogs.error("Missing data", "Please revise that all mandatory data is fulfil in:"+extraAlertMessage);
+				}
+			};
+
 					
             $scope.cancelModalWindowDataset = function () {            	
                 $modalInstance.dismiss('cancel');
