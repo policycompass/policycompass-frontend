@@ -420,7 +420,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         };
 
         $scope.editMetrics = function (index) {
-            dlg = dialogs.create('modules/fcm/partials/editmetrics.html', 'EditMetricsController', {}, {
+            dlg = dialogs.create('modules/fcm/partials/editmetrics.html', 'EditMetricsController', { concept: $scope.SimulationConcepts[index] }, {
                 key: false,
                 back: 'static'
             });
