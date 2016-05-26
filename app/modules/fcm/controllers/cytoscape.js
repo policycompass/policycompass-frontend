@@ -1278,13 +1278,35 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
     ])
 
 
-    .controller('EditMetricsController', function ($scope, Individual, $q, dialogs, $modalInstance, data, FCMModelsDetail) {
+    .controller('EditMetricsController', function ($scope, Individual, $q, $timeout, dialogs, Dataset, $modalInstance, data, FCMModelsDetail) {
         $scope.user = [
             { FCMModelId: -1 }, { title: '' }, { description: '' }, { keywords: '' }
         ];
 
         $scope.Models = [];
         $scope.Models = FCMModelsDetail.getModels();
+
+        //Mark saved dataset as selected
+        $scope.markSelectedDataset = function () {
+            $timeout(function () {
+                if ($('#filterDatasets div').length > 0 && $('#filterDatasets div a[title="Add  \'' + data.concept.metricTitle + '\'"]').length > 0) {
+                    $('#filterDatasets div a[title="Add  \'' + data.concept.metricTitle + '\'"]').click();
+
+                    //if (data.concept.metricCountryId != null && data.concept.metricCountryId != '') {
+                    //    $timeout(function () {
+                    //        $('li[ng-repeat="country in user.ListMetricsFilter[0].country"] a[data-id="' + data.concept.metricCountryId + '"]').click();
+                    //    }, 500);
+                    //}
+                    //else {
+                    //    console.log('0');
+                    //    $scope.markSelectedDataset();
+                    //}
+                }
+            }, 1000);
+        };
+
+        if (data.concept.metricTitle != null && data.concept.metricTitle != 'Link Datasets' && data.concept.metricTitle != '')
+            $scope.markSelectedDataset();
 
         //Allow only one dataset selection
         $scope.$watchCollection('user.ListMetricsFilter', function (datasetsList) {
