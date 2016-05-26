@@ -1,3 +1,4 @@
+
 <div class="modal-header">
     <h1 class="ng-binding"><span class="glyphicon glyphicon-list-alt"></span>Link datasets</h1>
 </div>
@@ -43,13 +44,13 @@
         </tabset>
     </div>
     <div class="modal-footer">
-        <div class="btn-group dropup" style="margin-right: 10px;" dropdown ng-if="user.ListMetricsFilter.length>0 && user.ListMetricsFilter[0].country.length>0 && user.ListMetricsFilter[0].country[0].data_class=='Country'">
-            <a href="" class="btn dropdown-toggle" dropdown-toggle>Select Country
+        <div class="btn-group dropup" style="margin-right: 10px;" dropdown ng-if="user.ListMetricsFilter.length>0 && user.ListMetricsFilter[0].country.length>0">
+            <a id="ddlCountryList" href="" class="btn dropdown-toggle" dropdown-toggle>Select Country
                 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu" dropdown-menu>
                 <li ng-repeat="country in user.ListMetricsFilter[0].country">
-                    <a ng-click="selectCountry(country.id)" ng-bind="country.title"></a>
+                    <a data-id="{{country.id}}" ng-click="selectCountry(country.id, country.title)" ng-bind="country.title"></a>
                 </li>
             </ul>
         </div>
