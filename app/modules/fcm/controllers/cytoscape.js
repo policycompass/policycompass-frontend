@@ -428,6 +428,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 if (user.ListMetricsFilter.length > 0) {
                     $scope.SimulationConcepts[index].metricId = user.ListMetricsFilter[0].id;
                     $scope.SimulationConcepts[index].metricTitle = user.ListMetricsFilter[0].title;
+                    $scope.SimulationConcepts[index].metricCountryId = user.ListMetricsFilter[0].countryId;
                     $scope.SimulationConcepts[index].individuals = user.Individuals;
                 }
             }, function () {
