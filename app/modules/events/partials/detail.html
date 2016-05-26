@@ -9,6 +9,7 @@
             </div>
         </div>
     </div>
+    <!--
     <div class="row">
         <div class="metadata metadata-event metadata-event-description">
             <div class="form-group form-group-description" ngshow="event.description">
@@ -19,7 +20,7 @@
 
 
     </div>
-
+	-->
 
     <div class="row">
         <h3 class="legend-primary">Details</h3>
@@ -27,10 +28,10 @@
 
         <!-- FIELDS START -->
 
-
+		<div class="itemlayout metadata metadata-event" item="event" type="'event'"></div>
 
         <div class="metadata metadata-event">
-
+			<!--
             <div class="form-group form-group-keywords">
                 <div class="form-item" ng-show="event.policy_domains">
                     <div class="field-label">Policy Domains</div>
@@ -38,12 +39,13 @@
                         <span ng-repeat="p in event.policy_domains">{{ p.title }}{{$last ? '' : ', '}}</span></div>
                 </div>
             </div>
-
+			-->
+			<!--
             <div class="form-group form-group-keywords" ngshow="event.keywords">
                 <div class="field-label">Keywords</div>
                 <div class="field-content">{{event.keywords}}</div>
             </div>
-
+			-->
             <div class="form-group form-group-date">
                 <div class="form-item" ngshow="event.startEventDate">
                     <div class="field-label">Event start</div>
@@ -55,6 +57,7 @@
                     <div class="field-content">{{ event.endEventDate | date:'longDate' }}</div>
                 </div>
             </div>
+            <!--
             <div class="form-group form-group-modified">
                 <div class="form-item" ng-if="event.creator_path">
                     <div class="field-label">Added by</div>
@@ -80,8 +83,8 @@
                     <div class="field-content">{{ event.dateModified | date:'longDate' }}</div>
                 </div>
             </div>
-
-
+			-->
+			<!--
             <div class="form-group form-group-location">
                 <div class="form-item" ng-if="event.spatials">
                         <div class="field-label">Locations</div>
@@ -98,6 +101,7 @@
                     <div class="field-content">{{ language.title }}</div>
                 </div>
             </div>
+           -->
             <div class="form-group form-group-link" ngshow="event.detailsURL">
                 <div class="field-label">Details URL</div>
                 <div class="field-content"><a href="{{ event.detailsURL }}" target="_blank">{{ event.detailsURL }}</a>
@@ -110,7 +114,7 @@
                 <div class="field-content">{{ event.externalResourceID }}</div>
             </div>
 
-
+			<!--
             <div class="form-group form-group-rating">
                 <div class="form-item">
                     <div class="field-label">Rating</div>
@@ -119,7 +123,7 @@
                     </div>
                 </div>
             </div>
-
+			-->
 
         </div>
 

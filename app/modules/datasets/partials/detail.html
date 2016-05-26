@@ -94,14 +94,16 @@
         <div class="row">
             <h3 class="legend-primary">Details</h3>
 
-            <div class="metadata metadata-event">
+			<div class="itemlayout metadata metadata-event" item="dataset" type="'dataset'"></div>
 
+            <div class="metadata metadata-event">
+				<!--
                 <div class="form-group form-group-keywords" ng-if="dataset.keywords">
                     <div class="field-label">Keywords</div>
                     <div class="field-content">{{dataset.keywords}}</div>
                 </div>
-
-
+				-->
+				<!--
                 <div class="form-group form-group-keywords" ng-if="dataset.policy_domains">
                     <div class="field-label">Policy Domains</div>
                     <div class="field-content">
@@ -109,7 +111,8 @@
                             <span ng-if="policydomain" resolve-policydomain id="policydomain"></span></div>
                     </div>
                 </div>
-
+				-->
+				<!--
                 <div class="form-group form-group-modified">
                     <div class="form-item" ng-if="dataset.creator_path">
                         <div class="field-label">Added by</div>
@@ -126,8 +129,8 @@
                         <div class="field-content">{{ dataset.modified | date:'longDate' }}</div>
                     </div>
                 </div>
-
-
+				-->
+				<!--
                 <div class="form-group form-group-location">
                     <div class="form-item" ng-if="dataset.language_id">
                         <div class="field-label">Language</div>
@@ -145,15 +148,15 @@
                         </div>
                     </div>
                 </div>
-
-
+				-->
+				<!--
                 <div class="form-group form-group-datasets">
                     <div class="form-item" ng-if="dataset.description">
                         <div class="field-label">Description</div>
                         <div class="field-content">{{ dataset.description }}</div>
                     </div>
                 </div>
-
+				-->
                 <div class="form-group form-group-link">
                     <div class="form-item" ng-if="dataset.resource.issued">
                         <div class="field-label">Resource Issued</div>
@@ -181,7 +184,7 @@
                 </div>
 
 
-
+				<!--
                 <div class="form-group form-group-lg">
                     <div class="form-item">
                         <div class="field-label">Rating</div>
@@ -198,7 +201,7 @@
                         <div class="field-content">{{ dataset.version }}</div>
                     </div>
                 </div>
-
+				-->
 
                 <div class="form-group form-group-visualisations form-group-external">
                     <div class="form-item">
