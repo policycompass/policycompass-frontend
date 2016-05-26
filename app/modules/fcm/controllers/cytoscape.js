@@ -1315,34 +1315,52 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                     $scope.user.ListMetricsFilter.splice(0, 1);
                 }
 
-                //to populate all country list
-                if ($scope.user.ListMetricsFilter != null && $scope.user.ListMetricsFilter.length > 0 && $scope.user.ListMetricsFilter[0].spatials != null && $scope.user.ListMetricsFilter[0].spatials.length > 0) {
+                ////to populate all country list
+                if ($scope.user.ListMetricsFilter != null && $scope.user.ListMetricsFilter.length > 0) {
+                    if (data.concept.metricCountryId != null && data.concept.metricCountryId != '') {
+                        $scope.user.ListMetricsFilter[0].countryId = data.concept.metricCountryId;
+                        data.concept.metricCountryId = null;
+                    }
+
                     $scope.user.ListMetricsFilter[0].country = [];
-                    var promises = [];
-                    // Resolve all Individuals first
-                    angular.forEach($scope.user.ListMetricsFilter[0].spatials, function (row) {
-                        promises.push(Individual.getById(row).$promise);
-                    });
+                    Dataset.get({ id: $scope.user.ListMetricsFilter[0].id },
+                        function (dataset) {
+                            console.log(dataset.data.individuals);
 
-                    // All Promises have to be resolved
-                    $q.all(promises).then(function (individuals) {
-                        angular.forEach(individuals, function (v) {
-                            $scope.user.ListMetricsFilter[0].country.push({
-                                code: v.code,
-                                data_class: v.data_class,
-                                id: v.id,
-                                title: v.title
+                            var promises = [];
+                            // Resolve all Individuals first
+                            angular.forEach(dataset.data.individuals, function (individualId) {
+                                promises.push(Individual.getById(individualId).$promise);
                             });
-                        });
-                    });
 
+                            // All Promises have to be resolved
+                            $q.all(promises).then(function (individuals) {
+                                angular.forEach(individuals, function (v) {
+                                    $scope.user.ListMetricsFilter[0].country.push({
+                                        code: v.code,
+                                        data_class: v.data_class,
+                                        id: v.id,
+                                        title: v.title
+                                    });
+                                });
+
+                                console.log('a' + $scope.user.ListMetricsFilter[0].countryId);
+                                if ($scope.user.ListMetricsFilter[0].countryId != null) {
+                                    $timeout(function () {
+                                        $('li[ng-repeat="country in user.ListMetricsFilter[0].country"] a[data-id="' + $scope.user.ListMetricsFilter[0].countryId + '"]').click();
+                                    }, 500);
+                                }
+                            });
+                        }
+                    );
                     //console.log($scope.user.ListMetricsFilter);
                 }
             }
         });
 
-        $scope.selectCountry = function (countryId) {
+        $scope.selectCountry = function (countryId, countryName) {
             $scope.user.ListMetricsFilter[0].countryId = countryId;
+            $('#ddlCountryList').html(countryName);
         };
 
         $scope.displaycontentMetricModal = function (idMetric) {
@@ -1361,8 +1379,8 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
         $scope.save = function () {
             //show validation error if country is not selected
-            if ($scope.user.ListMetricsFilter.length > 0 && $scope.user.ListMetricsFilter[0].country.length > 0
-                && $scope.user.ListMetricsFilter[0].country[0].data_class == 'Country' && $scope.user.ListMetricsFilter[0].countryId == null) {
+            if ($scope.user.ListMetricsFilter.length > 0 && $scope.user.ListMetricsFilter[0].country != null && $scope.user.ListMetricsFilter[0].country.length > 0
+                && $scope.user.ListMetricsFilter[0].countryId == null) {
                 dialogs.error('Validation Error', 'Please select a country.');
             }
             else
