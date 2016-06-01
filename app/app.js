@@ -80,7 +80,7 @@ var pcApp = angular.module('pcApp', pcAppDependencies)
             _paq.push(['enableLinkTracking']);
             _paq.push(['disableCookies']);
             _paq.push(['setTrackerUrl', tracker_url + 'piwik.php']);
-            _paq.push(['setSiteId', 1]);
+            _paq.push(['setSiteId', policyCompassConfig.PIWIK_SITE_ID ]);
             var $window = $windowProvider.$get();
             $window._paq = _paq;
             $.ajax({
