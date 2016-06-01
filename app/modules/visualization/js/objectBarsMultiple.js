@@ -1497,11 +1497,21 @@ policycompass.viz.barsMultiple = function (options) {
         self.eventsData = eventsData;
 
         if (Object.keys(dataIn).length === 0) {
-            self.svg.append("text")
-            .text("No data to plot. Add datasets")
-            .attr("class", "nodatatoplot")
-            .attr("x", self.margin.left)
-            .attr("y", self.margin.top)
+        	self.svg = d3.select(self.parentSelect)
+				.append("svg")
+				.attr("class", "pc_chart")
+				.attr("width", self.width + self.margin.left + self.margin.right + self.extraWidth)
+				.attr("height", self.height + self.margin.top + self.margin.bottom)        
+				.on("mousemove", mousemove)
+				.append("g")
+				.attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
+
+			self.svg.append("text")
+				.text("No data to plot.")
+				.attr("class", "nodatatoplot")
+				.attr("x", self.margin.left)
+				.attr("y", self.margin.top);
+			
         } else {
 
 
