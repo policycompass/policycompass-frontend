@@ -62,14 +62,14 @@
 
     <div id="page-container" class="ng-hide" ng-show="hideLoader">
 
-        <div cookie-law ng-hide="hideCookieLaw"></div>
+        <div cookie-law ng-hide="location.path() == '/' || hideCookieLaw"></div>
 
-        <div ng-include="'header.html'"></div>
+        <div ng-include="'header.html'" ng-hide="location.path() == '/'"></div>
         <div ng-view="" id="main-content"></div>
         <div class="wizardbar" show-Wizard="wizard_help"></div>
-        <div ng-include="'footer.html'"></div>
+        <div ng-include="'footer.html'" ng-hide="location.path() == '/'"></div>
 
-        <adh-cross-window-channel></adh-cross-window-channel>
+        <adh-cross-window-channel class="cross-window-channel"></adh-cross-window-channel>
     </div>
 
     <!--  Vendor Libs -->

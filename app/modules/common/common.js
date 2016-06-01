@@ -17,7 +17,7 @@ commonmanager.config(function ($routeProvider) {
     $routeProvider
         .when('/', {
             controller: 'StaticController',
-            templateUrl: 'modules/common/partials/main.html'
+            templateUrl: 'modules/common/partials/main_parallax.html'
         })
         .when('/browse', {
             controller: 'searchMainController',
