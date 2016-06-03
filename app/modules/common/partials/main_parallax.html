@@ -1,7 +1,9 @@
 <div ng-controller="ControllerScroller">
 
-
-    <div ng-include="'header.html'" class="landingpage"></div>
+    <div id="top-bar">
+        <div cookie-law ng-hide="hideCookieLaw" class="landingpage"></div>
+        <div ng-include="'header.html'" class="landingpage"></div>
+    </div>
 
     <div class="parallax">
 
@@ -137,7 +139,6 @@
                 </div>
             </div>
             <div class="parallax__layer parallax__layer--deep">
-                <div class="title">Deep Background Layer</div>
             </div>
         </div>
 
@@ -195,8 +196,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="parallax__layer parallax__layer--base">
             </div>
         </div>
 

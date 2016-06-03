@@ -181,13 +181,20 @@ html, body {
   background-size: cover !important;
 }
 
-.landingpage header {
-  background: transparent;
+#top-bar {
   position: fixed;
   z-index: 999;
   margin: 0 auto;
   left: 0;
   right: 0;
+}
+
+.landingpage header, .landingpage #cookielaw {
+  position: relative;
+}
+
+.landingpage header {
+  background: transparent;
 }
 
 .landingpage header #main-menu a  {
