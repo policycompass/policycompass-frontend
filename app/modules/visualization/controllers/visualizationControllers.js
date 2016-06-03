@@ -2289,6 +2289,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                 cntD = cntD + 1;
                             });
                         }
+                        $scope.recoverDataEnds = true;
                     }
 
                     $scope.plotGraphDatasets = function () {
@@ -3246,34 +3247,35 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                         'groupby':$scope.groupedby.value,
                                     });
                                     //barObj.render(datasetToSend, eventsArray);
-                                    
-                                    if ($scope.eventsToPlot.length==0) {
-                                    	barObj.render(datasetToSend, $scope.eventsToPlot);	
-                                    }
-                                    else {
-										$scope.$watchCollection('eventsToPlot', function (eventsToPlot) {                        
-											
-											var plotChart = true;
-											angular.forEach($scope.eventsToPlot, function(value, key) {
-  												if (!value.startDate) {
-  													plotChart = false;
-  												}
-											});
-											
-											if (plotChart) {
+                                    //console.log(datasetToSend.length);
+                                    if (datasetToSend.length>0) {
+	                                    if ($scope.eventsToPlot.length==0) {
+	                                    	barObj.render(datasetToSend, $scope.eventsToPlot);	
+	                                    }
+	                                    else {
+											$scope.$watchCollection('eventsToPlot', function (eventsToPlot) {                        
 												
-												if (document.getElementById("container_graph_" + $scope.visualization.id) != null) {
-                                        			document.getElementById("container_graph_" + $scope.visualization.id).innerHTML = "";
-                                    			} else {
-                                        			document.getElementById("container_graph_").innerHTML = "";
-                                    			}
+												var plotChart = true;
+												angular.forEach($scope.eventsToPlot, function(value, key) {
+	  												if (!value.startDate) {
+	  													plotChart = false;
+	  												}
+												});
 												
-												barObj.render(datasetToSend, $scope.eventsToPlot);
-											}											
-											
-										});                                    	
+												if (plotChart) {
+													
+													if (document.getElementById("container_graph_" + $scope.visualization.id) != null) {
+	                                        			document.getElementById("container_graph_" + $scope.visualization.id).innerHTML = "";
+	                                    			} else {
+	                                        			document.getElementById("container_graph_").innerHTML = "";
+	                                    			}
+													
+													barObj.render(datasetToSend, $scope.eventsToPlot);
+												}											
+												
+											});                                    	
+	                                    }
                                     }
-                                    
                                     
                                 }
                             }
