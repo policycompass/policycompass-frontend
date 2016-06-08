@@ -69,9 +69,9 @@ var pcApp = angular.module('pcApp', pcAppDependencies)
 
     .config([
         '$windowProvider', function($windowProvider) {
-            if (! policyCompassConfig.PIWIK_TRACKER_URL) {
-                $log.info("No piwik tracker enabled")
-                return
+            if (!policyCompassConfig.PIWIK_TRACKER_URL || !policyCompassConfig.PIWIK_SITE_ID) {
+                console.info("No piwik tracker enabled");
+                return;
             }
 
             var tracker_url = policyCompassConfig.PIWIK_TRACKER_URL;
