@@ -1,23 +1,23 @@
 .scrollbarButton{
-    margin: 0 auto;
-    padding: 10px;
-    position: fixed;
     top: 6%;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    margin-right: auto;
+    position: fixed;
     right: 0;
-    cursor: pointer;
-    background: #e5e5e5;
-    z-index: 1000;
+    z-index: 1000;    
 }
 
-.scrollbarButtonQuestionnaire{
-    margin: 0 auto;
-    padding: 10px;
-    position: fixed;
-    top: 14%;
-    right: 0;
-    cursor: pointer;
-    background: #e5e5e5;
-    z-index: 1000;
+.scrollbarButton ul {
+  list-style: none outside none;    
+}
+
+.scrollbarButton ul li div {
+  cursor: pointer; 
+  background: #e5e5e5;
+  padding: 10px;
+  margin-bottom: 0px;
 }
 
 .fonticon-feedback:before{
