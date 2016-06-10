@@ -420,7 +420,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         };
 
         $scope.editMetrics = function (index) {
-            dlg = dialogs.create('modules/fcm/partials/editmetrics.html', 'EditMetricsController', {}, {
+            dlg = dialogs.create('modules/fcm/partials/editmetrics.html', 'EditMetricsController', { concept: $scope.SimulationConcepts[index] }, {
                 key: false,
                 back: 'static'
             });
@@ -428,6 +428,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 if (user.ListMetricsFilter.length > 0) {
                     $scope.SimulationConcepts[index].metricId = user.ListMetricsFilter[0].id;
                     $scope.SimulationConcepts[index].metricTitle = user.ListMetricsFilter[0].title;
+                    $scope.SimulationConcepts[index].metricCountryId = user.ListMetricsFilter[0].countryId;
                     $scope.SimulationConcepts[index].individuals = user.Individuals;
                 }
             }, function () {
@@ -1277,13 +1278,90 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
     ])
 
 
-    .controller('EditMetricsController', function ($scope, $modalInstance, data, FCMModelsDetail) {
+    .controller('EditMetricsController', function ($scope, Individual, $q, $timeout, dialogs, Dataset, $modalInstance, data, FCMModelsDetail) {
         $scope.user = [
             { FCMModelId: -1 }, { title: '' }, { description: '' }, { keywords: '' }
         ];
 
         $scope.Models = [];
         $scope.Models = FCMModelsDetail.getModels();
+
+        //Mark saved dataset as selected
+        $scope.markSelectedDataset = function () {
+            $timeout(function () {
+                if ($('#filterDatasets div').length > 0 && $('#filterDatasets div a[title="Add  \'' + data.concept.metricTitle + '\'"]').length > 0) {
+                    $('#filterDatasets div a[title="Add  \'' + data.concept.metricTitle + '\'"]').click();
+
+                    //if (data.concept.metricCountryId != null && data.concept.metricCountryId != '') {
+                    //    $timeout(function () {
+                    //        $('li[ng-repeat="country in user.ListMetricsFilter[0].country"] a[data-id="' + data.concept.metricCountryId + '"]').click();
+                    //    }, 500);
+                    //}
+                    //else {
+                    //    console.log('0');
+                    //    $scope.markSelectedDataset();
+                    //}
+                }
+            }, 1000);
+        };
+
+        if (data.concept.metricTitle != null && data.concept.metricTitle != 'Link Datasets' && data.concept.metricTitle != '')
+            $scope.markSelectedDataset();
+
+        //Allow only one dataset selection
+        $scope.$watchCollection('user.ListMetricsFilter', function (datasetsList) {
+            if ($scope.user != null) {
+                if ($scope.user.ListMetricsFilter != null && $scope.user.ListMetricsFilter.length > 1) {
+                    $scope.user.ListMetricsFilter.splice(0, 1);
+                }
+
+                ////to populate all country list
+                if ($scope.user.ListMetricsFilter != null && $scope.user.ListMetricsFilter.length > 0) {
+                    if (data.concept.metricCountryId != null && data.concept.metricCountryId != '') {
+                        $scope.user.ListMetricsFilter[0].countryId = data.concept.metricCountryId;
+                        data.concept.metricCountryId = null;
+                    }
+
+                    $scope.user.ListMetricsFilter[0].country = [];
+                    Dataset.get({ id: $scope.user.ListMetricsFilter[0].id },
+                        function (dataset) {
+                            console.log(dataset.data.individuals);
+
+                            var promises = [];
+                            // Resolve all Individuals first
+                            angular.forEach(dataset.data.individuals, function (individualId) {
+                                promises.push(Individual.getById(individualId).$promise);
+                            });
+
+                            // All Promises have to be resolved
+                            $q.all(promises).then(function (individuals) {
+                                angular.forEach(individuals, function (v) {
+                                    $scope.user.ListMetricsFilter[0].country.push({
+                                        code: v.code,
+                                        data_class: v.data_class,
+                                        id: v.id,
+                                        title: v.title
+                                    });
+                                });
+
+                                console.log('a' + $scope.user.ListMetricsFilter[0].countryId);
+                                if ($scope.user.ListMetricsFilter[0].countryId != null) {
+                                    $timeout(function () {
+                                        $('li[ng-repeat="country in user.ListMetricsFilter[0].country"] a[data-id="' + $scope.user.ListMetricsFilter[0].countryId + '"]').click();
+                                    }, 500);
+                                }
+                            });
+                        }
+                    );
+                    //console.log($scope.user.ListMetricsFilter);
+                }
+            }
+        });
+
+        $scope.selectCountry = function (countryId, countryName) {
+            $scope.user.ListMetricsFilter[0].countryId = countryId;
+            $('#ddlCountryList').html(countryName);
+        };
 
         $scope.displaycontentMetricModal = function (idMetric) {
             var containerLink = document.getElementById("modal-edit-metric-button-" + idMetric);
@@ -1300,7 +1378,13 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         }; // end cancel
 
         $scope.save = function () {
-            $modalInstance.close($scope.user);
+            //show validation error if country is not selected
+            if ($scope.user.ListMetricsFilter.length > 0 && $scope.user.ListMetricsFilter[0].country != null && $scope.user.ListMetricsFilter[0].country.length > 0
+                && $scope.user.ListMetricsFilter[0].countryId == null) {
+                dialogs.error('Validation Error', 'Please select a country.');
+            }
+            else
+                $modalInstance.close($scope.user);
         }; // end save
 
     }) // end EditMatricController

@@ -471,7 +471,7 @@ policycompass.viz.pie = function (options) {
 
         if (Object.keys(piesArray).length === 0) {
             self.svg.append("text")
-            .text("No data to plot. Add datasets")
+            .text("No data to plot.")
             .attr("class", "nodatatoplot")
             .attr("x", self.margin.left)
             .attr("y", self.margin.top);
