@@ -9,8 +9,23 @@
     z-index: 1000;
 }
 
+.scrollbarButtonQuestionnaire{
+    margin: 0 auto;
+    padding: 10px;
+    position: fixed;
+    top: 14%;
+    right: 0;
+    cursor: pointer;
+    background: #e5e5e5;
+    z-index: 1000;
+}
+
 .fonticon-feedback:before{
     content:"\f0e0"
+}
+
+.fonticon-questionnaire:before{
+    content:"\e9bb"
 }
 
 .container-create-feedback{
