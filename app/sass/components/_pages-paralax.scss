@@ -4,7 +4,7 @@
   right:20px;
 
   @include reset-list();
- 
+
   a {
     display:block;
     width:20px;
@@ -52,23 +52,24 @@ h3 {
 
 /* Parallax base styles
 --------------------------------------------- */
-
-.parallax {
-  height: 500px; /* fallback for older browsers */
+#parallax {
+  height: 800px; /* fallback for older browsers */
   height: 100vh;
   overflow-x: hidden;
-  // overflow-y: auto;
+  overflow-y: auto;
   -webkit-perspective: 300px;
+  -webkit-perspective-origin-x: 100%;
   perspective: 300px;
+  perspective-origin-x: 100%;
+  background-color: #000;
 }
 
 .parallax__group {
   position: relative;
-  height: 500px; /* fallback for older browsers */
+  min-height: 800px; /* fallback for older browsers */
   height: 100vh;
-  min-height: 850px;
   -webkit-transform-style: preserve-3d;
-  transform-style: preserve-3d; 
+  transform-style: preserve-3d;
 }
 
 .parallax__layer {
@@ -77,6 +78,8 @@ h3 {
   left: 0;
   right: 0;
   bottom: 0;
+  -webkit-transform-origin-x: 100%;
+  transform-origin-x: 100%;
 }
 
 .parallax__layer--fore {
@@ -104,21 +107,8 @@ h3 {
   z-index: 2;
 }
 
-/* centre the content in the parallax layers */
-.title {
-  text-align: center;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-}
-
 /* style the groups
 --------------------------------------------- */
-html, body {
-  height: 100%;
-}
 
 #group1 {
   z-index: 5; /* slide over group 2 */
@@ -201,15 +191,65 @@ html, body {
   color: #fff !important;
 }
 
-.parallax h2 {
-  color: #fff;
-  font-size: 2.5em;
-}
-
-.parallax h3, .parallax p {
+#parallax h2 {
   color: #fff;
 }
 
-.parallax footer p {
+#parallax h3, #parallax p {
+  color: #fff;
+}
+
+#parallax footer p {
   color: #333;
+}
+
+div.sign-in-wrapper.main-menu-wrap.collapse.in {
+  background-color: #000;
+}
+
+@-moz-document url-prefix() {
+  .parallax__layer--fore {
+    display: none;
+  }
+}
+
+@media (max-width: $device_4) {
+  .parallax__layer--fore {
+    display: none;
+  }
+
+  #parallax h2 {
+    font-size: 22px;
+  }
+}
+
+/* custom paddings for each section
+-------------------------------------------*/
+#group2 div.container.parallax {
+  padding-top: 400px;
+}
+
+#group3 div.container.parallax {
+  padding-top: 300px;
+}
+
+#group4 div.container.parallax {
+  padding-top: 300px;
+}
+
+#group5 div.container.parallax {
+  padding-top: 300px;
+}
+
+#group6 div.container.parallax {
+  padding-top: 400px;
+}
+
+#group7 div.container.parallax {
+  padding-top: 300px;
+}
+
+.scrollbarButtonHome {
+  position: absolute;
+  z-index: 999;
 }
