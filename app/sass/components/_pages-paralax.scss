@@ -68,7 +68,7 @@
   .comic {
 
     }
-  .paralax-05,
+    .paralax-05,
   .paralax-03,
   .paralax-01 {
     background-color:#f6b145;
@@ -81,11 +81,17 @@
 
 
   }
+  
+.paralax-07 {
+  h3 {
+      text-align:center;
+    }
+}
 
-
- .paralax-06,
-  .paralax-04,
-  .paralax-02 {
+.paralax-07,
+.paralax-06,
+.paralax-04,
+.paralax-02 {
   background-color:$gris_90;
 
     }
