@@ -5,63 +5,58 @@
         <div ng-include="'header.html'" class="landingpage"></div>
     </div>
 
-    <div class="parallax">
+    <div id="parallax" du-scroll-container>
 
-        <div id="group1" class="parallax__group">
-            <div class="parallax__layer parallax__layer--fore">
-            </div>
+        <section id="group1" name="group1" class="parallax__group">
+            <div class="parallax__layer parallax__layer--fore"></div>
             <div class="parallax__layer parallax__layer--base">
-                <div class="content-header">
-                    <div class="home-head">
-                        <div class="home-head-logo"><img src="img/logo-white.svg" alt="Policy Compass's Logo" id="home-logo"></div>
-
-                        <div class="home-head-title container">
-                            <div class="col-md-6">
-                                <h2 class="page-title">
-                                    Opening Policy Horizons
-                                    <br>Open Data Driven analysis
-                                    <br>and impact evaluation
-                                </h2>
-                                <p style="color: #ccc;">
-                                    Policy Compass simplifies the way you utilize, interact, mash-up, visualise and interpret the increasing amount of international Open Data and prosperity indicators from reliable international data sources
-                                </p>
-                            </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3">
+                            <img src="img/logo-white.svg" alt="Policy Compass's Logo" id="home-logo">
                         </div>
+                    </div>
 
-                        <hr class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h2 class="page-title">
+                                Opening Policy Horizons
+                                <br>Open Data Driven analysis
+                                <br>and impact evaluation
+                            </h2>
+                            <p style="color: #ccc;">
+                                Policy Compass simplifies the way you utilize, interact, mash-up, visualise and interpret the increasing amount of international Open Data and prosperity indicators from reliable international data sources
+                            </p>
+                        </div>
+                    </div>
 
-                        <div class="container">
-                            <div class="col-md-4">
-                                <p>
-                                    Create, visualise, annotate and debate Open Data based performance metrics and policy models
-                                </p>
-                                <p>
-                                    <a href="#!/create#maintop" class="front-btn fonticon fonticon-create">Create</a>
-                                </p>
-                            </div>
-                            <div class="col-md-4">
-                                <p>
-                                    Browse content produced by fellow Policy Compass members
-                                </p>
-                                <p>
-                                    <a href="#!/browse#maintop" class="front-btn fonticon fonticon-search">Browse</a>
-                                </p>
-                            </div>
-                            <div class="col-md-4">
-                                <p>
-                                    Request non-existent content from expert users and give them ideas.
-                                </p>
-                                <p>
-                                    <a href="#!/request#maintop" class="front-btn fonticon fonticon-request">Request</a>
-                                </p>
-                            </div>
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <p>Create, visualise, annotate and debate Open Data based performance metrics and policy models</p>
+                            <p>
+                                <a href="#!/create#maintop" class="front-btn fonticon fonticon-create">Create</a>
+                            </p>
+                        </div>
+                        <div class="col-md-4">
+                            <p>Browse content produced by fellow Policy Compass members</p>
+                            <p>
+                                <a href="#!/browse#maintop" class="front-btn fonticon fonticon-search">Browse</a>
+                            </p>
+                        </div>
+                        <div class="col-md-4">
+                            <p>Request non-existent content from expert users and give them ideas.</p>
+                            <p>
+                                <a href="#!/request#maintop" class="front-btn fonticon fonticon-request">Request</a>
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div id="group2" class="parallax__group">
+        <section id="group2" name="group2" class="parallax__group">
             <div class="parallax__layer parallax__layer--fore">
                 <div class="container">
                     <div class="col-md-6">
@@ -72,8 +67,8 @@
                     </div>
                 </div>
             </div>
-            <div class="parallax__layer parallax__layer--base" id="paralax">
-                <div class="container paralax" style="padding-top: 400px;">
+            <div class="parallax__layer parallax__layer--base">
+                <div class="container parallax">
 
                     <div class="col-md-6">
                         <h3>Data Discovery</h3>
@@ -88,10 +83,10 @@
                 </div>
             </div>
             <div class="parallax__layer parallax__layer--back"></div>
-        </div>
+        </section>
 
 
-        <div id="group3" class="parallax__group">
+        <section id="group3" name="group3" class="parallax__group">
             <div class="parallax__layer parallax__layer--fore">
                 <div class="container">
                     <div class="col-md-8 col-md-offset-4">
@@ -100,8 +95,8 @@
                 </div>
             </div>
             <div class="parallax__layer parallax__layer--base">
-                <div class="container paralax">
-                    <div class="col-md-4" style="padding-top: 300px;">
+                <div class="container parallax">
+                    <div class="col-md-4">
                         <h3>Annotate Visualisations with Events</h3>
                         <p>
                             Register Historical Events which can later be used to annotate visualisation graphs to better support arguments.
@@ -112,9 +107,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div id="group4" class="parallax__group">
+        <section id="group4" name="group4" class="parallax__group">
             <div class="parallax__layer parallax__layer--fore">
                 <div class="container">
                     <div class="col-md-4" style="padding-top: 300px">
@@ -122,8 +117,8 @@
                     </div>
                 </div>
             </div>
-            <div class="parallax__layer parallax__layer--back" id="paralax">
-                <div class="container paralax" style="padding-top: 300px;">
+            <div class="parallax__layer parallax__layer--back">
+                <div class="container parallax">
                     <div class="col-md-5">
                         <h3>Visualising Datasets</h3>
                         <p>                       
@@ -140,9 +135,9 @@
             </div>
             <div class="parallax__layer parallax__layer--deep">
             </div>
-        </div>
+        </section>
 
-        <div id="group5" class="parallax__group">
+        <section id="group5" name="group5" class="parallax__group">
             <div class="parallax__layer parallax__layer--fore">
                 <div class="container">
                     <div class="col-md-6">
@@ -153,8 +148,8 @@
                     </div>
                 </div>
             </div>
-            <div class="parallax__layer parallax__layer--base" id="paralax">
-                <div class="container paralax" style="padding-top: 300px;">
+            <div class="parallax__layer parallax__layer--base">
+                <div class="container parallax">
                     <div class="col-md-6 col-md-push-6">
                         <h3>Create Causal Models</h3>
                         <p>                       
@@ -166,9 +161,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div id="group6" class="parallax__group">
+        <section id="group6" name="group6" class="parallax__group">
             <div class="parallax__layer parallax__layer--fore">
                 <div class="container">
                     <div class="col-md-6 col-md-offset-6">
@@ -177,8 +172,8 @@
                 </div>
             </div>
             <div class="parallax__layer parallax__layer--back">
-                <div class="parallax__layer parallax__layer--base" id="paralax">
-                    <div class="container paralax" style="padding-top: 400px;">
+                <div class="parallax__layer parallax__layer--base">
+                    <div class="container parallax">
                         <div class="col-md-4">
                             <h3>Discuss your Results</h3>
                             <p>                       
@@ -197,11 +192,11 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div id="group7" class="parallax__group">
+        <section id="group7" name="group7" class="parallax__group">
             <div class="parallax__layer parallax__layer--base">
-                <div class="container parallax" style="padding-top: 300px;">
+                <div class="container parallax">
 
                     <div class="col-md-5">
                         <h3>Dig Deeper!</h3>
@@ -215,7 +210,20 @@
 
                 </div>
             </div>
-        </div>
+        </section>
         <div ng-include="'footer.html'"></div>
-    </div><!-- /#paralax -->
+    </div><!-- /#parallax -->
+    <div class="scrollbarButtonHome">
+        <nav>
+            <ul id="paralax-links" du-scroll-container="parallax">
+                <li><a href="#group1" du-smooth-scroll du-scrollspy></a></li>
+                <li><a href="#group2" du-smooth-scroll du-scrollspy></a></li>
+                <li><a href="#group3" du-smooth-scroll du-scrollspy></a></li>
+                <li><a href="#group4" du-smooth-scroll du-scrollspy></a></li>
+                <li><a href="#group5" du-smooth-scroll du-scrollspy></a></li>
+                <li><a href="#group6" du-smooth-scroll du-scrollspy></a></li>
+                <li><a href="#group7" du-smooth-scroll du-scrollspy></a></li>
+            </ul>
+        </nav>
+    </div>
 </div>
