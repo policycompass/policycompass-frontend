@@ -460,11 +460,25 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             });
         };
 
+        $scope.getFuzzifiedValue = function (row, item) {
+            if ((item.value - row.min) / (row.max - row.min) >= 0 && (item.value - row.min) / (row.max - row.min) < 0.2)
+                return 0.2;
+            else if ((item.value - row.min) / (row.max - row.min) >= 0.2 && (item.value - row.min) / (row.max - row.min) < 0.4)
+                return 0.4;
+            else if ((item.value - row.min) / (row.max - row.min) >= 0.4 && (item.value - row.min) / (row.max - row.min) < 0.6)
+                return 0.6;
+            else if ((item.value - row.min) / (row.max - row.min) >= 0.6 && (item.value - row.min) / (row.max - row.min) < 0.8)
+                return 0.8;
+            else if ((item.value - row.min) / (row.max - row.min) >= 0.8 && (item.value - row.min) / (row.max - row.min) <= 1)
+                return 1.0;
+
+        };
 
         // **-*-****
         $scope.weightCalulation = function () {
             $scope.conceptStyle = [];
             $scope.relationShipStyle = [];
+            $scope.historicalData = [];
 
             $scope.SimulationConcepts.forEach(function (data) {
                 if (data.metricId == 0) {
