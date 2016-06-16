@@ -1293,6 +1293,20 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         }
     ])
 
+    .controller('WeightCalulationController', function ($scope, FcmWekaOutput, Individual, $q, $timeout, dialogs, Dataset, $modalInstance, data, FCMModelsDetail) {
+        $scope.dialogData = {};
+        $scope.dialogData.historicalData = data.concept[0].historicalData;
+        $scope.dialogData.wieghtCalculation = data.concept[0].wieghtCalculation;
+        $scope.dialogData.SimulationConcepts = data.concept;
+        var wekaRequestData = '';
+
+        $scope.cancel = function () {
+            $modalInstance.dismiss('canceled');
+        };
+
+
+        console.log($scope.dialogData.historicalData);
+    })
 
     .controller('EditMetricsController', function ($scope, Individual, $q, $timeout, dialogs, Dataset, $modalInstance, data, FCMModelsDetail) {
         $scope.user = [
@@ -1307,16 +1321,6 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             $timeout(function () {
                 if ($('#filterDatasets div').length > 0 && $('#filterDatasets div a[title="Add  \'' + data.concept.metricTitle + '\'"]').length > 0) {
                     $('#filterDatasets div a[title="Add  \'' + data.concept.metricTitle + '\'"]').click();
-
-                    //if (data.concept.metricCountryId != null && data.concept.metricCountryId != '') {
-                    //    $timeout(function () {
-                    //        $('li[ng-repeat="country in user.ListMetricsFilter[0].country"] a[data-id="' + data.concept.metricCountryId + '"]').click();
-                    //    }, 500);
-                    //}
-                    //else {
-                    //    console.log('0');
-                    //    $scope.markSelectedDataset();
-                    //}
                 }
             }, 1000);
         };
@@ -1341,7 +1345,8 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                     $scope.user.ListMetricsFilter[0].country = [];
                     Dataset.get({ id: $scope.user.ListMetricsFilter[0].id },
                         function (dataset) {
-                            console.log(dataset.data.individuals);
+                            $scope.user.metricsData = dataset.data;
+                            console.log($scope.user.metricsData);
 
                             var promises = [];
                             // Resolve all Individuals first
