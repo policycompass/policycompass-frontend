@@ -589,9 +589,71 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                     }
                 }
 
-            if ($scope.Concepts.length > 1) {
-                var dlg = dialogs.notify("Causal Model", "Weights are calculated!");
-            }
+
+                dlg = dialogs.create('modules/fcm/partials/weightcalulation.html', 'WeightCalulationController', { concept: $scope.SimulationConcepts }, {
+                    key: false,
+                    back: 'static'
+                });
+
+                dlg.result.then(function (data) {
+                }, function () {
+
+                });
+
+                //if ($scope.Concepts.length > 1) {
+                //    var dlg = dialogs.notify("Causal Model", "Weights are calculated!");
+                //}
+
+            }, function (err) {
+                throw { message: JSON.stringify(err.data) };
+            });
+
+
+            //for (i = 0; i < $scope.SimulationConcepts.length; i++) {
+            //    if ($scope.SimulationConcepts[i].metricId != 0) {
+            //        if ((i + 1) == 1)
+            //            $scope.SimulationConcepts[i].value = 0.8; else if ((i + 1) % 5 == 0)
+            //                $scope.SimulationConcepts[i].value = 1; else if ((i + 1) % 4 == 0)
+            //                    $scope.SimulationConcepts[i].value = 0.4; else if ((i + 1) % 3 == 0)
+            //                        $scope.SimulationConcepts[i].value = 0.6; else if ((i + 1) % 2 == 0)
+            //                            $scope.SimulationConcepts[i].value = 0.2; else
+            //                            $scope.SimulationConcepts[i].value = 0.8;
+            //        $scope.conceptStyle[i] = { "color": "#286090" };
+            //    }
+            //}
+            //for (i = 0; i < $scope.SimulationAssociations.length; i++) {
+            //    for (j = 0; j < $scope.SimulationConcepts.length; j++) {
+            //        if ($scope.SimulationConcepts[j].Id == $scope.SimulationAssociations[i].source.Id) {
+            //            if ($scope.SimulationConcepts[j].metricId != 0) {
+            //                if ((i + 1) == 1)
+            //                    $scope.SimulationAssociations[i].weighted = 0.25; else if ((i + 1) % 5 == 0)
+            //                        $scope.SimulationAssociations[i].weighted = -0.25; else if ((i + 1) % 4 == 0)
+            //                            $scope.SimulationAssociations[i].weighted = 0.75; else if ((i + 1) % 3 == 0)
+            //                                $scope.SimulationAssociations[i].weighted = -0.5; else if ((i + 1) % 2 == 0)
+            //                                    $scope.SimulationAssociations[i].weighted = 0.5; else
+            //                                    $scope.SimulationAssociations[i].weighted = 1;
+            //                $scope.relationShipStyle[i] = { "color": "#286090" };
+            //            }
+            //        }
+
+            //        if ($scope.SimulationConcepts[j].Id == $scope.SimulationAssociations[i].destination.Id) {
+            //            if ($scope.SimulationConcepts[j].metricId != 0) {
+            //                if ((i + 1) == 1)
+            //                    $scope.SimulationAssociations[i].weighted = 0.25; else if ((i + 1) % 5 == 0)
+            //                        $scope.SimulationAssociations[i].weighted = -0.25; else if ((i + 1) % 4 == 0)
+            //                            $scope.SimulationAssociations[i].weighted = 0.75; else if ((i + 1) % 3 == 0)
+            //                                $scope.SimulationAssociations[i].weighted = -0.5; else if ((i + 1) % 2 == 0)
+            //                                    $scope.SimulationAssociations[i].weighted = 0.5; else
+            //                                    $scope.SimulationAssociations[i].weighted = 1;
+            //                $scope.relationShipStyle[i] = { "color": "#286090" };
+            //            }
+            //        }
+            //    }
+            //}
+
+            //if ($scope.Concepts.length > 1) {
+            //    var dlg = dialogs.notify("Causal Model", "Weights are calculated!");
+            //}
         };
 
         $scope.runSimulation = function () {
@@ -1442,6 +1504,11 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
         $scope.selectCountry = function (countryId, countryName) {
             $scope.user.ListMetricsFilter[0].countryId = countryId;
+
+            angular.forEach($scope.user.metricsData.table, function (item) {
+                if (item.individual == countryId)
+                    $scope.user.metricsTable = item.values;
+            });
             $('#ddlCountryList').html(countryName);
         };
 
