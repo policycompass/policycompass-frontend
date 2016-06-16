@@ -1,3 +1,4 @@
+var weka = '';
 angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
     .service("ConceptsDetail", function () {
@@ -118,7 +119,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         };
     })
 
-    .controller('CytoscapeCtrl', function ($scope, $rootScope, $window, $routeParams, $location, $translate, Fcm, FcmModel, FcmSimulation, FcmActivator, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, SimulationConceptsDetail, AssociationsDetail, SimulationAssociationsDetail, EditConcept, EditAssociation, FCMActivatorDetail, Dataset, FcmIndicator, Auth) {
+    .controller('CytoscapeCtrl', function ($scope, $rootScope, $window, $routeParams, $location, $translate, Fcm, FcmModel, FcmWekaOutput, FcmSimulation, FcmActivator, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, SimulationConceptsDetail, AssociationsDetail, SimulationAssociationsDetail, EditConcept, EditAssociation, FCMActivatorDetail, Dataset, FcmIndicator, Auth) {
         // container objects
         $scope.user = Auth;
         $scope.Models = [];
@@ -430,6 +431,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                     $scope.SimulationConcepts[index].metricTitle = user.ListMetricsFilter[0].title;
                     $scope.SimulationConcepts[index].metricCountryId = user.ListMetricsFilter[0].countryId;
                     $scope.SimulationConcepts[index].individuals = user.Individuals;
+                    $scope.SimulationConcepts[index].metricsTable = user.metricsTable;
                 }
             }, function () {
                 $scope.name = 'You decided not to enter in your name, that makes me sad.';
