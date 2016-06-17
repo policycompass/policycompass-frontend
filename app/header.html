@@ -38,9 +38,9 @@
                     <li ng-show="authState.loggedIn!==undefined && !authState.loggedIn">
                         <a href="#!/login" ng-click="i=0" class="fonticon font-icon-log_in normal">Login</a>
                     </li>
-                    <!--<li ng-show="authState.loggedIn!==undefined && !authState.loggedIn">-->
-                        <!--<a href="#!/register" ng-click="i=0" class="fonticon font-icon-sign_up normal">Signup</a>-->
-                    <!--</li>-->
+                    <li ng-show="authState.loggedIn!==undefined && !authState.loggedIn">
+                        <a href="#!/register" ng-click="i=0" class="fonticon font-icon-sign_up normal">Signup</a>
+                    </li>
                     <li ng-show="authState.loggedIn!==undefined && authState.loggedIn">
                         <a ng-click="i=6" href="" data-hover="" class="fonticon fonticon-user normal">
                             <span>{{authState.userData.name}}</span>
