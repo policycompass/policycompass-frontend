@@ -437,6 +437,7 @@
             //Perform search through client and get a search Promise
             searchclient.search(request).then(function(resp) {
                 //If search is successfull return results in searchResults objects
+                window.scrollTo(0, 0);
                 $scope.searchResults = resp.hits.hits;
                 $scope.searchResultsCount = resp.hits.total;
                 $scope.totalItems = $scope.searchResultsCount;
