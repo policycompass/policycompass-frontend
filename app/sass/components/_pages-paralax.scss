@@ -10,7 +10,6 @@
     width:20px;
     height:20px;
     background:white;
-    border:1px solid $gris_80;
     border-radius:50%;
     margin-bottom:15px;
   }
@@ -30,13 +29,13 @@ h3 {
 .front-btn {
   display:inline-block;
   padding:.8em 1.3em;
-  background: #FFB700;
+  background: $bk;
   color: #000;
   position:relative;
   
   @include transition(all 0.2s ease);
 
-  border-radius:6px;
+
   padding-left:3.5em;
   &:before {
     font-size:1.6em;
@@ -46,7 +45,7 @@ h3 {
   }
   &:hover {
     color:black;
-    background: $bk;
+    background: #FFB700;
   }
 }
 
@@ -56,11 +55,9 @@ h3 {
   height: 800px; /* fallback for older browsers */
   height: 100vh;
   overflow-x: hidden;
-  overflow-y: auto;
+  //overflow-y: auto;
   -webkit-perspective: 300px;
-  -webkit-perspective-origin-x: 100%;
   perspective: 300px;
-  perspective-origin-x: 100%;
   background-color: #000;
 }
 
@@ -78,8 +75,6 @@ h3 {
   left: 0;
   right: 0;
   bottom: 0;
-  -webkit-transform-origin-x: 100%;
-  transform-origin-x: 100%;
 }
 
 .parallax__layer--fore {
@@ -170,7 +165,7 @@ h3 {
   background-position: center !important;
   background-size: cover !important;
 }
-
+ 
 #top-bar {
   position: fixed;
   z-index: 999;
@@ -205,12 +200,6 @@ h3 {
 
 div.sign-in-wrapper.main-menu-wrap.collapse.in {
   background-color: #000;
-}
-
-@-moz-document url-prefix() {
-  .parallax__layer--fore {
-    display: none;
-  }
 }
 
 @media (max-width: $device_4) {
