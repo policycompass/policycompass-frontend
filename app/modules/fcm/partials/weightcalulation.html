@@ -1,0 +1,48 @@
+<div class="modal-header">
+    <h1 class="ng-binding"><span class="glyphicon glyphicon-list-alt"></span>Weight Calulation</h1>
+</div>
+<div class="modal-body">
+    <div id="basic-modal-content-pc">
+        <h4 class="ng-scope">Concept historical data :</h4>
+        <table class="table table-hover ng-scope">
+            <tbody>
+                <tr>
+                    <td><b></b></td>
+                    <td ng-repeat="columnHeader in dialogData.historicalData[0].rowData"><b>{{columnHeader.key}}</b></td>
+                </tr>
+                <tr ng-repeat="row in dialogData.historicalData">
+                    <td ng-if="$index!=dialogData.historicalData.length-1" align="center"><b>Sources {{row.title}}</b></td>
+                    <td ng-if="$index==dialogData.historicalData.length-1" align="center"><b>Sink {{row.title}}</b></td>
+                    <td ng-repeat="item in row.rowData">{{item.value}}</td>
+                </tr>
+
+                <tr>
+                    <td colspan="{{dialogData.historicalData[0].rowData.length+1}}">
+                        <h4 class="ng-scope">Fuzzy values :</h4>
+                    </td>
+                </tr>
+                <tr ng-repeat="row in dialogData.historicalData">
+                    <td align="center"><b>{{row.title}}</b></td>
+                    <td ng-if="(item.value - row.min)/(row.max-row.min)>=0 && (item.value - row.min)/(row.max-row.min)<0.2" ng-repeat="item in row.rowData">0.2</td>
+                    <td ng-if="(item.value - row.min)/(row.max-row.min)>=0.2 && (item.value - row.min)/(row.max-row.min)<0.4" ng-repeat="item in row.rowData">0.4</td>
+                    <td ng-if="(item.value - row.min)/(row.max-row.min)>=0.4 && (item.value - row.min)/(row.max-row.min)<0.6" ng-repeat="item in row.rowData">0.6</td>
+                    <td ng-if="(item.value - row.min)/(row.max-row.min)>=0.6 && (item.value - row.min)/(row.max-row.min)<0.8" ng-repeat="item in row.rowData">0.8</td>
+                    <td ng-if="(item.value - row.min)/(row.max-row.min)>=0.8 && (item.value - row.min)/(row.max-row.min)<=1" ng-repeat="item in row.rowData">1.0</td>
+                </tr>
+
+                <tr>
+                    <td colspan="{{dialogData.historicalData[0].rowData.length+1}}">
+                        <h4 class="ng-scope">Wieght calculation : </h4>
+                    </td>
+                </tr>
+                <tr ng-repeat="row in dialogData.wieghtCalculation">
+                    <td colspan="{{dialogData.historicalData[0].rowData.length+1}}" style="text-align: left;"><b>{{row.source}} to {{row.destination}} = {{row.weight}}</b></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-close" ng-click="cancel()">Close</button>
+    </div>
+</div>

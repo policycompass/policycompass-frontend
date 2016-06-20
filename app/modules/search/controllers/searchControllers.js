@@ -260,7 +260,7 @@
             var bucket = this.bucket;
             facetSet(bucket.facetCategory, bucket.value, bucket.selected);
             $location.search("_"+bucket.facetCategory, facetsSelected[bucket.facetCategory]);
-            goSearch();
+            goToPage();
         };
 
         facetSet = function (category, value, enable) {
@@ -286,6 +286,17 @@
             //$scope.search(searchText);
         };
 
+        goToPage = function (page) {
+            page = page || 1;
+            $scope.currentPage = page;
+            $scope.pageChanged();
+        };
+
+        $scope.searchString = function (searchQuery){
+            $location.search('q', (searchQuery==="")?null:searchQuery);
+            goToPage();
+        };
+
         //Define function that fires search when page changes
         $scope.pageChanged = function () {
             if (typeof $scope.totalItems === "undefined") {
@@ -293,22 +304,22 @@
                     $scope.currentPage = $routeParams.page;
                 return;
             }
-            $location.search('page', $scope.currentPage);
-            goSearch();
+            $location.search('page', ($scope.currentPage===1)?null:$scope.currentPage);
+            //goSearch();
         };
 
         //Define function that fires search when Items Per Page selection box changes
         $scope.itemsPerPageChanged = function() {
             $scope.itemsperPage = $scope.selectedItemPerPage.id;
             $location.search('show', $scope.itemsperPage);
-            goSearch();
+            goToPage();
         };
 
         //Define function that fires search when Sort By selection box changes
         $scope.sortItemsChanged = function() {
             $scope.sortByItem = $scope.selectedSortItem.id;
             $location.search('sort', $scope.sortByItem);
-            goSearch();
+            goToPage();
         };
 
 
@@ -364,7 +375,7 @@
             if (typeof searchQuery == 'undefined') {
                 searchQuery = "";
             }
-            $location.search('q', (searchQuery==="")?null:searchQuery);
+            //$location.search('q', (searchQuery==="")?null:searchQuery);
             //Get current result item offset depending on current page
             itemOffset = ($scope.currentPage - 1) * $scope.itemsperPage;
             //Build Sort
@@ -426,6 +437,7 @@
             //Perform search through client and get a search Promise
             searchclient.search(request).then(function(resp) {
                 //If search is successfull return results in searchResults objects
+                window.scrollTo(0, 0);
                 $scope.searchResults = resp.hits.hits;
                 $scope.searchResultsCount = resp.hits.total;
                 $scope.totalItems = $scope.searchResultsCount;
