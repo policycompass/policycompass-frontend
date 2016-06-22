@@ -1,0 +1,32 @@
+.story-chapter-content{
+    background-color:#f9f9f9;
+}
+
+.story-chapter-content-toolbox{
+    margin-bottom: 1%;
+}
+
+.story-chapters-list{
+    position: fixed;
+    width : 15%;
+}
+
+.story-chapters-list-entry{
+    word-wrap: break-word;
+    margin: 3%;
+    padding: 3%;
+    border: 1px solid #E3E3E3;
+    border-radius: 5px;
+}
+
+.story-chapters-detail{
+    background-color:white;
+    border: 1px solid #E3E3E3;
+    border-radius: 5px;
+    box-shadow:0 0 7px grey;
+}
+
+.story-chapters-detail-entry{
+    word-wrap: break-word;
+    margin:2%;
+}

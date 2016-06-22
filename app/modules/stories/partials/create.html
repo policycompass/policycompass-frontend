@@ -1,0 +1,35 @@
+<div class="container container-create-visualisation">
+
+    <div class="content-header">
+        <h3 ng-if="mode == 'create'"><span class="fonticon fonticon-story"></span> Create a New Story</h3>
+
+        <h3 ng-if="mode == 'edit'"><span class="fonticon fonticon-story"></span> Edit Story</h3>
+    </div>
+
+    <div class="pc-visualization-formcontrols">
+        <div class="form-group pull-left btn-group">
+            <a href="" id="saveButton" data-ng-disabled="storyForm.$invalid" ng-if="userState.loggedIn" class="btn btn-default btn-save" ng-click="saveStory()">Save</a>
+            <a href="" id="addChapterButton" class="btn btn-default btn-add" ng-click="addChapter()">Add Chapter</a>
+            <a href="" id="previewButton" class="btn btn-default fa-file-text-o" ng-click="previewStory()">Preview</a>
+            <a type="button" class="btn btn-danger fa-trash-o" href="#!/">Cancel</a>
+        </div>
+    </div>
+
+    <div class="content-body">
+        <form name="storyForm" role="form" novalidate>
+            <div class="form-group">
+                <label>Story Title</label>
+                <input class="form-control" id="story_title" type="text" name="story_title" data-ng-model="story_title" required>
+            </div>
+
+            <br>
+            <br>
+
+            <div id="chaptersDiv">
+
+            </div>
+
+        </form>
+    </div>
+
+</div>

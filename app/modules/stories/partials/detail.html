@@ -1,0 +1,55 @@
+<div class="container container-create-visualisation">
+
+    <div class="content-header">
+        <h3><span class="fonticon fonticon-story"></span> {{ storyTitle }}</h3>
+    </div>
+
+    <div class="pc-visualization-formcontrols">
+        <div class="form-group pull-left btn-group">
+            <a type="button" class="btn btn-primary  btn-create" ng-if="userState.loggedIn && (userState.userPath == story.creator_path || userState.isAdmin)"  href="#!/stories/{{ story.id }}/edit">Edit</a>
+            <a href="" id="downloadButton" class="btn btn-default fa-file-text-o" ng-click="downloadStory()">Download</a>
+            <a href="" id="deleteButton" class="btn btn-danger fa-trash-o" ng-click="deleteChapter()">Delete</a>
+        </div>
+    </div>
+
+    <div class="content-body">
+        <div class="row">
+            <div class="story-chapters-list">
+                <div ng-repeat="chapter in storyChapters" id="chapters_list" name="chapters_list" class="story-chapters-list-entry">
+                    <a href="" ng-click="jumpToChapter(chapter.number)" ng-if="chapter">{{ chapter.title }}</a>
+                </div>
+            </div>
+            <div class="col-xs-9 col-xs-offset-2 story-chapters-detail">
+                <div ng-repeat="chapter in storyChapters" id="chapters_detail" name="chapters_detail" class="story-chapters-detail-entry">
+                    <a name="anchor-chapter{{ chapter.number }}" id="anchor-chapter{{ chapter.number }}"></a>
+                    <h2>{{ chapter.title }}</h2>
+                    <p>{{ chapter.text }}</p>
+
+                    <div class="row" id="metricsDiv{{ chapter.number }}" name="metricsDiv{{ chapter.number }}"></div>
+                    <div class="row" id="visualizationsDiv{{ chapter.number }}" name="visualizationsDiv{{ chapter.number }}"></div>
+                    <div class="row" id="causalsDiv{{ chapter.number }}" name="causalsDiv{{ chapter.number }}"></div>
+                    <!--
+                    <div class="col-lg-3 pc-tile" ng-repeat="rv in chapter.visualizations">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a href="#!/visualizations/{{ rv.visualization }}">
+                                    <h3 class="panel-title">{{ rv.title | limitTo: 25}} </h3></a>
+                            </div>
+                            <div class="panel-body">
+                                <div class="visualization-graph-page-content">
+
+                                    <div ng-repeat="idvisulist in [rv.visualization]" ng-include='"modules/visualization/partials/graph.html"'></div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
