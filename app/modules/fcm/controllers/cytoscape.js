@@ -1,4 +1,3 @@
-var weka = '';
 angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
     .service("ConceptsDetail", function () {
@@ -119,7 +118,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         };
     })
 
-    .controller('CytoscapeCtrl', function ($scope, $rootScope, $window, $routeParams, $location, $translate, Fcm, FcmModel, FcmWekaOutput, FcmSimulation, FcmActivator, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, SimulationConceptsDetail, AssociationsDetail, SimulationAssociationsDetail, EditConcept, EditAssociation, FCMActivatorDetail, Dataset, FcmIndicator, Auth) {
+    .controller('CytoscapeCtrl', function ($scope, $rootScope, $window, $routeParams, $location, $translate, Fcm, FcmModel, FcmWekaOutput, FcmSimulation, FcmActivator, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, SimulationConceptsDetail, AssociationsDetail, SimulationAssociationsDetail, EditConcept, EditAssociation, FCMActivatorDetail, Dataset, FcmIndicator, Auth, $q) {
         // container objects
         $scope.user = Auth;
         $scope.Models = [];
@@ -469,9 +468,28 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 return 0.6;
             else if ((item.value - row.min) / (row.max - row.min) >= 0.6 && (item.value - row.min) / (row.max - row.min) < 0.8)
                 return 0.8;
-            else if ((item.value - row.min) / (row.max - row.min) >= 0.8 && (item.value - row.min) / (row.max - row.min) <= 1)
+            else if ((item.value - row.min) / (row.max - row.min) >= 0.8 || isNaN((item.value - row.min) / (row.max - row.min)))
                 return 1.0;
 
+        };
+
+        $scope.getRelationWieght = function (value) {
+            if (value < -0.75)
+                return -1.0;
+            else if (value < -0.50 && value >= -0.75)
+                return -0.75;
+            else if (value < -0.25 && value >= -0.50)
+                return -0.50;
+            else if (value < 0 && value >= -0.25)
+                return -0.25;
+            else if (value >= 0 && value <= 0.25)
+                return 0.25;
+            else if (value > 0.25 && value <= 0.50)
+                return 0.50;
+            else if (value > 0.50 && value <= 0.75)
+                return 0.75;
+            else
+                return 1.00;
         };
 
         // **-*-****
