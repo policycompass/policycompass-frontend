@@ -474,22 +474,14 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         };
 
         $scope.getRelationWieght = function (value) {
-            if (value < -0.75)
-                return -1.0;
-            else if (value < -0.50 && value >= -0.75)
-                return -0.75;
-            else if (value < -0.25 && value >= -0.50)
-                return -0.50;
-            else if (value < 0 && value >= -0.25)
-                return -0.25;
-            else if (value >= 0 && value <= 0.25)
+            if (value === 0)
                 return 0.25;
-            else if (value > 0.25 && value <= 0.50)
-                return 0.50;
-            else if (value > 0.50 && value <= 0.75)
-                return 0.75;
-            else
-                return 1.00;
+            if (Math.abs(value) > 1)
+                return value > 0 ? 1 : -1;
+            if (value > 0)
+                return (Math.ceil(value * 4) / 4).toFixed(2) - 0;
+            if (value < 0)
+                return (Math.floor(value * 4) / 4).toFixed(2) - 0;
         };
 
         // **-*-****
