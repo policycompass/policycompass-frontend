@@ -520,7 +520,12 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
                 var data = [];
                 angular.forEach($scope.historicalData, function (itemHistorical) {
-                    if (itemHistorical.Id == itemAssociation.sourceID || itemHistorical.Id == itemAssociation.destinationID)
+                    if (itemHistorical.Id == itemAssociation.sourceID)
+                        data.push(itemHistorical);
+                });
+
+                angular.forEach($scope.historicalData, function (itemHistorical) {
+                    if (itemHistorical.Id == itemAssociation.destinationID)
                         data.push(itemHistorical);
                 });
 
@@ -529,7 +534,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                         wekaInputData = wekaInputData + '\n' + $scope.getFuzzifiedValue(data[0], data[0].rowData[i]) + ',' + $scope.getFuzzifiedValue(data[1], data[1].rowData[i]);
                 }
 
-                wekaRequestData = '@relation ' + data[0].Id + '\n\n@attribute \'' + data[0].Id + ',' + data[1].Id + '\' numeric\n' + '\n@attribute ' + data[1].Id + ' numeric\n\n' + wekaInputData;
+                wekaRequestData = '@relation \'' + data[0].Id + ',' + data[1].Id + '\'\n\n@attribute \'' + data[0].Id + ',' + data[1].Id + '\' numeric\n' + '\n@attribute ' + data[1].Id + ' numeric\n\n' + wekaInputData;
                 console.log(wekaRequestData);
                 promises.push(FcmWekaOutput.post(wekaRequestData).$promise);
             });
