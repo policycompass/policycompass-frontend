@@ -161,7 +161,7 @@ angular.module('pcApp.events.controllers.event', [
                     detailsURL: angular.toJson(eventService.getEvent()[0]['url']).replace(/\"/g, ""),
                     description: angular.toJson(eventService.getEvent()[0]['description']).replace(/\"/g, ""),
                     startEventDate: angular.toJson(eventService.getEvent()[0]['date']).replace(/\"/g, ""),
-                    endEventDate: angular.toJson(eventService.getEvent()[0]['date']).replace(/\"/g, ""),
+                    endEventDate: angular.toJson(eventService.getEvent()[0]['endDate']).replace(/\"/g, ""),
                     //spatials: $scope.spatials.output,
                     languageID: "38"
                 }
@@ -348,7 +348,11 @@ angular.module('pcApp.events.controllers.event', [
                     return;
                 }
                 $location.search('page', $scope.currentPage);
-                $scope.searchEvent();
+                //$scope.searchEvent();
+                console.log("daa" + $scope.searchResultsTotal);
+                $scope.itemOffset = ($scope.currentPage - 1 ) * $scope.itemsperPage;
+                $scope.totalItems = $scope.searchResultsTotal.length;
+                $scope.fillSearchResults($scope.searchResultsTotal);
                 $scope.goToTop();
             };
 
@@ -404,7 +408,7 @@ angular.module('pcApp.events.controllers.event', [
                 })
             }
 
-            var fillSearchResults = function(data){
+            $scope.fillSearchResults = function(data){
 
                 $scope.searchResultsTotal = data;
                 $scope.searchResultsTotal = sortByKey($scope.searchResultsTotal, $scope.sortByItem);
@@ -412,14 +416,14 @@ angular.module('pcApp.events.controllers.event', [
 
                 var searchResults = [];
 
-                var length = itemOffset+$scope.itemsperPage;
+                var length = $scope.itemOffset+$scope.itemsperPage;
 
                 if(length > $scope.searchResultsTotal.length){
                     length = $scope.searchResultsTotal.length;
                 }
 
-                for(var i = itemOffset; i < length; i++){
-                    searchResults[i-itemOffset] = $scope.searchResultsTotal[i];
+                for(var i = $scope.itemOffset; i < length; i++){
+                    searchResults[i-$scope.itemOffset] = $scope.searchResultsTotal[i];
                 }
 
                 eventService.setSearchResults(searchResults);
@@ -445,7 +449,7 @@ angular.module('pcApp.events.controllers.event', [
                         endRange = $scope.search.endRange;
                     }
 
-                    itemOffset = ($scope.currentPage - 1 ) * $scope.itemsperPage;
+                    $scope.itemOffset = ($scope.currentPage - 1 ) * $scope.itemsperPage;
 
                     $http.get(
                         API_CONF.EVENTS_MANAGER_URL +
@@ -461,7 +465,7 @@ angular.module('pcApp.events.controllers.event', [
                     success(function (data, status, headers, config) {
                         //console.log("data " + angular.toJson(data));
 
-                        fillSearchResults(data);
+                        $scope.fillSearchResults(data);
 
                         $scope.totalItems = $scope.searchResultsTotal.length;
 
