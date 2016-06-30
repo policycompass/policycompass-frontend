@@ -1057,7 +1057,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                     //funtion to reset the form, used into the Revert button
                     $scope.revertVisualization = function (idMetric, metrictitle) {
                         // Open a confirmation dialog
-                        var dlg = dialogs.confirm("Are you sure?", "Do you want to revert this visualization?");
+                        var dlg = dialogs.confirm("Are you sure?", "Do you want to revert your changes in this visualization?");
                         dlg.result.then(function () {
 
                             if ($scope.mode == 'create') {
