@@ -8,11 +8,16 @@
         <!--sources </p>-->
     </div>
 
-    <div class="pc-visualization-formcontrols">
-        <div class="button-group">
+    <div class="button-group pc-visualization-formcontrols row">
+        <div>
             <!-- <a type="button" class="btn btn-default btn-create" ng-click="saveParameters()" href="#!/events/create">Create Event manually</a>-->
+            <a type="button" class="btn btn-default btn-create" href="#!/events/create">Create Event manually</a>
+            <a type="button" class="btn btn-default btn-add" ng-click="open()">Configuration</a>
+            <a type="button" class="btn btn-default" ng-click="openWikipedia()">Search for Wikipedia articles</a>
             <open-configurations-modal></open-configurations-modal>
+            <open-wikipedia-modal></open-wikipedia-modal>
         </div>
+
     </div>
 
     <div class="content-body">
@@ -20,13 +25,12 @@
             <div>
                 <div class="input-group">
                     <!-- /btn-group -->
-                    <!--
-                    <input type="text" class="browse-input form-control" ng-keyup="$event.keyCode == 13 && saveParameters() && searchEvent()" id="title" name="title"placeholder="Keyword" ng-model="search.title" ng-minlength="3" ng-required="true" required>
+
+                    <input type="text" class="browse-input form-control" ng-keyup="$event.keyCode == 13 && saveParameters() && searchEvent()" id="title" name="title"placeholder="Keyword" ng-model="search_title" ng-minlength="3" ng-required="true" required>
                     <span class="input-group-btn">
                         <button class="btn" type="button" ng-click="saveParameters() && searchEvent()">Go!</button>
                     </span>
-                    -->
-                    <open-eventminer-modal></open-eventminer-modal>
+
                 </div>
                     <div class="filter-group">
                         <div class="row">

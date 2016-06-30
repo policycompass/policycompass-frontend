@@ -253,7 +253,7 @@ angular.module('pcApp.events.controllers.event', [
                 //showPerPage = $routeParams.show-0 || 10;
 
                 //Default search query
-                $scope.search.title =  $routeParams.q || "";
+                $scope.search_title =  $routeParams.q || "";
                 $scope.search.startRange = $routeParams.start || "";
                 $scope.search.endRange = $routeParams.end || "";
 
@@ -323,14 +323,14 @@ angular.module('pcApp.events.controllers.event', [
 
                 $location.search('extractors' , $scope.selectedExtractors);
 
-                if($routeParams.q !== $scope.search.title){
+                if($routeParams.q !== $scope.search_title){
                     $location.search('page', 1);
                 }
                 else{
                     $location.search('page', $scope.currentPage);
                 }
 
-                $location.search('q', $scope.search.title);
+                $location.search('q', $scope.search_title);
 
                 $location.search('start', $scope.search.startRange);
                 $location.search('end', $scope.search.endRange);
@@ -349,7 +349,6 @@ angular.module('pcApp.events.controllers.event', [
                 }
                 $location.search('page', $scope.currentPage);
                 //$scope.searchEvent();
-                console.log("daa" + $scope.searchResultsTotal);
                 $scope.itemOffset = ($scope.currentPage - 1 ) * $scope.itemsperPage;
                 $scope.totalItems = $scope.searchResultsTotal.length;
                 $scope.fillSearchResults($scope.searchResultsTotal);
@@ -425,14 +424,13 @@ angular.module('pcApp.events.controllers.event', [
                 for(var i = $scope.itemOffset; i < length; i++){
                     searchResults[i-$scope.itemOffset] = $scope.searchResultsTotal[i];
                 }
-
                 eventService.setSearchResults(searchResults);
                 $scope.searchResults = searchResults;
             }
 
 
             $scope.searchEvent = function () {
-                if($scope.search.title.length > 0) {
+                if($scope.search_title.length > 0) {
                     $scope.searched = true;
                     var startRange, endRange;
 
@@ -454,7 +452,7 @@ angular.module('pcApp.events.controllers.event', [
                     $http.get(
                         API_CONF.EVENTS_MANAGER_URL +
                         '/harvestevents?keyword=' +
-                        $scope.search.title +
+                        $scope.search_title +
                         '&extractors=' +
                         $scope.selectedExtractors +
                         '&start=' +
