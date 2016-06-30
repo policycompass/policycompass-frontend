@@ -1212,7 +1212,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                         document.getElementById("endDatePosX").value = '';
                     };
 
-                    $scope.name = 'Link an event';
+                    $scope.name = 'Edit events';
 
                     $scope.showModal = function (action) {
 						

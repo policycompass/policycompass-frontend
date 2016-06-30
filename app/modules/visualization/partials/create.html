@@ -16,7 +16,7 @@
                 <p>
                     To create a visualisation you need to:
                 <ul>
-                    <li>Select which dataset (one or more) do you wish to use. Use the "Link Datasets" button to do it.</li>
+                    <li>Select which dataset (one or more) do you wish to use. Use the "Edit Datasets" button to do it.</li>
                     <li>Select the type of chart you want using the appropiate button:
                         <ul>
                             <li>"Map" To plot as a map chart.</li>
@@ -25,7 +25,7 @@
                             <li>"Bars" To plot as a bar chart.</li>
                         </ul>
                     </li>
-                    <li>In case you select a "Line" or "Bars", then you can related historical events with the chart using the "Link Events" button.</li>
+                    <li>In case you select a "Line" or "Bars", then you can related historical events with the chart using the "Edit Events" button.</li>
                     <li>Fulfil the mandatory fields that are marked with an asterisk.</li>
                     <li>Click over the button "Save" to save the visualisation.</li>
                 </ul>
@@ -66,8 +66,8 @@
                 </a>
 
                 <a href="" ng-show="mode=='edit'" ng-disabled="disableRevert" type="submit" data-intro="Revert data" data-position="top" class="btn btn-default btn-revert2" ng-click="revertVisualization()">Revert</a>
-                <a href="" data-intro="Helps you to link datasets with this visualisation" data-position="top" type="submit" class="btn btn-default btn-adddataset" id="modaladddataset" ng-click="showModal('datasets')">Link Datasets</a>
-                <a href="" ng-show="(isSelectedSon('graph_line') || isSelectedSon('graph_bars')) && ListMetricsFilter.length>0" data-intro="Helps you to link this visualisation with events" data-position="top" type="submit" class="btn btn-primary btn-adddevent" id="addHEbutton" ng-click="showModal('events')">Link Events</a>
+                <a href="" data-intro="Helps you to link datasets with this visualisation" data-position="top" type="submit" class="btn btn-default btn-adddataset" id="modaladddataset" ng-click="showModal('datasets')">Edit Datasets</a>
+                <a href="" ng-show="(isSelectedSon('graph_line') || isSelectedSon('graph_bars')) && ListMetricsFilter.length>0" data-intro="Helps you to link this visualisation with events" data-position="top" type="submit" class="btn btn-primary btn-adddevent" id="addHEbutton" ng-click="showModal('events')">Edit Events</a>
                 
                 <a href="" type="submit" data-intro="Cancel" data-position="top" class="btn btn-default btn-danger btn-clear" ng-click="cancelVisualization()">Cancel</a>
             </div>
