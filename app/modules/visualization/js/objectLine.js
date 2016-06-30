@@ -142,7 +142,9 @@ policycompass.viz.line = function (options) {
 
     function toIntArray(arr) {
         for (var i = 0; i < arr.length; i++) {
-            arr[i] = +arr[i];
+        	if (arr[i]) {
+        		arr[i] = +arr[i];	
+        	}
         }
         return arr;
     }
@@ -255,6 +257,22 @@ policycompass.viz.line = function (options) {
         }
 
         var arrayXaxesLabel = [];
+
+		//delete null values from array		
+		lines.forEach(function (d, i) {
+			//console.log(d.ValueY);
+			var TemporalXValues = [];
+			var TemporalYValues = [];
+			for (var pi in d.ValueY) {
+				if (d.ValueY[pi] != null) {
+					TemporalXValues.push(d.ValueX[pi]);
+					TemporalYValues.push(d.ValueY[pi]);
+				}
+			}
+			lines[i].ValueX = TemporalXValues;
+			lines[i].ValueY = TemporalYValues;
+			
+		});
 
         lines.forEach(function (d, i) {
             var r_data = []
@@ -847,12 +865,15 @@ policycompass.viz.line = function (options) {
 					.style("text-anchor", "end").text(function () {
 						var returnValue = "";
 						if (self.showAsPercentatge) {
+							/*
 							if (self.labelY[0]) {							
 								returnValue = "As % (" + self.labelY[0] + ")";
 							}
 							else {
 								returnValue = "As %"
-							}							
+							}
+							*/
+							returnValue = "As %"
 						} else {
 							returnValue = self.labelY[0];
 						}
@@ -884,13 +905,15 @@ policycompass.viz.line = function (options) {
 						.text(function () {
                             var returnValue = "";
                             if (self.showAsPercentatge) {
+                            	/*
                             	if (self.labelY[keyIndex]) {
                                 	returnValue = "As % (" + self.labelY[keyIndex] + ")";
                                	}
                                	else {
                                		returnValue = "As %";
                                	}
-                               	
+                               	*/
+                               	returnValue = "As %"
                             } else {
                                 returnValue = self.labelY[keyIndex];
                             }
@@ -1009,6 +1032,9 @@ policycompass.viz.line = function (options) {
                         if (formatdecimal < 2) {
                             formatdecimal = 2;
                         }
+                        else if (formatdecimal > 3) {
+                        	formatdecimal = 2;
+                        }
 
                         var posFinalXAxeY = self.width;
                         posFinalXAxeY = posFinalXAxeY + (self.distanceXaxes + formatdecimal) * (i - 1)
@@ -1018,7 +1044,7 @@ policycompass.viz.line = function (options) {
                             var yAxisLeft = d3.svg.axis().scale(self.yArray[i]).ticks(10).orient("right");
                         } else {
                             var yAxisLeft = d3.svg.axis().scale(self.yArray[i]).ticks(10).orient("right")
-                                .tickFormat(d3.format(".2s"));
+                                .tickFormat(d3.format("."+formatdecimal+"s"));
                         }
                     }
 
@@ -1061,12 +1087,15 @@ policycompass.viz.line = function (options) {
                     .text(function () {
 						var returnValue = "";
                         if (self.showAsPercentatge) {
+                        	/*
                         	if (self.labelY[cnti - 1]) {
                         		returnValue = "As % (" + self.labelY[cnti - 1] + ")";
                         	}
                         	else {
                         		returnValue = "As %";
-                        	}                        	
+                        	}
+                        	*/
+                        	returnValue = "As %"
 						} else {
                         	returnValue = self.labelY[cnti - 1];
                         }
@@ -1268,9 +1297,8 @@ policycompass.viz.line = function (options) {
                     else {
                     	lineClass += " active_item";
                     }
-                    
-                    var path = self.svg.append("path").datum(data)                  
-                        .attr("class", lineClass)
+
+                    var path = self.svg.append("path").datum(data)
                         .style("opacity", lineOpacity)
                         .attr("id", 'tag_' + key.replace(/\W/g, '')) // assign ID
                         .attr("fill", "none").style("stroke", function (d, i) {
@@ -1683,7 +1711,10 @@ policycompass.viz.line = function (options) {
 
                 var datosCircle = []
                 for (var i in d.ValueX) {
-                    datosCircle.push(d.ValueX[i] + "|" + d.ValueY[i])
+                	if (d.ValueY[i] != null)
+                	{
+                		datosCircle.push(d.ValueX[i] + "|" + d.ValueY[i]);	
+                	}
                 }
 
                 var myCircles = self.svg.selectAll("circles").data(datosCircle);

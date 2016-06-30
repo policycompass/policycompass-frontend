@@ -192,7 +192,9 @@ policycompass.viz.pie = function (options) {
 				
                 var sumatotal = 0;
                 for (var ij = 0; ij < pies.length; ij++) {
-                    sumatotal = parseInt(sumatotal) + parseInt(pies[ij]);
+                	if (pies[ij] != null) {                	
+                    	sumatotal = parseInt(sumatotal) + parseInt(pies[ij]);
+                   }
                 }
 
                 var average = Math.round((pies[i] * 100 / sumatotal), 2);
@@ -224,6 +226,7 @@ policycompass.viz.pie = function (options) {
                 else {
                 	var textToReturn = number + " (" + average + "%)";
                 }
+				
 
                 if (average < 3) {
                     return ("");
@@ -316,11 +319,17 @@ policycompass.viz.pie = function (options) {
                 }).text(function (d, i) {
                     var sumatotal = 0;
                     for (var ij = 0; ij < pies.length; ij++) {
-                        sumatotal = parseInt(sumatotal) + parseInt(pies[ij]);
+                    	if (pies[ij] != null) {
+                    		sumatotal = parseInt(sumatotal) + parseInt(pies[ij]);	
+                    	}                        
                     }
                     var average = Math.round((pies[i] * 100 / sumatotal), 2);
                     var number = pies[i];
-                    number = (parseFloat(number * 100) / 100).toFixed(2);
+
+                    if (number != null) {
+                    	number = (parseFloat(number * 100) / 100).toFixed(2);
+                    }
+                    
                     
                     var formatdecimal = 0;
                     formatdecimal = Math.round(number / 100) + 1;
@@ -351,6 +360,9 @@ policycompass.viz.pie = function (options) {
                     	var textToReturn = resTRext + " (" + number + ")";
                     }
                     else {
+                    	if (number == null) {
+                    		number = 'no data';
+                    	}
                     	var textToReturn = resTRext + " (" + number + " - " + average + "%)";
                     }
                     
