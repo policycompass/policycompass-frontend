@@ -37,7 +37,7 @@
     </div>
 
     <div ng-hide="ListMetricsFilter.length>0">
-        <div class="form-instructions">
+        <div class="form-custom-instructions">
             <p>In this form you can create your own datasets visualisations.</p>
 
             <p>If you need help about how to use this form, please click over the question tag (<span class="fonticon fonticon-help help-switch" ng-click="help=!help"> </span>) or the "View help" button.
@@ -46,8 +46,8 @@
         </div>
     </div>
 	
-	<div ng-show="(visualizationForm.$invalid || visualization.policy_domains_data.output.length==0) && ListMetricsFilter.length>0" class="form-instructions">
-		<p class="text-danger">To save a visualisation <span ng-hide="user.state.loggedIn"> you must be logged and </span> all mandatory fields (*) must be filled.</p>
+	<div ng-show="(visualizationForm.$invalid || visualization.policy_domains_data.output.length==0) && ListMetricsFilter.length>0" class="form-custom-instructions">
+		<p class="text-warning">To save a visualisation <span ng-hide="user.state.loggedIn"> you must be logged and </span> all mandatory fields (*) must be filled.</p>
 	</div>
 	
     <div class="pc-visualization-formcontrols">
