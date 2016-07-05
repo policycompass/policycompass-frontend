@@ -1578,7 +1578,7 @@ policycompass.viz.line = function (options) {
 							*/
 							//console.log(trimmedString.length);
 							if (eventsData.length>0) {							
-								var length = 100;
+								var length = 90;
 								if (trimmedString.length > length) {
                                 	trimmedString = trimmedString.substring(0, length-3) + "...";
                             	}
@@ -2323,7 +2323,9 @@ policycompass.viz.line = function (options) {
 
 		if (self.showLegend)
 		{		
-			var valueX = (self.margin.left)*2+((self.width/2));
+			//var valueX = (self.margin.left)*2+((self.width/2));
+			var valueX = (self.margin.left)*2+((self.maxWidth/2));
+			self.maxWidth
 			//console.log(valueX);
 			//console.log(eventsData.length);
 			if (eventsData.length>0) {
@@ -2420,7 +2422,7 @@ policycompass.viz.line = function (options) {
 	                        return resTRext;
 	                        */
 	                        var trimmedString = d.title;
-            				var length = 80;
+            				var length = 70;
             				if (trimmedString.length > length) {
 								trimmedString = trimmedString.substring(0, length) + "...";
 							}
@@ -2697,7 +2699,9 @@ policycompass.viz.line = function (options) {
 		             })
 					*/
 					
-					historicalEventsCircles.enter().append("circle")
+					historicalEventsCircles.enter()
+					/*
+					.append("circle")
 					.attr("cx", function (d, i) {
 						var retunrDate='';
 						if (iHE==1) {
@@ -2711,13 +2715,40 @@ policycompass.viz.line = function (options) {
 	                    //return self.xScale(getDate(retunrDate));
 	                    return returnValue;                   
 					})
-	                .style("opacity", 1)
-	                .attr("cy", function (d, i) {                    
+					.attr("cy", function (d, i) {                    
 	                    //return -10;
 	                    var vToReturn = -(self.maxEventsByPeriod * self.spaceBetweenEvents);	                    
             			return vToReturn;
 	                })
 	                .attr("r", 0)
+					*/				
+					.append("rect")
+					.attr("x", function (d, i) {
+						var retunrDate='';
+						if (iHE==1) {
+							retunrDate = d.startDate;
+						}
+						else if (iHE==2) {
+							retunrDate = d.endDate;
+						}
+
+						var returnValue = self.xScale(getDate(retunrDate));	                    
+	                    return returnValue - (self.radius/2);                   
+					})
+					.attr("y", function (d, i) {                    
+	                    //return -10;
+	                    var vToReturn = -(self.maxEventsByPeriod * self.spaceBetweenEvents);	                    
+            			return vToReturn - (self.radius/2);
+	                })
+	                .attr("width", function (d, i) {                    
+	                    var vToReturn = self.radius;                 
+            			return vToReturn;
+	                })
+	                .attr("height", function (d, i) {                    
+	                    var vToReturn = self.radius;                 
+            			return vToReturn;
+	                })
+	                .style("opacity", 1)
 	                .attr("class", function (d, i) {
 	                	var className = "lineXDisco event_circle_"+d.index;
 	                	return className;
