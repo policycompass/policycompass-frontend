@@ -229,7 +229,8 @@ angular.module('pcApp.events.controllers.event', [
         'dialogs',
         '$routeParams',
         '$anchorScroll',
-        function ($scope, $filter, Event, $location, $log, $http, API_CONF, eventService, Auth, dialogs, $routeParams, $anchorScroll) {
+        'ngProgress',
+        function ($scope, $filter, Event, $location, $log, $http, API_CONF, eventService, Auth, dialogs, $routeParams, $anchorScroll, ngProgress) {
 
             $scope.userState = Auth.state;
 
@@ -482,6 +483,7 @@ angular.module('pcApp.events.controllers.event', [
 
             $scope.searchEvent = function () {
                 if($scope.search_title.length > 0) {
+                    ngProgress.start();
                     var startRange, endRange;
 
                     if (!$scope.search.startRange) {
@@ -519,6 +521,7 @@ angular.module('pcApp.events.controllers.event', [
                         $scope.totalItems = $scope.searchResultsTotal.length;
                         $scope.searched = true;
                         $scope.wikipedia_event_active = false;
+                        ngProgress.complete();
 
                     }).error(function (data, status, headers, config) {
                         // called asynchronously if an error occurs
@@ -531,7 +534,7 @@ angular.module('pcApp.events.controllers.event', [
                         $scope.searched = true;
                         $scope.wikipedia_title_results = data[1];
                     }).error(function (data, status, headers, config) {
-
+                        ngProgress.complete();
                     });
 
                 }
@@ -542,6 +545,7 @@ angular.module('pcApp.events.controllers.event', [
             };
 
             $scope.searchForWikipediaEvents = function(wiki_title){
+                ngProgress.start();
                 $scope.wikiTitle = wiki_title;
                 $scope.wikiSearchResults = [];
                 var startRange, endRange;
@@ -580,8 +584,13 @@ angular.module('pcApp.events.controllers.event', [
                     $scope.totalItems = $scope.wikiSearchResultsTotal.length;
                     $scope.searched = true;
                     $scope.wikipedia_event_active = true;
+                    if(data.length == 0){
+                        dialogs.notify('Events from selected Wikipedia article cannot be extracted', 'Please choose another article.');
+                    }
+                    ngProgress.complete();
 
                 }).error(function (data, status, headers, config) {
+                    ngProgress.complete();
                     // called asynchronously if an error occurs
                     // or server returns response with an error status.
                 });
