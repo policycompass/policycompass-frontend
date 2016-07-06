@@ -1,4 +1,3 @@
-var weka = '';
 angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
     .service("ConceptsDetail", function () {
@@ -119,7 +118,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         };
     })
 
-    .controller('CytoscapeCtrl', function ($scope, $rootScope, $window, $routeParams, $location, $translate, Fcm, FcmModel, FcmWekaOutput, FcmSimulation, FcmActivator, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, SimulationConceptsDetail, AssociationsDetail, SimulationAssociationsDetail, EditConcept, EditAssociation, FCMActivatorDetail, Dataset, FcmIndicator, Auth) {
+    .controller('CytoscapeCtrl', function ($scope, $rootScope, $window, $routeParams, $location, $translate, Fcm, FcmModel, FcmWekaOutput, FcmSimulation, FcmActivator, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, SimulationConceptsDetail, AssociationsDetail, SimulationAssociationsDetail, EditConcept, EditAssociation, FCMActivatorDetail, Dataset, FcmIndicator, Auth, $q) {
         // container objects
         $scope.user = Auth;
         $scope.Models = [];
@@ -469,9 +468,20 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 return 0.6;
             else if ((item.value - row.min) / (row.max - row.min) >= 0.6 && (item.value - row.min) / (row.max - row.min) < 0.8)
                 return 0.8;
-            else if ((item.value - row.min) / (row.max - row.min) >= 0.8 && (item.value - row.min) / (row.max - row.min) <= 1)
+            else if ((item.value - row.min) / (row.max - row.min) >= 0.8 || isNaN((item.value - row.min) / (row.max - row.min)))
                 return 1.0;
 
+        };
+
+        $scope.getRelationWieght = function (value) {
+            if (value === 0)
+                return 0.25;
+            if (Math.abs(value) > 1)
+                return value > 0 ? 1 : -1;
+            if (value > 0)
+                return (Math.ceil(value * 4) / 4).toFixed(2) - 0;
+            if (value < 0)
+                return (Math.floor(value * 4) / 4).toFixed(2) - 0;
         };
 
         // **-*-****
@@ -489,7 +499,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
             angular.forEach($scope.SimulationConcepts, function (item) {
                 var text = item.title;
-                $scope.historicalData.push({ title: text, rowData: [], min: null, max: null });
+                $scope.historicalData.push({ title: text, Id: item.Id, rowData: [], min: null, max: null });
 
                 angular.forEach(item.metricsTable, function (v, k) {
                     $scope.historicalData[$scope.historicalData.length - 1].rowData.push({ key: k, value: v });
@@ -502,94 +512,68 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
             });
 
+            var promises = [];
             $scope.SimulationConcepts[0].historicalData = $scope.historicalData;
             $scope.SimulationConcepts[0].wieghtCalculation = [];
-            var wekaInputData = '@data';
-            for (var i = 0; i < $scope.historicalData[0].rowData.length; i++) {
-                wekaInputData = wekaInputData + '\n';
-                for (var j = 0; j < $scope.historicalData.length; j++) {
-                    wekaInputData = wekaInputData + (j == 0 ? '' : ',') + $scope.getFuzzifiedValue($scope.historicalData[j], $scope.historicalData[j].rowData[i]);
-                }
-            }
+            angular.forEach($scope.SimulationAssociations, function (itemAssociation) {
+                var wekaInputData = '@data';
 
-            wekaRequestData = '@relation ' + $scope.historicalData[$scope.historicalData.length - 1].title + '\n';
-
-            angular.forEach($scope.historicalData, function (item) {
-                wekaRequestData = wekaRequestData + '@attribute ' + item.title + ' numeric\n';
-            });
-
-            wekaRequestData = wekaRequestData + '\n' + wekaInputData;
-            console.log(wekaRequestData);
-
-            FcmWekaOutput.post(wekaRequestData, function (res) {
-                console.log(res);
-                weka = res;
-
-                var lines = res.wekaString.split('\n');
-                angular.forEach(lines, function (text) {
-                    var attrib = text.split('Attrib ');
-                    if (attrib.length > 1) {
-                        for (var i = 1; i < attrib.length; i++) {
-                            if ($.trim(attrib[i]) != '') {
-                                var conceptTitle = attrib[i].split('    ')[0];
-                                var conceptWeight = parseFloat(attrib[i].split('    ')[1]).toFixed(2);
-                                console.log(conceptTitle, conceptWeight);
-
-                                $scope.SimulationAssociations[i - 1].weighted = conceptWeight;
-
-                                $scope.SimulationConcepts[0].wieghtCalculation.push({
-                                    source: $.trim(conceptTitle),
-                                    destination: $scope.SimulationConcepts[$scope.SimulationConcepts.length - 1].title,
-                                    weight: conceptWeight
-                                });
-                            }
-                        }
-                    }
+                var data = [];
+                angular.forEach($scope.historicalData, function (itemHistorical) {
+                    if (itemHistorical.Id == itemAssociation.sourceID)
+                        data.push(itemHistorical);
                 });
 
-                for (i = 0; i < $scope.SimulationConcepts.length; i++) {
-                    if ($scope.SimulationConcepts[i].metricId != 0) {
-                        if ((i + 1) == 1)
-                            $scope.SimulationConcepts[i].value = 0.8; else if ((i + 1) % 5 == 0)
-                            $scope.SimulationConcepts[i].value = 1; else if ((i + 1) % 4 == 0)
-                            $scope.SimulationConcepts[i].value = 0.4; else if ((i + 1) % 3 == 0)
-                            $scope.SimulationConcepts[i].value = 0.6; else if ((i + 1) % 2 == 0)
-                            $scope.SimulationConcepts[i].value = 0.2; else
-                            $scope.SimulationConcepts[i].value = 0.8;
-                        $scope.conceptStyle[i] = { "color": "#286090" };
-                    }
-                }
-                for (i = 0; i < $scope.SimulationAssociations.length; i++) {
-                    for (j = 0; j < $scope.SimulationConcepts.length; j++) {
-                        if ($scope.SimulationConcepts[j].Id == $scope.SimulationAssociations[i].source.Id) {
-                            if ($scope.SimulationConcepts[j].metricId != 0) {
-                                if ((i + 1) == 1)
-                                    $scope.SimulationAssociations[i].weighted = 0.25; else if ((i + 1) % 5 == 0)
-                                    $scope.SimulationAssociations[i].weighted = -0.25; else if ((i + 1) % 4 == 0)
-                                    $scope.SimulationAssociations[i].weighted = 0.75; else if ((i + 1) % 3 == 0)
-                                    $scope.SimulationAssociations[i].weighted = -0.5; else if ((i + 1) % 2 == 0)
-                                    $scope.SimulationAssociations[i].weighted = 0.5; else
-                                    $scope.SimulationAssociations[i].weighted = 1;
-                                $scope.relationShipStyle[i] = { "color": "#286090" };
-                            }
-                        }
+                angular.forEach($scope.historicalData, function (itemHistorical) {
+                    if (itemHistorical.Id == itemAssociation.destinationID)
+                        data.push(itemHistorical);
+                });
 
-                        if ($scope.SimulationConcepts[j].Id == $scope.SimulationAssociations[i].destination.Id) {
-                            if ($scope.SimulationConcepts[j].metricId != 0) {
-                                if ((i + 1) == 1)
-                                    $scope.SimulationAssociations[i].weighted = 0.25; else if ((i + 1) % 5 == 0)
-                                    $scope.SimulationAssociations[i].weighted = -0.25; else if ((i + 1) % 4 == 0)
-                                    $scope.SimulationAssociations[i].weighted = 0.75; else if ((i + 1) % 3 == 0)
-                                    $scope.SimulationAssociations[i].weighted = -0.5; else if ((i + 1) % 2 == 0)
-                                    $scope.SimulationAssociations[i].weighted = 0.5; else
-                                    $scope.SimulationAssociations[i].weighted = 1;
-                                $scope.relationShipStyle[i] = { "color": "#286090" };
-                            }
-                        }
-                    }
+                for (var i = 0; i < data[0].rowData.length; i++) {
+                    if (data[1].rowData[i] != null)
+                        wekaInputData = wekaInputData + '\n' + $scope.getFuzzifiedValue(data[0], data[0].rowData[i]) + ',' + $scope.getFuzzifiedValue(data[1], data[1].rowData[i]);
                 }
 
+                wekaRequestData = '@relation \'' + data[0].Id + ',' + data[1].Id + '\'\n\n@attribute \'' + data[0].Id + ',' + data[1].Id + '\' numeric\n' + '\n@attribute ' + data[1].Id + ' numeric\n\n' + wekaInputData;
+                console.log(wekaRequestData);
+                promises.push(FcmWekaOutput.post(wekaRequestData).$promise);
+            });
 
+            // All Promises have to be resolved
+            $q.all(promises).then(function (results) {
+                console.log(results);
+
+                angular.forEach(results, function (res) {
+                    var lines = res.wekaString.split('\n');
+                    angular.forEach(lines, function (text) {
+                        var attrib = text.split('Attrib ');
+                        if (attrib.length > 1) {
+                            for (var i = 1; i < attrib.length; i++) {
+                                if ($.trim(attrib[i]) != '') {
+                                    var conceptIds = attrib[i].split('    ')[0].split(',');
+                                    var conceptWeight = parseFloat(attrib[i].split('    ')[1]).toFixed(2);
+                                    console.log(conceptIds, conceptWeight);
+
+                                    //$scope.SimulationAssociations[i - 1].weighted = conceptWeight;
+
+                                    angular.forEach($scope.SimulationAssociations, function (itemAssociation) {
+                                        if (itemAssociation.sourceID == conceptIds[0] && itemAssociation.destinationID == conceptIds[1]) {
+                                            itemAssociation.weighted = $scope.getRelationWieght(conceptWeight);
+                                            $scope.SimulationConcepts[0].wieghtCalculation.push({
+                                                source: itemAssociation.source.title,
+                                                sourceID: $.trim(conceptIds[0]),
+                                                destination: itemAssociation.destination.title,
+                                                destinationID: $.trim(conceptIds[1]),
+                                                weight: conceptWeight
+                                            });
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    });
+                });
+                console.log($scope.SimulationConcepts);
                 dlg = dialogs.create('modules/fcm/partials/weightcalulation.html', 'WeightCalulationController', { concept: $scope.SimulationConcepts }, {
                     key: false,
                     back: 'static'
@@ -599,28 +583,22 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 }, function () {
 
                 });
-
-                //if ($scope.Concepts.length > 1) {
-                //    var dlg = dialogs.notify("Causal Model", "Weights are calculated!");
-                //}
-
-            }, function (err) {
-                throw { message: JSON.stringify(err.data) };
             });
 
 
-            //for (i = 0; i < $scope.SimulationConcepts.length; i++) {
-            //    if ($scope.SimulationConcepts[i].metricId != 0) {
-            //        if ((i + 1) == 1)
-            //            $scope.SimulationConcepts[i].value = 0.8; else if ((i + 1) % 5 == 0)
-            //                $scope.SimulationConcepts[i].value = 1; else if ((i + 1) % 4 == 0)
-            //                    $scope.SimulationConcepts[i].value = 0.4; else if ((i + 1) % 3 == 0)
-            //                        $scope.SimulationConcepts[i].value = 0.6; else if ((i + 1) % 2 == 0)
-            //                            $scope.SimulationConcepts[i].value = 0.2; else
-            //                            $scope.SimulationConcepts[i].value = 0.8;
-            //        $scope.conceptStyle[i] = { "color": "#286090" };
-            //    }
-            //}
+            for (i = 0; i < $scope.SimulationConcepts.length; i++) {
+                if ($scope.SimulationConcepts[i].metricId != 0) {
+                    if ((i + 1) == 1)
+                        $scope.SimulationConcepts[i].value = 0.8; else if ((i + 1) % 5 == 0)
+                        $scope.SimulationConcepts[i].value = 1; else if ((i + 1) % 4 == 0)
+                        $scope.SimulationConcepts[i].value = 0.4; else if ((i + 1) % 3 == 0)
+                        $scope.SimulationConcepts[i].value = 0.6; else if ((i + 1) % 2 == 0)
+                        $scope.SimulationConcepts[i].value = 0.2; else
+                        $scope.SimulationConcepts[i].value = 0.8;
+                    $scope.conceptStyle[i] = { "color": "#286090" };
+                }
+            }
+
             //for (i = 0; i < $scope.SimulationAssociations.length; i++) {
             //    for (j = 0; j < $scope.SimulationConcepts.length; j++) {
             //        if ($scope.SimulationConcepts[j].Id == $scope.SimulationAssociations[i].source.Id) {
@@ -651,9 +629,51 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             //    }
             //}
 
-            //if ($scope.Concepts.length > 1) {
-            //    var dlg = dialogs.notify("Causal Model", "Weights are calculated!");
-            //}
+            ////for (i = 0; i < $scope.SimulationConcepts.length; i++) {
+            ////    if ($scope.SimulationConcepts[i].metricId != 0) {
+            ////        if ((i + 1) == 1)
+            ////            $scope.SimulationConcepts[i].value = 0.8; else if ((i + 1) % 5 == 0)
+            ////                $scope.SimulationConcepts[i].value = 1; else if ((i + 1) % 4 == 0)
+            ////                    $scope.SimulationConcepts[i].value = 0.4; else if ((i + 1) % 3 == 0)
+            ////                        $scope.SimulationConcepts[i].value = 0.6; else if ((i + 1) % 2 == 0)
+            ////                            $scope.SimulationConcepts[i].value = 0.2; else
+            ////                            $scope.SimulationConcepts[i].value = 0.8;
+            ////        $scope.conceptStyle[i] = { "color": "#286090" };
+            ////    }
+            ////}
+            ////for (i = 0; i < $scope.SimulationAssociations.length; i++) {
+            ////    for (j = 0; j < $scope.SimulationConcepts.length; j++) {
+            ////        if ($scope.SimulationConcepts[j].Id == $scope.SimulationAssociations[i].source.Id) {
+            ////            if ($scope.SimulationConcepts[j].metricId != 0) {
+            ////                if ((i + 1) == 1)
+            ////                    $scope.SimulationAssociations[i].weighted = 0.25; else if ((i + 1) % 5 == 0)
+            ////                        $scope.SimulationAssociations[i].weighted = -0.25; else if ((i + 1) % 4 == 0)
+            ////                            $scope.SimulationAssociations[i].weighted = 0.75; else if ((i + 1) % 3 == 0)
+            ////                                $scope.SimulationAssociations[i].weighted = -0.5; else if ((i + 1) % 2 == 0)
+            ////                                    $scope.SimulationAssociations[i].weighted = 0.5; else
+            ////                                    $scope.SimulationAssociations[i].weighted = 1;
+            ////                $scope.relationShipStyle[i] = { "color": "#286090" };
+            ////            }
+            ////        }
+
+            ////        if ($scope.SimulationConcepts[j].Id == $scope.SimulationAssociations[i].destination.Id) {
+            ////            if ($scope.SimulationConcepts[j].metricId != 0) {
+            ////                if ((i + 1) == 1)
+            ////                    $scope.SimulationAssociations[i].weighted = 0.25; else if ((i + 1) % 5 == 0)
+            ////                        $scope.SimulationAssociations[i].weighted = -0.25; else if ((i + 1) % 4 == 0)
+            ////                            $scope.SimulationAssociations[i].weighted = 0.75; else if ((i + 1) % 3 == 0)
+            ////                                $scope.SimulationAssociations[i].weighted = -0.5; else if ((i + 1) % 2 == 0)
+            ////                                    $scope.SimulationAssociations[i].weighted = 0.5; else
+            ////                                    $scope.SimulationAssociations[i].weighted = 1;
+            ////                $scope.relationShipStyle[i] = { "color": "#286090" };
+            ////            }
+            ////        }
+            ////    }
+            ////}
+
+            ////if ($scope.Concepts.length > 1) {
+            ////    var dlg = dialogs.notify("Causal Model", "Weights are calculated!");
+            ////}
         };
 
         $scope.runSimulation = function () {
