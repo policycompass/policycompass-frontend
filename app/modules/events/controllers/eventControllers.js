@@ -265,7 +265,7 @@ angular.module('pcApp.events.controllers.event', [
                 $scope.search_title =  $routeParams.q || "";
                 $scope.search.startRange = $routeParams.start || "";
                 $scope.search.endRange = $routeParams.end || "";
-                //$scope.wikiTitle = $routeParams.wikiTitle || "";
+                $scope.wikiTitle = $routeParams.wikiTitle || "";
 
                 $scope.selectedExtractors = [];
 
@@ -528,13 +528,27 @@ angular.module('pcApp.events.controllers.event', [
                         // or server returns response with an error status.
                     });
 
-                    $http.get(
-                        "https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=" + $scope.search_title
-                    ).success(function (data, status, headers, config) {
-                        $scope.searched = true;
-                        $scope.wikipedia_title_results = data[1];
-                    }).error(function (data, status, headers, config) {
-                        ngProgress.complete();
+
+                    $.ajax( {
+                        url: "https://en.wikipedia.org/w/api.php",
+                        jsonp: "callback",
+                        dataType: 'jsonp',
+                        data: {
+                            action: "opensearch",
+                            list: "search",
+                            srsearch: "javascript",
+                            format: "json",
+                            search: $scope.search_title
+                        },
+                        xhrFields: { withCredentials: true },
+                        success: function(response) {
+                            $scope.searched = true;
+                            $scope.wikipedia_title_results = [];
+                            for(var i = 0; i<response[1].length;i++){
+                                $scope.searched = true;
+                                $scope.wikipedia_title_results[i] = [response[1][i], response[2][i], response[3][i]];
+                            }
+                        }
                     });
 
                 }

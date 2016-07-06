@@ -126,16 +126,20 @@
                                     <!--<div class="num-results" ng-hide="searchResults.length"><span>No results found</span></div>-->
                                     <!--<div class="num-results" ng-show="searchResults.length"><span>{{searchResultsCount}} results found</span>-->
                             </div>
-                            <div class="row">
-                                <div class="container-wikipedia-entries">
-                                    <div ng-repeat="result in wikipedia_title_results">
-                                        <div class="well col-md-10 col-xs-3 wikipedia-search">
+                            <div class="search-results row-flex">
+                                <div ng-repeat="result in wikipedia_title_results" class="result-wrapper">
+                                    <div class="result-block searchItemIcon">
+                                        <div class="search-result">
+                                            <h5>
+                                                <a href ng-click="searchForWikipediaEvents(result[0])">{{result[0]}}</a>
+                                            </h5>
                                             <div class="attributes">
-                                                <h5>
-                                                    <a href ng-click="searchForWikipediaEvents(result)">{{result}}</a>
-                                                </h5>
-
-                                                <a href="https://en.wikipedia.org/wiki/{{ result }}" target="_blank">https://en.wikipedia.org/wiki/{{ result | limitTo:50 }}</a>
+                                                <p>
+                                                    {{ result[1] }}
+                                                </p>
+                                                <p>
+                                                    URL: {{ result[2]}}
+                                                </p
                                             </div>
                                         </div>
                                     </div>
