@@ -55,9 +55,11 @@ h3 {
   height: 800px; /* fallback for older browsers */
   height: 100vh;
   overflow-x: hidden;
-  //overflow-y: auto;
+  overflow-y: auto;
   -webkit-perspective: 300px;
   perspective: 300px;
+  -webkit-perspektive-origin-x: 100%;
+  perspective-origin-x: 100%;
   background-color: #000;
 }
 
@@ -75,6 +77,8 @@ h3 {
   left: 0;
   right: 0;
   bottom: 0;
+  -webkit-perspektive-origin-x: 100%;
+  perspective-origin-x: 100%;
 }
 
 .parallax__layer--fore {
