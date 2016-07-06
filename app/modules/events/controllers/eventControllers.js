@@ -155,13 +155,20 @@ angular.module('pcApp.events.controllers.event', [
 
             if (angular.toJson(eventService.getEvent()) != "[]") {
                 //console.log(angular.toJson(eventService.getEvent()));
+                var endDate = '';
+                if(typeof eventService.getEvent()[0]['endDate'] === "undefined"){
+                    endDate = '2099-01-01';
+                }
+                else{
+                    endDate = eventService.getEvent()[0]['endDate'];
+                }
                 $scope.event = {
                     title: angular.toJson(eventService.getEvent()[0]['title']).replace(/\"/g, ""),
                     keywords: angular.toJson(eventService.getEvent()[0]['title']).replace(/\"/g, ""),
                     detailsURL: angular.toJson(eventService.getEvent()[0]['url']).replace(/\"/g, ""),
                     description: angular.toJson(eventService.getEvent()[0]['description']).replace(/\"/g, ""),
                     startEventDate: angular.toJson(eventService.getEvent()[0]['date']).replace(/\"/g, ""),
-                    endEventDate: angular.toJson(eventService.getEvent()[0]['endDate']).replace(/\"/g, ""),
+                    endEventDate: angular.toJson(endDate).replace(/\"/g, ""),
                     //spatials: $scope.spatials.output,
                     languageID: "38"
                 }
@@ -243,6 +250,7 @@ angular.module('pcApp.events.controllers.event', [
 
 
             $scope.init = function () {
+                $activeTab = 0;
                 $scope.searched = false;
                 //Set Pagination defaults
                 //Default value for how many pages to show in the page navigation control
@@ -256,16 +264,19 @@ angular.module('pcApp.events.controllers.event', [
                 $scope.search_title =  $routeParams.q || "";
                 $scope.search.startRange = $routeParams.start || "";
                 $scope.search.endRange = $routeParams.end || "";
+                //$scope.wikiTitle = $routeParams.wikiTitle || "";
 
                 $scope.selectedExtractors = [];
 
                 $scope.searchResults = eventService.getSearchResults();
+                $scope.wikiSearchResults = eventService.getWikiSearchResults();
 
 
                 //Default sort
                 $scope.sortByItem = 'Relevance';
                 //Default current page
                 $scope.currentPage = $routeParams.page || 1;
+
 
                 var sortBy = $routeParams.sort;
                 angular.forEach($scope.sortOptions, function(option) {
@@ -277,6 +288,7 @@ angular.module('pcApp.events.controllers.event', [
 
 
                 var showPerPage = $routeParams.show-0 || 10;
+
                 angular.forEach($scope.itemsPerPageChoices, function(option) {
                     if (option.id === showPerPage){
                         $scope.itemsperPage = showPerPage;
@@ -338,6 +350,8 @@ angular.module('pcApp.events.controllers.event', [
                 $location.search('show', $scope.itemsperPage);
 
                 $location.search('sort', $scope.sortByItem);
+
+                $location.search('wikiTitle' , $scope.wikiTitle);
             }
 
             //Define function that fires search when page changes
@@ -347,13 +361,29 @@ angular.module('pcApp.events.controllers.event', [
                         $scope.currentPage = $routeParams.page;
                     return;
                 }
-                $location.search('page', $scope.currentPage);
-                //$scope.searchEvent();
+
                 $scope.itemOffset = ($scope.currentPage - 1 ) * $scope.itemsperPage;
-                $scope.totalItems = $scope.searchResultsTotal.length;
-                $scope.fillSearchResults($scope.searchResultsTotal);
+
+                switch($scope.activeTab){
+                    case 0: {
+                        $scope.fillSearchResults($scope.searchResultsTotal);
+                        $scope.totalItems = $scope.searchResultsTotal.length;
+                    }
+                        break;
+                    case 1: {
+                        //$scope.totalItems = $scope.wikipedia_title_results;
+                    }
+                        break;
+                    case 2: {
+                        $scope.fillWikiSearchResults($scope.wikiSearchResultsTotal);
+                        $scope.totalItems = $scope.wikiSearchResultsTotal.length;
+                    }
+                        break;
+                }
+
                 $scope.goToTop();
             };
+
 
             //Define function that fires search when Items Per Page selection box changes
             $scope.itemsPerPageChanged = function () {
@@ -412,7 +442,6 @@ angular.module('pcApp.events.controllers.event', [
                 $scope.searchResultsTotal = data;
                 $scope.searchResultsTotal = sortByKey($scope.searchResultsTotal, $scope.sortByItem);
 
-
                 var searchResults = [];
 
                 var length = $scope.itemOffset+$scope.itemsperPage;
@@ -428,10 +457,31 @@ angular.module('pcApp.events.controllers.event', [
                 $scope.searchResults = searchResults;
             }
 
+            $scope.fillWikiSearchResults = function(data){
+
+                $scope.wikiSearchResultsTotal = data;
+                $scope.wikiSearchResultsTotal = sortByKey($scope.wikiSearchResultsTotal, $scope.sortByItem);
+
+                var wikiSearchResults = [];
+
+                var length = $scope.itemOffset+$scope.itemsperPage;
+
+
+                if(length > $scope.wikiSearchResultsTotal.length){
+                    length = $scope.wikiSearchResultsTotal.length;
+                }
+
+                for(var i = $scope.itemOffset; i < length; i++){
+                    wikiSearchResults[i-$scope.itemOffset] = $scope.wikiSearchResultsTotal[i];
+                }
+
+                eventService.setWikiSearchResults(wikiSearchResults);
+                $scope.wikiSearchResults = wikiSearchResults;
+            }
+
 
             $scope.searchEvent = function () {
                 if($scope.search_title.length > 0) {
-                    $scope.searched = true;
                     var startRange, endRange;
 
                     if (!$scope.search.startRange) {
@@ -449,12 +499,14 @@ angular.module('pcApp.events.controllers.event', [
 
                     $scope.itemOffset = ($scope.currentPage - 1 ) * $scope.itemsperPage;
 
+                    var selectedExtractors = selectedExtractorsWithoutWiki();
+
                     $http.get(
                         API_CONF.EVENTS_MANAGER_URL +
                         '/harvestevents?keyword=' +
                         $scope.search_title +
                         '&extractors=' +
-                        $scope.selectedExtractors +
+                        selectedExtractors +
                         '&start=' +
                         $filter('date')(startRange, "yyyy-MM-dd") +
                         '&end=' +
@@ -462,14 +514,24 @@ angular.module('pcApp.events.controllers.event', [
 
                     success(function (data, status, headers, config) {
                         //console.log("data " + angular.toJson(data));
-
+                        $scope.wikiSearchResults = [];
                         $scope.fillSearchResults(data);
-
                         $scope.totalItems = $scope.searchResultsTotal.length;
+                        $scope.searched = true;
+                        $scope.wikipedia_event_active = false;
 
                     }).error(function (data, status, headers, config) {
                         // called asynchronously if an error occurs
                         // or server returns response with an error status.
+                    });
+
+                    $http.get(
+                        "https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=" + $scope.search_title
+                    ).success(function (data, status, headers, config) {
+                        $scope.searched = true;
+                        $scope.wikipedia_title_results = data[1];
+                    }).error(function (data, status, headers, config) {
+
                     });
 
                 }
@@ -479,23 +541,87 @@ angular.module('pcApp.events.controllers.event', [
 
             };
 
+            $scope.searchForWikipediaEvents = function(wiki_title){
+                $scope.wikiTitle = wiki_title;
+                $scope.wikiSearchResultsTotal = [];
+                var startRange, endRange;
+
+                if (!$scope.search.startRange) {
+                    startRange = "0001-01-01";
+                }
+                else {
+                    startRange = $scope.search.startRange;
+                }
+                if (!$scope.search.endRange) {
+                    endRange = "2099-12-31";
+                }
+                else {
+                    endRange = $scope.search.endRange;
+                }
+
+                $scope.itemOffset = ($scope.currentPage - 1 ) * $scope.itemsperPage;
+
+
+                $http.get(
+                    API_CONF.EVENTS_MANAGER_URL +
+                    '/harvestevents?keyword=' +
+                    wiki_title +
+                    '&extractors=' +
+                    'Wikipedia' +
+                    '&start=' +
+                    $filter('date')(startRange, "yyyy-MM-dd") +
+                    '&end=' +
+                    $filter('date')(endRange, "yyyy-MM-dd")).
+
+                success(function (data, status, headers, config) {
+                    //console.log("data " + angular.toJson(data));
+                    $scope.fillWikiSearchResults(data);
+                    $scope.wikiTotalItems = $scope.wikiSearchResultsTotal.length;
+                    $scope.totalItems = $scope.wikiSearchResultsTotal.length;
+                    $scope.searched = true;
+                    $scope.wikipedia_event_active = true;
+
+                }).error(function (data, status, headers, config) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                });
+
+            };
+
+            var selectedExtractorsWithoutWiki = function(){
+                var _extractors = [];
+                $scope.selectedExtractors.forEach(function (selectedExtractor) {
+                    if(selectedExtractor != 'Wikipedia'){
+                        _extractors.push(selectedExtractor);
+                    }
+                });
+
+                return _extractors;
+            }
+
 
             $scope.selectEvent = function () {
-                //console.log(angular.toJson($scope.search.selectedEvent));
                 eventService.addEvent($scope.search.selectedEvent);
-                //console.log("addEvent:" + angular.toJson(eventService.getEvent()));
+                $scope.saveParameters();
                 $location.path('/events/create');
             };
 
             $scope.goToTop = function(){
+                var old = $location.hash();
                 $location.hash('top');
                 $anchorScroll();
+                $location.hash(old);
             };
 
 
             $scope.$on('$routeUpdate', function(){
                 $scope.init();
             });
+
+            $scope.setActiveTab = function(_active){
+                $scope.currentPage = 1;
+                $scope.activeTab = _active;
+            };
 
             $scope.init();
 
