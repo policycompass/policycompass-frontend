@@ -543,7 +543,7 @@ angular.module('pcApp.events.controllers.event', [
 
             $scope.searchForWikipediaEvents = function(wiki_title){
                 $scope.wikiTitle = wiki_title;
-                $scope.wikiSearchResultsTotal = [];
+                $scope.wikiSearchResults = [];
                 var startRange, endRange;
 
                 if (!$scope.search.startRange) {
