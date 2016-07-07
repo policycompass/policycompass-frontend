@@ -58,8 +58,6 @@ h3 {
   overflow-y: auto;
   -webkit-perspective: 300px;
   perspective: 300px;
-  -webkit-perspektive-origin-x: 100%;
-  perspective-origin-x: 100%;
   background-color: #000;
 }
 
@@ -77,32 +75,30 @@ h3 {
   left: 0;
   right: 0;
   bottom: 0;
-  -webkit-perspektive-origin-x: 100%;
-  perspective-origin-x: 100%;
 }
 
 .parallax__layer--fore {
   -webkit-transform: translateZ(90px) scale(.7);
-  transform: translateZ(90px) scale(.7);
+  -moz-transform: translateZ(90px) scale(.7);
   z-index: 1;
   pointer-events: none;
 }
 
 .parallax__layer--base {
   -webkit-transform: translateZ(0);
-  transform: translateZ(0);
+  -moz-transform: translateZ(0);
   z-index: 4;
 }
 
 .parallax__layer--back {
   -webkit-transform: translateZ(-300px) scale(2);
-  transform: translateZ(-300px) scale(2);
+  -moz-transform: translateZ(-300px) scale(2);
   z-index: 3;
 }
 
 .parallax__layer--deep {
   -webkit-transform: translateZ(-600px) scale(3);
-  transform: translateZ(-600px) scale(3);
+  -moz-transform: translateZ(-600px) scale(3);
   z-index: 2;
 }
 
@@ -157,6 +153,10 @@ h3 {
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.4)), url('../img/front/parallax-6.jpg');
 }
 
+#group6 .parallax__layer--base {
+  pointer-events: none;
+}
+
 #group7 {
   z-index: 3; /* slide over group 7 */
 }
@@ -186,20 +186,16 @@ h3 {
   background: transparent;
 }
 
-.landingpage header #main-menu a  {
+.landingpage header #main-menu a, #parallax h2, #parallax h3 {
   color: #fff !important;
 }
 
-#parallax h2 {
+#parallax p {
   color: #fff;
 }
 
-#parallax h3, #parallax p {
-  color: #fff;
-}
-
-#parallax footer p {
-  color: #333;
+#footer p {
+  color: inherit;
 }
 
 div.sign-in-wrapper.main-menu-wrap.collapse.in {
