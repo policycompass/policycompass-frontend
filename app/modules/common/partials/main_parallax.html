@@ -1,14 +1,14 @@
 <div ng-controller="ControllerScroller">
 
-    <div id="top-bar">
-        <div cookie-law ng-hide="hideCookieLaw" class="landingpage"></div>
-        <div ng-include="'header.html'" class="landingpage"></div>
-    </div>
-
     <div id="parallax" du-scroll-container>
 
+        <div id="top-bar">
+            <div cookie-law ng-hide="hideCookieLaw" class="landingpage"></div>
+            <div ng-include="'header.html'" class="landingpage"></div>
+        </div>
+
         <section id="group1" name="group1" class="parallax__group">
-            <div class="parallax__layer parallax__layer--fore">
+            <div class="parallax__layer parallax__layer--base">
                 <div class="container">
                     <div class="row">
                         <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3">
@@ -53,7 +53,6 @@
                     </div>
                 </div>
             </div>
-            <div class="parallax__layer parallax__layer--base"></div>
         </section>
 
         <section id="group2" name="group2" class="parallax__group">
@@ -172,6 +171,13 @@
 
         <section id="group6" name="group6" class="parallax__group">
             <div class="parallax__layer parallax__layer--base">
+                <div class="container">
+                    <div class="col-md-6 col-md-offset-6" style="padding-top: 600px">
+                        <img src="img/front/social-media_1.png" class="hidden-sm hidden-xs">
+                    </div>
+                </div>
+            </div>
+            <div class="parallax__layer parallax__layer--back">
                 <div class="container parallax">
                     <div class="col-md-4">
                         <h3>Discuss your Results</h3>
@@ -185,12 +191,8 @@
                             Shared Policy Compass content into social networks.
                         </p>
                     </div>
-                    <div class="col-md-4 hidden-sm hidden-xs">
-                        <img src="img/front/social-media_1.png">
-                    </div>
                 </div>
             </div>
-            <div class="parallax__layer parallax__layer--back"></div>
         </section>
 
         <section id="group7" name="group7" class="parallax__group">
