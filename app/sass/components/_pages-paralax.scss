@@ -202,10 +202,6 @@ html, body {
   color: inherit;
 }
 
-div.sign-in-wrapper.main-menu-wrap.collapse.in {
-  background-color: #000;
-}
-
 @media (max-width: $device_4) {
   .parallax__layer--fore {
     display: none;
@@ -247,6 +243,6 @@ div.sign-in-wrapper.main-menu-wrap.collapse.in {
   z-index: 50;
 }
 
-#feedbackButton {
+.home-top-bar #feedbackButton {
   display: none;
 }

@@ -63,7 +63,7 @@
     <div id="page-container" class="ng-hide" ng-show="hideLoader">
 
         <div ng-class="{'container home-top-bar': location.path() == '/'}">
-            <div class="row">
+            <div ng-class="{'row': location.path() == '/'}">
                 <div cookie-law ng-hide="hideCookieLaw"></div>
                 <div ng-include="'header.html'" ng-class="{'landingpage': location.path() == '/'}"></div>
             </div>
