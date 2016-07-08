@@ -118,7 +118,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         };
     })
 
-    .controller('CytoscapeCtrl', function ($scope, $rootScope, $window, $routeParams, $location, $translate, Fcm, FcmModel, FcmSimulation, FcmActivator, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, SimulationConceptsDetail, AssociationsDetail, SimulationAssociationsDetail, EditConcept, EditAssociation, FCMActivatorDetail, Dataset, FcmIndicator, Auth) {
+    .controller('CytoscapeCtrl', function ($scope, $rootScope, $window, $routeParams, $location, $translate, Fcm, FcmModel, FcmWekaOutput, FcmSimulation, FcmActivator, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, SimulationConceptsDetail, AssociationsDetail, SimulationAssociationsDetail, EditConcept, EditAssociation, FCMActivatorDetail, Dataset, FcmIndicator, Auth, $q) {
         // container objects
         $scope.user = Auth;
         $scope.Models = [];
@@ -420,7 +420,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         };
 
         $scope.editMetrics = function (index) {
-            dlg = dialogs.create('modules/fcm/partials/editmetrics.html', 'EditMetricsController', {}, {
+            dlg = dialogs.create('modules/fcm/partials/editmetrics.html', 'EditMetricsController', { concept: $scope.SimulationConcepts[index] }, {
                 key: false,
                 back: 'static'
             });
@@ -428,7 +428,9 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 if (user.ListMetricsFilter.length > 0) {
                     $scope.SimulationConcepts[index].metricId = user.ListMetricsFilter[0].id;
                     $scope.SimulationConcepts[index].metricTitle = user.ListMetricsFilter[0].title;
+                    $scope.SimulationConcepts[index].metricCountryId = user.ListMetricsFilter[0].countryId;
                     $scope.SimulationConcepts[index].individuals = user.Individuals;
+                    $scope.SimulationConcepts[index].metricsTable = user.metricsTable;
                 }
             }, function () {
                 $scope.name = 'You decided not to enter in your name, that makes me sad.';
@@ -457,17 +459,132 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             });
         };
 
+        $scope.getFuzzifiedValue = function (row, item) {
+            if ((item.value - row.min) / (row.max - row.min) >= 0 && (item.value - row.min) / (row.max - row.min) < 0.2)
+                return 0.2;
+            else if ((item.value - row.min) / (row.max - row.min) >= 0.2 && (item.value - row.min) / (row.max - row.min) < 0.4)
+                return 0.4;
+            else if ((item.value - row.min) / (row.max - row.min) >= 0.4 && (item.value - row.min) / (row.max - row.min) < 0.6)
+                return 0.6;
+            else if ((item.value - row.min) / (row.max - row.min) >= 0.6 && (item.value - row.min) / (row.max - row.min) < 0.8)
+                return 0.8;
+            else if ((item.value - row.min) / (row.max - row.min) >= 0.8 || isNaN((item.value - row.min) / (row.max - row.min)))
+                return 1.0;
+
+        };
+
+        $scope.getRelationWieght = function (value) {
+            if (value === 0)
+                return 0.25;
+            if (Math.abs(value) > 1)
+                return value > 0 ? 1 : -1;
+            if (value > 0)
+                return (Math.ceil(value * 4) / 4).toFixed(2) - 0;
+            if (value < 0)
+                return (Math.floor(value * 4) / 4).toFixed(2) - 0;
+        };
 
         // **-*-****
         $scope.weightCalulation = function () {
             $scope.conceptStyle = [];
             $scope.relationShipStyle = [];
+            $scope.historicalData = [];
 
             $scope.SimulationConcepts.forEach(function (data) {
                 if (data.metricId == 0) {
                     throw { message: "You need to link all the concepts to datasets" };
                 }
             });
+
+
+            angular.forEach($scope.SimulationConcepts, function (item) {
+                var text = item.title;
+                $scope.historicalData.push({ title: text, Id: item.Id, rowData: [], min: null, max: null });
+
+                angular.forEach(item.metricsTable, function (v, k) {
+                    $scope.historicalData[$scope.historicalData.length - 1].rowData.push({ key: k, value: v });
+                    if ($scope.historicalData[$scope.historicalData.length - 1].min == null || $scope.historicalData[$scope.historicalData.length - 1].min > v)
+                        $scope.historicalData[$scope.historicalData.length - 1].min = v;
+                    if ($scope.historicalData[$scope.historicalData.length - 1].max == null || $scope.historicalData[$scope.historicalData.length - 1].max < v)
+                        $scope.historicalData[$scope.historicalData.length - 1].max = v;
+
+                });
+
+            });
+
+            var promises = [];
+            $scope.SimulationConcepts[0].historicalData = $scope.historicalData;
+            $scope.SimulationConcepts[0].wieghtCalculation = [];
+            angular.forEach($scope.SimulationAssociations, function (itemAssociation) {
+                var wekaInputData = '@data';
+
+                var data = [];
+                angular.forEach($scope.historicalData, function (itemHistorical) {
+                    if (itemHistorical.Id == itemAssociation.sourceID)
+                        data.push(itemHistorical);
+                });
+
+                angular.forEach($scope.historicalData, function (itemHistorical) {
+                    if (itemHistorical.Id == itemAssociation.destinationID)
+                        data.push(itemHistorical);
+                });
+
+                for (var i = 0; i < data[0].rowData.length; i++) {
+                    if (data[1].rowData[i] != null)
+                        wekaInputData = wekaInputData + '\n' + $scope.getFuzzifiedValue(data[0], data[0].rowData[i]) + ',' + $scope.getFuzzifiedValue(data[1], data[1].rowData[i]);
+                }
+
+                wekaRequestData = '@relation \'' + data[0].Id + ',' + data[1].Id + '\'\n\n@attribute \'' + data[0].Id + ',' + data[1].Id + '\' numeric\n' + '\n@attribute ' + data[1].Id + ' numeric\n\n' + wekaInputData;
+                console.log(wekaRequestData);
+                promises.push(FcmWekaOutput.post(wekaRequestData).$promise);
+            });
+
+            // All Promises have to be resolved
+            $q.all(promises).then(function (results) {
+                console.log(results);
+
+                angular.forEach(results, function (res) {
+                    var lines = res.wekaString.split('\n');
+                    angular.forEach(lines, function (text) {
+                        var attrib = text.split('Attrib ');
+                        if (attrib.length > 1) {
+                            for (var i = 1; i < attrib.length; i++) {
+                                if ($.trim(attrib[i]) != '') {
+                                    var conceptIds = attrib[i].split('    ')[0].split(',');
+                                    var conceptWeight = parseFloat(attrib[i].split('    ')[1]).toFixed(2);
+                                    console.log(conceptIds, conceptWeight);
+
+                                    //$scope.SimulationAssociations[i - 1].weighted = conceptWeight;
+
+                                    angular.forEach($scope.SimulationAssociations, function (itemAssociation) {
+                                        if (itemAssociation.sourceID == conceptIds[0] && itemAssociation.destinationID == conceptIds[1]) {
+                                            itemAssociation.weighted = $scope.getRelationWieght(conceptWeight);
+                                            $scope.SimulationConcepts[0].wieghtCalculation.push({
+                                                source: itemAssociation.source.title,
+                                                sourceID: $.trim(conceptIds[0]),
+                                                destination: itemAssociation.destination.title,
+                                                destinationID: $.trim(conceptIds[1]),
+                                                weight: conceptWeight
+                                            });
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    });
+                });
+                console.log($scope.SimulationConcepts);
+                dlg = dialogs.create('modules/fcm/partials/weightcalulation.html', 'WeightCalulationController', { concept: $scope.SimulationConcepts }, {
+                    key: false,
+                    back: 'static'
+                });
+
+                dlg.result.then(function (data) {
+                }, function () {
+
+                });
+            });
+
 
             for (i = 0; i < $scope.SimulationConcepts.length; i++) {
                 if ($scope.SimulationConcepts[i].metricId != 0) {
@@ -481,39 +598,82 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                     $scope.conceptStyle[i] = { "color": "#286090" };
                 }
             }
-            for (i = 0; i < $scope.SimulationAssociations.length; i++) {
-                for (j = 0; j < $scope.SimulationConcepts.length; j++) {
-                    if ($scope.SimulationConcepts[j].Id == $scope.SimulationAssociations[i].source.Id) {
-                        if ($scope.SimulationConcepts[j].metricId != 0) {
-                            if ((i + 1) == 1)
-                                $scope.SimulationAssociations[i].weighted = 0.25; else if ((i + 1) % 5 == 0)
-                                $scope.SimulationAssociations[i].weighted = -0.25; else if ((i + 1) % 4 == 0)
-                                $scope.SimulationAssociations[i].weighted = 0.75; else if ((i + 1) % 3 == 0)
-                                $scope.SimulationAssociations[i].weighted = -0.5; else if ((i + 1) % 2 == 0)
-                                $scope.SimulationAssociations[i].weighted = 0.5; else
-                                $scope.SimulationAssociations[i].weighted = 1;
-                            $scope.relationShipStyle[i] = { "color": "#286090" };
-                        }
-                    }
 
-                    if ($scope.SimulationConcepts[j].Id == $scope.SimulationAssociations[i].destination.Id) {
-                        if ($scope.SimulationConcepts[j].metricId != 0) {
-                            if ((i + 1) == 1)
-                                $scope.SimulationAssociations[i].weighted = 0.25; else if ((i + 1) % 5 == 0)
-                                $scope.SimulationAssociations[i].weighted = -0.25; else if ((i + 1) % 4 == 0)
-                                $scope.SimulationAssociations[i].weighted = 0.75; else if ((i + 1) % 3 == 0)
-                                $scope.SimulationAssociations[i].weighted = -0.5; else if ((i + 1) % 2 == 0)
-                                $scope.SimulationAssociations[i].weighted = 0.5; else
-                                $scope.SimulationAssociations[i].weighted = 1;
-                            $scope.relationShipStyle[i] = { "color": "#286090" };
-                        }
-                    }
-                }
-            }
+            //for (i = 0; i < $scope.SimulationAssociations.length; i++) {
+            //    for (j = 0; j < $scope.SimulationConcepts.length; j++) {
+            //        if ($scope.SimulationConcepts[j].Id == $scope.SimulationAssociations[i].source.Id) {
+            //            if ($scope.SimulationConcepts[j].metricId != 0) {
+            //                if ((i + 1) == 1)
+            //                    $scope.SimulationAssociations[i].weighted = 0.25; else if ((i + 1) % 5 == 0)
+            //                        $scope.SimulationAssociations[i].weighted = -0.25; else if ((i + 1) % 4 == 0)
+            //                            $scope.SimulationAssociations[i].weighted = 0.75; else if ((i + 1) % 3 == 0)
+            //                                $scope.SimulationAssociations[i].weighted = -0.5; else if ((i + 1) % 2 == 0)
+            //                                    $scope.SimulationAssociations[i].weighted = 0.5; else
+            //                                    $scope.SimulationAssociations[i].weighted = 1;
+            //                $scope.relationShipStyle[i] = { "color": "#286090" };
+            //            }
+            //        }
 
-            if ($scope.Concepts.length > 1) {
-                var dlg = dialogs.notify("Causal Model", "Weights are calculated!");
-            }
+            //        if ($scope.SimulationConcepts[j].Id == $scope.SimulationAssociations[i].destination.Id) {
+            //            if ($scope.SimulationConcepts[j].metricId != 0) {
+            //                if ((i + 1) == 1)
+            //                    $scope.SimulationAssociations[i].weighted = 0.25; else if ((i + 1) % 5 == 0)
+            //                        $scope.SimulationAssociations[i].weighted = -0.25; else if ((i + 1) % 4 == 0)
+            //                            $scope.SimulationAssociations[i].weighted = 0.75; else if ((i + 1) % 3 == 0)
+            //                                $scope.SimulationAssociations[i].weighted = -0.5; else if ((i + 1) % 2 == 0)
+            //                                    $scope.SimulationAssociations[i].weighted = 0.5; else
+            //                                    $scope.SimulationAssociations[i].weighted = 1;
+            //                $scope.relationShipStyle[i] = { "color": "#286090" };
+            //            }
+            //        }
+            //    }
+            //}
+
+            ////for (i = 0; i < $scope.SimulationConcepts.length; i++) {
+            ////    if ($scope.SimulationConcepts[i].metricId != 0) {
+            ////        if ((i + 1) == 1)
+            ////            $scope.SimulationConcepts[i].value = 0.8; else if ((i + 1) % 5 == 0)
+            ////                $scope.SimulationConcepts[i].value = 1; else if ((i + 1) % 4 == 0)
+            ////                    $scope.SimulationConcepts[i].value = 0.4; else if ((i + 1) % 3 == 0)
+            ////                        $scope.SimulationConcepts[i].value = 0.6; else if ((i + 1) % 2 == 0)
+            ////                            $scope.SimulationConcepts[i].value = 0.2; else
+            ////                            $scope.SimulationConcepts[i].value = 0.8;
+            ////        $scope.conceptStyle[i] = { "color": "#286090" };
+            ////    }
+            ////}
+            ////for (i = 0; i < $scope.SimulationAssociations.length; i++) {
+            ////    for (j = 0; j < $scope.SimulationConcepts.length; j++) {
+            ////        if ($scope.SimulationConcepts[j].Id == $scope.SimulationAssociations[i].source.Id) {
+            ////            if ($scope.SimulationConcepts[j].metricId != 0) {
+            ////                if ((i + 1) == 1)
+            ////                    $scope.SimulationAssociations[i].weighted = 0.25; else if ((i + 1) % 5 == 0)
+            ////                        $scope.SimulationAssociations[i].weighted = -0.25; else if ((i + 1) % 4 == 0)
+            ////                            $scope.SimulationAssociations[i].weighted = 0.75; else if ((i + 1) % 3 == 0)
+            ////                                $scope.SimulationAssociations[i].weighted = -0.5; else if ((i + 1) % 2 == 0)
+            ////                                    $scope.SimulationAssociations[i].weighted = 0.5; else
+            ////                                    $scope.SimulationAssociations[i].weighted = 1;
+            ////                $scope.relationShipStyle[i] = { "color": "#286090" };
+            ////            }
+            ////        }
+
+            ////        if ($scope.SimulationConcepts[j].Id == $scope.SimulationAssociations[i].destination.Id) {
+            ////            if ($scope.SimulationConcepts[j].metricId != 0) {
+            ////                if ((i + 1) == 1)
+            ////                    $scope.SimulationAssociations[i].weighted = 0.25; else if ((i + 1) % 5 == 0)
+            ////                        $scope.SimulationAssociations[i].weighted = -0.25; else if ((i + 1) % 4 == 0)
+            ////                            $scope.SimulationAssociations[i].weighted = 0.75; else if ((i + 1) % 3 == 0)
+            ////                                $scope.SimulationAssociations[i].weighted = -0.5; else if ((i + 1) % 2 == 0)
+            ////                                    $scope.SimulationAssociations[i].weighted = 0.5; else
+            ////                                    $scope.SimulationAssociations[i].weighted = 1;
+            ////                $scope.relationShipStyle[i] = { "color": "#286090" };
+            ////            }
+            ////        }
+            ////    }
+            ////}
+
+            ////if ($scope.Concepts.length > 1) {
+            ////    var dlg = dialogs.notify("Causal Model", "Weights are calculated!");
+            ////}
         };
 
         $scope.runSimulation = function () {
@@ -1276,14 +1436,101 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         }
     ])
 
+    .controller('WeightCalulationController', function ($scope, FcmWekaOutput, Individual, $q, $timeout, dialogs, Dataset, $modalInstance, data, FCMModelsDetail) {
+        $scope.dialogData = {};
+        $scope.dialogData.historicalData = data.concept[0].historicalData;
+        $scope.dialogData.wieghtCalculation = data.concept[0].wieghtCalculation;
+        $scope.dialogData.SimulationConcepts = data.concept;
+        var wekaRequestData = '';
 
-    .controller('EditMetricsController', function ($scope, $modalInstance, data, FCMModelsDetail) {
+        $scope.cancel = function () {
+            $modalInstance.dismiss('canceled');
+        };
+
+
+        console.log($scope.dialogData.historicalData);
+    })
+
+    .controller('EditMetricsController', function ($scope, Individual, $q, $timeout, dialogs, Dataset, $modalInstance, data, FCMModelsDetail) {
         $scope.user = [
             { FCMModelId: -1 }, { title: '' }, { description: '' }, { keywords: '' }
         ];
 
         $scope.Models = [];
         $scope.Models = FCMModelsDetail.getModels();
+
+        //Mark saved dataset as selected
+        $scope.markSelectedDataset = function () {
+            $timeout(function () {
+                if ($('#filterDatasets div').length > 0 && $('#filterDatasets div a[title="Add  \'' + data.concept.metricTitle + '\'"]').length > 0) {
+                    $('#filterDatasets div a[title="Add  \'' + data.concept.metricTitle + '\'"]').click();
+                }
+            }, 1000);
+        };
+
+        if (data.concept.metricTitle != null && data.concept.metricTitle != 'Link Datasets' && data.concept.metricTitle != '')
+            $scope.markSelectedDataset();
+
+        //Allow only one dataset selection
+        $scope.$watchCollection('user.ListMetricsFilter', function (datasetsList) {
+            if ($scope.user != null) {
+                if ($scope.user.ListMetricsFilter != null && $scope.user.ListMetricsFilter.length > 1) {
+                    $scope.user.ListMetricsFilter.splice(0, 1);
+                }
+
+                ////to populate all country list
+                if ($scope.user.ListMetricsFilter != null && $scope.user.ListMetricsFilter.length > 0) {
+                    if (data.concept.metricCountryId != null && data.concept.metricCountryId != '') {
+                        $scope.user.ListMetricsFilter[0].countryId = data.concept.metricCountryId;
+                        data.concept.metricCountryId = null;
+                    }
+
+                    $scope.user.ListMetricsFilter[0].country = [];
+                    Dataset.get({ id: $scope.user.ListMetricsFilter[0].id },
+                        function (dataset) {
+                            $scope.user.metricsData = dataset.data;
+                            console.log($scope.user.metricsData);
+
+                            var promises = [];
+                            // Resolve all Individuals first
+                            angular.forEach(dataset.data.individuals, function (individualId) {
+                                promises.push(Individual.getById(individualId).$promise);
+                            });
+
+                            // All Promises have to be resolved
+                            $q.all(promises).then(function (individuals) {
+                                angular.forEach(individuals, function (v) {
+                                    $scope.user.ListMetricsFilter[0].country.push({
+                                        code: v.code,
+                                        data_class: v.data_class,
+                                        id: v.id,
+                                        title: v.title
+                                    });
+                                });
+
+                                console.log('a' + $scope.user.ListMetricsFilter[0].countryId);
+                                if ($scope.user.ListMetricsFilter[0].countryId != null) {
+                                    $timeout(function () {
+                                        $('li[ng-repeat="country in user.ListMetricsFilter[0].country"] a[data-id="' + $scope.user.ListMetricsFilter[0].countryId + '"]').click();
+                                    }, 500);
+                                }
+                            });
+                        }
+                    );
+                    //console.log($scope.user.ListMetricsFilter);
+                }
+            }
+        });
+
+        $scope.selectCountry = function (countryId, countryName) {
+            $scope.user.ListMetricsFilter[0].countryId = countryId;
+
+            angular.forEach($scope.user.metricsData.table, function (item) {
+                if (item.individual == countryId)
+                    $scope.user.metricsTable = item.values;
+            });
+            $('#ddlCountryList').html(countryName);
+        };
 
         $scope.displaycontentMetricModal = function (idMetric) {
             var containerLink = document.getElementById("modal-edit-metric-button-" + idMetric);
@@ -1300,7 +1547,13 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         }; // end cancel
 
         $scope.save = function () {
-            $modalInstance.close($scope.user);
+            //show validation error if country is not selected
+            if ($scope.user.ListMetricsFilter.length > 0 && $scope.user.ListMetricsFilter[0].country != null && $scope.user.ListMetricsFilter[0].country.length > 0
+                && $scope.user.ListMetricsFilter[0].countryId == null) {
+                dialogs.error('Validation Error', 'Please select a country.');
+            }
+            else
+                $modalInstance.close($scope.user);
         }; // end save
 
     }) // end EditMatricController

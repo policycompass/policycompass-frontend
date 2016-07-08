@@ -17,7 +17,7 @@ commonmanager.config(function ($routeProvider) {
     $routeProvider
         .when('/', {
             controller: 'StaticController',
-            templateUrl: 'modules/common/partials/main.html'
+            templateUrl: 'modules/common/partials/main_parallax.html'
         })
         .when('/browse', {
             controller: 'searchMainController',
@@ -45,12 +45,14 @@ commonmanager.config(function ($routeProvider) {
             controller: 'StaticController',
             templateUrl: 'modules/common/partials/request.html'
         })
-        //old version of the imprint. New version partials/imprint.html
         .when('/imprint', {
-            templateUrl: 'modules/common/partials/publishingNotes.html'
+            templateUrl: 'modules/common/partials/imprint.html'
         })
-        .when('/dataProtection', {
+        .when('/privacy-statement', {
             templateUrl: 'modules/common/partials/dataprotection.html'
+        })
+        .when('/terms-of-use', {
+            templateUrl: 'modules/common/partials/termsOfUse.html'
         })
         .when('/login', {
             templateUrl: 'modules/common/partials/login.html'

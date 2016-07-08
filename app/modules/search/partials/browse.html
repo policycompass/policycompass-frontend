@@ -9,9 +9,9 @@
     <div class="row">
         <div class="search-content">
             <div class="input-group">
-                <input type="search" ng-keyup="$event.keyCode == 13 && search(searchQuery)" class="browse-input form-control" required="" placeholder="{{searchItemTypeInfo}}" ng-model="searchQuery" />
+                <input type="search" ng-keyup="$event.keyCode == 13 && searchString(searchQuery)" class="browse-input form-control" required="" placeholder="{{searchItemTypeInfo}}" ng-model="searchQuery" />
                 <span class="input-group-btn">
-        <button class="btn" type="button" ng-click="search(searchQuery)">Go!</button>
+        <button class="btn" type="button" ng-click="searchString(searchQuery)">Go!</button>
         </span></div>
             <div class="search-results-header">
                 <div class="filterbar">

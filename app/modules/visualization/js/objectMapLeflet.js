@@ -5,7 +5,6 @@ var policycompass = policycompass || {
         'extras': {}
     };
 
-
 policycompass.viz.mapLeaflet = function (options) {
 
     //console.log(" mapLeaflet");
@@ -28,7 +27,7 @@ policycompass.viz.mapLeaflet = function (options) {
 		var ng_el = "";
 		var ng_el_scope = "";
 	}
-    
+
     if (!self.scaleColor) {
     	self.scaleColor = "#f7941e"
     }
@@ -52,17 +51,14 @@ policycompass.viz.mapLeaflet = function (options) {
             windowWidth = maxWidth;
         }
 
-
         self.windowWidth = windowWidth;
 
         //windowHeight = (500 * windowWidth) / maxWidth;
         windowHeight = (maxHeight * windowWidth) / maxWidth;
 
-
         document.getElementById('mapPC_' + self.idName).style.width = windowWidth + 'px';
         document.getElementById('mapPC_' + self.idName).style.height = windowHeight + 'px';
         document.getElementById('mapPC_' + self.idName).style.background = '#fafafa';
-
 
     }
 
@@ -71,16 +67,14 @@ policycompass.viz.mapLeaflet = function (options) {
     }
     self.parentSelect = "#" + self.idName;
 
-
     if (!document.getElementById("mapPC_"+self.idName))	{
     	document.getElementById(self.idName).innerHTML = "<div id='mapPC_" + self.idName + "' class='datamap'></div>";
 	}
-	
+
     resize();
 
     var countriesData = {};
     var countriesDataCircle = {};
-
 
     //var map = "";
     if (self.initialZoom > 0) {
@@ -88,7 +82,6 @@ policycompass.viz.mapLeaflet = function (options) {
     } else {
         var initialZoom = 2;
     }
-
 
     initialZoom = (initialZoom * self.windowWidth) / self.maxWidth;
     initialZoom = Math.round(initialZoom);
@@ -107,26 +100,37 @@ policycompass.viz.mapLeaflet = function (options) {
         }
     }
 
+	$(".leaflet-popup").fadeOut();
+	$(".leaflet-clickable").fadeOut();
+	$(".info_"+self.idName).fadeOut();
+	$(".legend_"+self.idName).fadeOut();
+
 	//remove info divs
+	/*
 	var elements = document.getElementsByClassName("info_"+self.idName);
 	while(elements.length > 0) {
        	elements[0].parentNode.removeChild(elements[0]);
     }
+    */
     //remove legend divs
+    /*
 	var elements = document.getElementsByClassName("legend_"+self.idName);
 	while(elements.length > 0) {
        	elements[0].parentNode.removeChild(elements[0]);
     }
+    */
     //remove elements divs
+    /*
 	var elements = document.getElementsByClassName("leaflet-clickable");
 	while(elements.length > 0) {
        	elements[0].parentNode.removeChild(elements[0]);
     }
-    
+    */
+
 	//used to check if map exist
 	if (ng_el_scope.map != undefined) {
 		ng_el_scope.reload = true;
-		var map = ng_el_scope.map; 
+		var map = ng_el_scope.map;
 	}
 	else {	    
 	    var map = L.map("mapPC_" + self.idName, {
@@ -142,7 +146,6 @@ policycompass.viz.mapLeaflet = function (options) {
 	        maxZoom: 8,
 	        maxBounds: [[-90.0, -180.0], [90.0, 180.0]]
 	        //maxBounds: [[-85.0, -180.0],[85.0, 180.0]]
-	
 	    });
 	}
 
@@ -150,9 +153,9 @@ policycompass.viz.mapLeaflet = function (options) {
     	L.control.pan().addTo(map);
     	L.control.scale().addTo(map);
 	}
-	
+
 	ng_el_scope.map=map;
-	
+
     map.on('zoomend', function () {
         document.getElementById('initialZoom').value = map.getZoom();
         document.getElementById('initialLat').value = map.getCenter().lat;
@@ -185,7 +188,6 @@ policycompass.viz.mapLeaflet = function (options) {
 
     plotChartMap = function () {
 
-
         data = arguments[1];
         countriesDataCollection = arguments[2];
 
@@ -197,7 +199,7 @@ policycompass.viz.mapLeaflet = function (options) {
 
         self.maxDensityValue = 0;
         self.minDensityValue = 0;
-
+		self.cntCountriesToPlot = 0;
 
         var items = [];
         $.each(data.features, function (key, val) {
@@ -207,14 +209,13 @@ policycompass.viz.mapLeaflet = function (options) {
                 if (data.features[key].id == self.data[id].Id)
                 {
                     var valueCalc = "";
-                    
+
                     for (variable in self.data[id].Data) {
                         //console.log(variable)
                         if (variable == self.from_country) {
                             valueCalc = self.data[id].Data[variable];
                         }
                     }
-
 
                     if (!valueCalc) {
                         //console.log("no data");
@@ -248,6 +249,8 @@ policycompass.viz.mapLeaflet = function (options) {
 
                         data.features[key].latlng = latlng;
 
+						self.cntCountriesToPlot = self.cntCountriesToPlot + 1;
+
                         if (valueCalc > self.maxDensityValue) {
                             self.maxDensityValue = valueCalc;
                         }
@@ -255,7 +258,6 @@ policycompass.viz.mapLeaflet = function (options) {
                         if (valueCalc < self.minDensityValue) {
                             self.minDensityValue = valueCalc;
                         }
-
 
                         if (self.showBubbles) {
                             countriesDataCircle["features"].push({
@@ -269,19 +271,13 @@ policycompass.viz.mapLeaflet = function (options) {
                                     "popupContent": data.features[key].properties.name + " (" + data.features[key].id + "): " + valueCalc
                                 }
                             });
-
                         } else {
                             countriesData["features"].push(data.features[key]);
                         }
                     }
                 }
-
-
             }
-
-
         });
-
 
         // control that shows state info on hover
         var info = L.control();
@@ -302,21 +298,31 @@ policycompass.viz.mapLeaflet = function (options) {
                 this._div.innerHTML = 'Data for: ' + self.from_country;
 
             };
-			
+			//$(".info_"+self.idName).fadeOut();
 			//remove info divs
 			var elements = document.getElementsByClassName("info_"+self.idName);
+
 			while(elements.length > 0) {
         		elements[0].parentNode.removeChild(elements[0]);
         	}
-        
             info.addTo(map);
         }
 
         self.maxValueScale = Math.round(self.maxDensityValue);
         self.minValueScale = Math.round(self.minDensityValue);
 
-        self.difMaxMinScale = Math.round((Math.round(self.maxValueScale) - Math.round(self.minValueScale)) / 8);
+		if (self.cntCountriesToPlot>8) {
+			self.cntCountriesToPlot = 8;
+		}
 
+        //self.difMaxMinScale = Math.round((Math.round(self.maxValueScale) - Math.round(self.minValueScale)) / 8);
+       	self.difMaxMinScale = Math.round((Math.round(self.maxValueScale) - Math.round(self.minValueScale)) / self.cntCountriesToPlot);	
+
+        /*
+        if (self.difMaxMinScale==self.maxValueScale) {
+        	self.difMaxMinScale = 2;
+        }
+        */
 
         function ColorLuminance(hex, lum) {
             // validate hex string
@@ -437,6 +443,27 @@ policycompass.viz.mapLeaflet = function (options) {
 
 
                 var div = L.DomUtil.create('div', 'info legend legend_'+self.idName);
+                
+                var grades = []
+                
+                if (self.cntCountriesToPlot == 0)
+                {
+                	grades.push(self.minValueScale);
+                }
+                else {
+	                for (var i = 1; i <= self.cntCountriesToPlot; i++) {
+	                	if (i==1) {
+	                		grades.push(self.minValueScale)
+	                	}              	
+	                	else if (i==self.cntCountriesToPlot) {
+	                		grades.push(self.maxDensityValue)
+	                	}
+	                	else {
+	                		grades.push(self.difMaxMinScale*i);	
+	                	}
+	                }
+				}
+                /*
                 var grades = [
                         self.minValueScale,
                         (self.difMaxMinScale * 2),
@@ -446,6 +473,7 @@ policycompass.viz.mapLeaflet = function (options) {
                         (self.difMaxMinScale * 6),
                         (self.difMaxMinScale * 7),
                         self.maxDensityValue];
+                */
                 var labels = [];
                 var from;
                 var to;
@@ -461,12 +489,15 @@ policycompass.viz.mapLeaflet = function (options) {
                 return div;
             };
 
-
+			//$(".legend_"+self.idName).fadeOut();
+			
     		//remove legend divs
 			var elements = document.getElementsByClassName("legend_"+self.idName);
+			
 			while(elements.length > 0) {
 	        	elements[0].parentNode.removeChild(elements[0]);
     		}
+    		
     		
             legend.addTo(map);
         }

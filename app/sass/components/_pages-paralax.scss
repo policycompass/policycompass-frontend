@@ -1,17 +1,7 @@
-
-
-.main-content-landing {
-  // min-height:960px;
-  // min-height:660px;
-  // position:relative;
-
-}
-
 #paralax-links {
- position:fixed;
+  position:fixed;
   top:120px;
-  right:20px;
-
+  right:30px;
 
   @include reset-list();
 
@@ -20,218 +10,243 @@
     width:20px;
     height:20px;
     background:white;
-    //border:1px solid $gris_80;
-    border:1px solid $bk_1_2;
     border-radius:50%;
     margin-bottom:15px;
   }
- a.active {
-   //background-color:#F7941E;
-   background-color:$bk;
- }
- a:hover {
-   //background-color:#fff2ca;
-   background-color:$bk_1_3;
- }
-
+  a.active {
+    background-color:#F7941E;
+  }
+  a:hover {
+    background-color:#fff2ca;
+  }
 }
 
-.paralax-05 .container {
-  min-height: 300px;
-}
- #paralax-00 {
-    padding-bottom:2em;
-  }
-#paralax {
-
-  .comic-wrap {
-    margin-right:5em;
-    margin-left:5em;
-    // display:block;
-  }
-    color:black;
-
-  margin-bottom:-2em;
-  border-bottom:1px solid $gris_60;
-
-  section {
-    position:relative;
-  }
-  p {
-    margin:1em 0;
-  }
-  .paralax {
-    // background:#fcd9ae;
-    padding:5em 0;
-  }
-
-  .comic {
-
-    }
-  .paralax-05,
-  .paralax-03,
-  .paralax-01 {
-    background-color:#f6b145;
-
-
-    h3 {
-      text-align:center;
-    }
-
-
-
-  }
-
-
- .paralax-06,
-  .paralax-04,
-  .paralax-02 {
-  background-color:$gris_90;
-
-    }
-    .paralax-05  {
-        text-align:center;
-
-      }
-
-  h3 {
-    font-weight:bold;
-
-  }
-  .par-buttons {
-      // text-align:center;
-      // padding-top:.5em;
-  }
-
-
-  .arrow {
-    position:absolute;
-    display:none;
-    width:200px;
-
-  }
-
-  .arrow-01 {
-  top:-100px;
-   left:45%;
-  }
-  .arrow-02 {
-  top:300px;
-   left:35%;
-     transform: rotate(55deg);
-  }
-   .arrow-03 {
-   top:-75px;
-   left:38%;
-     transform: rotate(270deg);
-  }
-  .arrow-05 {
-   top:-90px;
-   left:30%;
-   // transform: rotate(270deg);
-  }
-  .arrow-04 {
-   top:-90px;
-   left:50%;
-   // transform: rotate(270deg);
-  }
-   .arrow-06 {
-   top:-75px;
-   left:38%;
-     transform: rotate(270deg);
-  }
-
-
-  @media all and (min-width:$device_max) {
-     .arrow {
-    // position:absolute;
-      display:block;
-    // width:200px;q
-
-    }
-    .paralax-01 {
-        .comic-wrap {
-          margin-top:-5em;
-          }
-      }
-    .paralax-05,
-    .paralax-03,
-    .paralax-01 {
-      background-image:url(../img/front/bk_01.jpg);
-      background-position:100% 100%;
-      background-repeat:no-repeat;
-      background-size:1080px;
-      background-attachment:fixed;
-
-    }
-   .paralax-04,
-    .paralax-02 {
-
-     background-image:url(../img/front/bk_02.jpg);
-     background-position:100% 100%;
-    background-repeat:no-repeat;
-      background-size:1080px;
-      background-size:700px;
-       background-attachment: fixed;
-
-    }
-    .paralax-02 {
-      padding-bottom:7em;
-    }
-
-      .paralax-05  {
-        background-image:url(../img/front/bk_05.jpg);
-
-                background-position:0% 120%;
-        background-size:100%;
-               background-position:0% 0%;
-        background-size:100%;
-      }
-      .paralax-03 {
-        background-image:url(../img/front/bk_03.jpg);
-        background-size:720px;
-      }
-      .paralax-04 {
-        background-image:url(../img/front/bk_04.jpg);
-        background-position:100% 80% ;
-        background-size:700px;
-      }
-    .comic-wrap {
-      margin-right:0em;
-      margin-left:0;
-        // display:block;
-    }
-  }
+h3 {
+  font-weight:bold;
+  font-size: 2.4em;
 }
 
 .front-btn {
-    display:inline-block;
-    padding:.8em 1.3em;
-    background:white;
-    color:$bk_1_1;
-    background: #808080;
-    color:white;
-    position:relative;
+  display:inline-block;
+  padding:.8em 1.3em;
+  background: $bk;
+  color: #000;
+  position:relative;
+  
+  @include transition(all 0.2s ease);
 
-@include transition(all 0.4s linear);
-    border-radius:6px;
-    padding-left:3.5em;
-    &:before {
+
+  padding-left:3.5em;
+  &:before {
     font-size:1.6em;
     left:.5em;
     position:absolute;
     // margin-right:.5em;
-    }
-    &:hover {
-        background: #AAA;
-        color:white;
-    }
-    &:focus{
-        background: #AAA;
-        color:white;
-    }
+  }
+  &:hover {
+    color:black;
+    background: #FFB700;
+  }
 }
 
+/* Parallax base styles
+--------------------------------------------- */
+html, body {
+  height: 100%;
+}
 
+#parallax {
+  height: 800px; /* fallback for older browsers */
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-perspective: 300px;
+  perspective: 300px;
+  background-color: #000;
+}
 
+.parallax__group {
+  position: relative;
+  min-height: 800px; /* fallback for older browsers */
+  height: 100vh;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
 
+.parallax__layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.parallax__layer--fore {
+  -webkit-transform: translateZ(90px) scale(.7);
+  -moz-transform: translateZ(90px) scale(.7);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.parallax__layer--base {
+  -webkit-transform: translateZ(0);
+  -moz-transform: translateZ(0);
+  z-index: 4;
+}
+
+.parallax__layer--back {
+  -webkit-transform: translateZ(-300px) scale(2);
+  -moz-transform: translateZ(-300px) scale(2);
+  z-index: 3;
+}
+
+.parallax__layer--deep {
+  -webkit-transform: translateZ(-600px) scale(3);
+  -moz-transform: translateZ(-600px) scale(3);
+  z-index: 2;
+}
+
+/* style the groups
+--------------------------------------------- */
+
+#group1 {
+  z-index: 5; /* slide over group 2 */
+}
+
+#group1 .parallax__layer--base {
+  background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6)), url('../img/front/parallax-1.jpg');
+}
+
+#group2 {
+  z-index: 3; /* slide under groups 1 and 3 */
+}
+
+#group2 .parallax__layer--back {
+  background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4)), url('../img/front/parallax-2.jpg');
+}
+
+#group3 {
+  z-index: 4; /* slide over group 2 and 4 */
+}
+
+#group3 .parallax__layer--base {
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)), url('../img/front/parallax-3.jpg');
+}
+
+#group4 {
+  z-index: 2; /* slide under group 3 and 5 */
+}
+
+#group4 .parallax__layer--deep {
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.5)), url('../img/front/parallax-4.jpg');
+}
+
+#group5 {
+  z-index: 3; /* slide over group 4 and 6 */
+}
+
+#group5 .parallax__layer--base {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.4)), url('../img/front/parallax-5.jpg');
+}
+
+#group6 {
+  z-index: 2; /* slide under group 5 and 7 */
+}
+
+#group6 .parallax__layer--back {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.4)), url('../img/front/parallax-6.jpg');
+}
+
+#group6 .parallax__layer--base {
+  pointer-events: none;
+}
+
+#group7 {
+  z-index: 3; /* slide over group 7 */
+}
+
+#group7 .parallax__layer--base {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.4)), url('../img/front/parallax-7.jpg');
+}
+
+.parallax__layer--base, .parallax__layer--back, .parallax__layer--deep {
+  background-position: center !important;
+  background-size: cover !important;
+}
+ 
+.home-top-bar {
+  position: fixed;
+  z-index: 999;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+}
+
+.landingpage header, .landingpage #cookielaw {
+  position: relative;
+}
+
+.landingpage header {
+  background: transparent;
+}
+
+.landingpage header #main-menu a, #parallax h2, #parallax h3 {
+  color: #fff !important;
+}
+
+#parallax p {
+  color: #fff;
+}
+
+#footer p {
+  color: inherit;
+}
+
+div.sign-in-wrapper.main-menu-wrap.collapse.in {
+  background-color: #000;
+}
+
+@media (max-width: $device_4) {
+  .parallax__layer--fore {
+    display: none;
+  }
+
+  #parallax h2 {
+    font-size: 22px;
+  }
+}
+
+/* custom paddings for each section
+-------------------------------------------*/
+#group2 div.container.parallax {
+  padding-top: 400px;
+}
+
+#group3 div.container.parallax {
+  padding-top: 300px;
+}
+
+#group4 div.container.parallax {
+  padding-top: 300px;
+}
+
+#group5 div.container.parallax {
+  padding-top: 300px;
+}
+
+#group6 div.container.parallax {
+  padding-top: 400px;
+}
+
+#group7 div.container.parallax {
+  padding-top: 200px;
+}
+
+.scrollbarButtonHome {
+  position: absolute;
+  z-index: 50;
+}
+
+#feedbackButton {
+  display: none;
+}
