@@ -1,7 +1,7 @@
 #paralax-links {
   position:fixed;
   top:120px;
-  right:20px;
+  right:30px;
 
   @include reset-list();
 
@@ -51,6 +51,10 @@ h3 {
 
 /* Parallax base styles
 --------------------------------------------- */
+html, body {
+  height: 100%;
+}
+
 #parallax {
   height: 800px; /* fallback for older browsers */
   height: 100vh;
@@ -241,4 +245,8 @@ div.sign-in-wrapper.main-menu-wrap.collapse.in {
 .scrollbarButtonHome {
   position: absolute;
   z-index: 999;
+}
+
+#feedbackButton {
+  display: none;
 }

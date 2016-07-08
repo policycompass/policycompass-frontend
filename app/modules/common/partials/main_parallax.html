@@ -1,11 +1,13 @@
 <div ng-controller="ControllerScroller">
 
-    <div id="parallax" du-scroll-container>
-
-        <div id="top-bar">
+    <div id="top-bar" class="container">
+        <div class="row">
             <div cookie-law ng-hide="hideCookieLaw" class="landingpage"></div>
             <div ng-include="'header.html'" class="landingpage"></div>
         </div>
+    </div>
+
+    <div id="parallax" du-scroll-container>
 
         <section id="group1" name="group1" class="parallax__group">
             <div class="parallax__layer parallax__layer--base">
@@ -96,7 +98,7 @@
             <div class="parallax__layer parallax__layer--fore">
                 <div class="container">
                     <div class="col-md-8 col-md-offset-4">
-                        <img src="img/front/diagram_1.png" style="padding-top: 400px;">
+                        <img src="img/front/diagram_1.png" style="padding-top: 400px;" class="hidden-sm hidden-xs">
                     </div>
                 </div>
             </div>
@@ -119,11 +121,11 @@
             <div class="parallax__layer parallax__layer--fore">
                 <div class="container">
                     <div class="col-md-7 col-md-offset-5" style="padding-top: 300px">
-                        <img src="img/front/banner_graficos.png">
+                        <img src="img/front/banner_graficos.png" class="hidden-sm hidden-xs">
                     </div>
                 </div>
             </div>
-            <div class="parallax__layer parallax__layer--back">
+            <div class="parallax__layer parallax__layer--base">
                 <div class="container parallax">
                     <div class="col-md-5">
                         <h3>Visualising Datasets</h3>
@@ -211,7 +213,7 @@
         </section>
         <div ng-include="'footer.html'"></div>
     </div><!-- /#parallax -->
-    <div class="scrollbarButtonHome">
+    <div class="scrollbarButtonHome hidden-sm hidden-xs">
         <nav>
             <ul id="paralax-links" du-scroll-container="parallax">
                 <li><a href="#group1" du-smooth-scroll du-scrollspy></a></li>
