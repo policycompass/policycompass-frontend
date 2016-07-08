@@ -282,6 +282,7 @@ header .container {
         &.active {
             z-index: 3000;
             top:0;
+            left:0;
             padding-top:50px;
             // padding-top:50px;
             position: fixed;
