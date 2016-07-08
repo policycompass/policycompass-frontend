@@ -97,6 +97,7 @@
         &:hover {
             background: #808080;
             text-decoration: none;
+            color: #fff;
         }
 
         padding: 15px 15px 14px;
@@ -236,6 +237,9 @@ header .container {
 
 .main-menu-wrap {
     clear: both;
+}
+
+.home-top-bar .main-menu-wrap {
     background-color: #000;
 }
 
