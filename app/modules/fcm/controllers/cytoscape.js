@@ -1,4 +1,3 @@
-var weka = '';
 angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
     .service("ConceptsDetail", function () {
@@ -119,7 +118,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         };
     })
 
-    .controller('CytoscapeCtrl', function ($scope, $rootScope, $window, $routeParams, $location, $translate, Fcm, FcmModel, FcmWekaOutput, FcmSimulation, FcmActivator, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, SimulationConceptsDetail, AssociationsDetail, SimulationAssociationsDetail, EditConcept, EditAssociation, FCMActivatorDetail, Dataset, FcmIndicator, Auth) {
+    .controller('CytoscapeCtrl', function ($scope, $rootScope, $window, $routeParams, $location, $translate, Fcm, FcmModel, FcmWekaOutput, FcmSimulation, FcmActivator, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, SimulationConceptsDetail, AssociationsDetail, SimulationAssociationsDetail, EditConcept, EditAssociation, FCMActivatorDetail, Dataset, FcmIndicator, Auth, $q) {
         // container objects
         $scope.user = Auth;
         $scope.Models = [];
@@ -362,7 +361,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             // Open a confirmation dialog
             var dlg = dialogs.confirm("Are you sure?", "Do you want to exit without save this causal model?");
             dlg.result.then(function () {
-                $location.path('/models/' + id);
+                $location.path('/browse'); //https://github.com/policycompass/policycompass/issues/574: Redirecting to https://policycompass.eu/app/#!/browse
             });
         };
 
