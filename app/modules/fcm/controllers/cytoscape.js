@@ -468,9 +468,20 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 return 0.6;
             else if ((item.value - row.min) / (row.max - row.min) >= 0.6 && (item.value - row.min) / (row.max - row.min) < 0.8)
                 return 0.8;
-            else if ((item.value - row.min) / (row.max - row.min) >= 0.8 && (item.value - row.min) / (row.max - row.min) <= 1)
+            else if ((item.value - row.min) / (row.max - row.min) >= 0.8 || isNaN((item.value - row.min) / (row.max - row.min)))
                 return 1.0;
 
+        };
+
+        $scope.getRelationWieght = function (value) {
+            if (value === 0)
+                return 0.25;
+            if (Math.abs(value) > 1)
+                return value > 0 ? 1 : -1;
+            if (value > 0)
+                return (Math.ceil(value * 4) / 4).toFixed(2) - 0;
+            if (value < 0)
+                return (Math.floor(value * 4) / 4).toFixed(2) - 0;
         };
 
         // **-*-****
@@ -488,7 +499,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
             angular.forEach($scope.SimulationConcepts, function (item) {
                 var text = item.title;
-                $scope.historicalData.push({ title: text, rowData: [], min: null, max: null });
+                $scope.historicalData.push({ title: text, Id: item.Id, rowData: [], min: null, max: null });
 
                 angular.forEach(item.metricsTable, function (v, k) {
                     $scope.historicalData[$scope.historicalData.length - 1].rowData.push({ key: k, value: v });
@@ -1699,7 +1710,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 var data = [];
                 angular.forEach($scope.fcmImpactAnalysis.data.concepts, function (item) {
                     data.push({
-                        Key: item.Id,
+                        Key: item.title, //https://github.com/policycompass/policycompass/issues/614: Showing title instead of id
                         ValueX: [],
                         ValueY: [],
                         Type: "FCM"
@@ -1722,7 +1733,10 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 });
 
             }, function (err) {
-                throw { message: JSON.stringify(err.data) };
+                var errorMessage = JSON.stringify(err.data);
+                if (errorMessage == '""')
+                    errorMessage = 'Please inter the weight values for each relationship';//https://github.com/policycompass/policycompass/issues/616: Changing error message
+                throw { message: errorMessage };
             });
 
         }; // end Single Impact Analysis
