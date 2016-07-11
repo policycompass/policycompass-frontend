@@ -1300,6 +1300,7 @@ policycompass.viz.line = function (options) {
 
                     var path = self.svg.append("path").datum(data)
                         .style("opacity", lineOpacity)
+                        .attr("class", lineClass)
                         .attr("id", 'tag_' + key.replace(/\W/g, '')) // assign ID
                         .attr("fill", "none").style("stroke", function (d, i) {
 
