@@ -3622,7 +3622,6 @@ angular.module('pcApp.visualization.controllers.visualization', [
                 $scope.mode = "view";
             }
 
-
             $scope.resetlocation = '/visualizations/' + $routeParams.visualizationId + '/edit/';
 
             helper.baseVisualizationsCreateController($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualization, $location, helper, $log, API_CONF, Individual, Unit);
@@ -3644,8 +3643,6 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				});
 				
 	            $scope.visualization = Visualization.get({id: $routeParams.visualizationId}, function (visualization) {
-	            	
-	            	
 	            	
 	            	for (i in visualization.datasets_in_visualization) {
 	            		idDataset = $scope.visualization.datasets_in_visualization[i].dataset_id;
@@ -3676,13 +3673,13 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	                };
 	
 					$scope.$watchCollection(
-					"visualization.language_data",
+					"visualization.language_id",
 					function( newValue, oldValue ) 
 					{
-						if (newValue.output[0]!=oldValue.output[0]) {
+						if (newValue!=oldValue) {
 							$scope.disableRevert = false;
 						}
-						else if (newValue.output.length!=oldValue.output.length) {						
+						else if (newValue.length!=oldValue.length) {						
 							$scope.disableRevert = false;
 						}
 					}
@@ -3695,13 +3692,13 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	
 	
 					$scope.$watchCollection(
-					"visualization.location_data",
+					"visualization.location",
 					function( newValue, oldValue ) 
 					{
-						if (newValue.output[0]!=oldValue.output[0]) {
+						if (newValue!=oldValue) {
 							$scope.disableRevert = false;
 						}
-						else if (newValue.output.length!=oldValue.output.length) {						
+						else if (newValue.length!=oldValue.length) {						
 							$scope.disableRevert = false;
 						}
 					}
@@ -3714,13 +3711,13 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	
 	
 					$scope.$watchCollection(
-					"visualization.policy_domains_data",
+					"visualization.policy_domains",
 					function( newValue, oldValue ) 
 					{
-						if (newValue.output[0]!=oldValue.output[0]) {
+						if (newValue!=oldValue) {
 							$scope.disableRevert = false;
 						}
-						else if (newValue.output.length!=oldValue.output.length) {						
+						else if (newValue.length!=oldValue.length) {						
 							$scope.disableRevert = false;
 						}
 					}
@@ -4300,9 +4297,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
 
                 $scope.visualization.datasets_in_visualization = dataMetrics;
-                $scope.visualization.language_id = $scope.visualization.language_data.output[0];
-                $scope.visualization.location = $scope.visualization.location_data.output[0];
-                $scope.visualization.policy_domains = $scope.visualization.policy_domains_data.output;
+                //$scope.visualization.language_id = $scope.visualization.language_data.output[0];
+                //$scope.visualization.location = $scope.visualization.location_data.output[0];
+                //$scope.visualization.policy_domains = $scope.visualization.policy_domains_data.output;
 
                 var saveErrorCallback = function (err) {
                     var headers = err.headers();
@@ -4450,6 +4447,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
             $scope.showZoom = false;
             $scope.showBubbles = false;
             $scope.showMovement = true;
+
             $scope.visualization = {};
 
             $scope.visualization.language_data = {
@@ -4687,9 +4685,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
                 $scope.visualization.filter_configuration = string_filter_configuration;
                 $scope.visualization.historical_events_in_visualization = dataHE;
                 $scope.visualization.datasets_in_visualization = dataMetrics;
-                $scope.visualization.language_id = $scope.visualization.language_data.output[0];
-                $scope.visualization.location = $scope.visualization.location_data.output[0];
-                $scope.visualization.policy_domains = $scope.visualization.policy_domains_data.output;
+                //$scope.visualization.language_id = $scope.visualization.language_data.output[0];
+                //$scope.visualization.location = $scope.visualization.location_data.output[0];
+                //$scope.visualization.policy_domains = $scope.visualization.policy_domains_data.output;
 
                 var saveErrorCallback = function (err) {
                     var headers = err.headers();
