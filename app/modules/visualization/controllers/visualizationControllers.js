@@ -61,7 +61,15 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
 
                         }, function (err) {
-                            throw {message: JSON.stringify(err.data)};
+                        	
+                        	var data = {
+                                event_id: eventId,
+                                title: 'Deleted event',
+                                color: '',
+                            };
+                        	$scope.historicalEventsRelated.push(data);
+                        	
+                            //throw {message: JSON.stringify(err.data)};
                         });
                     };
 
@@ -4057,7 +4065,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
 	            
 			});
-
+			
+			$scope.deletedEventDetected = false;
             $scope.getEventDataDetail = function (posI, datIn, callback) {
 
                 $scope.her = Event.get({id: datIn.historical_event_id}, function (her) {
@@ -4082,7 +4091,32 @@ angular.module('pcApp.visualization.controllers.visualization', [
                     callback(myObject);
 
                 }, function (err) {
-                    throw {message: JSON.stringify(err.data)};
+                	
+                	var titleeventdeleted = 'Deleted event'
+                	var tmp_startDate ='';
+                	var tmp_endDate = '';
+					var myObject = {
+                        id: datIn.historical_event_id,
+                        title: titleeventdeleted, 
+                        startDate: tmp_startDate,
+                        endDate: tmp_endDate,
+                        desc: '',
+                        color: ''
+                    }
+
+                    $scope.titleHE[(parseInt(posI) + 1)] = titleeventdeleted;
+                    $scope.startDateHE[(parseInt(posI) + 1)] = tmp_startDate;
+                    $scope.endDateHE[(parseInt(posI) + 1)] = tmp_endDate;
+
+                    $scope.eventsToPlot[posI] = myObject;
+                    callback(myObject);                	
+                	
+                	if (!$scope.deletedEventDetected) {
+                		var message = "Sorry, but this visualisation cannot be displayed correctly because a related event has been deleted."
+						dialogs.notify('Error', message);
+					}
+					$scope.deletedEventDetected = true;
+                    //throw {message: JSON.stringify(err.data)};
                 });
 
             };
@@ -4886,7 +4920,8 @@ angular.module('pcApp.visualization').filter('pagination', function () {
                                             }
 
                                         }, function (err) {
-                                            throw {message: JSON.stringify(err.data)};
+                                        
+                                            //throw {message: JSON.stringify(err.data)};
                                         });
 
 

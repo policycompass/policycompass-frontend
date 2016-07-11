@@ -161,10 +161,10 @@
                         <input type="hidden" ng-model="endDateHE[$index+1]" id="endDateHE{{$index+1}}" name="endDateHE[]" value="{{event.endDate}}">
 
                         <div class="historicalevent-buttons active">
-                            <a type="button" data-intro="Edit event main data" data-position="right" class="btn btn-primary btn-create" ng-click="vieweditHE[$index+1]=!vieweditHE[$index+1]">
+                            <a ng-if="startDateHE[$index+1]" type="button" data-intro="Edit event main data" data-position="right" class="btn btn-primary btn-create" ng-click="vieweditHE[$index+1]=!vieweditHE[$index+1]">
                                 <span ng-show="vieweditHE[$index+1]">Collapse</span> Configure event data</a>
                             <button data-intro="Unlink event from the list of related events" data-position="left" type="button" class="btn btn-danger btn-clear" ng-click="deleteContainerHistoricalEvent('row_config_',$index+1, event.title, event.id)" id="delete-he-button-{{event.id}}">Unlink</button>
-                            <a type="button" data-intro="Access to the event data" data-position="right" class="btn btn-info btn-adddevent" href="#!/events/{{event.id}}" target="_blank" id="view-metric-button-{{event.id}}">Open event details</a>
+                            <a ng-if="startDateHE[$index+1]" type="button" data-intro="Access to the event data" data-position="right" class="btn btn-info btn-adddevent" href="#!/events/{{event.id}}" target="_blank" id="view-metric-button-{{event.id}}">Open event details</a>
                         </div>
 
                         <div ng-show="vieweditHE[$index+1]" class="contentHE">
