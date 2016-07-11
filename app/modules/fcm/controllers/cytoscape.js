@@ -1492,6 +1492,11 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                             $scope.user.metricsData = dataset.data;
                             console.log($scope.user.metricsData);
 
+                            if (dataset.class_id != null && dataset.class_id > 0)
+                                $scope.user.ListMetricsFilter[0].class_id = dataset.class_id;//https://github.com/policycompass/policycompass/issues/613: Showing Dimension Type instead of fixed text 'Country'
+                            else
+                                $scope.user.ListMetricsFilter[0].class_id = 1;// Setting default Dimension Type text 'Country'
+
                             var promises = [];
                             // Resolve all Individuals first
                             angular.forEach(dataset.data.individuals, function (individualId) {
