@@ -361,7 +361,11 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             // Open a confirmation dialog
             var dlg = dialogs.confirm("Are you sure?", "Do you want to exit without save this causal model?");
             dlg.result.then(function () {
-                $location.path('/browse'); //https://github.com/policycompass/policycompass/issues/574: Redirecting to https://policycompass.eu/app/#!/browse
+                if (id) {
+                    $location.path('/models/' + id);
+                } else {
+                    $location.path('/browse');
+                }
             });
         };
 
