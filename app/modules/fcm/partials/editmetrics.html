@@ -1,4 +1,5 @@
 
+
 <div class="modal-header">
     <h1 class="ng-binding"><span class="glyphicon glyphicon-list-alt"></span>Link datasets</h1>
 </div>
@@ -45,7 +46,7 @@
     </div>
     <div class="modal-footer">
         <div class="btn-group dropup" style="margin-right: 10px;" dropdown ng-if="user.ListMetricsFilter.length>0 && user.ListMetricsFilter[0].country.length>0">
-            <a id="ddlCountryList" href="" class="btn dropdown-toggle" dropdown-toggle>Select Country
+            <a id="ddlCountryList" href="" class="btn dropdown-toggle" dropdown-toggle>Select <resource-title resource="Class" id="user.ListMetricsFilter[0].class_id"></resource-title>
                 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu" dropdown-menu>

@@ -361,7 +361,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             // Open a confirmation dialog
             var dlg = dialogs.confirm("Are you sure?", "Do you want to exit without save this causal model?");
             dlg.result.then(function () {
-                $location.path('/models/' + id);
+                $location.path('/browse'); //https://github.com/policycompass/policycompass/issues/574: Redirecting to https://policycompass.eu/app/#!/browse
             });
         };
 
@@ -574,15 +574,16 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                     });
                 });
                 console.log($scope.SimulationConcepts);
-                dlg = dialogs.create('modules/fcm/partials/weightcalulation.html', 'WeightCalulationController', { concept: $scope.SimulationConcepts }, {
-                    key: false,
-                    back: 'static'
-                });
+                //https://github.com/policycompass/policycompass/issues/612: Hide simulation modal
+                //dlg = dialogs.create('modules/fcm/partials/weightcalulation.html', 'WeightCalulationController', { concept: $scope.SimulationConcepts }, {
+                //    key: false,
+                //    back: 'static'
+                //});
 
-                dlg.result.then(function (data) {
-                }, function () {
+                //dlg.result.then(function (data) {
+                //}, function () {
 
-                });
+                //});
             });
 
 
@@ -1491,6 +1492,11 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                             $scope.user.metricsData = dataset.data;
                             console.log($scope.user.metricsData);
 
+                            if (dataset.class_id != null && dataset.class_id > 0)
+                                $scope.user.ListMetricsFilter[0].class_id = dataset.class_id;//https://github.com/policycompass/policycompass/issues/613: Showing Dimension Type instead of fixed text 'Country'
+                            else
+                                $scope.user.ListMetricsFilter[0].class_id = 1;// Setting default Dimension Type text 'Country'
+
                             var promises = [];
                             // Resolve all Individuals first
                             angular.forEach(dataset.data.individuals, function (individualId) {
@@ -1720,7 +1726,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 var data = [];
                 angular.forEach($scope.fcmImpactAnalysis.data.concepts, function (item) {
                     data.push({
-                        Key: item.Id,
+                        Key: item.title, //https://github.com/policycompass/policycompass/issues/614: Showing title instead of id
                         ValueX: [],
                         ValueY: [],
                         Type: "FCM"
@@ -1743,7 +1749,10 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 });
 
             }, function (err) {
-                throw { message: JSON.stringify(err.data) };
+                var errorMessage = JSON.stringify(err.data);
+                if (errorMessage == '""')
+                    errorMessage = 'Please inter the weight values for each relationship';//https://github.com/policycompass/policycompass/issues/616: Changing error message
+                throw { message: errorMessage };
             });
 
         }; // end Single Impact Analysis
