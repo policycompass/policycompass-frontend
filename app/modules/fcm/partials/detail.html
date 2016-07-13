@@ -100,9 +100,88 @@
                     </table>
                 </tab>
 
-                <!--<tab heading="Simulation">Simulation</tab>
+                <tab heading="Run Simulation">
+                    <button type="button" class="btn btn-danger pull-right" ng-click="advanceSettings()">Advanced Settings</button>
+                    <h4>Concepts :</h4>
+                    <table class="table table-hover">
+                        <tr>
+                            <td align="center" width="30%"><b>Title</b></td>
+                            <td align="center" width="15%">
+                                <div class="subtitle-help">
+                                    <span class="fonticon fonticon-help help-switch" style="font-size:15px;"  ng-click="openHelpModel($event,'help1')"><b>Value</b></span>
+                                </div>
+                            </td>
+                            <td align="center" width="55%">
+                                <div class="subtitle-help">
+                                    <span class="fonticon fonticon-help help-switch" style="font-size:15px;float:none;"  ng-click="openHelpModel($event,'help2')"><b>Linked Datasets</b></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr ng-show="Concepts" ng-repeat="concept in SimulationConcepts track by $index">
+                            <td align="center">{{ concept.title }}</td>
+                            <td align="center">
+                                <select data-ng-style="conceptStyle[$index]" class="form-control" name="fixedoutput" id="value" ng-model="SimulationConcepts[$index].value" required>
+                                    <option value="0.2">0.2 (Very Low)</option>
+                                    <option value="0.4">0.4 (Low)</option>
+                                    <option value="0.6">0.6 (Medium)</option>
+                                    <option value="0.8">0.8 (High)</option>
+                                    <option value="1">1.0 (Very High)</option>
+                                </select></td>
+                            <td align="center">
+                                <button data-intro="Helps you to link datasets with this Concept" data-position="top" type="submit" class="btn btn-default btn-adddataset" id="modaladddataset" ng-click="editMetrics($index)">{{ concept.metricTitle }}</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                    <h4>Relationships :</h4>
+                    <table class="table table-hover">
+                        <tr>
+                            <td align="center" width="10%"><b>Relation ID</b></td>
+                            <td align="center" width="33%"><b>Source Concept</b></td>
+                            <td align="center" width="33%"><b>Sink Concept</b></td>
+                            <td align="center" width="24%">
+                                <div class="subtitle-help">
+                                    <span class="fonticon fonticon-help help-switch" style="font-size:15px;" ng-click="openHelpModel($event,'help3')"><b>Weight</b></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr ng-show="Associations" ng-repeat="connection in SimulationAssociations track by $index">
+                            <td align="center">{{ $index + 1 }}</td>
+                            <td align="center">{{ connection.source.title }}</td>
+                            <td align="center">{{ connection.destination.title }}</td>
+                            <td align="center">
+                                <select data-ng-style="relationShipStyle[$index]" data-ng-change="updateEdge($index)" class="form-control" name="weight" id="weight" ng-model="SimulationAssociations[$index].weighted" required>
+                                    <option value="1">Very Strong Positive (1.0)</option>
+                                    <option value="0.75">Strong Positive (0.75)</option>
+                                    <option value="0.5">Weak Positive (0.5)</option>
+                                    <option value="0.25">Very Weak Positive (0.25)</option>
+                                    <option value="-0.25">Very Weak Negative (-0.25)</option>
+                                    <option value="-0.5">Weak Negative (-0.5)</option>
+                                    <option value="-0.75">Strong Negative (-0.75)</option>
+                                    <option value="-1">Very Strong Negative (-1.0)</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                    <div class="subtitle-help">
+                        <span class="fonticon fonticon-help help-switch" ng-click="openHelpModel($event,'help4')"></span>
+                    </div>
+                    <button type="submit" class="btn btn-default" ng-click="weightCalulation();">Weight Calculation using the Historical Data</button>
+                    <button ng-if="1==2" type="submit" class="btn btn-default" ng-click="runSimulation();">Run Simulation</button>
+                    <button type="submit" class="btn btn-default" ng-click="impactAnalysis();">Impact Analysis</button>
+                </tab>
 
-                <tab heading="Graph">Graph</tab>-->
 
             </tabset>
 
