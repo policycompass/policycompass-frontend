@@ -223,10 +223,12 @@ angular.module('pcApp.metrics.controllers.metric', [
     .controller('MetricsmanagerDetailController', [
         '$scope',
         '$routeParams',
+        '$location',
         'MetricService',
         'IndicatorService',
         'Auth',
-        function ($scope, $routeParams, MetricService, IndicatorService, Auth) {
+        'dialogs',
+        function ($scope, $routeParams, $location, MetricService, IndicatorService, Auth, dialogs) {
 
             // FIXME: MOVE TO SERVICE
             var isOwner = function (userpath) {
@@ -245,6 +247,16 @@ angular.module('pcApp.metrics.controllers.metric', [
             // FIXME: MOVE TO SERVICE
             $scope.allowEdit = function (userpath) {
                 return (isAdmin() || isOwner(userpath));
+            };
+
+            $scope.deleteMetric = function (metric) {
+                var dlg = dialogs.confirm("Are you sure?", "Do you want to delete the Dataset " + metric.title + " permanently?");
+                dlg.result.then(function () {
+                    // Delete the dataset via the API
+                    metric.$delete({}, function () {
+                        $location.path('/metrics');
+                    });
+                });
             };
 
             $scope.data = MetricService.get({id: $routeParams.metricId}, function (metric) {
