@@ -35,8 +35,15 @@ angular.module('pcApp.visualization.controllers.visualization', [
                            	}
 
                         }, function (err) {
-                        	//console.log("error getMetricData");
-                            //throw {message: JSON.stringify(err.data)};
+                        	
+                        	if (err.status=='404') {
+                        		//the visualisation uses a dataset that has been deleted
+                        		//we don't need to show a message in this moment	
+                        	}
+                        	else {
+                        		throw {message: JSON.stringify(err.data)};
+                        	}
+                            
                         });
                     };
 
@@ -62,14 +69,20 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                         }, function (err) {
                         	
-                        	var data = {
+                        	if (err.status=='404') {
+                        		//the visualisation uses an event that has been deleted
+                        		//we don't need to show a message in this moment
+                        		var data = {
                                 event_id: eventId,
                                 title: 'Deleted event',
                                 color: '',
-                            };
-                        	$scope.historicalEventsRelated.push(data);
-                        	
-                            //throw {message: JSON.stringify(err.data)};
+                            	};
+                        		$scope.historicalEventsRelated.push(data);	
+                        	}
+                        	else {
+                        		throw {message: JSON.stringify(err.data)};
+                        	}
+
                         });
                     };
 
@@ -226,6 +239,15 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	                    }, function (error) {
 	                    	//console.log("error loadDataCombosHelper");
 	                        //throw {message: error.data.message || JSON.stringify(error.data)};
+
+							if (error.status=='404') {
+                        		//the visualisation uses an event that has been deleted
+                        		//we don't need to show a message in this moment	
+                        	}
+                        	else {
+                        		throw {message: JSON.stringify(error.data)};
+                        	}
+
 	                    });
                 	};
 
@@ -1159,7 +1181,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                     // Function for delete a metric from the list od metrics to plot
                     $scope.deleteMetricFromList = function (idMetric, metrictitle, metriclistIn, indexIn, source) {
                     	
-                    	console.log(idMetric);
+                    	//console.log(idMetric);
                         // Open a confirmation dialog
                         var dlg = dialogs.confirm("Are you sure?", "Do you want to unlink '" + metrictitle + "' from the list of datasets?");
                         dlg.result.then(function () {
@@ -3741,7 +3763,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 								
 							}
 							
-							if (1==1) {
+							
 							//else {
 								//can plot chart								
 
@@ -4054,7 +4076,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					            });
 								
 								
-							}
+							//}
 						}
 											
 					}
@@ -4776,8 +4798,19 @@ angular.module('pcApp.visualization').filter('pagination', function () {
 
 					$scope.tmpdataset = Dataset.get({id: item.id}, function (tmpdataset) {
 						$scope.datasetsUnits[tmpdataset.id] = tmpdataset.unit_id;
-					}, function (err) {						
+					}, function (err) {			
+						//console.log("$watchCollection ListMetricsFilterModal");
 						//throw {message: JSON.stringify(err.data)};
+						
+						if (err.status=='404') {
+							//the visualisation uses an event that has been deleted
+							//we don't need to show a message in this moment	
+						}
+						else {
+							throw {message: JSON.stringify(err.data)};
+						}
+						
+						
 					});
 				});
 			});
