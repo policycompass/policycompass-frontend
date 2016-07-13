@@ -1780,7 +1780,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 			            
 			            }, function (individualDataRec) {
 							$scope.ArrayAllIndividuals = [];
-							angular.forEach(individualDataRec, function(value, key) {							
+							angular.forEach(individualDataRec, function(value, key) {
 								$scope.ArrayAllIndividuals[value.id] = {'id': value.id, 'title': value.title, 'code': value.code, 'data_class': value.data_class};
 							});
 
@@ -2547,6 +2547,27 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                         var labelTemporalYAxes = "";
 
                                         $sem = 0;
+                                        
+                                        
+                                        
+                                        
+                                        if (arguments[i]['unit_id'] == 0) {
+											var labelTemporalYAxes = "No unit";
+                                        }
+                                        else {
+                                        	
+                                        	var idtovalidate = arguments[i]['unit_id'];
+
+                                        	if (idtovalidate in $scope.ArrayUnits) {
+                                        		var labelTemporalYAxes = $scope.ArrayUnits[idtovalidate]['title'];
+                                        	}
+                                        	else {
+                                        		var labelTemporalYAxes = "No unit found";
+                                        	}
+                                        	
+                                        }
+                                        /*
+                                        //it will be deleted in the future
                                         while (labelTemporalYAxes == "") {
                                         	
 											if ($scope.TitleUnitsByDataset[arguments[i]['id']]) {
@@ -2562,10 +2583,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                             if ($sem > 5000) {
                                                 var labelTemporalYAxes = arguments[i]['unit_id'];
                                             }
-
-
                                         }
-
+										*/
+										
                                         var arrayLabels = [];
                                         var arrayValues = [];
                                         var arrayUnits = [];
@@ -2650,8 +2670,13 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                                     var key = "";
 
                                                     $sem = 0;
-
+													
+													var str = arguments[i].title;
+                                                    var key = $scope.custoListIndividuals[arguments[i]['data']['table'][j].individual] + " [" + str + "] _" + j;
+													/*
+                                                    //it will be deleted in the future
                                                     while (key == "") {
+
                                                         if ($scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]) {
                                                             if ($scope.TitleIndividuals[arguments[i]['data']['table'][j].individual] != arguments[i]['data']['table'][j].individual) {
 																var str = arguments[i].title;
@@ -2667,7 +2692,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
 
                                                     }
-
+													*/
+													
                                                     var type = "metric";
                                                     var arrayLabels = [];
                                                     var arrayColors = [];
@@ -2709,6 +2735,12 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                                     var label = '';
 
                                                     $sem = 0;
+                                                    
+                                                    var str = arguments[i].title;
+                                                    var label = $scope.custoListIndividuals[arguments[i]['data']['table'][j].individual] + " [" + str + "] _" + j;
+                                                    
+                                                    /*
+                                                    //it will be deleted in the future
                                                     while (label == "") {
                                                         if ($scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]) {
                                                             
@@ -2728,33 +2760,11 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                                         }
 
                                                     }
-
+													*/
 
                                                     for (value in obj_[j]) {
                                                         var pieColor = '#000000';
-														
-														/*
-                                                        if (colorsIdentities) {
-
-                                                            var cntObject = 0;
-
-                                                            for (var index in colorsIdentities) {
-
-                                                                if (j == cntObject) {
-
-
-                                                                    if (colorsIdentities[index]) {
-                                                                        pieColor = colorsIdentities[index];
-                                                                    }
-                                                                }
-
-                                                                cntObject = cntObject + 1;
-                                                            }
-
-                                                        } else {
-                                                            pieColor = $scope.colorScale(arguments[i]['data']['table'][j].individual.title)
-                                                        }
-                                                        */
+																												
                                                         if (colorsIdentities) {
                                                         	pieColor = $scope.optionToPlot[arguments[i].id].identitiescolors[arguments[i]['data']['table'][j].individual];
                                                     	} else {
@@ -2785,17 +2795,13 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                                     var key = "";
 
                                                     $sem = 0;
+                                                    
+                                                    var str = arguments[i].title;
+                                                    var key = $scope.custoListIndividuals[arguments[i]['data']['table'][j].individual] + " [" + str + "] _" + j;
+                                                    /*
+                                                    //it will be deleted in the future
                                                     while (key == "") {
-                                                        if ($scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]) {
-                                                        	/*
-                                                        	if (arguments.length>2) {
-																var str = arguments[i].title;
-                                                            	var key = $scope.TitleIndividuals[arguments[i]['data']['table'][j].individual] + " [" + str + "]_" + j;
-                                                           	}
-                                                           	else {
-                                                           		var key = $scope.TitleIndividuals[arguments[i]['data']['table'][j].individual] + " _" + j;
-                                                           	}
-                                                           	*/
+                                                        if ($scope.TitleIndividuals[arguments[i]['data']['table'][j].individual]) {                                                        	
                                                            	var str = arguments[i].title;
                                                             var key = $scope.TitleIndividuals[arguments[i]['data']['table'][j].individual] + " [" + str + "]_" + j;
                                                         }
@@ -2806,10 +2812,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                                             var key = arguments[i]['data']['table'][j].individual + " [" + str + "]_" + j;
 
                                                         }
-
-
                                                     }
-
+													*/
 													
 													var lineColor = '#000000';
 
@@ -3562,89 +3566,98 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					$scope.custoListIndividuals[value.id]=value.title;
 				});
 				
-	            $scope.visualization = Visualization.get({id: $routeParams.visualizationId}, function (visualization) {
-	            	
-	            	for (i in visualization.datasets_in_visualization) {
-	            		idDataset = $scope.visualization.datasets_in_visualization[i].dataset_id;
-
-						$scope.dataDatasetVisu = Dataset.get({id: idDataset}, function (dataDatasetVisu) {
+				$scope.UnitsList = Unit.query({  }, function(unitList) {
+					$scope.ArrayUnits = [];					
+					angular.forEach(unitList, function(value, key) {	
+						$scope.ArrayUnits[value.id] = {'id': value.id, 'title': value.title};
+					});
+				
+		            $scope.visualization = Visualization.get({id: $routeParams.visualizationId}, function (visualization) {
+		            	
+		            	for (i in visualization.datasets_in_visualization) {
+		            		idDataset = $scope.visualization.datasets_in_visualization[i].dataset_id;
+	
+							$scope.dataDatasetVisu = Dataset.get({id: idDataset}, function (dataDatasetVisu) {
+								
+								$scope.listDatasetAccepted.push(dataDatasetVisu.id);
+								$scope.cntDatasets = $scope.cntDatasets +1;
+								if ($scope.cntDatasets>=visualization.datasets_in_visualization.length) {	            			
+			            			$scope.finishLoadingDatsetsData = true;
+		            			}
+		            		
+	                		}, function (err) {
+	
+	                    		$scope.listDatasetDeleted.push(idDataset);               		
+	                    		$scope.errorLoadingDatsetsData = true;
+	                    		$scope.cntDatasets = $scope.cntDatasets +1;
+	                    		if ($scope.cntDatasets>=visualization.datasets_in_visualization.length) {	            			
+		            				$scope.finishLoadingDatsetsData = true;
+		            			}
+	                		});	            		
+		            	}
+		
+		                $scope.visualization.language_data = {
+		                    input: visualization.language_id,
+		                    output: [visualization.language_id]
+		                };
+		
+						$scope.$watchCollection(
+						"visualization.language_id",
+						function( newValue, oldValue ) 
+						{
+							if (newValue!=oldValue) {
+								$scope.disableRevert = false;
+							}
+							else if (newValue.length!=oldValue.length) {						
+								$scope.disableRevert = false;
+							}
+						});
+	
+		                $scope.visualization.location_data = {
+		                    input: visualization.location,
+		                    output: [visualization.location]
+		                };
+	
+						$scope.$watchCollection(
+						"visualization.location",
+						function( newValue, oldValue ) 
+						{
+							if (newValue!=oldValue) {
+								$scope.disableRevert = false;
+							}
+							else if (newValue) {
+								if (newValue.length!=oldValue.length) {						
+									$scope.disableRevert = false;
+								}	
+							}
 							
-							$scope.listDatasetAccepted.push(dataDatasetVisu.id);
-							$scope.cntDatasets = $scope.cntDatasets +1;
-							if ($scope.cntDatasets>=visualization.datasets_in_visualization.length) {	            			
-		            			$scope.finishLoadingDatsetsData = true;
-	            			}
-	            		
-                		}, function (err) {
-
-                    		$scope.listDatasetDeleted.push(idDataset);               		
-                    		$scope.errorLoadingDatsetsData = true;
-                    		$scope.cntDatasets = $scope.cntDatasets +1;
-                    		if ($scope.cntDatasets>=visualization.datasets_in_visualization.length) {	            			
-	            				$scope.finishLoadingDatsetsData = true;
-	            			}
-                		});	            		
-	            	}
-	
-	                $scope.visualization.language_data = {
-	                    input: visualization.language_id,
-	                    output: [visualization.language_id]
-	                };
-	
-					$scope.$watchCollection(
-					"visualization.language_id",
-					function( newValue, oldValue ) 
-					{
-						if (newValue!=oldValue) {
-							$scope.disableRevert = false;
+						});
+		
+		                $scope.visualization.policy_domains_data = {
+		                    input: visualization.policy_domains,
+		                    output: visualization.policy_domains
+		                };
+		
+		
+						$scope.$watchCollection(
+						"visualization.policy_domains",
+						function( newValue, oldValue ) 
+						{
+							if (newValue!=oldValue) {
+								$scope.disableRevert = false;
+							}
+							else if (newValue.length!=oldValue.length) {						
+								$scope.disableRevert = false;
+							}
 						}
-						else if (newValue.length!=oldValue.length) {						
-							$scope.disableRevert = false;
-						}
-					});
-
-	                $scope.visualization.location_data = {
-	                    input: visualization.location,
-	                    output: [visualization.location]
-	                };
-
-					$scope.$watchCollection(
-					"visualization.location",
-					function( newValue, oldValue ) 
-					{
-						if (newValue!=oldValue) {
-							$scope.disableRevert = false;
-						}
-						else if (newValue.length!=oldValue.length) {						
-							$scope.disableRevert = false;
-						}
-					});
-	
-	                $scope.visualization.policy_domains_data = {
-	                    input: visualization.policy_domains,
-	                    output: visualization.policy_domains
-	                };
-	
-	
-					$scope.$watchCollection(
-					"visualization.policy_domains",
-					function( newValue, oldValue ) 
-					{
-						if (newValue!=oldValue) {
-							$scope.disableRevert = false;
-						}
-						else if (newValue.length!=oldValue.length) {						
-							$scope.disableRevert = false;
-						}
-					}
-					);
-									
-					
-	            }, function (error) {	            	
-	                //throw {message: error.data.message || JSON.stringify(error.data)};
-	                //console.log (JSON.stringify(error.data));
-	            });
-			
+						);
+										
+						
+		            }, function (error) {	            	
+		                //throw {message: error.data.message || JSON.stringify(error.data)};
+		                //console.log (JSON.stringify(error.data));
+		            });
+				});
 
 				$scope.$watch("finishLoadingDatsetsData", function( newValue, oldValue ) {
 											
@@ -3937,6 +3950,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					                                for (xi = 0; xi < lisIndividuals.length; xi++) {
 					                                	
 					                                	var titleItemTmp = "";
+
 					                                	if ($scope.custoListIndividuals[parseInt(lisIndividuals[xi])])
 					                                	{
 					                                		titleItemTmp = $scope.custoListIndividuals[parseInt(lisIndividuals[xi])];
@@ -3947,7 +3961,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					                                        'title': titleItemTmp
 					                                    };
 					                                    $scope.IndividualSelectorLabelColumn_[id].push(varTmp);
-					
+
 					                                    varTmp = parseInt(lisIndividuals[xi]);
 					
 					                                    if (pushData) {
@@ -4301,6 +4315,21 @@ angular.module('pcApp.visualization.controllers.visualization', [
         'Auth',
         function ($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualization, $location, helper, $log, dialogs, API_CONF, Individual, Unit, Auth) {
 
+
+			$scope.fullListIndividuals = Individual.query({}, function (fullListIndividuals) {			
+				$scope.custoListIndividuals = [];
+				angular.forEach(fullListIndividuals, function(value, key) {					
+					$scope.custoListIndividuals[value.id]=value.title;
+				});
+			});
+
+			$scope.UnitsList = Unit.query({  }, function(unitList) {
+				$scope.ArrayUnits = [];					
+				angular.forEach(unitList, function(value, key) {	
+					$scope.ArrayUnits[value.id] = {'id': value.id, 'title': value.title};
+				});
+			});
+						
 			$scope.hideTabs = false;
 			
             $scope.user = Auth;
