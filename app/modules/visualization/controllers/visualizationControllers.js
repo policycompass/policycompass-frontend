@@ -38,7 +38,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                         	
                         	if (err.status=='404') {
                         		//the visualisation uses a dataset that has been deleted
-                        		//we don't need to show a message in this moment	
+                        		//we don't need to show a message in this moment
                         	}
                         	else {
                         		throw {message: JSON.stringify(err.data)};
@@ -4801,26 +4801,23 @@ angular.module('pcApp.visualization').filter('pagination', function () {
 					}, function (err) {			
 						//console.log("$watchCollection ListMetricsFilterModal");
 						//throw {message: JSON.stringify(err.data)};
-						
+
 						if (err.status=='404') {
 							//the visualisation uses an event that has been deleted
-							//we don't need to show a message in this moment	
+							//we don't need to show a message in this moment
 						}
 						else {
 							throw {message: JSON.stringify(err.data)};
 						}
-						
-						
+
 					});
 				});
 			});
-
 
             $scope.displaycontentMetricModal = function (idMetric) {
                 var containerLink = document.getElementById("modal-edit-metric-button-" + idMetric);
                 $(containerLink).parent().next().toggle(200);
             };
-
 
 			$scope.okModalWindowDataset = function () {
 				var acceptApply = true;
