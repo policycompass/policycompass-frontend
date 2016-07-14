@@ -138,7 +138,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                 baseVisualizationsCreateController: function ($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualization, $location, helper, $log, API_CONF, Individual, Unit) {
 
-
+					$scope.vieweditHE = [];
 					$scope.loadDataCombosHelper = function (idMetric, valueColumTemp, valueGroupTemp) {
 				
 						id = idMetric;
@@ -1225,6 +1225,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                             $scope.idHE.splice((index), 1);
                             $scope.eventsToPlot.splice((index - 1), 1);
+                            $scope.colorHE.splice(index, 1);
                             $scope.rePlotGraph();
 
                         });
