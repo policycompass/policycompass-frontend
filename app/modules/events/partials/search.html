@@ -22,9 +22,9 @@
                 <div class="input-group">
                     <!-- /btn-group -->
 
-                    <input type="text" class="browse-input form-control" ng-keyup="$event.keyCode == 13 && saveParameters() && searchEvent()" id="title" name="title"placeholder="Keyword" ng-model="search_title" ng-minlength="3" ng-required="true" required>
+                    <input type="text" class="browse-input form-control" ng-keyup="$event.keyCode == 13 && searchEvent()" id="title" name="title"placeholder="Keyword" ng-model="search_title" ng-minlength="3" ng-required="true" required>
                     <span class="input-group-btn">
-                        <button class="btn" type="button" ng-click="saveParameters() && searchEvent()">Go!</button>
+                        <button class="btn" type="button" ng-click="searchEvent()">Go!</button>
                     </span>
 
                 </div>
@@ -71,24 +71,68 @@
                                     </button>
                                 </form>
                             </div>
-
-
                         </div>
                     </div>
-
                 </div>
 
                 <!-- /.search content  -->
-                <form name="search-results-form" class="tab-form-events" ng-if="searched && searchResultsTotal.length > 0" >
-                    <tabset>
-                        <tab select="setActiveTab(0)" index="0" active="dbpedia_active" heading="DBPedia & GESIS" id="tab_dbpedia" ng-if="searchResultsTotal.length > 0">
+                <form name="search-results-form" class="tab-form-events" ng-show="searched" >
+                    <tabset id="eventTabs">
+                        <tab select="setActiveTab(0)" index="0" active="wikipedia_title_active" heading="Wikipedia" id="tab_wikipedia_titles"  >
+                            <div class="filter-group" ng-show="false">
+                                <div class="row">
+                                    <div class="form-group col-md-4 col-xs-12">
+                                        <form class="form-inline" role="form">
+                                            <span class="filter-span">
+                                                Search:
+                                            </span>
+                                            <input type="text" id="searchBar" ng-change="filterSearchResults(searchBar)" ng-model="searchBar" name="searchBar" placeholder="Keyword" class="form-control"/>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="number-results-wrap">
+                                <span><ng-pluralize count="wikipedia_title_results.length" when="{'0': 'No results found',
+                                               '1': '1 result found',
+                                               'other': '{} results found'}"></ng-pluralize></span>
+                            </div>
+
+                            <div class="search-results row-flex">
+                                <div ng-repeat="result in wikipedia_title_results" ng-model="wikiTitleResults" class="result-wrapper">
+                                    <div class="result-block searchItemIcon" ng-cloak>
+                                        <div class="search-result">
+                                            <h5>
+                                                <a href ng-click="searchForWikipediaEvents(result[0])">{{result[0]}}</a>
+                                            </h5>
+
+                                            <div class="attributes">
+                                                <p>{{ result[1] }}</p>
+
+                                                <p class="wikipedia-search">URL: {{ result[2] }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </tab>
+                        <tab select="setActiveTab(1)" index="1" active="dbpedia_active" heading="DBPedia & GESIS" id="tab_dbpedia" >
+                            <div class="filter-group">
+                                <div class="row">
+                                    <div class="form-group col-md-4 col-xs-12">
+                                        <form class="form-inline" role="form">
+                                            <span class="filter-span">
+                                                Search:
+                                            </span>
+                                            <input type="text" id="searchBar" ng-change="filterSearchResults(searchBar)" ng-model="searchBar" name="searchBar" placeholder="Keyword" class="form-control"/>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="number-results-wrap">
                                 <span><ng-pluralize count="searchResultsTotal.length" when="{'0': 'No results found',
                                                '1': '1 result found',
                                                'other': '{} results found'}"></ng-pluralize></span>
-                                <!--<span ng-hide="searchResultsTotal">Loading...</span>
-                                    <!--<div class="num-results" ng-hide="searchResults.length"><span>No results found</span></div>-->
-                                    <!--<div class="num-results" ng-show="searchResults.length"><span>{{searchResultsCount}} results found</span>-->
                             </div>
                             <div class="search-results row-flex">
                                 <div ng-repeat="resultEvent in searchResults"  value="{{$index}}" ng-model="searchResults" class="result-wrapper result-wrapper-{{'event'}}">
@@ -100,7 +144,7 @@
 
                                             <div class="attributes">
 
-                                                <p>{{ resultEvent.description | limitTo:500 }}...</p>
+                                                <p>{{ resultEvent.description | limitTo:500 }}</p>
 
                                                 <div class="key-field">
                                                     <label class="key-field-title">Start of Event: </label>
@@ -109,7 +153,7 @@
 
                                                 <div class="key-field">
                                                     <label class="key-field-title">URL: </label>
-                                                    {{ resultEvent.url | limitTo:50}}
+                                                    {{ resultEvent.url }}
                                                 </div>
                                             </div>
                                         </div>
@@ -117,39 +161,23 @@
                                  </div>
                             </div>
                         </tab>
-                        <tab select="setActiveTab(1)" index="1" active="wikipedia_title_active" heading="Wikipedia" id="tab_wikipedia_titles"  ng-if="wikipedia_title_results.length > 0">
-                            <div class="number-results-wrap">
-                                <span><ng-pluralize count="wikipedia_title_results.length" when="{'0': 'No results found',
-                                               '1': '1 result found',
-                                               'other': '{} results found'}"></ng-pluralize></span>
-                                <!--<span ng-hide="searchResultsTotal">Loading...</span>
-                                    <!--<div class="num-results" ng-hide="searchResults.length"><span>No results found</span></div>-->
-                                    <!--<div class="num-results" ng-show="searchResults.length"><span>{{searchResultsCount}} results found</span>-->
-                            </div>
-                            <div class="row">
-                                <div class="container-wikipedia-entries">
-                                    <div ng-repeat="result in wikipedia_title_results">
-                                        <div class="well col-md-10 col-xs-3 wikipedia-search">
-                                            <div class="attributes">
-                                                <h5>
-                                                    <a href ng-click="searchForWikipediaEvents(result[0])">{{result[0]}}</a>
-                                                </h5>
-
-                                                <a href="{{ result[2] }}" target="_blank">{{ result[2] | limitTo:50 }}</a>
-                                            </div>
-                                        </div>
+                        <tab select="setActiveTab(2)" index="2" active="wikipedia_event_active" id="tab_wikipedia_results" heading='Events from "{{ wikiTitle }}" article' ng-show="searchedForWikiEvents">
+                            <div class="filter-group" ng-show="searchedForWikiEvents">
+                                <div class="row">
+                                    <div class="form-group col-md-4 col-xs-12">
+                                        <form class="form-inline" role="form">
+                                            <span class="filter-span">
+                                                Search:
+                                            </span>
+                                            <input type="text" id="wikiSearchBar" ng-change="filterWikiSearchResults(wikiSearchBar)" ng-model="wikiSearchBar" name="wikiSearchBar" placeholder="Keyword" class="form-control"/>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
-                        </tab>
-                        <tab select="setActiveTab(2)" index="2" active="wikipedia_event_active" id="tab_wikipedia_results" heading='Events from "{{ wikiTitle }}" article' ng-if="wikiSearchResults.length > 0">
                             <div class="number-results-wrap">
                                 <span><ng-pluralize count="wikiSearchResultsTotal.length" when="{'0': 'No results found',
                                                '1': '1 result found',
                                                'other': '{} results found'}"></ng-pluralize></span>
-                                <!--<span ng-hide="searchResultsTotal">Loading...</span>
-                                    <!--<div class="num-results" ng-hide="searchResults.length"><span>No results found</span></div>-->
-                                    <!--<div class="num-results" ng-show="searchResults.length"><span>{{searchResultsCount}} results found</span>-->
                             </div>
                             <div class="search-results row-flex">
                                 <div ng-repeat="resultEvent in wikiSearchResults"  value="{{$index}}" ng-model="wikiSearchResults" class="result-wrapper result-wrapper-{{'event'}}">
@@ -161,7 +189,7 @@
 
                                             <div class="attributes">
 
-                                                <p>{{ resultEvent.description | limitTo:500 }}...</p>
+                                                <p>{{ resultEvent.description | limitTo:500 }}</p>
 
                                                 <div class="key-field">
                                                     <label class="key-field-title">Start of Event: </label>
@@ -170,7 +198,7 @@
 
                                                 <div class="key-field">
                                                     <label class="key-field-title">URL: </label>
-                                                    {{ resultEvent.url | limitTo:50}}
+                                                    {{ resultEvent.url }}
                                                 </div>
                                             </div>
                                         </div>
@@ -179,13 +207,22 @@
                             </div>
                         </tab>
                     </tabset>
+
+                    <div style="text-align: center" ng-show="activeTab==0">
+                        <pagination total-items="wikipedia_title_results.length" ng-change="pageChangedWikiTitles()" items-per-page="itemsperPage" ng-model="currentPageWikiTitles" max-size="paginationSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+                    </div>
+
+                    <div style="text-align: center" ng-show="activeTab==1">
+                        <pagination total-items="totalItems" ng-change="pageChanged()" items-per-page="itemsperPage" ng-model="currentPage" max-size="paginationSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+                    </div>
+
+                    <div style="text-align: center" ng-show="activeTab==2">
+                        <pagination total-items="wikiSearchResultsTotal.length" ng-change="pageChangedWikiResults()" items-per-page="itemsperPage" ng-model="currentPageWikiResults" max-size="paginationSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+                    </div>
+
                 </form>
 
                 <div class="clearfix"></div>
-
-                <div style="text-align: center">
-                    <pagination total-items="totalItems" ng-change="pageChanged()" items-per-page="itemsperPage" ng-model="currentPage" max-size="paginationSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
-                </div>
 
         </div>
         <!-- /.row  -->
