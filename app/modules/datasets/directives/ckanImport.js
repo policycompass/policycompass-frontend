@@ -15,7 +15,7 @@ angular.module('pcApp.datasets.directives.ckanImport', []).directive('ckanImport
                 'loadData': '='
             },
             link: function (scope, element, attrs, ctrls) {
-                scope.itemsPerPage = 9;
+                scope.itemsPerPage = 10;
                 scope.ckanStart = 0;
                 scope.byNumResourcesGtZero = function (result) {
                     if(result){
