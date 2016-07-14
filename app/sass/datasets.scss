@@ -131,11 +131,25 @@
 
 .dataset-search{
     background-color:#f9f9f9;
-    height:120px;
+    //height:120px;
     width:30%;
     min-width: 280px;
     margin-left: 2.5%;
 }
+
+.dataset-search-results{
+    background-color:#f9f9f9;
+    padding: 2% 2% 2% 2%;
+}
+
+.dataset-search-results > *:last-child{
+    margin-bottom: 2%;
+}
+
+.dataset-results-block{
+    margin: 0.8%;
+}
+
 
 .dropdown-datasets{
     position:absolute;
@@ -167,3 +181,5 @@
 .dropdown-datasets:hover .dropdown-content{
     display:block;
 }
+
+
