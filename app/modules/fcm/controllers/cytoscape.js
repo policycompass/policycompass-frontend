@@ -1747,6 +1747,9 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                     });
 
                 });
+
+                $scope.dataset = [];
+                $scope.labels = [];
                 angular.forEach(data, function (item) {
                     $scope.dataset.push(item);
                     $scope.labels.push("");
