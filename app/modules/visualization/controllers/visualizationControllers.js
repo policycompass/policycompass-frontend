@@ -3572,9 +3572,16 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					angular.forEach(unitList, function(value, key) {	
 						$scope.ArrayUnits[value.id] = {'id': value.id, 'title': value.title};
 					});
-				
-		            $scope.visualization = Visualization.get({id: $routeParams.visualizationId}, function (visualization) {
-		            	
+
+					var idVisuToGet = '';
+					if ($scope.idvisulist) {
+						idVisuToGet = $scope.idvisulist;
+					} else {
+						idVisuToGet = $routeParams.visualizationId
+					}
+					
+		            //$scope.visualization = Visualization.get({id: $routeParams.visualizationId}, function (visualization) {
+		            $scope.visualization = Visualization.get({id: idVisuToGet}, function (visualization) {
 		            	for (i in visualization.datasets_in_visualization) {
 		            		idDataset = $scope.visualization.datasets_in_visualization[i].dataset_id;
 	
