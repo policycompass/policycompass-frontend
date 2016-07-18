@@ -11,7 +11,7 @@
  			<p class="text-danger">Changes will not be applied until you click over the "Apply" button!</p> 			
  		</div>
  		-->
-
+		
         <tabset>
             <tab heading="Search" active="tab1" disabled="">
             	
@@ -31,19 +31,23 @@
             <tab heading="Configure" active="tab2" disabled="">
                 <div class="row createvisualization">
                     <div ng-show="ListMetricsFilterModal.length==0">No dataset linked</div>
-                    <div ng-show="metric.title" class="designer-metrics active" class="designer-metrics" id="designer-metrics-num-{{metric.id}}" ng-repeat="metric in ListMetricsFilterModal track by $index">
-                        <h4>{{metric.title}} -- {{metric.issued | date:'longDate' }}</h4>
+                    
+                    <div class="designer-metrics active" class="designer-metrics" id="designer-metrics-num-{{metric.id}}" ng-repeat="metric in ListMetricsFilterModal track by $index">
+                        <h4 ng-show="metric.title" >{{metric.title}} -- {{metric.issued | date:'longDate' }}</h4>
+                        <h4 ng-show="!metric.title" >Deleted dataset {{metric.id}}</h4>
 
                         <input type="hidden" ng-model="MetricSelectediId_[metric.id]" id="MetricSelectediId_{{metric.id}}" name="MetricSelectedId[]" value="">
                         <input type="hidden" ng-model="MetricSelectediIndex_[metric.id]" ng-init="MetricSelectediIndex_[metric.id]=metric.id" id="MetricSelectediIndex_{{metric.id}}" name="MetricSelectediIndex[]" value="{{metric.id}}">
 
                         <div class="metric-buttons">
                             <a type="button" data-intro="Unlink dataset from the visualisation" data-position="top" class="btn btn-danger btn-clear" ng-click="deleteMetricFromList(metric.id, metric.title, ListMetricsFilterModal, $index, 'modal');" id="delete-metric-button-{{metric.id}}">Unlink</a>
-                            <a type="button" data-intro="Access to the dataset data" data-position="right" class="btn btn-info btn-adddataset" href="#!/datasets/{{metric.id}}" target="_blank" id="view-metric-button-{{metric.id}}">Open dataset details</a>
+                            <a ng-show="metric.title" type="button" data-intro="Access to the dataset data" data-position="right" class="btn btn-info btn-adddataset" href="#!/datasets/{{metric.id}}" target="_blank" id="view-metric-button-{{metric.id}}">Open dataset details</a>
                             <!--
    	                        <a type="button" class="btn btn-default" href="" ng-click="applayscale[metric.id]=!applayscale[metric.id]"><span ng-if="!applayscale[metric.id]">Apply</span><span ng-if="applayscale[metric.id]">Disable</span> Custom Scale</a>
    	                        -->
                         </div>
+						
+						<div ng-show="metric.title">
 
                         <div class="metric-forms">
 							<div>
@@ -184,6 +188,8 @@
                                 </table>
                               -->
                             </div>
+                        </div>
+                        
                         </div>
                     </div>
                 </div>

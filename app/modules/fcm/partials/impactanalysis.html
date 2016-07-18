@@ -22,7 +22,7 @@
                             <td align="center" ng-repeat="result in ImpactAnalysisResults" ng-if="result.conceptID == user.selectConcept.Id">
                                 <b>{{ result.input }}</b></td>
                         </tr>
-                        <tr ng-show="Concepts" ng-repeat="concept in Concepts">
+                        <tr ng-show="Concepts" ng-repeat="concept in Concepts | filter:{ Id: '!' +user.selectConcept.Id}">
                             <td>{{ concept.title }}</td>
                             <td align="center" ng-repeat="result in ImpactAnalysisResults" ng-if="concept.Id == result.conceptID">{{ result.output }}</td>
                         </tr>
@@ -35,7 +35,7 @@
                     <br />
                 </tab>
                 <tab heading="Impact of Two Concepts">
-                    <label class="control-label" for="impactanalysis">Impact of Change in</label><select class="form-control" name="source" id="source" ng-model="user.selectConcept1" ng-options="concept.title for concept in Concepts" required></select><label class="control-label" for="impactanalysis">and</label><select class="form-control" name="source" id="source" ng-model="user.selectConcept2" ng-options="concept.title for concept in Concepts" required></select>(initial concept value)<br/><label class="control-label" for="impactanalysis">on</label><select class="form-control" name="source" id="source" ng-model="user.selectConcept3" ng-options="concept.title for concept in Concepts" required></select><br/>
+                    <label class="control-label" for="impactanalysis">Impact of Change in</label><select class="form-control" name="source" id="Select1" ng-model="user.selectConcept1" ng-options="concept.title for concept in Concepts" required></select><label class="control-label" for="impactanalysis">and</label><select class="form-control" name="source" id="Select2" ng-model="user.selectConcept2" ng-options="concept.title for concept in Concepts" required></select>(initial concept value)<br/><label class="control-label" for="impactanalysis">on</label><select class="form-control" name="source" id="Select3" ng-model="user.selectConcept3" ng-options="concept.title for concept in Concepts" required></select><br/>
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" ng-click="two()">Calculate</button>
