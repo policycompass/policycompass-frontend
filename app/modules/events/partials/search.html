@@ -77,7 +77,7 @@
 
                 <!-- /.search content  -->
                 <form name="search-results-form" class="tab-form-events" ng-show="searched" >
-                    <tabset id="eventTabs">
+                    <tabset id="eventTabs" active="tabsActive" ng-show="tabsActive">
                         <tab select="setActiveTab(0)" index="0" active="wikipedia_title_active" heading="Wikipedia" id="tab_wikipedia_titles"  >
                             <div class="filter-group" ng-show="false">
                                 <div class="row">
@@ -98,7 +98,7 @@
                             </div>
 
                             <div class="search-results row-flex">
-                                <div ng-repeat="result in wikipedia_title_results" ng-model="wikiTitleResults" class="result-wrapper">
+                                <div ng-repeat="result in wikipedia_title_results track by $index" ng-model="wikiTitleResults" class="result-wrapper">
                                     <div class="result-block searchItemIcon" ng-cloak>
                                         <div class="search-result">
                                             <h5>
@@ -135,7 +135,7 @@
                                                'other': '{} results found'}"></ng-pluralize></span>
                             </div>
                             <div class="search-results row-flex">
-                                <div ng-repeat="resultEvent in searchResults"  value="{{$index}}" ng-model="searchResults" class="result-wrapper result-wrapper-{{'event'}}">
+                                <div ng-repeat="resultEvent in searchResults track by $index"  value="{{$index}}" ng-model="searchResults" class="result-wrapper result-wrapper-{{'event'}}">
                                     <div class="result-block searchItemIcon {{'event'}}Icon" ng-cloak>
                                         <div class="search-result">
                                             <h5><a ng-click="search.selectedEvent = resultEvent; selectEvent()">
@@ -162,48 +162,50 @@
                             </div>
                         </tab>
                         <tab select="setActiveTab(2)" index="2" active="wikipedia_event_active" id="tab_wikipedia_results" heading='Events from "{{ wikiTitle }}" article' ng-show="searchedForWikiEvents">
-                            <div class="filter-group" ng-show="searchedForWikiEvents">
-                                <div class="row">
-                                    <div class="form-group col-md-4 col-xs-12">
-                                        <form class="form-inline" role="form">
-                                            <span class="filter-span">
-                                                Search:
-                                            </span>
-                                            <input type="text" id="wikiSearchBar" ng-change="filterWikiSearchResults(wikiSearchBar)" ng-model="wikiSearchBar" name="wikiSearchBar" placeholder="Keyword" class="form-control"/>
-                                        </form>
+                            <div ng-show="searchedForWikiEvents">
+                                <div class="filter-group">
+                                    <div class="row">
+                                        <div class="form-group col-md-4 col-xs-12">
+                                            <form class="form-inline" role="form">
+                                                <span class="filter-span">
+                                                    Search:
+                                                </span>
+                                                <input type="text" id="wikiSearchBar" ng-change="filterWikiSearchResults(wikiSearchBar)" ng-model="wikiSearchBar" name="wikiSearchBar" placeholder="Keyword" class="form-control"/>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="number-results-wrap">
-                                <span><ng-pluralize count="wikiSearchResultsTotal.length" when="{'0': 'No results found',
-                                               '1': '1 result found',
-                                               'other': '{} results found'}"></ng-pluralize></span>
-                            </div>
-                            <div class="search-results row-flex">
-                                <div ng-repeat="resultEvent in wikiSearchResults"  value="{{$index}}" ng-model="wikiSearchResults" class="result-wrapper result-wrapper-{{'event'}}">
-                                    <div class="result-block searchItemIcon {{'event'}}Icon" ng-cloak>
-                                        <div class="search-result">
-                                            <h5><a ng-click="search.selectedEvent = resultEvent; selectEvent()">
-                                                {{ resultEvent.title}}</a>
-                                            </h5>
+                                <div class="number-results-wrap">
+                                    <span><ng-pluralize count="wikiSearchResultsTotal.length" when="{'0': 'No results found',
+                                                   '1': '1 result found',
+                                                   'other': '{} results found'}"></ng-pluralize></span>
+                                </div>
+                                <div class="search-results row-flex">
+                                    <div ng-repeat="resultEvent in wikiSearchResults track by $index"  value="{{$index}}" ng-model="wikiSearchResults" class="result-wrapper result-wrapper-{{'event'}}">
+                                        <div class="result-block searchItemIcon {{'event'}}Icon" ng-cloak>
+                                            <div class="search-result">
+                                                <h5><a ng-click="search.selectedEvent = resultEvent; selectEvent()">
+                                                    {{ resultEvent.title}}</a>
+                                                </h5>
 
-                                            <div class="attributes">
+                                                <div class="attributes">
 
-                                                <p>{{ resultEvent.description | limitTo:500 }}</p>
+                                                    <p>{{ resultEvent.description | limitTo:500 }}</p>
 
-                                                <div class="key-field">
-                                                    <label class="key-field-title">Start of Event: </label>
-                                                    {{ resultEvent.date|date:'dd-MM-yyyy'}}
-                                                </div>
+                                                    <div class="key-field">
+                                                        <label class="key-field-title">Start of Event: </label>
+                                                        {{ resultEvent.date|date:'dd-MM-yyyy'}}
+                                                    </div>
 
-                                                <div class="key-field">
-                                                    <label class="key-field-title">URL: </label>
-                                                    {{ resultEvent.url }}
+                                                    <div class="key-field">
+                                                        <label class="key-field-title">URL: </label>
+                                                        {{ resultEvent.url }}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                 </div>
+                                     </div>
+                                </div>
                             </div>
                         </tab>
                     </tabset>

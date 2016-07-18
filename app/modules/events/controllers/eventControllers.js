@@ -157,7 +157,7 @@ angular.module('pcApp.events.controllers.event', [
                 //console.log(angular.toJson(eventService.getEvent()));
                 var endDate = '';
                 if(typeof eventService.getEvent()[0]['endDate'] === "undefined"){
-                    endDate = '2099-01-01';
+                    endDate = eventService.getEvent()[0]['date'];
                 }
                 else{
                     endDate = eventService.getEvent()[0]['endDate'];
@@ -252,9 +252,11 @@ angular.module('pcApp.events.controllers.event', [
 
 
             $scope.init = function () {
+                $scope.tabsActive = false;
                 $scope.activeTab = 0;
                 //if($scope.searchResults) $location.path('/events/create');
                 $scope.searched = false;
+                $scope.searchedForWikiEvents = false;
                 //Set Pagination defaults
                 //Default value for how many pages to show in the page navigation control
                 $scope.paginationSize = 5;
@@ -506,9 +508,14 @@ angular.module('pcApp.events.controllers.event', [
 
             $scope.searchEvent = function () {
                 if($scope.search_title.length > 0) {
+                    angular.element("#tab_wikipedia_titles").click();
+                    $scope.wikipedia_title_active = true;
+                    $scope.tabsActive = false;
                     $scope.searched = false;
                     $scope.searchedForWikiEvents = false;
+                    $scope.wikipedia_event_active = false;
                     $scope.fillSearchResults([]);
+                    $scope.fillWikiSearchResults([]);
                     $scope.totalItems = $scope.searchResultsTotal.length;
                     $scope.wikipedia_title_results = [];
                     ngProgress.start();
@@ -544,12 +551,11 @@ angular.module('pcApp.events.controllers.event', [
                         $filter('date')(endRange, "yyyy-MM-dd")).
 
                     success(function (data, status, headers, config) {
-                        $scope.wikiSearchResults = [];
+                        $scope.tabsActive = true;
                         $scope.fillSearchResults(data);
                         $scope.totalItems = $scope.searchResultsTotal.length;
                         $scope.searchResultsTotalBackup = $scope.searchResultsTotal;
                         $scope.searched = true;
-                        $scope.wikipedia_event_active = false;
                         ngProgress.complete();
 
                     }).error(function (data, status, headers, config) {
@@ -669,7 +675,6 @@ angular.module('pcApp.events.controllers.event', [
 
             $scope.$on('$routeUpdate', function(){
                 if($scope.searched)$location.path('/events/create');
-
             });
 
 
