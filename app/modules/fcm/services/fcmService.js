@@ -8,12 +8,14 @@ angular.module('pcApp.fcm.services.fcm', [
         'ngResource',
         'pcApp.config'
     ])
-
+    /**
+     * Factory for the Weka integration for FCM
+     */
     .factory('FcmWekaOutput', [
         '$resource', 'API_CONF', function ($resource, API_CONF) {
             // Get the base URL from the configuration
             var url = API_CONF.FCM_URL + "/wekaoutput";
-            //var url = "http://localhost:8084/policycompass.fcmmanager/v1/fcmmanager/wekaoutput";
+            //var url = "http://localhost:8086/policycompass.fcmmanager/v1/fcmmanager/wekaoutput";
 
             return $resource(url, {}, {
                 // Add support for create
