@@ -26,6 +26,46 @@ angular.module('pcApp.fcm.services.fcm', [
     ])
 
     /**
+     * Factory for related models by keyword for FCM
+     */
+    .factory('FcmRelatedModelByKeyword', [
+        '$resource', 'API_CONF', function ($resource, API_CONF) {
+            // Get the base URL from the configuration
+            var url = API_CONF.FCM_URL + "/relatedModelsBykeyword/:keyword";
+            //var url = "http://localhost:8086/policycompass.fcmmanager/v1/fcmmanager/relatedModelsBykeyword/:keyword";
+
+            return $resource(url, {
+                keyword: "@keyword"
+            }, {
+                // Array is false due to additional pagination data
+                'show': { method: 'GET' }
+            });
+        }
+    ])
+
+    .factory('FcmModel', [
+        '$resource', 'API_CONF', function ($resource, API_CONF) {
+            // Get the base URL from the configuration
+            var url = API_CONF.FCM_URL + "/models/:id";
+
+            return $resource(url, {
+                id: "@id"
+            }, {
+                // Array is false due to additional pagination data
+                'show': { method: 'GET' }, // Add support for create
+                'update': {
+                    method: 'PUT',
+                    params: { id: '@id' }
+                },
+                'delete': {
+                    method: 'DELETE',
+                    params: { id: '@id' }
+                }
+            });
+        }
+    ])
+
+    /**
      * Factory for the Resource for FCM
      */
     .factory('Fcm', [
