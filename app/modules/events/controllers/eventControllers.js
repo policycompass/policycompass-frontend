@@ -254,7 +254,6 @@ angular.module('pcApp.events.controllers.event', [
             $scope.init = function () {
                 $scope.tabsActive = false;
                 $scope.activeTab = 0;
-                //if($scope.searchResults) $location.path('/events/create');
                 $scope.searched = false;
                 $scope.searchedForWikiEvents = false;
                 //Set Pagination defaults
@@ -364,7 +363,6 @@ angular.module('pcApp.events.controllers.event', [
 
                 $location.search('wikiTitle' , $scope.wikiTitle);
             }
-
 
 
             //Define function that fires search when page changes
@@ -508,7 +506,6 @@ angular.module('pcApp.events.controllers.event', [
 
             $scope.searchEvent = function () {
                 if($scope.search_title.length > 0) {
-                    angular.element("#tab_wikipedia_titles").click();
                     $scope.wikipedia_title_active = true;
                     $scope.tabsActive = false;
                     $scope.searched = false;
@@ -563,27 +560,7 @@ angular.module('pcApp.events.controllers.event', [
                         // or server returns response with an error status.
                     });
 
-
-                    $.ajax( {
-                        url: "https://en.wikipedia.org/w/api.php",
-                        jsonp: "callback",
-                        dataType: 'jsonp',
-                        data: {
-                            action: "opensearch",
-                            list: "search",
-                            srsearch: "javascript",
-                            format: "json",
-                            search: $scope.search_title
-                        },
-                        xhrFields: { withCredentials: true },
-                        success: function(response) {
-                            $scope.wikipedia_title_results = [];
-                            for(var i = 0; i<response[1].length;i++){
-                                $scope.wikipedia_title_results[i] = [response[1][i], response[2][i], response[3][i]];
-                            }
-                            //$("#eventTabs").tabs({active: 0});
-                        }
-                    });
+                    $scope.searchForWikipediaTitles($scope.search_title);
 
                 }
                 else{
@@ -591,6 +568,28 @@ angular.module('pcApp.events.controllers.event', [
                 }
 
             };
+
+            $scope.searchForWikipediaTitles = function(search_title){
+                $.ajax( {
+                    url: "https://en.wikipedia.org/w/api.php",
+                    jsonp: "callback",
+                    dataType: 'jsonp',
+                    data: {
+                        action: "opensearch",
+                        list: "search",
+                        srsearch: "javascript",
+                        format: "json",
+                        search: search_title
+                    },
+                    xhrFields: { withCredentials: true },
+                    success: function(response) {
+                        $scope.wikipedia_title_results = [];
+                        for(var i = 0; i<response[1].length;i++){
+                            $scope.wikipedia_title_results[i] = [response[1][i], response[2][i], response[3][i]];
+                        }
+                    }
+                });
+            }
 
             $scope.searchForWikipediaEvents = function(wiki_title){
                 ngProgress.start();
@@ -674,7 +673,7 @@ angular.module('pcApp.events.controllers.event', [
 
 
             $scope.$on('$routeUpdate', function(){
-                if($scope.searched)$location.path('/events/create');
+                if($scope.searched && $scope.search_title.length > 0)$location.path('/events/create');
             });
 
 
