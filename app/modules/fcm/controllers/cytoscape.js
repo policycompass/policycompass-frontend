@@ -118,7 +118,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         };
     })
 
-    .controller('CytoscapeCtrl', function ($scope, $rootScope, $window, $routeParams, $location, $translate, Fcm, FcmModel, FcmWekaOutput, FcmSimulation, FcmActivator, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, SimulationConceptsDetail, AssociationsDetail, SimulationAssociationsDetail, EditConcept, EditAssociation, FCMActivatorDetail, Dataset, FcmIndicator, Auth, $q) {
+    .controller('CytoscapeCtrl', function ($scope, $rootScope, $window, $routeParams, $location, $translate, Fcm, FcmModel, FcmWekaOutput, FcmRelatedModelByKeyword, FcmSimulation, FcmActivator, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, SimulationConceptsDetail, AssociationsDetail, SimulationAssociationsDetail, EditConcept, EditAssociation, FCMActivatorDetail, Dataset, FcmIndicator, Auth, $q) {
         // container objects
         $scope.user = Auth;
         $scope.Models = [];
@@ -179,7 +179,16 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                     keywords: $scope.modeldetail.model.keywords.toString(),
 
                 };
+
                 FCMModelsDetail.setModels(model);
+
+                FcmRelatedModelByKeyword.get({ keyword: $scope.modeldetail.model.keywords.toString() }, function (modelList) {
+                    console.log(modelList);
+                    $scope.relatedModels = modelList;
+                }, function (error) {
+                    throw { message: JSON.stringify(error.data) };
+                });
+
 
                 var domains = JSON.parse(JSON.stringify($scope.modeldetail.domains));
                 $scope.modeldetail.domains = [];
@@ -304,7 +313,6 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 }
             };
         }
-
 
         $scope.showHelp = function (helpId) {
             if (helpId == 1) {
