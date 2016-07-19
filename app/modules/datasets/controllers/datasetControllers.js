@@ -769,6 +769,13 @@ angular.module('pcApp.datasets.controllers.dataset', [
                         $scope.resultTable.items.push([i]);
                     });
                 }
+
+                if($scope.resultTable.items.length <= 5){
+                    $scope.resultTable.height = $scope.resultTable.items.length * 30 + 50;
+                }
+                else{
+                    $scope.resultTable.height = 300;
+                }
             };
 
             init();
