@@ -43,6 +43,7 @@
         var requestAggs = {};
         var facetsSelected = {};
         var aggregationData = {};
+        var userId = "";
         $scope.facetCategories = [];
 
         var aggregations = {
@@ -122,6 +123,12 @@
             keyword: {
                 label: 'Keyword',
                 field: ["keywords"],
+                size: 200,
+                disable: true
+            },
+            userId: {
+                label: 'User',
+                field: ["creator_path", "userPath"],
                 size: 200,
                 disable: true
             }
@@ -494,6 +501,8 @@
             //Default current page
             $scope.currentPage = $routeParams.page || 1;
 
+            userId = ($routeParams.user_id) ? ("0000000"+$routeParams.user_id).slice(-7) : "";
+
             prepareAggregations();
 
             //Default search query
@@ -527,6 +536,9 @@
                     }
                 }
             });
+            if (userId != "") {
+                facetSet("userId", userId);
+            }
 
             if (type) {
                 $scope.filterSearchType(type);
