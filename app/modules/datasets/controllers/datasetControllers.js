@@ -742,7 +742,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 $scope.resultTable = creationService.data.resultTable;
                 $scope.resultTable.settings.afterInit = function () {
                     $scope.resultInstance = this;
-                    $scope.resultInstance.selectCell(0, 0, 0, $scope.timeSeriesLength);
+                    $scope.resultInstance.selectCell(0, 0, 0, 0);
                 };
 
                 $scope.inputTable.settings.contextMenu = false;
@@ -769,6 +769,9 @@ angular.module('pcApp.datasets.controllers.dataset', [
                         $scope.resultTable.items.push([i]);
                     });
                 }
+
+                $scope.resultTable.height = $scope.resultTable.items.length * 23 + 50;
+
             };
 
             init();
