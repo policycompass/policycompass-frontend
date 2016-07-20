@@ -405,8 +405,30 @@
             //Build query
             if (searchQuery != "") {
                 var query = {
-                    match: {
-                        _all: searchQuery
+                    "filtered": {
+                        "query": {
+                            "bool": {
+                                "should": [
+                                    {
+                                        "multi_match": {
+                                            "fields": ["title", "description"],
+                                            "fuzziness": "1",
+                                            "query": searchQuery
+                                        }
+                                    },
+                                    {
+                                        "prefix": {
+                                            "title": searchQuery
+                                        }
+                                    },
+                                    {
+                                        "prefix": {
+                                            "description": searchQuery
+                                        }
+                                    }
+                                ]
+                            }
+                        }
                     }
                 };
             } else {
