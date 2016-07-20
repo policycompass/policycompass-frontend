@@ -46,6 +46,7 @@
     </div>
 
     <div class="content-body">
+    	<!--
         <div class="row">
             <div class="metadata metadata-event metadata-event-description">
                 <div class="form-group form-group-description" ngshow="event.description">
@@ -54,17 +55,21 @@
                 </div>
             </div>
         </div>
-
+		-->
+		
         <div class="row">
 
             <legend class="legend-primary">Details</legend>
 
+			<div class="itemlayout metadata metadata-event" item="data" type="'metric'"></div>
+			
+			<!--
             <div class="metadata metadata-event">
                 <div class="form-group form-group-keywords" ng-if="data.keywords">
                     <div class="field-label">Keywords</div>
                     <div class="field-content">{{data.keywords}}</div>
                 </div>
-
+				
                 <div class="form-group form-group-modified">
                     <div class="form-item" ng-if="data.date_created">
                         <div class="field-label">Added</div>
@@ -72,7 +77,8 @@
                     </div>
                 </div>
             </div>
-
+			-->
+			
             <div class="metadata metadata-event">
 
                 <div class="form-group form-group-datasets">
@@ -86,7 +92,7 @@
                         </div>
                     </div>
                 </div>
-
+				<!--
                 <div class="form-group">
                     <div class="form-item" ng-if="data.creator_path">
                         <div class="field-label">Added by</div>
@@ -95,9 +101,10 @@
                         </div>
                     </div>
                 </div>
+               	-->
 
             </div>
-
+			<!--
             <div class="metadata metadata-event">
                 <div class="form-group form-group-rating">
                     <div class="form-item">
@@ -108,6 +115,7 @@
                     </div>
                 </div>
             </div>
+           	-->
         </div>
     </div>
 </div>

@@ -1,5 +1,83 @@
 angular.module('pcApp.common.directives.common', [])
 
+	.directive('itemlayout', [
+	        '$http', function ($http) {
+	            return {
+	                restrict: 'C',
+	                scope: {
+	                    item: '=item',
+	                    type: '=type'
+	                },	                
+	                controller: function ($scope) {
+	                	$scope.itemToPlot = [];
+	                	$scope.$watchCollection('item', function (newVal, oldVal) {
+	                		if (newVal) {
+								if (newVal['id']) {
+									$scope.itemToPlot['id'] = newVal['id'];	
+								}
+								if (newVal['description']) {
+									$scope.itemToPlot['description'] = newVal['description'];
+								}
+								if (newVal['keywords']) {
+									$scope.itemToPlot['keywords'] = newVal['keywords'];	
+								}
+															
+								$scope.itemToPlot['policy_domains'] = newVal['policy_domains'];
+								$scope.itemToPlot['creator_path'] = newVal['creator_path'];
+								$scope.itemToPlot['version'] = newVal['version'];							
+								$scope.itemToPlot['unit_category'] = newVal['unit_category'];
+								
+								if (newVal['created_at']) {
+									$scope.itemToPlot['created_at'] = newVal['created_at'];
+								}
+								else if (newVal['issued']) {
+									$scope.itemToPlot['created_at'] = newVal['issued'];
+								}
+								else if (newVal['dateAddedToPC']) {
+									$scope.itemToPlot['created_at'] = newVal['dateAddedToPC'];
+								}
+								else if (newVal['date_created']) {
+									$scope.itemToPlot['created_at'] = newVal['date_created'];
+								}
+	
+								$scope.itemToPlot['dateIssuedByExternalResource'] = newVal['dateIssuedByExternalResource'];
+								
+								if (newVal['updated_at']) {
+									$scope.itemToPlot['updated_at'] = newVal['updated_at'];
+								}
+								else if (newVal['issued']) {
+									$scope.itemToPlot['updated_at'] = newVal['modified'];
+								}
+								else if (newVal['dateAddedToPC']) {
+									$scope.itemToPlot['updated_at'] = newVal['dateModified'];
+								}
+								
+								if (newVal['language_id']) {
+									$scope.itemToPlot['language_id'] = newVal['language_id'];
+								}
+								else if (newVal['languageID']) {
+									$scope.itemToPlot['language_id'] = newVal['languageID'];
+								}
+								else if (newVal['language']) {
+									$scope.itemToPlot['language_id'] = newVal['language'];
+								}
+								
+								if (newVal['location']) {
+									$scope.itemToPlot['location'] = newVal['location'];
+								}
+								else if (newVal['spatials']) {
+									$scope.itemToPlot['spatials'] = newVal['spatials'];
+								}
+							}
+							
+						 });
+						
+	                },
+	                templateUrl: 'modules/common/partials/itemLayout.html',
+	            };
+	        }
+		])
+
     .directive("scroll", function ($window) {
         return function (scope, element, attrs) {
             angular.element($window).bind("scroll", function () {
