@@ -179,7 +179,46 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                     keywords: $scope.modeldetail.model.keywords.toString(),
 
                 };
+
                 FCMModelsDetail.setModels(model);
+
+                var reqData = {
+                    "body": {
+                        "size": 1000,
+                        "from": 0,
+                        "sort": ["title.lower_case_sort"],
+                        "query": {
+                            "bool": {
+                                "must": [{ "term": { "_type": "fuzzymap" } }],
+                                "should": []
+                            }
+                        }
+                    },
+                    "index": "policycompass_search"
+                };
+
+                angular.forEach($scope.modeldetail.model.keywords.toString().split(','), function (item) {
+                    if (reqData.body.query.bool.must.length == 1) {
+                        reqData.body.query.bool.must.push({ "match_phrase": { "keywords": $.trim(item) + ",*" } });
+                        reqData.body.query.bool.must.push({ "match_phrase": { "keywords": "*," + $.trim(item) } });
+                    }
+                    else {
+                        reqData.body.query.bool.should.push({ "match_phrase": { "keywords": $.trim(item) + ",*" } });
+                        reqData.body.query.bool.should.push({ "match_phrase": { "keywords": "*," + $.trim(item) } });
+                    }
+                });
+
+                searchclient.search(reqData).then(function (resp) {
+                    $scope.relatedModels = resp.hits.hits;
+                    //$.each(resp.hits.hits, function (index, item) {
+                    //    console.log(item._type);
+                    //    //console.log(item._source.keywords);
+                    //});
+
+                }, function (err) {
+                    console.trace(err.message);
+                });
+
 
                 var domains = JSON.parse(JSON.stringify($scope.modeldetail.domains));
                 $scope.modeldetail.domains = [];
