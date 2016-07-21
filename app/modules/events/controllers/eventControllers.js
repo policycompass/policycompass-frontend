@@ -130,7 +130,8 @@ angular.module('pcApp.events.controllers.event', [
         'Auth',
         '$filter',
         '$routeParams',
-        function ($scope, Event, $location, $log, dialogs, eventService, Auth, $filter, $routeParams) {
+        '$window',
+        function ($scope, Event, $location, $log, dialogs, eventService, Auth, $filter, $routeParams, $window) {
 
             $scope.userState = Auth.state;
 
@@ -208,6 +209,10 @@ angular.module('pcApp.events.controllers.event', [
                 $location.search('language', $scope.event.languageID)
             }
 
+            $scope.goBackButton = function(){
+                $window.history.back();
+            }
+
 
             $scope.init();
         }
@@ -279,9 +284,16 @@ angular.module('pcApp.events.controllers.event', [
                 $scope.sortByItem = 'Relevance';
 
                 //Default current page
-                $scope.currentPage = $routeParams.page || 1;
-                $scope.currentPageWikiTitles = $routeParams.pageWikiTitles || 1;
-                $scope.currentPageWikiResults= $routeParams.pageWikiResults || 1;
+                if($routeParams.page != 0){
+                    $scope.currentPage = $routeParams.page || 1;
+                    $scope.currentPageWikiTitles = $routeParams.pageWikiTitles || 1;
+                    $scope.currentPageWikiResults= $routeParams.pageWikiResults || 1;
+                }else{
+                    $scope.currentPage = 1;
+                    $scope.currentPageWikiTitles = 1;
+                    $scope.currentPageWikiResults = 1;
+                }
+
 
 
                 var sortBy = $routeParams.sort;
