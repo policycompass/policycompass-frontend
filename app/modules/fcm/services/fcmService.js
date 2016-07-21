@@ -8,17 +8,59 @@ angular.module('pcApp.fcm.services.fcm', [
         'ngResource',
         'pcApp.config'
     ])
-
+    /**
+     * Factory for the Weka integration for FCM
+     */
     .factory('FcmWekaOutput', [
         '$resource', 'API_CONF', function ($resource, API_CONF) {
             // Get the base URL from the configuration
             var url = API_CONF.FCM_URL + "/wekaoutput";
-            //var url = "http://localhost:8084/policycompass.fcmmanager/v1/fcmmanager/wekaoutput";
+            //var url = "http://localhost:8086/policycompass.fcmmanager/v1/fcmmanager/wekaoutput";
 
             return $resource(url, {}, {
                 // Add support for create
                 'post': { method: 'POST' },
                 'get': { method: 'GET' }
+            });
+        }
+    ])
+
+    /**
+     * Factory for related models by keyword for FCM
+     */
+    .factory('FcmRelatedModelByKeyword', [
+        '$resource', 'API_CONF', function ($resource, API_CONF) {
+            // Get the base URL from the configuration
+            var url = API_CONF.FCM_URL + "/relatedModelsBykeyword/:keyword";
+            //var url = "http://localhost:8086/policycompass.fcmmanager/v1/fcmmanager/relatedModelsBykeyword/:keyword";
+
+            return $resource(url, {
+                keyword: "@keyword"
+            }, {
+                // Array is false due to additional pagination data
+                'show': { method: 'GET' }
+            });
+        }
+    ])
+
+    .factory('FcmModel', [
+        '$resource', 'API_CONF', function ($resource, API_CONF) {
+            // Get the base URL from the configuration
+            var url = API_CONF.FCM_URL + "/models/:id";
+
+            return $resource(url, {
+                id: "@id"
+            }, {
+                // Array is false due to additional pagination data
+                'show': { method: 'GET' }, // Add support for create
+                'update': {
+                    method: 'PUT',
+                    params: { id: '@id' }
+                },
+                'delete': {
+                    method: 'DELETE',
+                    params: { id: '@id' }
+                }
             });
         }
     ])

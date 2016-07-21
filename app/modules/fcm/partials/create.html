@@ -136,7 +136,7 @@
                         </td>
                         <td align="center" width="55%">
                             <div class="subtitle-help">
-                                <span class="fonticon fonticon-help help-switch" style="font-size:15px;float:none;"  ng-click="openHelpModel($event,'help2')"><b>Linked Datasets</b></span>
+                                <span class="fonticon fonticon-help help-switch" style="font-size:15px;"  ng-click="openHelpModel($event,'help2')"><b>Metric</b></span>
                             </div>
                         </td>
                     </tr>
@@ -219,6 +219,35 @@
                 <button type="submit" class="btn btn-default" ng-click="impactAnalysis();">Impact Analysis</button>
             </tab>
 
+            <tab heading="Related Models">
+                <div class="search-results row-flex">
+                    <div ng-repeat="model in relatedModels.modelList" class="result-wrapper result-wrapper-fuzzymap">
+                        <div class="result-block searchItemIcon fuzzymapIcon" ng-cloak>
+                            <div class="search-result">
+                                <h5>
+                                    <a href="#!/models/{{ model.id }}">{{ model.title }}</a>
+                                </h5>
+
+                                <div class="attributes">
+
+                                    <p>{{ model.description | limitTo:200 }}...</p>
+
+                                    <div class="key-field">
+                                        <label class="key-field-title">Keywords: </label>
+                                        {{ model.keywords |date:'d-M-yy'}}
+                                    </div>
+                                    <div class="key-field">
+                                        <label class="key-field-title">Comments: </label>
+                                        {{ model.commentsCount }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="texticon texticon-fuzzymap"></div>
+                        </div>
+                    </div>
+                </div>
+            </tab>
+
             <tab heading="Simulation Results" active="tabsel.results"  ng-if="1==2">
                 <h4>Changes of Concept Values</h4>
                 <table class="table table-hover">
@@ -242,6 +271,8 @@
             <tab heading="Graph"  ng-if="1==2">
                 <div class="pcLinesChart" dataset="dataset" labels="labels" small="list" mode="modeg" hideyaxeunits="hideyaxeunits" chartid="2" show-Legend="showLegend" show-Labels="showLabels" show-Lines="showLines" show-Areas="showAreas" show-Points="showPoints" show-Grid="showGrid" show-Together="showYAxes" show-Percentatge="showAsPercentatge" xaxeformat="xaxeformat"></div>
             </tab>
+
+
         </tabset>
     </div>
 </div>
