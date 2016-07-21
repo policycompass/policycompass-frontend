@@ -333,9 +333,6 @@ angular.module('pcApp.events.controllers.event', [
 
                         $scope.searchEvent();
 
-                        if($scope.wikiTitle.length > 0){
-                            $scope.searchForWikipediaEvents($scope.wikiTitle);
-                        }
 
                     }).error(function (data, status, headers, config) {
                         // called asynchronously if an error occurs
@@ -599,8 +596,19 @@ angular.module('pcApp.events.controllers.event', [
                         for(var i = 0; i<response[1].length;i++){
                             $scope.wikipedia_title_results[i] = [response[1][i], response[2][i], response[3][i]];
                         }
+                        loadWikiSearchResults();
                     }
                 });
+            }
+
+            var loadWikiSearchResults = function(){
+                if(typeof $scope.wikipedia_title_results !== "undefined" && $scope.wikiTitle.length > 0){
+                    $scope.wikipedia_title_results.forEach(function(_title){
+                        if(_title[0] == $scope.wikiTitle){
+                            $scope.searchForWikipediaEvents($scope.wikiTitle);
+                        }
+                    });
+                }
             }
 
             $scope.searchForWikipediaEvents = function(wiki_title){
