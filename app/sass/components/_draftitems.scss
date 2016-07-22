@@ -1,0 +1,25 @@
+.h-warning {
+  color: $bk_1_2;
+}
+
+.itemindraft .chartvisu {  
+    background: $gris_95;
+    padding-top: 5px;
+    padding-bottom: 30px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border: 1px solid $gris_80;
+    border-radius: 6px;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.itemindraft {
+  margin-top: 7px;
+  margin-bottom: 15px;
+  padding: 24px;
+  border-radius: 6px;
+  background-color: $bk_1_3;
+  border: 1px solid $bk_1_2; 
+  box-shadow: 5px 5px 10px rgba(128, 128, 128, 0.5); 
+}

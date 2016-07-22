@@ -3582,6 +3582,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					
 		            //$scope.visualization = Visualization.get({id: $routeParams.visualizationId}, function (visualization) {
 		            $scope.visualization = Visualization.get({id: idVisuToGet}, function (visualization) {
+		            			            	
+		            	$scope.canDraft = visualization.is_draft;
+		            	
 		            	for (i in visualization.datasets_in_visualization) {
 		            		idDataset = $scope.visualization.datasets_in_visualization[i].dataset_id;
 	
@@ -4250,14 +4253,18 @@ angular.module('pcApp.visualization.controllers.visualization', [
                         dialogs.error("Error", message);
                     }
                 };
+				
 
                 if (($scope.user.state.userPath != $scope.visualization.creator_path) && ($scope.user.state.isAdmin != true)) {
+                    $scope.derived_from_id = $scope.visualization.id;
                     delete $scope.visualization.id;
                     delete $scope.visualization.self;
                     delete $scope.visualization.creator_path;
                     delete $scope.visualization.created_at;
                     delete $scope.visualization.updated_at;
-
+					
+					$scope.visualization.is_draft=true;
+					
                     $cntHE = 0;
                     for (i = 0; i < $scope.visualization.historical_events_in_visualization.length; i++) {
                         if ($scope.visualization.historical_events_in_visualization[i].historical_event > 0) {
@@ -4273,7 +4280,6 @@ angular.module('pcApp.visualization.controllers.visualization', [
                         $location.path('/visualizations/' + value.id);
                     }, saveErrorCallback);
                 } else {
-
                     Visualization.update($scope.visualization, function (value, responseHeaders) {
                         $location.path('/visualizations/' + value.id);
                     }, saveErrorCallback);
@@ -4323,7 +4329,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
         'Auth',
         function ($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualization, $location, helper, $log, dialogs, API_CONF, Individual, Unit, Auth) {
 
-
+			$scope.canDraft = true;
+			
 			$scope.fullListIndividuals = Individual.query({}, function (fullListIndividuals) {			
 				$scope.custoListIndividuals = [];
 				angular.forEach(fullListIndividuals, function(value, key) {					
