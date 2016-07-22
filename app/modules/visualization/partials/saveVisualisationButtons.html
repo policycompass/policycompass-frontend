@@ -1,3 +1,11 @@
+<div ng-if="canDraft" style="float:left">
+<toggle-switch 
+class="switch-danger"
+html="true" 
+ng-model="visualization.is_draft" 
+on-label="Draft" off-label="Public" class="switch-danger" ></toggle-switch>
+&nbsp;
+</div>
 <a href="#!/login" ng-if="!user.state.loggedIn" class="btn btn-default btn-save" target="_blank">Login to Save</a>
 <a href="" ng-if="mode == 'create' && user.state.loggedIn" type="submit" data-intro="Save data" data-position="top" ng-disabled="visualizationForm.$invalid " class="btn btn-default btn-save" ng-click="createVisualization(ListMetricsFilter)">Save </a>
 <a href="" ng-if="mode == 'edit' && user.state.loggedIn" type="submit" data-intro="Save data" data-position="top" ng-disabled="visualizationForm.$invalid " class="btn btn-default btn-save" ng-click="createVisualization(ListMetricsFilter)">Save <span ng-hide="user.state.userPath==visualization.creator_path"> a copy</span></a>

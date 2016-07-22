@@ -1,4 +1,4 @@
-<div ng-controller="VisualizationsEditController">
+<div ng-controller="VisualizationsEditController" ng-class="visualization.is_draft?'chartvisu':''">
     <div ng-hide="list">
         <div ng-show="isSelectedParent(1)">
             <div ng-show="mapTimeSlider.length>1">
