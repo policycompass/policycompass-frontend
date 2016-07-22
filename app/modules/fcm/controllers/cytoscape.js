@@ -408,7 +408,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         };
 
         $scope.updateModel = function () {
-            $scope.runSimulation();
+            $scope.runSimulation(true);
             var jsonModel = {
                 model: FCMModelsDetail.getModels(),
                 userID: "1",
@@ -719,19 +719,28 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             ////}
         };
 
-        $scope.runSimulation = function () {
+        $scope.runSimulation = function (isSaveModel) {
 
             if ($scope.Concepts.length == 0) {
-                throw { message: "The model is incomplete" };
+                if (isSaveModel)
+                    return;
+                else
+                    throw { message: "The model is incomplete" };
             }
 
             if (!$scope.isModelSaved) {
-                throw { message: "To run the simulation, please save the model" };
+                if (isSaveModel)
+                    return;
+                else
+                    throw { message: "To run the simulation, please save the model" };
             }
 
             $scope.SimulationConcepts.forEach(function (data) {
                 if (data.value == 0) {
-                    throw { message: "Please set the initial value for all concepts" };
+                    if (isSaveModel)
+                        return;
+                    else
+                        throw { message: "Please set the initial value for all concepts" };
                 }
             });
 
