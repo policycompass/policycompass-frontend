@@ -1178,19 +1178,27 @@ angular.module('pcApp.datasets.controllers.dataset', [
             $scope.dataset = Dataset.get({id: $routeParams.datasetId}, getDatasetSuccess, getDatasetError);
 
             $scope.deleteDataset = function (dataset) {
-                // Open a confirmation dialog
-                var dlg = dialogs.confirm("Are you sure?", "Do you want to delete the Dataset " + dataset.acronym + " permanently?");
-                dlg.result.then(function () {
-                    // Delete the dataset via the API
-                    dataset.$delete({}, function () {
-                        $location.path('/datasets');
+                if($scope.relatedVisualizationsString.length == 0){
+                    // Open a confirmation dialog
+                    var dlg = dialogs.confirm("Are you sure?", "Do you want to delete the Dataset " + dataset.acronym + " permanently?");
+                    dlg.result.then(function () {
+                        // Delete the dataset via the API
+                        dataset.$delete({}, function () {
+                            $location.path('/datasets');
+                        });
                     });
-                });
+                }
+                else{
+                    var dlg = dialogs.notify('Cannot delete this dataset', 'This dataset is being used by one or more visualizations. Please delete these visualizations first: ' +
+                        $scope.relatedVisualizationsString);
+                }
+
             };
 
             $scope.relatedVisualizations = [];
+            $scope.relatedVisualizationsString = "";
 
-            $scope.visualizationByMetricList = VisualizationByDataset.get({id: $routeParams.datasetId},
+            $scope.visualizationByDatasetList = VisualizationByDataset.get({id: $routeParams.datasetId},
                 function(VisualizationByDatasetList){
                     for(i in VisualizationByDatasetList.results){
                         var Tmp = {
@@ -1198,7 +1206,9 @@ angular.module('pcApp.datasets.controllers.dataset', [
                             "title": VisualizationByDatasetList.results[i]['title']
                         }
                         $scope.relatedVisualizations.push(Tmp);
+                        $scope.relatedVisualizationsString += '<br><a href= "/app/#!/visualizations' + '/' + VisualizationByDatasetList.results[i]['visualization'] + '" target="_blank"> '+ VisualizationByDatasetList.results[i]['title'] + '</a>';
                     }
+
                 });
         }
     ]);
