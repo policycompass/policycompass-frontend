@@ -118,7 +118,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         };
     })
 
-    .controller('CytoscapeCtrl', function ($scope, $rootScope, $window, $routeParams, $location, $translate, Fcm, FcmModel, FcmWekaOutput, FcmSimulation, FcmActivator, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, SimulationConceptsDetail, AssociationsDetail, SimulationAssociationsDetail, EditConcept, EditAssociation, FCMActivatorDetail, Dataset, FcmIndicator, Auth, $q) {
+    .controller('CytoscapeCtrl', function ($scope, $rootScope, $window, $routeParams, $location, $translate, Fcm, FcmModel, FcmWekaOutput, searchclient, FcmSimulation, FcmActivator, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, SimulationConceptsDetail, AssociationsDetail, SimulationAssociationsDetail, EditConcept, EditAssociation, FCMActivatorDetail, Dataset, FcmIndicator, Auth, $q) {
         // container objects
         $scope.user = Auth;
         $scope.Models = [];
@@ -179,7 +179,46 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                     keywords: $scope.modeldetail.model.keywords.toString(),
 
                 };
+
                 FCMModelsDetail.setModels(model);
+
+                var reqData = {
+                    "body": {
+                        "size": 1000,
+                        "from": 0,
+                        "sort": ["title.lower_case_sort"],
+                        "query": {
+                            "bool": {
+                                "must": [{ "term": { "_type": "fuzzymap" } }],
+                                "should": []
+                            }
+                        }
+                    },
+                    "index": "policycompass_search"
+                };
+
+                angular.forEach($scope.modeldetail.model.keywords.toString().split(','), function (item) {
+                    if (reqData.body.query.bool.must.length == 1) {
+                        reqData.body.query.bool.must.push({ "match_phrase": { "keywords": $.trim(item) + ",*" } });
+                        reqData.body.query.bool.must.push({ "match_phrase": { "keywords": "*," + $.trim(item) } });
+                    }
+                    else {
+                        reqData.body.query.bool.should.push({ "match_phrase": { "keywords": $.trim(item) + ",*" } });
+                        reqData.body.query.bool.should.push({ "match_phrase": { "keywords": "*," + $.trim(item) } });
+                    }
+                });
+
+                searchclient.search(reqData).then(function (resp) {
+                    $scope.relatedModels = resp.hits.hits;
+                    //$.each(resp.hits.hits, function (index, item) {
+                    //    console.log(item._type);
+                    //    //console.log(item._source.keywords);
+                    //});
+
+                }, function (err) {
+                    console.trace(err.message);
+                });
+
 
                 var domains = JSON.parse(JSON.stringify($scope.modeldetail.domains));
                 $scope.modeldetail.domains = [];
@@ -305,7 +344,6 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             };
         }
 
-
         $scope.showHelp = function (helpId) {
             if (helpId == 1) {
                 $scope.helpContents = "First, add appropriate concepts for you causal model (click \"Add Concept\"),<br>Second, create relationship (causal relationship) among concepts you added (click \"Create Relationship\"),<br>Then save your model (click \"Save Model\").<br>After saving you model, you can run simulation for your model!";
@@ -370,7 +408,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         };
 
         $scope.updateModel = function () {
-            $scope.runSimulation();
+            $scope.runSimulation(true);
             var jsonModel = {
                 model: FCMModelsDetail.getModels(),
                 userID: "1",
@@ -681,19 +719,28 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             ////}
         };
 
-        $scope.runSimulation = function () {
+        $scope.runSimulation = function (isSaveModel) {
 
             if ($scope.Concepts.length == 0) {
-                throw { message: "The model is incomplete" };
+                if (isSaveModel)
+                    return;
+                else
+                    throw { message: "The model is incomplete" };
             }
 
             if (!$scope.isModelSaved) {
-                throw { message: "To run the simulation, please save the model" };
+                if (isSaveModel)
+                    return;
+                else
+                    throw { message: "To run the simulation, please save the model" };
             }
 
             $scope.SimulationConcepts.forEach(function (data) {
                 if (data.value == 0) {
-                    throw { message: "Please set the initial value for all concepts" };
+                    if (isSaveModel)
+                        return;
+                    else
+                        throw { message: "Please set the initial value for all concepts" };
                 }
             });
 
