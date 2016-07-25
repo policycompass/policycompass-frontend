@@ -4261,7 +4261,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				
 
                 if (($scope.user.state.userPath != $scope.visualization.creator_path) && ($scope.user.state.isAdmin != true)) {
-                    $scope.derived_from_id = $scope.visualization.id;
+                    $scope.visualization.derived_from_id = $scope.visualization.id;
                     delete $scope.visualization.id;
                     delete $scope.visualization.self;
                     delete $scope.visualization.creator_path;
