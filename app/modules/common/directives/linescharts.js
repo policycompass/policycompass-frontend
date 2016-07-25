@@ -6,7 +6,13 @@ angular.module('pcApp.common.directives.linescharts', [])
     /*
      $scope.dataset (mandatory) =[{"Key":"USA_0","Labels":["1989-01-01","2003-01-01","2004-01-01"],"ValueX":["1989-01-01","2003-01-01","2004-01-01"],"ValueY":[99,33,53],"Type":"metric"},{"Key":"Germany_1","Labels":["2000-01-01","2004-01-01","2010-01-01"],"ValueX":["2000-01-01","2004-01-01","2010-01-01"],"ValueY":[14,66,33],"Type":"metric"},{"Key":"Canada_2","Labels":["2001-01-01","2003-01-01","2004-01-01"],"ValueX":["2001-01-01","2003-01-01","2004-01-01"],"ValueY":[33,54,12],"Type":"metric"},{"Key":"Spain_3","Labels":["2002-01-01","2003-01-01","2004-01-01","2005-01-01"],"ValueX":["2002-01-01","2003-01-01","2004-01-01","2005-01-01"],"ValueY":[23,55,88,36],"Type":"metric"},{"Key":"Andorra_4","Labels":["2003-01-01","2004-01-01"],"ValueX":["2003-01-01","2004-01-01"],"ValueY":[6,23],"Type":"metric"},{"Key":"Spain_5","Labels":["1989-01-01","2011-01-01","2012-01-01"],"ValueX":["1989-01-01","2011-01-01","2012-01-01"],"ValueY":[33,1,2],"Type":"metric"}];
      *///a row per line to plot
-    /*labels (mandatory) = array with label per line*//*events (optional) = array of events to plot (used only for visualisations)*//*chartid (mandatory) = unique id for the visualisation*//*small (mandatory) = boolean, true or false to plot image size *//*xaxeformat => 'sequence' to plot sequencial x axe 'time' to plot xaxe time *//*showLegend, showLabels, showLines, showAreas, showPoints, showGrid, showTogether, showPercentatge boolean to configure the template *//*hideyaxeunits => used to plot units or not into the y axe. Example if hideyaxeunits=true 0.4 = 0.4 if hideyaxeunits=false 0.4 = 0.4m*///if mode = 'view' the legends can be clickable to hide/show lines
+	/*labels (mandatory) = array with label per line*/
+	/*events (optional) = array of events to plot (used only for visualisations)*/
+	/*chartid (mandatory) = unique id for the visualisation*/
+	/*small (mandatory) = boolean, true or false to plot image size */
+	/*xaxeformat => 'sequence' to plot sequencial x axe 'time' to plot xaxe time */
+	/*showLegend, showLabels, showLines, showAreas, showPoints, showGrid, showTogether, showPercentatge boolean to configure the template */
+	/*hideyaxeunits => used to plot units or not into the y axe. Example if hideyaxeunits=true 0.4 = 0.4 if hideyaxeunits=false 0.4 = 0.4m*///if mode = 'view' the legends can be clickable to hide/show lines
     /*
      in your controller:
      $scope.dataset =[
@@ -27,6 +33,7 @@ angular.module('pcApp.common.directives.linescharts', [])
      $scope.showGrid = true;
      $scope.showYAxes = true;
      $scope.showAsPercentatge = false;
+     $scope.showAstoplines = true;
      $scope.xaxeformat = 'sequence'
      $scope.mode= 'view';
      $scope.chartid= '2';
@@ -53,6 +60,7 @@ angular.module('pcApp.common.directives.linescharts', [])
                     showGrid: '=showGrid',
                     showTogether: '=showTogether',
                     showPercentatge: '=showPercentatge',
+                    showAstoplines: '=showAstoplines',
                     xaxeformat: '=xaxeformat',
                     hideyaxeunits: '=hideyaxeunits',
                     resolution: '=resolution',
@@ -62,10 +70,8 @@ angular.module('pcApp.common.directives.linescharts', [])
                 compile: function (element, attributes) {
                     return {
                         pre: function (scope, element, attributes, controller, transcludeFn) {
-
                         },
                         post: function (scope, element, attributes, controller, transcludeFn) {
-
                         }
                     }
                 },
@@ -80,16 +86,7 @@ angular.module('pcApp.common.directives.linescharts', [])
                             .attr("class", "tooltip right in fade")
                             .style("opacity", 0);
                     }
-                    /*
-                     if (!document.getElementById("tooltip"))
-                     {
-                     tooltipLegend =  d3.select("body").append("div")
-                     .attr("id","tooltipLegend")
-                     .html("")
-                     .attr("class", "tooltipLegend")
-                     .style("opacity", 0);
-                     }
-                     */
+
                     var openedLabels = 0;
 
                     mousemove = function () {
@@ -100,43 +97,12 @@ angular.module('pcApp.common.directives.linescharts', [])
 
                     };
 
-                    /*
-                     $scope.$watch('resolution', function(resolution) {
-                     if (($scope.numbers1) && ($scope.chartid))
-                     {
-                     //$scope.directivePlotLineChart();
-                     $timeout($scope.directivePlotLineChart, 0);
-                     }
-                     });
-                     */
-                    /*
-                     $scope.$watch('viewyaxeunits', function(xaxeformat) {
-                     if (($scope.numbers1) && ($scope.chartid))
-                     {
-                     //$scope.directivePlotLineChart();
-                     $timeout($scope.directivePlotLineChart, 0);
-                     }
-                     });
-                     */
-                    /*
-                     $scope.$watch('xaxeformat', function(xaxeformat) {
-                     if (($scope.numbers1) && ($scope.chartid))
-                     {
-                     //$scope.directivePlotLineChart();
-                     $timeout($scope.directivePlotLineChart, 0);
-                     }
-                     });
-                     */
-
                     $scope.sem['labels'] = false;
                     $scope.$watch('labels', function (labels) {
                         $scope.sem['labels'] = true;
                         if (($scope.numbers1) && ($scope.chartid)) {
-                            //$scope.directivePlotLineChart();
-                            //$timeout($scope.directivePlotLineChart, 0);
                             $scope.origin = 'labels';
                             $timeout($scope.directivePlotLineChart, 0, false);
-                            //$scope.directivePlotLineChart();
                         }
                     });
 
@@ -144,11 +110,8 @@ angular.module('pcApp.common.directives.linescharts', [])
                     $scope.$watch('showLegend', function (showLegend) {
                         $scope.sem['showLegend'] = true;
                         if (($scope.numbers1) && ($scope.chartid)) {
-                            //$scope.directivePlotLineChart();
-                            //$timeout($scope.directivePlotLineChart, 0);
                             $scope.origin = 'showLegend';
                             $timeout($scope.directivePlotLineChart, 0, false);
-                            //$scope.directivePlotLineChart();
                         }
                     });
 
@@ -156,11 +119,8 @@ angular.module('pcApp.common.directives.linescharts', [])
                     $scope.$watch('showLabels', function (showLabels) {
                         $scope.sem['showLabels'] = true;
                         if (($scope.numbers1) && ($scope.chartid)) {
-                            //$scope.directivePlotLineChart();
-                            //$timeout($scope.directivePlotLineChart, 0);
                             $scope.origin = 'showLabels';
                             $timeout($scope.directivePlotLineChart, 0, false);
-                            //$scope.directivePlotLineChart();
                         }
                     });
 
@@ -168,11 +128,8 @@ angular.module('pcApp.common.directives.linescharts', [])
                     $scope.$watch('showLines', function (showLabels) {
                         $scope.sem['showLines'] = true;
                         if (($scope.numbers1) && ($scope.chartid)) {
-                            //$scope.directivePlotLineChart();
-                            //$timeout($scope.directivePlotLineChart, 0);
                             $scope.origin = 'showLines';
                             $timeout($scope.directivePlotLineChart, 0, false);
-                            //$scope.directivePlotLineChart();
                         }
                     });
 
@@ -180,11 +137,8 @@ angular.module('pcApp.common.directives.linescharts', [])
                     $scope.$watch('showAreas', function (showAreas) {
                         $scope.sem['showAreas'] = true;
                         if (($scope.numbers1) && ($scope.chartid)) {
-                            //$scope.directivePlotLineChart();
-                            //$timeout($scope.directivePlotLineChart, 0);
                             $scope.origin = 'showAreas';
                             $timeout($scope.directivePlotLineChart, 0, false);
-                            //$scope.directivePlotLineChart();
                         }
                     });
 
@@ -192,11 +146,8 @@ angular.module('pcApp.common.directives.linescharts', [])
                     $scope.$watch('showPoints', function (showPoints) {
                         $scope.sem['showPoints'] = true;
                         if (($scope.numbers1) && ($scope.chartid)) {
-                            //$scope.directivePlotLineChart();
-                            //$timeout($scope.directivePlotLineChart, 0);
                             $scope.origin = 'showPoints';
                             $timeout($scope.directivePlotLineChart, 0, false);
-                            //$scope.directivePlotLineChart();
                         }
                     });
 
@@ -204,11 +155,8 @@ angular.module('pcApp.common.directives.linescharts', [])
                     $scope.$watch('showGrid', function (showGrid) {
                         $scope.sem['showGrid'] = true;
                         if (($scope.numbers1) && ($scope.chartid)) {
-                            //$scope.directivePlotLineChart();
-                            //$timeout($scope.directivePlotLineChart, 0);
                             $scope.origin = 'showGrid';
                             $timeout($scope.directivePlotLineChart, 0, false);
-                            //$scope.directivePlotLineChart();
                         }
                     });
 
@@ -216,26 +164,27 @@ angular.module('pcApp.common.directives.linescharts', [])
                     $scope.$watch('showTogether', function (showTogether) {
                         $scope.sem['showTogether'] = true;
                         if (($scope.numbers1) && ($scope.chartid)) {
-                            //$scope.directivePlotLineChart();
-                            //$timeout($scope.directivePlotLineChart, 0);
                             $scope.origin = 'showTogether';
                             $timeout($scope.directivePlotLineChart, 0, false);
-                            //$scope.directivePlotLineChart();
                         }
-
                     });
-
+                    				
+					$scope.sem['showAstoplines'] = false;
+                    $scope.$watch('showAstoplines', function (showAstoplines) {
+                        $scope.sem['showAstoplines'] = true;
+                        if (($scope.numbers1) && ($scope.chartid)) {
+                            $scope.origin = 'showAstoplines';
+                            $timeout($scope.directivePlotLineChart, 0, false);
+                        }
+                    });
+                    
                     $scope.sem['showPercentatge'] = false;
-                    $scope.$watch('showPercentatge', function (showPercentatge) {
+                    $scope.$watch('showPercentatge', function (showPercentatge) {                   	
                         $scope.sem['showPercentatge'] = true;
                         if (($scope.numbers1) && ($scope.chartid)) {
-                            //$scope.directivePlotLineChart();
-                            //$timeout($scope.directivePlotLineChart, 0);
                             $scope.origin = 'showPercentatge';
                             $timeout($scope.directivePlotLineChart, 0, false);
-                            //$scope.directivePlotLineChart();
                         }
-
                     });
 
                     $scope.sem['chartid'] = false;
@@ -243,26 +192,18 @@ angular.module('pcApp.common.directives.linescharts', [])
                         $scope.chartid = chartid;
                         $scope.sem['chartid'] = true;
                         if (($scope.numbers1) && ($scope.chartid)) {
-                            //$scope.directivePlotLineChart();
-                            //$timeout($scope.directivePlotLineChart, 0);
                             $scope.origin = 'chartid';
                             $timeout($scope.directivePlotLineChart, 0, false);
-                            //$scope.directivePlotLineChart();
                         }
-
                     });
 
                     $scope.sem['events'] = false;
                     $scope.$watchCollection('events', function (events) {
                         $scope.sem['events'] = true;
                         if (($scope.numbers1) && ($scope.chartid)) {
-                            //$scope.directivePlotLineChart();
-                            //$timeout($scope.directivePlotLineChart, 0);
                             $scope.origin = 'events';
                             $timeout($scope.directivePlotLineChart, 0, false);
-                            //$scope.directivePlotLineChart();
                         }
-
                     });
 
                     $scope.sem['dataset'] = false;
@@ -273,33 +214,15 @@ angular.module('pcApp.common.directives.linescharts', [])
                         if (($scope.numbers1) && ($scope.chartid)) {
                             $scope.sem['dataset'] = true;
                             $scope.origin = 'dataset';
-                            //console.log(dataset);
-                            //$timeout($scope.directivePlotLineChart, 0);
-                            //if (($scope.xaxeformat=='sequence') || ($scope.small==true))
-                            //{
                             $timeout($scope.directivePlotLineChart, 0, false);
-                            //}
-
-                            //$scope.directivePlotLineChart();
-                            //$scope.directivePlotLineChart();
                         }
 
                     });
-                    //console.log($scope.chartid);
 
                     $scope.directivePlotLineChart = function () {
-                        //console.log("directivePlotLineChart");
-                        //console.log("origin="+$scope.origin);
-                        //console.log("$scope.chartid="+$scope.chartid);
+
                         $scope.iddiv = "";
-                        /*
-                         if ($scope.xaxeformat=='sequence')
-                         {
-                         document.getElementById("sequence").innerHTML = "";
-                         $scope.iddiv="sequence";
-                         }
-                         else
-                         */
+
                         if (document.getElementById("directive_container_lineschart_" + $scope.chartid) != null) {
                             document.getElementById("directive_container_lineschart_" + $scope.chartid).innerHTML = "";
                             $scope.iddiv = "directive_container_lineschart_" + $scope.chartid;
@@ -310,7 +233,6 @@ angular.module('pcApp.common.directives.linescharts', [])
                             //document.getElementById("directive_container_lineschart_"+$scope.chartid).innerHTML = "";
                             $scope.iddiv = "directive_container_lineschart_" + $scope.chartid;
                         }
-
 
                         var legendsColumn = 0;
                         if ($scope.showLegend) {
@@ -346,7 +268,7 @@ angular.module('pcApp.common.directives.linescharts', [])
                                     left: 44
                                 }, //width = 700,
                                 width = 980, //width = 1050,
-                            //height = 200;
+								//height = 200;
                                 height = 326, font_size = 11, radiouspoint = 4, dymarging = 15, offsetYaxesR = 10, offsetYaxesL = -20, distanceXaxes = 45;
 
                             //if ($scope.list)
@@ -397,7 +319,6 @@ angular.module('pcApp.common.directives.linescharts', [])
                                 if (plotChart) {
 
                                     //console.log("Plot chart!!!");
-
                                     var barLine = policycompass.viz.line({
                                         'idName': $scope.iddiv,
                                         'width': width,
@@ -420,6 +341,7 @@ angular.module('pcApp.common.directives.linescharts', [])
                                         'showGrid': $scope.showGrid,
                                         'legendsColumn': legendsColumn,
                                         'showAsPercentatge': $scope.showPercentatge,
+                                        'showAstoplines': $scope.showAstoplines,
                                         'xaxeformat': $scope.xaxeformat,
                                         'hideyaxeunits': $scope.hideyaxeunits,
                                         'resolution': $scope.resolution,
@@ -436,7 +358,10 @@ angular.module('pcApp.common.directives.linescharts', [])
                     }
                 },
 
-                template: '' + '<div id="directive_container_lineschart_{{chartid}}" class="{{xaxeformat}} pcchart container_graph directive_container_chart directive_container_chart_{{chartid}}">' + '<div class="loading-container">' + '<div ng-hide="small">' + '<div class="loading"></div>' + '<div id="loading-text">loading</div>' + '</div>' + '<div ng-show="small">' + '<div class="loading loading-small"></div>' + '<div id="loading-small-text">loading</div>' + '</div>' + '</div>' + '</div>' + '<div ng-hide="small" id="showFilterContainer" class="showFilterContainer">' + '<div id="showFilter" class="showFilter on_check">' + '<input type="hidden" name="disableindividuals" id="disableindividuals"><label class="checkbox-inline"><input ng-model="showLegend" type="checkbox" name="showLegend" class="checkbox filterCheckBox"> Show Legend</label>' + '<label class="checkbox-inline"><input ng-model="showLines"  type="checkbox" name="showLines"  class="checkbox filterCheckBox"> Show Lines</label>' + '<label class="checkbox-inline"><input ng-model="showAreas"  type="checkbox" name="showAreas"  class="checkbox filterCheckBox"> Show Areas</label>' + '<label class="checkbox-inline"><input ng-model="showPoints" type="checkbox" name="showPoints" class="checkbox filterCheckBox"> Show Points</label>' + '<label class="checkbox-inline"><input ng-model="showLabels" type="checkbox" name="showLabels" class="checkbox filterCheckBox"> Show Labels</label>' + '<label class="checkbox-inline"><input ng-model="showGrid"   type="checkbox" name="showGrid"   class="checkbox filterCheckBox"> Show Grid</label>' + '<label class="checkbox-inline"><input ng-model="showTogether"  type="checkbox" name="showTogether"  class="checkbox filterCheckBox"> Show only one Y axe</label>' + '<label class="checkbox-inline"><input ng-model="showPercentatge" type="checkbox" name="showPercentatge" class="checkbox filterCheckBox"> Show as %</label>' + '</div>' + '</div>'
+                template: '' + '<div id="directive_container_lineschart_{{chartid}}" class="{{xaxeformat}} pcchart container_graph directive_container_chart directive_container_chart_{{chartid}}">' + '<div class="loading-container">' + '<div ng-hide="small">' + '<div class="loading"></div>' + '<div id="loading-text">loading</div>' + '</div>' + '<div ng-show="small">' + '<div class="loading loading-small"></div>' + '<div id="loading-small-text">loading</div>' + '</div>' + '</div>' + '</div>' + '<div ng-hide="small" id="showFilterContainer" class="showFilterContainer">' + '<div id="showFilter" class="showFilter on_check">' + '<input type="hidden" name="disableindividuals" id="disableindividuals"><label class="checkbox-inline"><input ng-model="showLegend" type="checkbox" name="showLegend" class="checkbox filterCheckBox"> Show Legend</label>' + '<label class="checkbox-inline"><input ng-model="showLines"  type="checkbox" name="showLines"  class="checkbox filterCheckBox"> Show Lines</label>' + '<label class="checkbox-inline"><input ng-model="showAreas"  type="checkbox" name="showAreas"  class="checkbox filterCheckBox"> Show Areas</label>' + '<label class="checkbox-inline"><input ng-model="showPoints" type="checkbox" name="showPoints" class="checkbox filterCheckBox"> Show Points</label>' + '<label class="checkbox-inline"><input ng-model="showLabels" type="checkbox" name="showLabels" class="checkbox filterCheckBox"> Show Labels</label>' + '<label class="checkbox-inline"><input ng-model="showGrid"   type="checkbox" name="showGrid"   class="checkbox filterCheckBox"> Show Grid</label>' + '<label class="checkbox-inline"><input ng-model="showTogether"  type="checkbox" name="showTogether"  class="checkbox filterCheckBox"> Show only one Y axe</label>' 
+                + '<label class="checkbox-inline"><input ng-model="showPercentatge" type="checkbox" name="showPercentatge" class="checkbox filterCheckBox"> Show as %</label>' 
+                + '<label ng-show="events.length>0" class="checkbox-inline"><input ng-model="showAstoplines" type="checkbox" name="showAstoplines" class="checkbox filterCheckBox"> Events on top</label>'
+                + '</div>' + '</div>'
             };
         }
     ]);

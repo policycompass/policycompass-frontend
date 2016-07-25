@@ -14,6 +14,8 @@ policycompass.viz.line = function (options) {
         self[key] = options[key];
     }
 
+	//self.showAstoplines = true;
+	
 	//console.log(self.height);
     if (self.height>=350) {
     	self.margin.top = 1;	
@@ -30,6 +32,10 @@ policycompass.viz.line = function (options) {
     self.maxOffsetYaxesL = self.offsetYaxesL;
     self.maxDistanceXaxes = self.distanceXaxes;
 	self.he_bar_height = 10;
+
+	if (self.height<100) {
+		self.he_bar_height = self.he_bar_height / 5;
+	}
 
 	//this is to set where we wish to plot the data, at the begin or at the end of the period in granularity different of day
 	//possible values 'first' = the fist day of the period, 'end' = the last day of the period
@@ -928,18 +934,19 @@ policycompass.viz.line = function (options) {
         	if (self.height<=150) {
 				extra_height = extra_height /5;
 			}
-				
-        	if (eventsData.length>0) {
-        		//self.newScale
-        		if (self.linesToPlotEvents.length>1) {
-        			tickPosition = tickPosition + (self.linesToPlotEvents.length*self.spaceBetweenEvents+extra_height);
-        		}
-        		else {
-        			tickPosition = tickPosition + (self.spaceBetweenEvents)+extra_height;	
-        		}
-        	
-        	}
-       		
+
+			if (self.showAstoplines==true) {
+	        	if (eventsData.length>0) {
+	        		//self.newScale
+	        		if (self.linesToPlotEvents.length>1) {
+	        			tickPosition = tickPosition + (self.linesToPlotEvents.length*self.spaceBetweenEvents+extra_height);
+	        		}
+	        		else {
+	        			tickPosition = tickPosition + (self.spaceBetweenEvents)+extra_height;	
+	        		}
+	        	
+	        	}
+       		}
             self.svg.append("g")
             .attr("class", "grid")
             .attr("transform", "translate(0," + self.height + ")")
@@ -2550,9 +2557,9 @@ policycompass.viz.line = function (options) {
              }
 		}
 
-		self.plot_as_top_lines = 1;
+		//self.showAstoplines = true;
 
-		if (self.plot_as_top_lines==1 && eventsData.length>0) {
+		if (self.showAstoplines==true && eventsData.length>0) {
 			var rectangle = self.svg.append("rect")
 				.style("stroke", "black")
 	  			.style("fill", "none")
@@ -2577,7 +2584,8 @@ policycompass.viz.line = function (options) {
 					return resTRext;
 				});
 		}
-							
+		
+		self.cntDiff1 = 0;			
         historicalEvents.enter().append("rect")
         	//.attr("class", "lineXDisco")                   
             .style("stroke", function (d, i) {                
@@ -2609,7 +2617,7 @@ policycompass.viz.line = function (options) {
             })
             //.attr("y", 0)
             .attr("y", function (d, i) {
-            	if (self.plot_as_top_lines==1) {
+            	if (self.showAstoplines==true) {
             		
             		var saltolinea = 0;
             		for (var j in self.linesToPlotEvents) {
@@ -2643,9 +2651,10 @@ policycompass.viz.line = function (options) {
 	                }
 	                
 	                //events of 1 day. vertical line
-	                var vToReturn = (self.he_bar_height*i)
+	                var vToReturn = (self.he_bar_height*(i-self.cntDiff1))
 	                if (dif==1) {
-	                	vToReturn = 0;                	
+	                	vToReturn = 0;   
+	                	self.cntDiff1 = self.cntDiff1 +1;              	
 	                }
             		
             	}
@@ -2672,7 +2681,7 @@ policycompass.viz.line = function (options) {
             //.attr("height", self.height)
             //.attr("height", self.he_bar_height)
             .attr("height", function (d, i) {
-            	if (self.plot_as_top_lines==1) {
+            	if (self.showAstoplines==true) {
             		var vToReturn = 1;
             	}
             	else {
@@ -2763,7 +2772,7 @@ policycompass.viz.line = function (options) {
             })
 
 
-			if (self.plot_as_top_lines==1) {			
+			if (self.showAstoplines==true) {			
 				var historicalEventsCircles = self.svg.selectAll("circles").data(self.dataForCircles);
 				
 				for (var iHE=1;iHE<=2; iHE=iHE+1) {
@@ -3100,8 +3109,10 @@ policycompass.viz.line = function (options) {
 					maxEventsByPeriod=self.linesToPlotEvents.length;
 				}
 				
-				if (eventsData!=null && eventsData.length > 0) {
-					self.margin.top = self.margin.top + (self.spaceBetweenEvents*(maxEventsByPeriod+1));	
+				if (self.showAstoplines == true) {
+					if (eventsData!=null && eventsData.length > 0) {
+						self.margin.top = self.margin.top + (self.spaceBetweenEvents*(maxEventsByPeriod+1));	
+					}
 				}
 
 				self.maxEventsByPeriod = maxEventsByPeriod;

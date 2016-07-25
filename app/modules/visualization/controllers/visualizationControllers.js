@@ -800,6 +800,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                             $scope.showBubbles = false;
                             $scope.showMovement = false;
                             $scope.showBubbles = false;
+                            
                         } else {
                             from_country = $scope.translateCountryValue($scope.rangeDatesSliderMin);
                             to_country = $scope.translateCountryValue($scope.rangeDatesSliderMin);
@@ -1796,14 +1797,15 @@ angular.module('pcApp.visualization.controllers.visualization', [
 		                        //clear container chart div
 		                        var divContent = '';
 		                        divContent = '<div class="loading-container"><div class="loading" ></div><div id="loading-text">loading</div></div>';
-		                        if ($scope.mode != 'view') {
+		                        /*
+		                        if ($scope.mode != 'view') {		                        	
 		                            if (document.getElementById("container_graph_" + $scope.visualization.id) != null) {
 		                                document.getElementById("container_graph_" + $scope.visualization.id).innerHTML = divContent;
 		                            } else {
 		                                document.getElementById("container_graph_").innerHTML = divContent;
 		                            }
 		                        }
-		
+								*/
 		                        if ($scope.ListMetricsFilter.length == 0) {
 		                            $scope.resolution = "";
 		                        }
@@ -2994,6 +2996,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                                 'showLabels': $scope.showLabels,
                                                 'showGrid': $scope.showGrid,
                                                 'showAsPercentatge': $scope.showAsPercentatge,
+                                                'showAstoplines': $scope.showAstoplines,
                                                 'legendsColumn': legendsColumn,
                                                 'resolution': $scope.resolution.value,
                                                 'plotDataIn': $scope.plotdataoption,
@@ -3213,6 +3216,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                         'legendsColumn': legendsColumn,
                                         'resolution': $scope.resolution.value,
                                         'showAsPercentatge': $scope.showAsPercentatge,
+                                        'showAstoplines': $scope.showAstoplines,
                                         'groupby':$scope.groupedby.value,
                                     });
 
@@ -3772,7 +3776,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					                            $scope.scaleColor = dataFilter[1];
 					                        } else {
 					                            $scope.scaleColor = '#f27711';
-					                        }
+					                        }					                    
 					                    } else {
 					                        eval("$scope." + dataFilter[0] + "=" + dataFilter[1]);
 					                    }
@@ -4115,6 +4119,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                 dataConfig['scaleColor'] = $scope.scaleColor;
 
                 dataConfig['showAsPercentatge'] = $scope.showAsPercentatge;
+                dataConfig['showAstoplines'] = $scope.showAstoplines;
                 dataConfig['resolution'] = $scope.resolution['value'];
 				dataConfig['groupedby'] = $scope.groupedby['value'];
                 dataConfig['plotAt'] = $scope.plotdataoption['value'];
@@ -4398,6 +4403,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
             $scope.showZoom = false;
             $scope.showBubbles = false;
             $scope.showMovement = true;
+            $scope.showAstoplines = true;
 
             $scope.visualization = {};
 
@@ -4528,7 +4534,14 @@ angular.module('pcApp.visualization.controllers.visualization', [
                 if (!$scope.showAsPercentatge) {
                     $scope.showAsPercentatge = false;
                 }
+                
+                if (!$scope.showAstoplines) {
+                    $scope.showAstoplines = false;
+                }
+				
+				
                 dataConfig['showAsPercentatge'] = $scope.showAsPercentatge;
+                dataConfig['showAstoplines'] = $scope.showAstoplines;
                 dataConfig['resolution'] = $scope.resolution['value'];
                 dataConfig['groupedby'] = $scope.groupedby['value'];
 				dataConfig['plotAt'] = $scope.plotdataoption['value'];
