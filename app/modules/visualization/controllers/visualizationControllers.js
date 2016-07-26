@@ -4858,6 +4858,7 @@ angular.module('pcApp.visualization').filter('pagination', function () {
 
             $scope.arrayHE = [];
             $scope.recomendationevents = [];
+            $scope.listVisualisationsIdRec = [];
             for (var i = 0; i < $scope.metricslist.length; i++) {
                 var metricId = $scope.metricslist[i]
 
@@ -4865,37 +4866,41 @@ angular.module('pcApp.visualization').filter('pagination', function () {
 
                     for (i in visualizationByMetricList.results) {
                         var idVisu = visualizationByMetricList.results[i]['visualization'];
-                        $scope.visualizationRec = Visualization.get({id: idVisu}, function (visualizationList) {
+                        var a = $scope.listVisualisationsIdRec.indexOf(idVisu);
+                        if (a<0) {
+                        	$scope.listVisualisationsIdRec.push(idVisu);
+                        	$scope.visualizationRec = Visualization.get({id: idVisu}, function (visualizationList) {
 
-                            if (visualizationList.historical_events_in_visualization.length > 0) {
-
-                                for (var i = 0; i < visualizationList.historical_events_in_visualization.length; i++) {
-
-                                    if ($scope.arrayHE.indexOf(visualizationList.historical_events_in_visualization[i].historical_event_id) == -1) {
-                                        var eventId = visualizationList.historical_events_in_visualization[i].historical_event_id;
-                                        $scope.herec = Event.get({id: eventId}, function (herec) {
-
-                                            var arrayDatos = [];
-                                            arrayDatos['_source'] = herec;
-
-                                            if ($scope.arrayHE.indexOf(herec.id) == -1) {
-                                                $scope.arrayHE[herec.id] = herec.id;
-                                                $scope.recomendationevents.push(herec);
-                                            }
-
-                                        }, function (err) {
-                                            //no element found
-                                        });
-
-
-                                    } else {
-                                    	//element not found
-                                    }
-                                }
-                            }
-                        }, function (error) {
-                            throw {message: error.data.message || JSON.stringify(error.data)};
-                        });
+	                            if (visualizationList.historical_events_in_visualization.length > 0) {
+	
+	                                for (var i = 0; i < visualizationList.historical_events_in_visualization.length; i++) {
+	
+	                                    if ($scope.arrayHE.indexOf(visualizationList.historical_events_in_visualization[i].historical_event_id) == -1) {
+	                                        var eventId = visualizationList.historical_events_in_visualization[i].historical_event_id;
+	                                        $scope.herec = Event.get({id: eventId}, function (herec) {
+	
+	                                            var arrayDatos = [];
+	                                            arrayDatos['_source'] = herec;
+	
+	                                            if ($scope.arrayHE.indexOf(herec.id) == -1) {
+	                                                $scope.arrayHE[herec.id] = herec.id;
+	                                                $scope.recomendationevents.push(herec);
+	                                            }
+	
+	                                        }, function (err) {
+	                                            //no element found
+	                                        });
+	
+	
+	                                    } else {
+	                                    	//element not found
+	                                    }
+	                                }
+	                            }
+	                        }, function (error) {
+	                            throw {message: error.data.message || JSON.stringify(error.data)};
+	                        });
+                        }
                     }
                     $scope.showLoading = false;
                 });
