@@ -800,6 +800,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                             $scope.showBubbles = false;
                             $scope.showMovement = false;
                             $scope.showBubbles = false;
+                            
                         } else {
                             from_country = $scope.translateCountryValue($scope.rangeDatesSliderMin);
                             to_country = $scope.translateCountryValue($scope.rangeDatesSliderMin);
@@ -1796,14 +1797,15 @@ angular.module('pcApp.visualization.controllers.visualization', [
 		                        //clear container chart div
 		                        var divContent = '';
 		                        divContent = '<div class="loading-container"><div class="loading" ></div><div id="loading-text">loading</div></div>';
-		                        if ($scope.mode != 'view') {
+		                        /*
+		                        if ($scope.mode != 'view') {		                        	
 		                            if (document.getElementById("container_graph_" + $scope.visualization.id) != null) {
 		                                document.getElementById("container_graph_" + $scope.visualization.id).innerHTML = divContent;
 		                            } else {
 		                                document.getElementById("container_graph_").innerHTML = divContent;
 		                            }
 		                        }
-		
+								*/
 		                        if ($scope.ListMetricsFilter.length == 0) {
 		                            $scope.resolution = "";
 		                        }
@@ -2994,6 +2996,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                                 'showLabels': $scope.showLabels,
                                                 'showGrid': $scope.showGrid,
                                                 'showAsPercentatge': $scope.showAsPercentatge,
+                                                'showAstoplines': $scope.showAstoplines,
                                                 'legendsColumn': legendsColumn,
                                                 'resolution': $scope.resolution.value,
                                                 'plotDataIn': $scope.plotdataoption,
@@ -3213,6 +3216,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                         'legendsColumn': legendsColumn,
                                         'resolution': $scope.resolution.value,
                                         'showAsPercentatge': $scope.showAsPercentatge,
+                                        'showAstoplines': $scope.showAstoplines,
                                         'groupby':$scope.groupedby.value,
                                     });
 
@@ -3772,7 +3776,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					                            $scope.scaleColor = dataFilter[1];
 					                        } else {
 					                            $scope.scaleColor = '#f27711';
-					                        }
+					                        }					                    
 					                    } else {
 					                        eval("$scope." + dataFilter[0] + "=" + dataFilter[1]);
 					                    }
@@ -4115,6 +4119,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                 dataConfig['scaleColor'] = $scope.scaleColor;
 
                 dataConfig['showAsPercentatge'] = $scope.showAsPercentatge;
+                dataConfig['showAstoplines'] = $scope.showAstoplines;
                 dataConfig['resolution'] = $scope.resolution['value'];
 				dataConfig['groupedby'] = $scope.groupedby['value'];
                 dataConfig['plotAt'] = $scope.plotdataoption['value'];
@@ -4256,7 +4261,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				
 
                 if (($scope.user.state.userPath != $scope.visualization.creator_path) && ($scope.user.state.isAdmin != true)) {
-                    $scope.derived_from_id = $scope.visualization.id;
+                    $scope.visualization.derived_from_id = $scope.visualization.id;
                     delete $scope.visualization.id;
                     delete $scope.visualization.self;
                     delete $scope.visualization.creator_path;
@@ -4398,6 +4403,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
             $scope.showZoom = false;
             $scope.showBubbles = false;
             $scope.showMovement = true;
+            $scope.showAstoplines = true;
 
             $scope.visualization = {};
 
@@ -4528,7 +4534,14 @@ angular.module('pcApp.visualization.controllers.visualization', [
                 if (!$scope.showAsPercentatge) {
                     $scope.showAsPercentatge = false;
                 }
+                
+                if (!$scope.showAstoplines) {
+                    $scope.showAstoplines = false;
+                }
+				
+				
                 dataConfig['showAsPercentatge'] = $scope.showAsPercentatge;
+                dataConfig['showAstoplines'] = $scope.showAstoplines;
                 dataConfig['resolution'] = $scope.resolution['value'];
                 dataConfig['groupedby'] = $scope.groupedby['value'];
 				dataConfig['plotAt'] = $scope.plotdataoption['value'];
@@ -4845,6 +4858,7 @@ angular.module('pcApp.visualization').filter('pagination', function () {
 
             $scope.arrayHE = [];
             $scope.recomendationevents = [];
+            $scope.listVisualisationsIdRec = [];
             for (var i = 0; i < $scope.metricslist.length; i++) {
                 var metricId = $scope.metricslist[i]
 
@@ -4852,37 +4866,41 @@ angular.module('pcApp.visualization').filter('pagination', function () {
 
                     for (i in visualizationByMetricList.results) {
                         var idVisu = visualizationByMetricList.results[i]['visualization'];
-                        $scope.visualizationRec = Visualization.get({id: idVisu}, function (visualizationList) {
+                        var a = $scope.listVisualisationsIdRec.indexOf(idVisu);
+                        if (a<0) {
+                        	$scope.listVisualisationsIdRec.push(idVisu);
+                        	$scope.visualizationRec = Visualization.get({id: idVisu}, function (visualizationList) {
 
-                            if (visualizationList.historical_events_in_visualization.length > 0) {
-
-                                for (var i = 0; i < visualizationList.historical_events_in_visualization.length; i++) {
-
-                                    if ($scope.arrayHE.indexOf(visualizationList.historical_events_in_visualization[i].historical_event_id) == -1) {
-                                        var eventId = visualizationList.historical_events_in_visualization[i].historical_event_id;
-                                        $scope.herec = Event.get({id: eventId}, function (herec) {
-
-                                            var arrayDatos = [];
-                                            arrayDatos['_source'] = herec;
-
-                                            if ($scope.arrayHE.indexOf(herec.id) == -1) {
-                                                $scope.arrayHE[herec.id] = herec.id;
-                                                $scope.recomendationevents.push(herec);
-                                            }
-
-                                        }, function (err) {
-                                            //no element found
-                                        });
-
-
-                                    } else {
-                                    	//element not found
-                                    }
-                                }
-                            }
-                        }, function (error) {
-                            throw {message: error.data.message || JSON.stringify(error.data)};
-                        });
+	                            if (visualizationList.historical_events_in_visualization.length > 0) {
+	
+	                                for (var i = 0; i < visualizationList.historical_events_in_visualization.length; i++) {
+	
+	                                    if ($scope.arrayHE.indexOf(visualizationList.historical_events_in_visualization[i].historical_event_id) == -1) {
+	                                        var eventId = visualizationList.historical_events_in_visualization[i].historical_event_id;
+	                                        $scope.herec = Event.get({id: eventId}, function (herec) {
+	
+	                                            var arrayDatos = [];
+	                                            arrayDatos['_source'] = herec;
+	
+	                                            if ($scope.arrayHE.indexOf(herec.id) == -1) {
+	                                                $scope.arrayHE[herec.id] = herec.id;
+	                                                $scope.recomendationevents.push(herec);
+	                                            }
+	
+	                                        }, function (err) {
+	                                            //no element found
+	                                        });
+	
+	
+	                                    } else {
+	                                    	//element not found
+	                                    }
+	                                }
+	                            }
+	                        }, function (error) {
+	                            throw {message: error.data.message || JSON.stringify(error.data)};
+	                        });
+                        }
                     }
                     $scope.showLoading = false;
                 });

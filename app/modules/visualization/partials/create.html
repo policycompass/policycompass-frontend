@@ -284,6 +284,23 @@
 	                                    </label>
 	                                   -->
 	                                </div>
+	                                
+	                                <div id="div_showevntsontop" ng-show="(isSelectedSon('graph_line') || isSelectedSon('graph_bars')) && (eventsToPlot.length>0)" class="">
+	                                	<div class="col-xs-6 configureoptionchartlabel">
+	                                    	 
+	                                    </div>
+	                                    <div class="col-xs-6 configureoptionchartfield checkbox-inline">
+	                                    	<label class="checkbox-inline configureoptionchartlabel">
+	                                    		<input ng-model="showAstoplines" type="checkbox" ng-click="manualClick('showAstoplines');rePlotGraph();" name="showAstoplines" id="showAstoplines" class="checkbox filterCheckBox"> 
+	                                    		Events on top
+	                                    	</label>
+	                                    </div>
+	                                	<!--
+	                                    <label class="checkbox-inline">
+	                                        <input ng-model="showAsPercentatge" type="checkbox" ng-click="manualClick('showAsPercentatge');rePlotGraph();" name="showAsPercentatge" id="showAsPercentatge" class="checkbox filterCheckBox"> As %
+	                                    </label>
+	                                   -->
+	                                </div>
 	
 	                                <div id="div_showZoom" ng-show="isSelectedParent(1) && !isSelectedSon('orthographic') && !isSelectedSon('azimuthalEqualArea')" class="">
 	                                	<div class="col-xs-6 configureoptionchartlabel">
