@@ -327,6 +327,12 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
                 // broadcasting the event
                 $rootScope.$broadcast('appChanged');
+
+                // check is run simulation request
+                if ($routeParams.simulation) {
+                    $scope.isRunSimulation = true;
+                    $scope.runSimulation();
+                }
             }, function (error) {
                 throw { message: JSON.stringify(error.data) };
             });
@@ -1752,6 +1758,14 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 concepts: SimulationConceptsDetail.getConcepts(),
                 connections: SimulationAssociationsDetail.getAssociations()
             };
+
+            //var removedCount = 0;
+            //$.each(jsonSimulation.connections, function (index, item) {
+            //    if (item.sourceID == item.destinationID) {
+            //        jsonSimulation.connections.splice(index - removedCount, 1);
+            //        removedCount++;
+            //    }
+            //});
 
             $scope.fcmImpactAnalysis = new FcmImpactAnalysis();
             $scope.fcmImpactAnalysis.data = jsonSimulation;
