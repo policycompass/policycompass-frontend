@@ -4542,10 +4542,18 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				
                 dataConfig['showAsPercentatge'] = $scope.showAsPercentatge;
                 dataConfig['showAstoplines'] = $scope.showAstoplines;
-                dataConfig['resolution'] = $scope.resolution['value'];
-                dataConfig['groupedby'] = $scope.groupedby['value'];
-				dataConfig['plotAt'] = $scope.plotdataoption['value'];
-				dataConfig['xLegend'] = $scope.plotxaxislegend['value'];
+                if ($scope.resolution) {
+                	dataConfig['resolution'] = $scope.resolution['value'];	
+                }                
+                if ($scope.groupedby) {
+                	dataConfig['groupedby'] = $scope.groupedby['value'];
+                }
+                if ($scope.plotdataoption) {
+					dataConfig['plotAt'] = $scope.plotdataoption['value'];
+				}
+				if ($scope.plotxaxislegend) {
+					dataConfig['xLegend'] = $scope.plotxaxislegend['value'];
+				}
 				
                 if ($scope.timeStart != '----') {
                     dataConfig['timeStart'] = $scope.timeStart;
