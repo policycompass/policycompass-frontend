@@ -3991,14 +3991,16 @@ angular.module('pcApp.visualization.controllers.visualization', [
 										$scope.loadDataCombosHelper(id, valueColumTemp, valueGroupTemp);
 										
 					                    $scope.correctmetrics = "1";
+					                    
+										if ($scope.visualization.datasets_in_visualization.length-1==i) {
+					                    	$scope.rePlotGraph();
+					                    }
 					                }
 									
-	
-				                	$scope.rePlotGraph();
-					
+									if ($scope.visualization.datasets_in_visualization.length==0) {
+										$scope.rePlotGraph();
+									}
 					            });
-								
-								
 							//}
 						}
 											
@@ -4906,7 +4908,21 @@ angular.module('pcApp.visualization').filter('pagination', function () {
 	                                }
 	                            }
 	                        }, function (error) {
-	                            throw {message: error.data.message || JSON.stringify(error.data)};
+	                        	//we add this to avoid to show modal window in case of "knowed" errors
+	                        	if (error.status=='404') {
+	                        		//item not found	                        		
+	                        	}
+	                        	else if (error.status=='502') {
+	                        		//Bad Gateway
+	                        	}
+	                        	else if (error.status=='0') {
+	                        		//unknow PC error Gateway
+	                        	}
+	                        	else {
+	                        		//other error
+	                        		throw {message: error.data.message || JSON.stringify(error.data)};	
+	                        	}
+	                            
 	                        });
                         }
                     }
