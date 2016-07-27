@@ -1,16 +1,14 @@
 <div class="container">
     <div class="content-header">
 
-        <h1 class="fonticon fonticon-visualisation" ng-class="visualization.is_draft?'h-warning':''">{{ visualization.title }} <span ng-if="visualization.is_draft">(Draft)</span></h1>
-		
+        <h1 class="fonticon fonticon-visualisation">{{ visualization.title }}</h1>
+	
         <div class="pc-visualization-formcontrols">
 
             <edit-buttons data-userpath="{{visualization.creator_path}}" data-editurl="#!/visualizations/{{visualization.id}}/edit" data-deletefunction="deleteCurrentVisualisation"></edit-buttons>
-
             <a type="button" ng-if="!user.state.isAdmin && user.state.userPath!=visualization.creator_path" class="btn btn-primary btn-create" href="#!/visualizations/{{ visualization.id }}/edit">Edit</a>
-
+			<a href="#" ng-if="visualization.is_draft" ng-disabled="visualization.is_draft" class="btn btn-default btn-danger">Draft</a>
             <a type="button" class="btn btn-primary btn-addCausalModel" href="#!/models/create?{{urlListIndicators}}">Create Causal Model</a>
-
             <a type="button" class="btn btn-share" ng-click="share=!share" ng-class="{active: share}" ng-if="!1">Share</a>
 
         </div>
@@ -39,7 +37,7 @@
             </div>
         </div>
     </div>
-	<div ng-class="visualization.is_draft?'itemindraft':'itemnotdraft'">
+	<div>
 	    <div class="visualisation-dat right-column">
 	        <div ng-include='"modules/visualization/partials/graph.html"'></div>
 	    </div>
