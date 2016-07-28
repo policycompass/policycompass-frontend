@@ -442,24 +442,126 @@ angular.module('pcApp.datasets.controllers.dataset', [
         'ngProgress',
         '$routeParams',
         'creationService',
-        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService) {
+        'Individual',
+        '$http',
+        'API_CONF',
+        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService, Individual, $http, API_CONF) {
 
             var getSelection = function (startRow, startColumn, endRow, endColumn) {
                 var result = DatasetsControllerHelper.getTableSelection(startRow, startColumn, endRow, endColumn, $scope.inputTable.items);
-
                 angular.forEach(result, function (r) {
                     if ((!_.contains($scope.individualSelection, r)) && r != null && r != '') {
-                        $scope.individualSelection.push(r);
-                        $scope.$apply();
+                        searchForIndividuals(r);
+                        //$scope.individualSelection.push(r);
+                        //$scope.$apply();
                     }
                 });
             };
 
+
+            var searchForIndividuals = function(search_term){
+                if(typeof getSuggestion(search_term) === 'undefined'){
+                    $http.get(API_CONF.REFERENCE_POOL_URL + "/individuals?q=" + search_term).
+
+                    success(function (data, status, headers, config) {
+                        if(data.length > 1){
+                            var suggestions = [];
+                            angular.forEach(data, function (result) {
+                                suggestions.push({"name":result.title});
+                            });
+                            var suggestion = {};
+                            suggestion[search_term] = suggestions;
+                            $scope.individuals_suggestions.push(suggestion);
+                        }else if(data.length == 1){
+                            $scope.saveIndividual(search_term, data[0].title)
+                        }
+
+                    }).error(function (data, status, headers, config) {
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                    });
+                }
+
+            }
+
+            $scope.saveIndividual = function(key, name){
+                if(typeof name !== 'undefined'){
+                    $scope.removeSuggestion(key);
+                    var individualIndex = getIndexOfIndividual(key);
+                    if(individualIndex >= 0){
+                        $scope.individualSelection[individualIndex] = [key, name];
+                    }else{
+                        $scope.individualSelection.push([key, name]);
+                    }
+                }
+
+            };
+
+            var getSuggestion = function(key){
+                for(var i=0; i<$scope.individuals_suggestions.length; i++){
+                    if($scope.individuals_suggestions[i].hasOwnProperty(key) == true){
+                        return $scope.individuals_suggestions[i];
+                    }
+                }
+                return undefined;
+            }
+
+            $scope.removeSuggestion = function(key){
+                for(var i=0; i<$scope.individuals_suggestions.length; i++){
+                    if($scope.individuals_suggestions[i].hasOwnProperty(key) == true){
+                        $scope.individuals_suggestions.splice(i, 1);
+                        //$scope.$apply();
+                    }
+
+                }
+            }
+
+            var getIndexOfIndividual = function(key){
+                for(var i=0; i<$scope.individualSelection.length; i++){
+                    if($scope.individualSelection[i][0] == key){
+                        return i;
+                    }
+                }
+                return -1;
+            }
+
+            var sortIndividualSelection = function(){
+                var individualList = [];
+                for(var i=0; i<$scope.individualOrder.length; i++){
+                    for(var j=0; j<$scope.individualSelection.length; j++){
+                        if($scope.individualOrder[i] == $scope.individualSelection[j][0]){
+                            individualList.push([$scope.individualSelection[j][0],$scope.individualSelection[j][1]]);
+                            continue;
+                        }
+                    }
+                }
+                return individualList;
+            }
+
+            var renameIndividuals = function(){
+                for(var i=1;i<$scope.inputTable.items.length;i++){
+                    for(var j=0; j<$scope.individualSelection.length; j++){
+                       if($scope.individualSelection[j][0] == $scope.inputTable.items[i][0]){
+                           $scope.inputTable.items[i][0] = $scope.individualSelection[j][1];
+                           continue;
+                       }
+                    }
+
+                }
+            }
+
+
             var init = function () {
                 $scope.inputTable = creationService.data.inputTable;
+                $scope.individualOrder =  [];
+                for(var i=1;i<$scope.inputTable.items.length;i++){
+                    $scope.individualOrder.push($scope.inputTable.items[i][0]);
+                }
                 $scope.inputTable.settings.contextMenu = false;
                 $scope.inputTable.settings.afterSelectionEnd = getSelection;
                 $scope.inputTable.settings.readOnly = true;
+
+                $scope.individuals_suggestions = [];
 
                 if (creationService.data.individualSelection) {
                     $scope.individualSelection = creationService.data.individualSelection;
@@ -500,8 +602,12 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
             init();
 
-            $scope.removeIndividual = function (i) {
-                $scope.individualSelection = _.without($scope.individualSelection, i);
+            $scope.removeIndividual = function (key) {
+                for(var i=0; i<$scope.individualSelection.length; i++){
+                    if($scope.individualSelection[i][1] == key){
+                        $scope.individualSelection.splice(i, 1);
+                    }
+                }
             };
 
             $scope.addExtraMetadata = function () {
@@ -538,6 +644,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
             $scope.clearAll = function () {
                 $scope.individualSelection = [];
+                $scope.individuals_suggestions = [];
             };
 
             $scope.nextStep = function () {
@@ -552,7 +659,9 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
                 creationService.data.classPreSelection = $scope.selection.output;
                 creationService.data.extraMetadata = $scope.extraMetadata;
-                creationService.data.individualSelection = $scope.individualSelection;
+                creationService.data.individualSelection = sortIndividualSelection();
+
+                renameIndividuals();
             };
 
         }
@@ -731,6 +840,11 @@ angular.module('pcApp.datasets.controllers.dataset', [
             };
 
             var init = function () {
+                $scope.individualSelection = [];
+                for(var i=0; i<creationService.data.individualSelection.length; i++){
+                    $scope.individualSelection.push(creationService.data.individualSelection[i][1]);
+                }
+
                 $scope.mode = 'row';
                 $scope.timeSeries = DatasetsControllerHelper.generateTimeSeries(creationService.data.timeResolution, creationService.data.time.start, creationService.data.time.end);
 
@@ -748,25 +862,26 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 $scope.inputTable.settings.contextMenu = false;
                 $scope.inputTable.settings.afterSelectionEnd = getSelection;
 
-
-                $scope.individualSelection = creationService.data.individualSelection;
-
                 $scope.resultTable.settings.minCols = $scope.timeSeries.length + 1;
                 //$scope.resultTable.settings.minRows = creationService.data.individualSelection.length + 1;
                 $scope.resultTable.settings.colHeaders = [' '].concat($scope.timeSeries);
 
                 $scope.selectionStep = 1;
                 $scope.lastStep = $scope.individualSelection.length;
+
+                $scope.resultTable.items = [];
+
                 if ($scope.resultTable.items.length == 0) {
                     angular.forEach(creationService.data.individualSelection, function (i) {
-                        $scope.resultTable.items.push([i]);
+                        $scope.resultTable.items.push([i[1]]);
                     });
                 }
 
-                if ($scope.resultTable.items[0].length > ($scope.timeSeries.length + 1)) {
+
+                if ($scope.resultTable.items.length > ($scope.timeSeries.length + 1)) {
                     $scope.resultTable.items = [];
                     angular.forEach(creationService.data.individualSelection, function (i) {
-                        $scope.resultTable.items.push([i]);
+                        $scope.resultTable.items.push([i[1]]);
                     });
                 }
 
@@ -791,7 +906,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
             $scope.reset = function () {
                 $scope.resultTable.items = [];
                 angular.forEach(creationService.data.individualSelection, function (i) {
-                    $scope.resultTable.items.push([i]);
+                    $scope.resultTable.items.push([i][1]);
                 });
                 $scope.resultInstance.loadData($scope.resultTable.items);
                 $scope.selectionStep = 1;
@@ -926,7 +1041,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 var individualsList = Individual.query(null, function(){
                     individualsList.forEach(function(individual){
                         creationService.data.individualSelection.forEach(function(selectedIndividual){
-                            if(individual.title == selectedIndividual){
+                            if(individual.title == selectedIndividual[1]){
                                 $scope.selectedIndividuals.push(individual.id);
                             }
                         });
@@ -987,7 +1102,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     }
                     table.push({
                         row: count_ind + 1,
-                        individual: i,
+                        individual: i[1],
                         values: values
                     });
                     count_ind++;
