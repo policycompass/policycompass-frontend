@@ -1292,7 +1292,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 								$scope.tabSearch = true;
                             }
                                                  	
-                            $scope.name = 'Link an event';
+                            //$scope.name = 'Link an event';
+                            $scope.name = 'Edit events';
                             $scope.historicalevent_id = '';
                                                         
                             if ($scope.isSelectedSon('graph_line'))
