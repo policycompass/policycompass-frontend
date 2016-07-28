@@ -1,3 +1,13 @@
+.ats-switch span.switch-right {
+background: linear-gradient(to bottom, #e5e5e5 0%, #cccccc 100%);
+  border-color: #3177b3;
+  color: #4d4d4d;
+  border-bottom-color: gray;
+  color: #333333;
+  background: linear-gradient(to bottom, #9ac1e3, #72a9d8);
+  color: white;
+}
+
 .h-warning {
   color: $bk_1_2;
 }

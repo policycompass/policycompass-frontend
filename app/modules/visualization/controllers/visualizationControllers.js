@@ -4409,7 +4409,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
             $scope.showAstoplines = true;
 
             $scope.visualization = {};
-
+			$scope.visualization.is_draft = true;
+			
             $scope.visualization.language_data = {
                 input: '',
                 output: []
