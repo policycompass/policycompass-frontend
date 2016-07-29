@@ -132,7 +132,23 @@
 	                </div>
 	
 	            </div>
-	
+
+				<div ng-if="visualization.derived_from_id" class="form-group form-group-link">
+					<div class="form-item" >
+                    	<div class="field-label">Derived from</div>
+                    	<div class="field-content">
+                    		<a ng-if="originalvisualization.id" href="#!/visualizations/{{visualization.derived_from_id}}">{{origianlVisualisationTitle}}</a>
+                    		<span ng-if="!originalvisualization.id">{{origianlVisualisationTitle}}</span>
+                		</div>
+                	</div>
+					<div class="form-item" ng-if="originalvisualization.creator_path">
+						<div class="field-label">Added by</div>
+						<div class="field-content">
+							<username userpath="{{originalvisualization.creator_path}}"></username>
+						</div>
+					</div>
+            	</div>
+            		
 	            <div class="form-group form-group-visualisations form-group-external" ng-if="relatedVisualizations.length>0">
 	                <div class="form-item">
 	                    <div class="field-label">Related Visualisations</div>
@@ -142,8 +158,8 @@
 	                    </div>
 	                </div>
 	            </div>
-	
-	            <div class="form-group form-group-fcms form-group-external" ng-if="fcmRelated.length>0">
+           		
+	            <div class="form-group form-group-fcms form-group-external" ng-if="fcmRelated.length>1">
 	                <div class="form-item">
 	                    <div class="field-label">Related Causal Models</div>
 	                    <div class="field-content">

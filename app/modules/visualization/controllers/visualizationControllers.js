@@ -3293,6 +3293,15 @@ angular.module('pcApp.visualization.controllers.visualization', [
                 var id_visu = $routeParams.visualizationId;
                 $scope.relatedVisualizations = [];
 
+				if ($scope.visualization.derived_from_id) {
+					$scope.originalvisualization = Visualization.get({id: $scope.visualization.derived_from_id}, function (originalvisualization) {
+						$scope.origianlVisualisationTitle = originalvisualization.title;
+					}, function (error) {
+                		//throw {message: error.data.message || JSON.stringify(error.data)};              
+                		$scope.origianlVisualisationTitle = "Not found";
+            		});
+				}
+				
                 for (i in $scope.visualization.datasets_in_visualization) {
                     id = $scope.visualization.datasets_in_visualization[i].dataset_id;
                     $scope.getMetricData(i, id, "", "", "");
