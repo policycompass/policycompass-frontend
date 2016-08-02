@@ -1292,7 +1292,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 								$scope.tabSearch = true;
                             }
                                                  	
-                            $scope.name = 'Link an event';
+                            //$scope.name = 'Link an event';
+                            $scope.name = 'Edit events';
                             $scope.historicalevent_id = '';
                                                         
                             if ($scope.isSelectedSon('graph_line'))
@@ -1755,6 +1756,10 @@ angular.module('pcApp.visualization.controllers.visualization', [
                         }
 
                     }
+									
+					$scope.copyResolution = function (dataIn) {
+						$scope.resolution = angular.copy(dataIn);
+					}
 										
 					$scope.copyDatasets = function (dataIn) {
 						$scope.ListMetricsFilter = angular.copy(dataIn);
@@ -3292,6 +3297,15 @@ angular.module('pcApp.visualization.controllers.visualization', [
                 var id_visu = $routeParams.visualizationId;
                 $scope.relatedVisualizations = [];
 
+				if ($scope.visualization.derived_from_id) {
+					$scope.originalvisualization = Visualization.get({id: $scope.visualization.derived_from_id}, function (originalvisualization) {
+						$scope.origianlVisualisationTitle = originalvisualization.title;
+					}, function (error) {
+                		//throw {message: error.data.message || JSON.stringify(error.data)};              
+                		$scope.origianlVisualisationTitle = "Not found";
+            		});
+				}
+				
                 for (i in $scope.visualization.datasets_in_visualization) {
                     id = $scope.visualization.datasets_in_visualization[i].dataset_id;
                     $scope.getMetricData(i, id, "", "", "");
@@ -3991,14 +4005,16 @@ angular.module('pcApp.visualization.controllers.visualization', [
 										$scope.loadDataCombosHelper(id, valueColumTemp, valueGroupTemp);
 										
 					                    $scope.correctmetrics = "1";
+					                    
+										if ($scope.visualization.datasets_in_visualization.length-1==i) {
+					                    	$scope.rePlotGraph();
+					                    }
 					                }
 									
-	
-				                	$scope.rePlotGraph();
-					
+									if ($scope.visualization.datasets_in_visualization.length==0) {
+										$scope.rePlotGraph();
+									}
 					            });
-								
-								
 							//}
 						}
 											
@@ -4406,7 +4422,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
             $scope.showAstoplines = true;
 
             $scope.visualization = {};
-
+			$scope.visualization.is_draft = true;
+			
             $scope.visualization.language_data = {
                 input: '',
                 output: []
@@ -4542,10 +4559,18 @@ angular.module('pcApp.visualization.controllers.visualization', [
 				
                 dataConfig['showAsPercentatge'] = $scope.showAsPercentatge;
                 dataConfig['showAstoplines'] = $scope.showAstoplines;
-                dataConfig['resolution'] = $scope.resolution['value'];
-                dataConfig['groupedby'] = $scope.groupedby['value'];
-				dataConfig['plotAt'] = $scope.plotdataoption['value'];
-				dataConfig['xLegend'] = $scope.plotxaxislegend['value'];
+                if ($scope.resolution) {
+                	dataConfig['resolution'] = $scope.resolution['value'];	
+                }                
+                if ($scope.groupedby) {
+                	dataConfig['groupedby'] = $scope.groupedby['value'];
+                }
+                if ($scope.plotdataoption) {
+					dataConfig['plotAt'] = $scope.plotdataoption['value'];
+				}
+				if ($scope.plotxaxislegend) {
+					dataConfig['xLegend'] = $scope.plotxaxislegend['value'];
+				}
 				
                 if ($scope.timeStart != '----') {
                     dataConfig['timeStart'] = $scope.timeStart;
@@ -4781,6 +4806,47 @@ angular.module('pcApp.visualization').filter('pagination', function () {
 
 				if (acceptApply) {
 					$scope.enableRevertButton();
+					
+					//to select appropiate resolution acording differnt dataset selected
+					for (var k in $scope.ListMetricsFilterModal) {
+						if ($scope.ListMetricsFilterModal[k].defaultItemResolution) {
+							//console.log($scope.resolution.value+"---"+$scope.ListMetricsFilterModal[k].defaultItemResolution);
+							if ($scope.resolution.value=='year') {
+								
+							}
+							else if ($scope.resolution.value=='quarter') {
+								if ($scope.ListMetricsFilterModal[k].defaultItemResolution=='year') {
+									$scope.resolution = {label: "Year", value: "year"};
+									$scope.copyResolution($scope.resolution);
+								}
+							}
+							else if ($scope.resolution.value=='month') {
+								if ($scope.ListMetricsFilterModal[k].defaultItemResolution=='year') {
+									$scope.resolution = {label: "Year", value: "year"};
+									$scope.copyResolution($scope.resolution);
+								}
+								else if ($scope.ListMetricsFilterModal[k].defaultItemResolution=='quarter') {
+									$scope.resolution = {label: "Quarter", value: "quarter"};
+									$scope.copyResolution($scope.resolution);
+								}
+							}
+							else if ($scope.resolution.value=='day') {
+								if ($scope.ListMetricsFilterModal[k].defaultItemResolution=='year') {
+									$scope.resolution = {label: "Year", value: "year"};
+									$scope.copyResolution($scope.resolution);
+								}
+								else if ($scope.ListMetricsFilterModal[k].defaultItemResolution=='quarter') {
+									$scope.resolution = {label: "Quarter", value: "quarter"};
+									$scope.copyResolution($scope.resolution);
+								}
+								else if ($scope.ListMetricsFilterModal[k].defaultItemResolution=='month') {
+									$scope.resolution = {label: "Month", value: "month"};
+									$scope.copyResolution($scope.resolution);
+								}
+							}
+						}
+					}
+
 					$scope.copyDatasets($scope.ListMetricsFilterModal);
 					$scope.copyIndividuals($scope.ModalIndividualDatasetCheckboxes_);
 					$scope.copyfinalScales($scope.finalScales);
@@ -4898,7 +4964,21 @@ angular.module('pcApp.visualization').filter('pagination', function () {
 	                                }
 	                            }
 	                        }, function (error) {
-	                            throw {message: error.data.message || JSON.stringify(error.data)};
+	                        	//we add this to avoid to show modal window in case of "knowed" errors
+	                        	if (error.status=='404') {
+	                        		//item not found	                        		
+	                        	}
+	                        	else if (error.status=='502') {
+	                        		//Bad Gateway
+	                        	}
+	                        	else if (error.status=='0') {
+	                        		//unknow PC error Gateway
+	                        	}
+	                        	else {
+	                        		//other error
+	                        		throw {message: error.data.message || JSON.stringify(error.data)};	
+	                        	}
+	                            
 	                        });
                         }
                     }
