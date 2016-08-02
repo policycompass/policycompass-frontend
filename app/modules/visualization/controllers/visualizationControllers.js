@@ -1756,6 +1756,10 @@ angular.module('pcApp.visualization.controllers.visualization', [
                         }
 
                     }
+									
+					$scope.copyResolution = function (dataIn) {
+						$scope.resolution = angular.copy(dataIn);
+					}
 										
 					$scope.copyDatasets = function (dataIn) {
 						$scope.ListMetricsFilter = angular.copy(dataIn);
@@ -4802,6 +4806,47 @@ angular.module('pcApp.visualization').filter('pagination', function () {
 
 				if (acceptApply) {
 					$scope.enableRevertButton();
+					
+					//to select appropiate resolution acording differnt dataset selected
+					for (var k in $scope.ListMetricsFilterModal) {
+						if ($scope.ListMetricsFilterModal[k].defaultItemResolution) {
+							//console.log($scope.resolution.value+"---"+$scope.ListMetricsFilterModal[k].defaultItemResolution);
+							if ($scope.resolution.value=='year') {
+								
+							}
+							else if ($scope.resolution.value=='quarter') {
+								if ($scope.ListMetricsFilterModal[k].defaultItemResolution=='year') {
+									$scope.resolution = {label: "Year", value: "year"};
+									$scope.copyResolution($scope.resolution);
+								}
+							}
+							else if ($scope.resolution.value=='month') {
+								if ($scope.ListMetricsFilterModal[k].defaultItemResolution=='year') {
+									$scope.resolution = {label: "Year", value: "year"};
+									$scope.copyResolution($scope.resolution);
+								}
+								else if ($scope.ListMetricsFilterModal[k].defaultItemResolution=='quarter') {
+									$scope.resolution = {label: "Quarter", value: "quarter"};
+									$scope.copyResolution($scope.resolution);
+								}
+							}
+							else if ($scope.resolution.value=='day') {
+								if ($scope.ListMetricsFilterModal[k].defaultItemResolution=='year') {
+									$scope.resolution = {label: "Year", value: "year"};
+									$scope.copyResolution($scope.resolution);
+								}
+								else if ($scope.ListMetricsFilterModal[k].defaultItemResolution=='quarter') {
+									$scope.resolution = {label: "Quarter", value: "quarter"};
+									$scope.copyResolution($scope.resolution);
+								}
+								else if ($scope.ListMetricsFilterModal[k].defaultItemResolution=='month') {
+									$scope.resolution = {label: "Month", value: "month"};
+									$scope.copyResolution($scope.resolution);
+								}
+							}
+						}
+					}
+
 					$scope.copyDatasets($scope.ListMetricsFilterModal);
 					$scope.copyIndividuals($scope.ModalIndividualDatasetCheckboxes_);
 					$scope.copyfinalScales($scope.finalScales);
