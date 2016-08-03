@@ -493,11 +493,20 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
             $scope.updateSelectedSuggestion = function(suggestionIndex, individual){
                 angular.forEach(individual.suggestions, function(suggestion, index){
+                    var resetSelected = false;
                     if(suggestionIndex != index){
                         suggestion.checked = false;
                     }
                     else{
-                        individual.selected = suggestion.name;
+                        suggestion.checked = !suggestion.checked;
+                        if(suggestion.checked){
+                            individual.selected = suggestion.name;
+                        }else{
+                            resetSelected = true;
+                        }
+                    }
+                    if(resetSelected){
+                        individual.selected = "";
                     }
                 })
             }
@@ -527,7 +536,10 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 for(var i=0; i<$scope.individualOrder.length; i++){
                     for(var j=0; j<$scope.individualSelection.length; j++){
                         if($scope.individualOrder[i] == $scope.individualSelection[j].name){
-                            individualList.push({"name":$scope.individualSelection[j].name, "suggestions":$scope.individualSelection[j].suggestions, "selected":$scope.individualSelection[j].selected});
+                            if($scope.individualSelection[j].selected.length > 0){
+                                individualList.push({"name":$scope.individualSelection[j].name, "suggestions":$scope.individualSelection[j].suggestions, "selected":$scope.individualSelection[j].selected});
+                            }
+
                             continue;
                         }
                     }
@@ -669,14 +681,16 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     dialogs.error('Validation Error', 'Please provide a Data Dimension Type.');
                     return false;
                 }
-                if ($scope.individualSelection.length == 0) {
-                    dialogs.error('Validation Error', 'Please choose at least one Data Dimension.');
-                    return false;
-                }
 
                 creationService.data.classPreSelection = $scope.selection.output;
                 creationService.data.extraMetadata = $scope.extraMetadata;
                 creationService.data.individualSelection = sortIndividualSelection();
+                $scope.individualSelection = creationService.data.individualSelection;
+
+                if (creationService.data.individualSelection.length == 0) {
+                    dialogs.error('Validation Error', 'Please choose at least one Data Dimension.');
+                    return false;
+                }
 
                 renameIndividuals();
             };
