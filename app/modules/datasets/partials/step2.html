@@ -19,62 +19,22 @@
             <div class="content-column-wrap">
                 <button class="btn btn-clear" ng-disabled="individualSelection.length == 0 && individuals_suggestions.length == 0" ng-click="clearAll()">Clear All</button>
 
-
-
                 <div class="pc-dataset-individuals">
                     <table class="create-dataset-result">
-
-                    <div ng-repeat="suggestion in individuals_suggestions">
-                        <div ng-repeat="(key,value) in suggestion" class="form-group">
-                            <div class="pc-reference-selection-full">
-                                <a href="" ng-click="removeSuggestion(key)"><span class="glyphicon glyphicon-remove pc-individual-remove"></span></a>
-                                <h5>{{key}}</h5>
-                                <div class="individual-suggestions"
-                                     isteven-multi-select
-                                     on-close="saveIndividual(key,individual_output[0].name)"
-                                     input-model="value"
-                                     output-model="individual_output"
-                                     button-label="name"
-                                     item-label="name"
-                                     tick-property="ticked"
-                                     selection-mode="single"
-                                     max-height="100px"
-                                >
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                        <!--
-                        <div ng-repeat="suggestion in individuals_suggestions">
-                            <div ng-repeat="(key,value) in suggestion" class="form-group">
-                                <div class="dropdown" dropdown>
-                                    <button class="btn dropdown-toggle dropdown-button" dropdown-toggle>
-                                        {{ key }}
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu" style="cursor:pointer">
-                                        <li ng-repeat="v in value" class=" individual-suggestions">
-                                            <a ng-click="saveIndividual(key,v.name)">
-                                                <p>{{ v.name }}</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        -->
                         <tr ng-repeat="i in individualSelection">
-                            <td>{{ i[1] }}<a href="" ng-click="removeIndividual(i[1])"><span class="glyphicon glyphicon-remove pc-individual-remove"></span></a>
+                            <td>
+                                <span ng-if="i.suggestions.length == 1">
+                                    {{ i.name }}
+                                </span>
+                                <a href="" ng-click="removeIndividual(i.name)"><span class="glyphicon glyphicon-remove pc-individual-remove"></span></a>
+                                <!--<open-suggestions-modal></open-suggestions-modal> -->
+                                <div ng-if="i.suggestions.length > 1" ng-repeat="s in i.suggestions">
+                                    <input ng-model="s.checked" ng-click="updateSelectedSuggestion($index, i)" type="checkbox" />
+                                        {{ s.name }}
+                                </div>
                             </td>
                         </tr>
                     </table>
-                    <!--<p>-->
-                    <!--<a href="" class="btn btn-validate btn-info">Validate</a>-->
-                    <!--</p>-->
-                    <!--<p>-->
-                    <!--Validate and Add Individuals of the Class-->
-                    <!--</p>-->
                 </div>
             </div>
         </div>
