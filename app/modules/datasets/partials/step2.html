@@ -23,7 +23,7 @@
                     <table class="create-dataset-result">
                         <tr ng-repeat="i in individualSelection">
                             <td>
-                                <span ng-if="i.suggestions.length == 1">
+                                <span ng-if="i.suggestions.length <= 1">
                                     {{ i.name }}
                                 </span>
                                 <a href="" ng-click="removeIndividual(i.name)"><span class="glyphicon glyphicon-remove pc-individual-remove"></span></a>
