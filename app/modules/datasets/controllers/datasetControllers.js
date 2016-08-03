@@ -475,6 +475,9 @@ angular.module('pcApp.datasets.controllers.dataset', [
                                     suggestions.push({"name": result.title, "checked":false});
                                 }
                             });
+                            if(suggestions.length == 1){
+                                suggestions[0].checked = true;
+                            }
                         }
                         if(suggestions.length > 1){
                             $scope.saveIndividual(search_term, suggestions, "");
@@ -556,6 +559,22 @@ angular.module('pcApp.datasets.controllers.dataset', [
                            continue;
                        }
                     }
+                }
+            }
+
+            var allIndividualsChecked = function(){
+                var count = 0;
+                angular.forEach($scope.individualSelection, function(i){
+                    angular.forEach(i.suggestions, function(s){
+                        if(s.checked == true){
+                            count++;
+                        }
+                    });
+                });
+                if(count == $scope.individualSelection.length){
+                    return true;
+                }else{
+                    return false;
                 }
             }
 
@@ -684,6 +703,11 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
                 creationService.data.classPreSelection = $scope.selection.output;
                 creationService.data.extraMetadata = $scope.extraMetadata;
+
+                if(!allIndividualsChecked()){
+                    dialogs.error('Validation Error', 'Please choose one option for each Dimension.');
+                    return false;
+                }
                 creationService.data.individualSelection = sortIndividualSelection();
                 $scope.individualSelection = creationService.data.individualSelection;
 
