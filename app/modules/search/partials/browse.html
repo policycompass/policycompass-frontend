@@ -28,8 +28,10 @@
                         <span><ng-pluralize count="searchResultsCount" when="{'0': 'No results found',
                                    '1': '1 result found',
                                    'other': '{} results found'}"></ng-pluralize></span>
-                        <!--<div class="num-results" ng-hide="searchResults.length"><span>No results found</span></div>-->
-                        <!--<div class="num-results" ng-show="searchResults.length"><span>{{searchResultsCount}} results found</span>-->
+                        <div class="pull-right" ng-if="auth.state.loggedIn">
+                            <input type="checkbox" id="own_content" ng-checked="isOwnContentEnabled()" ng-click="ownContentChanged($event)">
+                            <label for="own_content">Show only my content</label>
+                        </div>
                     </div>
                 </div>
             </div>
