@@ -412,7 +412,7 @@
 						<div class="row">
 	                        <tabset ng-hide="ListMetricsFilter.length==0">
 	                            <tab heading="Metadata Editor">
-	                                <div class="form-group" ng-class="{'has-error': metricForm.title.$dirty && metricForm.title.$invalid}">
+	                                <div class="form-group" ng-class="{'has-error': visualizationForm.title.$dirty && visualizationForm.title.$invalid}">
 	                                    <label for="title">Title *</label>
 	                                    <input type="text" class="form-control" id="title" name="title" placeholder="Title" ng-model="visualization.title" ng-minlength="3" required>
 	                                </div>

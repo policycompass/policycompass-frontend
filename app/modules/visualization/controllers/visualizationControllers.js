@@ -4275,37 +4275,90 @@ angular.module('pcApp.visualization.controllers.visualization', [
                     }
                 };
 				
-
-                if (($scope.user.state.userPath != $scope.visualization.creator_path) && ($scope.user.state.isAdmin != true)) {
-                    $scope.visualization.derived_from_id = $scope.visualization.id;
-                    delete $scope.visualization.id;
-                    delete $scope.visualization.self;
-                    delete $scope.visualization.creator_path;
-                    delete $scope.visualization.created_at;
-                    delete $scope.visualization.updated_at;
+				var validForm = true;
+				if ($scope.visualizationForm.$invalid) {
+					validForm = false;
+				}
+				else {
+					if ($scope.visualization.datasets_in_visualization.length<=0) {
+						validForm = false; 
+					}
+				}
+				
+				if (!validForm) {
+						
+					var message = '';
+					var cntErrors = 0;
 					
-					$scope.visualization.is_draft=true;
-					
-                    $cntHE = 0;
-                    for (i = 0; i < $scope.visualization.historical_events_in_visualization.length; i++) {
-                        if ($scope.visualization.historical_events_in_visualization[i].historical_event > 0) {
-                            $cntHE = $cntHE + 1;
-                        }
-                    }
-                    if ($cntHE == 0) {
-                        delete $scope.visualization.historical_events_in_visualization;
-                    }
-					
+					message += '<ul>';
+					angular.forEach($scope.visualizationForm, function(value, key) {
+						//console.log(value);						
+						
+						if (value.$invalid) {
+							message += '<li><b>'+key.charAt(0).toUpperCase()+key.substr(1)+'</b>' + ': '+key.charAt(0).toUpperCase()+key.substr(1)+' is a mandatory.</li>';
+							cntErrors = cntErrors+1;
+						}
+					});
 
-                    Visualization.save($scope.visualization, function (value, responseHeaders) {
-                        $location.path('/visualizations/' + value.id);
-                    }, saveErrorCallback);
-                } else {
-                    Visualization.update($scope.visualization, function (value, responseHeaders) {
-                        $location.path('/visualizations/' + value.id);
-                    }, saveErrorCallback);
-                }
+					if ($scope.visualization.datasets_in_visualization.length<=0) {
+						message += '<li><b>Datasets</b>' + ': A Dataset is mandatory, please link at least one dataset.</li>';
+						cntErrors = cntErrors+1;
+					}
+					if (!$scope.visualization.language_id) {
+						message += '<li><b>Language</b>' + ': Language field is mandatory, please select a valid Language.</li>';
+						cntErrors = cntErrors+1;
+					}
+					if (!$scope.visualization.location) {
+						message += '<li><b>Location</b>' + ': Location field is mandatory, please select a valid Location.</li>';
+						cntErrors = cntErrors+1;
+					}
+					if (!$scope.visualization.policy_domains) {
+						message += '<li><b>Policy Domains</b>' + ': Policy Domains field is mandatory, please select valid Policy Domains for this visualisation.</li>';
+						cntErrors = cntErrors+1;
+					}
+					message += '</ul>';
 
+					if  (cntErrors==1) {
+						message = 'Please solve the following error before saving the visualisation:<br />'+message;
+					}
+					else {
+						message = 'Please solve the following errors before saving the visualisation:<br />'+message;	
+					}
+
+					dialogs.error("Error", message);
+					
+				}
+				else {
+	                if (($scope.user.state.userPath != $scope.visualization.creator_path) && ($scope.user.state.isAdmin != true)) {
+	                    $scope.visualization.derived_from_id = $scope.visualization.id;
+	                    delete $scope.visualization.id;
+	                    delete $scope.visualization.self;
+	                    delete $scope.visualization.creator_path;
+	                    delete $scope.visualization.created_at;
+	                    delete $scope.visualization.updated_at;
+						
+						$scope.visualization.is_draft=true;
+						
+	                    $cntHE = 0;
+	                    for (i = 0; i < $scope.visualization.historical_events_in_visualization.length; i++) {
+	                        if ($scope.visualization.historical_events_in_visualization[i].historical_event > 0) {
+	                            $cntHE = $cntHE + 1;
+	                        }
+	                    }
+	                    if ($cntHE == 0) {
+	                        delete $scope.visualization.historical_events_in_visualization;
+	                    }
+						
+	
+	                    Visualization.save($scope.visualization, function (value, responseHeaders) {
+	                        $location.path('/visualizations/' + value.id);
+	                    }, saveErrorCallback);
+	                } else {
+	                    Visualization.update($scope.visualization, function (value, responseHeaders) {
+	                        $location.path('/visualizations/' + value.id);
+	                    }, saveErrorCallback);
+	                }					
+				}
 
             };
         }
@@ -4691,9 +4744,63 @@ angular.module('pcApp.visualization.controllers.visualization', [
                     }
                 };
 
-                Visualization.save($scope.visualization, function (value, responseHeaders) {
-                    $location.path('/visualizations/' + value.id);
-                }, saveErrorCallback);
+				var validForm = true;
+				if ($scope.visualizationForm.$invalid) {
+					validForm = false;
+				}
+				else {
+					if ($scope.visualization.datasets_in_visualization.length<=0) {
+						validForm = false; 
+					}
+				}
+				
+				if (!validForm) {						
+					var message = '';
+					var cntErrors = 0;
+					
+					message += '<ul>';
+					angular.forEach($scope.visualizationForm, function(value, key) {
+						//console.log(value);						
+						
+						if (value.$invalid) {
+							message += '<li><b>'+key.charAt(0).toUpperCase()+key.substr(1)+'</b>' + ': '+key.charAt(0).toUpperCase()+key.substr(1)+' is a mandatory.</li>';
+							cntErrors = cntErrors+1;
+						}
+					});
+
+					if ($scope.visualization.datasets_in_visualization.length<=0) {
+						message += '<li><b>Datasets</b>' + ': A Dataset is mandatory, please link at least one dataset.</li>';
+						cntErrors = cntErrors+1;
+					}
+					if (!$scope.visualization.language_id) {
+						message += '<li><b>Language</b>' + ': Language field is mandatory, please select a valid Language.</li>';
+						cntErrors = cntErrors+1;
+					}
+					if (!$scope.visualization.location) {
+						message += '<li><b>Location</b>' + ': Location field is mandatory, please select a valid Location.</li>';
+						cntErrors = cntErrors+1;
+					}
+					if (!$scope.visualization.policy_domains) {
+						message += '<li><b>Policy Domains</b>' + ': Policy Domains field is mandatory, please select valid Policy Domains for this visualisation.</li>';
+						cntErrors = cntErrors+1;
+					}
+					message += '</ul>';
+
+					if  (cntErrors==1) {
+						message = 'Please solve the following error before saving the visualisation:<br />'+message;
+					}
+					else {
+						message = 'Please solve the following errors before saving the visualisation:<br />'+message;	
+					}
+
+					dialogs.error("Error", message);
+					
+				}
+				else {
+	                Visualization.save($scope.visualization, function (value, responseHeaders) {
+	                    $location.path('/visualizations/' + value.id);
+	                }, saveErrorCallback);
+                }
 
             };
 
