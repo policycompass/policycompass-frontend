@@ -429,6 +429,11 @@ angular.module('pcApp.datasets.controllers.dataset', [
             };
 
             $scope.nextStep = function () {
+                var individualOrder = [];
+                for(var i=1;i<$scope.inputTable.items.length;i++){
+                    individualOrder.push($scope.inputTable.items[i][0]);
+                }
+                creationService.data.individualsOrder = individualOrder;
                 return true;
             }
         }
@@ -462,8 +467,8 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
                     success(function (data, status, headers, config) {
                         var suggestions = [];
+                        suggestions.push({"name":search_term, "checked":false});
                         if(data.length > 0) {
-                            suggestions.push({"name":search_term, "checked":false});
                             angular.forEach(data, function (result) {
                                 var alreadyExisting = false;
                                 angular.forEach(suggestions, function(s){
@@ -475,9 +480,10 @@ angular.module('pcApp.datasets.controllers.dataset', [
                                     suggestions.push({"name": result.title, "checked":false});
                                 }
                             });
-                            if(suggestions.length == 1){
-                                suggestions[0].checked = true;
-                            }
+
+                        }
+                        if(suggestions.length == 1){
+                            suggestions[0].checked = true;
                         }
                         if(suggestions.length > 1){
                             $scope.saveIndividual(search_term, suggestions, "");
@@ -595,6 +601,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
             var init = function () {
                 $scope.inputTable = creationService.data.inputTable;
+                $scope.inputTable.items = creationService.data.inputTable.items;
                 if(creationService.data.individualsOrder.length > 0){
                     $scope.individualOrder = creationService.data.individualsOrder;
                 }
@@ -605,6 +612,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     }
                     creationService.data.individualsOrder = $scope.individualOrder;
                 }
+
 
                 if(creationService.data.individualSelectionBackup.length > 0){
                     restoreIndividuals();
