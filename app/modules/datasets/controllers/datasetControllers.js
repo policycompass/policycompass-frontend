@@ -463,7 +463,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
 
             var searchForIndividuals = function(search_term){
-                    $http.get(API_CONF.REFERENCE_POOL_URL + "/individuals?q=" + search_term).
+                    $http.get(API_CONF.REFERENCE_POOL_URL + "/individuals?class=" + $scope.selection.output +  "&q=" + search_term).
 
                     success(function (data, status, headers, config) {
                         var suggestions = [];
