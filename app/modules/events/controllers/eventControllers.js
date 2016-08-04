@@ -594,7 +594,6 @@ angular.module('pcApp.events.controllers.event', [
                     success: function(response) {
                         $scope.wikipedia_title_results = [];
                         for(var i = 0; i<response[1].length;i++){
-                            console.log("response " + response[2][i]);
                             if(!response[2][i].startsWith("This is a redirect from a title")) {
                                 $scope.wikipedia_title_results.push([response[1][i], response[2][i], response[3][i]]);
                             }
