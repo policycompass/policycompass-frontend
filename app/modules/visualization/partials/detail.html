@@ -2,12 +2,12 @@
     <div class="content-header">
 
         <h1 class="fonticon fonticon-visualisation">{{ visualization.title }}</h1>
-	
+
         <div class="pc-visualization-formcontrols">
 
             <edit-buttons data-userpath="{{visualization.creator_path}}" data-editurl="#!/visualizations/{{visualization.id}}/edit" data-deletefunction="deleteCurrentVisualisation"></edit-buttons>
             <a type="button" ng-if="!user.state.isAdmin && user.state.userPath!=visualization.creator_path" class="btn btn-primary btn-create" href="#!/visualizations/{{ visualization.id }}/edit">Edit</a>
-			<a href="#" ng-if="visualization.is_draft" ng-disabled="visualization.is_draft" class="btn btn-default btn-danger">Draft</a>
+            <a href="#" ng-if="visualization.is_draft" ng-disabled="visualization.is_draft" class="btn btn-default btn-danger">Draft</a>
             <a type="button" class="btn btn-primary btn-addCausalModel" href="#!/models/create?{{urlListIndicators}}">Create Causal Model</a>
             <a type="button" class="btn btn-share" ng-click="share=!share" ng-class="{active: share}" ng-if="!1">Share</a>
 
@@ -37,160 +37,162 @@
             </div>
         </div>
     </div>
-	<div>
-	    <div class="visualisation-dat right-column">
-	        <div ng-include='"modules/visualization/partials/graph.html"'></div>
-	    </div>
-	    <br/>
-	
-	    <div class="row">
-	
-	        <div class="metadata metadata-event metadata-event-description">
-	            <div class="form-group form-group-description" ngshow="event.description">
-	                <div class="field-label">Description</div>
-	                <div class="field-content">{{visualization.description}}</div>
-	            </div>
-	        </div>
-	
-	    </div>
-	    <div class="row">
-	        <h3 class="legend-primary">Details</h3>
-	        <!-- FIELDS START -->
-	        <div class="metadata metadata-event">
-	
-	            <div class="form-group form-group-keywords" ng-if="visualization.keywords">
-	                <div class="field-label">Keywords</div>
-	                <div class="field-content">{{visualization.keywords}}</div>
-	            </div>
-	
-	            <div class="form-group form-group-keywords" ng-if="visualization.policy_domains.length>0">
-	                <div class="field-label">Policy domains</div>
-	                <div class="field-content">
-	                    <div ng-repeat="policydomain in visualization.policy_domains">
-	                        <span ng-if="policydomain" resolve-policydomain id="policydomain"></span></div>
-	                </div>
-	            </div>
-	
-	            <div class="form-group form-group-modified">
-					<div class="form-item" ng-if="visualization.creator_path">
-						<div class="field-label">Added by</div>
-						<div class="field-content">
-								<username userpath="{{visualization.creator_path}}"></username>
-						</div>
-					</div>
-	                <div class="form-item" ng-if="visualization.created_at">
-	                    <div class="field-label">Added</div>
-	                    <div class="field-content">{{ visualization.created_at | date:'longDate' }}</div>
-	                </div>
-	                <div class="form-item" ng-if="visualization.updated_at">
-	                    <div class="field-label">Modified</div>
-	                    <div class="field-content">{{ visualization.updated_at | date:'longDate' }}</div>
-	                </div>
-	            </div>
-	
-	            <div class="form-group form-group-location">
-	                <div class="form-item">
-	                    <div class="field-label">Language</div>
-	                    <div class="field-content">
-	                        <span ng-if="visualization.language_id" resolve-language id="visualization.language_id"></span>
-	                    </div>
-	                </div>
-	
-	                <div class="form-item" ng-if="visualization.location">
-	                    <div class="field-label">Location</div>
-	                    <div class="field-content">
-	                        <span ng-if="visualization.location" resolve-individual id="visualization.location"></span>
-	                    </div>
-	                </div>
-	
-	            </div>
-	        </div>
-	
-	        <div class="metadata metadata-event">
-	
-	            <div class="form-group form-group-datasets form-group-external">
-	                <div class="form-item">
-	                    <div class="field-label">Datasets</div>
-	                    <div class="field-content">
-	                        <div ng-repeat="metric in meticsRelated"><a ng-href="#!/datasets/{{metric.id}}">{{metric.title}}</a></div>
-	                	</div>
-					</div>
-	            </div>
-	            <div class="form-group form-group-events form-group-external" ng-if="visualization.historical_events_in_visualization">
-	                <div class="form-item">
-	                    <div class="field-label">Historical Events</div>
-	                    <div class="field-content">
-	                        <div ng-repeat="her in historicalEventsRelated">
-	                            <div class='square-box'>
-	                                <div class='square-content' style="background:{{her.color}};">
-	                                    <div><span>&nbsp;</span></div>
-	                                </div>
-	                            </div>
-	                            <a ng-href="#!/events/{{her.event_id}}">{{her.title}}</a>
-	                        </div>
-	                    </div>
-	                </div>
-	
-	            </div>
+    <div>
+        <div class="visualisation-dat right-column">
+            <div ng-include='"modules/visualization/partials/graph.html"'></div>
+        </div>
+        <br/>
 
-				<div ng-if="visualization.derived_from_id" class="form-group form-group-link">
-					<div class="form-item" >
-                    	<div class="field-label">Derived from</div>
-                    	<div class="field-content">
-                    		<a ng-if="originalvisualization.id" href="#!/visualizations/{{visualization.derived_from_id}}">{{origianlVisualisationTitle}}</a>
-                    		<span ng-if="!originalvisualization.id">{{origianlVisualisationTitle}}</span>
-                		</div>
-                	</div>
-					<div class="form-item" ng-if="originalvisualization.creator_path">
-						<div class="field-label">Added by</div>
-						<div class="field-content">
-							<username userpath="{{originalvisualization.creator_path}}"></username>
-						</div>
-					</div>
-            	</div>
-            		
-	            <div class="form-group form-group-visualisations form-group-external" ng-if="relatedVisualizations.length>0">
-	                <div class="form-item">
-	                    <div class="field-label">Related Visualisations</div>
-	                    <div class="field-content">
-	                        <div ng-repeat="rv in relatedVisualizations">
-	                            <a ng-href="#!/visualizations/{{rv.visualization_id}}">{{rv.title}}</a></div>
-	                    </div>
-	                </div>
-	            </div>
-           		
-	            <div class="form-group form-group-fcms form-group-external" ng-if="fcmRelated.length>1">
-	                <div class="form-item">
-	                    <div class="field-label">Related Causal Models</div>
-	                    <div class="field-content">
-	                        <div ng-repeat="fcm in fcmRelated"><a ng-href="#!/models/{{fcm.id}}">{{fcm.title}}</a></div>
-	                    </div>
-	                </div>
-	            </div>
-	
-	        </div>
-	        <div class="metadata metadata-event">
-	            <div class="form-group form-group-rating">
-	                <div class="form-item">
-	                    <div class="field-label">Rating</div>
-	                    <div class="field-content">
-	                        <pc-rating ng-if="visualization.id" rating-id="visualization_{{visualization.id}}"></pc-rating>
-	                    </div>
-	                </div>
-	            </div>
-	        </div>
-	
-	        <!-- FIELDS END -->
-	
-	    </div>
-	
-	    <div class="row">
-	        <h3 class="legend-primary">Discussion</h3>
-	    </div>
-	    <div class="row">
-	        <div class="col-lg-12">
-	            <show-discussion ng-if="visualization.id" data-key="visualization_{{ visualization.id }}"></show-discussion>
-	        </div>
-	    </div>
-	</div>
+        <div class="row">
+
+            <div class="metadata metadata-event metadata-event-description">
+                <div class="form-group form-group-description" ngshow="event.description">
+                    <div class="field-label">Description</div>
+                    <div class="field-content">{{visualization.description}}</div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <h3 class="legend-primary">Details</h3>
+            <!-- FIELDS START -->
+            <div class="metadata metadata-event">
+
+                <div class="form-group form-group-keywords" ng-if="visualization.keywords">
+                    <div class="field-label">Keywords</div>
+                    <div class="field-content">{{visualization.keywords}}</div>
+                </div>
+
+                <div class="form-group form-group-keywords" ng-if="visualization.policy_domains.length>0">
+                    <div class="field-label">Policy domains</div>
+                    <div class="field-content">
+                        <div ng-repeat="policydomain in visualization.policy_domains">
+                            <span ng-if="policydomain" resolve-policydomain id="policydomain"></span></div>
+                    </div>
+                </div>
+
+                <div class="form-group form-group-modified">
+                    <div class="form-item" ng-if="visualization.creator_path">
+                        <div class="field-label">Added by</div>
+                        <div class="field-content">
+                            <username userpath="{{visualization.creator_path}}"></username>
+                        </div>
+                    </div>
+                    <div class="form-item" ng-if="visualization.created_at">
+                        <div class="field-label">Added</div>
+                        <div class="field-content">{{ visualization.created_at | date:'longDate' }}</div>
+                    </div>
+                    <div class="form-item" ng-if="visualization.updated_at">
+                        <div class="field-label">Modified</div>
+                        <div class="field-content">{{ visualization.updated_at | date:'longDate' }}</div>
+                    </div>
+                </div>
+
+                <div class="form-group form-group-location">
+                    <div class="form-item">
+                        <div class="field-label">Language</div>
+                        <div class="field-content">
+                            <span ng-if="visualization.language_id" resolve-language id="visualization.language_id"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-item" ng-if="visualization.location">
+                        <div class="field-label">Location</div>
+                        <div class="field-content">
+                            <span ng-if="visualization.location" resolve-individual id="visualization.location"></span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="metadata metadata-event">
+
+                <div class="form-group form-group-datasets form-group-external">
+                    <div class="form-item">
+                        <div class="field-label">Datasets</div>
+                        <div class="field-content">
+                            <div ng-repeat="metric in meticsRelated">
+                                <a ng-href="#!/datasets/{{metric.id}}">{{metric.title}}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group form-group-events form-group-external" ng-if="visualization.historical_events_in_visualization">
+                    <div class="form-item">
+                        <div class="field-label">Historical Events</div>
+                        <div class="field-content">
+                            <div ng-repeat="her in historicalEventsRelated">
+                                <div class='square-box'>
+                                    <div class='square-content' style="background:{{her.color}};">
+                                        <div><span>&nbsp;</span></div>
+                                    </div>
+                                </div>
+                                <a ng-href="#!/events/{{her.event_id}}">{{her.title}}</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div ng-if="visualization.derived_from_id" class="form-group form-group-link">
+                    <div class="form-item">
+                        <div class="field-label">Derived from</div>
+                        <div class="field-content">
+                            <a ng-if="originalvisualization.id" href="#!/visualizations/{{visualization.derived_from_id}}">{{origianlVisualisationTitle}}</a>
+                            <span ng-if="!originalvisualization.id">{{origianlVisualisationTitle}}</span>
+                        </div>
+                    </div>
+                    <div class="form-item" ng-if="originalvisualization.creator_path">
+                        <div class="field-label">Added by</div>
+                        <div class="field-content">
+                            <username userpath="{{originalvisualization.creator_path}}"></username>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group form-group-visualisations form-group-external" ng-if="relatedVisualizations.length>0">
+                    <div class="form-item">
+                        <div class="field-label">Related Visualisations</div>
+                        <div class="field-content">
+                            <div ng-repeat="rv in relatedVisualizations">
+                                <a ng-href="#!/visualizations/{{rv.visualization_id}}">{{rv.title}}</a></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group form-group-fcms form-group-external" ng-if="fcmRelated.length>1">
+                    <div class="form-item">
+                        <div class="field-label">Related Causal Models</div>
+                        <div class="field-content">
+                            <div ng-repeat="fcm in fcmRelated"><a ng-href="#!/models/{{fcm.id}}">{{fcm.title}}</a></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="metadata metadata-event">
+                <div class="form-group form-group-rating">
+                    <div class="form-item">
+                        <div class="field-label">Rating</div>
+                        <div class="field-content">
+                            <pc-rating ng-if="visualization.id" rating-id="visualization_{{visualization.id}}"></pc-rating>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FIELDS END -->
+
+        </div>
+
+        <div class="row">
+            <h3 class="legend-primary">Discussion</h3>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <show-discussion ng-if="visualization.id" data-key="visualization_{{ visualization.id }}"></show-discussion>
+            </div>
+        </div>
+    </div>
 </div>
