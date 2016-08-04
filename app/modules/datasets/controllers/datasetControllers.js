@@ -463,39 +463,45 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
 
             var searchForIndividuals = function(search_term){
-                    $http.get(API_CONF.REFERENCE_POOL_URL + "/individuals?class=" + $scope.selection.output +  "&q=" + search_term).
-
-                    success(function (data, status, headers, config) {
-                        var suggestions = [];
-                        suggestions.push({"name":search_term, "checked":false});
-                        if(data.length > 0) {
-                            angular.forEach(data, function (result) {
-                                var alreadyExisting = false;
-                                angular.forEach(suggestions, function(s){
-                                    if(s.name == result.title){
-                                        alreadyExisting = true;
-                                    }
-                                });
-                                if(!alreadyExisting){
-                                    suggestions.push({"name": result.title, "checked":false});
+                var individual_url = ""
+                if($scope.selection.output.length > 0){
+                    individual_url = API_CONF.REFERENCE_POOL_URL + "/individuals?class=" + $scope.selection.output +  "&q=" + search_term;
+                }else{
+                    individual_url = API_CONF.REFERENCE_POOL_URL + "/individuals?q=" + search_term;
+                }
+                $http.get(individual_url).
+                //$http.get(API_CONF.REFERENCE_POOL_URL + "/individuals?q=" + search_term).
+                success(function (data, status, headers, config) {
+                    var suggestions = [];
+                    suggestions.push({"name":search_term, "checked":false});
+                    if(data.length > 0) {
+                        angular.forEach(data, function (result) {
+                            var alreadyExisting = false;
+                            angular.forEach(suggestions, function(s){
+                                if(s.name == result.title){
+                                    alreadyExisting = true;
                                 }
                             });
+                            if(!alreadyExisting){
+                                suggestions.push({"name": result.title, "checked":false});
+                            }
+                        });
 
-                        }
-                        if(suggestions.length == 1){
-                            suggestions[0].checked = true;
-                        }
-                        if(suggestions.length > 1){
-                            $scope.saveIndividual(search_term, suggestions, "");
-                        }
-                        else{
-                            $scope.saveIndividual(search_term, suggestions, search_term);
-                        }
+                    }
+                    if(suggestions.length == 1){
+                        suggestions[0].checked = true;
+                    }
+                    if(suggestions.length > 1){
+                        $scope.saveIndividual(search_term, suggestions, "");
+                    }
+                    else{
+                        $scope.saveIndividual(search_term, suggestions, search_term);
+                    }
 
-                    }).error(function (data, status, headers, config) {
-                        // called asynchronously if an error occurs
-                        // or server returns response with an error status.
-                    });
+                }).error(function (data, status, headers, config) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                });
 
 
             }
