@@ -4284,18 +4284,31 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						validForm = false; 
 					}
 				}
-				
+
 				if (!validForm) {
 						
 					var message = '';
 					var cntErrors = 0;
 					
 					message += '<ul>';
-					angular.forEach($scope.visualizationForm, function(value, key) {
-						//console.log(value);						
-						
-						if (value.$invalid) {
-							message += '<li><b>'+key.charAt(0).toUpperCase()+key.substr(1)+'</b>' + ': '+key.charAt(0).toUpperCase()+key.substr(1)+' is a mandatory.</li>';
+					
+					angular.forEach($scope.visualizationForm.$error.maxlength, function(value, key) {
+						message += '<li><b>'+value.$name.charAt(0).toUpperCase()+value.$name.substr(1)+'</b>' + ': '+value.$name.charAt(0).toUpperCase()+value.$name.substr(1)+' length.</li>';
+						cntErrors = cntErrors+1;
+					});
+					
+					angular.forEach($scope.visualizationForm.$error.required, function(value, key) {
+						if (value.$error.required) {
+							if (value.$name=='Language') {
+								message += '<li><b>Language</b>' + ': Language field is mandatory, please select a valid Language.</li>';
+							}
+							else if (value.$name=='Policy Domains') {
+								message += '<li><b>Policy Domains</b>' + ': Policy Domains field is mandatory, please select valid Policy Domain for this visualisation.</li>';
+							}
+							else {
+								message += '<li><b>'+value.$name.charAt(0).toUpperCase()+value.$name.substr(1)+'</b>' + ': '+value.$name.charAt(0).toUpperCase()+value.$name.substr(1)+' is mandatory.</li>';	
+							}
+							
 							cntErrors = cntErrors+1;
 						}
 					});
@@ -4304,18 +4317,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 						message += '<li><b>Datasets</b>' + ': A Dataset is mandatory, please link at least one dataset.</li>';
 						cntErrors = cntErrors+1;
 					}
-					if (!$scope.visualization.language_id) {
-						message += '<li><b>Language</b>' + ': Language field is mandatory, please select a valid Language.</li>';
-						cntErrors = cntErrors+1;
-					}
-					if (!$scope.visualization.location) {
-						message += '<li><b>Location</b>' + ': Location field is mandatory, please select a valid Location.</li>';
-						cntErrors = cntErrors+1;
-					}
-					if (!$scope.visualization.policy_domains) {
-						message += '<li><b>Policy Domains</b>' + ': Policy Domains field is mandatory, please select valid Policy Domains for this visualisation.</li>';
-						cntErrors = cntErrors+1;
-					}
+					
 					message += '</ul>';
 
 					if  (cntErrors==1) {
@@ -4759,31 +4761,34 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					var cntErrors = 0;
 					
 					message += '<ul>';
-					angular.forEach($scope.visualizationForm, function(value, key) {
-						//console.log(value);						
-						
-						if (value.$invalid) {
-							message += '<li><b>'+key.charAt(0).toUpperCase()+key.substr(1)+'</b>' + ': '+key.charAt(0).toUpperCase()+key.substr(1)+' is a mandatory.</li>';
+					
+					angular.forEach($scope.visualizationForm.$error.maxlength, function(value, key) {
+						message += '<li><b>'+value.$name.charAt(0).toUpperCase()+value.$name.substr(1)+'</b>' + ': '+value.$name.charAt(0).toUpperCase()+value.$name.substr(1)+' length.</li>';
+						cntErrors = cntErrors+1;
+					});
+					
+					angular.forEach($scope.visualizationForm.$error.required, function(value, key) {
+						if (value.$error.required) {
+							if (value.$name=='Language') {
+								message += '<li><b>Language</b>' + ': Language field is mandatory, please select a valid Language.</li>';
+							}
+							else if (value.$name=='Policy Domains') {
+								message += '<li><b>Policy Domains</b>' + ': Policy Domains field is mandatory, please select valid Policy Domain for this visualisation.</li>';
+							}
+							else {
+								message += '<li><b>'+value.$name.charAt(0).toUpperCase()+value.$name.substr(1)+'</b>' + ': '+value.$name.charAt(0).toUpperCase()+value.$name.substr(1)+' is mandatory.</li>';	
+							}
+							
 							cntErrors = cntErrors+1;
 						}
 					});
+					
 
 					if ($scope.visualization.datasets_in_visualization.length<=0) {
 						message += '<li><b>Datasets</b>' + ': A Dataset is mandatory, please link at least one dataset.</li>';
 						cntErrors = cntErrors+1;
 					}
-					if (!$scope.visualization.language_id) {
-						message += '<li><b>Language</b>' + ': Language field is mandatory, please select a valid Language.</li>';
-						cntErrors = cntErrors+1;
-					}
-					if (!$scope.visualization.location) {
-						message += '<li><b>Location</b>' + ': Location field is mandatory, please select a valid Location.</li>';
-						cntErrors = cntErrors+1;
-					}
-					if (!$scope.visualization.policy_domains) {
-						message += '<li><b>Policy Domains</b>' + ': Policy Domains field is mandatory, please select valid Policy Domains for this visualisation.</li>';
-						cntErrors = cntErrors+1;
-					}
+					
 					message += '</ul>';
 
 					if  (cntErrors==1) {

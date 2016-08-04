@@ -414,7 +414,7 @@
 	                            <tab heading="Metadata Editor">
 	                                <div class="form-group" ng-class="{'has-error': visualizationForm.title.$dirty && visualizationForm.title.$invalid}">
 	                                    <label for="title">Title *</label>
-	                                    <input type="text" class="form-control" id="title" name="title" placeholder="Title" ng-model="visualization.title" ng-minlength="3" required>
+	                                    <input ng-maxlength="100" ng-maxlength="maxlength"type="text" class="form-control" id="title" name="title" placeholder="Title" ng-model="visualization.title" ng-minlength="3" required>
 	                                </div>
 	
 	                                <div class="form-group" ng-class="{'has-error': visualizationForm.description.$dirty && visualizationForm.description.$invalid}">
@@ -423,12 +423,13 @@
 	                                </div>
 	                                <div class="form-group">
 	                                    <label for="keywords">Keywords</label>
-	                                    <input type="text" class="form-control" id="keywords" placeholder="Keywords" ng-model="visualization.keywords">
+	                                    <input type="text" class="form-control" id="keywords" name="keywords" placeholder="Keywords" ng-model="visualization.keywords">
 	                                </div>
 
 	                                <div class="form-group">
 	                                    <label for="language_data">Language *</label>
 	                                    <div id="language_data" 
+	                                    name="Language"
 	                                    class="reference-selection-form pc-reference-selection-full" 
 	                                    resource="Language" selection-mode="single" 
 	                                    ng-model="visualization.language_id" required
@@ -442,7 +443,7 @@
 
 	                                <div class="form-group">
 	                                    <label for="policy_domains_data">Policy Domains *</label>
-	                                    <div id="policy_domains_data" class="reference-selection-form pc-reference-selection-full" resource="PolicyDomain" selection-mode="multiple" ng-model="visualization.policy_domains" required></div>
+	                                    <div name="Policy Domains" id="policy_domains_data" class="reference-selection-form pc-reference-selection-full" resource="PolicyDomain" selection-mode="multiple" ng-model="visualization.policy_domains" required></div>
 	                                </div>
 
 									<div class="row pull-right">
