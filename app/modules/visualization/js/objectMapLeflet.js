@@ -18,7 +18,7 @@ policycompass.viz.mapLeaflet = function (options) {
     }
 
 	if ((!self.mode) || (self.mode=='view')) {
-        var dom_el = document.querySelector('[ng-controller="VisualizationsEditController"]');
+        var dom_el = document.getElementById(self.idName);
     	var ng_el = angular.element(dom_el);
     	var ng_el_scope = ng_el.scope();
 	}

@@ -39,7 +39,7 @@
     </div>
     <div>
         <div class="visualisation-dat right-column">
-            <div ng-include='"modules/visualization/partials/graph.html"'></div>
+            <pc-visualization ng-if="visualization.id" visualization-id="{{visualization.id}}"></pc-visualization>
         </div>
         <br/>
 

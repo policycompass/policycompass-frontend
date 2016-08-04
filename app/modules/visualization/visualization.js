@@ -1,6 +1,7 @@
 //var visu = angular.module('pcApp.visualization', ['pcApp.metrics']);
 var visu = angular.module('pcApp.visualization', [
-    'pcApp.visualization.controllers.visualization'
+    'pcApp.visualization.controllers.visualization',
+    'pcApp.visualization.directives.visualizationDirective'
 ]);
 
 
@@ -24,8 +25,7 @@ visu.config(function ($routeProvider) {
             templateUrl: 'modules/visualization/partials/addEvent.html'
         })
         .when('/visualizations/graph/:visualizationId', {
-            //controller: 'VisualizationsGraphController',
-            controller: 'viewVisualizationCtrl',
+            controller: 'VisualizationsEditController',
             templateUrl: 'modules/visualization/partials/graph.html'
         })
         .when('/visualizations/:visualizationId', {

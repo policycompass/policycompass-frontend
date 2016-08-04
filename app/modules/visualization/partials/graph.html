@@ -1,4 +1,4 @@
-<div ng-controller="VisualizationsEditController" ng-class="visualization.is_draft?'chartvisu':''">
+<div ng-class="visualization.is_draft?'chartvisu':''">
     <div ng-hide="list">
         <div ng-show="isSelectedParent(1)">
             <div ng-show="mapTimeSlider.length>1">
@@ -41,7 +41,7 @@
 
                     <div>
                     	<div><br/></div>
-	                    <rzslider rz-slider-model="rangeDatesSliderMin" rz-slider-options="slider_translate_pie.options"></rzslider>                        				
+	                    <rzslider rz-slider-model="rangeDatesSliderMin" rz-slider-options="slider_translate_pie.options"></rzslider>
 						<!--
                         <rzslider rz-slider-model="rangeDatesSliderMin" rz-slider-ceil="numbers2.length-1" rz-slider-translate="translate"></rzslider>
 						-->
