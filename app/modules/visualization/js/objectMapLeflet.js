@@ -10,12 +10,14 @@ policycompass.viz.mapLeaflet = function (options) {
     //console.log(" mapLeaflet");
 
     var self = {};
-
+	
     // Get options data
 
     for (key in options) {
         self[key] = options[key];
     }
+
+	self.mapchartid = self.idName.replace("directive_container_mapchart_", "");
 
 	if ((!self.mode) || (self.mode=='view')) {
         var dom_el = document.getElementById(self.idName);
@@ -99,11 +101,20 @@ policycompass.viz.mapLeaflet = function (options) {
             var initialLng = self.initialLng;
         }
     }
+    
+	if (self.mapchartid>0) {
+		$("."+self.idName+" .leaflet-popup").fadeOut();
+		$("."+self.idName+" .leaflet-clickable").fadeOut();
+		$("."+self.idName+" .info_"+self.idName).fadeOut();
+		$("."+self.idName+" .legend_"+self.idName).fadeOut();		
+	}
+	else {
+		$(".leaflet-popup").fadeOut();
+		$(".leaflet-clickable").fadeOut();
+		$(".info_"+self.idName).fadeOut();
+		$(".legend_"+self.idName).fadeOut();		
+	}
 
-	$(".leaflet-popup").fadeOut();
-	$(".leaflet-clickable").fadeOut();
-	$(".info_"+self.idName).fadeOut();
-	$(".legend_"+self.idName).fadeOut();
 
 	//remove info divs
 	/*
@@ -131,8 +142,11 @@ policycompass.viz.mapLeaflet = function (options) {
 	if (ng_el_scope.map != undefined) {
 		ng_el_scope.reload = true;
 		var map = ng_el_scope.map;
+		
+		
 	}
 	else {
+
 	    var map = L.map("mapPC_" + self.idName, {
 	        layers: [
 	            L.tileLayer('//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -147,6 +161,7 @@ policycompass.viz.mapLeaflet = function (options) {
 	        maxBounds: [[-90.0, -180.0], [90.0, 180.0]]
 	        //maxBounds: [[-85.0, -180.0],[85.0, 180.0]]
 	    });
+
 	}
 
 	if (!ng_el_scope.reload) {
@@ -157,14 +172,38 @@ policycompass.viz.mapLeaflet = function (options) {
 	ng_el_scope.map=map;
 
     map.on('zoomend', function () {
-        document.getElementById('initialZoom').value = map.getZoom();
-        document.getElementById('initialLat').value = map.getCenter().lat;
-        document.getElementById('initialLng').value = map.getCenter().lng;
+    	
+    	if (self.mode=='create') {
+    		document.getElementById('initialZoom').value = map.getZoom();
+        	document.getElementById('initialLat').value = map.getCenter().lat;
+        	document.getElementById('initialLng').value = map.getCenter().lng;
+    	}
+    	else if (self.mapchartid>0) {
+    		document.getElementById('initialZoom_'+self.mapchartid).value = map.getZoom();
+        	document.getElementById('initialLat_'+self.mapchartid).value = map.getCenter().lat;
+        	document.getElementById('initialLng_'+self.mapchartid).value = map.getCenter().lng;
+    	}
+    	else {
+    		document.getElementById('initialZoom').value = map.getZoom();
+        	document.getElementById('initialLat').value = map.getCenter().lat;
+        	document.getElementById('initialLng').value = map.getCenter().lng;	
+    	}
     });
 
     map.on('moveend', function () {
-        document.getElementById('initialLat').value = map.getCenter().lat;
-        document.getElementById('initialLng').value = map.getCenter().lng;
+    	if (self.mode=='create') {
+    		document.getElementById('initialLat').value = map.getCenter().lat;
+        	document.getElementById('initialLng').value = map.getCenter().lng;
+       }
+    	else if (self.mapchartid>0) {
+    		document.getElementById('initialLat_'+self.mapchartid).value = map.getCenter().lat;
+        	document.getElementById('initialLng_'+self.mapchartid).value = map.getCenter().lng;
+    	}
+    	else {
+    		document.getElementById('initialLat').value = map.getCenter().lat;
+        	document.getElementById('initialLng').value = map.getCenter().lng;	
+    	}
+        
     });
 
     if (!self.showZoom) {
@@ -173,7 +212,7 @@ policycompass.viz.mapLeaflet = function (options) {
         map.scrollWheelZoom.disable();
         map.boxZoom.disable();
         map.keyboard.disable();
-        $(".leaflet-control-zoom").css("visibility", "hidden");
+        $("."+self.idName+" .leaflet-control-zoom").css("visibility", "hidden");
         map.scrollWheelZoom.disable();
     }
     else {
@@ -182,7 +221,7 @@ policycompass.viz.mapLeaflet = function (options) {
 		map.scrollWheelZoom.enable();
 		map.boxZoom.enable();
 		map.keyboard.enable();
-		$(".leaflet-control-zoom").css("visibility", "visible");
+		$("."+self.idName+" .leaflet-control-zoom").css("visibility", "visible");
 		map.scrollWheelZoom.enable();
 	}
 

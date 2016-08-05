@@ -3594,10 +3594,12 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					var idVisuToGet = '';
 					if ($scope.idvisulist) {
 						idVisuToGet = $scope.idvisulist;
+					} else if ($scope.visualizationId) {
+						idVisuToGet = $scope.visualizationId
 					} else {
 						idVisuToGet = $routeParams.visualizationId
 					}
-					
+
 		            //$scope.visualization = Visualization.get({id: $routeParams.visualizationId}, function (visualization) {
 		            $scope.visualization = Visualization.get({id: idVisuToGet}, function (visualization) {
 		            			            	
