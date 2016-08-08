@@ -542,7 +542,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
             var sortIndividualSelection = function(){
                 var individualList = [];
-                for(var i=0; i<$scope.individualOrder.length; iOrder++){
+                for(var i=0; i<$scope.individualOrder.length; i++){
                     for(var j=0; j<$scope.individualSelection.length; j++){
                         if($scope.individualOrder[i] == $scope.individualSelection[j].name){
                             if($scope.individualSelection[j].selected.length > 0){
