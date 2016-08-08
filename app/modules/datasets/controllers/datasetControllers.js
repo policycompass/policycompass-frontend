@@ -598,43 +598,6 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 creationService.data.individualSelectionBackup = individualsBackup;
             }
 
-            $scope.rotateData = function (_data) {
-                var data = data
-
-                var maxCol = 0;
-                var maxRow = 0;
-
-                _.each(data, function (element, index) {
-                    var rowFilled = false;
-                    _.each(element, function (element, index) {
-                        if(element !=  null) {
-                            rowFilled = true;
-                            if(index > maxCol) {
-                                maxCol = index;
-                            }
-                        }
-                    });
-                    if(rowFilled) {
-                        maxRow = index;
-                    }
-                });
-
-                var newData = [];
-                var i,j;
-                for (i = 0; i <= maxRow; i++) {
-                    for (j = 0; j <= maxCol; j++) {
-                        if(i == 0){
-                            newData[j] = [data[i][j]]
-                        }else {
-                            newData[j].push(data[i][j]);
-                        }
-                    }
-                }
-
-                return newData;
-            };
-
-
             var init = function () {
                 $scope.inputTable = creationService.data.inputTable;
                 $scope.inputTable.items = creationService.data.inputTable.items;
