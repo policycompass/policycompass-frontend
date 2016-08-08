@@ -429,11 +429,6 @@ angular.module('pcApp.datasets.controllers.dataset', [
             };
 
             $scope.nextStep = function () {
-                var individualOrder = [];
-                for(var i=1;i<$scope.inputTable.items.length;i++){
-                    individualOrder.push($scope.inputTable.items[i][0]);
-                }
-                creationService.data.individualsOrder = individualOrder;
                 return true;
             }
         }
@@ -470,7 +465,6 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     individual_url = API_CONF.REFERENCE_POOL_URL + "/individuals?q=" + search_term;
                 }
                 $http.get(individual_url).
-                //$http.get(API_CONF.REFERENCE_POOL_URL + "/individuals?q=" + search_term).
                 success(function (data, status, headers, config) {
                     var suggestions = [];
                     suggestions.push({"name":search_term, "checked":false});
@@ -548,7 +542,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
             var sortIndividualSelection = function(){
                 var individualList = [];
-                for(var i=0; i<$scope.individualOrder.length; i++){
+                for(var i=0; i<$scope.individualOrder.length; iOrder++){
                     for(var j=0; j<$scope.individualSelection.length; j++){
                         if($scope.individualOrder[i] == $scope.individualSelection[j].name){
                             if($scope.individualSelection[j].selected.length > 0){
@@ -604,10 +598,47 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 creationService.data.individualSelectionBackup = individualsBackup;
             }
 
+            $scope.rotateData = function (_data) {
+                var data = data
+
+                var maxCol = 0;
+                var maxRow = 0;
+
+                _.each(data, function (element, index) {
+                    var rowFilled = false;
+                    _.each(element, function (element, index) {
+                        if(element !=  null) {
+                            rowFilled = true;
+                            if(index > maxCol) {
+                                maxCol = index;
+                            }
+                        }
+                    });
+                    if(rowFilled) {
+                        maxRow = index;
+                    }
+                });
+
+                var newData = [];
+                var i,j;
+                for (i = 0; i <= maxRow; i++) {
+                    for (j = 0; j <= maxCol; j++) {
+                        if(i == 0){
+                            newData[j] = [data[i][j]]
+                        }else {
+                            newData[j].push(data[i][j]);
+                        }
+                    }
+                }
+
+                return newData;
+            };
+
 
             var init = function () {
                 $scope.inputTable = creationService.data.inputTable;
                 $scope.inputTable.items = creationService.data.inputTable.items;
+                /*
                 if(creationService.data.individualsOrder.length > 0){
                     $scope.individualOrder = creationService.data.individualsOrder;
                 }
@@ -618,8 +649,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     }
                     creationService.data.individualsOrder = $scope.individualOrder;
                 }
-
-
+                */
                 if(creationService.data.individualSelectionBackup.length > 0){
                     restoreIndividuals();
                 }
@@ -722,7 +752,8 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     dialogs.error('Validation Error', 'Please choose one option for each Dimension.');
                     return false;
                 }
-                creationService.data.individualSelection = sortIndividualSelection();
+                //creationService.data.individualSelection = sortIndividualSelection();
+                creationService.data.individualSelection = $scope.individualSelection;
                 $scope.individualSelection = creationService.data.individualSelection;
 
                 if (creationService.data.individualSelection.length == 0) {
@@ -730,7 +761,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     return false;
                 }
 
-                renameIndividuals();
+                //renameIndividuals();
             };
 
         }
