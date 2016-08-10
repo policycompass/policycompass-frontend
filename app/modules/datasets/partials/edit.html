@@ -51,9 +51,13 @@
                             </div>
                         </div>
 
-                        <div class="form-group" ng-class="{'has-error': datasetForm.license.$dirty && datasetForm.license.$invalid}">
-                            <label for="license">Licence</label>
-                            <input type="text" class="form-control" id="license" name="license" placeholder="CC BY 3.0" ng-model="dataset.license">
+                        <div class="form-group">
+                            <label for="license">License</label>
+                            <div id="license"
+                                class="reference-selection-form pc-reference-selection-full"
+                                resource="License" selection-mode="single"
+                                ng-model="dataset.license_id" required>
+                            </div>
                         </div>
                     </fieldset>
                 </div>

@@ -174,9 +174,11 @@
                             <div class="field-content">{{ dataset.resource.custom }}</div>
                         </a>
                     </div>
-                    <div class="form-item" ng-if="dataset.license">
-                        <div class="field-label">Licence</div>
-                        <div class="field-content">{{ dataset.license }}</div>
+                    <div class="form-item" ng-if="dataset.license_id">
+                        <div class="field-label">License</div>
+                        <div class="field-content">
+                            <span resolve-license id="dataset.license_id"></span>
+                        </div>
                     </div>
                 </div>
 

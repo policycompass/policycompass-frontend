@@ -27,9 +27,10 @@
                         <div id="language" class="reference-selection pc-reference-selection-full" resource="Language" selection-mode="single" output="language.output" input="language.input"></div>
                     </div>
 
-                    <div class="form-group" ng-class="{'has-error': datasetForm.license.$dirty && datasetForm.license.$invalid}">
+                    <div class="form-group">
                         <label for="license">Licence</label>
-                        <input type="text" class="form-control" id="license" name="license" placeholder="CC BY 3.0" ng-model="dataset.license" required>
+
+                        <div id="license" class="reference-selection pc-reference-selection-full" resource="License" selection-mode="single" output="license.output" input="license.input"></div>
                     </div>
                 </fieldset>
             </div>
