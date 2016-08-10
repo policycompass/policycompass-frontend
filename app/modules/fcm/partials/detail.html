@@ -101,6 +101,39 @@
                     </table>
                 </tab>
 
+                <tab heading="Related Models">
+                    <div class="search-results row-flex">
+                        <div ng-repeat="model in relatedModels" class="result-wrapper result-wrapper-fuzzymap">
+                            <div class="result-block searchItemIcon fuzzymapIcon" ng-cloak>
+                                <div class="search-result">
+                                    <h5>
+                                        <a href="#!/models/{{ model._source.id }}">{{ model._source.title }}</a>
+                                    </h5>
+
+                                    <div class="attributes">
+
+                                        <p>{{ model._source.description | limitTo:200 }}...</p>
+
+                                        <div class="key-field">
+                                            <label class="key-field-title">Keywords: </label>
+                                            {{ model._source.keywords |date:'d-M-yy'}}
+                                        </div>
+                                        <div class="key-field">
+                                            <label class="key-field-title">Comments: </label>
+                                            {{ model._source.commentsCount }}
+                                        </div>
+                                        <div class="key-field">
+                                            <label class="key-field-title">Rating: </label>
+                                            <pc-rating rating-id="fuzzymap_{{model._source.id}}" readonly="true"></pc-rating>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="texticon texticon-fuzzymap"></div>
+                            </div>
+                        </div>
+                    </div>
+                </tab>
+
                 <!--<tab heading="Simulation">Simulation</tab>
 
                 <tab heading="Graph">Graph</tab>-->

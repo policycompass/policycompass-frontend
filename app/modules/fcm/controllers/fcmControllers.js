@@ -36,7 +36,8 @@ angular.module('pcApp.fcm.controllers.fcm', [
         '$log',
         'FcmSearchUpdate',
         'Auth',
-        function ($scope, $rootScope, $routeParams, $location, FcmModel, FcmActivator, FcmSearchDelete, dialogs, $log, FcmSearchUpdate, Auth) {
+        'searchclient',
+        function ($scope, $rootScope, $routeParams, $location, FcmModel, FcmActivator, FcmSearchDelete, dialogs, $log, FcmSearchUpdate, Auth, searchclient) {
             $scope.mapData = [];
             $scope.edgeData = [];
             $scope.Concepts = [];
@@ -47,7 +48,7 @@ angular.module('pcApp.fcm.controllers.fcm', [
 
             $scope.user = Auth;
 
-            $scope.models = FcmModel.get({id: $routeParams.fcmId}, function (fcmList) {
+            $scope.models = FcmModel.get({ id: $routeParams.fcmId }, function (fcmList) {
                 for (i = 0; i < $scope.models.concepts.length; i++) {
                     var newNode = {
                         id: $scope.models.concepts[i].id.toString(),
@@ -84,8 +85,42 @@ angular.module('pcApp.fcm.controllers.fcm', [
 
                 // broadcasting the event
                 $rootScope.$broadcast('appChanged');
+
+                var reqData = {
+                    "body": {
+                        "size": 1000,
+                        "from": 0,
+                        "sort": ["title.lower_case_sort"],
+                        "query": {
+                            "bool": {
+                                "must": [{ "term": { "_type": "fuzzymap" } }],
+                                "should": []
+                            }
+                        }
+                    },
+                    "index": "policycompass_search"
+                };
+
+                angular.forEach($scope.models.model.keywords.toString().split(','), function (item) {
+                    if (reqData.body.query.bool.must.length == 1) {
+                        reqData.body.query.bool.must.push({ "match_phrase": { "keywords": $.trim(item) + ",*" } });
+                        reqData.body.query.bool.must.push({ "match_phrase": { "keywords": "*," + $.trim(item) } });
+                    }
+                    else {
+                        reqData.body.query.bool.should.push({ "match_phrase": { "keywords": $.trim(item) + ",*" } });
+                        reqData.body.query.bool.should.push({ "match_phrase": { "keywords": "*," + $.trim(item) } });
+                    }
+                });
+
+                searchclient.search(reqData).then(function (resp) {
+                    $scope.relatedModels = resp.hits.hits;
+
+                }, function (err) {
+                    console.trace(err.message);
+                });
+
             }, function (err) {
-                throw {message: JSON.stringify(err.data)};
+                throw { message: JSON.stringify(err.data) };
             });
 
             // Function for deleting the FCM Model
@@ -136,12 +171,12 @@ angular.module('pcApp.fcm.controllers.fcm', [
                     $('#tooltipTarget').trigger('customEvent');
             };
 
-            $scope.setUpdateModelValues = function(model) {
+            $scope.setUpdateModelValues = function (model) {
                 $scope.updateModels = {
-                    ModelID : model.model.id.toString(),
-                    description : model.model.description,
-                    keywords : model.model.keywords,
-                    title : model.model.title
+                    ModelID: model.model.id.toString(),
+                    description: model.model.description,
+                    keywords: model.model.keywords,
+                    title: model.model.title
                 };
 
                 for (i = 0; i < model.connections.length; i++) {
@@ -156,7 +191,7 @@ angular.module('pcApp.fcm.controllers.fcm', [
 
                     for (j = 0; j < $scope.Concepts.length; j++) {
                         if (Association.sourceID == $scope.Concepts[j].Id)
-                            Association.source =$scope.Concepts[j];
+                            Association.source = $scope.Concepts[j];
                         if (Association.destinationID == $scope.Concepts[j].Id)
                             Association.destination = $scope.Concepts[j];
                     }
@@ -169,10 +204,10 @@ angular.module('pcApp.fcm.controllers.fcm', [
                         dateAddedtoPC: model.concepts[i].dateAddedtoPC,
                         dateModified: model.concepts[i].dateModified,
                         description: model.concepts[i].description,
-                        metric_id : model.concepts[i].metric_id,
+                        metric_id: model.concepts[i].metric_id,
                         scale: model.concepts[i].scale,
                         title: model.concepts[i].title,
-                        value : model.concepts[i].value,
+                        value: model.concepts[i].value,
                         x: model.concepts[i].positionX,
                         y: model.concepts[i].positionY,
                     };
@@ -183,23 +218,23 @@ angular.module('pcApp.fcm.controllers.fcm', [
             $scope.updateModel = function () {
 
                 var jsonModel = {
-                    model : $scope.updateModels,
+                    model: $scope.updateModels,
                     userID: "1",
-                    concepts : $scope.updateConcepts,
-                    connections : $scope.updateAssociations
+                    concepts: $scope.updateConcepts,
+                    connections: $scope.updateAssociations
                 }
 
                 $scope.fcmModelUpdate = new FcmModel();
                 $scope.fcmModelUpdate.data = jsonModel;
                 $scope.md = jsonModel;
-                FcmModel.update({id: $routeParams.fcmId}, $scope.fcmModelUpdate, function (value) {
-                    FcmSearchUpdate.update({id: $routeParams.fcmId}, function () {
+                FcmModel.update({ id: $routeParams.fcmId }, $scope.fcmModelUpdate, function (value) {
+                    FcmSearchUpdate.update({ id: $routeParams.fcmId }, function () {
                         $location.path('/models/' + $routeParams.fcmId + '/edit');
                     });
                 });
             };
 
-//            $scope.updateModel();
+            //            $scope.updateModel();
         }
     ])
 

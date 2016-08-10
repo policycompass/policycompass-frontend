@@ -122,7 +122,7 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                         },
                         style: cytoscape.stylesheet().selector('node').css({
                             'shape': 'roundrectangle',
-                            'width': '200',
+                            'width': '300', //https://github.com/policycompass/policycompass/issues/646
                             'height': '40',
                             'background-color': 'data(typeColor)',
                             'content': 'data(name)',
