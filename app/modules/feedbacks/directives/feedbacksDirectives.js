@@ -19,7 +19,7 @@ angular.module('pcApp.feedbacks.directives.feedbacksDirectives', [])
                             $scope.feedback = Feedback;
                             $scope.submit = function () {
                                 $scope.submitted = true;
-                                $scope.feedback.saveFeedback($scope.name_text, $scope.email_address, $scope.subject_text, $scope.message_text, $location.absUrl());
+                                $scope.feedback.saveFeedback($scope.name_text, $scope.email_address, $scope.subject_text, $scope.message_text, $location.absUrl(), $scope.category.output[0]);
                             }
                             $scope.close = function(){
                                 $modalInstance.close();

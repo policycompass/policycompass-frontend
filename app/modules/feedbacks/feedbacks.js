@@ -4,6 +4,7 @@
 
 angular.module('pcApp.feedbacks', [
     'pcApp.feedbacks.directives.feedbacksDirectives',
+    'pcApp.feedbacks.directives.resolve',
     //'pcApp.feedbacks.services.feedbacksServices',
     'pcApp.feedbacks.controllers.feedback'
 ])

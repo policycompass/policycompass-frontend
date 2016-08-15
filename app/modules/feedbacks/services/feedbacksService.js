@@ -20,15 +20,35 @@ angular.module('pcApp.feedbacks.services.feedbacksService', [
                 }
             });
 
-            Feedback.saveFeedback = function(name, email, subject, message, link){
+            Feedback.saveFeedback = function(name, email, subject, message, link, category_id){
                 return this.save({
                     name: name,
                     email: email,
                     subject: subject,
                     message: message,
-                    link: link
+                    link: link,
+                    category_id: category_id
                 })
             };
             return Feedback;
          }
+    ])
+    .factory('FeedbackCategory', [
+        '$resource', 'API_CONF', function ($resource, API_CONF) {
+            var url = API_CONF.FEEDBACK_MANAGER_URL + "/categories/:id";
+            var Language = $resource(url, {
+                id: "@id"
+            }, {
+                get: {
+                    method: 'GET',
+                    cache: true
+                },
+                query: {
+                    method: 'GET',
+                    cache: true,
+                    isArray: true
+                }
+            });
+            return Language;
+        }
     ])
