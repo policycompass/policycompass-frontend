@@ -63,7 +63,7 @@
 
                             <div class="form-group" ng-class="{'has-error': datasetForm.url.$dirty && datasetForm.url.$invalid}">
                                 <label for="url">URL *</label>
-                                <input type="text" class="form-control" id="url" name="url" placeholder="http://eurostat.eu/1282" ng-model="dataset.url" required>
+                                <input type="text" class="form-control" id="url" name="url" placeholder="http://eurostat.eu/1282" ng-model="dataset.url" ng-blur="checkExternalResources()"required>
                             </div>
 
                         </div>

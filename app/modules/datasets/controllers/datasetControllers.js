@@ -919,7 +919,8 @@ angular.module('pcApp.datasets.controllers.dataset', [
         'Dataset',
         '$location',
         'Individual',
-        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService, $filter, Dataset, $location, Individual) {
+        'ExternalResource',
+        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService, $filter, Dataset, $location, Individual, ExternalResource) {
 
             var init = function () {
                 $scope.selectedIndividuals = [];
@@ -1075,6 +1076,16 @@ angular.module('pcApp.datasets.controllers.dataset', [
             $scope.saveObject = {
                 saveFinish: saveFinish,
                 saveCopy: saveCopy
+            };
+
+            $scope.checkExternalResources = function(){
+                var externalsList = ExternalResource.query(null, function(){
+                    externalsList.forEach(function(external){
+                        if($scope.dataset.url.toLowerCase().includes(external.title.toLowerCase())){
+                            $scope.external_resource.input = [external.id];
+                        }
+                    });
+                });
             };
 
         }
