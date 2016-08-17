@@ -78,4 +78,19 @@ angular.module('pcApp.references.directives.resolve', [
                 template: '<span>{{ policydomain.title }}</span>'
             };
         }
+    ])
+
+    .directive('resolveLicense', [
+        '$log', 'License', function ($log, License) {
+            return {
+                scope: {
+                    id: '='
+                },
+                link: function (scope, element, attrs, ctrls) {
+                    scope.license = License.get({id: scope.id}, function () {
+                    });
+                },
+                template: '<a href="{{license.url}}" target="_blank">{{ license.title }}</a>'
+            };
+        }
     ]);

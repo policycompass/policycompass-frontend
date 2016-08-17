@@ -953,6 +953,10 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     input: creationService.data.dataset.external_resource,
                     output: []
                 };
+                $scope.license = {
+                    input: creationService.data.dataset.license,
+                    output: []
+                };
 
                 $scope.custom = false;
             };
@@ -964,6 +968,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 creationService.data.dataset.language = $scope.language.output;
                 creationService.data.dataset.policy_domains = $scope.policy_domains.output;
                 creationService.data.dataset.external_resource = $scope.external_resource.output;
+                creationService.data.dataset.license = $scope.license.output;
                 //creationService.data.dataset =   $scope.dataset;
             };
 
@@ -1029,7 +1034,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 payload.title = $scope.dataset.title;
                 payload.acronym = $scope.dataset.acronym;
                 payload.keywords = $scope.dataset.keywords;
-                payload.license = $scope.dataset.license;
+                if($scope.license.output) payload.license_id = $scope.license.output[0];
                 payload.description = $scope.dataset.description;
                 payload.spatials = $scope.spatials.output;
                 payload.language_id = $scope.language.output[0];
