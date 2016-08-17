@@ -922,6 +922,58 @@ angular.module('pcApp.datasets.controllers.dataset', [
         'ExternalResource',
         function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService, $filter, Dataset, $location, Individual, ExternalResource) {
 
+            $scope.checkExternalResources = function(){
+                var externalsList = ExternalResource.query(null, function(){
+                    externalsList.forEach(function(external){
+                        if($scope.dataset.url.toLowerCase().includes(external.title.toLowerCase())){
+                            $scope.external_resource.input = [external.id];
+                        }
+                    });
+                });
+            };
+            
+            var init = function () {
+                $scope.selectedIndividuals = [];
+                var individualsList = Individual.query(null, function(){
+                    individualsList.forEach(function(individual){
+                        creationService.data.individualSelection.forEach(function(selectedIndividual){
+                            if(individual.title == selectedIndividual){
+                                $scope.selectedIndividuals.push(individual.id);
+                            }
+                        });
+                    });
+                });
+
+                $scope.spatials = {
+                    input: $scope.selectedIndividuals,
+                    output: []
+                };
+
+                $scope.dataset = creationService.data.dataset;
+
+
+                $scope.language = {
+                    input: creationService.data.dataset.language,
+                    output: []
+                };
+                $scope.policy_domains = {
+                    input: creationService.data.dataset.policy_domains,
+                    output: []
+                };
+                $scope.external_resource = {
+                    input: creationService.data.dataset.external_resource,
+                    output: []
+                };
+
+                if(typeof $scope.external_resource.input === 'undefined' && typeof $scope.dataset.url !== "undefined"){
+                    $scope.checkExternalResources();
+                }
+
+                $scope.custom = false;
+            };
+
+            init();
+
             $scope.prevStep = function () {
                 creationService.data.dataset.spatials = $scope.spatials.output;
                 creationService.data.dataset.language = $scope.language.output;
@@ -1039,58 +1091,6 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 saveFinish: saveFinish,
                 saveCopy: saveCopy
             };
-
-            $scope.checkExternalResources = function(){
-                var externalsList = ExternalResource.query(null, function(){
-                    externalsList.forEach(function(external){
-                        if($scope.dataset.url.toLowerCase().includes(external.title.toLowerCase())){
-                            $scope.external_resource.input = [external.id];
-                        }
-                    });
-                });
-            };
-
-             var init = function () {
-                $scope.selectedIndividuals = [];
-                var individualsList = Individual.query(null, function(){
-                    individualsList.forEach(function(individual){
-                        creationService.data.individualSelection.forEach(function(selectedIndividual){
-                            if(individual.title == selectedIndividual){
-                                $scope.selectedIndividuals.push(individual.id);
-                            }
-                        });
-                    });
-                });
-
-                $scope.spatials = {
-                    input: $scope.selectedIndividuals,
-                    output: []
-                };
-
-                $scope.dataset = creationService.data.dataset;
-
-
-                $scope.language = {
-                    input: creationService.data.dataset.language,
-                    output: []
-                };
-                $scope.policy_domains = {
-                    input: creationService.data.dataset.policy_domains,
-                    output: []
-                };
-                $scope.external_resource = {
-                    input: creationService.data.dataset.external_resource,
-                    output: []
-                };
-
-                if(typeof $scope.external_resource.input === 'undefined' && typeof $scope.dataset.url !== "undefined"){
-                    $scope.checkExternalResources();
-                }
-
-                $scope.custom = false;
-            };
-
-            init();
 
         }
     ])
