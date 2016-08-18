@@ -42,8 +42,7 @@ angular.module('pcApp.stories.controllers.storyController', ['pcApp.stories.serv
 
             $scope.addChapter = function(){
                 $scope.chapterCount++;
-                $scope.chapters.push({"chapterIndex":$scope.chapterCount, "contents":[]});
-                angular.element(document.getElementById('chaptersDiv')).append($compile("<div id='chapter"+$scope.chapterCount+"' <ng-model='chapter"+$scope.chapterCount+"' class='well'> <div class='row'> <div class='col-xs-4'> <h4>Chapter "+$scope.chapterCount+"</h4> </div> <div class='btn-group col-xs-offset-7 col-xs-1 text-right'> <a href='' id='removeChapter+"+$scope.chapterCount+"' class='btn btn-danger fa-trash-o' ng-click='removeChapter("+$scope.chapterCount+")'></a> </div> </div> <br> <input class='form-control' id='chapter"+$scope.chapterCount+"_title' type='text' name='chapter"+$scope.chapterCount+"_title' data-ng-model='chapter"+$scope.chapterCount+"_title' placeholder='Chapter "+$scope.chapterCount+" Title' required> <br> <div id='chapter"+$scope.chapterCount+"_content' name='chapter"+$scope.chapterCount+"_content' class='story-chapter-content well'> <div id='chapter"+$scope.chapterCount+"_content_toolbox' name='chapter"+$scope.chapterCount+"_content_toolbox' class='story-chapter-content-toolbox'> <div class='row'> <div class='btn-group col-xs-4'> <a href='' id='addMetricButton"+$scope.chapterCount+"' class='btn btn-default fonticon-metric' ng-click='addToChapter("+$scope.chapterCount+", 0, "+1+")'></a> <a href='' id='addVisualisationButton"+$scope.chapterCount+"' class='btn btn-default fonticon-visualisation' ng-click='addToChapter("+$scope.chapterCount+", 1, "+2+")'></a> <a href='' id='addCausalButton"+$scope.chapterCount+"' class='btn btn-default fa-bar-chart-o' ng-click='addToChapter("+$scope.chapterCount+", 2)'></a> </div> </div> </div> <div> <textarea class='form-control' rows=10 id='chapter"+$scope.chapterCount+"_text' type='text' name='chapter"+$scope.chapterCount+"_text' data-ng-model='chapter"+$scope.chapterCount+"_text' required placeholder='Chapter "+$scope.chapterCount+" Text' required></textarea> </div></div> </div>")($scope));
+                $scope.chapters.push({"number":$scope.chapterCount, "contents":[]});
             };
 
             $scope.removeChapter = function(index){
@@ -51,7 +50,7 @@ angular.module('pcApp.stories.controllers.storyController', ['pcApp.stories.serv
                 dlg.result.then(function () {
                     $("#chapter"+index).remove();
                     for(var j=0; j<$scope.chapters.length;j++){
-                        if($scope.chapters[j].chapterIndex == index){
+                        if($scope.chapters[j].number == index){
                             $scope.chapters.splice(j, 1);
                         }
                     }
@@ -61,7 +60,7 @@ angular.module('pcApp.stories.controllers.storyController', ['pcApp.stories.serv
             $scope.addToChapter = function(chapterIndex, contentType, contentIndex){
                 var arrayIndex = 0;
                 for(var i=0; i<$scope.chapters.length;i++){
-                    if($scope.chapters[i].chapterIndex == chapterIndex){
+                    if($scope.chapters[i].number == chapterIndex){
                         arrayIndex = i;
                     }
                 }
@@ -77,8 +76,8 @@ angular.module('pcApp.stories.controllers.storyController', ['pcApp.stories.serv
 
                 for(var i=0; i<$scope.chapters.length;i++){
                     var newChapter = {};
-                    newChapter.title = $scope.$eval('chapter'+$scope.chapters[i].chapterIndex+'_title')
-                    newChapter.text = $scope.$eval('chapter'+$scope.chapters[i].chapterIndex+'_text');
+                    newChapter.title = angular.element('#chapter'+$scope.chapters[i].number+'_title').val()
+                    newChapter.text = angular.element('#chapter'+$scope.chapters[i].number+'_text').val()
                     newChapter.number = i;
                     newChapter.contents = $scope.chapters[i].contents;
                     newChapters.push(newChapter);
@@ -150,9 +149,6 @@ angular.module('pcApp.stories.controllers.storyController', ['pcApp.stories.serv
                                 $scope.oldContents.push($scope.storyChapters[i].contents[j]);
                             }
                         }
-                        prepareChapters();
-                        //organizeContents();
-                        //splitChapterTextsForContents();
                     }
                 });
             }
@@ -160,7 +156,7 @@ angular.module('pcApp.stories.controllers.storyController', ['pcApp.stories.serv
             $scope.addToChapter = function(chapterIndex, contentType, contentIndex){
                 var arrayIndex = 0;
                 for(var i=0; i<$scope.chapters.length;i++){
-                    if($scope.chapters[i].chapterIndex == chapterIndex){
+                    if($scope.chapters[i].number == chapterIndex){
                         arrayIndex = i;
                     }
                 }
@@ -176,8 +172,8 @@ angular.module('pcApp.stories.controllers.storyController', ['pcApp.stories.serv
 
                 for(var i=0; i<$scope.chapters.length;i++){
                     var newChapter = {};
-                    newChapter.title = $scope.$eval('chapter'+$scope.chapters[i].chapterIndex+'_title')
-                    newChapter.text = $scope.$eval('chapter'+$scope.chapters[i].chapterIndex+'_text');
+                    newChapter.title = angular.element('#chapter'+$scope.chapters[i].number+'_title').val()
+                    newChapter.text = angular.element('#chapter'+$scope.chapters[i].number+'_text').val()
                     newChapter.number = i;
                     newChapter.contents = $scope.chapters[i].contents;
                     newChapters.push(newChapter);
@@ -186,19 +182,9 @@ angular.module('pcApp.stories.controllers.storyController', ['pcApp.stories.serv
 
             }
 
-            var prepareChapters = function(){
-                for(var i=0; i<$scope.storyChapters.length; i++){
-                    angular.element(document.getElementById('chaptersDiv')).append($compile("<div id='chapter"+$scope.storyChapters[i].number+"' <ng-model='chapter"+$scope.storyChapters[i].number+"' class='well'> <div class='row'> <div class='col-xs-4'> <h4>Chapter "+eval($scope.storyChapters[i].number+1)+"</h4> </div> <div class='btn-group col-xs-offset-7 col-xs-1 text-right'> <a href='' id='removeChapter+"+$scope.storyChapters[i].number+"' class='btn btn-danger fa-trash-o' ng-click='removeChapter("+$scope.storyChapters[i].number+")'></a> </div> </div> <br> <input class='form-control' id='chapter"+$scope.storyChapters[i].number+"_title' type='text' name='chapter"+$scope.storyChapters[i].number+"_title' data-ng-model='chapter"+$scope.storyChapters[i].number+"_title' placeholder='Chapter "+$scope.storyChapters[i].number+" Title' required> <br> <div id='chapter"+$scope.storyChapters[i].number+"_content' name='chapter"+$scope.storyChapters[i].number+"_content' class='story-chapter-content well'> <div id='chapter"+$scope.storyChapters[i].number+"_content_toolbox' name='chapter"+$scope.storyChapters[i].number+"_content_toolbox' class='story-chapter-content-toolbox'> <div class='row'> <div class='btn-group col-xs-4'> <a href='' id='addMetricButton"+$scope.storyChapters[i].number+"' class='btn btn-default fonticon-metric' ng-click='addToChapter("+$scope.storyChapters[i].number+", 0, 1)'></a> <a href='' id='addVisualisationButton"+$scope.storyChapters[i].number+"' class='btn btn-default fonticon-visualisation' ng-click='addToChapter("+$scope.storyChapters[i].number+", 1, 2)'></a> <a href='' id='addCausalButton"+$scope.storyChapters[i].number+"' class='btn btn-default fa-bar-chart-o' ng-click='addToChapter("+$scope.storyChapters[i].number+", 2)'></a> </div> </div> </div> <div> <textarea class='form-control' rows=10 id='chapter"+$scope.storyChapters[i].number+"_text' type='text' name='chapter"+$scope.storyChapters[i].number+"_text' data-ng-model='chapter"+$scope.storyChapters[i].number+"_text' required placeholder='Chapter "+$scope.storyChapters[i].number+" Text' required></textarea> </div></div> </div>")($scope));
-                    $scope['chapter'+$scope.storyChapters[i].number+'_title'] = $scope.storyChapters[i].title;
-                    $scope['chapter'+$scope.storyChapters[i].number+'_text'] = $scope.storyChapters[i].text;
-                    $scope.storyChapters[i].chapterIndex = i;
-                }
-            }
-
             $scope.addChapter = function(){
                 $scope.chapterCount++;
-                $scope.chapters.push({"chapterIndex":$scope.chapterCount, "contents":[]});
-                angular.element(document.getElementById('chaptersDiv')).append($compile("<div id='chapter"+$scope.chapterCount+"' <ng-model='chapter"+$scope.chapterCount+"' class='well'> <div class='row'> <div class='col-xs-4'> <h4>Chapter "+$scope.chapterCount+"</h4> </div> <div class='btn-group col-xs-offset-7 col-xs-1 text-right'> <a href='' id='removeChapter+"+$scope.chapterCount+"' class='btn btn-danger fa-trash-o' ng-click='removeChapter("+$scope.chapterCount+")'></a> </div> </div> <br> <input class='form-control' id='chapter"+$scope.chapterCount+"_title' type='text' name='chapter"+$scope.chapterCount+"_title' data-ng-model='chapter"+$scope.chapterCount+"_title' placeholder='Chapter "+$scope.chapterCount+" Title' required> <br> <div id='chapter"+$scope.chapterCount+"_content' name='chapter"+$scope.chapterCount+"_content' class='story-chapter-content well'> <div id='chapter"+$scope.chapterCount+"_content_toolbox' name='chapter"+$scope.chapterCount+"_content_toolbox' class='story-chapter-content-toolbox'> <div class='row'> <div class='btn-group col-xs-4'> <a href='' id='addMetricButton"+$scope.chapterCount+"' class='btn btn-default fonticon-metric' ng-click='addToChapter("+$scope.chapterCount+", 0, 1)'></a> <a href='' id='addVisualisationButton"+$scope.chapterCount+"' class='btn btn-default fonticon-visualisation' ng-click='addToChapter("+$scope.chapterCount+", 1, 2)'></a> <a href='' id='addCausalButton"+$scope.chapterCount+"' class='btn btn-default fa-bar-chart-o' ng-click='addToChapter("+$scope.chapterCount+", 2)'></a> </div> </div> </div> <div> <textarea class='form-control' rows=10 id='chapter"+$scope.chapterCount+"_text' type='text' name='chapter"+$scope.chapterCount+"_text' data-ng-model='chapter"+$scope.chapterCount+"_text' required placeholder='Chapter "+$scope.chapterCount+" Text' required></textarea> </div></div> </div>")($scope));
+                $scope.chapters.push({"number":$scope.chapterCount, "contents":[]});
             };
 
             $scope.saveStory = function(){
@@ -216,8 +202,6 @@ angular.module('pcApp.stories.controllers.storyController', ['pcApp.stories.serv
                         $location.path('/stories/' + response.data.result.id);
                     }
                 });
-
-
             }
 
             $scope.removeChapter = function(index){
@@ -225,7 +209,7 @@ angular.module('pcApp.stories.controllers.storyController', ['pcApp.stories.serv
                 dlg.result.then(function () {
                     $("#chapter"+index).remove();
                     for(var j=0; j<$scope.chapters.length;j++){
-                        if($scope.chapters[j].chapterIndex == index){
+                        if($scope.chapters[j].number == index){
                             $scope.chapters.splice(j, 1);
                         }
                     }
@@ -369,10 +353,6 @@ angular.module('pcApp.stories.controllers.storyController', ['pcApp.stories.serv
             var addContentsToHtml = function(){
                 for(var i=0; i<$scope.storyChapters.length;i++){
                     console.log("visu " + angular.toJson($scope.storyChapters[i].visualizations[0]));
-                    //angular.element(document.getElementById('metricsDiv'+i)).append($compile("")($scope));
-                    //angular.element(document.getElementById('visualizationsDiv'+i)).append($compile("<div class='col-lg-3 pc-tile' ng-repeat='rv in storyChapters["+i+"].visualizations'><div class='panel panel-default'> <div class='panel-heading'><a href='#!/visualizations/{{ rv.id }}'> <h3 class='panel-title'>{{ rv.title | limitTo: 25}} </h3></a> </div> <div class='panel-body'> <div class='visualization-graph-page-content'> <div ng-repeat='idvisulist in [rv.id]' ng-include='modules/visualization/partials/graph.html'></div></div></div> </div> </div>")($scope));
-                    angular.element(document.getElementById('visualizationsDiv'+i)).append($compile("<div class='panel panel-default col-xs-4'> <div class='panel-heading'><a href='#!/visualizations/{{ storyChapters["+i+"].visualizations["+i+"].id }}'> <h3 class='panel-title'>{{ storyChapters["+i+"].visualizations["+i+"].title | limitTo: 25}} </h3></a> </div> <div class='panel-body'> <div class='visualization-graph-page-content'> <div ng-repeat='idvisulist in [storyChapters["+i+"].visualizations["+i+"].id]' ng-include='modules/visualization/partials/graph.html'></div></div></div> </div> </div>")($scope));
-                    //angular.element(document.getElementById('causalsDiv'+i)).append($compile("")($scope));
                 }
 
             }

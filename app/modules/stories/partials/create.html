@@ -25,8 +25,40 @@
             <br>
             <br>
 
-            <div id="chaptersDiv">
+            <div id="chaptersDiv" ng-repeat="chapter in chapters">
+                <div id='chapter{{chapter.number}}' class='well'>
+                    <div class='row'>
+                        <div class='col-xs-4'>
+                            <h4 ng-show="chapter.title.length > 0"> {{ chapter.title }}</h4>
+                            <h4 ng-hide="chapter.title.length > 0">Chapter {{ chapter.number }}</h4>
+                        </div>
 
+                        <div class='btn-group col-xs-offset-7 col-xs-1 text-right'>
+                            <a href='' id='removeChapter{{chapter.number}}' class='btn btn-danger fa-trash-o' ng-click='removeChapter(chapter.number)'></a>
+                        </div>
+                    </div>
+
+                    <br>
+
+                    <input class='form-control' value="{{ chapter.title }}" id='chapter{{chapter.number}}_title' type='text' name='chapter{{chapter.number}}_title' placeholder='Chapter {{chapter.number}} Title' required>
+
+                    <br>
+
+                    <div id='chapter{{chapter.number}}_content' name='chapter{{chapter.number}}_content' class='story-chapter-content well'>
+                        <div id='chapter{{chapter.number}}_content_toolbox' name='chapter{{chapter.number}}_content_toolbox' class='story-chapter-content-toolbox'>
+                            <div class='row'>
+                                <div class='btn-group col-xs-4'>
+                                    <a href='' id='addMetricButton{{chapter.number}}' class='btn btn-default fonticon-metric' ng-click='addToChapter(chapter.number, 0, 1)'></a>
+                                    <a href='' id='addVisualisationButton{{chapter.number}}' class='btn btn-default fonticon-visualisation' ng-click='addToChapter(chapter.number, 1, 2)'></a>
+                                    <a href='' id='addCausalButton{{chapter.number}}' class='btn btn-default fa-bar-chart-o' ng-click='addToChapter(chapter.number, 2)'></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <textarea class='form-control' rows=10 id='chapter{{chapter.number}}_text' type='text' name='chapter{{chapter.number}}_text' required placeholder='Chapter {{chapter.number}} Text' required>{{ chapter.text }}</textarea>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </form>
