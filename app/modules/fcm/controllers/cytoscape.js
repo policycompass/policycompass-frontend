@@ -118,7 +118,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         };
     })
 
-    .controller('CytoscapeCtrl', function ($scope, $rootScope, $window, $routeParams, $location, $translate, Fcm, FcmModel, FcmWekaOutput, searchclient, FcmSimulation, FcmActivator, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, SimulationConceptsDetail, AssociationsDetail, SimulationAssociationsDetail, EditConcept, EditAssociation, FCMActivatorDetail, Dataset, FcmIndicator, Auth, $q) {
+    .controller('CytoscapeCtrl', function (API_CONF, $scope, $rootScope, $window, $routeParams, $location, $translate, Fcm, FcmModel, FcmWekaOutput, searchclient, FcmSimulation, FcmActivator, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, SimulationConceptsDetail, AssociationsDetail, SimulationAssociationsDetail, EditConcept, EditAssociation, FCMActivatorDetail, Dataset, FcmIndicator, Auth, $q) {
         // container objects
         $scope.user = Auth;
         $scope.Models = [];
@@ -182,33 +182,38 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
                 FCMModelsDetail.setModels(model);
 
-                var reqData = {
-                    "body": {
-                        "size": 1000,
-                        "from": 0,
-                        "sort": ["title.lower_case_sort"],
-                        "query": {
-                            "bool": {
-                                "must": [{ "term": { "_type": "fuzzymap" } }],
-                                "should": []
+                var query = {
+                    "bool": {
+                        "must": [{
+                            "term": {
+                                "_type": "fuzzymap"
                             }
-                        }
-                    },
-                    "index": "policycompass_search"
+                        }, {
+                            "match": {
+                                "keywords": ""
+                            }
+                        }]
+                    }
                 };
-
                 angular.forEach($scope.modeldetail.model.keywords.toString().split(','), function (item) {
-                    if (reqData.body.query.bool.must.length == 1) {
-                        reqData.body.query.bool.must.push({ "match_phrase": { "keywords": $.trim(item) + ",*" } });
-                        reqData.body.query.bool.must.push({ "match_phrase": { "keywords": "*," + $.trim(item) } });
-                    }
-                    else {
-                        reqData.body.query.bool.should.push({ "match_phrase": { "keywords": $.trim(item) + ",*" } });
-                        reqData.body.query.bool.should.push({ "match_phrase": { "keywords": "*," + $.trim(item) } });
-                    }
+                    if (query.bool.must[1].match.keywords == "")
+                        query.bool.must[1].match.keywords = $.trim(item);
+                    else
+                        query.bool.must[1].match.keywords = query.bool.must[1].match.keywords + ', ' + $.trim(item);
                 });
 
-                searchclient.search(reqData).then(function (resp) {
+                var request = {
+                    index: API_CONF.ELASTIC_INDEX_NAME,
+                    type: 'fuzzymap',
+                    body: {
+                        size: 1000,
+                        from: 0,
+                        sort: ["_score", "title.lower_case_sort"],
+                        query: query
+                    }
+                };
+
+                searchclient.search(request).then(function (resp) {
                     $scope.relatedModels = resp.hits.hits;
                     //$.each(resp.hits.hits, function (index, item) {
                     //    console.log(item._type);
@@ -647,82 +652,6 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                     $scope.conceptStyle[i] = { "color": "#286090" };
                 }
             }
-
-            //for (i = 0; i < $scope.SimulationAssociations.length; i++) {
-            //    for (j = 0; j < $scope.SimulationConcepts.length; j++) {
-            //        if ($scope.SimulationConcepts[j].Id == $scope.SimulationAssociations[i].source.Id) {
-            //            if ($scope.SimulationConcepts[j].metricId != 0) {
-            //                if ((i + 1) == 1)
-            //                    $scope.SimulationAssociations[i].weighted = 0.25; else if ((i + 1) % 5 == 0)
-            //                        $scope.SimulationAssociations[i].weighted = -0.25; else if ((i + 1) % 4 == 0)
-            //                            $scope.SimulationAssociations[i].weighted = 0.75; else if ((i + 1) % 3 == 0)
-            //                                $scope.SimulationAssociations[i].weighted = -0.5; else if ((i + 1) % 2 == 0)
-            //                                    $scope.SimulationAssociations[i].weighted = 0.5; else
-            //                                    $scope.SimulationAssociations[i].weighted = 1;
-            //                $scope.relationShipStyle[i] = { "color": "#286090" };
-            //            }
-            //        }
-
-            //        if ($scope.SimulationConcepts[j].Id == $scope.SimulationAssociations[i].destination.Id) {
-            //            if ($scope.SimulationConcepts[j].metricId != 0) {
-            //                if ((i + 1) == 1)
-            //                    $scope.SimulationAssociations[i].weighted = 0.25; else if ((i + 1) % 5 == 0)
-            //                        $scope.SimulationAssociations[i].weighted = -0.25; else if ((i + 1) % 4 == 0)
-            //                            $scope.SimulationAssociations[i].weighted = 0.75; else if ((i + 1) % 3 == 0)
-            //                                $scope.SimulationAssociations[i].weighted = -0.5; else if ((i + 1) % 2 == 0)
-            //                                    $scope.SimulationAssociations[i].weighted = 0.5; else
-            //                                    $scope.SimulationAssociations[i].weighted = 1;
-            //                $scope.relationShipStyle[i] = { "color": "#286090" };
-            //            }
-            //        }
-            //    }
-            //}
-
-            ////for (i = 0; i < $scope.SimulationConcepts.length; i++) {
-            ////    if ($scope.SimulationConcepts[i].metricId != 0) {
-            ////        if ((i + 1) == 1)
-            ////            $scope.SimulationConcepts[i].value = 0.8; else if ((i + 1) % 5 == 0)
-            ////                $scope.SimulationConcepts[i].value = 1; else if ((i + 1) % 4 == 0)
-            ////                    $scope.SimulationConcepts[i].value = 0.4; else if ((i + 1) % 3 == 0)
-            ////                        $scope.SimulationConcepts[i].value = 0.6; else if ((i + 1) % 2 == 0)
-            ////                            $scope.SimulationConcepts[i].value = 0.2; else
-            ////                            $scope.SimulationConcepts[i].value = 0.8;
-            ////        $scope.conceptStyle[i] = { "color": "#286090" };
-            ////    }
-            ////}
-            ////for (i = 0; i < $scope.SimulationAssociations.length; i++) {
-            ////    for (j = 0; j < $scope.SimulationConcepts.length; j++) {
-            ////        if ($scope.SimulationConcepts[j].Id == $scope.SimulationAssociations[i].source.Id) {
-            ////            if ($scope.SimulationConcepts[j].metricId != 0) {
-            ////                if ((i + 1) == 1)
-            ////                    $scope.SimulationAssociations[i].weighted = 0.25; else if ((i + 1) % 5 == 0)
-            ////                        $scope.SimulationAssociations[i].weighted = -0.25; else if ((i + 1) % 4 == 0)
-            ////                            $scope.SimulationAssociations[i].weighted = 0.75; else if ((i + 1) % 3 == 0)
-            ////                                $scope.SimulationAssociations[i].weighted = -0.5; else if ((i + 1) % 2 == 0)
-            ////                                    $scope.SimulationAssociations[i].weighted = 0.5; else
-            ////                                    $scope.SimulationAssociations[i].weighted = 1;
-            ////                $scope.relationShipStyle[i] = { "color": "#286090" };
-            ////            }
-            ////        }
-
-            ////        if ($scope.SimulationConcepts[j].Id == $scope.SimulationAssociations[i].destination.Id) {
-            ////            if ($scope.SimulationConcepts[j].metricId != 0) {
-            ////                if ((i + 1) == 1)
-            ////                    $scope.SimulationAssociations[i].weighted = 0.25; else if ((i + 1) % 5 == 0)
-            ////                        $scope.SimulationAssociations[i].weighted = -0.25; else if ((i + 1) % 4 == 0)
-            ////                            $scope.SimulationAssociations[i].weighted = 0.75; else if ((i + 1) % 3 == 0)
-            ////                                $scope.SimulationAssociations[i].weighted = -0.5; else if ((i + 1) % 2 == 0)
-            ////                                    $scope.SimulationAssociations[i].weighted = 0.5; else
-            ////                                    $scope.SimulationAssociations[i].weighted = 1;
-            ////                $scope.relationShipStyle[i] = { "color": "#286090" };
-            ////            }
-            ////        }
-            ////    }
-            ////}
-
-            ////if ($scope.Concepts.length > 1) {
-            ////    var dlg = dialogs.notify("Causal Model", "Weights are calculated!");
-            ////}
         };
 
         $scope.runSimulation = function (isSaveModel) {
