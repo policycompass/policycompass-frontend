@@ -279,5 +279,21 @@
 
         </tabset>
     </div>
-</div>
+
+
+    <div class="pc-visualization-formcontrols">
+        <div class="button-group">
+            <button type="submit" class="btn btn-primary btn-concept" ng-click="addObj()">Add Concept</button>
+            <button type="submit" ng-if="isDisabled == true" class="btn btn-primary btn-association" ng-click="addEdge()" disabled>Create Relationship</button>
+            <button type="submit" ng-if="isDisabled == false" class="btn btn-primary btn-association" ng-click="addEdge()">Create Relationship</button>
+            <button type="submit" ng-if="mode == 'create' && isDisabled == true && user.state.loggedIn" class="btn btn-primary btn-save" ng-click="saveModel()" disabled>Save Model</button>
+            <a href="#!/login" ng-if="mode == 'create' && !user.state.loggedIn" class="btn btn-default btn-save ng-scope" target="_blank">Login to Save</a>
+            <button type="submit" ng-if="mode == 'edit' && isDisabled == true" class="btn btn-primary btn-save" ng-click="updateModel()" disabled>Save Model</button>
+            <button type="submit" ng-if="mode == 'create' && isDisabled == false && user.state.loggedIn" class="btn btn-primary btn-save" ng-click="saveModel()" ng-disabled="modeldetail.model.title.length==0 || modeldetail.model.description.length==0 || modeldetail.domains.length==0">Save Model</button>
+            <button type="submit" ng-if="mode == 'edit' && isDisabled == false" class="btn btn-primary btn-save" ng-click="updateModel()">Save Model</button>
+            <button type="submit" ng-if="mode == 'create'" class="btn btn-primary btn-save" ng-click="saveModel()" disabled><span ng-hide="user.state.loggedIn">Login to </span>Save As Model</button>
+            <button type="submit" ng-if="mode == 'edit'" class="btn btn-primary btn-save" ng-click="saveModel()">Save As Model</button>
+            <button type="submit" data-intro="Cancel" data-position="top" class="btn btn-default btn-danger" ng-click="cancelModel(modeldetail.model.id)">Cancel</button>
+        </div>
+    </div>
 </div>
