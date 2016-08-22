@@ -37,7 +37,8 @@ angular.module('pcApp.fcm.controllers.fcm', [
         'FcmSearchUpdate',
         'Auth',
         'searchclient',
-        function ($scope, $rootScope, $routeParams, $location, FcmModel, FcmActivator, FcmSearchDelete, dialogs, $log, FcmSearchUpdate, Auth, searchclient) {
+        'API_CONF',
+        function ($scope, $rootScope, $routeParams, $location, FcmModel, FcmActivator, FcmSearchDelete, dialogs, $log, FcmSearchUpdate, Auth, searchclient, API_CONF) {
             $scope.mapData = [];
             $scope.edgeData = [];
             $scope.Concepts = [];
@@ -86,34 +87,44 @@ angular.module('pcApp.fcm.controllers.fcm', [
                 // broadcasting the event
                 $rootScope.$broadcast('appChanged');
 
-                var reqData = {
-                    "body": {
-                        "size": 1000,
-                        "from": 0,
-                        "sort": ["title.lower_case_sort"],
-                        "query": {
-                            "bool": {
-                                "must": [{ "term": { "_type": "fuzzymap" } }],
-                                "should": []
+                var query = {
+                    "bool": {
+                        "must": [{
+                            "term": {
+                                "_type": "fuzzymap"
                             }
-                        }
-                    },
-                    "index": "policycompass_search"
+                        }, {
+                            "match": {
+                                "keywords": ""
+                            }
+                        }]
+                    }
                 };
 
                 angular.forEach($scope.models.model.keywords.toString().split(','), function (item) {
-                    if (reqData.body.query.bool.must.length == 1) {
-                        reqData.body.query.bool.must.push({ "match_phrase": { "keywords": $.trim(item) + ",*" } });
-                        reqData.body.query.bool.must.push({ "match_phrase": { "keywords": "*," + $.trim(item) } });
-                    }
-                    else {
-                        reqData.body.query.bool.should.push({ "match_phrase": { "keywords": $.trim(item) + ",*" } });
-                        reqData.body.query.bool.should.push({ "match_phrase": { "keywords": "*," + $.trim(item) } });
-                    }
+                    if (query.bool.must[1].match.keywords == "")
+                        query.bool.must[1].match.keywords = $.trim(item);
+                    else
+                        query.bool.must[1].match.keywords = query.bool.must[1].match.keywords + ', ' + $.trim(item);
                 });
 
-                searchclient.search(reqData).then(function (resp) {
+                var request = {
+                    index: API_CONF.ELASTIC_INDEX_NAME,
+                    type: 'fuzzymap',
+                    body: {
+                        size: 1000,
+                        from: 0,
+                        sort: ["_score", "title.lower_case_sort"],
+                        query: query
+                    }
+                };
+
+                searchclient.search(request).then(function (resp) {
                     $scope.relatedModels = resp.hits.hits;
+                    //$.each(resp.hits.hits, function (index, item) {
+                    //    console.log(item._type);
+                    //    //console.log(item._source.keywords);
+                    //});
 
                 }, function (err) {
                     console.trace(err.message);
