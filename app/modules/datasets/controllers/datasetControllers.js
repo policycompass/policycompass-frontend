@@ -612,10 +612,11 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     }
                     creationService.data.individualsOrder = $scope.individualOrder;
                 }
-                */
+
                 if(creationService.data.individualSelectionBackup.length > 0){
                     restoreIndividuals();
                 }
+                */
                 $scope.inputTable.settings.contextMenu = false;
                 $scope.inputTable.settings.afterSelectionEnd = getSelection;
                 $scope.inputTable.settings.readOnly = true;
