@@ -2,6 +2,10 @@
 	<div class="content-header">
         <h3 class="fonticon fonticon-formula">Edit Metric</h3>
         <div class="pc-visualization-formcontrols">
+            <div style="float:left" ng-show="canDraft && !stepData.next">
+                <toggle-switch html="true" ng-model="data.is_draft" on-label="Draft" off-label="Public" class="switch-danger" ></toggle-switch>
+                &nbsp;
+            </div>
             <div class="button-group">
                 <a class="btn btn-save" ng-click="submit();" ng-class="{'disabled' : !metricsForm.$valid }">Save</a>
                 <a class="btn btn-cancel" ng-click="cancel();">Cancel</a>
