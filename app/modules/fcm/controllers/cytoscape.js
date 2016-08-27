@@ -399,6 +399,10 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 });
                 $scope.md = value;
                 $location.path('/models/' + value.model.id + '/edit');
+
+                //Remove indicator parameter if exists on url
+                if ($routeParams.indicator != null)
+                    $location.url($location.path());
             }, function (err) {
                 throw { message: JSON.stringify(err.data) };
             });
