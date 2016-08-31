@@ -8,7 +8,7 @@
         'pcApp.search.services.search', 'pcApp.config', 'pcApp.references.services.reference'
     ]);
 
-    var searchMainController = function($scope, $location, searchclient, esFactory, API_CONF, Language, PolicyDomain, Individual, $routeParams, $timeout) {
+    var searchMainController = function($scope, $location, searchclient, esFactory, API_CONF, Language, PolicyDomain, Individual, Auth, $routeParams, $timeout) {
         //Init Selectable number of items per page
         $scope.itemsPerPageChoices = [{
             id: 10,
@@ -43,6 +43,7 @@
         var requestAggs = {};
         var facetsSelected = {};
         var aggregationData = {};
+        var userId = "";
         $scope.facetCategories = [];
 
         var aggregations = {
@@ -122,6 +123,12 @@
             keyword: {
                 label: 'Keyword',
                 field: ["keywords"],
+                size: 200,
+                disable: true
+            },
+            userId: {
+                label: 'User',
+                field: ["creator_path", "userPath"],
                 size: 200,
                 disable: true
             }
@@ -369,6 +376,52 @@
             //goSearch();
         };
 
+        function addDraftFilter(filters) {
+            var filter = {
+                "or" : [
+                    {
+                        "term" : {
+                            "is_draft" : false
+                        }
+                    },
+                    {
+                        "not" : {
+                            "filter" : {
+                                "exists" : {
+                                    "field" : "is_draft"
+                                }
+                            }
+                        }
+                    }
+                ]
+            };
+            if (isloggedIn()){
+                filter["or"].push({
+                    "bool" : {
+                        "must" : [
+                            {
+                                "term" : {
+                                    "is_draft" : true
+                                }
+                            },
+                            {
+                                "term" : {
+                                    "creator_path" : ("0000000"+getUserId()).slice(-7)
+                                }
+                            }
+                        ]
+                    }
+                });
+            }
+
+            if (angular.equals({}, filters)) {
+                filters = filter;
+            } else {
+                filters["bool"]["must"].push(filter);
+            }
+            return filters;
+        }
+
         //Define Main search function
         $scope.search = function(searchQuery) {
 
@@ -405,8 +458,30 @@
             //Build query
             if (searchQuery != "") {
                 var query = {
-                    match: {
-                        _all: searchQuery
+                    "filtered": {
+                        "query": {
+                            "bool": {
+                                "should": [
+                                    {
+                                        "multi_match": {
+                                            "fields": ["title", "description"],
+                                            "fuzziness": "1",
+                                            "query": searchQuery
+                                        }
+                                    },
+                                    {
+                                        "prefix": {
+                                            "title": searchQuery
+                                        }
+                                    },
+                                    {
+                                        "prefix": {
+                                            "description": searchQuery
+                                        }
+                                    }
+                                ]
+                            }
+                        }
                     }
                 };
             } else {
@@ -416,24 +491,25 @@
             }
             var request = {
                 index: API_CONF.ELASTIC_INDEX_NAME,
-                body: {
-                    size: $scope.itemsperPage,
+            body: {
+                size: $scope.itemsperPage,
                     from: itemOffset,
                     sort: sort,
                     query: query,
                     aggs: requestAggs
-                }
-            };
-            var filters = normalizeAggregationFilter();
-            if (!angular.equals({}, filters)) {
-                //request.body.post_filter = filters;
-                request.body.query = {
-                    filtered: {
-                        query: query,
-                        filter: filters
-                    }
+            }
+        };
+        var filters = normalizeAggregationFilter();
+        filters = addDraftFilter(filters);
+        if (!angular.equals({}, filters)) {
+            //request.body.post_filter = filters;
+            request.body.query = {
+                filtered: {
+                    query: query,
+                    filter: filters
                 }
             }
+        }
             //Perform search through client and get a search Promise
             searchclient.search(request).then(function(resp) {
                 //If search is successfull return results in searchResults objects
@@ -446,6 +522,25 @@
                 console.trace(err.message);
             });
 
+        };
+        $scope.auth = Auth;
+        function isloggedIn(){
+            return (Auth.state.loggedIn === undefined) ? null : Auth.state.loggedIn;
+        }
+        function getUserId() {
+            return (Auth.state.userPath) ? Auth.state.userPath.replace(/[^0-9]/g,'')-0 : -1;
+        }
+        $scope.ownContentChanged = function ($event) {
+            if (!isloggedIn()) return;
+            var checkbox = $event.target;
+            var checked = checkbox.checked;
+            facetsSelected["userId"] = (checked) ? ("0000000"+getUserId()).slice(-7) : null;
+            $location.search("user_id", facetsSelected["userId"]);
+            goToPage();
+        };
+
+        $scope.isOwnContentEnabled = function () {
+            return userId === ("0000000"+getUserId()).slice(-7);
         };
 
         $scope.init = function() {
@@ -471,6 +566,8 @@
             $scope.sortByItem = 'Relevance';
             //Default current page
             $scope.currentPage = $routeParams.page || 1;
+
+            userId = ($routeParams.user_id) ? ("0000000"+$routeParams.user_id).slice(-7) : "";
 
             prepareAggregations();
 
@@ -505,6 +602,9 @@
                     }
                 }
             });
+            if (userId != "") {
+                facetSet("userId", userId);
+            }
 
             if (type) {
                 $scope.filterSearchType(type);

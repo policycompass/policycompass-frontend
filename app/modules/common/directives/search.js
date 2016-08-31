@@ -297,7 +297,7 @@ angular.module('pcApp.common.directives.search', [])
                     $scope.itemssearchfrom = 0;
                     $scope.pagToSearch = 1;
 
-                    $scope.clickDataset = function (spatials, idDataset, title, issued) {
+                    $scope.clickDataset = function (spatials, idDataset, title, issued, defaultItemResolution) {
                         //console.log("idDataset="+idDataset);
                         var addDataset = true;
                         if (idDataset > 0) {
@@ -336,6 +336,7 @@ angular.module('pcApp.common.directives.search', [])
                                 'id': idDataset,
                                 'title': title,
                                 'issued': issued,
+                                'defaultItemResolution': defaultItemResolution,
                                 'spatials': spatials //addding country list
                             };
                             $scope.datasetsList.push(myObject);
@@ -468,8 +469,9 @@ angular.module('pcApp.common.directives.search', [])
                         '<div class="row">' +
                         	'<ul class="datasets-list metrics-list ">' +
                         		'<li ng-class="{\'metrics-list dataset-list active\':DatasetSelectediId_[dataset._source.id]>0,\'metrics-list dataset-list\':DatasetSelectediId_[dataset.id]}" name="designer-dataset-num-{{dataset.id}}" ng-repeat="dataset in datasetsFilter.hits.hits track by $index" >' +
-                					'<a ng-show="viewAll || arrayGranularitiesAvailable.indexOf(dataset._source.time.resolution)!=-1 || DatasetSelectediId_[dataset._source.id]>0" href="" x-ng-click="clickDataset(dataset._source.spatials, dataset._source.id, dataset._source.title, dataset._source.issued);"  title="{{ !DatasetSelectediId_[dataset._source.id]>0 && \'Add \' || \'Remove \' }} \'{{dataset._source.title}}\'">{{dataset._source.title}} - {{ dataset._source.issued | date:\'longDate\' }}</a>' +
-                					'<span ng-hide="viewAll || arrayGranularitiesAvailable.indexOf(dataset._source.time.resolution)!=-1  || DatasetSelectediId_[dataset._source.id]>0">{{dataset._source.title}} - {{ dataset._source.issued | date:\'longDate\' }}</span>' +
+                					//'<a ng-show="viewAll || arrayGranularitiesAvailable.indexOf(dataset._source.time.resolution)!=-1 || DatasetSelectediId_[dataset._source.id]>0" href="" x-ng-click="clickDataset(dataset._source.spatials, dataset._source.id, dataset._source.title, dataset._source.issued);"  title="{{ !DatasetSelectediId_[dataset._source.id]>0 && \'Add \' || \'Remove \' }} \'{{dataset._source.title}}\'">{{dataset._source.title}} - {{ dataset._source.issued | date:\'longDate\' }}</a>' +
+                					//'<span ng-hide="viewAll || arrayGranularitiesAvailable.indexOf(dataset._source.time.resolution)!=-1  || DatasetSelectediId_[dataset._source.id]>0">{{dataset._source.title}} - {{ dataset._source.issued | date:\'longDate\' }}</span>' +
+                					'<a href="" x-ng-click="clickDataset(dataset._source.spatials, dataset._source.id, dataset._source.title, dataset._source.issued, dataset._source.time.resolution);"  title="{{ !DatasetSelectediId_[dataset._source.id]>0 && \'Add \' || \'Remove \' }} \'{{dataset._source.title}}\'">{{dataset._source.title}} - {{ dataset._source.issued | date:\'longDate\' }}</a>' +
                 				'</li>' +
                 			'</ul>' +
                         '</div>' +

@@ -238,7 +238,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 if(dataset.resource['custom']) {
                     $scope.custom = true;
                 }
-
+                $scope.canDraft = true;
             };
 
             var getDatasetError = function (error) {
@@ -442,24 +442,185 @@ angular.module('pcApp.datasets.controllers.dataset', [
         'ngProgress',
         '$routeParams',
         'creationService',
-        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService) {
+        'Individual',
+        '$http',
+        'API_CONF',
+        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService, Individual, $http, API_CONF) {
 
             var getSelection = function (startRow, startColumn, endRow, endColumn) {
                 var result = DatasetsControllerHelper.getTableSelection(startRow, startColumn, endRow, endColumn, $scope.inputTable.items);
-
                 angular.forEach(result, function (r) {
                     if ((!_.contains($scope.individualSelection, r)) && r != null && r != '') {
-                        $scope.individualSelection.push(r);
-                        $scope.$apply();
+                        searchForIndividuals(r);
                     }
                 });
             };
 
+
+            var searchForIndividuals = function(search_term){
+                var individual_url = ""
+                if($scope.selection.output.length > 0){
+                    individual_url = API_CONF.REFERENCE_POOL_URL + "/individuals?class=" + $scope.selection.output +  "&q=" + search_term;
+                }else{
+                    individual_url = API_CONF.REFERENCE_POOL_URL + "/individuals?q=" + search_term;
+                }
+                $http.get(individual_url).
+                success(function (data, status, headers, config) {
+                    var suggestions = [];
+                    suggestions.push({"name":search_term, "checked":false});
+                    if(data.length > 0) {
+                        angular.forEach(data, function (result) {
+                            var alreadyExisting = false;
+                            angular.forEach(suggestions, function(s){
+                                if(s.name == result.title){
+                                    alreadyExisting = true;
+                                }
+                            });
+                            if(!alreadyExisting){
+                                suggestions.push({"name": result.title, "checked":false});
+                            }
+                        });
+
+                    }
+                    if(suggestions.length == 1){
+                        suggestions[0].checked = true;
+                    }
+                    if(suggestions.length > 1){
+                        $scope.saveIndividual(search_term, suggestions, "");
+                    }
+                    else{
+                        $scope.saveIndividual(search_term, suggestions, search_term);
+                    }
+
+                }).error(function (data, status, headers, config) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                });
+
+
+            }
+
+            $scope.updateSelectedSuggestion = function(suggestionIndex, individual){
+                angular.forEach(individual.suggestions, function(suggestion, index){
+                    var resetSelected = false;
+                    if(suggestionIndex != index){
+                        suggestion.checked = false;
+                    }
+                    else{
+                        suggestion.checked = !suggestion.checked;
+                        if(suggestion.checked){
+                            individual.selected = suggestion.name;
+                        }else{
+                            resetSelected = true;
+                        }
+                    }
+                    if(resetSelected){
+                        individual.selected = "";
+                    }
+                })
+            }
+
+            $scope.saveIndividual = function(key, suggestions, selectedSuggestion){
+                var individualIndex = getIndexOfIndividual(key);
+                var newIndividual = {"name": key, "suggestions":suggestions, "selected":selectedSuggestion};
+                if(individualIndex >= 0){
+                    $scope.individualSelection[individualIndex] = newIndividual;
+                }else{
+                    $scope.individualSelection.push(newIndividual);
+                }
+            }
+
+
+            var getIndexOfIndividual = function(key){
+                for(var i=0; i<$scope.individualSelection.length; i++){
+                    if($scope.individualSelection[i].name == key){
+                        return i;
+                    }
+                }
+                return -1;
+            }
+
+            var sortIndividualSelection = function(){
+                var individualList = [];
+                for(var i=0; i<$scope.individualOrder.length; i++){
+                    for(var j=0; j<$scope.individualSelection.length; j++){
+                        if($scope.individualOrder[i] == $scope.individualSelection[j].name){
+                            if($scope.individualSelection[j].selected.length > 0){
+                                individualList.push({"name":$scope.individualSelection[j].name, "suggestions":$scope.individualSelection[j].suggestions, "selected":$scope.individualSelection[j].selected});
+                            }
+
+                            continue;
+                        }
+                    }
+                }
+                return individualList;
+            }
+
+            var restoreIndividuals = function(){
+                var individuals = creationService.data.individualSelectionBackup;
+                for(var i=1;i<$scope.inputTable.items.length;i++){
+                    for(var j=0; j<individuals.length; j++){
+                       if(individuals[j].selected == $scope.inputTable.items[i][0]){
+                           $scope.inputTable.items[i][0] = individuals[j].name;
+                           continue;
+                       }
+                    }
+                }
+            }
+
+            var allIndividualsChecked = function(){
+                var count = 0;
+                angular.forEach($scope.individualSelection, function(i){
+                    angular.forEach(i.suggestions, function(s){
+                        if(s.checked == true){
+                            count++;
+                        }
+                    });
+                });
+                if(count == $scope.individualSelection.length){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+
+            var renameIndividuals = function(){
+                var individualsBackup = [];
+                for(var i=1;i<$scope.inputTable.items.length;i++){
+                    for(var j=0; j<$scope.individualSelection.length; j++){
+                       if($scope.individualSelection[j].name == $scope.inputTable.items[i][0]){
+                           $scope.inputTable.items[i][0] = $scope.individualSelection[j].selected;
+                           individualsBackup.push({"name":$scope.individualSelection[j].name, "suggestions":$scope.individualSelection[j].suggestions, "selected":$scope.individualSelection[j].selected});
+                           continue;
+                       }
+                    }
+                }
+                creationService.data.individualSelectionBackup = individualsBackup;
+            }
+
             var init = function () {
                 $scope.inputTable = creationService.data.inputTable;
+                $scope.inputTable.items = creationService.data.inputTable.items;
+                /*
+                if(creationService.data.individualsOrder.length > 0){
+                    $scope.individualOrder = creationService.data.individualsOrder;
+                }
+                else{
+                    $scope.individualOrder = [];
+                    for(var i=1;i<$scope.inputTable.items.length;i++){
+                        $scope.individualOrder.push($scope.inputTable.items[i][0]);
+                    }
+                    creationService.data.individualsOrder = $scope.individualOrder;
+                }
+
+                if(creationService.data.individualSelectionBackup.length > 0){
+                    restoreIndividuals();
+                }
+                */
                 $scope.inputTable.settings.contextMenu = false;
                 $scope.inputTable.settings.afterSelectionEnd = getSelection;
                 $scope.inputTable.settings.readOnly = true;
+
 
                 if (creationService.data.individualSelection) {
                     $scope.individualSelection = creationService.data.individualSelection;
@@ -500,8 +661,12 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
             init();
 
-            $scope.removeIndividual = function (i) {
-                $scope.individualSelection = _.without($scope.individualSelection, i);
+            $scope.removeIndividual = function (key) {
+                for(var i=0; i<$scope.individualSelection.length; i++){
+                    if($scope.individualSelection[i].name == key){
+                        $scope.individualSelection.splice(i, 1);
+                    }
+                }
             };
 
             $scope.addExtraMetadata = function () {
@@ -517,8 +682,6 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
             $scope.removeExtraMetadata = function (em) {
                 $scope.extraMetadata = _.without($scope.extraMetadata, em)
-
-
             };
 
             $scope.$watch('extraMetadata', function (newValue) {
@@ -545,14 +708,24 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     dialogs.error('Validation Error', 'Please provide a Data Dimension Type.');
                     return false;
                 }
-                if ($scope.individualSelection.length == 0) {
+
+                creationService.data.classPreSelection = $scope.selection.output;
+                creationService.data.extraMetadata = $scope.extraMetadata;
+
+                if(!allIndividualsChecked()){
+                    dialogs.error('Validation Error', 'Please choose one option for each Dimension.');
+                    return false;
+                }
+                //creationService.data.individualSelection = sortIndividualSelection();
+                creationService.data.individualSelection = $scope.individualSelection;
+                $scope.individualSelection = creationService.data.individualSelection;
+
+                if (creationService.data.individualSelection.length == 0) {
                     dialogs.error('Validation Error', 'Please choose at least one Data Dimension.');
                     return false;
                 }
 
-                creationService.data.classPreSelection = $scope.selection.output;
-                creationService.data.extraMetadata = $scope.extraMetadata;
-                creationService.data.individualSelection = $scope.individualSelection;
+                //renameIndividuals();
             };
 
         }
@@ -731,6 +904,11 @@ angular.module('pcApp.datasets.controllers.dataset', [
             };
 
             var init = function () {
+                $scope.individualSelection = [];
+                for(var i=0; i<creationService.data.individualSelection.length; i++){
+                    $scope.individualSelection.push(creationService.data.individualSelection[i].selected);
+                }
+
                 $scope.mode = 'row';
                 $scope.timeSeries = DatasetsControllerHelper.generateTimeSeries(creationService.data.timeResolution, creationService.data.time.start, creationService.data.time.end);
 
@@ -742,14 +920,11 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 $scope.resultTable = creationService.data.resultTable;
                 $scope.resultTable.settings.afterInit = function () {
                     $scope.resultInstance = this;
-                    $scope.resultInstance.selectCell(0, 0, 0, $scope.timeSeriesLength);
+                    $scope.resultInstance.selectCell(0, 0, 0, 0);
                 };
 
                 $scope.inputTable.settings.contextMenu = false;
                 $scope.inputTable.settings.afterSelectionEnd = getSelection;
-
-
-                $scope.individualSelection = creationService.data.individualSelection;
 
                 $scope.resultTable.settings.minCols = $scope.timeSeries.length + 1;
                 //$scope.resultTable.settings.minRows = creationService.data.individualSelection.length + 1;
@@ -757,18 +932,25 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
                 $scope.selectionStep = 1;
                 $scope.lastStep = $scope.individualSelection.length;
+
+                $scope.resultTable.items = [];
+
                 if ($scope.resultTable.items.length == 0) {
                     angular.forEach(creationService.data.individualSelection, function (i) {
-                        $scope.resultTable.items.push([i]);
+                        $scope.resultTable.items.push([i.selected]);
                     });
                 }
 
-                if ($scope.resultTable.items[0].length > ($scope.timeSeries.length + 1)) {
+
+                if ($scope.resultTable.items.length > ($scope.timeSeries.length + 1)) {
                     $scope.resultTable.items = [];
                     angular.forEach(creationService.data.individualSelection, function (i) {
-                        $scope.resultTable.items.push([i]);
+                        $scope.resultTable.items.push([i.selected]);
                     });
                 }
+
+                $scope.resultTable.height = $scope.resultTable.items.length * 23 + 50;
+
             };
 
             init();
@@ -788,7 +970,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
             $scope.reset = function () {
                 $scope.resultTable.items = [];
                 angular.forEach(creationService.data.individualSelection, function (i) {
-                    $scope.resultTable.items.push([i]);
+                    $scope.resultTable.items.push([i].selected);
                 });
                 $scope.resultInstance.loadData($scope.resultTable.items);
                 $scope.selectionStep = 1;
@@ -916,14 +1098,27 @@ angular.module('pcApp.datasets.controllers.dataset', [
         'Dataset',
         '$location',
         'Individual',
-        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService, $filter, Dataset, $location, Individual) {
+        'ExternalResource',
+        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService, $filter, Dataset, $location, Individual, ExternalResource) {
+
+            $scope.canDraft = true;
+
+            $scope.checkExternalResources = function(){
+                var externalsList = ExternalResource.query(null, function(){
+                    externalsList.forEach(function(external){
+                        if($scope.dataset.url.toLowerCase().includes(external.title.toLowerCase())){
+                            $scope.external_resource.input = [external.id];
+                        }
+                    });
+                });
+            };
 
             var init = function () {
                 $scope.selectedIndividuals = [];
                 var individualsList = Individual.query(null, function(){
                     individualsList.forEach(function(individual){
                         creationService.data.individualSelection.forEach(function(selectedIndividual){
-                            if(individual.title == selectedIndividual){
+                            if(individual.title == selectedIndividual.selected){
                                 $scope.selectedIndividuals.push(individual.id);
                             }
                         });
@@ -950,8 +1145,18 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     input: creationService.data.dataset.external_resource,
                     output: []
                 };
+                $scope.license = {
+                    input: creationService.data.dataset.license,
+                    output: []
+                };
+
+                if(typeof $scope.external_resource.input === 'undefined' && typeof $scope.dataset.url !== "undefined"){
+                    $scope.checkExternalResources();
+                }
 
                 $scope.custom = false;
+
+                $scope.dataset.is_draft = true;
             };
 
             init();
@@ -961,6 +1166,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 creationService.data.dataset.language = $scope.language.output;
                 creationService.data.dataset.policy_domains = $scope.policy_domains.output;
                 creationService.data.dataset.external_resource = $scope.external_resource.output;
+                creationService.data.dataset.license = $scope.license.output;
                 //creationService.data.dataset =   $scope.dataset;
             };
 
@@ -984,7 +1190,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     }
                     table.push({
                         row: count_ind + 1,
-                        individual: i,
+                        individual: i.selected,
                         values: values
                     });
                     count_ind++;
@@ -1026,7 +1232,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 payload.title = $scope.dataset.title;
                 payload.acronym = $scope.dataset.acronym;
                 payload.keywords = $scope.dataset.keywords;
-                payload.license = $scope.dataset.license;
+                if($scope.license.output) payload.license_id = $scope.license.output[0];
                 payload.description = $scope.dataset.description;
                 payload.spatials = $scope.spatials.output;
                 payload.language_id = $scope.language.output[0];
@@ -1035,6 +1241,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 payload.user_id = 1;
                 payload.unit_id = $scope.dataset.unit[0];
                 payload.data = buildData();
+                payload.is_draft = $scope.dataset.is_draft;
                 return payload;
             };
 
@@ -1175,19 +1382,27 @@ angular.module('pcApp.datasets.controllers.dataset', [
             $scope.dataset = Dataset.get({id: $routeParams.datasetId}, getDatasetSuccess, getDatasetError);
 
             $scope.deleteDataset = function (dataset) {
-                // Open a confirmation dialog
-                var dlg = dialogs.confirm("Are you sure?", "Do you want to delete the Dataset " + dataset.acronym + " permanently?");
-                dlg.result.then(function () {
-                    // Delete the dataset via the API
-                    dataset.$delete({}, function () {
-                        $location.path('/datasets');
+                if($scope.relatedVisualizationsString.length == 0){
+                    // Open a confirmation dialog
+                    var dlg = dialogs.confirm("Are you sure?", "Do you want to delete the Dataset " + dataset.acronym + " permanently?");
+                    dlg.result.then(function () {
+                        // Delete the dataset via the API
+                        dataset.$delete({}, function () {
+                            $location.path('/datasets');
+                        });
                     });
-                });
+                }
+                else{
+                    var dlg = dialogs.notify('Cannot delete this dataset', 'This dataset is being used by one or more visualizations. Please delete these visualizations first: ' +
+                        $scope.relatedVisualizationsString);
+                }
+
             };
 
             $scope.relatedVisualizations = [];
+            $scope.relatedVisualizationsString = "";
 
-            $scope.visualizationByMetricList = VisualizationByDataset.get({id: $routeParams.datasetId},
+            $scope.visualizationByDatasetList = VisualizationByDataset.get({id: $routeParams.datasetId},
                 function(VisualizationByDatasetList){
                     for(i in VisualizationByDatasetList.results){
                         var Tmp = {
@@ -1195,7 +1410,9 @@ angular.module('pcApp.datasets.controllers.dataset', [
                             "title": VisualizationByDatasetList.results[i]['title']
                         }
                         $scope.relatedVisualizations.push(Tmp);
+                        $scope.relatedVisualizationsString += '<br><a href= "/app/#!/visualizations' + '/' + VisualizationByDatasetList.results[i]['visualization'] + '" target="_blank"> '+ VisualizationByDatasetList.results[i]['title'] + '</a>';
                     }
+
                 });
         }
     ]);

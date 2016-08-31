@@ -50,18 +50,33 @@ angular.module('pcApp.events.controllers.event', [
             });
 
             $scope.deleteEvent = function (event) {
-                // Open a confirmation dialog
-                var dlg = dialogs.confirm("Are you sure?", "Do you want to delete the Event '" + event.title + "' permanently?");
-                dlg.result.then(function () {
-                    // Delete the metric via the API
-                    event.$delete({}, function () {
-                        $location.path('/events');
+                if($scope.relatedVisualizations.length == 0){
+                    // Open a confirmation dialog
+                    var dlg = dialogs.confirm("Are you sure?", "Do you want to delete the Event '" + event.title + "' permanently?");
+                    dlg.result.then(function () {
+                        // Delete the metric via the API
+                        event.$delete({}, function () {
+                            $location.path('/events');
+                        });
                     });
-                });
+                }else{
+                    var dlg = dialogs.notify('Cannot delete this event', 'This event is being used by one or more visualizations. Please delete these visualizations first: ' +
+                        $scope.relatedVisualizationsString);
+                }
             };
 
+            $scope.relatedVisualizations = [];
+            $scope.relatedVisualizationsString = "";
 
-            $scope.linked_event_visualization = LinkedEventVisualization.get({id: $routeParams.eventId}, function (linked_event_visualization) {
+            $scope.linked_event_visualization = LinkedEventVisualization.get({id: $routeParams.eventId}, function (LinkedEventVisualizationList) {
+                for(i in LinkedEventVisualizationList.results){
+                    var Tmp = {
+                        "id": LinkedEventVisualizationList.results[i]['visualization'],
+                        "title": LinkedEventVisualizationList.results[i]['title']
+                    }
+                    $scope.relatedVisualizations.push(Tmp);
+                    $scope.relatedVisualizationsString += '<br><a href= "/app/#!/visualizations' + '/' + LinkedEventVisualizationList.results[i]['visualization'] + '" target="_blank"> '+ LinkedEventVisualizationList.results[i]['title'] + '</a>';
+                }
             }, function (err) {
                 throw {message: JSON.stringify(err.data)};
             });
@@ -92,6 +107,7 @@ angular.module('pcApp.events.controllers.event', [
             $scope.mode = "edit";
 
             $scope.event = Event.get({id: $routeParams.eventId}, function (event) {
+                $scope.canDraft = true;
                 $scope.spatials = {
                     input: $scope.event.spatials,
                     output: []
@@ -148,6 +164,8 @@ angular.module('pcApp.events.controllers.event', [
                     $scope.event.startEventDate = $routeParams.start || "";
                     $scope.event.endEventDate = $routeParams.end || "";
                     $scope.event.languageID = $routeParams.language || "";
+                    $scope.event.is_draft = true;
+                    $scope.canDraft = $scope.event.is_draft;
                 }
             }
 
@@ -198,7 +216,8 @@ angular.module('pcApp.events.controllers.event', [
                 $location.search('spatials', $scope.event.spatials);
                 $location.search('start', $scope.event.startEventDate);
                 $location.search('end', $scope.event.endEventDate);
-                $location.search('language', $scope.event.languageID)
+                $location.search('language', $scope.event.languageID);
+                $location.search('draft', $scope.event.is_draft);
             }
 
 

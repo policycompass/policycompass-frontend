@@ -69,6 +69,10 @@ commonmanager.config(function ($routeProvider) {
             controller: 'StaticController',
             templateUrl: 'modules/common/partials/create-data.html'
         })
+        .when('/support', {
+            controller: 'StaticController',
+            templateUrl: 'modules/common/partials/support.html'
+        })
         .otherwise({redirectTo: '/'});
 })
 

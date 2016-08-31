@@ -208,5 +208,31 @@ angular.module('pcApp.references.services.reference', [
             };
             return Individual;
         }
-    ]);
+    ])
 
+
+/**
+ * Factory for getting a Class, which connects to the class endpoint
+ */
+    .factory('License', [
+        '$resource', 'API_CONF', function ($resource, API_CONF) {
+            var url = API_CONF.REFERENCE_POOL_URL + "/licenses/:id";
+            var License = $resource(url, {
+                id: "@id"
+            }, {
+                get: {
+                    method: 'GET',
+                    cache: true
+                },
+                query: {
+                    method: 'GET',
+                    cache: true,
+                    isArray: true
+                }
+            });
+            License.getById = function (id) {
+                return this.get({id: id})
+            };
+            return License;
+        }
+    ]);

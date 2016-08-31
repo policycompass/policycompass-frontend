@@ -6,17 +6,21 @@ var policycompass = policycompass || {
         'extras': {}
     };
 
-
 policycompass.viz.line = function (options) {
 
     var self = {};
 
     for (var key in options) {
-
         self[key] = options[key];
     }
+
+	//self.showAstoplines = true;
 	
-	
+	//console.log(self.height);
+    if (self.height>=350) {
+    	self.margin.top = 1;	
+    }
+
     self.parentSelect = "#" + self.idName;
     self.maxMargin = self.margin;
     self.maxWidth = self.width;
@@ -28,19 +32,22 @@ policycompass.viz.line = function (options) {
     self.maxOffsetYaxesL = self.offsetYaxesL;
     self.maxDistanceXaxes = self.distanceXaxes;
 	self.he_bar_height = 10;
-	
+
+	if (self.height<100) {
+		self.he_bar_height = self.he_bar_height / 5;
+	}
+
 	//this is to set where we wish to plot the data, at the begin or at the end of the period in granularity different of day
 	//possible values 'first' = the fist day of the period, 'end' = the last day of the period
 	//console.log("self.plotDataIn");
 	//self.plotDataIn = 'first';
 	//self.plotDataIn = 'middle';
 	//self.plotDataIn = 'last';
-		
+
 	if (self.plotDataIn) {
 		self.plotDataIn = self.plotDataIn.value;	
 	}
-	
-		
+
     self.cntResizes = 0;
     d3.select(window).on('resize', resize);
 
@@ -52,52 +59,52 @@ policycompass.viz.line = function (options) {
 		self.plotDataIn = '';
 		self.tickposition = '';
 	}
-	
+
 	//console.log(self.tickposition);
 
 	self.alphabetical_sort_object_of_objects_lines = function(data, attr, sort) {
-            var arr = [];
-            for (var prop in data) {
-                if (data.hasOwnProperty(prop)) {
-                    var obj = {};
-                    obj[prop] = data[prop];
+        var arr = [];
+        for (var prop in data) {
+            if (data.hasOwnProperty(prop)) {
+                var obj = {};
+                obj[prop] = data[prop];
 
-                    if (isNaN(data[prop][attr])) {
-                    	obj.tempSortName = data[prop][attr].toLowerCase();
-                    }
-                    else {
-                    	obj.tempSortName = data[prop][attr];
-                    }
-                    arr.push(obj);
+                if (isNaN(data[prop][attr])) {
+                	obj.tempSortName = data[prop][attr].toLowerCase();
                 }
-            }
-
-            arr.sort(function (a, b) {
-            	if (sort=='desc') {
-                	var at = a.tempSortName, bt = b.tempSortName;
-                	return at < bt ? 1 : ( at > bt ? -1 : 0 );            		
-            	}
-            	else {
-                	var at = a.tempSortName, bt = b.tempSortName;
-                	return at > bt ? 1 : ( at < bt ? -1 : 0 );            		
-            	}
-
-            });
-
-            var result = [];
-            for (var i = 0, l = arr.length; i < l; i++) {
-                var obj = arr[i];
-                delete obj.tempSortName;
-                for (var prop in obj) {
-                    if (obj.hasOwnProperty(prop)) {
-                        var id = prop;
-                    }
+                else {
+                	obj.tempSortName = data[prop][attr];
                 }
-                var item = obj[id];
-                result.push(item);
+                arr.push(obj);
             }
-            return result;
         }
+
+        arr.sort(function (a, b) {
+        	if (sort=='desc') {
+            	var at = a.tempSortName, bt = b.tempSortName;
+            	return at < bt ? 1 : ( at > bt ? -1 : 0 );            		
+        	}
+        	else {
+            	var at = a.tempSortName, bt = b.tempSortName;
+            	return at > bt ? 1 : ( at < bt ? -1 : 0 );            		
+        	}
+
+        });
+
+        var result = [];
+        for (var i = 0, l = arr.length; i < l; i++) {
+            var obj = arr[i];
+            delete obj.tempSortName;
+            for (var prop in obj) {
+                if (obj.hasOwnProperty(prop)) {
+                    var id = prop;
+                }
+            }
+            var item = obj[id];
+            result.push(item);
+        }
+        return result;
+	}
         
     function resize() {
         self.cntResizes = self.cntResizes + 1;
@@ -111,12 +118,6 @@ policycompass.viz.line = function (options) {
         }
     }
 
-	/*
-    function make_x_axis() {
-        return d3.svg.axis().scale(self.xScale).orient("bottom").ticks(20)
-    }
-	*/
-	
     function make_y_axis() {
         return d3.svg.axis().scale(self.y).orient("left").ticks(20)
     }
@@ -184,7 +185,7 @@ policycompass.viz.line = function (options) {
     }
 
     self.drawLines = function (lines, eventsData) {
-		
+
         self.svg = d3.select(self.parentSelect)
         	.append("svg")
         	.attr("class", "pc_chart")
@@ -925,13 +926,27 @@ policycompass.viz.line = function (options) {
         }
 
 
-        if (showGrid) {        	
+        if (showGrid) {
         	
         	var tickPosition = self.height;
-        	if (eventsData.length>0) {
-        		tickPosition = tickPosition + (self.spaceBetweenEvents)+10;
-        	}
         	
+        	var extra_height = 10
+        	if (self.height<=150) {
+				extra_height = extra_height /5;
+			}
+
+			if (self.showAstoplines==true) {
+	        	if (eventsData.length>0) {
+	        		//self.newScale
+	        		if (self.linesToPlotEvents.length>1) {
+	        			tickPosition = tickPosition + (self.linesToPlotEvents.length*self.spaceBetweenEvents+extra_height);
+	        		}
+	        		else {
+	        			tickPosition = tickPosition + (self.spaceBetweenEvents)+extra_height;	
+	        		}
+	        	
+	        	}
+       		}
             self.svg.append("g")
             .attr("class", "grid")
             .attr("transform", "translate(0," + self.height + ")")
@@ -970,9 +985,7 @@ policycompass.viz.line = function (options) {
             var cntiMultiple = 0;
             var incremetY = 0;
             var cnti = 0;
-            
-            //lines = self.alphabetical_sort_object_of_objects_lines(lines, 'Key');
-            
+
             lines.forEach(function (d, i) {
                 self.cntLineasPintadas = i;
                 cnti = cnti + 1;
@@ -984,15 +997,11 @@ policycompass.viz.line = function (options) {
 
                 var evaluate = 0;
                 if ('ValueY' in d) {
-
-
                     linesArray = d.ValueY;
                     linesArrayX = d.ValueX;
                     linesArrayXY = d.ValueX + "|" + d.ValueY;
                     lineColor = d.Color;
-
                     evaluate = 1;
-
                 }
 
                 key = d.Key;
@@ -1023,8 +1032,7 @@ policycompass.viz.line = function (options) {
                         } else {
                             var yAxisLeft = d3.svg.axis().scale(self.yArray[i])
                                 .orient(orientText)
-                                .tickFormat(d3.format(".2s"))
-                                ;
+                                .tickFormat(d3.format(".2s"));
                         }
                     } else {
                         formatdecimal = parseInt(self.arrayMaxVy[i].toString().length);
@@ -1067,9 +1075,7 @@ policycompass.viz.line = function (options) {
                     .attr("class", "y axis axisLeft")
                     .attr("transform", transform)
                     .style("fill", function (d, i) {
-
                         var colorToReturn;
-
                         if (lineColor) {
                             colorToReturn = lineColor;
                         } else {
@@ -1300,6 +1306,7 @@ policycompass.viz.line = function (options) {
 
                     var path = self.svg.append("path").datum(data)
                         .style("opacity", lineOpacity)
+                        .attr("class", lineClass)
                         .attr("id", 'tag_' + key.replace(/\W/g, '')) // assign ID
                         .attr("fill", "none").style("stroke", function (d, i) {
 
@@ -2127,9 +2134,6 @@ policycompass.viz.line = function (options) {
             });
         }
 
-		
-		
-        
 
         //delete this trnsition because causes problems in chrome per linux
         /*
@@ -2189,8 +2193,7 @@ policycompass.viz.line = function (options) {
 						//var arrayObjDateFin = resX2.split("-");
 						var arrayObjDateFin = [];
                    	}
-                    
-                    
+
                     for (j=1; j<=2; j++) {
                     	var arrayObjDate = [];
                     	if (j==1) {
@@ -2246,34 +2249,26 @@ policycompass.viz.line = function (options) {
                     			
                     			var posXToPlot_fin = self.xScale(getDate(dateToPush));
                     		}
-							
 							//posXToPlot_fin = 300 * i;
 							//posXToPlot_ini = 1;
-							
 	                    }
 	                    else {
 	                    	posXToPlot_fin = 10000;
 	                    }
 					}
-					
+
 					posXToPlot_ini = posXToPlot_ini + (posXToPlot_fin-posXToPlot_ini)/2;
-					
+
                 }
 				else {
-					//console.log("----------");
-					//console.log("newDate="+newDate);
 					if (self.arrayXaxesLabel.length>(parseInt(i)+1)) {
-						//console.log(i);
 						var newDate2 = self.arrayXaxesLabel[parseInt(i)+1];
-						//console.log("newDate2="+newDate2);						
 						var posXToPlot_fin = self.xScale(getDate(newDate2));
-						//console.log("posXToPlot_fin="+posXToPlot_fin);
-						//var posXToPlot_fin = self.xScale((self.arrayXaxesLabel[parseInt(i)+1]));
-						
+
 						if (posXToPlot_fin<posXToPlot_ini) {
 							posXToPlot_fin = 1000;
 						}
-						
+
 						posXToPlot_ini = posXToPlot_ini + (posXToPlot_fin-posXToPlot_ini)/2;
 					}
 					else {
@@ -2294,21 +2289,97 @@ policycompass.viz.line = function (options) {
 				
 				var posY = self.height+15;
 				return "translate("+posXToPlot_ini+","+posY+") rotate(-25)"
-			})
-			;
-            		
-		
-		
+			});
 	}
 	
-	var plotEvents = function (eventsData, colorScaleForHE, getDate) {
-		/*************Ini plot historical events *******/
-		
-        var dataForCircles = [];
+	var initEvents = function (eventsData) {
+		/*************Init plot historical events *******/
+		function getDate(d) {
+            return new Date(d);
+        }
 
+		// Source: http://stackoverflow.com/questions/497790
+		var dates = {
+		    convert:function(d) {
+		        // Converts the date in d to a date-object. The input can be:
+		        //   a date object: returned without modification
+		        //  an array      : Interpreted as [year,month,day]. NOTE: month is 0-11.
+		        //   a number     : Interpreted as number of milliseconds
+		        //                  since 1 Jan 1970 (a timestamp) 
+		        //   a string     : Any format supported by the javascript engine, like
+		        //                  "YYYY/MM/DD", "MM/DD/YYYY", "Jan 31 2009" etc.
+		        //  an object     : Interpreted as an object with year, month and date
+		        //                  attributes.  **NOTE** month is 0-11.
+		        return (
+		            d.constructor === Date ? d :
+		            d.constructor === Array ? new Date(d[0],d[1],d[2]) :
+		            d.constructor === Number ? new Date(d) :
+		            d.constructor === String ? new Date(d) :
+		            typeof d === "object" ? new Date(d.year,d.month,d.date) :
+		            NaN
+		        );
+		    },
+		    compare:function(a,b) {
+		        // Compare two dates (could be of any type supported by the convert
+		        // function above) and returns:
+		        //  -1 : if a < b
+		        //   0 : if a = b
+		        //   1 : if a > b
+		        // NaN : if a or b is an illegal date
+		        // NOTE: The code inside isFinite does an assignment (=).
+		        return (
+		            isFinite(a=this.convert(a).valueOf()) &&
+		            isFinite(b=this.convert(b).valueOf()) ?
+		            (a>b)-(a<b) :
+		            NaN
+		        );
+		    },
+		    inRange:function(d,start,end) {
+		        // Checks if date in d is between dates in start and end.
+		        // Returns a boolean or NaN:
+		        //    true  : if d is between start and end (inclusive)
+		        //    false : if d is before start or after end
+		        //    NaN   : if one or more of the dates is illegal.
+		        // NOTE: The code inside isFinite does an assignment (=).
+		       return (
+		            isFinite(d=this.convert(d).valueOf()) &&
+		            isFinite(start=this.convert(start).valueOf()) &&
+		            isFinite(end=this.convert(end).valueOf()) ?
+		            start <= d && d <= end :
+		            NaN
+		        );
+		    }
+		}
+		
+		function canBePlotInThisLine(linesToPlotEvents, dataToPush) {
+			var startPoint = dataToPush.startPoint;
+			var endPoint = dataToPush.endPoint;
+			var eventId = dataToPush.id;
+			var returnValue = true;
+
+			for (var j2 in linesToPlotEvents) {
+    			if (eventId==linesToPlotEvents[j2]['id']) {
+    				//console.log("NO add item, it's the same!!!!!");    				
+    			}
+    			else if (dates.inRange(startPoint, linesToPlotEvents[j2]['startPoint'], linesToPlotEvents[j2]['endPoint'])) {
+   					//console.log("start date in the period- new line. event id "+eventsData[i].id+"--pos j="+j+"--linesToPlotEvents.length="+(linesToPlotEvents.length-1)+"---event id="+eventId);
+   					returnValue = false;
+    			}
+    			else if (dates.inRange(endPoint, linesToPlotEvents[j2]['startPoint'], linesToPlotEvents[j2]['endPoint'])) {
+   					//console.log("end date in the period- new line. event id "+eventsData[i].id+"--pos j="+j+"--linesToPlotEvents.length="+(linesToPlotEvents.length-1)+"---event id="+eventId);
+					returnValue = false;
+    			}
+			}
+			return returnValue;
+		}
+
+        var dataForCircles = [];
+		var linesToPlotEvents = [];
         for (var i in eventsData) {
+        	//console.log(eventsData[i].id);
             var arrayTemporal = [];
             arrayTemporal['index'] = i;
+            arrayTemporal['id'] = eventsData[i].id;
             arrayTemporal['color'] = eventsData[i].color;
             arrayTemporal['title'] = eventsData[i].title;
             arrayTemporal['startDate'] = eventsData[i].startDate;
@@ -2317,19 +2388,68 @@ policycompass.viz.line = function (options) {
             arrayTemporal['posY'] = 0;
             arrayTemporal['desc'] = eventsData[i].desc;
             dataForCircles[i] = arrayTemporal;
-        }
+            
+            var startPoint = getDate(eventsData[i].startDate);
+            var endPoint = getDate(eventsData[i].endDate);
+            //var startPoint = self.xScale(getDate(eventsData[i].startDate));
+            //var endPoint = self.xScale(getDate(eventsData[i].endDate));
+            
+            var valueToCheck = [];
+            var dataToPush = {id: eventsData[i].id,'startPoint':startPoint, 'endPoint':endPoint};
+            valueToCheck = [dataToPush];
+            //linesToPlot.push(valueToCheck);
 
-        var historicalEvents = self.svg.selectAll("rectagles").data(dataForCircles);
+            if (i==0) {
+            	linesToPlotEvents.push(valueToCheck);
+            }
+            else {
+            	var posJ=-1;
+            	var add_new_line = false;
+            	var addItem = true;
+            	var semaforo = true;
+            	for (var j in linesToPlotEvents) {
+            		
+        			var inThisLine = canBePlotInThisLine(linesToPlotEvents[j], dataToPush);
+            		if (inThisLine) {
+            			//add in the current line
+            			if (semaforo) {
+            				linesToPlotEvents[j].push(dataToPush);	
+            				semaforo = false;
+            			}
+            		}
+            		else {
+            			//addd new line
+            			if ((linesToPlotEvents.length-1)==j) {
+            				linesToPlotEvents.push(valueToCheck);	
+            			}
+            		}
+            	}
+            }
+        }
+        
+        self.linesToPlotEvents = linesToPlotEvents;
+        self.dataForCircles = dataForCircles;
+    }
+    
+    
+	var plotEvents = function (eventsData, colorScaleForHE, getDate) {
+		/*************Ini plot historical events *******/
+
+        var historicalEvents = self.svg.selectAll("rectagles").data(self.dataForCircles);
+		var spaceBetweenLines =  20;
+		
+		if (self.height<100) {
+			spaceBetweenLines = spaceBetweenLines/5;
+		}
 
 		if (self.showLegend)
-		{		
-			//var valueX = (self.margin.left)*2+((self.width/2));
+		{
 			var valueX = (self.margin.left)*2+((self.maxWidth/2));
 			self.maxWidth
 			//console.log(valueX);
 			//console.log(eventsData.length);
 			if (eventsData.length>0) {
-				//add title of legend			
+				//add title of legend
 				self.svg.append("text")
 	                .attr("x", function (d, i) {
 	                    return valueX;
@@ -2374,7 +2494,6 @@ policycompass.viz.line = function (options) {
 	    				return colorToReturn;
 					});
 
-
 				historicalEvents.enter().append("text")
 	                    .attr("x", function (d, i) {
 	                        return valueX;
@@ -2394,7 +2513,6 @@ policycompass.viz.line = function (options) {
 	                        return colorToReturn;
 	                    })
 	                    .on("mouseover", function (d, i) {
-	                    	
 							var str = "Event: " + d.title;
 							var fromDate = "From: " +d.startDate;
 							var toDate = "To: " +d.endDate;
@@ -2405,11 +2523,8 @@ policycompass.viz.line = function (options) {
 							else {
 								tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '<br/>'+fromDate+'<br/>'+toDate+'<br/>'+desc+'</div>');
 							}
-							
-	                        
 	                        d3.selectAll(".event_" + d.index).style("stroke-width", 5);
 	                        d3.selectAll(".event_circle_" + d.index).style("stroke-width", 5);
-	                    	
 	                    })
 	                    .on("mouseout", function (d, i) {
 							mouseout();
@@ -2426,12 +2541,9 @@ policycompass.viz.line = function (options) {
             				if (trimmedString.length > length) {
 								trimmedString = trimmedString.substring(0, length) + "...";
 							}
-            
             				return trimmedString;
-            				
 	                    })
 	                    .on("click", function () {
-	                        
 							if ((self.modeGraph == 'view') || (self.xaxeformat == 'sequence')) {
 								
 							} else {
@@ -2441,15 +2553,13 @@ policycompass.viz.line = function (options) {
                                     document.getElementById("addHEbutton").click();
                                 }
                             }
-	                        
 	                    });
-	                    
-             }   
+             }
 		}
 
-		self.plot_as_top_lines = 1;
+		//self.showAstoplines = true;
 
-		if (self.plot_as_top_lines==1 && eventsData.length>0) {
+		if (self.showAstoplines==true && eventsData.length>0) {
 			var rectangle = self.svg.append("rect")
 				.style("stroke", "black")
 	  			.style("fill", "none")
@@ -2474,7 +2584,8 @@ policycompass.viz.line = function (options) {
 					return resTRext;
 				});
 		}
-							
+		
+		self.cntDiff1 = 0;			
         historicalEvents.enter().append("rect")
         	//.attr("class", "lineXDisco")                   
             .style("stroke", function (d, i) {                
@@ -2506,9 +2617,20 @@ policycompass.viz.line = function (options) {
             })
             //.attr("y", 0)
             .attr("y", function (d, i) {
-            	if (self.plot_as_top_lines==1) {            		
+            	if (self.showAstoplines==true) {
+            		
+            		var saltolinea = 0;
+            		for (var j in self.linesToPlotEvents) {
+            			for (var j2 in self.linesToPlotEvents[j]) {
+            				if (self.linesToPlotEvents[j][j2].id==d.id) {
+            					saltolinea = j;
+            				}
+            			}
+            		}
+            		          		
             		//var vToReturn = -10;	
-            		var vToReturn = -(self.maxEventsByPeriod * self.spaceBetweenEvents);	                    
+            		var vToReturn = -(self.maxEventsByPeriod * self.spaceBetweenEvents);
+            		vToReturn = vToReturn + (spaceBetweenLines*saltolinea);	                    
             		return vToReturn;
             	}
             	else {
@@ -2529,9 +2651,10 @@ policycompass.viz.line = function (options) {
 	                }
 	                
 	                //events of 1 day. vertical line
-	                var vToReturn = (self.he_bar_height*i)
+	                var vToReturn = (self.he_bar_height*(i-self.cntDiff1))
 	                if (dif==1) {
-	                	vToReturn = 0;                	
+	                	vToReturn = 0;   
+	                	self.cntDiff1 = self.cntDiff1 +1;              	
 	                }
             		
             	}
@@ -2558,7 +2681,7 @@ policycompass.viz.line = function (options) {
             //.attr("height", self.height)
             //.attr("height", self.he_bar_height)
             .attr("height", function (d, i) {
-            	if (self.plot_as_top_lines==1) {
+            	if (self.showAstoplines==true) {
             		var vToReturn = 1;
             	}
             	else {
@@ -2587,6 +2710,7 @@ policycompass.viz.line = function (options) {
                 return vToReturn;
             })            
             .on("mouseover", function (d, i) {
+            	
                 d3.select(this).style("stroke-width", 5);
 
                 var textTooltip = "";
@@ -2614,8 +2738,9 @@ policycompass.viz.line = function (options) {
 
                 var startDateToPlot = monthNames[parseInt(resSplit[1])] + " " + parseInt(resSplit[2]) + ", " + resSplit[0];
 
-
-                textTooltip = d.title + "<br /> From: " + startDateToPlot;
+				textTooltip = "Event: " + d.title;
+                //textTooltip = textTooltip + "<br /> From: " + startDateToPlot;
+                textTooltip = textTooltip + "<br /> From: " + d.startDate;
                 if (d.endDate != "") {
                     if (d.endDate) {
                         var resSplit = d.endDate.split("-");
@@ -2623,7 +2748,10 @@ policycompass.viz.line = function (options) {
                         var resSplit = [];
                     }
                     var endDateToPlot = monthNames[parseInt(resSplit[1])] + " " + parseInt(resSplit[2]) + ", " + resSplit[0];
-                    textTooltip = textTooltip + " <br /> To: " + endDateToPlot;
+                    //textTooltip = textTooltip + " <br /> To: " + endDateToPlot;
+                    
+                    textTooltip = textTooltip + " <br /> To: " + d.endDate;
+                    
 
                 }
                 if (d.desc != "") {
@@ -2631,7 +2759,8 @@ policycompass.viz.line = function (options) {
                 }
 
                 var posXToPlot = self.xScale(getDate(d.startDate));
-                if (posXToPlot > 0) {
+                
+                if (posXToPlot >= 0) {
 
                     tooltip.style("opacity", 1.0).html("<div class='tooltip-arrow'></div><div class='tooltip-inner ng-binding' ng-bind='content'>" + textTooltip + "</div>");
 
@@ -2643,11 +2772,11 @@ policycompass.viz.line = function (options) {
             })
 
 
-			if (self.plot_as_top_lines==1) {			
-				var historicalEventsCircles = self.svg.selectAll("circles").data(dataForCircles);
+			if (self.showAstoplines==true) {			
+				var historicalEventsCircles = self.svg.selectAll("circles").data(self.dataForCircles);
 				
 				for (var iHE=1;iHE<=2; iHE=iHE+1) {
-					
+					//test to plot image as point
 					/*
 					historicalEventsCircles.enter()
 						.append('image')
@@ -2738,7 +2867,22 @@ policycompass.viz.line = function (options) {
 					.attr("y", function (d, i) {                    
 	                    //return -10;
 	                    var vToReturn = -(self.maxEventsByPeriod * self.spaceBetweenEvents);	                    
-            			return vToReturn - (self.radius/2);
+            			vToReturn = vToReturn - (self.radius/2);
+
+						var saltolinea = 0;
+            			for (var j in self.linesToPlotEvents) {
+            				for (var j2 in self.linesToPlotEvents[j]) {
+    	        				if (self.linesToPlotEvents[j][j2].id==d.id) {
+        	    					saltolinea = j;
+            					}
+            				}
+            			}
+            			
+            			
+            			vToReturn = vToReturn + (spaceBetweenLines*saltolinea);	                    
+            			return vToReturn;
+
+            			
 	                })
 	                .attr("width", function (d, i) {                    
 	                    var vToReturn = self.radius;                 
@@ -2772,7 +2916,7 @@ policycompass.viz.line = function (options) {
 						var toDate = "To: " +d.endDate;
 						var desc = "Desc.: " +d.desc;
 						if ((self.modeGraph == 'view') || (self.xaxeformat == 'sequence')) { 
-							tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '<br/>'+fromDate+'<br/>'+toDate+'<br/>'+desc+'<br/></div>');
+							tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '<br/>'+fromDate+'<br/>'+toDate+'<br/>'+desc+'</div>');
 						}
 						else {
 							tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '<br/>'+fromDate+'<br/>'+toDate+'<br/>'+desc+'</div>');
@@ -2787,10 +2931,6 @@ policycompass.viz.line = function (options) {
 							
 				}
 			}
-			
-			/**********/
-			
-
 
         /******** end plot historical events ***********/		
 	}
@@ -2881,36 +3021,14 @@ policycompass.viz.line = function (options) {
             self.distanceXaxes = self.maxDistanceXaxes * newScale;
         }
 
-
-//************************************************************
-// Zoom specific updates
-//************************************************************
+		//************************************************************
+		// Zoom specific updates
+		//************************************************************
 
 		if (!self.showLegend) {
 			self.margin.bottom = self.margin.top*2;
 		}
-		/*
-        self.svg = d3.select(self.parentSelect)
-        .append("svg").attr("class", "pc_chart")
-        .attr("width", self.width + self.margin.left + self.margin.right)
-        .attr("height", self.height + self.margin.top + self.margin.bottom)
-        //.call(d3.behavior.zoom().on("zoom", redraw))
-		.on("mousemove", function (d, i) {
-            var posMouse = d3.mouse(this);
-            var posX = posMouse[0];
-            var posY = posMouse[1];
-            handleMouseOverGraph(posMouse);
-            mousemove();
-		})
-		.on("click", function (d, i) {
-            if (self.xaxeformat == 'sequence') {
-            } else {
-
-            }
-		})
-		.append("g")
-		.attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
-		*/
+		
     }
 
     //function to clone an object
@@ -2923,7 +3041,6 @@ policycompass.viz.line = function (options) {
         for (var key in obj) {
             temp[key] = self.clone(obj[key]);
         }
-
         return temp;
     }
 
@@ -2956,57 +3073,55 @@ policycompass.viz.line = function (options) {
                 var newEventData = [];
                 
                 for (var i in eventsData) {
-                	
-                 	
-                 	
+
                  	var date1 = new Date(eventsData[i].startDate);
 					var date2 = new Date(eventsData[i].endDate);
 					var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-                 	                 	
+
                  	newEventData.push(eventsData[i]);
                  	if (isNaN(timeDiff))
                  	{
                  		timeDiff = 0;
                  	}
-                 	
+
                  	newEventData[i].timediff = timeDiff;
                 }
-                
-                
+
                 if (eventsData) {
 	                if (eventsData.length==0)
 	                {
 	                	self.plotDataIn = 'first';
-	                }                	
+	                }
                 }
 
         		self.margin.topIni = self.margin.top;
 				self.spaceBetweenEvents = 20;
 
 				if (self.height<=150) {
-					self.spaceBetweenEvents = self.spaceBetweenEvents /5;	
+					self.spaceBetweenEvents = self.spaceBetweenEvents /5;
 				}
 
+				initEvents(eventsData);
+				//console.log(self.linesToPlotEvents.length);
+				
 				var maxEventsByPeriod = 1;
-				
-				
-				if (eventsData!=null && eventsData.length > 0) {
-					self.margin.top = self.margin.top + (self.spaceBetweenEvents*(maxEventsByPeriod+1));	
+				if (self.linesToPlotEvents.length>maxEventsByPeriod) {
+					maxEventsByPeriod=self.linesToPlotEvents.length;
 				}
 				
+				if (self.showAstoplines == true) {
+					if (eventsData!=null && eventsData.length > 0) {
+						self.margin.top = self.margin.top + (self.spaceBetweenEvents*(maxEventsByPeriod+1));	
+					}
+				}
 
 				self.maxEventsByPeriod = maxEventsByPeriod;
 
 				//order by time dif
 				newEventData = self.alphabetical_sort_object_of_objects_lines(newEventData, 'timediff', 'desc');                
                 self.drawLines(dataToPlotUpdate, newEventData);                
-                
-                //self.drawLines(dataToPlotUpdate, eventsData);
-                
-
             }
         }
-        
     }
 
     self.init();

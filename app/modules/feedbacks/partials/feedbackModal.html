@@ -33,6 +33,12 @@
                         {{ location.absUrl() }}
                     </div>
 
+                    <div class="form-group" ng-show="!custom">
+                        <label for="category">Category</label>
+
+                        <div id="category" class="reference-selection pc-reference-selection-full" resource="FeedbackCategory" selection-mode="single" output="category.output" input="category.input"></div>
+                    </div>
+
                     <div class="form-group">
                         <label>Name</label>
                         <input class="form-control" id="name_text" type="text" name="name_text" data-ng-model="name_text">

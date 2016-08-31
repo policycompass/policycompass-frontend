@@ -49,28 +49,35 @@
 	<div ng-show="(visualizationForm.$invalid || visualization.policy_domains_data.output.length==0) && ListMetricsFilter.length>0" class="form-custom-instructions">
 		<p class="text-warning">To save a visualisation <span ng-hide="user.state.loggedIn"> you must be logged and </span> all mandatory fields (*) must be filled.</p>
 	</div>
-	
+
+<div>	
     <div class="pc-visualization-formcontrols">
         <div class="form-group pull-left">
             <canvas ng-show="false" id="canvas" width="800" height="400"></canvas>
             <div id="png-container"></div>
-            <div class="button-group">
-
+            
+            
+            <div class="button-group" ng-include='"modules/visualization/partials/saveVisualisationButtons.html"'></div>
+            <!--
+            <div class="button-group">			
 				<a href="#!/login" ng-if="!user.state.loggedIn" class="btn btn-default btn-save" target="_blank">Login to Save</a>
                 <a href="" ng-if="mode == 'create' && user.state.loggedIn" type="submit" data-intro="Save data" data-position="top" ng-disabled="visualizationForm.$invalid || visualization.policy_domains_data.output.length==0" class="btn btn-default btn-save" ng-click="createVisualization(ListMetricsFilter)">
                     Save
                 </a>
                 <a href="" ng-if="mode == 'edit' && user.state.loggedIn" type="submit" data-intro="Save data" data-position="top" ng-disabled="visualizationForm.$invalid || visualization.policy_domains_data.output.length==0" class="btn btn-default btn-save" ng-click="createVisualization(ListMetricsFilter)">
                     Save
-                    <span ng-hide="user.state.userPath==visualization.creator_path"> a copy
+                    <span ng-hide="user.state.userPath==visualization.creator_path"> a copy</span></n>
                 </a>
-
-                <a href="" ng-show="mode=='edit'" ng-disabled="disableRevert" type="submit" data-intro="Revert data" data-position="top" class="btn btn-default btn-revert2" ng-click="revertVisualization()">Revert</a>
-                <a href="" data-intro="Helps you to link datasets with this visualisation" data-position="top" type="submit" class="btn btn-default btn-adddataset" id="modaladddataset" ng-click="showModal('datasets')">Edit Datasets</a>
-                <a href="" ng-show="(isSelectedSon('graph_line') || isSelectedSon('graph_bars')) && ListMetricsFilter.length>0" data-intro="Helps you to link this visualisation with events" data-position="top" type="submit" class="btn btn-primary btn-adddevent" id="addHEbutton" ng-click="showModal('events')">Edit Events</a>
-                
+                <a href="" ng-show="mode=='edit'" ng-disabled="disableRevert" type="submit" data-intro="Revert data" data-position="top" class="btn btn-default btn-revert2" ng-click="revertVisualization()">Revert</a>               
                 <a href="" type="submit" data-intro="Cancel" data-position="top" class="btn btn-default btn-danger btn-clear" ng-click="cancelVisualization()">Cancel</a>
+			</div>
+			-->
+			<div class="button-group">
+                <a href="" data-intro="Helps you to link datasets with this visualisation" data-position="top" type="submit" class="btn btn-default btn-adddataset" id="modaladddataset" ng-click="showModal('datasets')">Edit Datasets</a>
+                <a href="" ng-disabled="(isSelectedSon('graph_pie')) || ListMetricsFilter.length<=0" data-intro="Helps you to link this visualisation with events" data-position="top" type="submit" class="btn btn-primary btn-adddevent" id="addHEbutton" ng-click="showModal('events')">Edit Events</a>
             </div>
+            
+            
             <!--
             <button ng-hide="ListMetricsFilter.length==0" type="button" data-intro="Plot data in a map" data-position="top" ng-class="{'btn btn-default btn-map':!isSelectedParent(1),'btn btn-info btn-map':isSelectedParent(1)}" ng-click="selectTabParent(1); selectTabSon('mercator');rePlotGraph();">Map</button>
 
@@ -97,11 +104,11 @@
     <div class="content-body">
 
         <form name="visualizationForm" role="form" novalidate="" form-on-change="formOnChange()">
-            <div class="row createvisualization">
+            <div class="createvisualization">
                 <div>
                     <div ng-switch="step">
 
-                        <div ng-show="canPlotGarph">
+                        <div ng-show="canPlotGarph" class="chartvisu">
                             <div ng-show="((1==1)  || isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')) && (ListMetricsFilter.length>0)" class="graphContainerdiv">
                                 <input type="hidden" id="startDatePosX" name="startDatePosX" value="">
                                 <input type="hidden" id="endDatePosX" name="endDatePosX" value="">
@@ -277,6 +284,23 @@
 	                                    </label>
 	                                   -->
 	                                </div>
+	                                
+	                                <div id="div_showevntsontop" ng-show="(isSelectedSon('graph_line') || isSelectedSon('graph_bars')) && (eventsToPlot.length>0)" class="">
+	                                	<div class="col-xs-6 configureoptionchartlabel">
+	                                    	 
+	                                    </div>
+	                                    <div class="col-xs-6 configureoptionchartfield checkbox-inline">
+	                                    	<label class="checkbox-inline configureoptionchartlabel">
+	                                    		<input ng-model="showAstoplines" type="checkbox" ng-click="manualClick('showAstoplines');rePlotGraph();" name="showAstoplines" id="showAstoplines" class="checkbox filterCheckBox"> 
+	                                    		Events on top
+	                                    	</label>
+	                                    </div>
+	                                	<!--
+	                                    <label class="checkbox-inline">
+	                                        <input ng-model="showAsPercentatge" type="checkbox" ng-click="manualClick('showAsPercentatge');rePlotGraph();" name="showAsPercentatge" id="showAsPercentatge" class="checkbox filterCheckBox"> As %
+	                                    </label>
+	                                   -->
+	                                </div>
 	
 	                                <div id="div_showZoom" ng-show="isSelectedParent(1) && !isSelectedSon('orthographic') && !isSelectedSon('azimuthalEqualArea')" class="">
 	                                	<div class="col-xs-6 configureoptionchartlabel">
@@ -388,9 +412,9 @@
 						<div class="row">
 	                        <tabset ng-hide="ListMetricsFilter.length==0">
 	                            <tab heading="Metadata Editor">
-	                                <div class="form-group" ng-class="{'has-error': metricForm.title.$dirty && metricForm.title.$invalid}">
+	                                <div class="form-group" ng-class="{'has-error': visualizationForm.title.$dirty && visualizationForm.title.$invalid}">
 	                                    <label for="title">Title *</label>
-	                                    <input type="text" class="form-control" id="title" name="title" placeholder="Title" ng-model="visualization.title" ng-minlength="3" required>
+	                                    <input ng-maxlength="100" ng-maxlength="maxlength"type="text" class="form-control" id="title" name="title" placeholder="Title" ng-model="visualization.title" ng-minlength="3" required>
 	                                </div>
 	
 	                                <div class="form-group" ng-class="{'has-error': visualizationForm.description.$dirty && visualizationForm.description.$invalid}">
@@ -399,34 +423,43 @@
 	                                </div>
 	                                <div class="form-group">
 	                                    <label for="keywords">Keywords</label>
-	                                    <input type="text" class="form-control" id="keywords" placeholder="Keywords" ng-model="visualization.keywords">
+	                                    <input type="text" class="form-control" id="keywords" name="keywords" placeholder="Keywords" ng-model="visualization.keywords">
 	                                </div>
-	
+
 	                                <div class="form-group">
 	                                    <label for="language_data">Language *</label>
-	
-	                                    <div id="language_data" class="reference-selection pc-reference-selection-full" resource="Language" selection-mode="single" output="visualization.language_data.output" input="visualization.language_data.output"></div>
+	                                    <div id="language_data" 
+	                                    name="Language"
+	                                    class="reference-selection-form pc-reference-selection-full" 
+	                                    resource="Language" selection-mode="single" 
+	                                    ng-model="visualization.language_id" required
+	                                    ></div>
 	                                </div>
-	
+
 	                                <div class="form-group">
 	                                    <label for="location_data">Location</label>
-	
-	                                    <div id="location_data" class="reference-selection pc-reference-selection-full" resource="Individual" selection-mode="single" output="visualization.location_data.output" input="visualization.location_data.output" parameters="{ class: 'Country' }"></div>
+		                                    <div id="location_data" class="reference-selection-form pc-reference-selection-full" resource="Individual" selection-mode="single" ng-model="visualization.location" parameters="{ class: 'Country' }"></div>
 	                                </div>
-	
+
 	                                <div class="form-group">
 	                                    <label for="policy_domains_data">Policy Domains *</label>
-	                                    <div id="policy_domains_data" class="reference-selection pc-reference-selection-full" resource="PolicyDomain" selection-mode="multiple" output="visualization.policy_domains_data.output" input="visualization.policy_domains_data.output"></div>
+	                                    <div name="Policy Domains" id="policy_domains_data" class="reference-selection-form pc-reference-selection-full" resource="PolicyDomain" selection-mode="multiple" ng-model="visualization.policy_domains" required></div>
 	                                </div>
-	
+
+									<div class="row pull-right">
+										<div class="button-group" ng-include='"modules/visualization/partials/saveVisualisationButtons.html"'></div>										
+									</div>
+									<div class="row"></div>
+									
 	                            </tab>
-	
-	
 	                        </tabset>
                        	</div>
                     </div>
                 </div>
             </div>
-		</form>	
-    </div>    
+		</form>
+    </div>
+
+    
+	</div>
 </div>

@@ -130,7 +130,7 @@ html, body {
 }
 
 #group3 .parallax__layer--base {
-  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)), url('../img/front/parallax-3.jpg');
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.5)), url('../img/front/parallax-3.jpg');
 }
 
 #group4 {
@@ -138,7 +138,7 @@ html, body {
 }
 
 #group4 .parallax__layer--deep {
-  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.5)), url('../img/front/parallax-4.jpg');
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)), url('../img/front/parallax-4.jpg');
 }
 
 #group5 {
@@ -202,10 +202,6 @@ html, body {
   color: inherit;
 }
 
-div.sign-in-wrapper.main-menu-wrap.collapse.in {
-  background-color: #000;
-}
-
 @media (max-width: $device_4) {
   .parallax__layer--fore {
     display: none;
@@ -247,6 +243,6 @@ div.sign-in-wrapper.main-menu-wrap.collapse.in {
   z-index: 50;
 }
 
-#feedbackButton {
+.home-top-bar #feedbackButton {
   display: none;
 }
