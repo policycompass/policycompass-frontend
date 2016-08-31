@@ -238,7 +238,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 if(dataset.resource['custom']) {
                     $scope.custom = true;
                 }
-                $scope.canDraft = true;
+                $scope.canDraft = dataset.is_draft;
             };
 
             var getDatasetError = function (error) {
