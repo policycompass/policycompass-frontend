@@ -238,16 +238,14 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 if(dataset.resource['custom']) {
                     $scope.custom = true;
                 }
-
+                $scope.canDraft = true;
             };
 
             var getDatasetError = function (error) {
                 $location.path('/datasets');
             };
 
-            $scope.dataset = Dataset.get({id: $routeParams.datasetId},function(dataset){
-                $scope.canDraft = dataset.is_draft;
-            }, getDatasetSuccess, getDatasetError);
+            $scope.dataset = Dataset.get({id: $routeParams.datasetId}, getDatasetSuccess, getDatasetError);
 
             var preSave = function () {
                 delete $scope.dataset['data']['individuals'];
