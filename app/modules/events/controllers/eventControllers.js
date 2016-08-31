@@ -107,7 +107,7 @@ angular.module('pcApp.events.controllers.event', [
             $scope.mode = "edit";
 
             $scope.event = Event.get({id: $routeParams.eventId}, function (event) {
-                $scope.canDraft = $scope.event.is_draft;
+                $scope.canDraft = true;
                 $scope.spatials = {
                     input: $scope.event.spatials,
                     output: []
