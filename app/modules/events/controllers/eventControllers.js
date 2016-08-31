@@ -107,6 +107,7 @@ angular.module('pcApp.events.controllers.event', [
             $scope.mode = "edit";
 
             $scope.event = Event.get({id: $routeParams.eventId}, function (event) {
+                $scope.canDraft = true;
                 $scope.spatials = {
                     input: $scope.event.spatials,
                     output: []
@@ -163,6 +164,8 @@ angular.module('pcApp.events.controllers.event', [
                     $scope.event.startEventDate = $routeParams.start || "";
                     $scope.event.endEventDate = $routeParams.end || "";
                     $scope.event.languageID = $routeParams.language || "";
+                    $scope.event.is_draft = true;
+                    $scope.canDraft = $scope.event.is_draft;
                 }
             }
 
@@ -213,7 +216,8 @@ angular.module('pcApp.events.controllers.event', [
                 $location.search('spatials', $scope.event.spatials);
                 $location.search('start', $scope.event.startEventDate);
                 $location.search('end', $scope.event.endEventDate);
-                $location.search('language', $scope.event.languageID)
+                $location.search('language', $scope.event.languageID);
+                $location.search('draft', $scope.event.is_draft);
             }
 
 

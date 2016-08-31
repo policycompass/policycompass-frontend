@@ -13,6 +13,8 @@
                     Delete</a>
             </div>
 
+            <a href="#" ng-if="dataset.is_draft" ng-disabled="dataset.is_draft" class="btn btn-default btn-danger">Draft</a>
+
 
             <a type="button" class="btn btn-share" ng-click="share=!share" ng-class="{active: share}" ng-if="!1">Share</a>
         </div>

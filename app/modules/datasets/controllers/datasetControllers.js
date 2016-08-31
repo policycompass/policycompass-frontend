@@ -238,7 +238,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 if(dataset.resource['custom']) {
                     $scope.custom = true;
                 }
-
+                $scope.canDraft = true;
             };
 
             var getDatasetError = function (error) {
@@ -1101,6 +1101,8 @@ angular.module('pcApp.datasets.controllers.dataset', [
         'ExternalResource',
         function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService, $filter, Dataset, $location, Individual, ExternalResource) {
 
+            $scope.canDraft = true;
+
             $scope.checkExternalResources = function(){
                 var externalsList = ExternalResource.query(null, function(){
                     externalsList.forEach(function(external){
@@ -1110,7 +1112,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     });
                 });
             };
-            
+
             var init = function () {
                 $scope.selectedIndividuals = [];
                 var individualsList = Individual.query(null, function(){
@@ -1153,6 +1155,8 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 }
 
                 $scope.custom = false;
+
+                $scope.dataset.is_draft = true;
             };
 
             init();
@@ -1237,6 +1241,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 payload.user_id = 1;
                 payload.unit_id = $scope.dataset.unit[0];
                 payload.data = buildData();
+                payload.is_draft = $scope.dataset.is_draft;
                 return payload;
             };
 
