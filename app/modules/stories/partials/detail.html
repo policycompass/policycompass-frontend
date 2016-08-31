@@ -6,7 +6,7 @@
 
     <div class="pc-visualization-formcontrols">
         <div class="form-group pull-left btn-group">
-            <a type="button" class="btn btn-primary  btn-create" ng-if="userState.loggedIn && (userState.userPath == story.creator_path || userState.isAdmin)"  href="#!/stories/{{ story.id }}/edit">Edit</a>
+            <a type="button" class="btn btn-primary btn-create" href="#!/stories/{{ story.id }}/edit">Edit</a>
             <a href="" id="downloadButton" class="btn btn-default fa-file-text-o" ng-click="downloadStory()">Download</a>
             <a href="" id="deleteButton" class="btn btn-danger fa-trash-o" ng-click="deleteChapter()">Delete</a>
         </div>
@@ -16,18 +16,20 @@
         <div class="row">
             <div class="story-chapters-list">
                 <div ng-repeat="chapter in storyChapters" id="chapters_list" name="chapters_list" class="story-chapters-list-entry">
-                    <a href="" ng-click="jumpToChapter(chapter.number)" ng-if="chapter">{{ chapter.title }}</a>
+                    <a ng-if="chapter" href="#anchor-chapter{{ chapter.number }}" du-smooth-scroll du-scrollspy>{{ chapter.title }}</a>
                 </div>
             </div>
             <div class="col-xs-9 col-xs-offset-2 story-chapters-detail">
                 <div ng-repeat="chapter in storyChapters" id="chapters_detail" name="chapters_detail" class="story-chapters-detail-entry">
                     <a name="anchor-chapter{{ chapter.number }}" id="anchor-chapter{{ chapter.number }}"></a>
-                    <h2>{{ chapter.title }}</h2>
-                    <p>{{ chapter.text }}</p>
 
-                    <div class="row" id="metricsDiv{{ chapter.number }}" name="metricsDiv{{ chapter.number }}"></div>
-                    <div class="row" id="visualizationsDiv{{ chapter.number }}" name="visualizationsDiv{{ chapter.number }}"></div>
-                    <div class="row" id="causalsDiv{{ chapter.number }}" name="causalsDiv{{ chapter.number }}"></div>
+                    <h2>{{ chapter.title }}</h2>
+
+                    <div ng-bind-html="chapter.text"></div>
+
+                    <div ng-repeat="content in chapter.contents">
+                        <pc-visualization visualization-id="{{content.contentId}}"></pc-visualization>
+                    </div>
                 </div>
             </div>
         </div>

@@ -3,6 +3,7 @@
  */
 
 angular.module('pcApp.stories.controllers.storyController', ['pcApp.stories.services.storyServices'])
+angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
 
     .factory('StoryCreateControllerHelper', function(){
         return {
@@ -38,11 +39,16 @@ angular.module('pcApp.stories.controllers.storyController', ['pcApp.stories.serv
                 $scope.chapterCount = 0;
                 $scope.chaptersDOMIndices = [];
                 $scope.addChapter();
+                $(function () {
+                  $('[data-toggle="tooltip"]').tooltip()
+                })
             }
 
             $scope.addChapter = function(){
                 $scope.chapterCount++;
                 $scope.chapters.push({"number":$scope.chapterCount, "contents":[]});
+
+                $document.scrollToElementAnimated(angular.element(document.getElementById('chapter' + chapterCount)));
             };
 
             $scope.removeChapter = function(index){
@@ -56,20 +62,6 @@ angular.module('pcApp.stories.controllers.storyController', ['pcApp.stories.serv
                     }
                 });
             };
-
-            $scope.addToChapter = function(chapterIndex, contentType, contentIndex){
-                var arrayIndex = 0;
-                for(var i=0; i<$scope.chapters.length;i++){
-                    if($scope.chapters[i].number == chapterIndex){
-                        arrayIndex = i;
-                    }
-                }
-                try{
-                    $scope.chapters[arrayIndex].contents.push({"type":contentType, "index": contentIndex, "stringIndex": arrayIndex+10*15+contentType});
-                }
-                catch(e){
-                }
-            }
 
             var prepareNewChapters = function(){
                 var newChapters = [];
@@ -122,11 +114,13 @@ angular.module('pcApp.stories.controllers.storyController', ['pcApp.stories.serv
         '$compile',
         '$http',
         'API_CONF',
-        function ($scope, Story, Chapter, Content, $location, $log, dialogs, storyServices, Auth, $filter, $routeParams, $compile, $http, API_CONF) {
+        '$anchorScroll',
+        function ($scope, Story, Chapter, Content, $location, $log, dialogs, storyServices, Auth, $filter, $routeParams, $compile, $http, API_CONF, $anchorScroll) {
 
 
             $scope.init = function(){
                 $scope.mode = "edit";
+                $scope.mediaSmall = true;
                 $scope.userState = Auth.state;
                 $scope.chapterCount = 0;
                 $scope.chapters = [];
@@ -135,6 +129,45 @@ angular.module('pcApp.stories.controllers.storyController', ['pcApp.stories.serv
             }
 
             var getStory = function(id){
+                $scope.story = {
+                    "title":"Test Story One",
+                    "id":146,
+                    "chapters": [
+                    {
+                        "number": 0,
+                        "text": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+                        "title": "Introduction",
+                        "contents": []
+                    },
+                    {
+                        "number":1,
+                        "text":"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+                        "title": "After Deleted Chapter",
+                        "contents": [
+                        {
+                            "type": "visualization",
+                            "contentId": 9
+                        }]
+                    },
+                    {
+                        "number": 2,
+                        "text": "<h1>Hier kommt die Überschrift</h1><h6>Das ist die Unterüberschrift</h6><p><img src='https://i.ytimg.com/vi/0SDNXhkojw4/sddefault.jpg'/><br/></p><p>Das ist ein Text.</p><blockquote><p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr. No sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p></blockquote><p><b>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</b></p><p><br/></p><h6>Das ist die Unterüberschrift<br/><br/><b>Das ist ein Text.</b></h6>",
+                        "title": "Conclusion",
+                        "contents": []
+                    }]
+                };
+                $scope.storyTitle = $scope.story.title;
+                $scope.story_title = $scope.storyTitle;
+                $scope.storyChapters = $scope.story.chapters;
+                $scope.chapters = $scope.storyChapters;
+                $scope.chapterCount = $scope.chapters.length;
+                $scope.oldContents = [];
+                for(var i=0; i<$scope.storyChapters.length;i++){
+                    for(var j=0; j<$scope.storyChapters[i].contents.length;j++){
+                        $scope.oldContents.push($scope.storyChapters[i].contents[j]);
+                    }
+                }
+                /*
                 $http.get(API_CONF.STORY_MANAGER_URL + '/stories', {params: {id:$routeParams.storyId, getList:false}}).then(function(response){
                     if(response){
                         $scope.story = response.data.result;
@@ -150,21 +183,7 @@ angular.module('pcApp.stories.controllers.storyController', ['pcApp.stories.serv
                             }
                         }
                     }
-                });
-            }
-
-            $scope.addToChapter = function(chapterIndex, contentType, contentIndex){
-                var arrayIndex = 0;
-                for(var i=0; i<$scope.chapters.length;i++){
-                    if($scope.chapters[i].number == chapterIndex){
-                        arrayIndex = i;
-                    }
-                }
-                try{
-                    $scope.chapters[arrayIndex].contents.push({"type":contentType, "index": contentIndex, "stringIndex": arrayIndex+10*15+contentType});
-                }
-                catch(e){
-                }
+                });*/
             }
 
             var prepareNewChapters = function(){
@@ -183,8 +202,13 @@ angular.module('pcApp.stories.controllers.storyController', ['pcApp.stories.serv
             }
 
             $scope.addChapter = function(){
-                $scope.chapterCount++;
+                $scope.chapterCount++
                 $scope.chapters.push({"number":$scope.chapterCount, "contents":[]});
+
+                /*setTimeout(function () {
+                    $location.hash('chapter' + $scope.chapterCount);
+                    $anchorScroll();
+                }, 300) */
             };
 
             $scope.saveStory = function(){
@@ -215,6 +239,18 @@ angular.module('pcApp.stories.controllers.storyController', ['pcApp.stories.serv
                     }
                 });
             };
+
+            $scope.removeFromChapter = function (chapterIndex, contentIndex, contentType) {
+                var dlg = dialogs.confirm("Delete this " + contentType + "?");
+                dlg.result.then(function () {
+                    try {
+                        $scope.chapters[chapterIndex].contents.splice(contentIndex, 1);
+                    }
+                    catch(err) {
+                        alert("err " + err + ": failed to remove " + contentType);
+                    }
+                })
+            }
 
             $scope.init();
         }
@@ -252,16 +288,46 @@ angular.module('pcApp.stories.controllers.storyController', ['pcApp.stories.serv
             }
 
             var getStory = function(id){
+                $scope.story = {
+                    "title":"Test Story One",
+                    "id":146,
+                    "chapters": [
+                    {
+                        "number": 0,
+                        "text": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+                        "title": "Introduction",
+                        "contents": []
+                    },
+                    {
+                        "number":1,
+                        "text":"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+                        "title": "After Deleted Chapter",
+                        "contents": [
+                        {
+                            "type": "visualization",
+                            "contentId": 9
+                        }]
+                    },
+                    {
+                        "number": 2,
+                        "text": "<h1>Hier kommt die Überschrift</h1><h6>Das ist die Unterüberschrift</h6><p><img src='https://i.ytimg.com/vi/0SDNXhkojw4/sddefault.jpg'/><br/></p><p>Das ist ein Text.</p><blockquote><p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr. No sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p></blockquote><p><b>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</b></p><p><br/></p><h6>Das ist die Unterüberschrift<br/><br/><b>Das ist ein Text.</b></h6>",
+                        "title": "Conclusion",
+                        "contents": []
+                    }]
+                };
+                $scope.storyTitle = $scope.story.title;
+                $scope.storyChapters = $scope.story.chapters;
+                /*
                 $http.get(API_CONF.STORY_MANAGER_URL + '/stories', {params: {id:$routeParams.storyId, getList:false}}).then(function(response){
                     if(response){
                         $scope.story = response.data.result;
-                       //$scope.story = {"id":146,"chapters":[{"number":0,"text":"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.","title":"Anfang","contents":[{"type":0,"index":1,"stringIndex":150,"contentId":214},{"type":0,"index":1,"stringIndex":150,"contentId":215}]},{"number":1,"text":"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.","title":"After Deleted Chapter","contents":[{"type":1,"index":2,"stringIndex":153,"contentId":216}]},{"number":2,"text":"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.\n\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.\n\n\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.","title":"Conclusion","contents":[{"type":0,"index":1,"stringIndex":152,"contentId":217}]}],"title":"Test Story One"}
+                       //$scope.story = {"id":146,"chapters":[{"number":0,"text":"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.","title":"Introduction","contents":[{"type":0,"index":1,"stringIndex":150,"contentId":214},{"type":0,"index":1,"stringIndex":150,"contentId":215}]},{"number":1,"text":"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.","title":"After Deleted Chapter","contents":[{"type":1,"index":2,"stringIndex":153,"contentId":216}]},{"number":2,"text":"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.\n\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.\n\n\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.","title":"Conclusion","contents":[{"type":0,"index":1,"stringIndex":152,"contentId":217}]}],"title":"Test Story One"}
                         $scope.storyTitle = $scope.story.title;
                         $scope.storyChapters = $scope.story.chapters;
                         //countContents();
                         //organizeContents();
                     }
-                });
+                });*/
             }
 
 

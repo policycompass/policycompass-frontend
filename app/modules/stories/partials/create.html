@@ -8,7 +8,7 @@
 
     <div class="pc-visualization-formcontrols">
         <div class="form-group pull-left btn-group">
-            <a href="" id="saveButton" data-ng-disabled="storyForm.$invalid" ng-if="userState.loggedIn" class="btn btn-default btn-save" ng-click="saveStory()">Save</a>
+            <a href="" id="saveButton" data-ng-disabled="storyForm.$invalid" class="btn btn-default btn-save" ng-click="saveStory()">Save</a>
             <a href="" id="addChapterButton" class="btn btn-default btn-add" ng-click="addChapter()">Add Chapter</a>
             <a href="" id="previewButton" class="btn btn-default fa-file-text-o" ng-click="previewStory()">Preview</a>
             <a type="button" class="btn btn-danger fa-trash-o" href="#!/">Cancel</a>
@@ -29,7 +29,7 @@
                 <div id='chapter{{chapter.number}}' class='well'>
                     <div class='row'>
                         <div class='col-xs-4'>
-                            <h4 ng-show="chapter.title.length > 0"> {{ chapter.title }}</h4>
+                            <h4 ng-show="chapter.title.length > 0">{{ chapter.title }}</h4>
                             <h4 ng-hide="chapter.title.length > 0">Chapter {{ chapter.number }}</h4>
                         </div>
 
@@ -47,15 +47,41 @@
                     <div id='chapter{{chapter.number}}_content' name='chapter{{chapter.number}}_content' class='story-chapter-content well'>
                         <div id='chapter{{chapter.number}}_content_toolbox' name='chapter{{chapter.number}}_content_toolbox' class='story-chapter-content-toolbox'>
                             <div class='row'>
-                                <div class='btn-group col-xs-4'>
-                                    <a href='' id='addMetricButton{{chapter.number}}' class='btn btn-default fonticon-metric' ng-click='addToChapter(chapter.number, 0, 1)'></a>
+                                <div class='btn-group col-xs-12'>
+                                    <add-media-button-modal content-type="visualization" chapter="chapters[$index]"></add-media-button-modal>
+
+                                    <add-media-button-modal content-type="metric" chapter="chapters[$index]"></add-media-button-modal>
+
+                                    <add-media-button-modal content-type="fuzzymap" chapter="chapters[$index]"></add-media-button-modal>
+
+                                    <add-media-button-modal content-type="dataset" chapter="chapters[$index]"></add-media-button-modal>
+
+                                    <!--<a href='' id='addMetricButton{{chapter.number}}' class='btn btn-default fonticon-metric' ng-click='addToChapter(chapter.number, 0, 1)'></a>
                                     <a href='' id='addVisualisationButton{{chapter.number}}' class='btn btn-default fonticon-visualisation' ng-click='addToChapter(chapter.number, 1, 2)'></a>
-                                    <a href='' id='addCausalButton{{chapter.number}}' class='btn btn-default fa-bar-chart-o' ng-click='addToChapter(chapter.number, 2)'></a>
+                                    <a href='' id='addCausalButton{{chapter.number}}' class='btn btn-default fa-bar-chart-o' ng-click='addToChapter(chapter.number, 2)'></a>-->
                                 </div>
                             </div>
                         </div>
                         <div>
-                            <textarea class='form-control' rows=10 id='chapter{{chapter.number}}_text' type='text' name='chapter{{chapter.number}}_text' required placeholder='Chapter {{chapter.number}} Text' required>{{ chapter.text }}</textarea>
+                            <text-angular ng-model="chapter.text" placeholder='Chapter {{chapter.number}} Text'></text-angular>
+                            <textarea class='form-control' rows='10' id='chapter{{chapter.number}}_text' type='text' name='chapter{{chapter.number}}_text' required placeholder='Chapter {{chapter.number}} Text' required>{{ chapter.text }}</textarea>
+                        </div>
+                    </div>
+
+                    <div ng-repeat="content in chapter.contents" class="well">
+                        <div>
+                            <a class="close" ng-click="removeFromChapter($parent.$index, $index, content.type)" title="Delete this {{ content.type }}">×</a>
+
+                            <a ng-click="mediaSmall = !mediaSmall" title="Toggle size" style="cursor: pointer">
+                                <i class="fa " ng-class="{'fa-expand': mediaSmall, 'fa-compress': !mediaSmall}" aria-hidden="true"></i>
+                            </a>
+
+                            <div ng-if="mediaSmall">
+                                <pc-visualization visualization-id="{{content.contentId}}" x-small></pc-visualization>
+                            </div>
+                            <div ng-if="!mediaSmall">
+                                <pc-visualization visualization-id="{{content.contentId}}"></pc-visualization>
+                            </div>
                         </div>
                     </div>
                 </div>
