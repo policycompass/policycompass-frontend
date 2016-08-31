@@ -29,7 +29,8 @@ var pcAppDependencies = [
     'checklist-model',
     'duScroll',
     'angulartics',
-    'angulartics.piwik'
+    'angulartics.piwik',
+    'toggle-switch'
 ];
 
 if (policyCompassConfig.ENABLE_ADHOCRACY) {

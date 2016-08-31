@@ -3,10 +3,12 @@
         <h1 class="fonticon fonticon-event">{{ event.title }}</h1>
 
         <div class="pc-visualization-formcontrols">
-            <div>
+            <div class="button-group">
                 <a type="button" class="btn btn-primary  btn-create" ng-if="userState.loggedIn && (userState.userPath == event.creator_path || userState.isAdmin)"  href="#!/events/{{ event.id }}/edit">Edit</a>
-                <a type="button" class="btn btn-danger  btn-clear"  ng-if="userState.loggedIn && userState.isAdmin"  ng-click="deleteEvent(event)">Delete</a>
+                <a type="button" class="btn btn-danger  btn-clear"  ng-if="userState.loggedIn && (userState.userPath == event.creator_path || userState.isAdmin)"  ng-click="deleteEvent(event)">Delete</a>
             </div>
+
+            <a href="#" ng-if="event.is_draft" ng-disabled="event.is_draft" class="btn btn-default btn-danger">Draft</a>
         </div>
     </div>
     <div class="row">
@@ -105,8 +107,8 @@
             </div>
 
 
-            <div class="form-group form-group-external" ngshow="event.externalResourceID">
-                <div class="field-label">External Resource</div>
+            <div class="form-group form-group-external" ng-show="event.externalResourceID > 0">
+                <div class="field-label">External Resource ID</div>
                 <div class="field-content">{{ event.externalResourceID }}</div>
             </div>
 
@@ -140,7 +142,7 @@
                 <div class="panel-body">
                     <div class="visualization-graph-page-content">
 
-                        <div ng-repeat="idvisulist in [rv.visualization]" ng-include='"modules/visualization/partials/graph.html"'></div>
+                        <pc-visualization ng-repeat="idvisulist in [rv.visualization]" visualization-id="{{idvisulist}}" small></pc-visualization>
 
 
                     </div>
@@ -164,7 +166,7 @@
         <h3 class="legend-primary">Discussion</h3>
     </div>
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-12">
             <show-discussion ng-if="event.id" data-key="event_{{ event.id }}"></show-discussion>
         </div>
     </div>

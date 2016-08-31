@@ -90,7 +90,7 @@
 
 .pc-dataset-individuals {
     margin-top: 10px;
-    max-height: 420px;
+    height: 420px;
     overflow: auto;
 }
 
@@ -137,6 +137,20 @@
     margin-left: 2.5%;
 }
 
+.dataset-search-results{
+    background-color:#f9f9f9;
+    padding: 2% 2% 2% 2%;
+}
+
+.dataset-search-results > *:last-child{
+    margin-bottom: 2%;
+}
+
+.dataset-results-block{
+    margin: 0.8%;
+}
+
+
 .dropdown-datasets{
     position:absolute;
     display: inline-block;
@@ -167,3 +181,14 @@
 .dropdown-datasets:hover .dropdown-content{
     display:block;
 }
+
+
+.datasets-step2-table{
+    width:67%;
+}
+
+.datasets-step2-individuals{
+    width:33%;
+}
+
+

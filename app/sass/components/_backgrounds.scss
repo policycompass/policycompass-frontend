@@ -5,6 +5,10 @@ body {
     // padding:0;margin:0;
 }
 
+.cross-window-channel {
+    display: none;
+}
+
 #logo {
 
     a {
@@ -48,14 +52,11 @@ body {
 
 footer {
     background: linear-gradient(to bottom, #ededed, $gris_95 10px);
-    //background: $footercolor;
-    // background: $gris_95;
-    // border-top-color:red;
 }
 
 a {
     color: $bk_3;
-    // text-decoration:none;
+    @include transition(color 0.2s ease);
     &:hover {
         // border-bottom:1px solid $gris_80;
         text-decoration: none;

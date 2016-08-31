@@ -9,9 +9,9 @@
     <div class="row">
         <div class="search-content">
             <div class="input-group">
-                <input type="search" ng-keyup="$event.keyCode == 13 && search(searchQuery)" class="browse-input form-control" required="" placeholder="{{searchItemTypeInfo}}" ng-model="searchQuery" />
+                <input type="search" ng-keyup="$event.keyCode == 13 && searchString(searchQuery)" class="browse-input form-control" required="" placeholder="{{searchItemTypeInfo}}" ng-model="searchQuery" />
                 <span class="input-group-btn">
-        <button class="btn" type="button" ng-click="search(searchQuery)">Go!</button>
+        <button class="btn" type="button" ng-click="searchString(searchQuery)">Go!</button>
         </span></div>
             <div class="search-results-header">
                 <div class="filterbar">
@@ -28,8 +28,10 @@
                         <span><ng-pluralize count="searchResultsCount" when="{'0': 'No results found',
                                    '1': '1 result found',
                                    'other': '{} results found'}"></ng-pluralize></span>
-                        <!--<div class="num-results" ng-hide="searchResults.length"><span>No results found</span></div>-->
-                        <!--<div class="num-results" ng-show="searchResults.length"><span>{{searchResultsCount}} results found</span>-->
+                        <div class="pull-right" ng-if="auth.state.loggedIn">
+                            <input type="checkbox" id="own_content" ng-checked="isOwnContentEnabled()" ng-click="ownContentChanged($event)">
+                            <label for="own_content">Show only my content</label>
+                        </div>
                     </div>
                 </div>
             </div>

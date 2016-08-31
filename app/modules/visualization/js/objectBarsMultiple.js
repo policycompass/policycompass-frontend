@@ -791,12 +791,14 @@ policycompass.viz.barsMultiple = function (options) {
 	                        	}
 	                        	
 	                        	if (self.showAsPercentatge) {
-	                            	returnValue = "As % (" + returnValue + ")";
+	                            	//returnValue = "As % (" + returnValue + ")";
+	                            	returnValue = "As %";
 	                            }
 	                        }
 	                        else {
 	                        	if (self.showAsPercentatge) {
-	                            	returnValue = "As % (" + self.labelY[cntYAxes] + ")";
+	                            	//returnValue = "As % (" + self.labelY[cntYAxes] + ")";
+	                            	returnValue = "As %";
 	                        	} else {
 	                            	returnValue = self.labelY[cntYAxes];
 	                        	}
@@ -889,7 +891,8 @@ policycompass.viz.barsMultiple = function (options) {
 	                    .text(function () {
 	                        var returnValue = "";
 	                        if (self.showAsPercentatge) {
-	                            returnValue = "As % (" + self.labelY[keyIndex] + ")";
+	                            //returnValue = "As % (" + self.labelY[keyIndex] + ")";
+	                            returnValue = "As %";
 	                        } else {
 	                            returnValue = self.labelY[keyIndex];
 	                        }

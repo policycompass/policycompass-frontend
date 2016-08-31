@@ -18,6 +18,10 @@
 
     <div class="pc-visualization-formcontrols">
         <div class="button-group">
+            <div style="float:left" ng-show="canDraft">
+                <toggle-switch html="true" ng-model="event.is_draft" on-label="Draft" off-label="Public" class="switch-danger" ></toggle-switch>
+                &nbsp;
+            </div>
             <a type="button" class="btn btn-default btn-map" ng-click="saveParameters()" href="#!/events/search">Browse for Events</a>
             <a href="#!/login" ng-if="!userState.loggedIn" class="btn btn-default btn-save" target="_blank">Login to Save</a>
             <a href="" id="saveButton" data-ng-disabled="eventForm.$invalid" ng-if="userState.loggedIn" class="btn btn-default btn-save" ng-click="createEvent()">Save</a>

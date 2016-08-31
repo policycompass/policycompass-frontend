@@ -18,7 +18,7 @@
                         <br/>
 
                         <div class="visualization-graph-page-content">
-                            <div ng-controller="VisualizationsEditController" ng-repeat="idvisulist in [visualization.id]" ng-include='"modules/visualization/partials/graph.html"'></div>
+                            <pc-visualization ng-repeat="idvisulist in [visualization.id]" visualization-id="{{idvisulist}}" small></pc-visualization>
                         </div>
                         <br/>
 

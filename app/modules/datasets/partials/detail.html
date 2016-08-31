@@ -9,9 +9,11 @@
                 <a type="button" class="btn btn-line" href="#!/visualizations/create/?datasets={{dataset.id}}">Visualise</a>
                 <a type="button" class="btn btn-tree" href="https://carneades-dev.policycompass.eu/carneades/#/projects/compass" target="_blank" ng-disabled="true">Create
                     Argument Map</a>
-                <a type="button" class="btn btn-danger" ng-click="deleteDataset(dataset)" ng-if="userState.loggedIn && userState.isAdmin">
+                <a type="button" class="btn btn-danger" ng-click="deleteDataset(dataset)" ng-if="userState.loggedIn && (userState.userPath == dataset.creator_path || userState.isAdmin)">
                     Delete</a>
             </div>
+
+            <a href="#" ng-if="dataset.is_draft" ng-disabled="dataset.is_draft" class="btn btn-default btn-danger">Draft</a>
 
 
             <a type="button" class="btn btn-share" ng-click="share=!share" ng-class="{active: share}" ng-if="!1">Share</a>
@@ -174,9 +176,11 @@
                             <div class="field-content">{{ dataset.resource.custom }}</div>
                         </a>
                     </div>
-                    <div class="form-item" ng-if="dataset.license">
-                        <div class="field-label">Licence</div>
-                        <div class="field-content">{{ dataset.license }}</div>
+                    <div class="form-item" ng-if="dataset.license_id">
+                        <div class="field-label">License</div>
+                        <div class="field-content">
+                            <span resolve-license id="dataset.license_id"></span>
+                        </div>
                     </div>
                 </div>
 
@@ -222,7 +226,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-12">
                 <show-discussion ng-if="dataset.id" data-key="dataset_{{ dataset.id }}"></show-discussion>
             </div>
         </div>

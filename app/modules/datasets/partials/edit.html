@@ -5,6 +5,11 @@
     </div>
 
     <div class="pc-visualization-formcontrols">
+        <div style="float:left" ng-show="canDraft && !stepData.next">
+            <toggle-switch html="true" ng-model="dataset.is_draft" on-label="Draft" off-label="Public" class="switch-danger" ></toggle-switch>
+            &nbsp;
+        </div>
+
         <div class="button-group">
             <a href="#!/login" ng-if="!userState.loggedIn" class="btn btn-default btn-save" target="_blank">Login to Save</a>
             <a href="" id="saveButton" ng-disabled="datasetForm.$invalid" ng-if="userState.loggedIn && (userState.userPath == dataset.creator_path || userState.isAdmin)" class="btn btn-default btn-save" ng-click="save()">Save</a>
@@ -51,9 +56,13 @@
                             </div>
                         </div>
 
-                        <div class="form-group" ng-class="{'has-error': datasetForm.license.$dirty && datasetForm.license.$invalid}">
-                            <label for="license">Licence</label>
-                            <input type="text" class="form-control" id="license" name="license" placeholder="CC BY 3.0" ng-model="dataset.license">
+                        <div class="form-group">
+                            <label for="license">License</label>
+                            <div id="license"
+                                class="reference-selection-form pc-reference-selection-full"
+                                resource="License" selection-mode="single"
+                                ng-model="dataset.license_id" required>
+                            </div>
                         </div>
                     </fieldset>
                 </div>
