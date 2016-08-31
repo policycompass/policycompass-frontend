@@ -12,8 +12,13 @@
         </div>
     </div>
     <ul class="navigation-steps">
+        <div style="float:left" ng-show="!stepData.next">
+            <toggle-switch html="true" ng-model="dataset.is_draft" on-label="Draft" off-label="Public" class="switch-danger" ></toggle-switch>
+            &nbsp;
+        </div>
         <li><a href="" class="btn btn-prev" ng-disabled="!stepData.prev" ng-click="prevStep()">Previous Step</a></li>
         <li><a href="" class="btn btn-next" ng-show="stepData.next" ng-click="nextStep()">Next Step</a></li>
+
         <li>
             <a href="#!/login" target="_blank" class="btn btn-save" ng-show="!stepData.next && !userState.loggedIn">Login to Save</a>
         </li>

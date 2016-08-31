@@ -17,7 +17,8 @@ angular.module('pcApp.datasets.directives.snippets', [
                     step: '@',
                     beforeNextStep: '&',
                     beforePrevStep: '&',
-                    save: '='
+                    save: '=',
+                    dataset: '='
                 },
                 templateUrl: 'modules/datasets/partials/header.html',
                 controller: function ($scope, $element, $attrs) {
