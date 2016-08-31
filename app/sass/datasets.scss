@@ -90,7 +90,7 @@
 
 .pc-dataset-individuals {
     margin-top: 10px;
-    max-height: 420px;
+    height: 420px;
     overflow: auto;
 }
 
@@ -180,6 +180,15 @@
 
 .dropdown-datasets:hover .dropdown-content{
     display:block;
+}
+
+
+.datasets-step2-table{
+    width:67%;
+}
+
+.datasets-step2-individuals{
+    width:33%;
 }
 
 
