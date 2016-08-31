@@ -54,7 +54,7 @@
                 <label for="unit_id" class="field-label">Unit</label>
 
                 <div class="field-content">
-                    <select class="form-control unit-options" ng-model="apply_metric_helper.data.unit_id" id="unit_id" required>
+                    <select class="form-control unit-options" ng-model="apply_metric_helper.data.unit_id" data-category="apply_metric_helper.unit_category_id" id="unit_id" required>
                     </select>
 
                     <p ng-hide="servererror.unit_id || (datasetForm.unit_id.$error.required && !datasetForm.unit_id.$pristine)" class="help-block">Please select the unit for the new dataset</p>
