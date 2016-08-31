@@ -376,6 +376,52 @@
             //goSearch();
         };
 
+        function addDraftFilter(filters) {
+            var filter = {
+                "or" : [
+                    {
+                        "term" : {
+                            "is_draft" : false
+                        }
+                    },
+                    {
+                        "not" : {
+                            "filter" : {
+                                "exists" : {
+                                    "field" : "is_draft"
+                                }
+                            }
+                        }
+                    }
+                ]
+            };
+            if (isloggedIn()){
+                filter["or"].push({
+                    "bool" : {
+                        "must" : [
+                            {
+                                "term" : {
+                                    "is_draft" : true
+                                }
+                            },
+                            {
+                                "term" : {
+                                    "creator_path" : ("0000000"+getUserId()).slice(-7)
+                                }
+                            }
+                        ]
+                    }
+                });
+            }
+
+            if (angular.equals({}, filters)) {
+                filters = filter;
+            } else {
+                filters["bool"]["must"].push(filter);
+            }
+            return filters;
+        }
+
         //Define Main search function
         $scope.search = function(searchQuery) {
 
@@ -454,6 +500,7 @@
             }
         };
         var filters = normalizeAggregationFilter();
+        filters = addDraftFilter(filters);
         if (!angular.equals({}, filters)) {
             //request.body.post_filter = filters;
             request.body.query = {
