@@ -13,9 +13,6 @@ policycompass.viz.line = function (options) {
     for (var key in options) {
         self[key] = options[key];
     }
-console.log("!!!!!!!!!!!!!!");
-console.log(self.plotDataIn);
-console.log("!!!!!!!!!!!!!!");
 	//self.showAstoplines = true;
 	
 	//console.log(self.height);
@@ -49,7 +46,6 @@ console.log("!!!!!!!!!!!!!!");
 	if (self.plotDataIn) {
 		self.plotDataIn = self.plotDataIn.value;	
 	}
-console.log(self.plotDataIn);
 
     self.cntResizes = 0;
     d3.select(window).on('resize', resize);
@@ -1879,11 +1875,6 @@ console.log(self.plotDataIn);
                             var arrayObjDate = resX.split("-");
                             resX = arrayObjDate[1] + "/" + arrayObjDate[2] + "/" + arrayObjDate[0];
                         }
-                        
-                        console.log("self.plotDataIn="+self.plotDataIn);
-                        console.log("1.-"+resX);
-                        console.log("2.-"+getDate(resX));
-                        console.log("3.-"+self.xScale(getDate(resX)));
                         
                         return (self.xScale(getDate(resX)));
                     }
