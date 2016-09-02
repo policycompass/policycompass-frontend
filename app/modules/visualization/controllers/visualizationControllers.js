@@ -1426,14 +1426,16 @@ angular.module('pcApp.visualization.controllers.visualization', [
                             for (var i = 0; i < $scope.ListMetricsFilter.length; i++) {
                                 arrayIdsMetricsSelected[i] = $scope.ListMetricsFilter[i].id;
 
-                                for (var i_identity = 0; i_identity < $scope.IndividualDatasetCheckboxes_[$scope.ListMetricsFilter[i].id].length; i_identity++) {
-                                    var idindividual = $scope.IndividualDatasetCheckboxes_[$scope.ListMetricsFilter[i].id][i_identity];
+								if ($scope.IndividualDatasetCheckboxes_[$scope.ListMetricsFilter[i].id]) {
+	                                for (var i_identity = 0; i_identity < $scope.IndividualDatasetCheckboxes_[$scope.ListMetricsFilter[i].id].length; i_identity++) {
+	                                    var idindividual = $scope.IndividualDatasetCheckboxes_[$scope.ListMetricsFilter[i].id][i_identity];
 
-                                    var a = $scope.individualsSelected.indexOf(idindividual);
-                                    if (a < 0) {
-                                        $scope.individualsSelected.push(idindividual);
-                                    }
-                                }
+	                                    var a = $scope.individualsSelected.indexOf(idindividual);
+	                                    if (a < 0) {
+	                                        $scope.individualsSelected.push(idindividual);
+	                                    }
+	                                }
+                               	}
                             };
 
                             //to avoid modal in cache we add a random in the path
