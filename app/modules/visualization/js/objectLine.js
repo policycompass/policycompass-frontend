@@ -2170,8 +2170,14 @@ policycompass.viz.line = function (options) {
     }
 
 	var plotNewXAxe = function (getDate) {
+		console.log(self.arrayXaxesLabel);
+		
+		//this sort has been added to solve problems with FF
+		self.arrayXaxesLabel = self.arrayXaxesLabel.sort();
+		//console.log(newlabelarray);
 		
 		var newXLabel = self.svg.selectAll("rectangles").data(self.arrayXaxesLabel);
+		
 
 		newXLabel.enter().append("text")
 			.attr("class", "x axis")
@@ -2317,6 +2323,7 @@ policycompass.viz.line = function (options) {
 				var posY = self.height+15;
 				return "translate("+posXToPlot_ini+","+posY+") rotate(-25)"
 			});
+
 	}
 	
 	var initEvents = function (eventsData) {
