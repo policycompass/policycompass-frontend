@@ -3,8 +3,8 @@
 <!-- feedback modal template -->
 <script type="text/ng-template" id="add-media-modal">
 <div class="modal-header dialog-header-notify ng-scope">
-    <button type="button" class="close" ng-click="close()">×</button>
-    <h4 class="modal-title text-info ng-binding fonticon fonticon-dataset ng-binding"> Add {{ contentType }}</h4>
+    <button type="button" class="close" ng-click="close()">&times;</button>
+    <h4 class="modal-title text-info ng-binding fonticon fonticon-{{ contentType }} ng-binding"> Add {{ contentType }}</h4>
 </div>
 
 <div class="modal-body text-info ng-binding ng-scope">
@@ -13,7 +13,7 @@
 		<div ng-switch-when="m" id="filterMetrics" class="selectorMetrics" metrics-list="ListMetricsFilter" number-Max-Metrics="1" functionformetric="rePlotGraph()"></div>
 
 		<div ng-switch-default id="basic-modal-content-pc">
-			<div id="filterDatasets" class="selectorMedia" datasets-list="ListDatasetsFilter" number-Max-Datasets="1" functionfordataset="rePlotGraph()" content-id="contentId" content-type="contentType"></div>
+			<div id="filterDatasets" class="selectorMedia" datasets-list="ListDatasetsFilter" number-Max-Datasets="2" functionfordataset="rePlotGraph()" content-id="contentId" content-type="contentType"></div>
 		</div>
 	</div>
 </div>

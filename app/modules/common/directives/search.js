@@ -641,7 +641,7 @@ angular.module('pcApp.common.directives.search', [])
                     });
 
                     $scope.searchtext = '';
-                    $scope.itemsperpagesize = 10;
+                    $scope.itemsperpagesize = 8;
                     $scope.itemssearchfrom = 0;
                     $scope.pagToSearch = 1;
 
@@ -669,6 +669,7 @@ angular.module('pcApp.common.directives.search', [])
                         }
 
                         if (addDataset && $scope.datasetsList.length < $scope.numberMaxDatasets) {
+                            $scope.datasetsList.length = 0;
                             var myObject = {
                                 'id': idDataset,
                                 'title': title,
@@ -685,20 +686,23 @@ angular.module('pcApp.common.directives.search', [])
                         }
                     };
 
-                    $scope.alertSelection = function () {
-                        //$scope.addtochapter(146, 1, 2);
-                        //console.log('alertSelection wurde aufgerufen');
-                        alert("läauft" + $scope.selection);
+                    $scope.filter = function (searchtext) {
+                        $scope.searchtext = searchtext;
+                        $scope.findDatasetsByFilter();
                     }
 
                     $scope.findDatasetsByFilter = function (pagIn) {
                         if (pagIn == 'next') {
                             $scope.pagToSearch = $scope.pagToSearch + 1;
-                        } else if (pagIn == 'prev') {
+                        } 
+                        if (pagIn == 'prev') {
                             $scope.pagToSearch = $scope.pagToSearch - 1;
-                        } else {
-                            $scope.pagToSearch = 1;
                         }
+                        if (!isNaN(pagIn)) {
+                            $scope.pagToSearch = pagIn;
+                        }
+
+                        console.log("function called and pagToSearch changed to " + $scope.pagToSearch);
 
                         $scope.itemssearchfrom = ($scope.pagToSearch - 1) * $scope.itemsperpagesize;
                         $scope.showerrormessage = false;

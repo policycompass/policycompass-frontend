@@ -30,3 +30,12 @@
     word-wrap: break-word;
     margin:2%;
 }
+
+.ta-toolbar  {
+    .btn-group {
+        padding-bottom: 10px;
+    }
+    .btn-default[disabled] {
+        background-color: #F7941E;
+    }
+}

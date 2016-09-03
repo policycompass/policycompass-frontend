@@ -1,15 +1,14 @@
-<div class="container container-create-visualisation">
+<div class="container container-create-visualization">
 
     <div class="content-header">
-        <h3 ng-if="mode == 'create'"><span class="fonticon fonticon-story"></span> Create a New Story</h3>
-
-        <h3 ng-if="mode == 'edit'"><span class="fonticon fonticon-story"></span> Edit Story</h3>
+        <h3 ng-if="mode == 'create'"><span class="fonticon fonticon-story"></span>Create a New Story</h3>
+        <h3 ng-if="mode == 'edit'"><span class="fonticon fonticon-story"></span>Edit Story</h3>
     </div>
 
     <div class="pc-visualization-formcontrols">
         <div class="form-group pull-left btn-group">
             <a href="" id="saveButton" data-ng-disabled="storyForm.$invalid" class="btn btn-default btn-save" ng-click="saveStory()">Save</a>
-            <a href="" id="addChapterButton" class="btn btn-default btn-add" ng-click="addChapter()">Add Chapter</a>
+            <a href="" id="addChapterButton" class="btn btn-default btn-add" ng-click="addChapter()">Add chapter</a>
             <a href="" id="previewButton" class="btn btn-default fa-file-text-o" ng-click="previewStory()">Preview</a>
             <a type="button" class="btn btn-danger fa-trash-o" href="#!/">Cancel</a>
         </div>
@@ -22,25 +21,20 @@
                 <input class="form-control" id="story_title" type="text" name="story_title" data-ng-model="story_title" required>
             </div>
 
-            <br>
-            <br>
+            <tabset id="chaptersDiv">
+                <tab ng-repeat="chapter in chapters">
+                    <tab-heading>
+                        <button type="button" class="close" ng-click='removeChapter(chapter.number)'>&times;</button>
+                        <span ng-if="chapter.title">{{ chapter.title }}</span>
+                        <span ng-if="!chapter.title">Chapter {{ chapter.number }}</span>
+                        &nbsp;
+                    </tab-heading>
 
-            <div id="chaptersDiv" ng-repeat="chapter in chapters">
-                <div id='chapter{{chapter.number}}' class='well'>
-                    <div class='row'>
-                        <div class='col-xs-4'>
-                            <h4 ng-show="chapter.title.length > 0">{{ chapter.title }}</h4>
-                            <h4 ng-hide="chapter.title.length > 0">Chapter {{ chapter.number }}</h4>
-                        </div>
-
-                        <div class='btn-group col-xs-offset-7 col-xs-1 text-right'>
-                            <a href='' id='removeChapter{{chapter.number}}' class='btn btn-danger fa-trash-o' ng-click='removeChapter(chapter.number)'></a>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input class='form-control' value="{{ chapter.title }}" id='chapter{{chapter.number}}_title' type='text' name='chapter{{chapter.number}}_title' placeholder='Chapter {{chapter.number}} Title' required>
                         </div>
                     </div>
-
-                    <br>
-
-                    <input class='form-control' value="{{ chapter.title }}" id='chapter{{chapter.number}}_title' type='text' name='chapter{{chapter.number}}_title' placeholder='Chapter {{chapter.number}} Title' required>
 
                     <br>
 
@@ -55,16 +49,11 @@
                                     <add-media-button-modal content-type="fuzzymap" chapter="chapters[$index]"></add-media-button-modal>
 
                                     <add-media-button-modal content-type="dataset" chapter="chapters[$index]"></add-media-button-modal>
-
-                                    <!--<a href='' id='addMetricButton{{chapter.number}}' class='btn btn-default fonticon-metric' ng-click='addToChapter(chapter.number, 0, 1)'></a>
-                                    <a href='' id='addVisualisationButton{{chapter.number}}' class='btn btn-default fonticon-visualisation' ng-click='addToChapter(chapter.number, 1, 2)'></a>
-                                    <a href='' id='addCausalButton{{chapter.number}}' class='btn btn-default fa-bar-chart-o' ng-click='addToChapter(chapter.number, 2)'></a>-->
                                 </div>
                             </div>
                         </div>
                         <div>
                             <text-angular ng-model="chapter.text" placeholder='Chapter {{chapter.number}} Text'></text-angular>
-                            <textarea class='form-control' rows='10' id='chapter{{chapter.number}}_text' type='text' name='chapter{{chapter.number}}_text' required placeholder='Chapter {{chapter.number}} Text' required>{{ chapter.text }}</textarea>
                         </div>
                     </div>
 
@@ -72,20 +61,20 @@
                         <div>
                             <a class="close" ng-click="removeFromChapter($parent.$index, $index, content.type)" title="Delete this {{ content.type }}">×</a>
 
-                            <a ng-click="mediaSmall = !mediaSmall" title="Toggle size" style="cursor: pointer">
-                                <i class="fa " ng-class="{'fa-expand': mediaSmall, 'fa-compress': !mediaSmall}" aria-hidden="true"></i>
-                            </a>
+                            <div ng-switch on="content.type">
+                                <pc-visualization ng-switch-when="visualization" visualization-id="{{content.contentId}}"></pc-visualization>
 
-                            <div ng-if="mediaSmall">
-                                <pc-visualization visualization-id="{{content.contentId}}" x-small></pc-visualization>
+                                <pc-dataset ng-switch-when="dataset" dataset-id="{{content.contentId}}"></pc-dataset>
+
+                                <div ng-switch-default>
+                                    <div class="alert alert-danger" style="margin-bottom: 0">Sorry, there is currently no renderer available for this {{ content.type }}.</div>
+                                </div>
                             </div>
-                            <div ng-if="!mediaSmall">
-                                <pc-visualization visualization-id="{{content.contentId}}"></pc-visualization>
-                            </div>
+
                         </div>
                     </div>
-                </div>
-            </div>
+                </tab>
+            </tabset>
 
         </form>
     </div>

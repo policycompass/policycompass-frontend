@@ -5,6 +5,22 @@
 angular.module('pcApp.stories.controllers.storyController', ['pcApp.stories.services.storyServices'])
 angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
 
+    .config(function($provide){
+        $provide.decorator('taOptions', ['taRegisterTool', '$delegate', function(taRegisterTool, taOptions){
+            // $delegate is the taOptions we are decorating
+            // register the tool with textAngular
+            taOptions.toolbar = [
+                ['h1', 'h4', 'h5', 'p', 'pre', 'quote'],
+                ['bold', 'italics', 'underline'],
+                ['ul', 'ol'],
+                ['insertLink', 'insertImage', 'insertVideo'],
+                ['wordcount', 'charcount'],
+                ['undo', 'redo']
+            ];
+            return taOptions;
+        }]);
+    })
+
     .factory('StoryCreateControllerHelper', function(){
         return {
             sendStory: function(story){
@@ -48,8 +64,7 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                 $scope.chapterCount++;
                 $scope.chapters.push({"number":$scope.chapterCount, "contents":[]});
 
-                $document.scrollToElementAnimated(angular.element(document.getElementById('chapter' + chapterCount)));
-            };
+                };
 
             $scope.removeChapter = function(index){
                 var dlg = dialogs.confirm("Are you sure you want to remove this chapter?");
@@ -329,21 +344,6 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                     }
                 });*/
             }
-
-
-
-            /*
-            var splitChapterTextsForContents = function(){
-                for(var i=0; i<$scope.storyChapters.length;i++){
-                    var contentsStringIndices = [];
-                    for(var j=0; j<$scope.storyChapters[i].contents.length;j++){
-                        contentsStringIndices.push($scope.storyChapters[i].contents[j].stringIndex);
-                    }
-                    contentsStringIndices.
-                }
-            }
-
-            */
 
             var countContents = function(){
                 for(var i=0; i<$scope.storyChapters.length;i++) {

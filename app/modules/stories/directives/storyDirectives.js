@@ -19,8 +19,6 @@ angular.module('pcApp.stories.directives.storyDirectives', [])
                         backdrop: true,
                         windowClass: 'modal',
                         controller: function ($scope) {
-                            console.log("chapterNumber " + chapterNumber);
-                            console.log('error contentId: ' + $scope.contentId);
                             $scope.contentType = scope.contentType;
                             $scope.contentId = scope.contentId;
                             $scope.chapterNumber = chapterNumber;
@@ -28,7 +26,7 @@ angular.module('pcApp.stories.directives.storyDirectives', [])
                             $scope.close = function(){
                                 $modalInstance.close();
                             }
-                            $scope.addToChapter = function(chapterIndex, contentType){
+                            $scope.addToChapter = function(chapterIndex){
                                 console.log('no error contentId: ' + $scope.contentId)
 
                                 try {

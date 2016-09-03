@@ -9,96 +9,61 @@
         <div id="loading-text">loading</div>
     </div>
 
-    <div ng-if="mediaLoaded" class="row">
-        <div class="col-md-4">
+    <div ng-if="mediaLoaded">
+        <div class="row">
+            <div class="col-md-6">
 
-            <div class="filterMetricsPagination" id="filterMetricsPaginationDirective">
-                <div class="button-group">
-                    <button ng-show="datasetsFilter.hits.total>1" ng-disabled="pagToSearch==1" class="btn" ng-click="findDatasetsByFilter('prev')">
-                        <span class="glyphicon glyphicon-chevron-left"></span> Previous
-                    </button>
-                    <button ng-show="datasetsFilter.hits.total>1" ng-disabled="datasetsFilter.hits.total<=pagToSearch*itemsperpagesize" class="btn" ng-click="findDatasetsByFilter('next')">
-                        Next <span class="glyphicon glyphicon-chevron-right"></span>
-                    </button>
+                <div class="input-group">
+                    <input type="text" ng-model="searchtext" placeholder="Filter {{datasetsFilter.hits.total}} {{ contentType }}s" class="form-control" ng-keyup="$event.keyCode == 13 && filter(searchtext)" style="height: inherit; padding: 4px 12px;">
+
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-default" ng-click="filter(searchtext)"><i class="glyphicon glyphicon-search"></i></a>
+                    </span>
                 </div>
+
             </div>
+            <div class="col-md-6" style="padding: 6px">
 
+                <span class="filterDatasetsPaginationHeader" id="filterDatasetsPaginationHeaderDirective">
+                    <span ng-if="datasetsFilter.hits.total>1">{{datasetsFilter.hits.total}} {{ contentType }}s found</span>
+                    <span ng-if="datasetsFilter.hits.total==1">{{datasetsFilter.hits.total}} {{ contentType }}s found</span>
+                    
+                </span>
+
+            </div>
         </div>
-        <div class="col-md-4">
 
-            <input placeholder="Filter {{ contentType }}s" ng-model="searchtext" ng-change="findDatasetsByFilter('1')" type="text" id="filterDatasetDirective" class="form-control">
+        <div class="row" style="padding-top: 20px">
+            <div class="col-md-12">
+                <div class="filterDatasetPaginationBody createvisualization">
+                    <div class="search-results row-flex">
+                        <div ng-repeat="dataset in datasetsFilter.hits.hits track by $index" class="result-wrapper result-wrapper-{{ contentType }}" ng-class="{'result-selected':selection[dataset._source.id]>0}">
+                            <div class="result-block searchItemIcon {{ contentType }}Icon" ng-click="clickDataset(dataset._source.id, dataset._source.name, dataset._source.issued, dataset._source.unit_category);" title="{{ !selection[dataset._source.id]>0 && 'Add' || 'Delete' }} {{dataset._source.title}}" ng-cloak style="cursor: pointer">
 
-        </div>
-        <div class="col-md-4" style="padding: 6px">
+                                <div class="search-result">
+                                    <h5>
+                                        <a>{{ dataset._source.title }}</a>
+                                    </h5>
 
-            <span class="filterDatasetsPaginationHeader" id="filterDatasetsPaginationHeaderDirective">
-                <span ng-if="datasetsFilter.hits.total>1">{{datasetsFilter.hits.total}} {{ contentType }}s found</span>
-                <span ng-if="datasetsFilter.hits.total==1">{{datasetsFilter.hits.total}} {{ contentType }}s found</span>
-                <span ng-if="datasetsFilter.hits.total==0">No {{ contentType }} found</span>
-            </span>
+                                    <div class="attributes">
 
-        </div>
-    </div>
+                                        <p>{{ dataset._source.description | limitTo:100 }}...</p>
 
-    <div class="row" style="padding-top: 20px">
-        <div class="col-md-12">
-            <div class="list-group filterDatasetPaginationBody createvisualization">
-                <div class="search-results row-flex">
-                    <div ng-repeat="dataset in datasetsFilter.hits.hits track by $index" class="result-wrapper result-wrapper-{{ contentType }}" ng-class="{'result-selected':selection[dataset._source.id]>0}">
-                        <div class="result-block searchItemIcon {{ contentType }}Icon" ng-click="clickDataset(dataset._source.id, dataset._source.name, dataset._source.issued, dataset._source.unit_category);" title="{{ !selection[dataset._source.id]>0 && 'Add' || 'Delete' }} {{dataset._source.title}}" ng-cloak style="cursor: pointer">
-
-                            <div class="search-result">
-                                <h5>
-                                    <a>{{ dataset._source.title }}</a>
-                                </h5>
-
-                                <div class="attributes">
-
-                                    <p>{{ dataset._source.description | limitTo:200 }}...</p>
-
-                                    <div class="key-field">
-                                        <label class="key-field-title">Rating: </label>
-                                        <pc-rating rating-id="{{ contentType }}_{{ dataset._source.id }}" readonly="true"></pc-rating>
+                                        <div class="key-field">
+                                            <label class="key-field-title">Rating: </label>
+                                            <pc-rating rating-id="{{ contentType }}_{{ dataset._source.id }}" readonly="true"></pc-rating>
+                                        </div>
                                     </div>
                                 </div>
+
+                                <div class="texticon texticon-{{ contentType }}"></div>
                             </div>
 
-                            <div class="texticon texticon-{{ contentType }}"></div>
-
-                            <!-- /.col-lg-12  -->
                         </div>
-                        <!-- /result-block .col-lg-3  -->
-
-                        <!-- /.row  -->
-
                     </div>
                 </div>
-                
-                <!--<ul class="datasets-list metrics-list">
-                    <li class="metrics-list dataset-list'" ng-class="{'active':selection[dataset._source.id]>0}" name="designer-dataset-num-{{dataset.id}}" ng-repeat="dataset in datasetsFilter.hits.hits track by $index"> 
-
-                        <a href="" ng-click="clickDataset(dataset._source.id, dataset._source.name, dataset._source.issued, dataset._source.unit_category);" title="{{ !selection[dataset._source.id]>0 && 'Add' || 'Delete' }} {{dataset._source.title}}">
-
-                            <div style="padding-left: 5px">
-                                <h5 style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; margin-top: 0">{{dataset._source.id}}: {{dataset._source.title}}</h5>
-                                <p style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">{{dataset._source.description}}</p>
-                            </div>
-                        </a>
-                    </li>
-                </ul>-->
+                <pagination total-items="datasetsFilter.hits.total" ng-change="findDatasetsByFilter(pagToSearch)" items-per-page="itemsperpagesize" ng-model="pagToSearch" max-size="10" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
             </div>
         </div>
     </div>
-
-    <!--<div class="filterDatasetPaginationBody createvisualization" id="filterDatasetsPaginationBodyDirective">
-        <ul class="datasets-list metrics-list">
-            <li class="metrics-list dataset-list'" ng-class="{'active':selection[dataset._source.id]>0}" name="designer-dataset-num-{{dataset.id}}" ng-repeat="dataset in datasetsFilter.hits.hits track by $index"> 
-
-                <a href="" ng-click="clickDataset(dataset._source.id, dataset._source.name, dataset._source.issued, dataset._source.unit_category);" title="{{ !selection[dataset._source.id]>0 && 'Add' || 'Delete' }} {{dataset._source.title}}">
-                    <h5 style="display: inline-block; margin-bottom: 0px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; max-width: 500px;">{{dataset._source.id}}: {{dataset._source.title}}</h5>
-                    <p style="padding-left: 28px;">{{dataset._source.description}}</p>
-                </a>
-            </li>
-        </ul>
-    </div>-->
 </div>
