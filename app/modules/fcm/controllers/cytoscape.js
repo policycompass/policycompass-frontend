@@ -148,7 +148,8 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         $scope.hideyaxeunits = true;
         $scope.NodeID = 0;
         $scope.isModelSaved = true;
-
+        $scope.canDraft = true; //show draft/public option
+        $scope.model = { is_draft: true };//default show isdraft button active
 
         FCMModelsDetail.setModels($scope.Models);
         ConceptsDetail.setConcepts($scope.Concepts);
@@ -167,11 +168,26 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             throw { message: JSON.stringify(error.data) };
         });
 
+        $scope.checkAndUpdateDraftStatus = function (model) {
+            if (model.isDraft != null && model.isDraft == true) {
+                $scope.model = { is_draft: true };//set model type as draft
+            }
+            else {
+                $scope.canDraft = false; //hide draft/public option for public model
+                $scope.model = { is_draft: false };//set model type as public
+            }
+        }
+
         if ($routeParams.fcmId) {
             // Mode is editing
             $scope.mode = "edit";
 
             $scope.modeldetail = FcmModel.get({ id: $routeParams.fcmId }, function (fcmList) {
+                //show message if model not found in database
+                if ($scope.modeldetail.model == null) {
+                    throw { message: "Causal model not found." };
+                }
+
                 var model = {
                     ModelID: $scope.modeldetail.model.id.toString(),
                     title: $scope.modeldetail.model.title.toString(),
@@ -181,6 +197,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 };
 
                 FCMModelsDetail.setModels(model);
+                $scope.checkAndUpdateDraftStatus($scope.modeldetail.model);
 
                 var query = {
                     "bool": {
@@ -385,7 +402,8 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 domains: $scope.modeldetail.domains,
                 userID: "1",
                 concepts: ConceptsDetail.getConcepts(),
-                connections: AssociationsDetail.getAssociations()
+                connections: AssociationsDetail.getAssociations(),
+                isDraft: $scope.model.is_draft
             };
 
             $scope.fcmModel = new Fcm();
@@ -428,7 +446,8 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 model: FCMModelsDetail.getModels(),
                 userID: "1",
                 concepts: ConceptsDetail.getConcepts(),
-                connections: AssociationsDetail.getAssociations()
+                connections: AssociationsDetail.getAssociations(),
+                isDraft: $scope.model.is_draft
             };
 
             jsonModel.model.title = $scope.modeldetail.model.title;
@@ -441,6 +460,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             FcmModel.update({ id: $routeParams.fcmId }, $scope.fcmModelUpdate, function (value) {
                 FcmSearchUpdate.update({ id: $routeParams.fcmId }, function () {
                     var dlg = dialogs.notify("Causal Model", "'" + value.model.title + "' Casual Model has been saved!");
+                    $scope.checkAndUpdateDraftStatus(value.model);
                 }, function (err) {
                     throw { message: err.statusText + "<br/><br/>" + (err.data == "" ? "" : JSON.stringify(err.data)) };
                 });
