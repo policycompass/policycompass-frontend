@@ -238,7 +238,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 if(dataset.resource['custom']) {
                     $scope.custom = true;
                 }
-                $scope.canDraft = true;
+                $scope.canDraft = dataset.is_draft;
             };
 
             var getDatasetError = function (error) {
@@ -1104,13 +1104,15 @@ angular.module('pcApp.datasets.controllers.dataset', [
             $scope.canDraft = true;
 
             $scope.checkExternalResources = function(){
-                var externalsList = ExternalResource.query(null, function(){
-                    externalsList.forEach(function(external){
-                        if($scope.dataset.url.toLowerCase().includes(external.title.toLowerCase())){
-                            $scope.external_resource.input = [external.id];
-                        }
+                if($scope.dataset.url) {
+                    var externalsList = ExternalResource.query(null, function(){
+                        externalsList.forEach(function(external){
+                            if($scope.dataset.url.toLowerCase().includes(external.title.toLowerCase())){
+                                $scope.external_resource.input = [external.id];
+                            }
+                        });
                     });
-                });
+                }
             };
 
             var init = function () {

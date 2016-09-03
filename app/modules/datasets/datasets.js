@@ -6,6 +6,7 @@ angular.module('pcApp.datasets', [
     'pcApp.datasets.controllers.dataset',
     'pcApp.datasets.directives.eurostatImport',
     'pcApp.datasets.directives.ckanImport',
+    'pcApp.datasets.directives.embedDirective',
     'pcApp.references.directives.forms',
     'ngHandsontable',
     'pcApp.datasets.directives.snippets',
