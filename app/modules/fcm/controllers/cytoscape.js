@@ -149,7 +149,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         $scope.NodeID = 0;
         $scope.isModelSaved = true;
         $scope.canDraft = true; //show draft/public option
-        $scope.model = { is_draft: true };//default show isdraft button active
+        $scope.model = { is_draft: true, derivedId: 0 };//default show isdraft button active
 
         FCMModelsDetail.setModels($scope.Models);
         ConceptsDetail.setConcepts($scope.Concepts);
@@ -181,6 +181,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         if ($routeParams.fcmId) {
             // Mode is editing
             $scope.mode = "edit";
+            $scope.model.derivedId = $routeParams.fcmId;
 
             $scope.modeldetail = FcmModel.get({ id: $routeParams.fcmId }, function (fcmList) {
                 //show message if model not found in database
@@ -403,7 +404,8 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 userID: "1",
                 concepts: ConceptsDetail.getConcepts(),
                 connections: AssociationsDetail.getAssociations(),
-                isDraft: $scope.model.is_draft
+                isDraft: $scope.model.is_draft,
+                derivedFromId: $scope.model.derivedId
             };
 
             $scope.fcmModel = new Fcm();
