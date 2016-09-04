@@ -170,11 +170,11 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
         $scope.checkAndUpdateDraftStatus = function (model) {
             if (model.isDraft != null && model.isDraft == true) {
-                $scope.model = { is_draft: true };//set model type as draft
+                $scope.model.is_draft = true;//set model type as draft
             }
             else {
                 $scope.canDraft = false; //hide draft/public option for public model
-                $scope.model = { is_draft: false };//set model type as public
+                $scope.model.is_draft = false;//set model type as public
             }
         }
 
