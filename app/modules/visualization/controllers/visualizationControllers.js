@@ -136,7 +136,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
         '$filter', 'dialogs', '$log', '$interval', '$timeout', '$http', function ($filter, dialogs, $log, $interval, $timeout, $http) {
             return {
 
-                baseVisualizationsCreateController: function ($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualization, $location, helper, $log, API_CONF, Individual, Unit) {
+                baseVisualizationsCreateController: function ($scope, $route, $routeParams, $modal, $localStorage, Event, Metric, Dataset, Visualization, $location, helper, $log, API_CONF, Individual, Unit) {
 
 					$scope.vieweditHE = [];
 					$scope.loadDataCombosHelper = function (idMetric, valueColumTemp, valueGroupTemp) {
@@ -532,7 +532,18 @@ angular.module('pcApp.visualization.controllers.visualization', [
                             value: 'last'
                         }
                     ];
-					$scope.plotdataoption = $scope.plotdataoptions[0];
+                    
+                    $scope.plotdataoption = $scope.plotdataoptions[0];
+                    if ($scope.mode=='create') {
+                    	if ($localStorage.hasOwnProperty('plotdataoption')) {
+	            			angular.forEach($scope.plotdataoptions, function (item, position) {
+	            				if ($localStorage.plotdataoption==item.value) {
+	            					$scope.plotdataoption = $scope.plotdataoptions[position];
+	            				}
+	            			});
+	            			
+	            		}
+					}
 
 					$scope.plotxaxislegendoptions = [
                         {
@@ -544,7 +555,17 @@ angular.module('pcApp.visualization.controllers.visualization', [
                         	value: 'middle'
                     	}
                     ];
-					$scope.plotxaxislegend = $scope.plotxaxislegendoptions[0];
+					
+  					$scope.plotxaxislegend = $scope.plotxaxislegendoptions[0];
+            		if ($localStorage.hasOwnProperty('plotxaxislegend')) {
+            			angular.forEach($scope.plotxaxislegendoptions, function (item, position) {            				
+            				if ($localStorage.plotxaxislegend==item.value) {
+            					$scope.plotxaxislegend = $scope.plotxaxislegendoptions[position];
+            				}
+            			});
+            			
+            		}
+            		            		
 					
 					$scope.barchartgroupoptions = [
                         {
@@ -557,6 +578,18 @@ angular.module('pcApp.visualization.controllers.visualization', [
                         }                        
 					];
 					$scope.groupedby=$scope.barchartgroupoptions[0];
+
+                    if ($scope.mode=='create') {
+                    	if ($localStorage.hasOwnProperty('groupedby')) {
+	            			angular.forEach($scope.barchartgroupoptions, function (item, position) {
+	            				if ($localStorage.groupedby==item.value) {
+	            					$scope.groupedby = $scope.barchartgroupoptions[position];
+	            				}
+	            			});
+	            			
+	            		}
+					}
+					
 					
                     $scope.resolutionoptions = [
                         {
@@ -1393,14 +1426,16 @@ angular.module('pcApp.visualization.controllers.visualization', [
                             for (var i = 0; i < $scope.ListMetricsFilter.length; i++) {
                                 arrayIdsMetricsSelected[i] = $scope.ListMetricsFilter[i].id;
 
-                                for (var i_identity = 0; i_identity < $scope.IndividualDatasetCheckboxes_[$scope.ListMetricsFilter[i].id].length; i_identity++) {
-                                    var idindividual = $scope.IndividualDatasetCheckboxes_[$scope.ListMetricsFilter[i].id][i_identity];
+								if ($scope.IndividualDatasetCheckboxes_[$scope.ListMetricsFilter[i].id]) {
+	                                for (var i_identity = 0; i_identity < $scope.IndividualDatasetCheckboxes_[$scope.ListMetricsFilter[i].id].length; i_identity++) {
+	                                    var idindividual = $scope.IndividualDatasetCheckboxes_[$scope.ListMetricsFilter[i].id][i_identity];
 
-                                    var a = $scope.individualsSelected.indexOf(idindividual);
-                                    if (a < 0) {
-                                        $scope.individualsSelected.push(idindividual);
-                                    }
-                                }
+	                                    var a = $scope.individualsSelected.indexOf(idindividual);
+	                                    if (a < 0) {
+	                                        $scope.individualsSelected.push(idindividual);
+	                                    }
+	                                }
+                               	}
                             };
 
                             //to avoid modal in cache we add a random in the path
@@ -1737,8 +1772,30 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                     $scope.manualCheckoxesSelected = [];
                     $scope.manualCheckoxesSelected['showYAxes'] = false;
-
+					
+					$scope.savePreferences = function () {
+						
+						$localStorage.showLegend = $scope.showLegend;
+						$localStorage.showLines = $scope.showLines;
+						$localStorage.showAreas = $scope.showAreas;
+						$localStorage.showPoints = $scope.showPoints;
+						$localStorage.showLabels = $scope.showLabels;
+						$localStorage.showGrid = $scope.showGrid;
+						$localStorage.showYAxes = $scope.showYAxes;
+						$localStorage.showAsPercentatge = $scope.showAsPercentatge;
+						$localStorage.showAstoplines = $scope.showAstoplines;
+						
+						$localStorage.showZoom = $scope.showZoom;
+						$localStorage.showBubbles = $scope.showBubbles;
+						
+						$localStorage.plotdataoption = $scope.plotdataoption.value;
+						$localStorage.plotxaxislegend = $scope.plotxaxislegend.value;
+						$localStorage.groupedby = $scope.groupedby.value;
+						
+					}
+										
                     $scope.manualClick = function (checkboxId) {
+                    	//eval("$localStorage."+checkboxId+" = !$scope."+checkboxId);
                         $scope.manualCheckoxesSelected[checkboxId] = true;
                     }
 
@@ -3526,6 +3583,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
         '$route',
         '$routeParams',
         '$modal',
+        '$localStorage',
         'Event',
         'Metric',
         'Dataset',
@@ -3538,7 +3596,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
         'Individual',
         'Unit',
         'Auth',
-        function ($filter, $scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualization, $location, helper, $log, dialogs, API_CONF, Individual, Unit, Auth) {
+        function ($filter, $scope, $route, $routeParams, $modal, $localStorage, Event, Metric, Dataset, Visualization, $location, helper, $log, dialogs, API_CONF, Individual, Unit, Auth) {
 
             $scope.user = Auth;
 
@@ -3567,7 +3625,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
             $scope.resetlocation = '/visualizations/' + $routeParams.visualizationId + '/edit/';
 
-            helper.baseVisualizationsCreateController($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualization, $location, helper, $log, API_CONF, Individual, Unit);
+            helper.baseVisualizationsCreateController($scope, $route, $routeParams, $modal, $localStorage, Event, Metric, Dataset, Visualization, $location, helper, $log, API_CONF, Individual, Unit);
 
             $scope.ListMetricsFilter = [];
             $scope.ListMetricsFilterModal = [];
@@ -4333,6 +4391,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					
 				}
 				else {
+					
+					$scope.savePreferences();
+					
 	                if (($scope.user.state.userPath != $scope.visualization.creator_path) && ($scope.user.state.isAdmin != true)) {
 	                    $scope.visualization.derived_from_id = $scope.visualization.id;
 	                    delete $scope.visualization.id;
@@ -4393,6 +4454,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
         '$route',
         '$routeParams',
         '$modal',
+        '$localStorage',
         'Event',
         'Metric',
         'Dataset',
@@ -4405,7 +4467,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
         'Individual',
         'Unit',
         'Auth',
-        function ($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualization, $location, helper, $log, dialogs, API_CONF, Individual, Unit, Auth) {
+        function ($scope, $route, $routeParams, $modal, $localStorage, Event, Metric, Dataset, Visualization, $location, helper, $log, dialogs, API_CONF, Individual, Unit, Auth) {
 
 			$scope.canDraft = true;
 			
@@ -4436,7 +4498,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
             $scope.firstLoad = false;
             $scope.resetlocation = "/visualizations/create/";
 
-            helper.baseVisualizationsCreateController($scope, $route, $routeParams, $modal, Event, Metric, Dataset, Visualization, $location, helper, $log, API_CONF, Individual, Unit);
+            helper.baseVisualizationsCreateController($scope, $route, $routeParams, $modal, $localStorage, Event, Metric, Dataset, Visualization, $location, helper, $log, API_CONF, Individual, Unit);
 
             $scope.tabParent = 2;
             $scope.tabSon = 'graph_line';
@@ -4466,17 +4528,91 @@ angular.module('pcApp.visualization.controllers.visualization', [
             $scope.colorHE = [];
 
             //filters
-            $scope.showLegend = true;
-            $scope.showLines = true;
-            $scope.showAreas = true;
-            $scope.showPoints = true;
-            $scope.showLabels = true;
-            $scope.showGrid = true;
-            $scope.showYAxes = false;
-            $scope.showZoom = false;
-            $scope.showBubbles = false;
+            //$scope.showLegend = true;
+            if ($localStorage.hasOwnProperty('showLegend')) {
+            	$scope.showLegend = $localStorage.showLegend;
+            }
+            else {
+            	$scope.showLegend = true;
+            }
+            
+            //$scope.showLines = true;
+            if ($localStorage.hasOwnProperty('showLines')) {
+            	$scope.showLines = $localStorage.showLines;
+            }
+            else {
+            	$scope.showLines = true;
+            }
+            
+            //$scope.showAreas = true;
+            if ($localStorage.hasOwnProperty('showAreas')) {
+            	$scope.showAreas = $localStorage.showAreas;
+            }
+            else {
+            	$scope.showAreas = true;
+            }
+            
+            //$scope.showPoints = true;
+            if ($localStorage.hasOwnProperty('showPoints')) {
+            	$scope.showPoints = $localStorage.showPoints;
+            }
+            else {
+            	$scope.showPoints = true;
+            }
+            
+            //$scope.showLabels = true;
+            if ($localStorage.hasOwnProperty('showLabels')) {
+            	$scope.showLabels = $localStorage.showLabels;
+            }
+            else {
+            	$scope.showLabels = true;
+            }
+            
+            //$scope.showGrid = true;
+            if ($localStorage.hasOwnProperty('showGrid')) {
+            	$scope.showGrid = $localStorage.showGrid;
+            }
+            else {
+            	$scope.showGrid = true;
+            }
+            
+            //$scope.showYAxes = false;
+            if ($localStorage.hasOwnProperty('showYAxes')) {
+            	$scope.showYAxes = $localStorage.showYAxes;
+            }
+            else {
+            	$scope.showYAxes = true;
+            }
+            
+            //$scope.showZoom = false;
+            if ($localStorage.hasOwnProperty('showZoom')) {
+            	$scope.showZoom = $localStorage.showZoom;
+            }
+            else {
+            	$scope.showZoom = true;
+            }
+            
+            //$scope.showBubbles = false;
+            if ($localStorage.hasOwnProperty('showBubbles')) {
+            	$scope.showBubbles = $localStorage.showBubbles;
+            }
+            else {
+            	$scope.showBubbles = true;
+            }
+            
             $scope.showMovement = true;
-            $scope.showAstoplines = true;
+            
+            //$scope.showAstoplines = true;
+            if ($localStorage.hasOwnProperty('showAstoplines')) {
+            	$scope.showAstoplines = $localStorage.showAstoplines;
+            }
+            else {
+            	$scope.showAstoplines = true;
+            }
+			
+			if ($localStorage.hasOwnProperty('showAsPercentatge')) {
+            	$scope.showAsPercentatge = $localStorage.showAsPercentatge;
+            }
 
             $scope.visualization = {};
 			$scope.visualization.is_draft = true;
@@ -4804,6 +4940,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					
 				}
 				else {
+					
+					$scope.savePreferences();
+					
 	                Visualization.save($scope.visualization, function (value, responseHeaders) {
 	                    $location.path('/visualizations/' + value.id);
 	                }, saveErrorCallback);
