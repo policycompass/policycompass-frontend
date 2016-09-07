@@ -1,12 +1,13 @@
-<div ng-if="canDraft" style="float:left">
-<toggle-switch 
-html="true" 
-ng-model="visualization.is_draft" 
-on-label="Draft" off-label="Public" class="switch-danger" ></toggle-switch>
-&nbsp;
+<div ng-if="canDraft" data-intro="A visualisation can be published as 'Draft' until you finish it, but if you set as 'Public' then you cannot be able to set as 'Draft' again." data-position="top" style="float:left">
+	<toggle-switch 
+		is-disabled="!canDraft"
+		html="true" 
+		ng-model="visualization.is_draft" 
+		on-label="Draft" off-label="Public" class="switch-danger" ></toggle-switch>
+		&nbsp;
 </div>
-<a href="#!/login" ng-if="!user.state.loggedIn" class="btn btn-default btn-save" target="_blank">Login to Save</a>
-<a href="" ng-if="mode == 'create' && user.state.loggedIn" type="submit" data-intro="Save data" data-position="top" class="btn btn-default btn-save" ng-click="createVisualization(ListMetricsFilter)">Save </a>
-<a href="" ng-if="mode == 'edit' && user.state.loggedIn" type="submit" data-intro="Save data" data-position="top" class="btn btn-default btn-save" ng-click="createVisualization(ListMetricsFilter)">Save <span ng-hide="user.state.userPath==visualization.creator_path"> a copy</span></a>
-<a href="" ng-show="mode=='edit'" ng-disabled="disableRevert" type="submit" data-intro="Revert data" data-position="top" class="btn btn-default btn-revert2" ng-click="revertVisualization()">Revert</a>
-<a href="" type="submit" data-intro="Cancel" data-position="top" class="btn btn-default btn-danger btn-clear" ng-click="cancelVisualization()">Cancel</a>
+<a href="#!/login" ng-if="!user.state.loggedIn" data-intro="Only logged users can create visualisations." data-position="top" class="btn btn-default btn-save" target="_blank">Login to Save</a>
+<a href="" ng-if="mode == 'create' && user.state.loggedIn" type="submit" data-intro="Click here to save the visualisation." data-position="top" class="btn btn-default btn-save" ng-click="createVisualization(ListMetricsFilter)">Save </a>
+<a href="" ng-if="mode == 'edit' && user.state.loggedIn" type="submit" data-intro="Click here to save the visualisation." data-position="top" class="btn btn-default btn-save" ng-click="createVisualization(ListMetricsFilter)">Save <span ng-hide="user.state.userPath==visualization.creator_path"> a copy</span></a>
+<a href="" ng-if="mode=='edit'" ng-disabled="disableRevert" type="submit" data-intro="This button is to revert the data, it sets the content to their original value." data-position="top" class="btn btn-default btn-revert2" ng-click="revertVisualization()">Revert</a>
+<a href="" type="submit" data-intro="Click this button to cancel the creation of this visualisation." data-position="top" class="btn btn-default btn-danger btn-clear" ng-click="cancelVisualization()">Cancel</a>
