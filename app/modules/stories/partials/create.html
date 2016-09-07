@@ -1,0 +1,82 @@
+<div class="container container-create-visualization">
+
+    <div class="content-header">
+        <h3 ng-if="mode == 'create'"><span class="fonticon fonticon-story"></span>Create a New Story</h3>
+        <h3 ng-if="mode == 'edit'"><span class="fonticon fonticon-story"></span>Edit Story</h3>
+    </div>
+
+    <div class="pc-visualization-formcontrols">
+        <div class="form-group pull-left btn-group">
+            <a href="" id="saveButton" data-ng-disabled="storyForm.$invalid" ng-if="userState.loggedIn" class="btn btn-default btn-save" ng-click="saveStory()">Save</a>
+            <a href="" id="addChapterButton" class="btn btn-default btn-add" ng-click="addChapter()">Add chapter</a>
+            <a href="" id="previewButton" class="btn btn-default fa-file-text-o" ng-click="previewStory()">Preview</a>
+            <a href="#!/" type="button" class="btn btn-danger fa-trash-o" ng-click="deleteStory()">Cancel</a>
+        </div>
+    </div>
+
+    <div class="content-body">
+        <form name="storyForm" role="form" novalidate>
+            <div class="form-group">
+                <label>Story Title</label>
+                <input class="form-control" id="story_title" type="text" name="story_title" data-ng-model="story_title" required>
+            </div>
+
+            <tabset id="chaptersDiv">
+                <tab ng-repeat="chapter in chapters">
+                    <tab-heading>
+                        <button type="button" class="close" ng-click='removeChapter(chapter.number)'>&times;</button>
+                        <span ng-if="chapter.title" title="{{ chapter.title }}">{{ chapter.title | limitTo:20 }}{{ chapter.title.length > 20 ? '...' : '' }}</span>
+                        <span ng-if="!chapter.title">Untitled chapter</span>
+                        &nbsp;
+                    </tab-heading>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input class='form-control' value="{{ chapter.title }}" id='chapter{{chapter.number}}_title' type='text' name='chapter{{chapter.number}}_title' placeholder='Story title' ng-model="chapter.title" required>
+                        </div>
+                    </div>
+
+                    <br>
+
+                    <div id='chapter{{chapter.number}}_content' name='chapter{{chapter.number}}_content' class='story-chapter-content well'>
+                        <div id='chapter{{chapter.number}}_content_toolbox' name='chapter{{chapter.number}}_content_toolbox' class='story-chapter-content-toolbox'>
+                            <div class='row'>
+                                <div class='btn-group col-xs-12'>
+                                    <add-media-button-modal content-type="visualization" chapter="chapters[$index]"></add-media-button-modal>
+
+                                    <add-media-button-modal content-type="metric" chapter="chapters[$index]"></add-media-button-modal>
+
+                                    <add-media-button-modal content-type="fuzzymap" chapter="chapters[$index]"></add-media-button-modal>
+
+                                    <add-media-button-modal content-type="dataset" chapter="chapters[$index]"></add-media-button-modal>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <text-angular ng-model="chapter.text" placeholder='Place your story here'></text-angular>
+                        </div>
+                    </div>
+
+                    <div ng-repeat="content in chapter.contents" class="well">
+                        <div>
+                            <a class="close" ng-click="removeFromChapter($parent.$index, $index, content.type)" title="Delete this {{ content.type }}">×</a>
+
+                            <div ng-switch on="content.type">
+                                <pc-visualization ng-switch-when="visualization" visualization-id="{{content.contentId}}"></pc-visualization>
+
+                                <pc-dataset ng-switch-when="dataset" dataset-id="{{content.contentId}}"></pc-dataset>
+
+                                <div ng-switch-default>
+                                    <div class="alert alert-danger" style="margin-bottom: 0">Sorry, there is currently no renderer available for this {{ content.type }}.</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </tab>
+            </tabset>
+
+        </form>
+    </div>
+
+</div>
