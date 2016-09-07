@@ -88,7 +88,7 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                     }
                 })
             }
-            
+
 
             $scope.saveStory = function(){
                 $http.post(API_CONF.STORY_MANAGER_URL + '/stories', {
@@ -319,6 +319,9 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                         $scope.story = response.data.result;
                         $scope.storyTitle = $scope.story.title;
                         $scope.storyChapters = $scope.story.chapters;
+                    }
+                    if($scope.story == 500){
+                        $location.path('/stories');
                     }
                 });
             }
