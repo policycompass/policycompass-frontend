@@ -331,28 +331,6 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                 }
             }
 
-            var addContentToScope = function(chapter,type, content){
-                switch(type){
-                    case 0:{
-                        $scope.storyChapters[chapter].metrics.push(content);
-                    }
-                        break;
-                    case 1:{
-                        $scope.storyChapters[chapter].visualizations.push(content);
-                    }
-                        break;
-                    case 2:{
-                        $scope.storyChapters[chapter].causals.push(content);
-                    }
-                }
-
-                contentCount++;
-                if(allContentCount == contentCount){
-                    addContentsToHtml();
-                }
-
-            }
-
             $scope.jumpToChapter = function(number){
                 var old = $location.hash();
                 $location.hash('anchor-chapter'+number);
@@ -361,7 +339,6 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
             }
 
             $scope.deleteStory = function (story) {
-
                 // Open a confirmation dialog
                 var dlg = dialogs.confirm("Are you sure?", "Do you want to delete the Story " + story.title + " permanently?");
                 dlg.result.then(function () {
