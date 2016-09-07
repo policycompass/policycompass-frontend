@@ -38,8 +38,8 @@ angular.module('pcApp.stories.directives.storyDirectives', [])
                                                 throw "already exists";
                                             }
                                         }
-                                    }   
-                                    scope.chapter.contents.push({"type": scope.contentType, "contentId": $scope.contentId});
+                                    }
+                                    scope.chapter.contents.push({"type": scope.contentType, "index": $scope.contentId});
                                 }
                                 catch(err) {
                                     console.log('error ' + err + ' contentId: ' + $scope.contentId)

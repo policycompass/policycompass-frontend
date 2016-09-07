@@ -61,9 +61,9 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
 
             $scope.addChapter = function(){
                 $scope.chapterCount++;
-                $scope.chapters.push({"number":$scope.chapterCount, "contents":[]});
+                $scope.chapters.push({"title": "", "number":$scope.chapterCount, "contents":[]});
 
-                };
+            };
 
             $scope.removeChapter = function(index){
                 var dlg = dialogs.confirm("Are you sure you want to remove this chapter?");
@@ -93,12 +93,9 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
             }
 
             $scope.saveStory = function(){
-                var newStory = {};
-                newStory.title = $scope.story_title;
-                newStory.chapters = prepareNewChapters();
                 $http.post(API_CONF.STORY_MANAGER_URL + '/stories', {
-                    title: newStory.title,
-                    chapters: newStory.chapters
+                    title: $scope.story_title,
+                    chapters: $scope.chapters
                 }).then(function(response){
                     if(response){
                         $location.path('/stories/' + response.data.result.id);
@@ -143,6 +140,7 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
             }
 
             var getStory = function(id){
+                /*
                 $scope.story = {
                     "title":"Test Story One",
                     "id":146,
@@ -170,6 +168,7 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                         "contents": []
                     }]
                 };
+
                 $scope.storyTitle = $scope.story.title;
                 $scope.story_title = $scope.storyTitle;
                 $scope.storyChapters = $scope.story.chapters;
@@ -181,7 +180,8 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                         $scope.oldContents.push($scope.storyChapters[i].contents[j]);
                     }
                 }
-                /*
+                */
+
                 $http.get(API_CONF.STORY_MANAGER_URL + '/stories', {params: {id:$routeParams.storyId, getList:false}}).then(function(response){
                     if(response){
                         $scope.story = response.data.result;
@@ -197,27 +197,13 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                             }
                         }
                     }
-                });*/
+                });
             }
 
-            var prepareNewChapters = function(){
-                var newChapters = [];
-
-                for(var i=0; i<$scope.chapters.length;i++){
-                    var newChapter = {};
-                    newChapter.title = angular.element('#chapter'+$scope.chapters[i].number+'_title').val()
-                    newChapter.text = angular.element('#chapter'+$scope.chapters[i].number+'_text').val()
-                    newChapter.number = i;
-                    newChapter.contents = $scope.chapters[i].contents;
-                    newChapters.push(newChapter);
-                }
-                return newChapters;
-
-            }
 
             $scope.addChapter = function(){
                 $scope.chapterCount++
-                $scope.chapters.push({"number":$scope.chapterCount, "contents":[]});
+                $scope.chapters.push({"title": "", "number":$scope.chapterCount, "contents":[]});
 
                 /*setTimeout(function () {
                     $location.hash('chapter' + $scope.chapterCount);
@@ -226,14 +212,10 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
             };
 
             $scope.saveStory = function(){
-                var newStory = {};
-                newStory.title = $scope.story_title;
-                newStory.chapters = prepareNewChapters();
-
                 $http.put(API_CONF.STORY_MANAGER_URL + '/stories/' + $scope.story.id, {
                     id: $scope.story.id,
-                    title: newStory.title,
-                    chapters: newStory.chapters,
+                    title: $scope.story_title,
+                    chapters: $scope.chapters,
                     oldContents: $scope.oldContents
                 }).then(function(response){
                     if(response){
@@ -302,6 +284,7 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
             }
 
             var getStory = function(id){
+                /*
                 $scope.story = {
                     "title":"Test Story One",
                     "id":146,
@@ -331,17 +314,19 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                 };
                 $scope.storyTitle = $scope.story.title;
                 $scope.storyChapters = $scope.story.chapters;
-                /*
+                */
+
                 $http.get(API_CONF.STORY_MANAGER_URL + '/stories', {params: {id:$routeParams.storyId, getList:false}}).then(function(response){
                     if(response){
                         $scope.story = response.data.result;
+                        console.log("story " + angular.toJson($scope.story));
                        //$scope.story = {"id":146,"chapters":[{"number":0,"text":"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.","title":"Introduction","contents":[{"type":0,"index":1,"stringIndex":150,"contentId":214},{"type":0,"index":1,"stringIndex":150,"contentId":215}]},{"number":1,"text":"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.","title":"After Deleted Chapter","contents":[{"type":1,"index":2,"stringIndex":153,"contentId":216}]},{"number":2,"text":"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.\n\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.\n\n\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.","title":"Conclusion","contents":[{"type":0,"index":1,"stringIndex":152,"contentId":217}]}],"title":"Test Story One"}
                         $scope.storyTitle = $scope.story.title;
                         $scope.storyChapters = $scope.story.chapters;
                         //countContents();
                         //organizeContents();
                     }
-                });*/
+                });
             }
 
             var countContents = function(){
@@ -411,13 +396,6 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                 contentCount++;
                 if(allContentCount == contentCount){
                     addContentsToHtml();
-                }
-
-            }
-
-            var addContentsToHtml = function(){
-                for(var i=0; i<$scope.storyChapters.length;i++){
-                    console.log("visu " + angular.toJson($scope.storyChapters[i].visualizations[0]));
                 }
 
             }

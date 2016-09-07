@@ -62,9 +62,9 @@
                             <a class="close" ng-click="removeFromChapter($parent.$index, $index, content.type)" title="Delete this {{ content.type }}">×</a>
 
                             <div ng-switch on="content.type">
-                                <pc-visualization ng-switch-when="visualization" visualization-id="{{content.contentId}}"></pc-visualization>
+                                <pc-visualization ng-switch-when="visualization" visualization-id="{{content.index}}"></pc-visualization>
 
-                                <pc-dataset ng-switch-when="dataset" dataset-id="{{content.contentId}}"></pc-dataset>
+                                <pc-dataset ng-switch-when="dataset" dataset-id="{{content.index}}"></pc-dataset>
 
                                 <div ng-switch-default>
                                     <div class="alert alert-danger" style="margin-bottom: 0">Sorry, there is currently no renderer available for this {{ content.type }}.</div>
