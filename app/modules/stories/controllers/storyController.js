@@ -319,11 +319,8 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                 $http.get(API_CONF.STORY_MANAGER_URL + '/stories', {params: {id:$routeParams.storyId, getList:false}}).then(function(response){
                     if(response){
                         $scope.story = response.data.result;
-                       //$scope.story = {"id":146,"chapters":[{"number":0,"text":"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.","title":"Introduction","contents":[{"type":0,"index":1,"stringIndex":150,"contentId":214},{"type":0,"index":1,"stringIndex":150,"contentId":215}]},{"number":1,"text":"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.","title":"After Deleted Chapter","contents":[{"type":1,"index":2,"stringIndex":153,"contentId":216}]},{"number":2,"text":"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.\n\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.\n\n\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.","title":"Conclusion","contents":[{"type":0,"index":1,"stringIndex":152,"contentId":217}]}],"title":"Test Story One"}
                         $scope.storyTitle = $scope.story.title;
                         $scope.storyChapters = $scope.story.chapters;
-                        //countContents();
-                        //organizeContents();
                     }
                 });
             }
@@ -331,49 +328,6 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
             var countContents = function(){
                 for(var i=0; i<$scope.storyChapters.length;i++) {
                     allContentCount += $scope.storyChapters[i].contents.length;
-                }
-            }
-
-
-            var organizeContents = function(){
-                for(var i=0; i<$scope.storyChapters.length;i++){
-                    $scope.storyChapters[i].metrics = [];
-                    $scope.storyChapters[i].visualizations = [];
-                    $scope.storyChapters[i].causals = [];
-                    for(var j=0; j<$scope.storyChapters[i].contents.length; j++){
-                        switch($scope.storyChapters[i].contents[j].type){
-                            case 0:{
-                                var m_id = 1;
-                                //var m_id = $scope.storyChapters[i].contents[j].index;
-                                $scope.storyChapters[i].metrics.push(Metric.get({id: m_id}, function (metric) {
-                                    addContentToScope(0, 0, metric);
-                                }, function (err) {
-                                    throw {message: JSON.stringify(err.data)};
-                                }));
-                            }
-                                break;
-                            case 1:{
-                                var v_id = 1;
-                                //var v_id = $scope.storyChapters[i].contents[j].index;
-                                $scope.storyChapters[i].visualizations.push(Visualization.get({id: v_id}, function (visualization) {
-                                    addContentToScope(0,1,visualization);
-                                }, function (err) {
-                                    throw {message: JSON.stringify(err.data)};
-                                }));
-                            }
-                                break;
-                            case 2:{
-                                var c_id = 1;
-                                //var c_id = $scope.storyChapters[i].contents[j].index;
-                                $scope.storyChapters[i].causals.push(Visualization.get({id: c_id}, function (causal) {
-                                    //addContentToScope(i, 2, causal);
-                                }, function (err) {
-                                    throw {message: JSON.stringify(err.data)};
-                                }));
-                            }
-                                break;
-                        }
-                    }
                 }
             }
 
