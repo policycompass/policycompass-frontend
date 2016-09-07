@@ -25,7 +25,7 @@
             <a type="button" class="btn btn-default btn-map" ng-click="saveParameters()" href="#!/events/search">Browse for Events</a>
             <a href="#!/login" ng-if="!userState.loggedIn" class="btn btn-default btn-save" target="_blank">Login to Save</a>
             <a href="" id="saveButton" data-ng-disabled="eventForm.$invalid" ng-if="userState.loggedIn" class="btn btn-default btn-save" ng-click="createEvent()">Save</a>
-            <a type="button" id="cancelButton" class="btn btn-danger" ng-click="saveParameters();" href="#!/events/search">Cancel</a>
+            <a type="button" id="cancelButton" class="btn btn-danger" ng-click="goBackButton()">Cancel</a>
             </button>
         </div>
     </div>
