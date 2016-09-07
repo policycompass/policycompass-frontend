@@ -77,20 +77,18 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                 });
             };
 
-            var prepareNewChapters = function(){
-                var newChapters = [];
-
-                for(var i=0; i<$scope.chapters.length;i++){
-                    var newChapter = {};
-                    newChapter.title = angular.element('#chapter'+$scope.chapters[i].number+'_title').val()
-                    newChapter.text = angular.element('#chapter'+$scope.chapters[i].number+'_text').val()
-                    newChapter.number = i;
-                    newChapter.contents = $scope.chapters[i].contents;
-                    newChapters.push(newChapter);
-                }
-                return newChapters;
-
+            $scope.removeFromChapter = function (chapterIndex, contentIndex, contentType) {
+                var dlg = dialogs.confirm("Delete this " + contentType + "?");
+                dlg.result.then(function () {
+                    try {
+                        $scope.chapters[chapterIndex].contents.splice(contentIndex, 1);
+                    }
+                    catch(err) {
+                        alert("err " + err + ": failed to remove " + contentType);
+                    }
+                })
             }
+            
 
             $scope.saveStory = function(){
                 $http.post(API_CONF.STORY_MANAGER_URL + '/stories', {
