@@ -10,11 +10,10 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
             // $delegate is the taOptions we are decorating
             // register the tool with textAngular
             taOptions.toolbar = [
-                ['h1', 'h4', 'h5', 'p', 'pre', 'quote'],
+                ['h1', 'h4', 'h5', 'p', 'quote'],
                 ['bold', 'italics', 'underline'],
                 ['ul', 'ol'],
                 ['insertLink', 'insertImage', 'insertVideo'],
-                ['wordcount', 'charcount'],
                 ['undo', 'redo']
             ];
             return taOptions;
@@ -161,7 +160,7 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                         "contents": [
                         {
                             "type": "visualization",
-                            "contentId": 9
+                            "contentId": 69
                         }]
                     },
                     {
@@ -320,7 +319,7 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                         "contents": [
                         {
                             "type": "visualization",
-                            "contentId": 9
+                            "contentId": 69
                         }]
                     },
                     {

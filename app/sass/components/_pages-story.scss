@@ -39,3 +39,11 @@
         background-color: #F7941E;
     }
 }
+
+.ta-editor {
+    .placeholder-text {
+        &:before {
+            color: #aaa;
+        }
+    }
+}

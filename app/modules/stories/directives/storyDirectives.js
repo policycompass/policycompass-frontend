@@ -27,17 +27,23 @@ angular.module('pcApp.stories.directives.storyDirectives', [])
                                 $modalInstance.close();
                             }
                             $scope.addToChapter = function(chapterIndex){
-                                console.log('no error contentId: ' + $scope.contentId)
-
                                 try {
                                     if (typeof $scope.contentId == "undefined" || $scope.contentId == '') {
                                         throw "empty";
                                     }
+                                    for (var content in scope.chapter.contents) {
+                                        if (scope.chapter.contents.hasOwnProperty(content)) {
+                                            if (scope.chapter.contents[content].type === scope.contentType && scope.chapter.contents[content].contentId === $scope.contentId) {
+                                                alert("This " + scope.contentType + " already exists in this chapter and can not be added!");
+                                                throw "already exists";
+                                            }
+                                        }
+                                    }   
                                     scope.chapter.contents.push({"type": scope.contentType, "contentId": $scope.contentId});
                                 }
                                 catch(err) {
-                                    console.log('error contentId: ' + $scope.contentId)
-                                    console.log('error contentType: ' + scope.contentType)
+                                    console.log('error ' + err + ' contentId: ' + $scope.contentId)
+                                    console.log('error ' + err + ' contentType: ' + scope.contentType)
                                 }
                                 $scope.close();
                             }

@@ -7,10 +7,10 @@
 
     <div class="pc-visualization-formcontrols">
         <div class="form-group pull-left btn-group">
-            <a href="" id="saveButton" data-ng-disabled="storyForm.$invalid" class="btn btn-default btn-save" ng-click="saveStory()">Save</a>
+            <a href="" id="saveButton" data-ng-disabled="storyForm.$invalid" ng-if="userState.loggedIn" class="btn btn-default btn-save" ng-click="saveStory()">Save</a>
             <a href="" id="addChapterButton" class="btn btn-default btn-add" ng-click="addChapter()">Add chapter</a>
             <a href="" id="previewButton" class="btn btn-default fa-file-text-o" ng-click="previewStory()">Preview</a>
-            <a type="button" class="btn btn-danger fa-trash-o" href="#!/">Cancel</a>
+            <a href="#!/" type="button" class="btn btn-danger fa-trash-o" ng-click="deleteStory()">Cancel</a>
         </div>
     </div>
 
@@ -25,14 +25,14 @@
                 <tab ng-repeat="chapter in chapters">
                     <tab-heading>
                         <button type="button" class="close" ng-click='removeChapter(chapter.number)'>&times;</button>
-                        <span ng-if="chapter.title">{{ chapter.title }}</span>
-                        <span ng-if="!chapter.title">Chapter {{ chapter.number }}</span>
+                        <span ng-if="chapter.title" title="{{ chapter.title }}">{{ chapter.title | limitTo:20 }}{{ chapter.title.length > 20 ? '...' : '' }}</span>
+                        <span ng-if="!chapter.title">Untitled chapter</span>
                         &nbsp;
                     </tab-heading>
 
                     <div class="row">
                         <div class="col-md-12">
-                            <input class='form-control' value="{{ chapter.title }}" id='chapter{{chapter.number}}_title' type='text' name='chapter{{chapter.number}}_title' placeholder='Chapter {{chapter.number}} Title' required>
+                            <input class='form-control' value="{{ chapter.title }}" id='chapter{{chapter.number}}_title' type='text' name='chapter{{chapter.number}}_title' placeholder='Story title' ng-model="chapter.title" required>
                         </div>
                     </div>
 
@@ -53,7 +53,7 @@
                             </div>
                         </div>
                         <div>
-                            <text-angular ng-model="chapter.text" placeholder='Chapter {{chapter.number}} Text'></text-angular>
+                            <text-angular ng-model="chapter.text" placeholder='Place your story here'></text-angular>
                         </div>
                     </div>
 
