@@ -631,7 +631,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                                 if ($.trim(attrib[i]) != '') {
                                     var conceptIds = attrib[i].split('    ')[0].split(',');
                                     var conceptWeight = parseFloat(attrib[i].split('    ')[1]).toFixed(2);
-                                    console.log(conceptIds, conceptWeight);
+                                    //console.log(conceptIds, conceptWeight);
 
                                     //$scope.SimulationAssociations[i - 1].weighted = conceptWeight;
 
@@ -645,6 +645,11 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                                                 destinationID: $.trim(conceptIds[1]),
                                                 weight: conceptWeight
                                             });
+                                            //https://github.com/policycompass/policycompass/issues/666
+                                            angular.forEach($scope.edgeData, function (edgeItem) {
+                                                if (edgeItem.source == itemAssociation.sourceID && edgeItem.target == itemAssociation.destinationID)
+                                                    edgeItem.weighted = itemAssociation.weighted;
+                                            });
                                         }
                                     });
                                 }
@@ -652,7 +657,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                         }
                     });
                 });
-                console.log($scope.SimulationConcepts);
+                //console.log($scope.SimulationConcepts);
                 //https://github.com/policycompass/policycompass/issues/612: Hide simulation modal
                 //dlg = dialogs.create('modules/fcm/partials/weightcalulation.html', 'WeightCalulationController', { concept: $scope.SimulationConcepts }, {
                 //    key: false,
@@ -663,6 +668,10 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 //}, function () {
 
                 //});
+
+
+                // broadcasting the event
+                $rootScope.$broadcast('appChanged');
             });
 
 
@@ -2033,4 +2042,4 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
             $scope.loadDataCombos($scope.metric.id, "", "");
         }
-    ]);
+    ])
