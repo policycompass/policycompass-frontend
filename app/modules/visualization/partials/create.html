@@ -109,11 +109,13 @@
             <div class="createvisualization">
                 <div>
                     <div ng-switch="step">
+                    	<!--
                         <div ng-if="ListMetricsFilter.length>0" data-intro="Region where you can preview the chart." data-position="top"  class="chartvisu">
-                        	<div ng-show="canPlotGarph"  class="graphContainerdiv">
-                        	<!--
+                        -->
+                        <div ng-show="canPlotGarph"  class="graphContainerdiv">
+                        	
                             <div ng-show="((1==1)  || isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')) && (ListMetricsFilter.length>0)" class="graphContainerdiv">
-                            -->
+                            
                                 <input type="hidden" id="startDatePosX" name="startDatePosX" value="">
                                 <input type="hidden" id="endDatePosX" name="endDatePosX" value="">
 
@@ -154,9 +156,9 @@
                         </div>
 
 						
-                        <div ng-if="ListMetricsFilter.length>0" >                        
+                        <div ng-show="ListMetricsFilter.length>0" >                        
 	                        <div id="showFilterContainer" class="showFilterContainer">
-	                            <div id="showFilter" class="showFilter on_check" data-intro="According the type of chart selected (Map, Line, Pie or Bars) you can customize the chart according the next parameters." data-position="top">
+	                            <div id="showFilter" class="showFilter on_check" >
 	                            	
 									<div class="col-xs-6 col-md-4">
 		                                <div id="div_showLegend" ng-show="isSelectedParent(1) || isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')" class="">
