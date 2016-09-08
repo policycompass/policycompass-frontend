@@ -1,4 +1,3 @@
-
 <div class="container">
     <div class="content-header">
         <h1><span class="glyphicon glyphicon-list-alt"></span>{{ models.model.title }}</h1>
@@ -43,7 +42,6 @@
                                 <div class="field-content">{{models.model.description}}</div>
                             </div>
                         </div>
-
                         <div class="form-group form-group-modified">
                             <div class="form-item" ng-if="models.model.userPath">
                                 <div class="field-label">Added by</div>
@@ -60,7 +58,6 @@
                                 <div class="field-content">{{ models.model.dateModified | date:'longDate' }}</div>
                             </div>
                         </div>
-
                     </div>
                     <div class="metadata metadata-event">
                         <div class="form-group form-group-keywords" ng-if="models.model.keywords">
@@ -76,8 +73,24 @@
                             </div>
                         </div>
                     </div>
+                    <div class="metadata metadata-event">
+                        <div ng-if="derivedFromModel" class="form-group form-group-link">
+                            <div class="form-item">
+                                <div class="field-label">Derived from</div>
+                                <div class="field-content">
+                                    <a ng-if="derivedFromModel.id" href="#!/models/{{derivedFromModel.id}}">{{derivedFromModel.title}}</a>
+                                    <span>{{models.model.title}}</span>
+                                </div>
+                            </div>
+                            <div class="form-item" ng-if="derivedFromModel.userPath">
+                                <div class="field-label">Added by</div>
+                                <div class="field-content">
+                                    <username userpath="{{derivedFromModel.userPath}}"></username>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </tab>
-
                 <tab heading="Show Concepts">
                     <table class="table table-hover">
                         <tr>
@@ -100,7 +113,6 @@
                         </tr>
                     </table>
                 </tab>
-
                 <tab heading="Related Models">
                     <div class="search-results row-flex">
                         <div ng-repeat="model in relatedModels" class="result-wrapper result-wrapper-fuzzymap">
@@ -109,11 +121,8 @@
                                     <h5>
                                         <a href="#!/models/{{ model._source.id }}">{{ model._source.title }}</a>
                                     </h5>
-
                                     <div class="attributes">
-
                                         <p>{{ model._source.description | limitTo:200 }}...</p>
-
                                         <div class="key-field">
                                             <label class="key-field-title">Keywords: </label>
                                             {{ model._source.keywords |date:'d-M-yy'}}
@@ -133,11 +142,9 @@
                         </div>
                     </div>
                 </tab>
-
                 <!--<tab heading="Simulation">Simulation</tab>
 
                 <tab heading="Graph">Graph</tab>-->
-
             </tabset>
 
         </div>
