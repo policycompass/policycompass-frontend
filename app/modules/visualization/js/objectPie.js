@@ -145,6 +145,7 @@ policycompass.viz.pie = function (options) {
         })
 		.on("mouseout", function (d, i) {
                 self.clicToOpen = true;
+                tooltip.style("opacity", 1.0).html("");
                 tooltip.style("opacity", 0.0);
                 d3.select(this).select("path").transition().duration(1000).attr("d", self.arc);
 		});
@@ -404,6 +405,7 @@ policycompass.viz.pie = function (options) {
 					tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '</div>');
 				})
 				.on("mouseout", function () {
+					tooltip.style("opacity", 1.0).html("");
 					tooltip.style("opacity", 0.0);
                 })                
                 ;

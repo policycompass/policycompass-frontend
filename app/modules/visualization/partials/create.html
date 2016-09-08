@@ -6,7 +6,7 @@
 
         <div class="subtitle-help">
             <h4>
-                <div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div>
+                <div class="fonticon fonticon-help help-switch" ng-click="help=!help" data-intro="Click here to view a short help about how works this form." data-position="right" data-step="1"></div>
                 Visualise Data
             </h4>
             <div ng-class="{active: help}" class="help-text">
@@ -28,6 +28,7 @@
                     <li>In case you select a "Line" or "Bars", then you can related historical events with the chart using the "Edit Events" button.</li>
                     <li>Fulfil the mandatory fields that are marked with an asterisk.</li>
                     <li>Click over the button "Save" to save the visualisation.</li>
+                    <li ng-if="canDraft">You can set the visualisation as draft until you finish it using the button "Draft/Public"</li>
                 </ul>
                 </p>
                 <p>
@@ -58,6 +59,7 @@
             
             
             <div class="button-group" ng-include='"modules/visualization/partials/saveVisualisationButtons.html"'></div>
+            <a class="btn btn-info btn-help" href="javascript:void(0);" onclick="introJs().start()" ng-click="help=false">Help</a>
             <!--
             <div class="button-group">			
 				<a href="#!/login" ng-if="!user.state.loggedIn" class="btn btn-default btn-save" target="_blank">Login to Save</a>
@@ -73,8 +75,8 @@
 			</div>
 			-->
 			<div class="button-group">
-                <a href="" data-intro="Helps you to link datasets with this visualisation" data-position="top" type="submit" class="btn btn-default btn-adddataset" id="modaladddataset" ng-click="showModal('datasets')">Edit Datasets</a>
-                <a href="" ng-disabled="(isSelectedSon('graph_pie')) || ListMetricsFilter.length<=0" data-intro="Helps you to link this visualisation with events" data-position="top" type="submit" class="btn btn-primary btn-adddevent" id="addHEbutton" ng-click="showModal('events')">Edit Events</a>
+                <a href="" type="submit" class="btn btn-default btn-adddataset" id="modaladddataset" ng-click="showModal('datasets')" data-intro="Use this button to link this visualisation with datasets." data-position="top" data-step="2">Edit Datasets</a>
+                <a href="" ng-disabled="(isSelectedParent(1)) || (isSelectedSon('graph_pie')) || ListMetricsFilter.length<=0" data-intro="Use this button to link this visualisation with events." data-position="top" data-step="8" type="submit" class="btn btn-primary btn-adddevent" id="addHEbutton" ng-click="showModal('events')">Edit Events</a>
             </div>
             
             
@@ -88,11 +90,11 @@
                 <button type="button" data-intro="Plot data as bars chart" data-position="top" ng-hide="!isSelectedParent(2)" ng-disabled="!isSelectedParent(2)" ng-class="{'btn btn-default':!isSelectedSon('graph_bars'),'btn btn-info':isSelectedSon('graph_bars')}" ng-click="selectTabParent(2);selectTabSon('graph_bars');rePlotGraph();" class="btn-bars">Bars</button>
             </div>
             -->
-            <div class="button-group">
-				<button type="button" data-intro="Plot data in a map" data-position="top" ng-class="{'btn btn-default btn-map':!isSelectedParent(1),'btn btn-info btn-map':isSelectedParent(1)}" ng-click="selectTabParent(1); selectTabSon('mercator');rePlotGraph();">Map</button>
-                <button type="button" data-intro="Plot data as line chart" data-position="top" ng-class="{'btn btn-default':!isSelectedSon('graph_line'),'btn btn-info':isSelectedSon('graph_line')}" ng-click="selectTabParent(2);selectTabSon('graph_line');rePlotGraph();" class="btn-line">Line</button>
-                <button type="button" data-intro="Plot data as pie chart" data-position="top" ng-class="{'btn btn-default':!isSelectedSon('graph_pie'),'btn btn-info':isSelectedSon('graph_pie')}" ng-click="selectTabParent(2);selectTabSon('graph_pie');rePlotGraph();" class="btn-pie">Pie</button>
-                <button type="button" data-intro="Plot data as bars chart" data-position="top" ng-class="{'btn btn-default':!isSelectedSon('graph_bars'),'btn btn-info':isSelectedSon('graph_bars')}" ng-click="selectTabParent(2);selectTabSon('graph_bars');rePlotGraph();" class="btn-bars">Bars</button>
+            <div class="button-group" data-intro="Select the type of chart you want using the appropriate button." data-position="top" data-step="3">
+				<button type="button" data-intro="With this button, data is plotted in a map." data-position="top" data-step="4" ng-class="{'btn btn-default btn-map':!isSelectedParent(1),'btn btn-info btn-map':isSelectedParent(1)}" ng-click="selectTabParent(1); selectTabSon('mercator');rePlotGraph();">Map</button>
+                <button type="button" data-intro="With this button, data is plotted as a line chart." data-position="top" data-step="5" ng-class="{'btn btn-default':!isSelectedSon('graph_line'),'btn btn-info':isSelectedSon('graph_line')}" ng-click="selectTabParent(2);selectTabSon('graph_line');rePlotGraph();" class="btn-line">Line</button>
+                <button type="button" data-intro="With this button, data is plotted as a pie chart." data-position="top" data-step="6" ng-class="{'btn btn-default':!isSelectedSon('graph_pie'),'btn btn-info':isSelectedSon('graph_pie')}" ng-click="selectTabParent(2);selectTabSon('graph_pie');rePlotGraph();" class="btn-pie">Pie</button>
+                <button type="button" data-intro="With this button, data is plotted as a bar chart." data-position="top" data-step="7" ng-class="{'btn btn-default':!isSelectedSon('graph_bars'),'btn btn-info':isSelectedSon('graph_bars')}" ng-click="selectTabParent(2);selectTabSon('graph_bars');rePlotGraph();" class="btn-bars">Bars</button>
             </div>
             
             <!--
@@ -107,9 +109,13 @@
             <div class="createvisualization">
                 <div>
                     <div ng-switch="step">
-
-                        <div ng-show="canPlotGarph" class="chartvisu">
+                    	<!--
+                        <div ng-if="ListMetricsFilter.length>0" data-intro="Region where you can preview the chart." data-position="top"  class="chartvisu">
+                        -->
+                        <div ng-show="canPlotGarph"  class="graphContainerdiv">
+                        	
                             <div ng-show="((1==1)  || isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')) && (ListMetricsFilter.length>0)" class="graphContainerdiv">
+                            
                                 <input type="hidden" id="startDatePosX" name="startDatePosX" value="">
                                 <input type="hidden" id="endDatePosX" name="endDatePosX" value="">
 
@@ -149,268 +155,270 @@
                             </div>
                         </div>
 
-
-                        <div ng-show="ListMetricsFilter.length>0" id="showFilterContainer" class="showFilterContainer">
-                            <div id="showFilter" ng-show="isSelectedParent(1) || isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')" class="showFilter on_check">
-                            	
-								<div class="col-xs-6 col-md-4">
-	                                <div id="div_showLegend" ng-show="isSelectedParent(1) || isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')" class="">
-	                                    
-	                                    <div class="col-xs-6 configureoptionchartlabel">
-	                                    	 
-	                                    </div>
-	                                    <div class="col-xs-6 configureoptionchartfield checkbox-inline">
-	                                    	<label class="checkbox-inline configureoptionchartlabel">
-	                                    		<input ng-model="showLegend" type="checkbox" ng-click="manualClick('showLegend');rePlotGraph();" name="showLegend" id="showLegend" class="checkbox filterCheckBox">
-	                                    		Legend
-	                                    	</label>
-	                                    </div>
-	                                    <!--
-	                                    <label class="checkbox-inline">
-	                                        <input ng-model="showLegend" type="checkbox" ng-click="manualClick('showLegend');rePlotGraph();" name="showLegend" id="showLegend" class="checkbox filterCheckBox"> Legend
-	                                    </label>
-	                                    -->
-	                                </div>
-	                                <div id="div_showLines" ng-show="isSelectedSon('graph_line')" class="">
-	                                	<div class="col-xs-6 configureoptionchartlabel">
-	                                    	 
-	                                    </div>
-	                                    <div class="col-xs-6 configureoptionchartfield checkbox-inline">
-	                                    	<label class="checkbox-inline configureoptionchartlabel">
-	                                    		<input ng-model="showLines" type="checkbox" ng-click="manualClick('showLines');rePlotGraph();" name="showLines" id="showLines" class="checkbox filterCheckBox"> 
-	                                    		Lines
-	                                    	</label>
-	                                    </div>
-	                                    <!--
-	                                    <label class="checkbox-inline">
-	                                        <input ng-model="showLines" type="checkbox" ng-click="manualClick('showLines');rePlotGraph();" name="showLines" id="showLines" class="checkbox filterCheckBox"> Lines
-	                                    </label>
-	                                    -->
-	                                </div>
-	                                <div id="div_showLines" ng-show="isSelectedSon('graph_line')" class="">                                	
-	                                	<div class="col-xs-6 configureoptionchartlabel">
-	                                    	 
-	                                    </div>
-	                                    <div class="col-xs-6 configureoptionchartfield checkbox-inline">
-	                                    	<label class="checkbox-inline configureoptionchartlabel">
-	                                    		<input ng-model="showAreas" type="checkbox" ng-click="manualClick('showAreas');rePlotGraph();" name="showAreas" id="showAreas" class="checkbox filterCheckBox"> 
-	                                    		Areas
-	                                    	</label>
-	                                    </div>
-	                                    <!--
-	                                    <label class="checkbox-inline">
-	                                        <input ng-model="showAreas" type="checkbox" ng-click="manualClick('showAreas');rePlotGraph();" name="showAreas" id="showAreas" class="checkbox filterCheckBox"> Areas
-	                                    </label>
-	                                    -->
-	                                </div>
-	                                <div id="div_showPoints" ng-show="isSelectedSon('graph_line')" class="">                                	
-	                                	<div class="col-xs-6 configureoptionchartlabel">
-	                                    	 
-	                                    </div>
-	                                    <div class="col-xs-6 configureoptionchartfield checkbox-inline">
-	                                    	<label class="checkbox-inline configureoptionchartlabel">
-	                                    		<input ng-model="showPoints" type="checkbox" ng-click="manualClick('showPoints');rePlotGraph();" name="showPoints" id="showPoints" class="checkbox filterCheckBox"> 
-	                                    		Points
-	                                    	</label>
-	                                    </div>
-	                                    <!--
-	                                    <label class="checkbox-inline">
-	                                        <input ng-model="showPoints" type="checkbox" ng-click="manualClick('showPoints');rePlotGraph();" name="showPoints" id="showPoints" class="checkbox filterCheckBox"> Points
-	                                    </label>
-	                                    -->
-	                                </div>
-	                                <div id="div_showLabels" ng-show="isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')" class="">
-	                                	<div class="col-xs-6 configureoptionchartlabel">
-	                                    	 
-	                                    </div>
-	                                    <div class="col-xs-6 configureoptionchartfield checkbox-inline">
-	                                    	<label class="checkbox-inline configureoptionchartlabel">
-	                                    		<input ng-model="showLabels" type="checkbox" ng-click="manualClick('showLabels');rePlotGraph();" name="showLabels" id="showLabels" class="checkbox filterCheckBox"> 
-	                                    		Labels
-	                                    	</label>
-	                                    </div>                                    
-	                                	<!--
-	                                    <label class="checkbox-inline">
-	                                        <input ng-model="showLabels" type="checkbox" ng-click="manualClick('showLabels');rePlotGraph();" name="showLabels" id="showLabels" class="checkbox filterCheckBox"> Labels
-	                                    </label>
-	                                   	-->
-	                                </div>
-	                                <div id="div_showGrid" ng-show="isSelectedSon('graph_line') || isSelectedSon('graph_bars')" class="">
-	                                	<div class="col-xs-6 configureoptionchartlabel">
-	                                    	 
-	                                    </div>
-	                                    <div class="col-xs-6 configureoptionchartfield checkbox-inline">
-	                                    	<label class="checkbox-inline configureoptionchartlabel">
-	                                    		<input ng-model="showGrid" type="checkbox" ng-click="manualClick('showGrid');rePlotGraph();" name="showGrid" id="showGrid" class="checkbox filterCheckBox"> 
-	                                    		Grid
-	                                    	</label>
-	                                    </div>
-	                                    <!--
-	                                    <label class="checkbox-inline">
-	                                        <input ng-model="showGrid" type="checkbox" ng-click="manualClick('showGrid');rePlotGraph();" name="showGrid" id="showGrid" class="checkbox filterCheckBox"> Grid
-	                                    </label>
-	                                    -->
-	                                </div>
-	                                <div id="div_showYaxes" ng-show="isSelectedSon('graph_line') || isSelectedSon('graph_bars')" class="">
-	                                	<div class="col-xs-6 configureoptionchartlabel">
-	                                    	 
-	                                    </div>
-	                                    <div class="col-xs-6 configureoptionchartfield checkbox-inline">
-	                                    	<label class="checkbox-inline configureoptionchartlabel">
-	                                    		<input ng-model="showYAxes" type="checkbox" ng-click="manualClick('showYAxes');rePlotGraph();" name="showYAxes" id="showYAxes" class="checkbox filterCheckBox"> 
-	                                    		Only one Y axe
-	                                    	</label>
-	                                    </div>
-	                                	<!--
-	                                    <label class="checkbox-inline">
-	                                        <input ng-model="showYAxes" type="checkbox" ng-click="manualClick('showYAxes');rePlotGraph();" name="showYAxes" id="showYAxes" class="checkbox filterCheckBox"> Only one Y axe
-	                                    </label>
-	                                   -->
-	                                </div>
-	
-	                                <div id="div_showAsPercentatge" ng-show="isSelectedSon('graph_line') || isSelectedSon('graph_bars')" class="">
-	                                	<div class="col-xs-6 configureoptionchartlabel">
-	                                    	 
-	                                    </div>
-	                                    <div class="col-xs-6 configureoptionchartfield checkbox-inline">
-	                                    	<label class="checkbox-inline configureoptionchartlabel">
-	                                    		<input ng-model="showAsPercentatge" type="checkbox" ng-click="manualClick('showAsPercentatge');rePlotGraph();" name="showAsPercentatge" id="showAsPercentatge" class="checkbox filterCheckBox"> 
-	                                    		As %
-	                                    	</label>
-	                                    </div>
-	                                	<!--
-	                                    <label class="checkbox-inline">
-	                                        <input ng-model="showAsPercentatge" type="checkbox" ng-click="manualClick('showAsPercentatge');rePlotGraph();" name="showAsPercentatge" id="showAsPercentatge" class="checkbox filterCheckBox"> As %
-	                                    </label>
-	                                   -->
-	                                </div>
-	                                
-	                                <div id="div_showevntsontop" ng-show="(isSelectedSon('graph_line') || isSelectedSon('graph_bars')) && (eventsToPlot.length>0)" class="">
-	                                	<div class="col-xs-6 configureoptionchartlabel">
-	                                    	 
-	                                    </div>
-	                                    <div class="col-xs-6 configureoptionchartfield checkbox-inline">
-	                                    	<label class="checkbox-inline configureoptionchartlabel">
-	                                    		<input ng-model="showAstoplines" type="checkbox" ng-click="manualClick('showAstoplines');rePlotGraph();" name="showAstoplines" id="showAstoplines" class="checkbox filterCheckBox"> 
-	                                    		Events on top
-	                                    	</label>
-	                                    </div>
-	                                	<!--
-	                                    <label class="checkbox-inline">
-	                                        <input ng-model="showAsPercentatge" type="checkbox" ng-click="manualClick('showAsPercentatge');rePlotGraph();" name="showAsPercentatge" id="showAsPercentatge" class="checkbox filterCheckBox"> As %
-	                                    </label>
-	                                   -->
-	                                </div>
-	
-	                                <div id="div_showZoom" ng-show="isSelectedParent(1) && !isSelectedSon('orthographic') && !isSelectedSon('azimuthalEqualArea')" class="">
-	                                	<div class="col-xs-6 configureoptionchartlabel">
-	                                    	 
-	                                    </div>
-	                                    <div class="col-xs-6 configureoptionchartfield checkbox-inline">	                                    	
-	                                    	<input type="hidden" name="initialZoom" id="initialZoom" value="2">
-	                                    	<input type="hidden" name="initialLat" id="initialLat" value="49.009952">
-	                                    	<input type="hidden" name="initialLng" id="initialLng" value="2.548635">
-	                                    	<label class="checkbox-inline configureoptionchartlabel">
-	                                    		<input ng-model="showZoom" type="checkbox" ng-click="manualClick('showZoom');rePlotGraph();" name="showZoom" id="showZoom" class="checkbox filterCheckBox"> 
-	                                    		Zoom
-	                                    	</label>
-	                                    </div>
-	                                	<!--
-	                                    <input type="hidden" name="initialZoom" id="initialZoom" value="2">
-	                                    <input type="hidden" name="initialLat" id="initialLat" value="49.009952">
-	                                    <input type="hidden" name="initialLng" id="initialLng" value="2.548635">
-	                                    <label class="checkbox-inline">
-	                                        <input ng-model="showZoom" type="checkbox" ng-click="manualClick('showZoom');rePlotGraph();" name="showZoom" id="showZoom" class="checkbox filterCheckBox"> Zoom
-	                                    </label>
-	                                   -->
-	                                </div>
-	
-	                                <div id="div_showBubbles" ng-show="isSelectedParent(1)" class="">
-	                                	<div class="col-xs-6 configureoptionchartlabel">
-	                                    	 
-	                                    </div>
-	                                    <div class="col-xs-6 configureoptionchartfield checkbox-inline">
-	                                    	<label class="checkbox-inline configureoptionchartlabel">
-	                                    		<input ng-model="showBubbles" type="checkbox" ng-click="manualClick('showBubbles');rePlotGraph();" name="showBubbles" id="showBubbles" class="checkbox filterCheckBox"> 
-	                                    		Bubble marker
-	                                    	</label>
-	                                    </div>
-	                                    <!--
-	                                    <label class="checkbox-inline">
-	                                        <input ng-model="showBubbles" type="checkbox" ng-click="manualClick('showBubbles');rePlotGraph();" name="showBubbles" id="showBubbles" class="checkbox filterCheckBox"> Bubble marker
-	                                    </label>
-	                                    -->
-	                                </div>
-								</div>
-								<div class="col-xs-6 col-md-4">
-	                                <div id="div_showscaleColor" ng-show="isSelectedParent(1)" class="">
-	                                    <div class="col-xs-6 configureoptionchartlabel">Scale Colour</div>
-										<div class="col-xs-6 configureoptionchartfield">
-	                                        <spectrum name='color' ng-model="scaleColor" ng-model-onblur ng-change="rePlotGraph()" options="{
-													showInput: true,
-													showAlpha: false,
-													allowEmpty: false,
-													preferredFormat: 'hex'
-												}"></spectrum>
-	                                    </div>
-	                                </div>
-	
-	                                <div id="div_resolution" ng-show="TimeSelector.length>1" class="">                               	
-	                                	<div class="col-xs-6 configureoptionchartlabel">Resolution </div>
-	                                	<div class="col-xs-6 configureoptionchartfield"><select id="resolution" ng-change="timeStart='';timeEnd='';rePlotGraph();" ng-model="resolution" ng-options="opt as opt.label for opt in resolutionoptions"></select></div>
-	                                </div>
-
-									<div id="div_resolution" ng-show="isSelectedSon('graph_bars')" class="">                                	
-	                                	<div class="col-xs-6 configureoptionchartlabel">Grouped by</div>
-	                                	<div class="col-xs-6 configureoptionchartfield"><select id="resolution" ng-change="rePlotGraph();" ng-model="groupedby" ng-options="opt as opt.label for opt in barchartgroupoptions"></select></div>
-	                                </div>
-	                                
-									<div id="div_resolution" ng-show="isSelectedSon('graph_line') && TimeSelector.length>1 && resolution.value!='day'" class="">                                    
-	                                    <div class="col-xs-6 configureoptionchartlabel">Plot data</div>
-	                                    <div class="col-xs-6 configureoptionchartfield"><select id="plotdataoption" ng-change="rePlotGraph();" ng-model="plotdataoption" ng-options="opt as opt.label for opt in plotdataoptions"></select></div>
-	                                </div>
-	
-									<div id="div_resolution" ng-show="isSelectedSon('graph_line') && TimeSelector.length>1 && resolution.value!='day'" class="">
-	                                    <div class="col-xs-6 configureoptionchartlabel">Plot x legend</div>
-	                                    <div class="col-xs-6 configureoptionchartfield"><select id="plotdataoptionxaxis" ng-change="rePlotGraph();" ng-model="plotxaxislegend" ng-options="opt as opt.label for opt in plotxaxislegendoptions"></select></div>
-	                                </div>
-	
-	                                <div id="div_fromdate" ng-show="TimeSelector.length>1" class="">                                    
-	                                    <div class="col-xs-6 configureoptionchartlabel">From</div>
-	                                    <div class="col-xs-6 configureoptionchartfield"><select id="fromDate" ng-change="rePlotGraph()" ng-model="timeStart" ng-options="opt for opt in TimeSelector"></select></div>
-	                                </div>
-	
-	                                <div id="div_todate" ng-show="TimeSelector.length>1" class="">
-	                                    <div class="col-xs-6 configureoptionchartlabel">To</div>
-	                                    <div class="col-xs-6 configureoptionchartfield"><select id="toDate" ng-change="rePlotGraph();" ng-model="timeEnd" ng-options="opt for opt in TimeSelector"></select></div>
-	                                </div>
-								</div>
-								<div class="col-xs-6 col-md-4" ng-show="(isSelectedSon('graph_line') || isSelectedSon('graph_bars')) && ListMetricsFilter.length>0">									
-									<div ng-if="eventsToPlot.length>0">
-										<div class="col-xs-8 configureoptionchartlabel">Events:</div>
-										<div class="col-xs-2 configureoptionchartfield">{{eventsToPlot.length}}</div>
+						
+                        <div ng-show="ListMetricsFilter.length>0" >                        
+	                        <div id="showFilterContainer" class="showFilterContainer">
+	                            <div id="showFilter" class="showFilter on_check" >
+	                            	
+									<div class="col-xs-6 col-md-4">
+		                                <div id="div_showLegend" ng-show="isSelectedParent(1) || isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')" class="">
+		                                    
+		                                    <div class="col-xs-6 configureoptionchartlabel">
+		                                    	 
+		                                    </div>
+		                                    <div class="col-xs-6 configureoptionchartfield checkbox-inline">
+		                                    	<label class="checkbox-inline configureoptionchartlabel">
+		                                    		<input ng-model="showLegend" type="checkbox" ng-click="manualClick('showLegend');rePlotGraph();" name="showLegend" id="showLegend" class="checkbox filterCheckBox">
+		                                    		Legend
+		                                    	</label>
+		                                    </div>
+		                                    <!--
+		                                    <label class="checkbox-inline">
+		                                        <input ng-model="showLegend" type="checkbox" ng-click="manualClick('showLegend');rePlotGraph();" name="showLegend" id="showLegend" class="checkbox filterCheckBox"> Legend
+		                                    </label>
+		                                    -->
+		                                </div>
+		                                <div id="div_showLines" ng-show="isSelectedSon('graph_line')" class="">
+		                                	<div class="col-xs-6 configureoptionchartlabel">
+		                                    	 
+		                                    </div>
+		                                    <div class="col-xs-6 configureoptionchartfield checkbox-inline">
+		                                    	<label class="checkbox-inline configureoptionchartlabel">
+		                                    		<input ng-model="showLines" type="checkbox" ng-click="manualClick('showLines');rePlotGraph();" name="showLines" id="showLines" class="checkbox filterCheckBox"> 
+		                                    		Lines
+		                                    	</label>
+		                                    </div>
+		                                    <!--
+		                                    <label class="checkbox-inline">
+		                                        <input ng-model="showLines" type="checkbox" ng-click="manualClick('showLines');rePlotGraph();" name="showLines" id="showLines" class="checkbox filterCheckBox"> Lines
+		                                    </label>
+		                                    -->
+		                                </div>
+		                                <div id="div_showLines" ng-show="isSelectedSon('graph_line')" class="">                                	
+		                                	<div class="col-xs-6 configureoptionchartlabel">
+		                                    	 
+		                                    </div>
+		                                    <div class="col-xs-6 configureoptionchartfield checkbox-inline">
+		                                    	<label class="checkbox-inline configureoptionchartlabel">
+		                                    		<input ng-model="showAreas" type="checkbox" ng-click="manualClick('showAreas');rePlotGraph();" name="showAreas" id="showAreas" class="checkbox filterCheckBox"> 
+		                                    		Areas
+		                                    	</label>
+		                                    </div>
+		                                    <!--
+		                                    <label class="checkbox-inline">
+		                                        <input ng-model="showAreas" type="checkbox" ng-click="manualClick('showAreas');rePlotGraph();" name="showAreas" id="showAreas" class="checkbox filterCheckBox"> Areas
+		                                    </label>
+		                                    -->
+		                                </div>
+		                                <div id="div_showPoints" ng-show="isSelectedSon('graph_line')" class="">                                	
+		                                	<div class="col-xs-6 configureoptionchartlabel">
+		                                    	 
+		                                    </div>
+		                                    <div class="col-xs-6 configureoptionchartfield checkbox-inline">
+		                                    	<label class="checkbox-inline configureoptionchartlabel">
+		                                    		<input ng-model="showPoints" type="checkbox" ng-click="manualClick('showPoints');rePlotGraph();" name="showPoints" id="showPoints" class="checkbox filterCheckBox"> 
+		                                    		Points
+		                                    	</label>
+		                                    </div>
+		                                    <!--
+		                                    <label class="checkbox-inline">
+		                                        <input ng-model="showPoints" type="checkbox" ng-click="manualClick('showPoints');rePlotGraph();" name="showPoints" id="showPoints" class="checkbox filterCheckBox"> Points
+		                                    </label>
+		                                    -->
+		                                </div>
+		                                <div id="div_showLabels" ng-show="isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')" class="">
+		                                	<div class="col-xs-6 configureoptionchartlabel">
+		                                    	 
+		                                    </div>
+		                                    <div class="col-xs-6 configureoptionchartfield checkbox-inline">
+		                                    	<label class="checkbox-inline configureoptionchartlabel">
+		                                    		<input ng-model="showLabels" type="checkbox" ng-click="manualClick('showLabels');rePlotGraph();" name="showLabels" id="showLabels" class="checkbox filterCheckBox"> 
+		                                    		Labels
+		                                    	</label>
+		                                    </div>                                    
+		                                	<!--
+		                                    <label class="checkbox-inline">
+		                                        <input ng-model="showLabels" type="checkbox" ng-click="manualClick('showLabels');rePlotGraph();" name="showLabels" id="showLabels" class="checkbox filterCheckBox"> Labels
+		                                    </label>
+		                                   	-->
+		                                </div>
+		                                <div id="div_showGrid" ng-show="isSelectedSon('graph_line') || isSelectedSon('graph_bars')" class="">
+		                                	<div class="col-xs-6 configureoptionchartlabel">
+		                                    	 
+		                                    </div>
+		                                    <div class="col-xs-6 configureoptionchartfield checkbox-inline">
+		                                    	<label class="checkbox-inline configureoptionchartlabel">
+		                                    		<input ng-model="showGrid" type="checkbox" ng-click="manualClick('showGrid');rePlotGraph();" name="showGrid" id="showGrid" class="checkbox filterCheckBox"> 
+		                                    		Grid
+		                                    	</label>
+		                                    </div>
+		                                    <!--
+		                                    <label class="checkbox-inline">
+		                                        <input ng-model="showGrid" type="checkbox" ng-click="manualClick('showGrid');rePlotGraph();" name="showGrid" id="showGrid" class="checkbox filterCheckBox"> Grid
+		                                    </label>
+		                                    -->
+		                                </div>
+		                                <div id="div_showYaxes" ng-show="isSelectedSon('graph_line') || isSelectedSon('graph_bars')" class="">
+		                                	<div class="col-xs-6 configureoptionchartlabel">
+		                                    	 
+		                                    </div>
+		                                    <div class="col-xs-6 configureoptionchartfield checkbox-inline">
+		                                    	<label class="checkbox-inline configureoptionchartlabel">
+		                                    		<input ng-model="showYAxes" type="checkbox" ng-click="manualClick('showYAxes');rePlotGraph();" name="showYAxes" id="showYAxes" class="checkbox filterCheckBox"> 
+		                                    		Only one Y axe
+		                                    	</label>
+		                                    </div>
+		                                	<!--
+		                                    <label class="checkbox-inline">
+		                                        <input ng-model="showYAxes" type="checkbox" ng-click="manualClick('showYAxes');rePlotGraph();" name="showYAxes" id="showYAxes" class="checkbox filterCheckBox"> Only one Y axe
+		                                    </label>
+		                                   -->
+		                                </div>
+		
+		                                <div id="div_showAsPercentatge" ng-show="isSelectedSon('graph_line') || isSelectedSon('graph_bars')" class="">
+		                                	<div class="col-xs-6 configureoptionchartlabel">
+		                                    	 
+		                                    </div>
+		                                    <div class="col-xs-6 configureoptionchartfield checkbox-inline">
+		                                    	<label class="checkbox-inline configureoptionchartlabel">
+		                                    		<input ng-model="showAsPercentatge" type="checkbox" ng-click="manualClick('showAsPercentatge');rePlotGraph();" name="showAsPercentatge" id="showAsPercentatge" class="checkbox filterCheckBox"> 
+		                                    		As %
+		                                    	</label>
+		                                    </div>
+		                                	<!--
+		                                    <label class="checkbox-inline">
+		                                        <input ng-model="showAsPercentatge" type="checkbox" ng-click="manualClick('showAsPercentatge');rePlotGraph();" name="showAsPercentatge" id="showAsPercentatge" class="checkbox filterCheckBox"> As %
+		                                    </label>
+		                                   -->
+		                                </div>
+		                                
+		                                <div id="div_showevntsontop" ng-show="(isSelectedSon('graph_line') || isSelectedSon('graph_bars')) && (eventsToPlot.length>0)" class="">
+		                                	<div class="col-xs-6 configureoptionchartlabel">
+		                                    	 
+		                                    </div>
+		                                    <div class="col-xs-6 configureoptionchartfield checkbox-inline">
+		                                    	<label class="checkbox-inline configureoptionchartlabel">
+		                                    		<input ng-model="showAstoplines" type="checkbox" ng-click="manualClick('showAstoplines');rePlotGraph();" name="showAstoplines" id="showAstoplines" class="checkbox filterCheckBox"> 
+		                                    		Events on top
+		                                    	</label>
+		                                    </div>
+		                                	<!--
+		                                    <label class="checkbox-inline">
+		                                        <input ng-model="showAsPercentatge" type="checkbox" ng-click="manualClick('showAsPercentatge');rePlotGraph();" name="showAsPercentatge" id="showAsPercentatge" class="checkbox filterCheckBox"> As %
+		                                    </label>
+		                                   -->
+		                                </div>
+		
+		                                <div id="div_showZoom" ng-show="isSelectedParent(1) && !isSelectedSon('orthographic') && !isSelectedSon('azimuthalEqualArea')" class="">
+		                                	<div class="col-xs-6 configureoptionchartlabel">
+		                                    	 
+		                                    </div>
+		                                    <div class="col-xs-6 configureoptionchartfield checkbox-inline">	                                    	
+		                                    	<input type="hidden" name="initialZoom" id="initialZoom" value="2">
+		                                    	<input type="hidden" name="initialLat" id="initialLat" value="49.009952">
+		                                    	<input type="hidden" name="initialLng" id="initialLng" value="2.548635">
+		                                    	<label class="checkbox-inline configureoptionchartlabel">
+		                                    		<input ng-model="showZoom" type="checkbox" ng-click="manualClick('showZoom');rePlotGraph();" name="showZoom" id="showZoom" class="checkbox filterCheckBox"> 
+		                                    		Zoom
+		                                    	</label>
+		                                    </div>
+		                                	<!--
+		                                    <input type="hidden" name="initialZoom" id="initialZoom" value="2">
+		                                    <input type="hidden" name="initialLat" id="initialLat" value="49.009952">
+		                                    <input type="hidden" name="initialLng" id="initialLng" value="2.548635">
+		                                    <label class="checkbox-inline">
+		                                        <input ng-model="showZoom" type="checkbox" ng-click="manualClick('showZoom');rePlotGraph();" name="showZoom" id="showZoom" class="checkbox filterCheckBox"> Zoom
+		                                    </label>
+		                                   -->
+		                                </div>
+		
+		                                <div id="div_showBubbles" ng-show="isSelectedParent(1)" class="">
+		                                	<div class="col-xs-6 configureoptionchartlabel">
+		                                    	 
+		                                    </div>
+		                                    <div class="col-xs-6 configureoptionchartfield checkbox-inline">
+		                                    	<label class="checkbox-inline configureoptionchartlabel">
+		                                    		<input ng-model="showBubbles" type="checkbox" ng-click="manualClick('showBubbles');rePlotGraph();" name="showBubbles" id="showBubbles" class="checkbox filterCheckBox"> 
+		                                    		Bubble marker
+		                                    	</label>
+		                                    </div>
+		                                    <!--
+		                                    <label class="checkbox-inline">
+		                                        <input ng-model="showBubbles" type="checkbox" ng-click="manualClick('showBubbles');rePlotGraph();" name="showBubbles" id="showBubbles" class="checkbox filterCheckBox"> Bubble marker
+		                                    </label>
+		                                    -->
+		                                </div>
 									</div>
-									<div id="designer-metrics-he-num-{{$index+1}}" ng-repeat="event in eventsToPlot track by $index">
-                                                
-                        				<div class="col-xs-8 configureoptionchartlabel">{{$index+1}}.-{{event.title}}</div>
-                    					<div class="col-xs-2 configureoptionchartfield">
-											<spectrum name="colorHE[]" ng-model="colorHE[$index+1]" ng-model-onblur ng-change="event.color=colorHE[$index+1];rePlotGraph()" options="{                        
-	  											showInput: true,
-	  											showAlpha: false,
-	  											allowEmpty: false,
-	  											preferredFormat: 'hex'
-	  										}"></spectrum>
-	  									</div>
-	  									<div class="col-xs-2 configureoptionchartfield">
-	  										<button title="Unlink event from the list of related events" type="button" class="btn btn-danger btn-clear" ng-click="deleteContainerHistoricalEvent('row_config_',$index+1, event.title, event.id)">
-	  									</div>	
-                    					
-               						</div>
-								</div>
-                            </div>
+									<div class="col-xs-6 col-md-4">
+		                                <div id="div_showscaleColor" ng-show="isSelectedParent(1)" class="">
+		                                    <div class="col-xs-6 configureoptionchartlabel">Scale Colour</div>
+											<div class="col-xs-6 configureoptionchartfield">
+		                                        <spectrum name='color' ng-model="scaleColor" ng-model-onblur ng-change="rePlotGraph()" options="{
+														showInput: true,
+														showAlpha: false,
+														allowEmpty: false,
+														preferredFormat: 'hex'
+													}"></spectrum>
+		                                    </div>
+		                                </div>
+		
+		                                <div id="div_resolution" ng-show="TimeSelector.length>1" class="">                               	
+		                                	<div class="col-xs-6 configureoptionchartlabel">Resolution </div>
+		                                	<div class="col-xs-6 configureoptionchartfield"><select id="resolution" ng-change="timeStart='';timeEnd='';rePlotGraph();" ng-model="resolution" ng-options="opt as opt.label for opt in resolutionoptions"></select></div>
+		                                </div>
+	
+										<div id="div_resolution" ng-show="isSelectedSon('graph_bars')" class="">                                	
+		                                	<div class="col-xs-6 configureoptionchartlabel">Grouped by</div>
+		                                	<div class="col-xs-6 configureoptionchartfield"><select id="resolution" ng-change="rePlotGraph();" ng-model="groupedby" ng-options="opt as opt.label for opt in barchartgroupoptions"></select></div>
+		                                </div>
+		                                
+										<div id="div_resolution" ng-show="isSelectedSon('graph_line') && TimeSelector.length>1 && resolution.value!='day'" class="">                                    
+		                                    <div class="col-xs-6 configureoptionchartlabel">Plot data</div>
+		                                    <div class="col-xs-6 configureoptionchartfield"><select id="plotdataoption" ng-change="rePlotGraph();" ng-model="plotdataoption" ng-options="opt as opt.label for opt in plotdataoptions"></select></div>
+		                                </div>
+		
+										<div id="div_resolution" ng-show="isSelectedSon('graph_line') && TimeSelector.length>1 && resolution.value!='day'" class="">
+		                                    <div class="col-xs-6 configureoptionchartlabel">Plot x legend</div>
+		                                    <div class="col-xs-6 configureoptionchartfield"><select id="plotdataoptionxaxis" ng-change="rePlotGraph();" ng-model="plotxaxislegend" ng-options="opt as opt.label for opt in plotxaxislegendoptions"></select></div>
+		                                </div>
+		
+		                                <div id="div_fromdate" ng-show="TimeSelector.length>1" class="">                                    
+		                                    <div class="col-xs-6 configureoptionchartlabel">From</div>
+		                                    <div class="col-xs-6 configureoptionchartfield"><select id="fromDate" ng-change="rePlotGraph()" ng-model="timeStart" ng-options="opt for opt in TimeSelector"></select></div>
+		                                </div>
+		
+		                                <div id="div_todate" ng-show="TimeSelector.length>1" class="">
+		                                    <div class="col-xs-6 configureoptionchartlabel">To</div>
+		                                    <div class="col-xs-6 configureoptionchartfield"><select id="toDate" ng-change="rePlotGraph();" ng-model="timeEnd" ng-options="opt for opt in TimeSelector"></select></div>
+		                                </div>
+									</div>
+									<div class="col-xs-6 col-md-4" ng-show="(isSelectedSon('graph_line') || isSelectedSon('graph_bars')) && ListMetricsFilter.length>0">									
+										<div ng-if="eventsToPlot.length>0">
+											<div class="col-xs-8 configureoptionchartlabel">Events:</div>
+											<div class="col-xs-2 configureoptionchartfield">{{eventsToPlot.length}}</div>
+										</div>
+										<div id="designer-metrics-he-num-{{$index+1}}" ng-repeat="event in eventsToPlot track by $index">
+	                                                
+	                        				<div class="col-xs-8 configureoptionchartlabel">{{$index+1}}.-{{event.title}}</div>
+	                    					<div class="col-xs-2 configureoptionchartfield">
+												<spectrum name="colorHE[]" ng-model="colorHE[$index+1]" ng-model-onblur ng-change="event.color=colorHE[$index+1];rePlotGraph()" options="{                        
+		  											showInput: true,
+		  											showAlpha: false,
+		  											allowEmpty: false,
+		  											preferredFormat: 'hex'
+		  										}"></spectrum>
+		  									</div>
+		  									<div class="col-xs-2 configureoptionchartfield">
+		  										<button title="Unlink event from the list of related events" type="button" class="btn btn-danger btn-clear" ng-click="deleteContainerHistoricalEvent('row_config_',$index+1, event.title, event.id)">
+		  									</div>	
+	                    					
+	               						</div>
+									</div>
+	                            </div>
+	                        </div>
                         </div>
 						<div class="row">
-	                        <tabset ng-hide="ListMetricsFilter.length==0">
+	                        <tabset ng-if="ListMetricsFilter.length>0" data-intro="You need to fulfil the mandatory fields that are marked with an asterisk into the 'Metadata Editor' tab to save a visualisation." data-position="top">
 	                            <tab heading="Metadata Editor">
 	                                <div class="form-group" ng-class="{'has-error': visualizationForm.title.$dirty && visualizationForm.title.$invalid}">
 	                                    <label for="title">Title *</label>
