@@ -6,6 +6,10 @@
     </div>
 
     <div class="pc-visualization-formcontrols">
+        <div style="float:left" ng-show="canDraft">
+            <toggle-switch html="true" ng-model="story.is_draft" on-label="Draft" off-label="Public" class="switch-danger" ></toggle-switch>
+            &nbsp;
+        </div>
         <div class="form-group pull-left btn-group">
             <a href="" id="saveButton" data-ng-disabled="storyForm.$invalid" ng-if="userState.loggedIn" class="btn btn-default btn-save" ng-click="saveStory()">Save</a>
             <a href="" id="addChapterButton" class="btn btn-default btn-add" ng-click="addChapter()">Add chapter</a>

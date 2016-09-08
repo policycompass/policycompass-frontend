@@ -57,6 +57,9 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                 $(function () {
                   $('[data-toggle="tooltip"]').tooltip()
                 })
+                $scope.story = {};
+                $scope.story.is_draft = true;
+                $scope.canDraft = $scope.story.is_draft;
             }
 
             $scope.addChapter = function(){
@@ -93,7 +96,8 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
             $scope.saveStory = function(){
                 $http.post(API_CONF.STORY_MANAGER_URL + '/stories', {
                     title: $scope.story_title,
-                    chapters: $scope.chapters
+                    chapters: $scope.chapters,
+                    is_draft: $scope.story.is_draft
                 }).then(function(response){
                     if(response){
                         $location.path('/stories/' + response.data.result.id);
@@ -194,6 +198,7 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                                 $scope.oldContents.push($scope.storyChapters[i].contents[j]);
                             }
                         }
+                        $scope.canDraft =  $scope.story.is_draft;
                     }
                 });
             }
@@ -214,7 +219,8 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                     id: $scope.story.id,
                     title: $scope.story_title,
                     chapters: $scope.chapters,
-                    oldContents: $scope.oldContents
+                    oldContents: $scope.oldContents,
+                    is_draft: $scope.story.is_draft
                 }).then(function(response){
                     if(response){
                         $location.path('/stories/' + response.data.result.id);
