@@ -42,7 +42,6 @@
                                 <div class="field-content">{{models.model.description}}</div>
                             </div>
                         </div>
-
                         <div class="form-group form-group-modified">
                             <div class="form-item" ng-if="models.model.userPath">
                                 <div class="field-label">Added by</div>
@@ -59,7 +58,6 @@
                                 <div class="field-content">{{ models.model.dateModified | date:'longDate' }}</div>
                             </div>
                         </div>
-
                     </div>
                     <div class="metadata metadata-event">
                         <div class="form-group form-group-keywords" ng-if="models.model.keywords">
@@ -93,7 +91,6 @@
                         </div>
                     </div>
                 </tab>
-
                 <tab heading="Show Concepts">
                     <table class="table table-hover">
                         <tr>
@@ -116,12 +113,38 @@
                         </tr>
                     </table>
                 </tab>
-
-
+                <tab heading="Related Models">
+                    <div class="search-results row-flex">
+                        <div ng-repeat="model in relatedModels" class="result-wrapper result-wrapper-fuzzymap">
+                            <div class="result-block searchItemIcon fuzzymapIcon" ng-cloak>
+                                <div class="search-result">
+                                    <h5>
+                                        <a href="#!/models/{{ model._source.id }}">{{ model._source.title }}</a>
+                                    </h5>
+                                    <div class="attributes">
+                                        <p>{{ model._source.description | limitTo:200 }}...</p>
+                                        <div class="key-field">
+                                            <label class="key-field-title">Keywords: </label>
+                                            {{ model._source.keywords |date:'d-M-yy'}}
+                                        </div>
+                                        <div class="key-field">
+                                            <label class="key-field-title">Comments: </label>
+                                            {{ model._source.commentsCount }}
+                                        </div>
+                                        <div class="key-field">
+                                            <label class="key-field-title">Rating: </label>
+                                            <pc-rating rating-id="fuzzymap_{{model._source.id}}" readonly="true"></pc-rating>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="texticon texticon-fuzzymap"></div>
+                            </div>
+                        </div>
+                    </div>
+                </tab>
                 <!--<tab heading="Simulation">Simulation</tab>
 
                 <tab heading="Graph">Graph</tab>-->
-
             </tabset>
 
         </div>
