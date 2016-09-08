@@ -160,6 +160,11 @@
 
 }
 
+.btn-help:before {
+    content: "\e617";
+
+}
+
 .helpbutton .btn:before {
     content: "\e617";
 }
