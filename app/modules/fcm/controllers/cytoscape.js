@@ -169,7 +169,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         });
 
         $scope.checkAndUpdateDraftStatus = function (model) {
-            if (model.isDraft != null && model.isDraft == true) {
+            if (model.is_draft != null && model.is_draft == true) {
                 $scope.model.is_draft = true;//set model type as draft
             }
             else {
@@ -631,7 +631,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                                 if ($.trim(attrib[i]) != '') {
                                     var conceptIds = attrib[i].split('    ')[0].split(',');
                                     var conceptWeight = parseFloat(attrib[i].split('    ')[1]).toFixed(2);
-                                    //console.log(conceptIds, conceptWeight);
+                                    console.log(conceptIds, conceptWeight);
 
                                     //$scope.SimulationAssociations[i - 1].weighted = conceptWeight;
 
