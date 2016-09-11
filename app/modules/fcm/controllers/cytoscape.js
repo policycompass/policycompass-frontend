@@ -674,19 +674,21 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 $rootScope.$broadcast('appChanged');
             });
 
-
-            for (i = 0; i < $scope.SimulationConcepts.length; i++) {
-                if ($scope.SimulationConcepts[i].metricId != 0) {
-                    if ((i + 1) == 1)
-                        $scope.SimulationConcepts[i].value = 0.8; else if ((i + 1) % 5 == 0)
-                        $scope.SimulationConcepts[i].value = 1; else if ((i + 1) % 4 == 0)
-                        $scope.SimulationConcepts[i].value = 0.4; else if ((i + 1) % 3 == 0)
-                        $scope.SimulationConcepts[i].value = 0.6; else if ((i + 1) % 2 == 0)
-                        $scope.SimulationConcepts[i].value = 0.2; else
-                        $scope.SimulationConcepts[i].value = 0.8;
-                    $scope.conceptStyle[i] = { "color": "#286090" };
-                }
-            }
+            ///Stop auto calculation of concept value
+            /*
+             for (i = 0; i < $scope.SimulationConcepts.length; i++) {
+             if ($scope.SimulationConcepts[i].metricId != 0) {
+             if ((i + 1) == 1)
+             $scope.SimulationConcepts[i].value = 0.8; else if ((i + 1) % 5 == 0)
+             $scope.SimulationConcepts[i].value = 1; else if ((i + 1) % 4 == 0)
+             $scope.SimulationConcepts[i].value = 0.4; else if ((i + 1) % 3 == 0)
+             $scope.SimulationConcepts[i].value = 0.6; else if ((i + 1) % 2 == 0)
+             $scope.SimulationConcepts[i].value = 0.2; else
+             $scope.SimulationConcepts[i].value = 0.8;
+             $scope.conceptStyle[i] = { "color": "#286090" };
+             }
+             }
+             */
         };
 
         $scope.runSimulation = function (isSaveModel) {
