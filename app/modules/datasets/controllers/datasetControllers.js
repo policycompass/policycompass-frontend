@@ -1021,7 +1021,8 @@ angular.module('pcApp.datasets.controllers.dataset', [
         '$routeParams',
         'creationService',
         '$location',
-        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService, $location) {
+        '$modal',
+        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService, $location, $modal) {
 
             var init = function () {
                 $scope.unitSelector = false;
@@ -1036,6 +1037,18 @@ angular.module('pcApp.datasets.controllers.dataset', [
             };
 
             init();
+
+            $scope.addIndicator = function () {
+                $modal.open({
+                    templateUrl: 'modules/datasets/partials/indicator-form.html',
+                    controller: function ($scope, $modalInstance) {
+                        $scope.close = function(){
+                            $modalInstance.close();
+                        }
+                    }
+                })
+
+            };
 
             $scope.nextStep = function () {
                 if ($scope.ListDatasetsFilter.length == 0) {
