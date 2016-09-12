@@ -118,6 +118,9 @@ $ancho: $unidad * 2;
     .texticon-dataset:before {
         content: "Dataset";
     }
+    .texticon-story:before {
+        content: "Story";
+    }
     .rating-stars {
         opacity: 0.4;
     }
@@ -213,6 +216,10 @@ $ancho: $unidad * 2;
 
 .datasetIcon a:before {
     content: "\e611";
+}
+
+.storyIcon a:before {
+    content: "\f02d";
 }
 
 .browse-filters-block {
