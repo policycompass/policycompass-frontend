@@ -100,6 +100,7 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                     is_draft: $scope.story.is_draft
                 }).then(function(response){
                     if(response){
+                        console.log("response.data.id " + angular.toJson(response.data));
                         $location.path('/stories/' + response.data.result.id);
                     }
                 });
@@ -186,7 +187,7 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
 
                 $http.get(API_CONF.STORY_MANAGER_URL + '/stories', {params: {id:$routeParams.storyId, getList:false}}).then(function(response){
                     if(response){
-                        $scope.story = response.data.result;
+                        $scope.story = response.data;
                         $scope.storyTitle = $scope.story.title;
                         $scope.story_title = $scope.storyTitle;
                         $scope.storyChapters = $scope.story.chapters;
@@ -322,7 +323,7 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
 
                 $http.get(API_CONF.STORY_MANAGER_URL + '/stories', {params: {id:$routeParams.storyId, getList:false}}).then(function(response){
                     if(response){
-                        $scope.story = response.data.result;
+                        $scope.story = response.data;
                         $scope.storyTitle = $scope.story.title;
                         $scope.storyChapters = $scope.story.chapters;
                     }
