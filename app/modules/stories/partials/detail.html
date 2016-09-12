@@ -1,0 +1,53 @@
+<div class="container container-create-visualisation">
+
+    <div class="content-header">
+        <h3><span class="fonticon fonticon-story"></span> {{ storyTitle }}</h3>
+    </div>
+
+    <div class="pc-visualization-formcontrols">
+        <div class="btn-group">
+            <a type="button" class="btn btn-primary  btn-create" ng-if="userState.loggedIn && (userState.userPath == story.creator_path || userState.isAdmin)"  href="#!/stories/{{ story.id }}/edit">Edit</a>
+            <a href="" id="downloadButton" class="btn btn-default fa-file-text-o" ng-click="downloadStory()">Download</a>
+            <a href="" id="deleteButton" class="btn btn-danger fa-trash-o" ng-if="userState.loggedIn && (userState.userPath == story.creator_path || userState.isAdmin)" ng-click="deleteStory(story)">Delete</a>
+        </div>
+
+        <a href="#" ng-if="story.is_draft" ng-disabled="story.is_draft" class="btn btn-default btn-danger">Draft</a>
+    </div>
+
+    <div class="content-body">
+        <div class="row">
+            <div class="story-chapters-list">
+                <div ng-repeat="chapter in storyChapters" id="chapters_list" name="chapters_list" class="story-chapters-list-entry">
+                    <a ng-if="chapter" href="#anchor-chapter{{ chapter.number }}" du-smooth-scroll du-scrollspy>{{ chapter.title }}</a>
+                </div>
+            </div>
+            <div class="col-xs-9 col-xs-offset-2 story-chapters-detail">
+                <div ng-repeat="chapter in storyChapters" id="chapters_detail" name="chapters_detail" class="story-chapters-detail-entry">
+                    <a name="anchor-chapter{{ chapter.number }}" id="anchor-chapter{{ chapter.number }}"></a>
+
+                    <h2>{{ chapter.title }}</h2>
+
+                    <div ng-bind-html="chapter.text"></div>
+
+                    <div ng-repeat="content in chapter.contents">
+                        <div>
+
+                            <div ng-switch on="content.type">
+                                <pc-visualization ng-switch-when="visualization" visualization-id="{{content.index}}"></pc-visualization>
+
+                                <pc-dataset ng-switch-when="dataset" dataset-id="{{content.index}}"></pc-dataset>
+
+                                <div ng-switch-default>
+                                    <div class="alert alert-danger" style="margin-bottom: 0">Sorry, there is currently no renderer available for this {{ content.type }}.</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
