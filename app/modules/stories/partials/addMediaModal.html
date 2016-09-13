@@ -12,7 +12,6 @@
     <div ng-if="mediaLoaded">
         <div class="row">
             <div class="col-md-6">
-
                 <div class="input-group">
                     <input type="text" ng-model="searchtext" placeholder="Filter {{datasetsFilter.hits.total}} {{ contentType }}s" class="form-control" ng-keyup="$event.keyCode == 13 && filter(searchtext)" style="height: inherit; padding: 4px 12px;">
 
@@ -27,7 +26,7 @@
                 <span class="filterDatasetsPaginationHeader" id="filterDatasetsPaginationHeaderDirective">
                     <span ng-if="datasetsFilter.hits.total>1">{{datasetsFilter.hits.total}} {{ contentType }}s found</span>
                     <span ng-if="datasetsFilter.hits.total==1">{{datasetsFilter.hits.total}} {{ contentType }}s found</span>
-                    
+
                 </span>
 
             </div>
@@ -41,7 +40,11 @@
                             <div class="result-block searchItemIcon {{ contentType }}Icon" ng-click="clickDataset(dataset._source.id, dataset._source.name, dataset._source.issued, dataset._source.unit_category);" title="{{ !selection[dataset._source.id]>0 && 'Select' || 'Deselect' }} {{dataset._source.title}}" ng-cloak style="cursor: pointer">
 
                                 <div class="search-result">
-                                    <h5>
+                                    <h5 ng-if="dataset['_type']=='indicator'">
+                                        <a>{{ dataset._source.name | limitTo:55 }}{{ dataset._source.name.length > 55 ? '...' : '' }}</a>
+                                    </h5>
+
+                                    <h5 ng-if="dataset['_type']!='indicator'">
                                         <a>{{ dataset._source.title | limitTo:55 }}{{ dataset._source.title.length > 55 ? '...' : '' }}</a>
                                     </h5>
 

@@ -627,7 +627,7 @@ angular.module('pcApp.common.directives.search', [])
                 controller: function ($scope, $element, $attrs, $location, dialogs) {
                     $scope.mediaLoaded = false;
                     $scope.selection = [];
-
+                    $log.info($scope.contentId);
                     $scope.$watchCollection('datasetsList', function (datasetsList) {
                         $scope.selection = [];
                         if (isNaN($scope.numberMaxDatasets)) {
@@ -695,7 +695,7 @@ angular.module('pcApp.common.directives.search', [])
                     $scope.findDatasetsByFilter = function (pagIn) {
                         if (pagIn == 'next') {
                             $scope.pagToSearch = $scope.pagToSearch + 1;
-                        } 
+                        }
                         if (pagIn == 'prev') {
                             $scope.pagToSearch = $scope.pagToSearch - 1;
                         }
@@ -724,7 +724,6 @@ angular.module('pcApp.common.directives.search', [])
                                 match_all: {}
                             }
                         }
-
                         //Perform search through client and get a search Promise
                         searchclient.search({
                             index: API_CONF.ELASTIC_INDEX_NAME,
