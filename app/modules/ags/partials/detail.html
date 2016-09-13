@@ -5,8 +5,10 @@
         <div class="pc-visualization-formcontrols">
             <div class="button-group">
                 <a type="button" class="btn btn-primary  btn-create" ng-if="userState.loggedIn && (userState.userPath == ag.creator_path || userState.isAdmin)" href="#!/ags/{{ ag.id }}/edit">Edit</a>
-                <a type="button" class="btn btn-danger  btn-clear" ng-if="userState.loggedIn && (userState.userPath == ag.creator_path || userState.isAdmin)" ng-click="deleteAg(ag)" ng-disabled="true">Delete</a>
+                <a type="button" class="btn btn-danger  btn-clear" ng-if="userState.loggedIn && (userState.userPath == ag.creator_path || userState.isAdmin)" ng-click="deleteAg(ag)">Delete</a>
             </div>
+
+            <a href="#" ng-if="ag.is_draft" ng-disabled="ag.is_draft" class="btn btn-default btn-danger">Draft</a>
         </div>
     </div>
     <div class="row">
