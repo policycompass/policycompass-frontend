@@ -66,6 +66,10 @@
     content: "\e613";
 }
 
+.font-icon-stories:before {
+    content: "\f0f6";
+}
+
 .font-icon-visualisation:before {
     content: "\e615";
 }
@@ -145,7 +149,7 @@ header .container {
 }
 .submenu {
     width: 100%;
-   
+
     position: relative;
     overflow: hidden;
     background: rgba(0, 0, 0, 0.8);
@@ -203,7 +207,7 @@ header .container {
         // top:auto;
         height:100%;
         // height:calc(100% - 50px);
-        
+
     }
     &.submenu-share {
         ul li a:before {
