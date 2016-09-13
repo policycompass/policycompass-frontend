@@ -200,8 +200,8 @@
                         </div>
 
                         <div ng-if="searchResult['_type']=='story'" class="search-result">
-                            <h5><a href="#!/stories/{{ searchResult['_source']['result']['id'] }}">
-                                {{ searchResult['_source']['result']['title']}}</a>
+                            <h5><a href="#!/stories/{{ searchResult['_source']['id'] }}">
+                                {{ searchResult['_source']['title']}}</a>
                             </h5>
 
                             <div class="attributes">
