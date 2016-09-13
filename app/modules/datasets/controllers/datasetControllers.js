@@ -1022,36 +1022,80 @@ angular.module('pcApp.datasets.controllers.dataset', [
         'creationService',
         '$location',
         '$modal',
-        function ($scope, DatasetsControllerHelper, $log, dialogs, ngProgress, $routeParams, creationService, $location, $modal) {
+        'Indicator',
+        'Auth',
+        function ($scope,
+                  DatasetsControllerHelper,
+                  $log,
+                  dialogs,
+                  ngProgress,
+                  $routeParams,
+                  creationService,
+                  $location,
+                  $modal,
+                  Indicator,
+                  Auth) {
 
             var init = function () {
-                $scope.unitSelector = false;
-                $scope.ListDatasetsFilter = creationService.data.indicator;
                 $scope.unit = {
                     input: creationService.data.dataset.unit,
                     output: []
                 };
-                if ($scope.ListDatasetsFilter.length > 0) {
-                    $scope.unitSelector = true;
-                }
+
             };
 
             init();
 
-            $scope.addIndicator = function () {
-                $modal.open({
+            $scope.userState = Auth.state;
+            $scope.selectionConfig = {
+                contentType: 'indicator',
+                selection: creationService.data.indicator
+            }
+
+            if ($scope.selectionConfig.selection.length > 0) {
+                var sel = $scope.selectionConfig.selection[0];
+                if('selected' in sel){
+                    $scope.newIndicator = sel;
+                    $scope.newIndicator['selected'] = true;
+                }
+            }
+
+            
+                $scope.addIndicator = function () {
+                var modelInstance = $modal.open({
                     templateUrl: 'modules/datasets/partials/indicator-form.html',
                     controller: function ($scope, $modalInstance) {
+                        // Empty indcator object
+                        $scope.indicator = {};
+                        $scope.userState = Auth.state;
+
+                        // Create the indicator via the API
+                        $scope.save = function () {
+                            // Save the Indicaotr and redirect to the detail view
+                            Indicator.save($scope.indicator, function (value, responseHeaders) {
+                                $modalInstance.close(value);
+                            }, function (err) {
+                                throw {message: JSON.stringify(err.data)};
+                            });
+                        };
+
                         $scope.close = function(){
                             $modalInstance.close();
                         }
                     }
-                })
+                });
 
+                modelInstance.result.then(function (indicator) {
+                    if(indicator) {
+                        $scope.newIndicator = indicator;
+                        $scope.newIndicator['selected'] = true;
+                        $scope.selectionConfig.selection = [indicator];
+                    }
+                })
             };
 
             $scope.nextStep = function () {
-                if ($scope.ListDatasetsFilter.length == 0) {
+                if ($scope.selectionConfig.selection.length == 0) {
                     dialogs.error('Validation Error', 'Please provide an Indicator.');
                     return false;
                 }
@@ -1061,16 +1105,21 @@ angular.module('pcApp.datasets.controllers.dataset', [
                     return false;
                 }
 
-                creationService.data.indicator = $scope.ListDatasetsFilter;
+                creationService.data.indicator = $scope.selectionConfig.selection;
                 creationService.data.dataset.unit = $scope.unit.output;
             };
 
             $scope.indicatorSelected = function () {
-                if ($scope.ListDatasetsFilter.length > 0) {
-                    $scope.unitSelector = true;
-                } else {
-                    $scope.unitSelector = false;
+                if ($scope.selectionConfig.selection.length > 0) {
+                    if($scope.newIndicator) {
+                        $scope.newIndicator ['selected'] = false;
+                    }
                 }
+            };
+
+            $scope.selectNewIndicator = function () {
+                $scope.newIndicator['selected'] = true;
+                $scope.selectionConfig.selection = [$scope.newIndicator];
             };
 
         }
