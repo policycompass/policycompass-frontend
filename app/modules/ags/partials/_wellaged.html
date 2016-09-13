@@ -13,10 +13,10 @@
             </div>
         </div>
         <div class="row" style="margin-top: 1em">
-            <div ng-class="(mode === 'edit') ? 'col-md-8' : 'col-md-12'" style="overflow: scroll; border: 1px solid black; background: white; height: 500px;">
+            <div ng-class="(mode === 'edit' && selectedNode) ? 'col-md-8' : 'col-md-12'" style="overflow: scroll; border: 1px solid black; background: white; height: 500px;">
                 <div class="wellaged-paper" style="height: 2048px; width: 2048px" />
             </div>
-            <div class="col-md-4" ng-if="mode === 'edit'">
+            <div class="col-md-4" ng-if="mode === 'edit' && selectedNode">
                 <h1>Edit node:</h1>
                 <div ng-if="selectedNode">
 
