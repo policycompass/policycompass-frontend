@@ -55,6 +55,12 @@ angular.module('pcApp.ags.directives.wellaged', [])
                     $scope.clear = function() {
                         $scope.editor.clear();
                     };
+
+                    $scope.changeLabel = function(){
+                        if(typeof $scope.selectedNode.model.attributes.text !== 'undefined'){
+                            $scope.selectedNode.model.trigger('change:text');
+                        }
+                    }
                 },
                 link: function(scope, element, attrs) {
                     scope._editorEl = element[0].querySelector('.wellaged-editor');
