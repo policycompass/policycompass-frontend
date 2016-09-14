@@ -42,7 +42,7 @@
 
                     <br>
 
-                    <div id='chapter{{chapter.number}}_content' name='chapter{{chapter.number}}_content' class='story-chapter-content well'>
+                    <div id='chapter{{chapter.number}}_content' name='chapter{{chapter.number}}_content'>
                         <div id='chapter{{chapter.number}}_content_toolbox' name='chapter{{chapter.number}}_content_toolbox' class='story-chapter-content-toolbox'>
                             <div class='row'>
                                 <div class='btn-group col-xs-12'>
@@ -61,7 +61,7 @@
                         </div>
                     </div>
 
-                    <div ng-repeat="content in chapter.contents" class="well">
+                    <div ng-repeat="content in chapter.contents" class="well" style="margin-top: 20px;">
                         <div>
                             <a class="close" ng-click="removeFromChapter($parent.$index, $index, content.type)" title="Delete this {{ content.type }}">×</a>
 
