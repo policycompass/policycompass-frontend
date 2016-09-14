@@ -121,7 +121,9 @@ angular.module('pcApp.metrics.services.metric', [
             }
 
             helper.init = function () {
-                helper.clear();
+                if (!helper.metricsdata) {
+                    helper.clear();
+                }
 
                 var indicators = IndicatorService.query(function () {
                     helper.indicators = _.map(indicators.results, function (indicator) {

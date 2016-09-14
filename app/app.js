@@ -17,6 +17,7 @@ var pcAppDependencies = [
     'pcApp.datasets',
     'pcApp.feedbacks',
     'pcApp.ags',
+    'pcApp.stories',
     'pcApp.references.directives.resolve',
     'dialogs.main',
     'dialogs.default-translations',
@@ -28,7 +29,8 @@ var pcAppDependencies = [
     'checklist-model',
     'duScroll',
     'angulartics',
-    'angulartics.piwik'
+    'angulartics.piwik',
+    'toggle-switch'
 ];
 
 if (policyCompassConfig.ENABLE_ADHOCRACY) {

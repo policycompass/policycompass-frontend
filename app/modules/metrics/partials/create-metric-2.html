@@ -28,8 +28,18 @@
             </div>
         </div>
 
+        <ul class="navigation-steps">
+            <li><a href="" class="btn btn-prev" ng-click="prevStep();">Previous Step</a></li>
+            <li>
+                <a href="#" class="btn btn-next disabled">Next Step</a>
+            </li>
+        </ul>
         <div class="pc-visualization-formcontrols">
             <div class="button-group">
+                <div style="float:left">
+                    <toggle-switch html="true" ng-model="is_draft" on-label="Draft" off-label="Public" class="switch-danger" ></toggle-switch>
+                    &nbsp;
+                </div>
                 <a class="btn btn-save" ng-click="submitData(false);" ng-class="{'disabled' : !metadataForm.$valid }">Save</a>
                 <a class="btn btn-dataset" ng-click="submitData(true);" ng-class="{'disabled' : !metadataForm.$valid }">Save and Apply to Data sets</a>
             </div>

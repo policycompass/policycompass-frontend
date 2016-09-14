@@ -28,8 +28,10 @@
                         <span><ng-pluralize count="searchResultsCount" when="{'0': 'No results found',
                                    '1': '1 result found',
                                    'other': '{} results found'}"></ng-pluralize></span>
-                        <!--<div class="num-results" ng-hide="searchResults.length"><span>No results found</span></div>-->
-                        <!--<div class="num-results" ng-show="searchResults.length"><span>{{searchResultsCount}} results found</span>-->
+                        <div class="pull-right" ng-if="auth.state.loggedIn">
+                            <input type="checkbox" id="own_content" ng-checked="isOwnContentEnabled()" ng-click="ownContentChanged($event)">
+                            <label for="own_content">Show only my content</label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -190,6 +192,24 @@
                                     <label class="key-field-title">Comments: </label>
                                     {{ searchResult['_source']['commentsCount']}}
                                 </div>
+                                <div class="key-field">
+                                    <label class="key-field-title">Rating: </label>
+                                    <pc-rating rating-id="{{searchResult['_type']}}_{{searchResult['_source']['id']}}" readonly="true"></pc-rating>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div ng-if="searchResult['_type']=='story'" class="search-result">
+                            <h5><a href="#!/stories/{{ searchResult['_source']['id'] }}">
+                                {{ searchResult['_source']['title']}}</a>
+                            </h5>
+
+                            <div class="attributes">
+                                <div class="key-field">
+                                    <label class="key-field-title">Comments: </label>
+                                    {{ searchResult['_source']['commentsCount']}}
+                                </div>
+
                                 <div class="key-field">
                                     <label class="key-field-title">Rating: </label>
                                     <pc-rating rating-id="{{searchResult['_type']}}_{{searchResult['_source']['id']}}" readonly="true"></pc-rating>

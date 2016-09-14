@@ -297,7 +297,7 @@ angular.module('pcApp.common.directives.search', [])
                     $scope.itemssearchfrom = 0;
                     $scope.pagToSearch = 1;
 
-                    $scope.clickDataset = function (spatials, idDataset, title, issued) {
+                    $scope.clickDataset = function (spatials, idDataset, title, issued, defaultItemResolution) {
                         //console.log("idDataset="+idDataset);
                         var addDataset = true;
                         if (idDataset > 0) {
@@ -336,6 +336,7 @@ angular.module('pcApp.common.directives.search', [])
                                 'id': idDataset,
                                 'title': title,
                                 'issued': issued,
+                                'defaultItemResolution': defaultItemResolution,
                                 'spatials': spatials //addding country list
                             };
                             $scope.datasetsList.push(myObject);
@@ -468,8 +469,10 @@ angular.module('pcApp.common.directives.search', [])
                         '<div class="row">' +
                         	'<ul class="datasets-list metrics-list ">' +
                         		'<li ng-class="{\'metrics-list dataset-list active\':DatasetSelectediId_[dataset._source.id]>0,\'metrics-list dataset-list\':DatasetSelectediId_[dataset.id]}" name="designer-dataset-num-{{dataset.id}}" ng-repeat="dataset in datasetsFilter.hits.hits track by $index" >' +
-                					'<a ng-show="viewAll || arrayGranularitiesAvailable.indexOf(dataset._source.time.resolution)!=-1 || DatasetSelectediId_[dataset._source.id]>0" href="" x-ng-click="clickDataset(dataset._source.spatials, dataset._source.id, dataset._source.title, dataset._source.issued);"  title="{{ !DatasetSelectediId_[dataset._source.id]>0 && \'Add \' || \'Remove \' }} \'{{dataset._source.title}}\'">{{dataset._source.title}} - {{ dataset._source.issued | date:\'longDate\' }}</a>' +
-                					'<span ng-hide="viewAll || arrayGranularitiesAvailable.indexOf(dataset._source.time.resolution)!=-1  || DatasetSelectediId_[dataset._source.id]>0">{{dataset._source.title}} - {{ dataset._source.issued | date:\'longDate\' }}</span>' +
+                					//'<a ng-show="viewAll || arrayGranularitiesAvailable.indexOf(dataset._source.time.resolution)!=-1 || DatasetSelectediId_[dataset._source.id]>0" href="" x-ng-click="clickDataset(dataset._source.spatials, dataset._source.id, dataset._source.title, dataset._source.issued);"  title="{{ !DatasetSelectediId_[dataset._source.id]>0 && \'Add \' || \'Remove \' }} \'{{dataset._source.title}}\'">{{dataset._source.title}} - {{ dataset._source.issued | date:\'longDate\' }}</a>' +
+                					//'<span ng-hide="viewAll || arrayGranularitiesAvailable.indexOf(dataset._source.time.resolution)!=-1  || DatasetSelectediId_[dataset._source.id]>0">{{dataset._source.title}} - {{ dataset._source.issued | date:\'longDate\' }}</span>' +
+                					'<a ng-hide="dataset._source.is_draft" href="" x-ng-click="clickDataset(dataset._source.spatials, dataset._source.id, dataset._source.title, dataset._source.issued, dataset._source.time.resolution);"  title="{{ !DatasetSelectediId_[dataset._source.id]>0 && \'Add \' || \'Remove \' }} \'{{dataset._source.title}}\'">{{dataset._source.title}} - {{ dataset._source.issued | date:\'longDate\' }}</a>' +
+                					'<span ng-show="dataset._source.is_draft">{{dataset._source.title}} - {{ dataset._source.issued | date:\'longDate\' }} (Draft version)</span>' +
                 				'</li>' +
                 			'</ul>' +
                         '</div>' +
@@ -606,6 +609,147 @@ angular.module('pcApp.common.directives.search', [])
                     $scope.findDatasetsByFilter(1);
                 },
                 templateUrl: 'modules/common/partials/searchIndicator.html'
+            };
+        }
+    ])
+
+    .directive('selectorMedia', [
+        '$log', 'searchclient', 'API_CONF', function ($log, searchclient, API_CONF) {
+            return {
+                restrict: 'C',
+                scope: {
+                    datasetsList: '=',
+                    numberMaxDatasets: '@',
+                    functionfordataset: "&",
+                    contentId: "=",
+                    contentType: "="
+                },
+                controller: function ($scope, $element, $attrs, $location, dialogs) {
+                    $scope.mediaLoaded = false;
+                    $scope.selection = [];
+                    $log.info($scope.contentId);
+                    $scope.$watchCollection('datasetsList', function (datasetsList) {
+                        $scope.selection = [];
+                        if (isNaN($scope.numberMaxDatasets)) {
+                            $scope.numberMaxDatasets = 1;
+                        }
+                        if (!datasetsList) {
+                            $scope.datasetsList = [];
+                        }
+                        for (var k in $scope.datasetsList) {
+                            $scope.selection[$scope.datasetsList[k].id] = $scope.datasetsList[k].id;
+                        }
+                    });
+
+                    $scope.searchtext = '';
+                    $scope.itemsperpagesize = 8;
+                    $scope.itemssearchfrom = 0;
+                    $scope.pagToSearch = 1;
+
+                    $scope.clickDataset = function (idDataset, title, issued, unit_category) {
+                        var addDataset = true;
+                        if (idDataset > 0) {
+                            addDataset = true;
+                        } else {
+                            addDataset = false;
+                        }
+
+                        if (!$scope.datasetsList) {
+                            $scope.datasetsList = [];
+                        }
+                        var k;
+
+                        for (k = 0; k < $scope.datasetsList.length; k++) {
+                            if ($scope.datasetsList[k].id == idDataset) {
+                                addDataset = false;
+                                $scope.datasetsList.splice(k, 1);
+                                $scope.selection[idDataset] = '';
+                                $scope.$parent.$parent.contentId = '';
+                                $scope.functionfordataset();
+                            }
+                        }
+
+                        if (addDataset && $scope.datasetsList.length < $scope.numberMaxDatasets) {
+                            $scope.datasetsList.length = 0;
+                            var myObject = {
+                                'id': idDataset,
+                                'title': title,
+                                'issued': issued,
+                                'unit_category': unit_category
+                            };
+                            $scope.datasetsList.push(myObject);
+                            $scope.functionfordataset();
+                            $scope.$parent.$parent.contentId = idDataset;
+                        }
+
+                        for (k in $scope.datasetsList) {
+                            $scope.selection[$scope.datasetsList[k].id] = $scope.datasetsList[k].id;
+                        }
+                    };
+
+                    $scope.filter = function (searchtext) {
+                        $scope.searchtext = searchtext;
+                        $scope.findDatasetsByFilter();
+                    }
+
+                    $scope.findDatasetsByFilter = function (pagIn) {
+                        if (pagIn == 'next') {
+                            $scope.pagToSearch = $scope.pagToSearch + 1;
+                        }
+                        if (pagIn == 'prev') {
+                            $scope.pagToSearch = $scope.pagToSearch - 1;
+                        }
+                        if (!isNaN(pagIn)) {
+                            $scope.pagToSearch = pagIn;
+                        }
+
+                        console.log("function called and pagToSearch changed to " + $scope.pagToSearch);
+
+                        $scope.itemssearchfrom = ($scope.pagToSearch - 1) * $scope.itemsperpagesize;
+                        $scope.showerrormessage = false;
+                        //var sort =    ["title"];
+                        //var sort =     [{"title" : {"order" : "asc"}}];
+                        var sort = [{"issued": {"order": "desc"}}];
+                        //var sort =     [{"id" : {"order" : "desc"}},"_score"];
+
+                        //Build query
+                        if ($scope.searchtext) {
+                            var query = {
+                                match: {
+                                    _all: $scope.searchtext
+                                }
+                            };
+                        } else {
+                            var query = {
+                                match_all: {}
+                            }
+                        }
+                        //Perform search through client and get a search Promise
+                        searchclient.search({
+                            index: API_CONF.ELASTIC_INDEX_NAME,
+                            // type: 'visualization', //type: 'metric',
+                            type: $scope.contentType, //type: 'metric',
+                            body: {
+                                size: $scope.itemsperpagesize,
+                                from: $scope.itemssearchfrom,
+                                //sort: sort,
+                                query: query
+                            }
+                        }).then(function (resp) {
+                            //If search is successfull return results in searchResults objects
+                            $scope.datasetsFilter = resp;
+                            $scope.mediaLoaded = true;
+
+                        }, function (err) {
+                            console.trace(err.message);
+                            $scope.showerrormessage = true;
+                        });
+
+                    };
+
+                    $scope.findDatasetsByFilter(1);
+                },
+                templateUrl: 'modules/stories/partials/addMediaModal.html'
             };
         }
     ])

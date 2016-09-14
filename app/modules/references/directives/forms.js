@@ -53,6 +53,26 @@ angular.module('pcApp.references.directives.forms', [
     ])
 
 /**
+ * Returns HTML option tags for the selection of the license
+ */
+    .directive('licenseOptions', [
+        '$log', 'License', function ($log, License) {
+            return {
+                restrict: 'C',
+                scope: {
+                    model: '=model'
+                },
+                controller: function ($scope) {
+                    $scope.licenses = License.query(null, function () {
+                        //$log.info($scope.licenses);
+                    });
+                },
+                template: '<option value="{{ l.id }}" ng-repeat="l in licenses" ng-selected="l.id == model" >{{ l.title }}</option>'
+            };
+        }
+    ])
+
+/**
  * Returns HTML option tags for the selection of the policy domain
  */
     .directive('policydomainOptions', [

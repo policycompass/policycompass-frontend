@@ -106,16 +106,16 @@ angular.module('pcApp.common.directives.mapscharts', [])
 
                         //console.log("$scope.iddiv="+$scope.iddiv);
                         var initialZoomMap = 2;
-                        if (document.getElementById('initialZoom').value > 0) {
-                            initialZoomMap = document.getElementById('initialZoom').value;
+                        if (document.getElementById('initialZoom_'+$scope.chartid).value > 0) {
+                            initialZoomMap = document.getElementById('initialZoom_'+$scope.chartid).value;
                         }
 
-                        if (document.getElementById('initialLat').value) {
-                            var initialLat = document.getElementById('initialLat').value;
+                        if (document.getElementById('initialLat_'+$scope.chartid).value) {
+                            var initialLat = document.getElementById('initialLat_'+$scope.chartid).value;
                         }
 
-                        if (document.getElementById('initialLng').value) {
-                            var initialLng = document.getElementById('initialLng').value;
+                        if (document.getElementById('initialLng_'+$scope.chartid).value) {
+                            var initialLng = document.getElementById('initialLng_'+$scope.chartid).value;
                         }
 
 
@@ -186,7 +186,7 @@ angular.module('pcApp.common.directives.mapscharts', [])
                 },
 
 
-                template: '' + '<div id="directive_container_mapchart_{{chartid}}" class="pcchart container_graph directive_container_chart directive_container_mapchart_{{chartid}}">' + '<div class="loading-container">' + '<div ng-hide="small">' + '<div class="loading"></div>' + '<div id="loading-text">loading</div>' + '</div>' + '<div ng-show="small">' + '<div class="loading loading-small"></div>' + '<div id="loading-small-text">loading</div>' + '</div>' + '</div>' + '</div>' + '<div ng-hide="small" id="showFilterContainer" class="showFilterContainer">' + '<div id="showFilter" class="showFilter on_check">' + '<input type="hidden" name="initialZoom" id="initialZoom" value="2">' + '<input type="hidden" name="initialLat" id="initialLat" value="49.009952">' + '<input type="hidden" name="initialLng" id="initialLng" value="2.548635">' + '<label class="checkbox-inline"><input ng-model="showLegend" type="checkbox" name="showLegend" class="checkbox filterCheckBox"> Show Legend </label> ' + '<label class="checkbox-inline"><input ng-model="showZoom" type="checkbox" name="showZoom" class="checkbox filterCheckBox"> Enable Zoom </label> ' + '<label class="checkbox-inline"><input ng-model="showBubbles" type="checkbox" name="showBubbles" class="checkbox filterCheckBox"> View as bubble marker </label> ' + '<label ng-show="showLegend" class="checkbox-inline">' + //'<input type="color" name="color" ng-model="scaleColor"  /> ' +
+                template: '' + '<div id="directive_container_mapchart_{{chartid}}" class="pcchart container_graph directive_container_chart directive_container_mapchart_{{chartid}}">' + '<div class="loading-container">' + '<div ng-hide="small">' + '<div class="loading"></div>' + '<div id="loading-text">loading</div>' + '</div>' + '<div ng-show="small">' + '<div class="loading loading-small"></div>' + '<div id="loading-small-text">loading</div>' + '</div>' + '</div>' + '</div>' + '<div ng-hide="small" id="showFilterContainer" class="showFilterContainer">' + '<div id="showFilter" class="showFilter on_check">' + '<input type="hidden" name="initialZoom" id="initialZoom_{{chartid}}" value="2">' + '<input type="hidden" name="initialLat" id="initialLat_{{chartid}}" value="49.009952">' + '<input type="hidden" name="initialLng" id="initialLng_{{chartid}}" value="2.548635">' + '<label class="checkbox-inline"><input ng-model="showLegend" type="checkbox" name="showLegend" class="checkbox filterCheckBox"> Show Legend </label> ' + '<label class="checkbox-inline"><input ng-model="showZoom" type="checkbox" name="showZoom" class="checkbox filterCheckBox"> Enable Zoom </label> ' + '<label class="checkbox-inline"><input ng-model="showBubbles" type="checkbox" name="showBubbles" class="checkbox filterCheckBox"> View as bubble marker </label> ' + '<label ng-show="showLegend" class="checkbox-inline">' + //'<input type="color" name="color" ng-model="scaleColor"  /> ' +
                 '<spectrum name="color" ng-model="scaleColor" ng-model-onblur options="{showInput: true, showAlpha: false, allowEmpty: false, preferredFormat:hex}"></spectrum>' + ' Scale Colour </label>' + '</div>' + '</div>'
             };
         }

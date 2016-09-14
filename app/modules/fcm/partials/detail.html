@@ -3,7 +3,8 @@
         <h1><span class="glyphicon glyphicon-list-alt"></span>{{ models.model.title }}</h1>
 
         <div class="pc-visualization-formcontrols">
-            <a type="button" class="btn btn-primary" data-ng-click="updateModel()" href="#!/models/{{ models.model.id }}/edit">Run Simulation</a>
+            <a href="#" ng-if="models.model.is_draft" ng-disabled="models.model.is_draft" class="btn btn-default btn-danger ng-scope" disabled="disabled">Draft</a>
+            <a type="button" class="btn btn-primary" data-ng-click="updateModel()" href="#!/models/{{ models.model.id }}/edit/true">Run Simulation</a>
 
             <div class="button-group">
                 <a type="button" class="btn btn-primary  btn-create" href="#!/models/{{ models.model.id }}/edit">Edit</a>
@@ -75,6 +76,23 @@
                             </div>
                         </div>
                     </div>
+                    <div class="metadata metadata-event">
+                        <div ng-if="derivedFromModel" class="form-group form-group-link">
+                            <div class="form-item">
+                                <div class="field-label">Derived from</div>
+                                <div class="field-content">
+                                    <a ng-if="derivedFromModel.id" href="#!/models/{{derivedFromModel.id}}">{{derivedFromModel.title}}</a>
+                                    <span>{{models.model.title}}</span>
+                                </div>
+                            </div>
+                            <div class="form-item" ng-if="derivedFromModel.userPath">
+                                <div class="field-label">Added by</div>
+                                <div class="field-content">
+                                    <username userpath="{{derivedFromModel.userPath}}"></username>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </tab>
 
                 <tab heading="Show Concepts">
@@ -98,6 +116,39 @@
                             <td align="center">{{ concept.dateModified | date:'longDate' }}</td>
                         </tr>
                     </table>
+                </tab>
+
+                <tab heading="Related Models">
+                    <div class="search-results row-flex">
+                        <div ng-repeat="model in relatedModels" class="result-wrapper result-wrapper-fuzzymap">
+                            <div class="result-block searchItemIcon fuzzymapIcon" ng-cloak>
+                                <div class="search-result">
+                                    <h5>
+                                        <a href="#!/models/{{ model._source.id }}">{{ model._source.title }}</a>
+                                    </h5>
+
+                                    <div class="attributes">
+
+                                        <p>{{ model._source.description | limitTo:200 }}...</p>
+
+                                        <div class="key-field">
+                                            <label class="key-field-title">Keywords: </label>
+                                            {{ model._source.keywords |date:'d-M-yy'}}
+                                        </div>
+                                        <div class="key-field">
+                                            <label class="key-field-title">Comments: </label>
+                                            {{ model._source.commentsCount }}
+                                        </div>
+                                        <div class="key-field">
+                                            <label class="key-field-title">Rating: </label>
+                                            <pc-rating rating-id="fuzzymap_{{model._source.id}}" readonly="true"></pc-rating>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="texticon texticon-fuzzymap"></div>
+                            </div>
+                        </div>
+                    </div>
                 </tab>
 
                 <!--<tab heading="Simulation">Simulation</tab>

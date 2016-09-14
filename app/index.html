@@ -16,6 +16,9 @@
     <link href="../bower_components/isteven-angular-multiselect/isteven-multi-select.css" rel="stylesheet" media="screen"/>
     <link href="../bower_components/Leaflet.Pancontrol/src/L.Control.Pan.css" rel="stylesheet" media="screen"/>
     <link href="../bower_components/angularjs-slider/dist/rzslider.css" rel="stylesheet" media="screen"/>
+	<link href="../bower_components/angular-bootstrap-toggle-switch/style/bootstrap3/angular-toggle-switch-bootstrap-3.css" rel="stylesheet" media="screen"/>
+
+    <link rel='stylesheet' href='/bower_components/textAngular/dist/textAngular.css'>
 
     <!--  App Styles -->
     <link href="css/main.css" rel="stylesheet" media="screen"/>
@@ -63,7 +66,7 @@
     <div id="page-container" class="ng-hide" ng-show="hideLoader">
 
         <div ng-class="{'container home-top-bar': location.path() == '/'}">
-            <div class="row">
+            <div ng-class="{'row': location.path() == '/'}">
                 <div cookie-law ng-hide="hideCookieLaw"></div>
                 <div ng-include="'header.html'" ng-class="{'landingpage': location.path() == '/'}"></div>
             </div>
@@ -112,6 +115,7 @@
     <script type="text/javascript" src="../bower_components/angular-scroll/angular-scroll.min.js"></script>
     <script type="text/javascript" src="../bower_components/angulartics/dist/angulartics.min.js"></script>
     <script type="text/javascript" src="../bower_components/angulartics-piwik/dist/angulartics-piwik.min.js"></script>
+    <script type="text/javascript" src="../bower_components/angular-bootstrap-toggle-switch/angular-toggle-switch.min.js"></script>
 
     <!--  App Libs -->
     <script type="text/javascript" src="config.js"></script>
@@ -146,6 +150,7 @@
     <script type="text/javascript" src="modules/metrics/directives/contenteditable.js"></script>
     <script type="text/javascript" src="modules/metrics/directives/indicatorToDataset.js"></script>
     <script type="text/javascript" src="modules/metrics/directives/functionsTable.js"></script>
+    <script type="text/javascript" src="modules/metrics/directives/embedDirective.js"></script>
     <script type="text/javascript" src="modules/indicators/indicators.js"></script>
     <script type="text/javascript" src="modules/indicators/controllers/indicatorControllers.js"></script>
     <script type="text/javascript" src="modules/indicators/services/indicatorService.js"></script>
@@ -175,6 +180,7 @@
     <script type="text/javascript" src="modules/ratings/directives/ratingsDirective.js"></script>
     <script type="text/javascript" src="modules/visualization/visualization.js"></script>
     <script type="text/javascript" src="modules/visualization/controllers/visualizationControllers.js"></script>
+    <script type="text/javascript" src="modules/visualization/directives/visualizationDirective.js"></script>
     <script type="text/javascript" src="modules/visualization/services/visualizationService.js"></script>
     <script type="text/javascript" src="modules/visualization/js/objectBarsMultiple.js"></script>
     <script type="text/javascript" src="modules/visualization/js/objectLine.js"></script>
@@ -195,12 +201,23 @@
     <script type="text/javascript" src="modules/datasets/controllers/datasetControllers.js"></script>
     <script type="text/javascript" src="modules/datasets/directives/ngDropzone.js"></script>
     <script type="text/javascript" src="modules/datasets/directives/snippets.js"></script>
+    <script type="text/javascript" src="modules/datasets/directives/embedDirective.js"></script>
     <script type="text/javascript" src="modules/datasets/services/datasetServices.js"></script>
 
     <script type="text/javascript" src="modules/feedbacks/feedbacks.js"></script>
     <script type="text/javascript" src="modules/feedbacks/services/feedbacksService.js"></script>
     <script type="text/javascript" src="modules/feedbacks/directives/feedbacksDirectives.js"></script>
+    <script type="text/javascript" src="modules/feedbacks/directives/resolve.js"></script>
     <script type="text/javascript" src="modules/feedbacks/controllers/feedbacksController.js"></script>
+
+    <script type="text/javascript" src="modules/stories/stories.js"></script>
+    <script type="text/javascript" src="modules/stories/services/storyServices.js"></script>
+    <script type="text/javascript" src="modules/stories/directives/storyDirectives.js"></script>
+    <script type="text/javascript" src="modules/stories/controllers/storyController.js"></script>
+
+    <script src='/bower_components/textAngular/dist/textAngular-rangy.min.js'></script>
+    <script src='/bower_components/textAngular/dist/textAngular-sanitize.min.js'></script>
+    <script src='/bower_components/textAngular/dist/textAngular.min.js'></script>
 
     <!--<![endif]-->
 </body>

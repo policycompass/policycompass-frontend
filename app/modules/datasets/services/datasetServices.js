@@ -34,7 +34,10 @@ angular.module('pcApp.datasets.services.dataset', [
                     items: []
                 },
                 classPreSelection: [],
+                individualsOrder: [],
                 individualSelection: [],
+                individualSelectionBackup: [],
+                individuals_suggestions: [],
                 timeResolution: null,
                 time: {
                     start: null,

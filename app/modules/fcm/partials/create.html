@@ -1,3 +1,4 @@
+
 <div ng-class="{active: help}" class="help-text">
     <div class="fonticon fonticon-close" ng-click="help=!help"></div>
     <p>
@@ -63,7 +64,7 @@
     </div>
     <div class="pc-visualization-formcontrols">
         <div class="button-group">
-            <!--				<div class="fonticon fonticon-help help-switch" ng-click="showHelp(1)"></div>   -->
+            <div ng-if="canDraft" style="float:left"><toggle-switch html="true" ng-model="model.is_draft" on-label="Draft" off-label="Public" class="switch-danger"></toggle-switch>&nbsp;</div>
             <button type="submit" class="btn btn-primary btn-concept" ng-click="addObj()">Add Concept</button>
             <button type="submit" ng-if="isDisabled == true" class="btn btn-primary btn-association" ng-click="addEdge()" disabled>Create Relationship</button>
             <button type="submit" ng-if="isDisabled == false" class="btn btn-primary btn-association" ng-click="addEdge()">Create Relationship</button>
@@ -122,7 +123,7 @@
                 </div>
             </tab>
 
-            <tab heading="Run Simulation">
+            <tab active="isRunSimulation" heading="Run Simulation">
                 <!--To run the simulation of your model, set the value, metric, and weight.-->
                 <button type="button" class="btn btn-danger pull-right" ng-click="advanceSettings()">Advanced Settings</button>
                 <h4>Concepts :</h4>
@@ -131,12 +132,12 @@
                         <td align="center" width="30%"><b>Title</b></td>
                         <td align="center" width="15%">
                             <div class="subtitle-help">
-                                <span class="fonticon fonticon-help help-switch" style="font-size:15px;"  ng-click="openHelpModel($event,'help1')"><b>Value</b></span>
+                                <span class="fonticon fonticon-help help-switch" style="font-size:15px;" ng-click="openHelpModel($event,'help1')"><b>Value</b></span>
                             </div>
                         </td>
                         <td align="center" width="55%">
                             <div class="subtitle-help">
-                                <span class="fonticon fonticon-help help-switch" style="font-size:15px;"  ng-click="openHelpModel($event,'help2')"><b>Metric</b></span>
+                                <span class="fonticon fonticon-help help-switch" style="font-size:15px;float:none;" ng-click="openHelpModel($event,'help2')"><b>Linked Datasets</b></span>
                             </div>
                         </td>
                     </tr>
@@ -149,7 +150,8 @@
                                 <option value="0.6">0.6 (Medium)</option>
                                 <option value="0.8">0.8 (High)</option>
                                 <option value="1">1.0 (Very High)</option>
-                            </select></td>
+                            </select>
+                        </td>
                         <!--			    <td align="center">
                                         <select class="form-control" name="fixedoutput" id="fixedoutput" ng-model="SimulationConcepts[$index].fixedoutput" required>
                                         <option value="True">True</option>
@@ -219,7 +221,40 @@
                 <button type="submit" class="btn btn-default" ng-click="impactAnalysis();">Impact Analysis</button>
             </tab>
 
-            <tab heading="Simulation Results" active="tabsel.results"  ng-if="1==2">
+            <tab heading="Related Models" ng-if="mode == 'edit'">
+                <div class="search-results row-flex">
+                    <div ng-repeat="model in relatedModels" class="result-wrapper result-wrapper-fuzzymap">
+                        <div class="result-block searchItemIcon fuzzymapIcon" ng-cloak>
+                            <div class="search-result">
+                                <h5>
+                                    <a href="#!/models/{{ model._source.id }}">{{ model._source.title }}</a>
+                                </h5>
+
+                                <div class="attributes">
+
+                                    <p>{{ model._source.description | limitTo:200 }}...</p>
+
+                                    <div class="key-field">
+                                        <label class="key-field-title">Keywords: </label>
+                                        {{ model._source.keywords |date:'d-M-yy'}}
+                                    </div>
+                                    <div class="key-field">
+                                        <label class="key-field-title">Comments: </label>
+                                        {{ model._source.commentsCount }}
+                                    </div>
+                                    <div class="key-field">
+                                        <label class="key-field-title">Rating: </label>
+                                        <pc-rating rating-id="fuzzymap_{{model._source.id}}" readonly="true"></pc-rating>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="texticon texticon-fuzzymap"></div>
+                        </div>
+                    </div>
+                </div>
+            </tab>
+
+            <tab heading="Simulation Results" active="tabsel.results" ng-if="1==2">
                 <h4>Changes of Concept Values</h4>
                 <table class="table table-hover">
                     <tr>
@@ -229,7 +264,8 @@
                     <tr ng-show="Concepts" ng-repeat="concept in Concepts">
                         <td>{{ concept.title }}</td>
                         <td align="center" ng-repeat="result in SimulationResults" ng-if="concept.Id == result.conceptID">
-                            <b>{{ result.output }}</b></td>
+                            <b>{{ result.output }}</b>
+                        </td>
                     </tr>
                     <tr>
                         <td></td>
@@ -239,10 +275,28 @@
                 <button type="submit" class="btn btn-default" ng-click="impactAnalysis();">Impact Analysis</button>
             </tab>
 
-            <tab heading="Graph"  ng-if="1==2">
+            <tab heading="Graph" ng-if="1==2">
                 <div class="pcLinesChart" dataset="dataset" labels="labels" small="list" mode="modeg" hideyaxeunits="hideyaxeunits" chartid="2" show-Legend="showLegend" show-Labels="showLabels" show-Lines="showLines" show-Areas="showAreas" show-Points="showPoints" show-Grid="showGrid" show-Together="showYAxes" show-Percentatge="showAsPercentatge" xaxeformat="xaxeformat"></div>
             </tab>
+
+
         </tabset>
     </div>
-</div>
+
+
+    <div class="pc-visualization-formcontrols">
+        <div class="button-group">
+            <button type="submit" class="btn btn-primary btn-concept" ng-click="addObj()">Add Concept</button>
+            <button type="submit" ng-if="isDisabled == true" class="btn btn-primary btn-association" ng-click="addEdge()" disabled>Create Relationship</button>
+            <button type="submit" ng-if="isDisabled == false" class="btn btn-primary btn-association" ng-click="addEdge()">Create Relationship</button>
+            <button type="submit" ng-if="mode == 'create' && isDisabled == true && user.state.loggedIn" class="btn btn-primary btn-save" ng-click="saveModel()" disabled>Save Model</button>
+            <a href="#!/login" ng-if="mode == 'create' && !user.state.loggedIn" class="btn btn-default btn-save ng-scope" target="_blank">Login to Save</a>
+            <button type="submit" ng-if="mode == 'edit' && isDisabled == true" class="btn btn-primary btn-save" ng-click="updateModel()" disabled>Save Model</button>
+            <button type="submit" ng-if="mode == 'create' && isDisabled == false && user.state.loggedIn" class="btn btn-primary btn-save" ng-click="saveModel()" ng-disabled="modeldetail.model.title.length==0 || modeldetail.model.description.length==0 || modeldetail.domains.length==0">Save Model</button>
+            <button type="submit" ng-if="mode == 'edit' && isDisabled == false" class="btn btn-primary btn-save" ng-click="updateModel()">Save Model</button>
+            <button type="submit" ng-if="mode == 'create'" class="btn btn-primary btn-save" ng-click="saveModel()" disabled><span ng-hide="user.state.loggedIn">Login to </span>Save As Model</button>
+            <button type="submit" ng-if="mode == 'edit'" class="btn btn-primary btn-save" ng-click="saveModel()">Save As Model</button>
+            <button type="submit" data-intro="Cancel" data-position="top" class="btn btn-default btn-danger" ng-click="cancelModel(modeldetail.model.id)">Cancel</button>
+        </div>
+    </div>
 </div>

@@ -17,7 +17,8 @@ angular.module('pcApp.datasets.directives.snippets', [
                     step: '@',
                     beforeNextStep: '&',
                     beforePrevStep: '&',
-                    save: '='
+                    save: '=',
+                    dataset: '='
                 },
                 templateUrl: 'modules/datasets/partials/header.html',
                 controller: function ($scope, $element, $attrs) {
@@ -51,7 +52,7 @@ angular.module('pcApp.datasets.directives.snippets', [
                         },
                         5: {
                             'title': 'Step 5 - Set Indicator and Unit',
-                            'help': 'Please chose a fitting indicator for your new dataset. ' + 'An indicator indicates what "thing" the data is describing, e.g. Unemployment. ' + 'In a Metric the dataset can be referenced via this indicator. ' + 'If the list does not include a suitable indicator, create a new one. In ' + 'addition provide the unit your values are in. The selection of units ' + 'depends on the indicator you choose.',
+                            'help': 'Please chose a fitting indicator for your new dataset. ' + 'An indicator indicates what "thing" the data describes.' + 'In a Metric the dataset can be referenced via this indicator. ' + 'If the list does not include a suitable indicator, create a new one. In ' + 'addition provide the unit your values are in. An Indicator has to be a generic concept, independent from location (country, city) and time. For example Unemployment, Death Rate, Happiness',
                             'prev': '/datasets/create/data',
                             'next': '/datasets/create/preview'
                         },
