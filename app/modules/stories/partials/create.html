@@ -70,6 +70,8 @@
 
                                 <pc-dataset ng-switch-when="dataset" dataset-id="{{content.index}}"></pc-dataset>
 
+                                <pc-metric ng-switch-when="metric" metric-id="{{content.index}}"></pc-metric>
+
                                 <div ng-switch-default>
                                     <div class="alert alert-danger" style="margin-bottom: 0">Sorry, there is currently no renderer available for this {{ content.type }}.</div>
                                 </div>
