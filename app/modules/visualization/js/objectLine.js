@@ -2170,7 +2170,7 @@ policycompass.viz.line = function (options) {
     }
 
 	var plotNewXAxe = function (getDate) {
-		console.log(self.arrayXaxesLabel);
+		//console.log(self.arrayXaxesLabel);
 		
 		//this sort has been added to solve problems with FF
 		self.arrayXaxesLabel = self.arrayXaxesLabel.sort();
