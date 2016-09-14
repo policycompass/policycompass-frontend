@@ -3608,12 +3608,20 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
             $scope.list = false;
             $scope.firstLoad = true;
+console.log($routeParams);
 
             if ($scope.idvisulist) {
                 $routeParams.visualizationId = $scope.idvisulist;
                 $scope.list = true;
             }
-
+			
+			if ($routeParams.randomID) {
+				$scope.randomID = $routeParams.randomID;
+			}
+			else {
+				$scope.randomId = $routeParams.visualizationId;
+			}
+			
             var locationURL = $location.path();
 
             if (locationURL.indexOf("edit") > -1) {
