@@ -3608,7 +3608,6 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
             $scope.list = false;
             $scope.firstLoad = true;
-console.log($routeParams);
 
             if ($scope.idvisulist) {
                 $routeParams.visualizationId = $scope.idvisulist;
