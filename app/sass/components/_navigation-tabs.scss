@@ -6,17 +6,11 @@
 .nav-tabs > li > a {
     color: #58595b;
     border-radius: 0px;
-    -webkit-transition: background-color 300ms ease-out;
-    -moz-transition: background-color 300ms ease-out;
-    transition: background-color 300ms ease-out;
 }
 
 .nav-tabs > li > a:hover, .nav-tabs > li > a:focus {
     text-decoration: none;
-    background-color: #f7941e;
-    color: white;
-
-    transition: background-color 300ms ease-out;
+    background-color: #fff;
 }
 
 .nav-tabs.nav-justified > li > a {
@@ -47,12 +41,6 @@
 
 .nav-tabs {
     border-bottom: 0px;
-}
-
-.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover {
-    text-decoration: none;
-    background-color: #f7941e;
-    color: #fff;
 }
 
 .nav > li.disabled > a:hover, .nav > li.disabled > a:focus {

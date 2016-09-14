@@ -29,56 +29,22 @@
     <div class="content-body">
         <form name="indicatorForm" role="form">
             <div class="row">
-                <div class="col-lg-4">
+                <div class="col-lg-8">
                     <fieldset>
-                        <legend>Main Details</legend>
+                        <legend>Details</legend>
                         <div class="form-group" ng-class="{'has-error': indicatorForm.title.$dirty && indicatorForm.title.$invalid}">
                             <label for="title">Name *</label>
                             <input type="text" class="form-control" id="title" name="title" placeholder="Indicator Name" ng-model="indicator.name" ng-minlength="3" required>
                         </div>
 
-                        <div class="form-group" ng-class="{'has-error': indicatorForm.unitCategory.$dirty && indicatorForm.unitCategory.$invalid}">
-                            <label for="unitCategory">Unit Category *</label>
-                            <div id="unitCategory"
-                                class="reference-selection-form pc-reference-selection-full"
-                                resource="UnitCategory" selection-mode="single"
-                                ng-model="indicator.unit_category" required>
-                            </div>
-                            </select>
-                        </div>
-
-                        <div class="form-group" ng-class="{'has-error': indicatorForm.language.$dirty && indicatorForm.language.$invalid}">
-                            <label for="language" class="">Language *</label>
-                            <div id="language"
-                                class="reference-selection-form pc-reference-selection-full"
-                                resource="Language" selection-mode="single"
-                                ng-model="indicator.language" required>
-                            </div>
-                        </div>
-
-                    </fieldset>
-                </div>
-                <div class="col-lg-8">
-                    <fieldset>
-                        <legend>Further Information</legend>
                         <div class="form-group" ng-class="{'has-error': indicatorForm.description.$dirty && indicatorForm.description.$invalid}">
                             <label for="indicator-description" class="">Description *</label>
                             <textarea class="form-control" rows="8" id="indicator-description" name="indicator-description" ng-model="indicator.description" required></textarea>
-                        </div>
-                        <div class="form-group" ng-class="{'has-error': indicatorForm.policyDomains.$dirty && indicatorForm.policyDomains.$invalid}">
-                            <label for="policyDomains">Policy Domains *</label>
-                            <div id="policyDomains"
-                                class="reference-selection-form pc-reference-selection-full"
-                                resource="PolicyDomain"
-                                ng-model="indicator.policy_domains" required>
-                            </div>
-
                         </div>
                     </fieldset>
                 </div>
 
             </div>
-
         </form>
     </div>
 </div>

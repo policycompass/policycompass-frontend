@@ -23,30 +23,8 @@
         <h3 class="legend-primary">Details</h3>
 
         <div class="metadata metadata-event">
-            <div class="form-group form-group-keywords">
-                <div class="form-item" ng-show="indicator.policy_domains">
-                    <div class="field-label">Policy Domains</div>
-                    <div class="field-content">
-                        <span ng-repeat="p in indicator.policy_domains">{{ p.title }}{{$last ? '' : ', '}}</span></div>
-                </div>
-
-                <div class="form-item" ng-if="indicator.unit_category">
-                    <div class="field-label">Unit Category</div>
-                    <div class="field-content">
-                        <span resource-title id="indicator.unit_category" resource="UnitCategory"></span>
-                    </div>
-                </div>
-
-            </div>
-            <div class="form-group form-group-location" ng-if="indicator.language">
-
-                <div class="field-label">Language</div>
-                <div class="field-content">
-                    <span resource-title id="indicator.language" resource="Language"></span>
-                </div>
 
 
-            </div>
             <div class="form-group form-group-modified">
                 <div class="form-item " ng-show="indicator.issued">
                     <div class="field-label">Issued</div>
