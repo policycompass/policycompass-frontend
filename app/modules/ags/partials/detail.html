@@ -12,7 +12,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="metadata metadata-ag metadata-ag-description">
+        <div class="metadata metadata-event metadata-event-description">
             <div class="form-group form-group-description" ngshow="ag.description">
                 <div class="field-label">Description</div>
                 <div class="field-content">{{ag.description}}</div>
@@ -29,15 +29,20 @@
     <div class="row">
         <h3 class="legend-primary">Details</h3>
         <!-- FIELDS START -->
-        <div class="metadata metadata-ag">
+        <div class="metadata metadata-event">
 
             <div class="form-group form-group-modified">
-                <div class="form-item" ngshow="ag.issued">
+                <div class="form-item" ng-if="ag.creator_path">
+                    <div class="field-label">Added by</div>
+                    <div class="field-content">
+                        <username userpath="{{ ag.creator_path }}"></username>
+                    </div>
+                </div>
+                <div class="form-item" ng-if="ag.issued">
                     <div class="field-label">Added</div>
                     <div class="field-content">{{ ag.issued | date:'longDate' }}</div>
                 </div>
-
-                <div class="form-item" ng-show="ag.modified">
+                <div class="form-item" ng-if="ag.modified">
                     <div class="field-label">Modified</div>
                     <div class="field-content">{{ ag.modified | date:'longDate' }}</div>
                 </div>
