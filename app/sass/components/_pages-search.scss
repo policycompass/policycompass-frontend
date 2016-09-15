@@ -6,8 +6,8 @@ $ancho: $unidad * 2;
 
 .browse-input {
     height: inherit;
-    padding-top: 3px;
-    padding-bottom: 3px;
+    padding-top: 4px;
+    padding-bottom: 4px;
 }
 
 @media (max-width: $device - 1) {
@@ -162,6 +162,7 @@ $ancho: $unidad * 2;
             display: none;
         }
         color: $claro;
+        margin-bottom: 10px;
 
     }
     .key-field-title {
@@ -186,7 +187,7 @@ $ancho: $unidad * 2;
         font-weight: normal;
         content: "\e612";
         position: absolute;
-        left: -5px;
+        left: 0px;
         top: 10px;
         font-size: 30px;
         line-height: 1em;

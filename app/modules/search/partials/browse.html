@@ -197,21 +197,21 @@
                         </div>
 
                         <div ng-if="searchResult['_type']=='story'" class="search-result">
-                            <h5><a href="#!/stories/{{ searchResult['_source']['id'] }}">
-                                {{ searchResult['_source']['title']}}</a>
-                            </h5>
+                            <a href="#!/stories/{{ searchResult['_source']['id'] }}">
+                                <h5>{{ searchResult['_source']['title']}}</h5>
 
-                            <div class="attributes">
-                                <div class="key-field">
-                                    <label class="key-field-title">Comments: </label>
-                                    {{ searchResult['_source']['commentsCount']}}
-                                </div>
+                                <div class="attributes">
+                                    <div class="key-field">
+                                        <label class="key-field-title">Comments: </label>
+                                        {{ searchResult['_source']['commentsCount']}}
+                                    </div>
 
-                                <div class="key-field">
-                                    <label class="key-field-title">Rating: </label>
-                                    <pc-rating rating-id="{{searchResult['_type']}}_{{searchResult['_source']['id']}}" readonly="true"></pc-rating>
+                                    <div class="key-field">
+                                        <label class="key-field-title">Rating: </label>
+                                        <pc-rating rating-id="{{searchResult['_type']}}_{{searchResult['_source']['id']}}" readonly="true"></pc-rating>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
 
                         <div class="texticon texticon-{{searchResult['_type']}}"></div>
