@@ -126,14 +126,6 @@ header {
     background: linear-gradient(to bottom, $main_bk 0%, $main_3 99.5%, $main_bk_2);
 }
 
-#main-content {
-    background: $main_bk;
-}
-
-body {
-    background: $main_3;
-}
-
 footer {
     background: linear-gradient(to bottom, $main_bk_2, $main_3 10px);
 }
