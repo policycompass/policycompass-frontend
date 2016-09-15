@@ -118,6 +118,20 @@ $ancho: $unidad * 2;
     .texticon-dataset:before {
         content: "Dataset";
     }
+    .texticon-story:before {
+        content: "Story";
+    }
+    .rating-stars {
+        opacity: 0.4;
+    }
+    &:hover {
+        background: $gris_99;
+
+        .rating-stars {
+            opacity: 1;
+        }
+
+    }
 
 }
 
@@ -203,6 +217,10 @@ $ancho: $unidad * 2;
     content: "\e611";
 }
 
+.storyIcon a:before {
+    content: "\f0f6";
+}
+
 .browse-filters-block {
     font-size: 13px;
     & > ul {
@@ -253,4 +271,8 @@ $ancho: $unidad * 2;
         background-color: #f5f5f5;
     }
 
+}
+
+.result-selected {
+    background-color: #ccc !important;
 }

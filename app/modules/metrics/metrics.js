@@ -13,7 +13,8 @@ var metrics = angular.module('pcApp.metrics', [
     'pcApp.metrics.directives.indicator',
     'pcApp.metrics.directives.datasetSelect',
     'pcApp.metrics.directives.indicatorToDataset',
-    'pcApp.metrics.directives.functionsTable'
+    'pcApp.metrics.directives.functionsTable',
+    'pcApp.metrics.directives.embedDirective'
 ]);
 
 /**

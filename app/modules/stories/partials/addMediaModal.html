@@ -1,0 +1,72 @@
+<div ng-if="showerrormessage">
+    <label>There is a problem with the connection to the search service.</label>
+</div>
+
+<div ng-if="!showerrormessage">
+
+    <div class="loading-container" id="loading-container-div" ng-hide="mediaLoaded">
+        <div class="loading"></div>
+        <div id="loading-text">loading</div>
+    </div>
+
+    <div ng-if="mediaLoaded">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <input type="text" ng-model="searchtext" placeholder="Filter {{datasetsFilter.hits.total}} {{ contentType }}s" class="form-control" ng-keyup="$event.keyCode == 13 && filter(searchtext)" style="height: inherit; padding: 4px 12px;">
+
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-default" ng-click="filter(searchtext)"><i class="glyphicon glyphicon-search"></i></a>
+                    </span>
+                </div>
+
+            </div>
+            <div class="col-md-6" style="padding: 6px">
+
+                <span class="filterDatasetsPaginationHeader" id="filterDatasetsPaginationHeaderDirective">
+                    <span ng-if="datasetsFilter.hits.total>1">{{datasetsFilter.hits.total}} {{ contentType }}s found</span>
+                    <span ng-if="datasetsFilter.hits.total==1">{{datasetsFilter.hits.total}} {{ contentType }}s found</span>
+
+                </span>
+
+            </div>
+        </div>
+
+        <div class="row" style="padding-top: 20px">
+            <div class="col-md-12">
+                <div class="filterDatasetPaginationBody createvisualization">
+                    <div class="search-results row-flex">
+                        <div ng-repeat="dataset in datasetsFilter.hits.hits track by $index" class="result-wrapper result-wrapper-{{ contentType }}" ng-class="{'result-selected':selection[dataset._source.id]>0}">
+                            <div class="result-block searchItemIcon {{ contentType }}Icon" ng-click="clickDataset(dataset._source.id, dataset._source.name, dataset._source.issued, dataset._source.unit_category);" title="{{ !selection[dataset._source.id]>0 && 'Select' || 'Deselect' }} {{dataset._source.title}}" ng-cloak style="cursor: pointer">
+
+                                <div class="search-result">
+                                    <h5 ng-if="dataset['_type']=='indicator'">
+                                        <a>{{ dataset._source.name | limitTo:55 }}{{ dataset._source.name.length > 55 ? '...' : '' }}</a>
+                                    </h5>
+
+                                    <h5 ng-if="dataset['_type']!='indicator'">
+                                        <a>{{ dataset._source.title | limitTo:55 }}{{ dataset._source.title.length > 55 ? '...' : '' }}</a>
+                                    </h5>
+
+                                    <div class="attributes">
+
+                                        <p>{{ dataset._source.description | limitTo:70 }}{{ dataset._source.description.length > 70 ? '...' : '' }}</p>
+
+                                        <div class="key-field">
+                                            <label class="key-field-title">Rating: </label>
+                                            <pc-rating rating-id="{{ contentType }}_{{ dataset._source.id }}" readonly="true"></pc-rating>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="texticon texticon-{{ contentType }}"></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <pagination total-items="datasetsFilter.hits.total" ng-change="findDatasetsByFilter(pagToSearch)" items-per-page="itemsperpagesize" ng-model="pagToSearch" max-size="10" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+            </div>
+        </div>
+    </div>
+</div>

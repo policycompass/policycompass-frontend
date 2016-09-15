@@ -127,11 +127,7 @@ angular.module('pcApp.indicators.controllers.indicator', [
             $scope.userState = Auth.state;
 
             $scope.indicator = Indicator.get({id: $routeParams.indicatorId}, function (indicator) {
-                var domains = [];
-                indicator.policy_domains.forEach(function (p) {
-                    domains.push(PolicyDomain.getById(p))
-                });
-                indicator.policy_domains = domains;
+
             }, function (err) {
                 $location.path('/browse');
             });

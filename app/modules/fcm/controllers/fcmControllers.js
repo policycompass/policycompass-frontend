@@ -87,6 +87,14 @@ angular.module('pcApp.fcm.controllers.fcm', [
                 // broadcasting the event
                 $rootScope.$broadcast('appChanged');
 
+                //Id model derived from other model then get details of other model
+                if ($scope.models.model.derivedFromId > 0) {
+                    $scope.modeldetail = FcmModel.get({ id: $scope.models.model.derivedFromId }, function (fcm) {
+                        $scope.derivedFromModel = fcm.model;
+                        console.log($scope.derivedFromModel);
+                    });
+                }
+
                 var query = {
                     "bool": {
                         "must": [{

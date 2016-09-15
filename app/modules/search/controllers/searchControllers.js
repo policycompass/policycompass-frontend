@@ -114,6 +114,9 @@
                         case "ag":
                             this.label = "Argument graph";
                             break;
+                        case "story":
+                            this.label = "Stories";
+                            break;
                         default:
                             this.label = this.value;
                             break;
@@ -337,7 +340,7 @@
             $scope.searchItemType = searchItemType;
             switch (searchItemType) {
                 case 'metric,visualization,event,fuzzymap,ag':
-                    $scope.searchItemTypeInfo = 'Search for metrics, visualizations, causal models, events, datasets, indicators, argument graphs';
+                    $scope.searchItemTypeInfo = 'Search for metrics, visualizations, causal models, events, datasets, indicators, argument graphs, stories';
                     $scope.searchItemTypeInfoDropDown = 'All';
                     break;
                 case 'metric':
@@ -368,9 +371,13 @@
                     $scope.searchItemTypeInfo = 'Search for argument graphs';
                     $scope.searchItemTypeInfoDropDown = 'Argument graphs';
                     break;
+                case 'story':
+                    $scope.searchItemTypeInfo = 'Search for stories';
+                    $scope.searchItemTypeInfoDropDown = 'Stories';
+                    break;
 
                 default:
-                    $scope.searchItemTypeInfo = 'Search for metrics, visualizations, causal models, events, datasets, indicators, argument graphs';
+                    $scope.searchItemTypeInfo = 'Search for metrics, visualizations, causal models, events, datasets, indicators, argument graphs, stories';
             }
             //Perform search based on new Item Type
             //goSearch();
@@ -397,17 +404,26 @@
             };
             if (isloggedIn()){
                 filter["or"].push({
-                    "bool" : {
-                        "must" : [
+                    "bool": {
+                        "must": [
                             {
-                                "term" : {
-                                    "is_draft" : true
+                                "term": {
+                                    "is_draft": true
                                 }
                             },
                             {
-                                "term" : {
-                                    "creator_path" : ("0000000"+getUserId()).slice(-7)
-                                }
+                                "or": [
+                                    {
+                                        "term": {
+                                            "creator_path": ("0000000" + getUserId()).slice(-7)
+                                        }
+                                    },
+                                    {
+                                        "term": {
+                                            "userPath": ("0000000" + getUserId()).slice(-7)
+                                        }
+                                    }
+                                ]
                             }
                         ]
                     }
@@ -424,7 +440,6 @@
 
         //Define Main search function
         $scope.search = function(searchQuery) {
-
             if (typeof searchQuery == 'undefined') {
                 searchQuery = "";
             }
@@ -602,6 +617,7 @@
                     }
                 }
             });
+
             if (userId != "") {
                 facetSet("userId", userId);
             }
@@ -610,7 +626,7 @@
                 $scope.filterSearchType(type);
             } else {
                 //Default search item type
-                $scope.searchItemType = 'metric,visualization,event,fuzzymap,dataset,indicator,ag';
+                $scope.searchItemType = 'metric,visualization,event,fuzzymap,dataset,indicator,ag,story';
                 $scope.searchItemTypeInfo = 'Search content';
                 $scope.searchItemTypeInfoDropDown = 'All';
             }

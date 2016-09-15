@@ -113,8 +113,10 @@ angular.module('pcApp.metrics.controllers.metric', [
                 if ($scope.metadataForm.$valid) {
                     $http.post(url, $scope.metrics_controller_helper.metricsdata).then(function (response) {
                         if (applyAfterwards) {
+                            $scope.metrics_controller_helper.clear()
                             $location.path("/metrics/" + response.data.id + "/apply-1");
                         } else {
+                            $scope.metrics_controller_helper.clear()
                             $location.path("/metrics/" + response.data.id);
                         }
                     }, function (response) {
@@ -127,6 +129,9 @@ angular.module('pcApp.metrics.controllers.metric', [
                 $scope.servererror = undefined;
             }
 
+            $scope.prevStep = function () {
+                $location.path("/metrics/create-1");
+            }
         }
     ])
 
