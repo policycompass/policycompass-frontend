@@ -404,17 +404,26 @@
             };
             if (isloggedIn()){
                 filter["or"].push({
-                    "bool" : {
-                        "must" : [
+                    "bool": {
+                        "must": [
                             {
-                                "term" : {
-                                    "is_draft" : true
+                                "term": {
+                                    "is_draft": true
                                 }
                             },
                             {
-                                "term" : {
-                                    "creator_path" : ("0000000"+getUserId()).slice(-7)
-                                }
+                                "or": [
+                                    {
+                                        "term": {
+                                            "creator_path": ("0000000" + getUserId()).slice(-7)
+                                        }
+                                    },
+                                    {
+                                        "term": {
+                                            "userPath": ("0000000" + getUserId()).slice(-7)
+                                        }
+                                    }
+                                ]
                             }
                         ]
                     }

@@ -93,16 +93,31 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
             }
 
 
-            $scope.saveStory = function(){
-                $http.post(API_CONF.STORY_MANAGER_URL + '/stories', {
-                    title: $scope.story_title,
-                    chapters: $scope.chapters,
-                    is_draft: $scope.story.is_draft
-                }).then(function(response){
-                    if(response){
-                        $location.path('/stories/' + response.data.result.id);
+            $scope.saveStory = function() {
+                if ($scope.checkIfStoryIsValid()) {
+                    $http.post(API_CONF.STORY_MANAGER_URL + '/stories', {
+                        title: $scope.story_title,
+                        chapters: $scope.chapters,
+                        is_draft: $scope.story.is_draft
+                    }).then(function (response) {
+                        if (response) {
+                            $location.path('/stories/' + response.data.result.id);
+                        }
+                    });
+                }else{
+                    dialogs.notify("Error", "Please provide text for all chapters");
+                }
+            }
+
+            $scope.checkIfStoryIsValid = function(){
+                for(var i=0; i<$scope.chapters.length; i++){
+                    if(typeof $scope.chapters[i].text === 'undefined'){
+                        return false;
+                    }else if($scope.chapters[i].text.length === 0){
+                        return false;
                     }
-                });
+                }
+                return true;
             }
 
             $scope.init();
@@ -215,17 +230,32 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
             };
 
             $scope.saveStory = function(){
-                $http.put(API_CONF.STORY_MANAGER_URL + '/stories/' + $scope.story.id, {
-                    id: $scope.story.id,
-                    title: $scope.story_title,
-                    chapters: $scope.chapters,
-                    oldContents: $scope.oldContents,
-                    is_draft: $scope.story.is_draft
-                }).then(function(response){
-                    if(response){
-                        $location.path('/stories/' + response.data.result.id);
+                if ($scope.checkIfStoryIsValid()) {
+                    $http.put(API_CONF.STORY_MANAGER_URL + '/stories/' + $scope.story.id, {
+                        id: $scope.story.id,
+                        title: $scope.story_title,
+                        chapters: $scope.chapters,
+                        oldContents: $scope.oldContents,
+                        is_draft: $scope.story.is_draft
+                    }).then(function (response) {
+                        if (response) {
+                            $location.path('/stories/' + response.data.result.id);
+                        }
+                    });
+                }else{
+                    dialogs.notify("Error", "Please provide text for all chapters");
+                }
+            }
+
+            $scope.checkIfStoryIsValid = function(){
+                for(var i=0; i<$scope.chapters.length; i++){
+                    if(typeof $scope.chapters[i].text === 'undefined'){
+                        return false;
+                    }else if($scope.chapters[i].text.length === 0){
+                        return false;
                     }
-                });
+                }
+                return true;
             }
 
             $scope.removeChapter = function(index){
