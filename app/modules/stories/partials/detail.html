@@ -27,7 +27,7 @@
 
                     <h2>{{ chapter.title }}</h2>
 
-                    <div ng-bind-html="chapter.text"></div>
+                    <div ta-bind ng-model="chapter.text"></div>
 
                     <div ng-repeat="content in chapter.contents">
                         <div style="padding: 10px 0;">
