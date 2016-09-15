@@ -5,6 +5,43 @@
         <h3 ng-if="mode == 'edit'"><span class="fonticon fonticon-story"></span>Edit Story</h3>
     </div>
 
+    <div class="subtitle-help">
+        <h4>
+            <div class="fonticon fonticon-help help-switch" ng-click="openHelpModel($event,'help')"></div>
+            Story manager
+        </h4>
+
+    </div>
+
+    <div ng-class="{active: help}" class="help-text">
+        <div class="fonticon fonticon-close" ng-click="help=!help"></div>
+        <p>
+            To create or edit a story follow this process:
+            <ul>
+                <li>Story title: This is the title of your story.</li>
+                <li>Draft/public switch: Use this switch for changing the status of your story from draft to public and vice-versa.</li>
+                <li>Add chapter: Appends a new chapter to your story.</li>
+                <li>Cancel: This will discard your story.</li>
+            </ul>
+        </p>
+
+        <p>
+            Adding interactive media:
+            <ul>
+                <li>You can add visualizations, metrics, fuzzymaps and datasets using the equivalent buttons.</li>
+                <li>Select your media and click "Add to chapter", to add it at the end of the current chapter.</li>
+            </ul>
+        </p>
+
+        <p>
+            Styling:
+            <ul>
+                <li>Use the toolbar to add and change styles.</li>
+                <li>You may add links, images and YouTube videos.</li>
+            </ul>
+        </p>
+    </div>
+
     <div class="pc-visualization-formcontrols">
         <div style="float:left" ng-show="canDraft">
             <toggle-switch html="true" ng-model="story.is_draft" on-label="Draft" off-label="Public" class="switch-danger" ></toggle-switch>

@@ -120,6 +120,18 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                 return true;
             }
 
+            //Open help menu
+            $scope.openHelpModel = function (event, helpModelId) {
+                $scope[helpModelId] = !$scope[helpModelId];
+
+                var thisControl = $(event.target);
+                var posX = (event.pageX), posY = (event.pageY + 10);
+
+                var model = $('div[ng-class="{active: ' + helpModelId + '}"]');
+                model.css('left', posX + 'px');
+                model.css('top', posY + 'px');
+            };
+
             $scope.init();
 
         }
@@ -280,6 +292,18 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                         alert("err " + err + ": failed to remove " + contentType);
                     }
                 })
+            }
+
+            //Open help menu
+            $scope.openHelpModel = function (event, helpModelId) {
+                $scope[helpModelId] = !$scope[helpModelId];
+
+                var thisControl = $(event.target);
+                var posX = (event.pageX), posY = (event.pageY + 10);
+
+                var model = $('div[ng-class="{active: ' + helpModelId + '}"]');
+                model.css('left', posX + 'px');
+                model.css('top', posY + 'px');
             }
 
             $scope.init();
