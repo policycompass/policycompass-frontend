@@ -106,29 +106,28 @@
                         <div ng-repeat="model in relatedModels" class="result-wrapper result-wrapper-fuzzymap">
                             <div class="result-block searchItemIcon fuzzymapIcon" ng-cloak>
                                 <div class="search-result">
-                                    <h5>
-                                        <a href="#!/models/{{ model._source.id }}">{{ model._source.title }}</a>
-                                    </h5>
+                                    <a href="#!/models/{{ model._source.id }}">
+                                        <h5>{{ model._source.title }}</h5>
 
-                                    <div class="attributes">
+                                        <div class="attributes">
 
-                                        <p>{{ model._source.description | limitTo:200 }}...</p>
+                                            <p>{{ model._source.description | limitTo:200 }}...</p>
 
-                                        <div class="key-field">
-                                            <label class="key-field-title">Keywords: </label>
-                                            {{ model._source.keywords |date:'d-M-yy'}}
+                                            <div class="key-field">
+                                                <span class="key-field-title">Keywords: </span>
+                                                {{ model._source.keywords |date:'d-M-yy'}}
+                                            </div>
+                                            <div class="key-field">
+                                                <span class="key-field-title">Comments: </span>
+                                                {{ model._source.commentsCount }}
+                                            </div>
+                                            <div class="key-field">
+                                                <span class="key-field-title">Rating: </span>
+                                                <pc-rating rating-id="fuzzymap_{{model._source.id}}" readonly="true"></pc-rating>
+                                            </div>
                                         </div>
-                                        <div class="key-field">
-                                            <label class="key-field-title">Comments: </label>
-                                            {{ model._source.commentsCount }}
-                                        </div>
-                                        <div class="key-field">
-                                            <label class="key-field-title">Rating: </label>
-                                            <pc-rating rating-id="fuzzymap_{{model._source.id}}" readonly="true"></pc-rating>
-                                        </div>
-                                    </div>
+                                    </a>
                                 </div>
-                                <div class="texticon texticon-fuzzymap"></div>
                             </div>
                         </div>
                     </div>
