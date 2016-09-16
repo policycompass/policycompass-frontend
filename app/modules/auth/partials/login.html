@@ -1,0 +1,34 @@
+<div class="container">
+    <div class="container-header">
+        <h3>Login</h3>
+        <div class="subtitle-help">
+            <h4>
+                <div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div>
+                <span class="ng-scope">Enter your credentials</span>
+            </h4>
+            <div ng-class="{active: help}" class="help-text">
+                <div class="fonticon fonticon-close" ng-click="help=!help"></div>
+                <p>Indicator herlp.</p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4 col-sm-offset-4">
+            <form ng-controller="LoginController" ng-submit="login()" name="loginForm" novalidate>
+                <div class="form-group">
+                    <label for="usernameOrEmail">Username or Email</label>
+                    <input class="form-control" type="text" ng-model="usernameOrEmail" id="usernameOrEmail" name="usernameOrEmail" ng-required="true" />
+                    <span ng-show="(loginForm.usernameOrEmail.$dirty || $submitted) && loginForm.usernameOrEmail.$error.required">The value is required!</span>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input class="form-control" type="password" ng-model="password" id="password" name="usernameOrEmail" ng-required="true" />
+                    <span ng-show="(loginForm.password.$dirty || $submitted) && loginform.password.$error.required">The value is required!</span>
+                </div>
+                <div class="form-group">
+                    <a href class="btn btn-success" ng-disabled="!registerForm.$valid">Login</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

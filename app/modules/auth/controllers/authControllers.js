@@ -5,5 +5,61 @@ angular.module('pcApp.auth.controllers.authControllers', [
     .controller('UserState', [
         '$scope', 'Auth', function ($scope, Auth) {
             $scope.authState = Auth.state;
+            $scope.auth = Auth
+        }
+    ])
+    .controller('RegisterController', [
+        '$scope', '$location', 'Auth', function ($scope, $location, Auth) {
+            $scope.goToLogin = function ( path ) {
+                $location.path('/login');
+            };
+
+            $scope.$submitted = false;
+
+            $scope.register = function () {
+                $scope.$submitted = true;
+
+                if (!$scope.registerForm.$valid) {
+                    return false
+                }
+
+                Auth.register(
+                    $scope.username,
+                    $scope.email,
+                    $scope.password
+                ).then(function () {
+                    $scope.completed = true;
+                }, function (reason) {
+                    // FIXME: set errors
+                })
+            };
+        }
+    ])
+    .controller('LoginController', [
+        '$scope', '$location',  'Auth', function ($scope, $location, Auth) {
+            $scope.goToRegister = function ( path ) {
+                $location.path('/register');
+            };
+
+            $scope.$submitted = false;
+
+            $scope.login = function () {
+                $scope.$submitted = true;
+
+                if (!$scope.loginForm.$valid) {
+                    return false
+                }
+
+                Auth.login(
+                    $scope.usernameOrEmail,
+                    $scope.password
+                ).then(function (previousLocation) {
+                    $location.url(previousLocation)
+                }, function (reason) {
+                    // FIXME: set errors
+                })
+
+                return true
+            };
         }
     ]);
