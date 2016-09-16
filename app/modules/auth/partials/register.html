@@ -47,7 +47,7 @@
                     <span ng-show="$submitted && registerForm.acceptTerms.$error.required">The value is required!</span>
                 </div>
                 <div class="form-group">
-                    <a href class="btn btn-primary" ng-disabled="!registerForm.$valid" ng-click="register()">Register</a>
+                    <input type="submit" name="submit" class="btn btn-primary" ng-disabled="!registerForm.$valid" ng-click="register()" value="Register" />
                 </div>
             </form>
         </div>

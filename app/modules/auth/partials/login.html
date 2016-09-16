@@ -27,7 +27,7 @@
                     <span ng-show="serverErrors.password">{{ serverErrors.password }}</span>
                 </div>
                 <div class="form-group">
-                    <a href class="btn btn-primary" ng-disabled="!loginForm.$valid" ng-click="login()">Login</a>
+                    <input type="submit" name="submit" class="btn btn-primary" ng-disabled="!loginForm.$valid" ng-click="login()" value="Login" />
                 </div>
             </form>
         </div>
