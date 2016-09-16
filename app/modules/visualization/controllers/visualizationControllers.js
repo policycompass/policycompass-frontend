@@ -3614,11 +3614,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
                 $scope.list = true;
             }
 			
-			if ($routeParams.randomID) {
-				$scope.randomID = $routeParams.randomID;
-			}
-			else {
-				$scope.randomId = $routeParams.visualizationId;
+			if (!$scope.randomID) {
+				$scope.randomID = $routeParams.visualizationId;
 			}
 			
             var locationURL = $location.path();

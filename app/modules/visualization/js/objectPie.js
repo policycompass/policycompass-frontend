@@ -145,8 +145,7 @@ policycompass.viz.pie = function (options) {
         })
 		.on("mouseout", function (d, i) {
                 self.clicToOpen = true;
-                tooltip.style("opacity", 1.0).html("");
-                tooltip.style("opacity", 0.0);
+                tooltip.style("opacity", 0.0).html("");
                 d3.select(this).select("path").transition().duration(1000).attr("d", self.arc);
 		});
 
