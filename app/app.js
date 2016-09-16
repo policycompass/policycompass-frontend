@@ -4,6 +4,7 @@
  */
 var pcAppDependencies = [
     'ngRoute',
+    'ngStorage',
     'ui.bootstrap',
     'pcApp.metrics',
     'pcApp.visualization',
@@ -48,7 +49,7 @@ var pcApp = angular.module('pcApp', pcAppDependencies)
     })
 
     .run(['Auth', function(Auth) {
-        Auth.recoverSession()
+        Auth.recoverSession();
     }])
 
 /**

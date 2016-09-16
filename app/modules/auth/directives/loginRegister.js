@@ -1,4 +1,4 @@
-angular.module('pcApp.auth.directives.login', [
+angular.module('pcApp.auth.directives.loginRegister', [
     'pcApp.auth.services.auth',
 ])
 

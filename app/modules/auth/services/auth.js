@@ -8,7 +8,6 @@ angular.module('pcApp.auth.services.auth', [
         'API_CONF',
         '$rootScope',
         '$http',
-        '$location',
         '$q',
         '$localStorage',
         function (Adhocracy, AdhocracyClient, API_CONF, $rootScope, $http, $q, $localStorage) {
