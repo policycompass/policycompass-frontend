@@ -1,27 +1,3 @@
-
-/** Unpack errors from A3 response. Unpacks A3 errors related
- *  to request body into an object of errors, with field names
- *  as keys.
- */
-var adhocracyErrorsToDict = function (response) {
-    if (response.data.status == 'error') {
-        var processedErrors = {}
-        var serverErrors = response.data.errors
-        for (errorIndex in serverErrors) {
-            if (serverErrors.hasOwnProperty(errorIndex)) {
-                var error = serverErrors[errorIndex];
-                if (error.location = 'body') {
-                    simpleName = error.name.split('.').pop();
-                    processedErrors[simpleName] = error.description;
-                }
-            }
-        }
-        return { pc_errors: processedErrors };
-    }
-    throw response;
-}
-
-
 angular.module('pcApp.auth.controllers.authControllers', [
     'pcApp.auth.services.auth',
 ])
@@ -54,8 +30,12 @@ angular.module('pcApp.auth.controllers.authControllers', [
                 ).then(function () {
                     $scope.completed = true;
                 }, function (response) {
-                    var errors = adhocracyErrorsToDict(response);
-                    $scope.serverErrors = errors.pc_errors;
+                    try {
+                        $scope.serverErrors = response.data.errorDict
+                    } catch (e) {
+                        $scope.serverErrors.$other = 'Unknown error.';
+                        throw e;
+                    }
                 })
             };
         }
@@ -82,8 +62,12 @@ angular.module('pcApp.auth.controllers.authControllers', [
                 ).then(function (previousLocation) {
                     $location.url(previousLocation);
                 }).catch(function (response) {
-                    var errors = adhocracyErrorsToDict(response);
-                    $scope.serverErrors = errors.pc_errors;
+                    try {
+                        $scope.serverErrors = response.data.errorDict;
+                    } catch (e) {
+                        $scope.serverErrors.$other = 'Unknown error.';
+                        throw e;
+                    }
                 })
             };
         }

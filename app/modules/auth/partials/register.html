@@ -15,6 +15,7 @@
     <div class="row" ng-controller="RegisterController">
         <div class="col-sm-4 col-sm-offset-4" >
             <form ng-hide="completed" name="registerForm" novalidate>
+                <div ng-show="serverErrors.$other">{{ serverErrors.$other }}</div>
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input class="form-control" type="text" ng-model="name" id="name" name="name" ng-required="true"/>

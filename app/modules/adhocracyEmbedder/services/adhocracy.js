@@ -33,6 +33,39 @@ angular.module('pcApp.adhocracyEmbedder.services.adhocracy', [])
                 return API_CONF.ADHOCRACY_BACKEND_URL + '/' + path
             };
 
+            /** Unpack errors from A3 response. Unpacks A3 errors related
+             *  to request body into an object of errors, with field names
+             *  as keys.
+             */
+            var adhocracyErrorResponseTransformer = function(data) {
+                if (data.status == 'error') {
+                    var processedErrors = {}
+                    var serverErrors = data.errors
+                    for (errorIndex in serverErrors) {
+                        if (serverErrors.hasOwnProperty(errorIndex)) {
+                            var error = serverErrors[errorIndex];
+                            if (error.location = 'body') {
+                                simpleName = error.name.split('.').pop();
+                                processedErrors[simpleName] = error.description;
+                                }
+                        }
+                    }
+                    data.errorDict = processedErrors
+                }
+                return data
+            }
+
+            var withResponseErrorTransformer = function() {
+                var defaultTransformers = $http.defaults.transformResponse
+
+                // transfomers might not be an array
+                if (! angular.isArray(defaultTransformers)) {
+                    defaultTransformers = [defaultTransformers];
+                }
+
+                return defaultTransformers.concat(adhocracyErrorResponseTransformer);
+            }
+
             var client = {};
 
             client.headerNames = {
@@ -55,7 +88,8 @@ angular.module('pcApp.adhocracyEmbedder.services.adhocracy', [])
                 return $http({
                     method: 'POST',
                     url: loginUrl,
-                    data: data
+                    data: data,
+                    transformResponse: withResponseErrorTransformer()
                 }).then(function (response){
                     return {
                         token: response.data.user_token,
@@ -72,7 +106,8 @@ angular.module('pcApp.adhocracyEmbedder.services.adhocracy', [])
                 return $http({
                     method: 'GET',
                     url: session.userPath,   // userPath does store the user url
-                    headers: headers
+                    headers: headers,
+                    transformResponse: withResponseErrorTransformer()
                 }).then(function (response) {
                     name = response.data.data['adhocracy_core.sheets.principal.IUserBasic'].name
                     roles = response.data.data['adhocracy_core.sheets.principal.IPermissions'].roles
@@ -102,7 +137,8 @@ angular.module('pcApp.adhocracyEmbedder.services.adhocracy', [])
                                 "password": password
                             }
                         }
-                    }
+                    },
+                    transformResponse: withResponseErrorTransformer()
                 })
             }
 
