@@ -40,14 +40,14 @@ angular.module('pcApp.adhocracyEmbedder.services.adhocracy', [])
                 userPath: 'X-User-Path'
             }
 
-            client.create_session = function(usernameOrEmail, password) {
+            client.create_session = function(nameOrEmail, password) {
                 var loginUrl, data;
-                if (usernameOrEmail.indexOf('@') === -1) {
-                    var username = usernameOrEmail;
+                if (nameOrEmail.indexOf('@') === -1) {
+                    var name = nameOrEmail;
                     loginUrl = url('login_username');
-                    data = { name: username, password: password };
+                    data = { name: name, password: password };
                 } else {
-                    var email = usernameOrEmail;
+                    var email = nameOrEmail;
                     loginUrl = url('login_email');
                     data = { email: email, password: password };
                 }
@@ -85,7 +85,7 @@ angular.module('pcApp.adhocracyEmbedder.services.adhocracy', [])
                 })
             };
 
-            client.register = function(username, email, password) {
+            client.register = function(name, email, password) {
                 return $http({
                     method: 'POST',
                     url: url('/principals/users/'),
@@ -93,7 +93,7 @@ angular.module('pcApp.adhocracyEmbedder.services.adhocracy', [])
                         "content_type": "adhocracy_core.resources.principal.IUser",
                         "data": {
                             "adhocracy_core.sheets.principal.IUserBasic": {
-                                "name": username
+                                "name": name
                             },
                             "adhocracy_core.sheets.principal.IUserExtended":{
                                 "email": email
@@ -103,7 +103,7 @@ angular.module('pcApp.adhocracyEmbedder.services.adhocracy', [])
                             }
                         }
                     }
-                });
+                })
             }
 
             return client;

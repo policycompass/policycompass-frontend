@@ -126,8 +126,8 @@ angular.module('pcApp.auth.services.auth', [
             /** Wrapper to make A3 auth features pluggable. Calls directly A3
              *  specific login code and A3 specific code to fetch user data.
              */
-            Auth.login = function (usernameOrEmail, password) {
-                return AdhocracyClient.create_session(usernameOrEmail, password)
+            Auth.login = function (nameOrEmail, password) {
+                return AdhocracyClient.create_session(nameOrEmail, password)
                     .then(function (session) {
                         return AdhocracyClient.validate_session(session)
                             .then(function (userData) {
@@ -142,8 +142,8 @@ angular.module('pcApp.auth.services.auth', [
             /** Wrapper to make A3 auth features pluggable. Calls directly A3
              *  specific register code.
              */
-            Auth.register = function (username, email, password) {
-                return AdhocracyClient.register(username, email, password)
+            Auth.register = function (name, email, password) {
+                return AdhocracyClient.register(name, email, password)
             };
 
             Auth.logout = function () {

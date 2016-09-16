@@ -24,7 +24,7 @@ angular.module('pcApp.auth.controllers.authControllers', [
                 }
 
                 Auth.register(
-                    $scope.username,
+                    $scope.name,
                     $scope.email,
                     $scope.password
                 ).then(function () {
@@ -51,7 +51,7 @@ angular.module('pcApp.auth.controllers.authControllers', [
                 }
 
                 Auth.login(
-                    $scope.usernameOrEmail,
+                    $scope.nameOrEmail,
                     $scope.password
                 ).then(function (previousLocation) {
                     $location.url(previousLocation)
