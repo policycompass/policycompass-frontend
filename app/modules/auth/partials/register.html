@@ -16,15 +16,17 @@
         <div class="col-sm-4 col-sm-offset-4" >
             <form ng-hide="completed" name="registerForm" novalidate>
                 <div class="form-group">
-                    <label for="username">Username</label>
-                    <input class="form-control" type="text" ng-model="username" id="username" name="username" ng-required="true"/>
-                    <span ng-show="(registerForm.username.$dirty || $submitted) && registerForm.username.$error.required">The value is required!</span>
+                    <label for="name">Name</label>
+                    <input class="form-control" type="text" ng-model="name" id="name" name="name" ng-required="true"/>
+                    <span ng-show="(registerForm.name.$dirty || $submitted) && registerForm.name.$error.required">The value is required!</span>
+                    <span ng-show="serverErrors.name">{{ serverErrors.name }}</span>
                 </div>
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input class="form-control" type="email" ng-model="email" id="email" name="email" ng-required="true" />
                     <span ng-show="(registerForm.email.$dirty || $submitted) && registerForm.email.$error.required">The value is required!</span>
                     <span ng-show="registerForm.email.$error.email"> Not valid email!</span>
+                    <span ng-show="serverErrors.email">{{ serverErrors.email }}</span>
                 </div>
                 <div class="form-group">
                     <label for="password" >Password</label>
@@ -32,6 +34,7 @@
                            ng-model="password" ng-required="true"/>
                     <span ng-show="(registerForm.password.$dirty || $submitted) && registerForm.password.$error.required">The value is required!</span>
                     <span ng-show="(registerForm.password.$dirty || $submitted) && registerForm.password.$error.minlength">The password is to short!</span>
+                    <span ng-show="serverErrors.password">{{ serverErrors.password }}</span>
                 </div>
                 <div class="form-group">
                     <label for="passwordConfirm">Password (again)</label>

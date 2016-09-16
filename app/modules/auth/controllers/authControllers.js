@@ -1,3 +1,27 @@
+
+/** Unpack errors from A3 response. Unpacks A3 errors related
+ *  to request body into an object of errors, with field names
+ *  as keys.
+ */
+var adhocracyErrorsToDict = function (response) {
+    if (response.data.status == 'error') {
+        var processedErrors = {}
+        var serverErrors = response.data.errors
+        for (errorIndex in serverErrors) {
+            if (serverErrors.hasOwnProperty(errorIndex)) {
+                var error = serverErrors[errorIndex];
+                if (error.location = 'body') {
+                    simpleName = error.name.split('.').pop();
+                    processedErrors[simpleName] = error.description;
+                }
+            }
+        }
+        return { pc_errors: processedErrors };
+    }
+    throw response;
+}
+
+
 angular.module('pcApp.auth.controllers.authControllers', [
     'pcApp.auth.services.auth',
 ])
@@ -29,8 +53,9 @@ angular.module('pcApp.auth.controllers.authControllers', [
                     $scope.password
                 ).then(function () {
                     $scope.completed = true;
-                }, function (reason) {
-                    // FIXME: set errors
+                }, function (response) {
+                    var errors = adhocracyErrorsToDict(response);
+                    $scope.serverErrors = errors.pc_errors;
                 })
             };
         }
@@ -42,6 +67,7 @@ angular.module('pcApp.auth.controllers.authControllers', [
             };
 
             $scope.$submitted = false;
+            $scope.serverErrors = {}
 
             $scope.login = function () {
                 $scope.$submitted = true;
@@ -54,12 +80,11 @@ angular.module('pcApp.auth.controllers.authControllers', [
                     $scope.nameOrEmail,
                     $scope.password
                 ).then(function (previousLocation) {
-                    $location.url(previousLocation)
-                }, function (reason) {
-                    // FIXME: set errors
+                    $location.url(previousLocation);
+                }).catch(function (response) {
+                    var errors = adhocracyErrorsToDict(response);
+                    $scope.serverErrors = errors.pc_errors;
                 })
-
-                return true
             };
         }
     ]);

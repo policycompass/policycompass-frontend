@@ -14,19 +14,20 @@
     </div>
     <div class="row">
         <div class="col-sm-4 col-sm-offset-4">
-            <form ng-controller="LoginController" ng-submit="login()" name="loginForm" novalidate>
+            <form ng-controller="LoginController" name="loginForm" novalidate>
                 <div class="form-group">
-                    <label for="usernameOrEmail">Username or Email</label>
-                    <input class="form-control" type="text" ng-model="usernameOrEmail" id="usernameOrEmail" name="usernameOrEmail" ng-required="true" />
-                    <span ng-show="(loginForm.usernameOrEmail.$dirty || $submitted) && loginForm.usernameOrEmail.$error.required">The value is required!</span>
+                    <label for="nameOrEmail">Name or Email</label>
+                    <input class="form-control" type="text" ng-model="nameOrEmail" id="nameOrEmail" name="nameOrEmail" ng-required="true" />
+                    <span ng-show="(loginForm.nameOrEmail.$dirty || $submitted) && loginForm.nameOrEmail.$error.required">The value is required!</span>
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input class="form-control" type="password" ng-model="password" id="password" name="usernameOrEmail" ng-required="true" />
-                    <span ng-show="(loginForm.password.$dirty || $submitted) && loginform.password.$error.required">The value is required!</span>
+                    <input class="form-control" type="password" ng-model="password" id="password" name="nameOrEmail" ng-required="true" />
+                    <span ng-show="(loginForm.password.$dirty || $submitted) && loginForm.password.$error.required">The value is required!</span>
+                    <span ng-show="serverErrors.password">{{ serverErrors.password }}</span>
                 </div>
                 <div class="form-group">
-                    <a href class="btn btn-success" ng-disabled="!registerForm.$valid">Login</a>
+                    <a href class="btn btn-primary" ng-disabled="!loginForm.$valid" ng-click="login()">Login</a>
                 </div>
             </form>
         </div>
