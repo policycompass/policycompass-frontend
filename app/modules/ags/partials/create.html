@@ -13,6 +13,10 @@
 
     <div class="pc-visualization-formcontrols">
         <div class="button-group">
+            <div style="float:left" ng-show="canDraft">
+                <toggle-switch html="true" ng-model="ag.is_draft" on-label="Draft" off-label="Public" class="switch-danger" ></toggle-switch>
+                &nbsp;
+            </div>
             <a href="#!/login" ng-if="!userState || !userState.loggedIn" class="btn btn-default btn-save" target="_blank">Login to Save</a>
             <a href="" id="saveButton" data-ng-disabled="agForm.$invalid" ng-if="userState.loggedIn" class="btn btn-default btn-save" ng-click="createAg()">Save</a>
             <a type="button" class="btn btn-danger" href="#!/ags/{{ag.id}}">Cancel</a>
@@ -27,7 +31,7 @@
 
                     <div class="form-group" ng-class="{'has-error': agForm.title.$dirty && agForm.title.$invalid}">
                         <label for="name">Title *</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Argumentation graph title" ng-model="ag.name" ng-minlength="10" required>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Argumentation graph title" ng-model="ag.name" required>
                     </div>
                 </div>
                 <div class="col-lg-8">
