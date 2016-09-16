@@ -47,6 +47,10 @@ var pcApp = angular.module('pcApp', pcAppDependencies)
         $rootScope.location = $location;
     })
 
+    .run(['Auth', function(Auth) {
+        Auth.recoverSession()
+    }])
+
 /**
  * Very simple central error handling
  */
