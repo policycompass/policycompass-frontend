@@ -218,6 +218,10 @@ $ancho: $unidad * 2;
     content: "\e611";
 }
 
+.agIcon a:before {
+    content: "\f074";
+}
+
 .storyIcon a:before {
     content: "\f0f6";
 }

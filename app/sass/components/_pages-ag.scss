@@ -1,11 +1,11 @@
 .fonticon-ag:before {
-    content: "\e612";
+    content: "\f074";
     // color:$claro;
 }
 
 .fonticon-indicator:before {
-    content: "\e803";
-    content: "\e80a";
+    content: "\f074";
+    content: "\f074";
 }
 
 .metadata-ag {
@@ -124,4 +124,13 @@
 
 .form-group {
     position: relative;
+}
+
+#ags-discussion {
+    height: 500px;
+    margin-bottom: 50px;
+}
+
+.ags-add-button {
+    padding-bottom: 20px;
 }

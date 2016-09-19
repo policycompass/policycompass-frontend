@@ -115,7 +115,13 @@ angular.module('pcApp.ags.controllers.ag', [
         'dialogs',
         'agService',
         'Auth',
-        function($scope, Ag, $location, $log, dialogs, agservice, Auth) {
+        '$routeParams',
+        function($scope, Ag, $location, $log, dialogs, agservice, Auth, $routeParams) {
+
+            $scope.discussionID = null;
+            if ($routeParams.discussion) {
+                $scope.discussionID = $routeParams.discussion;
+            }
 
             $scope.canDraft = true;
 
