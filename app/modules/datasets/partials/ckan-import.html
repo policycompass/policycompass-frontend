@@ -1,4 +1,6 @@
 <section>
+    <div id="top"></div>
+
     <h4>Import datasets from the European Data Portal:</h4>
 
     <div class="input-group">
@@ -55,7 +57,7 @@
                 </div>
 
             <div style="text-align: center">
-                <pagination ng-show="ckan.results" total-items="ckan.results.length" ng-change="onPageChange()" items-per-page="itemsPerPage" ng-model="currentPage" max-size="5" class="pagination-sm" style="float: inherit;" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+                <pagination ng-show="ckan.results" total-items="ckan.count" ng-change="onPageChange()" items-per-page="itemsPerPage" ng-model="currentPage" max-size="5" class="pagination-sm" style="float: inherit;" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
             </div>
         </div>
     </div>
