@@ -1,3 +1,4 @@
+
 <div class="container">
     <div class="content-header">
         <h1><span class="glyphicon glyphicon-list-alt"></span>{{ models.model.title }}</h1>
@@ -51,13 +52,13 @@
                                     <username userpath="{{models.model.userPath}}"></username>
                                 </div>
                             </div>
-                            <div class="form-item" ng-if="models.model.dateAddedtoPC">
+                            <div class="form-item" ng-if="models.model.date_created">
                                 <div class="field-label">Added</div>
-                                <div class="field-content">{{ models.model.dateAddedtoPC | date:'longDate' }}</div>
+                                <div class="field-content">{{ models.model.date_created | date:'longDate' }}</div>
                             </div>
-                            <div class="form-item" ng-if="models.model.dateModified">
+                            <div class="form-item" ng-if="models.model.date_modified">
                                 <div class="field-label">Modified</div>
-                                <div class="field-content">{{ models.model.dateModified | date:'longDate' }}</div>
+                                <div class="field-content">{{ models.model.date_modified | date:'longDate' }}</div>
                             </div>
                         </div>
 
