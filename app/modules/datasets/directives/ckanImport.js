@@ -5,7 +5,7 @@
  * But implemented again, because source are not maintained
  */
 angular.module('pcApp.datasets.directives.ckanImport', []).directive('ckanImport', [
-    '$http', 'ngProgress', 'API_CONF', 'dialogs', function ($http, ngProgress, API_CONF, dialogs) {
+    '$http', 'ngProgress', 'API_CONF', 'dialogs', '$location', '$anchorScroll', '$routeParams', function ($http, ngProgress, API_CONF, dialogs, $location, $anchorScroll, $routeParams) {
         return {
             restrict: 'A',
             templateUrl: function (el, attrs) {
@@ -16,7 +16,8 @@ angular.module('pcApp.datasets.directives.ckanImport', []).directive('ckanImport
             },
             link: function (scope, element, attrs, ctrls) {
                 scope.itemsPerPage = 10;
-                scope.ckanStart = 0;
+                scope.start = 0;
+                scope.currentPage = 1;
                 scope.byNumResourcesGtZero = function (result) {
                     if(result){
                         return result.num_resources > 0;
@@ -38,23 +39,32 @@ angular.module('pcApp.datasets.directives.ckanImport', []).directive('ckanImport
                     }
                 };
 
-                scope.onPageChange = function () {
-                    var start = (scope.currentPage - 1) * scope.itemsPerPage;
-                    scope.ckanStart = start;
-                    handlePageResults(scope.ckan);
+                scope.init = function(){
+                    if(typeof $routeParams.term !== 'undefined'){
+                        scope.search($routeParams.term, $routeParams.start);
+                    }
+                    if(typeof $routeParams.page !== 'undefined'){
+                        scope.currentPage = $routeParams.page;
+                    }
+                }
+
+                scope.goToTop = function(){
+                    var old = $location.hash();
+                    $location.hash('top');
+                    $anchorScroll();
+                    $location.hash(old);
                 };
 
-                var handlePageResults = function(result){
-                    scope.ckanSearchResults = [];
-                    var length = scope.ckanStart + scope.itemsPerPage;
+                scope.onPageChange = function () {
+                    scope.start = ((scope.currentPage - 1) * scope.itemsPerPage) + 1
+                    scope.search(scope.lastTerm, scope.start);
+                    scope.goToTop();
+                };
 
-                    if(length > result.results.length){
-                        length = result.results.length;
-                    }
-
-                    for(var i = scope.ckanStart; i<length; i++){
-                        scope.ckanSearchResults[i-scope.ckanStart] = result.results[i];
-                    }
+                scope.saveParameters = function(){
+                    $location.search('term', scope.searchTerm);
+                    $location.search('page', scope.currentPage);
+                    $location.search('start', scope.start);
                 }
 
                 scope.loadResource = function (dataset, resource) {
@@ -74,6 +84,7 @@ angular.module('pcApp.datasets.directives.ckanImport', []).directive('ckanImport
                         else{
                             scope.loadData(dataset, resource, response.data);
                             ngProgress.complete();
+                            //scope.saveParameters();
                         }
                     });
                 };
@@ -92,9 +103,11 @@ angular.module('pcApp.datasets.directives.ckanImport', []).directive('ckanImport
                     }).then(function (response) {
                         ngProgress.complete();
                         scope.ckan = response.data.result;
-                        handlePageResults(response.data.result);
+                        scope.ckanSearchResults = response.data.result.results;
                     });
                 };
+
+                scope.init();
             }
         }
     }
