@@ -791,12 +791,17 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                     $scope.plotMapChart = function () {
                     	
-                    	if (!$routeParams.storyId>0) {
-	                        if (document.getElementById("container_graph_" + $scope.visualization.id) != null) {
-	                            document.getElementById("container_graph_" + $scope.visualization.id).innerHTML = "";
-	                        } else {
-	                            document.getElementById("container_graph_").innerHTML = "";
-	                        }
+                    	var plotThisMapChart = false;
+                    	
+                    	if (document.getElementById("container_graph_" + $scope.visualization.id) != null) {
+							document.getElementById("container_graph_" + $scope.visualization.id).innerHTML = "";
+							plotThisMapChart = true;
+	                    } else if (document.getElementById("container_graph_") != null) {
+							document.getElementById("container_graph_").innerHTML = "";
+							plotThisMapChart = true;
+	                    }
+
+                    	if (plotThisMapChart) {	                        
 						
 	                        var margin = {
 	                            top: 20,
@@ -894,16 +899,18 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                 font_size = font_size / 5;
                                 $scope.showLegend = false;
                             }
+							
+							var plotThisPieChart = false;
 
-							if (!$routeParams.storyId>0) {
-	                            if (($scope.mode == 'create') || ($scope.mode == 'edit')) {
-	                                if ($scope.visualization.id) {
-	                                    document.getElementById("container_graph_" + $scope.visualization.id).innerHTML = "";
-	                                } else {
-	                                    document.getElementById("container_graph_").innerHTML = "";
-	                                }
-	                            }
-							}
+                            if (($scope.mode == 'create') || ($scope.mode == 'edit')) {                                
+                                if (document.getElementById("container_graph_" + $scope.visualization.id) != null) {
+                                    document.getElementById("container_graph_" + $scope.visualization.id).innerHTML = "";
+                                    plotThisPieChart = true;
+                                } else if (document.getElementById("container_graph_") != null) {
+                                    document.getElementById("container_graph_").innerHTML = "";
+                                    plotThisPieChart = true;
+                                }
+                            }                            
 
 
                             $scope.dataset.forEach(function (d, i) {
@@ -913,15 +920,15 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                     $style = 'style="display: none;"';
                                 }
 
-								if (!$routeParams.storyId>0) {
+								
 	                                if (($scope.mode == 'create') || ($scope.mode == 'edit')) {
 	                                    if (document.getElementById("container_graph_" + $scope.visualization.id) != null) {
 	                                        document.getElementById("container_graph_" + $scope.visualization.id).innerHTML = document.getElementById("container_graph_" + $scope.visualization.id).innerHTML + "<div class='pie_" + $scope.visualization.id + "' id='pie_" + $scope.visualization.id + "_" + i + "' " + $style + "></div>"
-	                                    } else {
+	                                    } else if (document.getElementById("container_graph_") != null) {
 	                                        document.getElementById("container_graph_").innerHTML = document.getElementById("container_graph_").innerHTML + "<div class='pie_' id='pie__" + i + "' " + $style + "></div>"
 	                                    }
 	                                }
-								}
+								
 
                             });
 
@@ -930,7 +937,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
 								var datasetToSend = d;
 								
-								if (!$routeParams.storyId>0) {
+								if (plotThisPieChart) {
 									if (($scope.mode == 'create') || ($scope.mode == 'edit')) {
 										var pieObj = policycompass.viz.pie({
 											'idName': "pie_" + $scope.visualization.id + "_" + i,
@@ -3035,61 +3042,67 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                             $scope.labelYAxe = labelYAxe;
                                         }
 
-										if (!$routeParams.storyId>0) {
-	                                        if (($scope.mode == 'create') || ($scope.mode == 'edit')) {
-	                                            if (document.getElementById("container_graph_" + $scope.visualization.id) != null) {
-	                                                document.getElementById("container_graph_" + $scope.visualization.id).innerHTML = "";
-	                                            } else {
-	                                                document.getElementById("container_graph_").innerHTML = "";
-	                                            }
-	
-	                                            var barLine = policycompass.viz.line({
-	                                                'idName': "container_graph_" + $scope.visualization.id,
-	                                                'width': width,
-	                                                'height': height,
-	                                                'margin': margin,
-	                                                'labelX': "label X",
-	                                                'labelY': labelYAxe,
-	                                                'radius': radiouspoint,
-	                                                'dymarging': dymarging,
-	                                                'offsetYaxesR': offsetYaxesR,
-	                                                'offsetYaxesL': offsetYaxesL,
-	                                                'distanceXaxes': distanceXaxes,
-	                                                'font_size': font_size,
-	                                                'showYAxesTogether': $scope.showYAxes,
-	                                                'showLegend': $scope.showLegend,
-	                                                'showLines': $scope.showLines,
-	                                                'showAreas': $scope.showAreas,
-	                                                'showPoints': $scope.showPoints,
-	                                                'showLabels': $scope.showLabels,
-	                                                'showGrid': $scope.showGrid,
-	                                                'showAsPercentatge': $scope.showAsPercentatge,
-	                                                'showAstoplines': $scope.showAstoplines,
-	                                                'legendsColumn': legendsColumn,
-	                                                'resolution': $scope.resolution.value,
-	                                                'plotDataIn': $scope.plotdataoption,
-	                                                'tickposition': $scope.plotxaxislegend,
-	                                            });
-	
-	                                            if (numbers1.length > 0) {
-	
-	                                                if ($scope.firstLoad == true) {
-	                                                    $scope.firstLoad = false;
-	
-	                                                    $scope.$watch('sem', function (sem) {
-	
-	                                                        if ($scope.sem == $scope.visualization.historical_events_in_visualization.length) {
-	                                                            barLine.render($scope.numbers1, $scope.eventsToPlot, $scope.mode);
-	                                                        }
-	
-	                                                    });
-	                                                } else {
-	
-	                                                    barLine.render($scope.numbers1, $scope.eventsToPlot, $scope.mode);
-	                                                }
-	                                            }
-	                                        }
+
+										var plotThisBarChart = false;
+                                        if (($scope.mode == 'create') || ($scope.mode == 'edit')) {
+                                            if (document.getElementById("container_graph_" + $scope.visualization.id) != null) {
+                                                document.getElementById("container_graph_" + $scope.visualization.id).innerHTML = "";
+                                                plotThisBarChart = true;
+                                            } if (document.getElementById("container_graph_") != null) {
+                                                document.getElementById("container_graph_").innerHTML = "";
+                                                plotThisBarChart = true;
+                                            }
+										
+										if (plotThisBarChart) {
+                                            var barLine = policycompass.viz.line({
+                                                'idName': "container_graph_" + $scope.visualization.id,
+                                                'width': width,
+                                                'height': height,
+                                                'margin': margin,
+                                                'labelX': "label X",
+                                                'labelY': labelYAxe,
+                                                'radius': radiouspoint,
+                                                'dymarging': dymarging,
+                                                'offsetYaxesR': offsetYaxesR,
+                                                'offsetYaxesL': offsetYaxesL,
+                                                'distanceXaxes': distanceXaxes,
+                                                'font_size': font_size,
+                                                'showYAxesTogether': $scope.showYAxes,
+                                                'showLegend': $scope.showLegend,
+                                                'showLines': $scope.showLines,
+                                                'showAreas': $scope.showAreas,
+                                                'showPoints': $scope.showPoints,
+                                                'showLabels': $scope.showLabels,
+                                                'showGrid': $scope.showGrid,
+                                                'showAsPercentatge': $scope.showAsPercentatge,
+                                                'showAstoplines': $scope.showAstoplines,
+                                                'legendsColumn': legendsColumn,
+                                                'resolution': $scope.resolution.value,
+                                                'plotDataIn': $scope.plotdataoption,
+                                                'tickposition': $scope.plotxaxislegend,
+                                            });
+
+                                            if (numbers1.length > 0) {
+
+                                                if ($scope.firstLoad == true) {
+                                                    $scope.firstLoad = false;
+
+                                                    $scope.$watch('sem', function (sem) {
+
+                                                        if ($scope.sem == $scope.visualization.historical_events_in_visualization.length) {
+                                                            barLine.render($scope.numbers1, $scope.eventsToPlot, $scope.mode);
+                                                        }
+
+                                                    });
+                                                } else {
+
+                                                    barLine.render($scope.numbers1, $scope.eventsToPlot, $scope.mode);
+                                                }
+                                            }
                                         }
+                                        
+                                       }
+
                                     }
                                 }
                             } else if ($scope.typeToPlot === 'graph_pie') {
@@ -3181,9 +3194,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                         $scope.selection = {Keys: $arrayTmp};
                                     }
 									
-									if (!$routeParams.storyId>0) {
-                                    	$scope.plotPieChart();
-                                   	}
+                                    $scope.plotPieChart();
 
                                 }
                                 
@@ -3261,68 +3272,74 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                     $scope.datasetToSend = datasetToSend;
                                 }
 								
-								if (!$routeParams.storyId>0) {
-	                                if (($scope.mode == 'create') || ($scope.mode == 'edit')) {
-	                                    if (document.getElementById("container_graph_" + $scope.visualization.id) != null) {
-	                                        document.getElementById("container_graph_" + $scope.visualization.id).innerHTML = "";
-	                                    } else {
-	                                        document.getElementById("container_graph_").innerHTML = "";
+								
+                                if (($scope.mode == 'create') || ($scope.mode == 'edit')) {
+                                	
+                                	var plotThisBarChart = false;
+                                	
+                                    if (document.getElementById("container_graph_" + $scope.visualization.id) != null) {
+                                        document.getElementById("container_graph_" + $scope.visualization.id).innerHTML = "";
+                                        plotThisBarChart = true;
+                                    } else if (document.getElementById("container_graph_") != null) {
+                                        document.getElementById("container_graph_").innerHTML = "";
+                                        plotThisBarChart = true;
+                                    }
+                                    
+									if (plotThisBarChart) {
+                                    var barObj = policycompass.viz.barsMultiple({
+                                        'idName': "container_graph_" + $scope.visualization.id,
+                                        'width': width,
+                                        'height': height,
+                                        'margin': margin,
+                                        'labelX': "",
+                                        'labelY': labelYAxe,
+                                        'font_size': font_size,
+                                        'radius': radiouspoint,
+                                        'showLegend': $scope.showLegend,
+                                        'showLines': $scope.showLines,
+                                        'showAreas': $scope.showAreas,
+                                        'showPoints': $scope.showPoints,
+                                        'showLabels': $scope.showLabels,
+                                        'showGrid': $scope.showGrid,
+                                        'showYAxesTogether': $scope.showYAxes,
+                                        'legendsColumn': legendsColumn,
+                                        'resolution': $scope.resolution.value,
+                                        'showAsPercentatge': $scope.showAsPercentatge,
+                                        'showAstoplines': $scope.showAstoplines,
+                                        'groupby':$scope.groupedby.value,
+                                    });
+
+                                    if (datasetToSend.length>0) {
+	                                    if ($scope.eventsToPlot.length==0) {
+	                                    	barObj.render(datasetToSend, $scope.eventsToPlot);	
 	                                    }
-	
-	                                    var barObj = policycompass.viz.barsMultiple({
-	                                        'idName': "container_graph_" + $scope.visualization.id,
-	                                        'width': width,
-	                                        'height': height,
-	                                        'margin': margin,
-	                                        'labelX': "",
-	                                        'labelY': labelYAxe,
-	                                        'font_size': font_size,
-	                                        'radius': radiouspoint,
-	                                        'showLegend': $scope.showLegend,
-	                                        'showLines': $scope.showLines,
-	                                        'showAreas': $scope.showAreas,
-	                                        'showPoints': $scope.showPoints,
-	                                        'showLabels': $scope.showLabels,
-	                                        'showGrid': $scope.showGrid,
-	                                        'showYAxesTogether': $scope.showYAxes,
-	                                        'legendsColumn': legendsColumn,
-	                                        'resolution': $scope.resolution.value,
-	                                        'showAsPercentatge': $scope.showAsPercentatge,
-	                                        'showAstoplines': $scope.showAstoplines,
-	                                        'groupby':$scope.groupedby.value,
-	                                    });
-	
-	                                    if (datasetToSend.length>0) {
-		                                    if ($scope.eventsToPlot.length==0) {
-		                                    	barObj.render(datasetToSend, $scope.eventsToPlot);	
-		                                    }
-		                                    else {
-												$scope.$watchCollection('eventsToPlot', function (eventsToPlot) {                        
+	                                    else {
+											$scope.$watchCollection('eventsToPlot', function (eventsToPlot) {                        
+												
+												var plotChart = true;
+												angular.forEach($scope.eventsToPlot, function(value, key) {
+	  												if (!value.startDate) {
+	  													plotChart = false;
+	  												}
+												});
+												
+												if (plotChart) {
 													
-													var plotChart = true;
-													angular.forEach($scope.eventsToPlot, function(value, key) {
-		  												if (!value.startDate) {
-		  													plotChart = false;
-		  												}
-													});
+													if (document.getElementById("container_graph_" + $scope.visualization.id) != null) {
+	                                        			document.getElementById("container_graph_" + $scope.visualization.id).innerHTML = "";
+	                                    			} else {
+	                                        			document.getElementById("container_graph_").innerHTML = "";
+	                                    			}
 													
-													if (plotChart) {
-														
-														if (document.getElementById("container_graph_" + $scope.visualization.id) != null) {
-		                                        			document.getElementById("container_graph_" + $scope.visualization.id).innerHTML = "";
-		                                    			} else {
-		                                        			document.getElementById("container_graph_").innerHTML = "";
-		                                    			}
-														
-														barObj.render(datasetToSend, $scope.eventsToPlot);
-													}											
-													
-												});                                    	
-		                                    }
+													barObj.render(datasetToSend, $scope.eventsToPlot);
+												}											
+												
+											});                                    	
 	                                    }
-	                                    
-	                                }
+                                    }
+                                    }
                                 }
+                                
                             }
                         }
                     }

@@ -1704,7 +1704,9 @@ policycompass.viz.line = function (options) {
                                 if (self.xaxeformat == 'sequence') {
 
                                 } else {
-                                    document.getElementById("modaladddataset").click();
+                                	if (document.getElementById("modaladddataset") != null) {
+                                    	document.getElementById("modaladddataset").click();
+									}
                                 }
                             }
                         })
