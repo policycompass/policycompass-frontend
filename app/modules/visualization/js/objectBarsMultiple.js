@@ -124,12 +124,12 @@ policycompass.viz.barsMultiple = function (options) {
 							var desc = "Desc.: " +d.desc;
 							
 							tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '<br/>'+fromDate+'<br/>'+toDate+'<br/>'+desc+'</div>');
-	                        d3.selectAll(".event_circle_"+i).style("stroke-width", self.radius+1);
+	                        d3.selectAll(self.parentSelect+" .event_circle_"+i).style("stroke-width", self.radius+1);
 	                    	
 	                    })
 	                    .on("mouseout", function (d, i) {
 							mouseout();
-							d3.selectAll(".event_circle_"+i).style("stroke-width", self.radius);
+							d3.selectAll(self.parentSelect+" .event_circle_"+i).style("stroke-width", self.radius);
 	                    })
 	                    .text(function (d, i) {
 	                        //var resTRext = d.title;	                        
@@ -325,7 +325,7 @@ policycompass.viz.barsMultiple = function (options) {
 					})
             		.on("mouseout", function (d, i) {
 						mouseout();
-						d3.selectAll(".event_circle_"+d.index).style("stroke-width", self.radius);
+						d3.selectAll(self.parentSelect+" .event_circle_"+d.index).style("stroke-width", self.radius);
 					})
             		;
 			});
@@ -383,7 +383,7 @@ policycompass.viz.barsMultiple = function (options) {
             		return 1;
             	})
             	.on("mouseover", function (d, i) {			
-					d3.selectAll(".event_circle_"+d.index).style("stroke-width", self.radius+1);				
+					d3.selectAll(self.parentSelect+" .event_circle_"+d.index).style("stroke-width", self.radius+1);				
 					var str = "Event: " + d.title;
 					var fromDate = "From: " +d.startDate;
 					var toDate = "To: " +d.endDate;
@@ -397,7 +397,7 @@ policycompass.viz.barsMultiple = function (options) {
 				})
             	.on("mouseout", function (d, i) {
 					mouseout();
-					d3.selectAll(".event_circle_"+d.index).style("stroke-width", self.radius);
+					d3.selectAll(self.parentSelect+" .event_circle_"+d.index).style("stroke-width", self.radius);
 				})
             	;
 		}		
@@ -1012,7 +1012,7 @@ policycompass.viz.barsMultiple = function (options) {
                     
 			var re = find.replace(/[^\w\-\u00A0-\uFFFF]/g,"_");
 			
-			d3.selectAll(".bar_line_"+re).attr("stroke","red").attr("stroke-width",0.8);       	        	
+			d3.selectAll(self.parentSelect+" .bar_line_"+re).attr("stroke","red").attr("stroke-width",0.8);       	        	
 						
             var resolution = 'day';
             var formatXaxe = "%d-%m-%Y";
@@ -1360,7 +1360,7 @@ policycompass.viz.barsMultiple = function (options) {
 						var find = d.title;						
 						var re = find.replace(/[^\w\-\u00A0-\uFFFF]/g,"_");
 						
-						d3.selectAll(".bar_line_"+re).attr("stroke","red").attr("stroke-width",0.8);
+						d3.selectAll(self.parentSelect+" .bar_line_"+re).attr("stroke","red").attr("stroke-width",0.8);
 			
 						var str = fullString;				
 						tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '</div>');
@@ -1370,7 +1370,7 @@ policycompass.viz.barsMultiple = function (options) {
 						var find = d.title;						
 						var re = find.replace(/[^\w\-\u00A0-\uFFFF]/g,"_");
 						
-						d3.selectAll(".bar_line_"+re).attr("stroke","white").attr("stroke-width",0.0);
+						d3.selectAll(self.parentSelect+" .bar_line_"+re).attr("stroke","white").attr("stroke-width",0.0);
 						
 						mouseout();
                     })					
