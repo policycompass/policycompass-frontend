@@ -78,13 +78,13 @@
                             <username userpath="{{visualization.creator_path}}"></username>
                         </div>
                     </div>
-                    <div class="form-item" ng-if="visualization.created_at">
+                    <div class="form-item" ng-if="visualization.date_created">
                         <div class="field-label">Added</div>
-                        <div class="field-content">{{ visualization.created_at | date:'longDate' }}</div>
+                        <div class="field-content">{{ visualization.date_created | date:'longDate' }}</div>
                     </div>
-                    <div class="form-item" ng-if="visualization.updated_at">
+                    <div class="form-item" ng-if="visualization.date_modified">
                         <div class="field-label">Modified</div>
-                        <div class="field-content">{{ visualization.updated_at | date:'longDate' }}</div>
+                        <div class="field-content">{{ visualization.date_modified | date:'longDate' }}</div>
                     </div>
                 </div>
 
