@@ -4403,8 +4403,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
 	                    delete $scope.visualization.id;
 	                    delete $scope.visualization.self;
 	                    delete $scope.visualization.creator_path;
-	                    delete $scope.visualization.created_at;
-	                    delete $scope.visualization.updated_at;
+	                    delete $scope.visualization.date_created;
+	                    delete $scope.visualization.date_modified;
 						
 						$scope.visualization.is_draft=true;
 						
