@@ -3613,7 +3613,11 @@ angular.module('pcApp.visualization.controllers.visualization', [
                 $routeParams.visualizationId = $scope.idvisulist;
                 $scope.list = true;
             }
-
+			
+			if (!$scope.randomID) {
+				$scope.randomID = $routeParams.visualizationId;
+			}
+			
             var locationURL = $location.path();
 
             if (locationURL.indexOf("edit") > -1) {

@@ -16,6 +16,7 @@ angular.module('pcApp.visualization.directives.visualizationDirective', [
                     $scope.idvisulist = $scope.visualizationId;
                 }
                 $routeParams.visualizationId = $scope.visualizationId;
+                $scope.randomID = Math.floor(Math.random()*16777215);
                 $controller('VisualizationsEditController', { $scope: $scope });
             };
             return {
