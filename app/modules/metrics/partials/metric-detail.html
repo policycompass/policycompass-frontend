@@ -72,6 +72,10 @@
                         <div class="field-label">Added</div>
                         <div class="field-content">{{ data.date_created | date:'longDate' }}</div>
                     </div>
+                    <div class="form-item" ng-if="data.date_modified">
+                        <div class="field-label">Modified</div>
+                        <div class="field-content">{{ data.date_modified | date:'longDate' }}</div>
+                    </div>
                 </div>
             </div>
 

@@ -38,13 +38,13 @@
                         <username userpath="{{ ag.creator_path }}"></username>
                     </div>
                 </div>
-                <div class="form-item" ng-if="ag.issued">
+                <div class="form-item" ng-if="ag.date_created">
                     <div class="field-label">Added</div>
-                    <div class="field-content">{{ ag.issued | date:'longDate' }}</div>
+                    <div class="field-content">{{ ag.date_created | date:'longDate' }}</div>
                 </div>
-                <div class="form-item" ng-if="ag.modified">
+                <div class="form-item" ng-if="ag.date_modified">
                     <div class="field-label">Modified</div>
-                    <div class="field-content">{{ ag.modified | date:'longDate' }}</div>
+                    <div class="field-content">{{ ag.date_modified | date:'longDate' }}</div>
                 </div>
             </div>
 

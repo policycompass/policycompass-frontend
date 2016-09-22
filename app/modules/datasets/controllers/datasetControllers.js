@@ -1060,7 +1060,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 }
             }
 
-            
+
                 $scope.addIndicator = function () {
                 var modelInstance = $modal.open({
                     templateUrl: 'modules/datasets/partials/indicator-form.html',
