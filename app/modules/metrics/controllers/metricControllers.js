@@ -131,7 +131,7 @@ angular.module('pcApp.metrics.controllers.metric', [
             }
 
             $scope.abort = function () {
-                var dialog = dialogs.confirm("Are you sure?", "Do you want to revert your changes in this visualization?");
+                var dialog = dialogs.confirm("Are you sure?", "Do you want to revert your changes in this metric?");
                 dialog.result.then(function () {
                     MetricsControllerHelper.clear();
                     $location.path("/metrics/create-1");
@@ -151,55 +151,51 @@ angular.module('pcApp.metrics.controllers.metric', [
 
             $scope.user = Auth;
 
-            if (!$scope.user.state.loggedIn) {
-                $location.path("/login")
-            } else {
-                $scope.apply_metric_helper = ApplyMetricHelper;
-                $scope.apply_metric_helper.init($routeParams.metricId);
-                $scope.error = true;
+            $scope.apply_metric_helper = ApplyMetricHelper;
+            $scope.apply_metric_helper.init($routeParams.metricId);
+            $scope.error = true;
 
-                $scope.submit = function () {
-                    _.each($scope.apply_metric_helper.data.datasets, function (value, key) {
-                        delete value['indicator'];
-                    });
-                    $location.path("/metrics/" + $routeParams.metricId + "/apply-2")
-                };
+            $scope.submit = function () {
+                _.each($scope.apply_metric_helper.data.datasets, function (value, key) {
+                    delete value['indicator'];
+                });
+                $location.path("/metrics/" + $routeParams.metricId + "/apply-2")
+            };
 
-                $scope.$watch('apply_metric_helper.data.datasets', function (newvalue, oldvalue) {
-                    var notValid = true;
-                    _.each(newvalue, function (value, key) {
-                        notValid = !(value.dataset > 0);
-                    });
-                    $scope.error = notValid;
-                }, true);
+            $scope.$watch('apply_metric_helper.data.datasets', function (newvalue, oldvalue) {
+                var notValid = true;
+                _.each(newvalue, function (value, key) {
+                    notValid = !(value.dataset > 0);
+                });
+                $scope.error = notValid;
+            }, true);
 
-                $scope.highlightIndicator = function (variable, event) {
-                    var target = angular.element('#variable' + variable);
-                    target.css('background', 'linear-gradient(to bottom, #9ac1e3, #72a9d8)');
-                    target.css('color', 'white');
-                    target.css('border-color', '#3177b3');
+            $scope.highlightIndicator = function (variable, event) {
+                var target = angular.element('#variable' + variable);
+                target.css('background', 'linear-gradient(to bottom, #9ac1e3, #72a9d8)');
+                target.css('color', 'white');
+                target.css('border-color', '#3177b3');
 
-                    var el = event.currentTarget;
-                    var span = angular.element(el.children[0].children[0]);
-                    span.css('background', 'linear-gradient(to bottom, #9ac1e3, #72a9d8)');
-                    span.css('color', 'white');
-                    span.css('border-color', '#3177b3');
-                };
+                var el = event.currentTarget;
+                var span = angular.element(el.children[0].children[0]);
+                span.css('background', 'linear-gradient(to bottom, #9ac1e3, #72a9d8)');
+                span.css('color', 'white');
+                span.css('border-color', '#3177b3');
+            };
 
-                $scope.unhighlightIndicator = function (variable, event) {
-                    var target = angular.element('#variable' + variable);
-                    target.css('background', 'transparent');
-                    target.css('border', '1px solid #ffd964');
-                    target.css('color', '#b75c6f');
+            $scope.unhighlightIndicator = function (variable, event) {
+                var target = angular.element('#variable' + variable);
+                target.css('background', 'transparent');
+                target.css('border', '1px solid #ffd964');
+                target.css('color', '#b75c6f');
 
-                    var el = event.currentTarget;
-                    var span = angular.element(el.children[0].children[0]);
-                    span.css('background', 'transparent');
-                    ;
-                    span.css('border', '1px solid #ffd964');
-                    span.css('color', '#4d4d4d');
-                };
-            }
+                var el = event.currentTarget;
+                var span = angular.element(el.children[0].children[0]);
+                span.css('background', 'transparent');
+                ;
+                span.css('border', '1px solid #ffd964');
+                span.css('color', '#4d4d4d');
+            };
         }
     ])
 
@@ -210,8 +206,11 @@ angular.module('pcApp.metrics.controllers.metric', [
         '$http',
         'ApplyMetricHelper',
         '$location',
-        function ($scope, $routeParams, API_CONF, $http, ApplyMetricHelper, $location) {
+        'Auth',
+        'dialogs',
+        function ($scope, $routeParams, API_CONF, $http, ApplyMetricHelper, $location, Auth, dialogs) {
 
+            $scope.user = Auth;
             $scope.apply_metric_helper = ApplyMetricHelper;
             $scope.apply_metric_helper.init($routeParams.metricId);
 
@@ -230,6 +229,16 @@ angular.module('pcApp.metrics.controllers.metric', [
                 });
             };
 
+            $scope.goToLogin = function () {
+                $location.path("/login");
+            }
+
+            $scope.abort = function () {
+                var dialog = dialogs.confirm("Are you sure?", "Do you want not to save this metric application?");
+                dialog.result.then(function () {
+                    $location.path("/metrics/" + $routeParams.metricId + "/apply-1");
+                });
+            }
         }
     ])
 
