@@ -16,7 +16,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                 id: metricId,
                                 title: metric.title,
                                 date_created: metric.date_created,
-                                issued: metric.issued,
+                                //issued: metric.issued,
                                 indicator: metric.indicator_id,
                             };
 
@@ -1050,7 +1050,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                             var data = {
                                 id: metric.id,
                                 title: metric.title,
-                                issued: metric.issued,
+                                //issued: metric.issued,
                                 date_created: metric.date_created,
                             };
 
@@ -1198,7 +1198,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                             'id': idMetric,
                             'name': selectedText,
                             'title': title,
-                            'issued': date_created,
+                            //'issued': date_created,
                             'date_created': date_created,                            
                             'column': 'from',
                             'value': 'value',
@@ -4033,7 +4033,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					                        'id': $scope.MetricSelectediId_[id], //'name': $scope.visualization.metrics_in_visualization[i].title,
 					                        'name': $scope.visualization.datasets_in_visualization[i].title, //'title': $scope.visualization.metrics_in_visualization[i].title,
 					                        'title': $scope.visualization.datasets_in_visualization[i].title, //'issued': $scope.visualization.metrics_in_visualization[i].issued,
-					                        'issued': $scope.visualization.datasets_in_visualization[i].issued,
+					                        //'issued': $scope.visualization.datasets_in_visualization[i].issued,
 					                        'date_created': $scope.visualization.datasets_in_visualization[i].date_created,
 					                        'identities': $scope.ListIndividualDatasetCheckboxes_[id],
 					                        'identitiescolors': $scope.dataset_color_palete_[id],
@@ -4183,7 +4183,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                         'id': metric.id,
                         'name': metric.title,
                         'title': metric.title,
-                        'issued': metric.issued,
+                        //'issued': metric.issued,
                         'date_created': metric.date_created,
                         'column': column,
                         'value': value,
