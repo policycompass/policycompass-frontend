@@ -5,7 +5,7 @@
 
         <div class="pc-visualization-formcontrols">
             <a href="#" ng-if="models.model.is_draft" ng-disabled="models.model.is_draft" class="btn btn-default btn-danger ng-scope" disabled="disabled">Draft</a>
-            <a type="button" class="btn btn-primary" data-ng-click="updateModel()" href="#!/models/{{ models.model.id }}/edit/true">Run Simulation</a>
+            <a type="button" class="btn btn-primary" href="#!/models/{{ models.model.id }}/edit/true">Run Simulation</a>
 
             <div class="button-group">
                 <a type="button" class="btn btn-primary  btn-create" href="#!/models/{{ models.model.id }}/edit">Edit</a>
