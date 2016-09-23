@@ -8,7 +8,7 @@ angular.module('pcApp.auth.directives.loginRegister', [
             templateUrl: 'modules/auth/partials/login.html',
         };
     })
-    .directive('register', function (Adhocracy) {
+    .directive('register', function () {
         return {
             restrict: 'E',
             templateUrl: 'modules/auth/partials/register.html',

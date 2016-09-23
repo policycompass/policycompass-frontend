@@ -7,7 +7,7 @@ angular.module('pcApp.adhocracyEmbedder.services.adhocracy', [])
  *
  * Currently returns a promise, because the init function is asynchronous.
  */
-    .factory('Adhocracy', [
+    .factory('AdhocracySdk', [
         "$q", "API_CONF", function ($q, API_CONF) {
             var deferred = $q.defer();
             $.ajax({
@@ -19,7 +19,30 @@ angular.module('pcApp.adhocracyEmbedder.services.adhocracy', [])
                     });
                 }
             });
-            return deferred.promise;
+            return deferred.promise
+        }
+    ])
+
+    .factory('AdhocracyCrossWindowChannel', [
+        'AdhocracySdk', '$q',
+        function(AdhocracySdk, $q) {
+            return AdhocracySdk.then(function (adh) {
+                var iframeJQuery = adh.getIframe('empty', {
+                    noheader: true,
+                    nocenter: true
+                });
+                var iframe = iframeJQuery[0]
+
+                ﻿iframe.setToken = function (token) {
+                    adh.postMessage(iframe.contentWindow,'setToken', {'token': token})
+                }
+
+                iframe.deleteToken = function () {
+                    adh.postMessage(iframe.contentWindow, 'deleteToken', {})
+                }
+
+                return iframeJQuery;
+            });
         }
     ])
 
