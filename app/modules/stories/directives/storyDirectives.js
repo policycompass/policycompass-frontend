@@ -33,8 +33,8 @@ angular.module('pcApp.stories.directives.storyDirectives', [])
                                     }
                                     for (var content in scope.chapter.contents) {
                                         if (scope.chapter.contents.hasOwnProperty(content)) {
-                                            if (scope.chapter.contents[content].type === scope.contentType && scope.chapter.contents[content].contentId === $scope.contentId) {
-                                                alert("This " + scope.contentType + " already exists in this chapter and can not be added!");
+                                            if (scope.chapter.contents[content].type === scope.contentType && scope.chapter.contents[content].index === $scope.contentId) {
+                                                alert("This " + scope.contentType + " already exists in this chapter and can only be added once!");
                                                 throw "already exists";
                                             }
                                         }
