@@ -15,6 +15,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                             var data = {
                                 id: metricId,
                                 title: metric.title,
+                                date_created: metric.date_created,
                                 issued: metric.issued,
                                 indicator: metric.indicator_id,
                             };
@@ -1050,6 +1051,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                 id: metric.id,
                                 title: metric.title,
                                 issued: metric.issued,
+                                date_created: metric.date_created,
                             };
 
                             $scope.meticsRelated.push(data);
@@ -1174,8 +1176,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
                     };
 
                     //funtion used when a metic is selected. Add a metric into the list
-                    $scope.addFilterMetric = function (idMetric, title, issued) {
-
+                    $scope.addFilterMetric = function (idMetric, title, date_created) {
+						
                         var containerLink = document.getElementById("metric-list-item-item-" + idMetric);
                         $(containerLink).addClass('active');
                         var str = $(containerLink).attr("name");
@@ -1196,7 +1198,8 @@ angular.module('pcApp.visualization.controllers.visualization', [
                             'id': idMetric,
                             'name': selectedText,
                             'title': title,
-                            'issued': issued,
+                            'issued': date_created,
+                            'date_created': date_created,                            
                             'column': 'from',
                             'value': 'value',
                             'group': 'grouping column'
@@ -4031,6 +4034,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
 					                        'name': $scope.visualization.datasets_in_visualization[i].title, //'title': $scope.visualization.metrics_in_visualization[i].title,
 					                        'title': $scope.visualization.datasets_in_visualization[i].title, //'issued': $scope.visualization.metrics_in_visualization[i].issued,
 					                        'issued': $scope.visualization.datasets_in_visualization[i].issued,
+					                        'date_created': $scope.visualization.datasets_in_visualization[i].date_created,
 					                        'identities': $scope.ListIndividualDatasetCheckboxes_[id],
 					                        'identitiescolors': $scope.dataset_color_palete_[id],
 					                        'column': $scope.MetricSelectorLabelColumn_[id],
@@ -4180,6 +4184,7 @@ angular.module('pcApp.visualization.controllers.visualization', [
                         'name': metric.title,
                         'title': metric.title,
                         'issued': metric.issued,
+                        'date_created': metric.date_created,
                         'column': column,
                         'value': value,
                         'group': group,
@@ -4687,7 +4692,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
                             		 $scope.dataset_color_palete_[metric.id][metric.data.individuals[xj]]=$scope.colorScale(metric.data.individuals[xj]);
                             	}
                             	//$scope.dataset_color_palete_[metric.id]
-                                $scope.addFilterMetric(metric.id, metric.title, metric.issued);
+                                //$scope.addFilterMetric(metric.id, metric.title, metric.issued);
+                                $scope.addFilterMetric(metric.id, metric.title, metric.date_created);
+                                
                                 
 								//create controller
                     			$scope.loadDataCombosHelper(metric.id, "", "");
