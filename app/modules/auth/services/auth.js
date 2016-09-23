@@ -39,7 +39,7 @@ angular.module('pcApp.auth.services.auth', [
                     isCreator: function(object) {
                         var a3Backend = API_CONF.ADHOCRACY_BACKEND_URL;
 
-                        if (!this.userPath) {
+                        if (!this.userPath || !object) {
                             return false;
                         }
 
