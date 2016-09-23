@@ -183,6 +183,12 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             $scope.mode = "edit";
             $scope.model.derivedId = $routeParams.fcmId;
 
+            if ($routeParams.simulation) {
+                $rootScope.simulation = true;
+                $location.path('/models/' + $routeParams.fcmId + '/edit');
+                return;
+            }
+
             $scope.modeldetail = FcmModel.get({ id: $routeParams.fcmId }, function (fcmList) {
                 //show message if model not found in database
                 if ($scope.modeldetail.model == null) {
