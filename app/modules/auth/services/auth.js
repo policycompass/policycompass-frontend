@@ -35,7 +35,19 @@ angular.module('pcApp.auth.services.auth', [
                     loggedIn: undefined,
                     userData: undefined,
                     userPath: undefined,
-                    isAdmin: undefined
+                    isAdmin: undefined,
+                    isCreator: function(object) {
+                        var a3Backend = API_CONF.ADHOCRACY_BACKEND_URL;
+
+                        if (!this.userPath) {
+                            return false;
+                        }
+
+                        // userpath contains the user uri with trailing slash (despite its name)
+                        var userPath = this.userPath.replace(a3Backend, '');
+                        userPath = userPath.replace(/\/$/, '');
+                        return userPath === object.creator_path;
+                    }
                 },
 
                 // NOTE: _login and _logout are only meant to be called through

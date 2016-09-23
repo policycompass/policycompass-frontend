@@ -251,26 +251,7 @@ angular.module('pcApp.metrics.controllers.metric', [
         'Auth',
         'dialogs',
         function ($scope, $routeParams, $location, MetricService, IndicatorService, Auth, dialogs) {
-
-            // FIXME: MOVE TO SERVICE
-            var isOwner = function (userpath) {
-                return Auth.state.userPath === userpath;
-            };
-
-            // FIXME: MOVE TO SERVICE
-            var isAdmin = function () {
-                if (Auth.state.isAdmin) {
-                    return true;
-                } else {
-                    return false;
-                }
-            };
-
-            // FIXME: MOVE TO SERVICE
-            $scope.allowEdit = function (userpath) {
-                return (isAdmin() || isOwner(userpath));
-            };
-
+            $scope.user = Auth.state;
             $scope.deleteMetric = function (metric) {
                 var dlg = dialogs.confirm("Are you sure?", "Do you want to delete the Dataset " + metric.title + " permanently?");
                 dlg.result.then(function () {
@@ -305,25 +286,6 @@ angular.module('pcApp.metrics.controllers.metric', [
         'Auth',
         function ($scope, $routeParams, $location, $http, API_CONF, MetricService, IndicatorService, FormulaHelper, Auth) {
 
-            // FIXME: MOVE TO SERVICE
-            var isOwner = function (userpath) {
-                return Auth.state.userPath === userpath;
-            };
-
-            // FIXME: MOVE TO SERVICE
-            var isAdmin = function () {
-                if (Auth.state.isAdmin) {
-                    return true;
-                } else {
-                    return false;
-                }
-            };
-
-            // FIXME: MOVE TO SERVICE
-            var allowEdit = function (userpath) {
-                return (isAdmin() || isOwner(userpath));
-            };
-
             var getNumber = function(key) {
                 var newKey = key.replace("__", "").replace("__", "");
                 return Number(newKey);
@@ -342,31 +304,30 @@ angular.module('pcApp.metrics.controllers.metric', [
             };
 
 
-
-            MetricService.get({id: $routeParams.metricId}, function (metric)
-                {
-
+            MetricService.get(
+                {id: $routeParams.metricId},
+                function (metric){
                     $scope.data = metric;
                     $scope.canDraft = $scope.data.is_draft;
                     $scope.variableIndex = getIndex(metric.variables) + 1;
                     var indicator_id = metric.indicator_id;
-                    IndicatorService.get({id: indicator_id}, function (indicator)
-                        {
+                    IndicatorService.get(
+                        {id: indicator_id},
+                        function (indicator){
                             $scope.indicator = indicator;
                         },
                         function (err) {
                             throw {message: JSON.stringify(err.data)};
                         }
                     );
-                    IndicatorService.query(function (indicators)
-                        {
+                    IndicatorService.query(
+                        function (indicators){
                             $scope.indicators = indicators.results;
                         },
                         function (err) {
                             throw {message: JSON.stringify(err.data)};
                         }
                     );
-
                 },
                 function (err) {
                     throw {message: JSON.stringify(err.data)};
@@ -375,13 +336,24 @@ angular.module('pcApp.metrics.controllers.metric', [
 
 
             $scope.submit = function() {
-                var url = API_CONF.METRICS_MANAGER_URL + "/metrics/" + $routeParams.metricId;
-
-                $http.put(url, $scope.data).then(function (response) {
-                    $location.path(/metrics/ + $routeParams.metricId);
-                }, function (response) {
-                    $scope.servererror = response.data;
-                });
+                var canEdit = Auth.state.isAdmin || Auth.state.isCreator($scope.data);
+                if (canEdit) {
+                    var url = API_CONF.METRICS_MANAGER_URL + "/metrics/" + $routeParams.metricId;
+                    $http.put(url, $scope.data).then(function (response) {
+                        $location.path(/metrics/ + $routeParams.metricId);
+                    }, function (response) {
+                        $scope.servererror = response.data;
+                    });
+                } else {
+                    var url = API_CONF.METRICS_MANAGER_URL + "/metrics";
+                    $scope.data.derived_from_id = $routeParams.metricId
+                    $http.post(url, $scope.data).then(function (response) {
+                        var newMetricId = response.data.id;
+                        $location.path(/metrics/ + newMetricId);
+                    }, function (response) {
+                        $scope.servererror = response.data;
+                    });
+                }
             };
 
             $scope.cancel = function() {
