@@ -37,7 +37,6 @@ angular.module('pcApp.ags.controllers.ag', [
                 id: $routeParams.agId
             }, function(ag) {
                 $scope.ag = ag;
-                console.log('hey', ag);
 
 
 
@@ -69,7 +68,8 @@ angular.module('pcApp.ags.controllers.ag', [
         '$location',
         '$log',
         'Auth',
-        function($scope, $routeParams, Ag, $location, $log, Auth) {
+        'dialogs',
+        function($scope, $routeParams, Ag, $location, $log, Auth, dialogs) {
 
             $scope.userState = Auth.state;
 
@@ -77,22 +77,30 @@ angular.module('pcApp.ags.controllers.ag', [
 
             $scope.ag = Ag.get({
                 id: $routeParams.agId
-            }, function(ag) {}, function(err) {
+            }, function(ag) {
+                $scope.canDraft = $scope.ag.is_draft;
+            }, function(err) {
                 throw {
                     message: JSON.stringify(err.data)
                 };
             });
 
             $scope.createAg = function() {
-                $scope.ag.data = $scope.editor.graphToYAML();
+                try{
+                    $scope.ag.data = $scope.editor.graphToYAML();
 
-                Ag.update($scope.ag, function(value, responseHeaders) {
-                    $location.path('/ags/' + value.id);
-                }, function(err) {
-                    throw {
-                        message: JSON.stringify(err.data)
-                    };
-                });
+                    Ag.update($scope.ag, function(value, responseHeaders) {
+                        $location.path('/ags/' + value.id);
+                    }, function(err) {
+                        throw {
+                            message: JSON.stringify(err.data)
+                        };
+                    });
+                }
+                catch(err){
+                    var dlg = dialogs.notify("Warning", "Please check all connections in the graph");
+                }
+
             };
         }
     ])
@@ -109,9 +117,14 @@ angular.module('pcApp.ags.controllers.ag', [
         'Auth',
         function($scope, Ag, $location, $log, dialogs, agservice, Auth) {
 
+            $scope.canDraft = true;
+
             $scope.userState = Auth.state;
 
             $scope.mode = "create";
+
+            $scope.ag = {};
+            $scope.ag.is_draft = true;
 
             if (angular.toJson(agservice.getAg()) != "[]") {
                 $scope.ag = agservice.getAg()[0];
@@ -119,17 +132,23 @@ angular.module('pcApp.ags.controllers.ag', [
             }
 
             $scope.createAg = function() {
-                //FIXME
-                $scope.ag.userID = 1;
-                $scope.ag.data = $scope.editor.graphToYAML();
+                try{
+                    //FIXME
+                    $scope.ag.userID = 1;
+                    $scope.ag.data = $scope.editor.graphToYAML();
 
-                Ag.save($scope.ag, function(value, responseHeaders) {
-                    $location.path('/ags/' + value.id);
-                }, function(err) {
-                    throw {
-                        message: JSON.stringify(err.data)
-                    };
-                });
+                    Ag.save($scope.ag, function(value, responseHeaders) {
+                        $location.path('/ags/' + value.id);
+                    }, function(err) {
+                        throw {
+                            message: JSON.stringify(err.data)
+                        };
+                    });
+                }
+                catch(err){
+                    var dlg = dialogs.notify("Warning", "Please check all connections in the graph");
+                }
+
             };
         }
     ])
