@@ -1,7 +1,7 @@
 angular.module('pcApp.adhocracyEmbedder.services.adhocracy', [])
 
 /**
- * Adhocracy service
+ * AdhocracySDK service
  *
  * Allow to interact with the Adhocracy embed SDK.
  *
@@ -23,25 +23,57 @@ angular.module('pcApp.adhocracyEmbedder.services.adhocracy', [])
         }
     ])
 
-    .factory('AdhocracyCrossWindowChannel', [
-        'AdhocracySdk', '$q',
-        function(AdhocracySdk, $q) {
+/**
+ * Adhocracy cross window channel iframe service
+ *
+ * Provides an iFrame that can be used to communiate with adhocracy services. Example
+ * usage could be setting and deleting auth token. This iFrame will not contain UI elements.
+ */
+    .factory('AdhocracyCrossWindowChannelIframe', [
+        'AdhocracySdk',
+        function(AdhocracySdk) {
             return AdhocracySdk.then(function (adh) {
                 var iframeJQuery = adh.getIframe('empty', {
                     noheader: true,
                     nocenter: true
                 });
                 var iframe = iframeJQuery[0]
-
-                ﻿iframe.setToken = function (token) {
-                    adh.postMessage(iframe.contentWindow,'setToken', {'token': token})
-                }
-
-                iframe.deleteToken = function () {
-                    adh.postMessage(iframe.contentWindow, 'deleteToken', {})
-                }
-
                 return iframeJQuery;
+            });
+        }
+    ])
+
+/**
+ * Adhocracy cross window channel service
+ *
+ * Provides some helpers to send messages to adhocracy through the CWC iframe.
+ */
+    .factory('AdhocracyCrossWindowChannel', [
+        'AdhocracyCrossWindowChannelIframe',
+        'AdhocracySdk',
+        '$q',
+        function (iframePromise, adhSdkPromise, $q) {
+            return $q.all([adhSdkPromise, iframePromise]).then(function(deps) {
+                var adhSdk = deps[0];
+                var iframe = deps[1][0]; // also unpack from jQuery object
+                var defered = $q.defer();
+
+                var channel = {iframe: iframe};
+                channel.setToken = function (token, userPath) {
+                    var data = {
+                        token: token,
+                        userPath: userPath
+                    }
+                    adhSdk.postMessage(this.iframe.contentWindow,'setToken', data);
+                };
+                channel.deleteToken = function () {
+                    adhSdk.postMessage(this.iframe.contentWindow, 'deleteToken', {})
+                };
+                adhSdk.registerMessageHandler('requestSetup', function(data, source) {
+                    defered.resolve(channel);
+                });
+
+                return defered.promise;
             });
         }
     ])

@@ -69,10 +69,8 @@ angular.module('pcApp.auth.services.auth', [
                 }
 
                 // setup a3 session
-                AdhocracyCrossWindowChannel.then(function (adhCWC) {
-                    adhCWC.load(function() {
-                        adhCWC[0].setToken(token)
-                    });
+                AdhocracyCrossWindowChannel.then(function (channel) {
+                    channel.setToken(token, userPath)
                 })
 
                 setupUserData(userData, doNotStore);
@@ -96,10 +94,8 @@ angular.module('pcApp.auth.services.auth', [
                 Auth.state.userData = undefined
                 Auth.state.isAdmin = undefined
 
-                AdhocracyCrossWindowChannel.then(function (adhCWC) {
-                    adhCWC.load(function() {
-                        adhCWC[0].deleteToken()
-                    });
+                AdhocracyCrossWindowChannel.then(function (channel) {
+                    channel.deleteToken();
                 })
 
                 delete $localStorage.token
