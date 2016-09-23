@@ -284,7 +284,10 @@ angular.module('pcApp.metrics.controllers.metric', [
         'IndicatorService',
         'FormulaHelper',
         'Auth',
-        function ($scope, $routeParams, $location, $http, API_CONF, MetricService, IndicatorService, FormulaHelper, Auth) {
+        'dialogs',
+        function ($scope, $routeParams, $location, $http, API_CONF, MetricService, IndicatorService, FormulaHelper, Auth, dialogs) {
+
+            $scope.user = Auth.state
 
             var getNumber = function(key) {
                 var newKey = key.replace("__", "").replace("__", "");
@@ -356,10 +359,6 @@ angular.module('pcApp.metrics.controllers.metric', [
                 }
             };
 
-            $scope.cancel = function() {
-                $location.path(/metrics/ + $routeParams.metricId);
-            };
-
             // FIXME: MOVE TO SERVICE
             $scope.addIndicator = function (indicator) {
                     var i = "__" + $scope.variableIndex + "__";
@@ -386,6 +385,17 @@ angular.module('pcApp.metrics.controllers.metric', [
 
             $scope.getCursorPosition = function (event) {
                 $scope.cursorPosVal = $scope.FormulaHelper.getCursorPosition(event);
+            };
+
+            $scope.goToLogin = function () {
+                $location.path("/login");
+            };
+
+            $scope.cancel = function () {
+                var dialog = dialogs.confirm("Are you sure?", "Do you want to revert your changes in this metric?");
+                dialog.result.then(function () {
+                    $location.path("/metrics/");
+                });
             };
         }
     ])
