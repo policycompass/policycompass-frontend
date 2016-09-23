@@ -36,6 +36,18 @@
                             ng-change="selectedNode.model.trigger( 'change:assumed')"
                             required>
                     </div>
+
+                    <div ng-show='selectedNode.model.get("type") == "wellaged.Argument"' class="form-group"ng-class="{ 'has-error': agForm.title.$dirty && agForm.title.$invalid}">
+                        <label for="assumed">Scheme </label>
+                        <div ng-repeat="element in editor.graph.getElements()">
+                            <div ng-show="selectedNode.model.get('id') == element.get('id')" ng-repeat="s in element.get('schemes')">
+                                <input ng-model="s.checked" ng-click="updateSelectedScheme($index, element)" type="checkbox" />
+                                    {{ s.name }}
+                            </div>
+                        </div>
+                    </div>
+
+
                     <div class="" ng-if="mode==='edit' ">
                         <a style="cursor: pointer;" ng-click="deleteNode()" class="btn btn-warning ">Delete node</a>
                     </div>
