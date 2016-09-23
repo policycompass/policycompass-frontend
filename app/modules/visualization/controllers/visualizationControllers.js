@@ -791,75 +791,82 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                     $scope.plotMapChart = function () {
                     	
-                        if (document.getElementById("container_graph_" + $scope.visualization.id) != null) {
-                            document.getElementById("container_graph_" + $scope.visualization.id).innerHTML = "";
-                        } else {
-                            document.getElementById("container_graph_").innerHTML = "";
-                        }
+                    	var plotThisMapChart = false;
+                    	
+                    	if (document.getElementById("container_graph_" + $scope.visualization.id) != null) {
+							document.getElementById("container_graph_" + $scope.visualization.id).innerHTML = "";
+							plotThisMapChart = true;
+	                    } else if (document.getElementById("container_graph_") != null) {
+							document.getElementById("container_graph_").innerHTML = "";
+							plotThisMapChart = true;
+	                    }
 
-                        var margin = {
-                            top: 20,
-                            right: 20,
-                            bottom: 55,
-                            left: 44
-                        }, width = 980, height = 426, font_size = 11;
-
-                        var from_country = '';
-                        var to_country = '';
-
-                        var initialZoomMap = 2;
-                        if (document.getElementById('initialZoom').value > 0) {
-                            initialZoomMap = document.getElementById('initialZoom').value;
-                        }
-
-                        if (document.getElementById('initialLat').value) {
-                            var initialLat = document.getElementById('initialLat').value;
-                        }
-
-                        if (document.getElementById('initialLng').value) {
-                            var initialLng = document.getElementById('initialLng').value;
-                        }
-
-                        if ($scope.list) {
-                            margin.top = margin.top / 5;
-                            margin.right = margin.right / 5;
-                            margin.bottom = margin.bottom / 5;
-                            margin.left = margin.left / 5;
-                            width = width / 5;
-                            height = height / 5;
-                            font_size = font_size / 5;
-                            $scope.showLegend = false;
-                            $scope.showZoom = false;
-                            $scope.showBubbles = false;
-                            $scope.showMovement = false;
-                            $scope.showBubbles = false;
-                            
-                        } else {
-                            from_country = $scope.translateCountryValue($scope.rangeDatesSliderMin);
-                            to_country = $scope.translateCountryValue($scope.rangeDatesSliderMin);
-                        }
-
-                        var mapObj = policycompass.viz.mapLeaflet({
-                            'idName': "container_graph_" + $scope.visualization.id,
-                            'width': width,
-                            'height': height,
-                            'margin': margin,
-                            'font_size': font_size,
-                            'mode': $scope.mode,
-                            'scaleColor': $scope.scaleColor,
-                            'legend': $scope.showLegend,
-                            'projection': $scope.typeToPlot,
-                            'showZoom': $scope.showZoom,
-                            'initialLat': initialLat,
-                            'initialLng': initialLng,
-                            'initialZoom': initialZoomMap,
-                            'showBubbles': $scope.showBubbles,
-                            'showMovement': $scope.showMovement,
-                            'data': $scope.datasetToSendMap,
-                            'from_country': from_country,
-                            'to_country': to_country
-                        });
-
+                    	if (plotThisMapChart) {	                        
+						
+	                        var margin = {
+	                            top: 20,
+	                            right: 20,
+	                            bottom: 55,
+	                            left: 44
+	                        }, width = 980, height = 426, font_size = 11;
+	
+	                        var from_country = '';
+	                        var to_country = '';
+	
+	                        var initialZoomMap = 2;
+	                        
+		                        if (document.getElementById('initialZoom').value > 0) {
+		                            initialZoomMap = document.getElementById('initialZoom').value;
+		                        }
+		
+		                        if (document.getElementById('initialLat').value) {
+		                            var initialLat = document.getElementById('initialLat').value;
+		                        }
+		
+		                        if (document.getElementById('initialLng').value) {
+		                            var initialLng = document.getElementById('initialLng').value;
+		                        }
+							
+	                        if ($scope.list) {
+	                            margin.top = margin.top / 5;
+	                            margin.right = margin.right / 5;
+	                            margin.bottom = margin.bottom / 5;
+	                            margin.left = margin.left / 5;
+	                            width = width / 5;
+	                            height = height / 5;
+	                            font_size = font_size / 5;
+	                            $scope.showLegend = false;
+	                            $scope.showZoom = false;
+	                            $scope.showBubbles = false;
+	                            $scope.showMovement = false;
+	                            $scope.showBubbles = false;
+	                            
+	                        } else {
+	                            from_country = $scope.translateCountryValue($scope.rangeDatesSliderMin);
+	                            to_country = $scope.translateCountryValue($scope.rangeDatesSliderMin);
+	                        }
+	
+	                        var mapObj = policycompass.viz.mapLeaflet({
+	                            'idName': "container_graph_" + $scope.visualization.id,
+	                            'width': width,
+	                            'height': height,
+	                            'margin': margin,
+	                            'font_size': font_size,
+	                            'mode': $scope.mode,
+	                            'scaleColor': $scope.scaleColor,
+	                            'legend': $scope.showLegend,
+	                            'projection': $scope.typeToPlot,
+	                            'showZoom': $scope.showZoom,
+	                            'initialLat': initialLat,
+	                            'initialLng': initialLng,
+	                            'initialZoom': initialZoomMap,
+	                            'showBubbles': $scope.showBubbles,
+	                            'showMovement': $scope.showMovement,
+	                            'data': $scope.datasetToSendMap,
+	                            'from_country': from_country,
+	                            'to_country': to_country
+	                        });
+						}
                     }
 
 
@@ -892,15 +899,18 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                 font_size = font_size / 5;
                                 $scope.showLegend = false;
                             }
+							
+							var plotThisPieChart = false;
 
-
-                            if (($scope.mode == 'create') || ($scope.mode == 'edit')) {
-                                if ($scope.visualization.id) {
+                            if (($scope.mode == 'create') || ($scope.mode == 'edit')) {                                
+                                if (document.getElementById("container_graph_" + $scope.visualization.id) != null) {
                                     document.getElementById("container_graph_" + $scope.visualization.id).innerHTML = "";
-                                } else {
+                                    plotThisPieChart = true;
+                                } else if (document.getElementById("container_graph_") != null) {
                                     document.getElementById("container_graph_").innerHTML = "";
+                                    plotThisPieChart = true;
                                 }
-                            }
+                            }                            
 
 
                             $scope.dataset.forEach(function (d, i) {
@@ -910,14 +920,15 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                     $style = 'style="display: none;"';
                                 }
 
-
-                                if (($scope.mode == 'create') || ($scope.mode == 'edit')) {
-                                    if (document.getElementById("container_graph_" + $scope.visualization.id) != null) {
-                                        document.getElementById("container_graph_" + $scope.visualization.id).innerHTML = document.getElementById("container_graph_" + $scope.visualization.id).innerHTML + "<div class='pie_" + $scope.visualization.id + "' id='pie_" + $scope.visualization.id + "_" + i + "' " + $style + "></div>"
-                                    } else {
-                                        document.getElementById("container_graph_").innerHTML = document.getElementById("container_graph_").innerHTML + "<div class='pie_' id='pie__" + i + "' " + $style + "></div>"
-                                    }
-                                }
+								
+	                                if (($scope.mode == 'create') || ($scope.mode == 'edit')) {
+	                                    if (document.getElementById("container_graph_" + $scope.visualization.id) != null) {
+	                                        document.getElementById("container_graph_" + $scope.visualization.id).innerHTML = document.getElementById("container_graph_" + $scope.visualization.id).innerHTML + "<div class='pie_" + $scope.visualization.id + "' id='pie_" + $scope.visualization.id + "_" + i + "' " + $style + "></div>"
+	                                    } else if (document.getElementById("container_graph_") != null) {
+	                                        document.getElementById("container_graph_").innerHTML = document.getElementById("container_graph_").innerHTML + "<div class='pie_' id='pie__" + i + "' " + $style + "></div>"
+	                                    }
+	                                }
+								
 
                             });
 
@@ -925,25 +936,26 @@ angular.module('pcApp.visualization.controllers.visualization', [
                             $scope.dataset.forEach(function (d, i) {
 
 								var datasetToSend = d;
-
-								if (($scope.mode == 'create') || ($scope.mode == 'edit')) {
-									var pieObj = policycompass.viz.pie({
-										'idName': "pie_" + $scope.visualization.id + "_" + i,
-                                        'visualizationid': $scope.visualization,
-                                        'idPie': cntPies,
-                                        'width': width,
-                                        'height': height,
-                                        'margin': margin,
-                                        'radius': radius,
-                                        'innerRadious': innerRadious,
-                                        'font_size': font_size,
-                                        'showLegend': $scope.showLegend, //'showLines': $scope.showLines,
-                                        'showLabels': $scope.showLabels, //'showGrid': $scope.showGrid
-									});
-
-                                    pieObj.render(datasetToSend);
+								
+								if (plotThisPieChart) {
+									if (($scope.mode == 'create') || ($scope.mode == 'edit')) {
+										var pieObj = policycompass.viz.pie({
+											'idName': "pie_" + $scope.visualization.id + "_" + i,
+	                                        'visualizationid': $scope.visualization,
+	                                        'idPie': cntPies,
+	                                        'width': width,
+	                                        'height': height,
+	                                        'margin': margin,
+	                                        'radius': radius,
+	                                        'innerRadious': innerRadious,
+	                                        'font_size': font_size,
+	                                        'showLegend': $scope.showLegend, //'showLines': $scope.showLines,
+	                                        'showLabels': $scope.showLabels, //'showGrid': $scope.showGrid
+										});
+	
+	                                    pieObj.render(datasetToSend);
+									}
 								}
-
                                 cntPies = cntPies + 1;
 
                             });
@@ -3030,13 +3042,18 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                             $scope.labelYAxe = labelYAxe;
                                         }
 
+
+										var plotThisBarChart = false;
                                         if (($scope.mode == 'create') || ($scope.mode == 'edit')) {
                                             if (document.getElementById("container_graph_" + $scope.visualization.id) != null) {
                                                 document.getElementById("container_graph_" + $scope.visualization.id).innerHTML = "";
-                                            } else {
+                                                plotThisBarChart = true;
+                                            } if (document.getElementById("container_graph_") != null) {
                                                 document.getElementById("container_graph_").innerHTML = "";
+                                                plotThisBarChart = true;
                                             }
-
+										
+										if (plotThisBarChart) {
                                             var barLine = policycompass.viz.line({
                                                 'idName': "container_graph_" + $scope.visualization.id,
                                                 'width': width,
@@ -3083,6 +3100,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                                 }
                                             }
                                         }
+                                        
+                                       }
+
                                     }
                                 }
                             } else if ($scope.typeToPlot === 'graph_pie') {
@@ -3173,11 +3193,11 @@ angular.module('pcApp.visualization.controllers.visualization', [
 
                                         $scope.selection = {Keys: $arrayTmp};
                                     }
-
+									
                                     $scope.plotPieChart();
-                                    
 
                                 }
+                                
                             } else if ($scope.typeToPlot === 'graph_bars') {
 
                                 numbers1 = arrayDataset;
@@ -3251,14 +3271,21 @@ angular.module('pcApp.visualization.controllers.visualization', [
                                     var eventsArray = [];
                                     $scope.datasetToSend = datasetToSend;
                                 }
-
+								
+								
                                 if (($scope.mode == 'create') || ($scope.mode == 'edit')) {
+                                	
+                                	var plotThisBarChart = false;
+                                	
                                     if (document.getElementById("container_graph_" + $scope.visualization.id) != null) {
                                         document.getElementById("container_graph_" + $scope.visualization.id).innerHTML = "";
-                                    } else {
+                                        plotThisBarChart = true;
+                                    } else if (document.getElementById("container_graph_") != null) {
                                         document.getElementById("container_graph_").innerHTML = "";
+                                        plotThisBarChart = true;
                                     }
-
+                                    
+									if (plotThisBarChart) {
                                     var barObj = policycompass.viz.barsMultiple({
                                         'idName': "container_graph_" + $scope.visualization.id,
                                         'width': width,
@@ -3310,8 +3337,9 @@ angular.module('pcApp.visualization.controllers.visualization', [
 											});                                    	
 	                                    }
                                     }
-                                    
+                                    }
                                 }
+                                
                             }
                         }
                     }

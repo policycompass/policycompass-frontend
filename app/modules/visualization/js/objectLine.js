@@ -1,6 +1,5 @@
 "use strict";
 var policycompass = policycompass || {
-        'version': 0.1,
         'controller': {},
         'viz': {},
         'extras': {}
@@ -19,8 +18,12 @@ policycompass.viz.line = function (options) {
     if (self.height>=350) {
     	self.margin.top = 1;	
     }
-
+	
+	self.dataIdArray = self.idName.split("_");	
+	self.idChartToPlot = self.dataIdArray[(self.dataIdArray.length-1)];
+	
     self.parentSelect = "#" + self.idName;
+
     self.maxMargin = self.margin;
     self.maxWidth = self.width;
     self.maxHeight = self.height;
@@ -1149,8 +1152,8 @@ policycompass.viz.line = function (options) {
                 if ((showAreas) && (cntpasadas == 1)) {
                 	
 					
-					if (document.getElementById('disableindividuals')) {
-                    	var arrayDisabledIndividuals = document.getElementById('disableindividuals').value.split("|");
+					if (document.getElementById('disableindividuals_'+self.idChartToPlot)) {
+                    	var arrayDisabledIndividuals = document.getElementById('disableindividuals_'+self.idChartToPlot).value.split("|");
                     	var stringToCheck = d.Key.replace(/\W/g, '');
                     	var a = arrayDisabledIndividuals.indexOf(stringToCheck);
                    	}
@@ -1300,8 +1303,8 @@ policycompass.viz.line = function (options) {
                 }
                 if ((showLines) && (cntpasadas == 2)) {
 					
-					if (document.getElementById('disableindividuals')) {						
-                    	var arrayDisabledIndividuals = document.getElementById('disableindividuals').value.split("|");
+					if (document.getElementById('disableindividuals_'+self.idChartToPlot)) {						
+                    	var arrayDisabledIndividuals = document.getElementById('disableindividuals_'+self.idChartToPlot).value.split("|");
                     	var stringToCheck = d.Key.replace(/\W/g, '');
                     	var a = arrayDisabledIndividuals.indexOf(stringToCheck);
                    	}
@@ -1473,8 +1476,8 @@ policycompass.viz.line = function (options) {
                         .attr("text-anchor", "center")
                         .attr("class", function() {
                         	
-                        	if (document.getElementById('disableindividuals')) {
-                        		var arrayDisabledIndividuals = document.getElementById('disableindividuals').value.split("|");
+                        	if (document.getElementById('disableindividuals_'+self.idChartToPlot)) {
+                        		var arrayDisabledIndividuals = document.getElementById('disableindividuals_'+self.idChartToPlot).value.split("|");
                     			var stringToCheck = d.Key.replace(/\W/g, '');
                     			var a = arrayDisabledIndividuals.indexOf(stringToCheck);
                     		}
@@ -1510,8 +1513,8 @@ policycompass.viz.line = function (options) {
 
                                 var keyTmp = d['Key'].split("_");
                                 var str = keyTmp[0];
-								if (document.getElementById('disableindividuals')) {
-                   					var arrayDisabledIndividuals = document.getElementById('disableindividuals').value.split("|");
+								if (document.getElementById('disableindividuals_'+self.idChartToPlot)) {
+                   					var arrayDisabledIndividuals = document.getElementById('disableindividuals_'+self.idChartToPlot).value.split("|");
                    				}
                    				else {
                    					var arrayDisabledIndividuals = [];
@@ -1526,15 +1529,15 @@ policycompass.viz.line = function (options) {
                                    	else {
                                    		tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '</div>');
                                    	}
-                                    d3.selectAll(".active_item").style("opacity", 0.3);
+                                    d3.selectAll(self.parentSelect+" .active_item").style("opacity", 0.3);
 
-                                    var strokeWidth = d3.select("#tag_" + d.Key.replace(/\W/g, '')).style("stroke-width");
+                                    var strokeWidth = d3.select(self.parentSelect+" #tag_" + d.Key.replace(/\W/g, '')).style("stroke-width");
                                     strokeWidth = strokeWidth.replace("px", "");
                                     strokeWidth = parseInt(strokeWidth) + 2;
 
-                                    d3.selectAll("#tag_" + d.Key.replace(/\W/g, '')).style("stroke-width", strokeWidth).style("opacity", 1);
+                                    d3.selectAll(self.parentSelect+" #tag_" + d.Key.replace(/\W/g, '')).style("stroke-width", strokeWidth).style("opacity", 1);
 
-                                    d3.selectAll(".point_" + d.Key.replace(/\W/g, '')).classed('pointOn', true)
+                                    d3.selectAll(self.parentSelect+" .point_" + d.Key.replace(/\W/g, '')).classed('pointOn', true)
                                         .style("opacity", 1);
 
                                 } else {             
@@ -1551,8 +1554,8 @@ policycompass.viz.line = function (options) {
                         })
                         .on("mouseout", function () {
 							
-							if (document.getElementById('disableindividuals')) {
-								var arrayDisabledIndividuals = document.getElementById('disableindividuals').value.split("|");
+							if (document.getElementById('disableindividuals_'+self.idChartToPlot)) {
+								var arrayDisabledIndividuals = document.getElementById('disableindividuals_'+self.idChartToPlot).value.split("|");
                     			var stringToCheck = d.Key.replace(/\W/g, '');
                     			var a = arrayDisabledIndividuals.indexOf(stringToCheck);
                     		}
@@ -1561,9 +1564,9 @@ policycompass.viz.line = function (options) {
                     		}
                     		
                     		if (a<0) {                    		
-                            	d3.selectAll(".active_item").style("opacity", 1);
-                            	d3.selectAll("#tag_" + d.Key.replace(/\W/g, '')).style("stroke-width", 2);
-                            	d3.selectAll(".point_" + d.Key.replace(/\W/g, '')).classed('pointOn', false);
+                            	d3.selectAll(self.parentSelect+" .active_item").style("opacity", 1);
+                            	d3.selectAll(self.parentSelect+" #tag_" + d.Key.replace(/\W/g, '')).style("stroke-width", 2);
+                            	d3.selectAll(self.parentSelect+" .point_" + d.Key.replace(/\W/g, '')).classed('pointOn', false);
                             	
                            	}
                            	mouseout();
@@ -1614,8 +1617,8 @@ policycompass.viz.line = function (options) {
                             	var trimmedString = resTRext[0];
                             	//console.log(resTRext[0]);
                             	
-                            	if (document.getElementById('disableindividuals')) {
-                            		var arrayDisabledIndividuals = document.getElementById('disableindividuals').value.split("|");
+                            	if (document.getElementById('disableindividuals_'+self.idChartToPlot)) {
+                            		var arrayDisabledIndividuals = document.getElementById('disableindividuals_'+self.idChartToPlot).value.split("|");
                             		var stringToCheck = d.Key.replace(/\W/g, '');
                             		var a = arrayDisabledIndividuals.indexOf(stringToCheck);
                             	}
@@ -1623,33 +1626,33 @@ policycompass.viz.line = function (options) {
                             		var a = -1;
                             	}
                             	
-                            	d3.selectAll(".legend_" + stringToCheck).classed('enableindividual', true);
-                    			d3.selectAll(".legend_" + stringToCheck).classed('disableindividual', false);
+                            	d3.selectAll(self.parentSelect+" .legend_" + stringToCheck).classed('enableindividual', true);
+                    			d3.selectAll(self.parentSelect+" .legend_" + stringToCheck).classed('disableindividual', false);
 								
-								d3.selectAll(".class_" + stringToCheck).classed('active_item', true);
+								d3.selectAll(self.parentSelect+" .class_" + stringToCheck).classed('active_item', true);
 
-                                d3.selectAll(".class_" + stringToCheck).transition().duration(100).style("opacity", 1);
-                                d3.selectAll(".area_class_" + stringToCheck).transition().duration(100).style("opacity", 0.3);
+                                d3.selectAll(self.parentSelect+" .class_" + stringToCheck).transition().duration(100).style("opacity", 1);
+                                d3.selectAll(self.parentSelect+" .area_class_" + stringToCheck).transition().duration(100).style("opacity", 0.3);
 
-								if (document.getElementById('disableindividuals')) {
+								if (document.getElementById('disableindividuals_'+self.idChartToPlot)) {
 	                            	if (a>=0) {
-	                            		document.getElementById('disableindividuals').value = '';
+	                            		document.getElementById('disableindividuals_'+self.idChartToPlot).value = '';
 	                            		for (key in arrayDisabledIndividuals) {                            			
 	                            			if (arrayDisabledIndividuals[key]) {
 	                            				if (arrayDisabledIndividuals[key]!=stringToCheck) {
-	                            					if (document.getElementById('disableindividuals').value)
+	                            					if (document.getElementById('disableindividuals_'+self.idChartToPlot).value)
 	                            					{
-	                            						document.getElementById('disableindividuals').value +="|";
+	                            						document.getElementById('disableindividuals_'+self.idChartToPlot).value +="|";
 	                            					}
-	                            					document.getElementById('disableindividuals').value +=arrayDisabledIndividuals[key];
+	                            					document.getElementById('disableindividuals_'+self.idChartToPlot).value +=arrayDisabledIndividuals[key];
 	                            					
-	                            					d3.selectAll(".legend_" + arrayDisabledIndividuals[key]).classed('enableindividual', false);
-	                                				d3.selectAll(".legend_" + arrayDisabledIndividuals[key]).classed('disableindividual', true);
+	                            					d3.selectAll(self.parentSelect+" .legend_" + arrayDisabledIndividuals[key]).classed('enableindividual', false);
+	                                				d3.selectAll(self.parentSelect+" .legend_" + arrayDisabledIndividuals[key]).classed('disableindividual', true);
 	                                				
-	                                				d3.selectAll(".class_" + stringToCheck).classed('active_item', false);
+	                                				d3.selectAll(self.parentSelect+" .class_" + stringToCheck).classed('active_item', false);
 	                                				
-					                                d3.selectAll(".class_" + arrayDisabledIndividuals[key]).transition().duration(100).style("opacity", 0);
-	                				                d3.selectAll(".area_class_" + arrayDisabledIndividuals[key]).transition().duration(100).style("opacity", 0);
+					                                d3.selectAll(self.parentSelect+" .class_" + arrayDisabledIndividuals[key]).transition().duration(100).style("opacity", 0);
+	                				                d3.selectAll(self.parentSelect+" .area_class_" + arrayDisabledIndividuals[key]).transition().duration(100).style("opacity", 0);
 	
 	                                				
 	                            				}
@@ -1657,19 +1660,19 @@ policycompass.viz.line = function (options) {
 	                            		}                            		
 	                            	}   
 	                            	else {                            		
-	                            		if (document.getElementById('disableindividuals').value)
+	                            		if (document.getElementById('disableindividuals_'+self.idChartToPlot).value)
 	                            		{
-	                            			document.getElementById('disableindividuals').value +="|";
+	                            			document.getElementById('disableindividuals_'+self.idChartToPlot).value +="|";
 	                            		}
-	                            		document.getElementById('disableindividuals').value +=stringToCheck;
+	                            		document.getElementById('disableindividuals_'+self.idChartToPlot).value +=stringToCheck;
 	
-										d3.selectAll(".legend_" + d.Key.replace(/\W/g, '')).classed('enableindividual', false);
-	                                	d3.selectAll(".legend_" + d.Key.replace(/\W/g, '')).classed('disableindividual', true);
+										d3.selectAll(self.parentSelect+" .legend_" + d.Key.replace(/\W/g, '')).classed('enableindividual', false);
+	                                	d3.selectAll(self.parentSelect+" .legend_" + d.Key.replace(/\W/g, '')).classed('disableindividual', true);
 										
-										d3.selectAll(".class_" + stringToCheck).classed('active_item', false);
+										d3.selectAll(self.parentSelect+" .class_" + stringToCheck).classed('active_item', false);
 										
-					                    d3.selectAll(".class_" + d.Key.replace(/\W/g, '')).transition().duration(100).style("opacity", 0);
-	                				    d3.selectAll(".area_class_" + d.Key.replace(/\W/g, '')).transition().duration(100).style("opacity", 0);
+					                    d3.selectAll(self.parentSelect+" .class_" + d.Key.replace(/\W/g, '')).transition().duration(100).style("opacity", 0);
+	                				    d3.selectAll(self.parentSelect+" .area_class_" + d.Key.replace(/\W/g, '')).transition().duration(100).style("opacity", 0);
 	                            		
 	                            	}
                             	}
@@ -1701,7 +1704,9 @@ policycompass.viz.line = function (options) {
                                 if (self.xaxeformat == 'sequence') {
 
                                 } else {
-                                    document.getElementById("modaladddataset").click();
+                                	if (document.getElementById("modaladddataset") != null) {
+                                    	document.getElementById("modaladddataset").click();
+									}
                                 }
                             }
                         })
@@ -1748,8 +1753,8 @@ policycompass.viz.line = function (options) {
                     }
                 }
 				
-				if (document.getElementById('disableindividuals')) {
-					var arrayDisabledIndividuals = document.getElementById('disableindividuals').value.split("|");
+				if (document.getElementById('disableindividuals_'+self.idChartToPlot)) {
+					var arrayDisabledIndividuals = document.getElementById('disableindividuals_'+self.idChartToPlot).value.split("|");
                 	var stringToCheck = keyCircle.replace(/\W/g, '');
                 	var a = arrayDisabledIndividuals.indexOf(stringToCheck);
                	}
@@ -2547,6 +2552,7 @@ policycompass.viz.line = function (options) {
 	                        return colorToReturn;
 	                    })
 	                    .on("mouseover", function (d, i) {
+
 							var str = "Event: " + d.title;
 							var fromDate = "From: " +d.startDate;
 							var toDate = "To: " +d.endDate;
@@ -2557,13 +2563,13 @@ policycompass.viz.line = function (options) {
 							else {
 								tooltip.style("opacity", 1.0).html('<div class="tooltip-arrow"></div><div class="tooltip-inner ng-binding" ng-bind="content">' + str + '<br/>'+fromDate+'<br/>'+toDate+'<br/>'+desc+'</div>');
 							}
-	                        d3.selectAll(".event_" + d.index).style("stroke-width", 5);
-	                        d3.selectAll(".event_circle_" + d.index).style("stroke-width", 5);
+	                        d3.selectAll(self.parentSelect+" .event_" + d.index).style("stroke-width", 5);
+	                        d3.selectAll(self.parentSelect+" .event_circle_" + d.index).style("stroke-width", 5);
 	                    })
 	                    .on("mouseout", function (d, i) {
 							mouseout();
-							d3.selectAll(".event_" + d.index).style("stroke-width", 1);
-							d3.selectAll(".event_circle_" + d.index).style("stroke-width", self.radius);
+							d3.selectAll(self.parentSelect+" .event_" + d.index).style("stroke-width", 1);
+							d3.selectAll(self.parentSelect+" .event_circle_" + d.index).style("stroke-width", self.radius);
 	                    })
 	                    .text(function (d, i) {
 	                    	/*
