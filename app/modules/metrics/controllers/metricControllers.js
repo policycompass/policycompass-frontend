@@ -12,96 +12,89 @@ angular.module('pcApp.metrics.controllers.metric', [
 
     .controller('CreateMetric1Controller', [
         '$scope',
-        '$modal',
         'API_CONF',
         '$http',
         'MetricsControllerHelper',
         'FormulaHelper',
         '$location',
         'Auth',
-        function ($scope, $modal, API_CONF, $http, MetricsControllerHelper, FormulaHelper, $location, Auth) {
-
-            $scope.user = Auth;
+        function ($scope, API_CONF, $http, MetricsControllerHelper, FormulaHelper, $location, Auth) {
             $scope.FormulaHelper = FormulaHelper;
             $scope.sortOptions = [{"name": "Title", "sort": "name"}, {"name": "Date updated", "sort": "-date"}]
 
-            if (!$scope.user.state.loggedIn) {
-                $location.path("/login");
-            } else {
-                $scope.metrics_controller_helper = MetricsControllerHelper;
-                $scope.metrics_controller_helper.init();
+            $scope.metrics_controller_helper = MetricsControllerHelper;
+            $scope.metrics_controller_helper.init();
 
-                $scope.variableIndex = 1;
-                $scope.showFunctions = false;
+            $scope.variableIndex = 1;
+            $scope.showFunctions = false;
 
-                $scope.toggleFunctions = function () {
-                    $scope.showFunctions = !$scope.showFunctions;
-                }
-
-                // FIXME: MOVE TO SERVICE
-                $scope.addIndicator = function (indicator) {
-                    var i = "__" + $scope.variableIndex + "__";
-                    if (angular.isUndefined($scope.cursorPosVal) || angular.isUndefined($scope.metrics_controller_helper.metricsdata.formula)) {
-                        if (angular.isUndefined($scope.metrics_controller_helper.metricsdata.formula)) {
-                            $scope.metrics_controller_helper.metricsdata.formula = "";
-                        }
-                        $scope.metrics_controller_helper.metricsdata.formula = $scope.metrics_controller_helper.metricsdata.formula + i;
-                    } else {
-                        $scope.metrics_controller_helper.metricsdata.formula = [
-                            $scope.metrics_controller_helper.metricsdata.formula.slice(0, $scope.cursorPosVal),
-                            i,
-                            $scope.metrics_controller_helper.metricsdata.formula.slice($scope.cursorPosVal)
-                        ].join('');
-                        $scope.cursorPosVal = undefined;
-                    }
-                    $scope.variableIndex += 1;
-                    $scope.metrics_controller_helper.metricsdata.variables[i] = {
-                        "type": "indicator",
-                        "id": indicator.id
-                    }
-                };
-
-                $scope.getCursorPosition = function (event) {
-                    $scope.cursorPosVal = $scope.FormulaHelper.getCursorPosition(event);
-                };
-
-                $scope.clearErrors = function () {
-                    $scope.servererror = undefined;
-                }
-
-                $scope.submitFormula = function () {
-                    var url = API_CONF.FORMULA_VALIDATION_URL;
-                    if ($scope.formulaForm.$valid) {
-                        $http({
-                            url: url,
-                            method: 'get',
-                            params: {
-                                formula: $scope.metrics_controller_helper.metricsdata.formula,
-                                variables: $scope.metrics_controller_helper.metricsdata.variables
-                            }
-                        }).then(function (response) {
-                            $location.path("/metrics/create-2")
-                        }, function (response) {
-                            $scope.servererror = response.data;
-                        });
-                    }
-                };
+            $scope.toggleFunctions = function () {
+                $scope.showFunctions = !$scope.showFunctions;
             }
 
+            // FIXME: MOVE TO SERVICE
+            $scope.addIndicator = function (indicator) {
+                var i = "__" + $scope.variableIndex + "__";
+                if (angular.isUndefined($scope.cursorPosVal) || angular.isUndefined($scope.metrics_controller_helper.metricsdata.formula)) {
+                    if (angular.isUndefined($scope.metrics_controller_helper.metricsdata.formula)) {
+                        $scope.metrics_controller_helper.metricsdata.formula = "";
+                    }
+                    $scope.metrics_controller_helper.metricsdata.formula = $scope.metrics_controller_helper.metricsdata.formula + i;
+                } else {
+                    $scope.metrics_controller_helper.metricsdata.formula = [
+                        $scope.metrics_controller_helper.metricsdata.formula.slice(0, $scope.cursorPosVal),
+                        i,
+                        $scope.metrics_controller_helper.metricsdata.formula.slice($scope.cursorPosVal)
+                    ].join('');
+                    $scope.cursorPosVal = undefined;
+                }
+                $scope.variableIndex += 1;
+                $scope.metrics_controller_helper.metricsdata.variables[i] = {
+                    "type": "indicator",
+                    "id": indicator.id
+                }
+            };
 
+            $scope.getCursorPosition = function (event) {
+                $scope.cursorPosVal = $scope.FormulaHelper.getCursorPosition(event);
+            };
+
+            $scope.clearErrors = function () {
+                $scope.servererror = undefined;
+            }
+
+            $scope.submitFormula = function () {
+                var url = API_CONF.FORMULA_VALIDATION_URL;
+                if ($scope.formulaForm.$valid) {
+                    $http({
+                        url: url,
+                        method: 'get',
+                        params: {
+                            formula: $scope.metrics_controller_helper.metricsdata.formula,
+                            variables: $scope.metrics_controller_helper.metricsdata.variables
+                        }
+                    }).then(function (response) {
+                        $location.path("/metrics/create-2")
+                    }, function (response) {
+                        $scope.servererror = response.data;
+                    });
+                }
+            };
         }
     ])
 
 
     .controller('CreateMetric2Controller', [
+        'Auth',
         '$scope',
-        '$modal',
         '$http',
         'API_CONF',
         'MetricsControllerHelper',
         '$location',
-        function ($scope, $modal, $http, API_CONF, MetricsControllerHelper, $location) {
+        'dialogs',
+        function (Auth, $scope, $http, API_CONF, MetricsControllerHelper, $location, dialogs) {
 
+            $scope.user = Auth;
             $scope.metrics_controller_helper = MetricsControllerHelper;
 
             $scope.is_draft = true;
@@ -132,6 +125,18 @@ angular.module('pcApp.metrics.controllers.metric', [
             $scope.prevStep = function () {
                 $location.path("/metrics/create-1");
             }
+
+            $scope.goToLogin = function () {
+                $location.path("/login");
+            }
+
+            $scope.abort = function () {
+                var dialog = dialogs.confirm("Are you sure?", "Do you want to revert your changes in this metric?");
+                dialog.result.then(function () {
+                    MetricsControllerHelper.clear();
+                    $location.path("/metrics/create-1");
+                });
+            }
         }
     ])
 
@@ -146,55 +151,51 @@ angular.module('pcApp.metrics.controllers.metric', [
 
             $scope.user = Auth;
 
-            if (!$scope.user.state.loggedIn) {
-                $location.path("/login")
-            } else {
-                $scope.apply_metric_helper = ApplyMetricHelper;
-                $scope.apply_metric_helper.init($routeParams.metricId);
-                $scope.error = true;
+            $scope.apply_metric_helper = ApplyMetricHelper;
+            $scope.apply_metric_helper.init($routeParams.metricId);
+            $scope.error = true;
 
-                $scope.submit = function () {
-                    _.each($scope.apply_metric_helper.data.datasets, function (value, key) {
-                        delete value['indicator'];
-                    });
-                    $location.path("/metrics/" + $routeParams.metricId + "/apply-2")
-                };
+            $scope.submit = function () {
+                _.each($scope.apply_metric_helper.data.datasets, function (value, key) {
+                    delete value['indicator'];
+                });
+                $location.path("/metrics/" + $routeParams.metricId + "/apply-2")
+            };
 
-                $scope.$watch('apply_metric_helper.data.datasets', function (newvalue, oldvalue) {
-                    var notValid = true;
-                    _.each(newvalue, function (value, key) {
-                        notValid = !(value.dataset > 0);
-                    });
-                    $scope.error = notValid;
-                }, true);
+            $scope.$watch('apply_metric_helper.data.datasets', function (newvalue, oldvalue) {
+                var notValid = true;
+                _.each(newvalue, function (value, key) {
+                    notValid = !(value.dataset > 0);
+                });
+                $scope.error = notValid;
+            }, true);
 
-                $scope.highlightIndicator = function (variable, event) {
-                    var target = angular.element('#variable' + variable);
-                    target.css('background', 'linear-gradient(to bottom, #9ac1e3, #72a9d8)');
-                    target.css('color', 'white');
-                    target.css('border-color', '#3177b3');
+            $scope.highlightIndicator = function (variable, event) {
+                var target = angular.element('#variable' + variable);
+                target.css('background', 'linear-gradient(to bottom, #9ac1e3, #72a9d8)');
+                target.css('color', 'white');
+                target.css('border-color', '#3177b3');
 
-                    var el = event.currentTarget;
-                    var span = angular.element(el.children[0].children[0]);
-                    span.css('background', 'linear-gradient(to bottom, #9ac1e3, #72a9d8)');
-                    span.css('color', 'white');
-                    span.css('border-color', '#3177b3');
-                };
+                var el = event.currentTarget;
+                var span = angular.element(el.children[0].children[0]);
+                span.css('background', 'linear-gradient(to bottom, #9ac1e3, #72a9d8)');
+                span.css('color', 'white');
+                span.css('border-color', '#3177b3');
+            };
 
-                $scope.unhighlightIndicator = function (variable, event) {
-                    var target = angular.element('#variable' + variable);
-                    target.css('background', 'transparent');
-                    target.css('border', '1px solid #ffd964');
-                    target.css('color', '#b75c6f');
+            $scope.unhighlightIndicator = function (variable, event) {
+                var target = angular.element('#variable' + variable);
+                target.css('background', 'transparent');
+                target.css('border', '1px solid #ffd964');
+                target.css('color', '#b75c6f');
 
-                    var el = event.currentTarget;
-                    var span = angular.element(el.children[0].children[0]);
-                    span.css('background', 'transparent');
-                    ;
-                    span.css('border', '1px solid #ffd964');
-                    span.css('color', '#4d4d4d');
-                };
-            }
+                var el = event.currentTarget;
+                var span = angular.element(el.children[0].children[0]);
+                span.css('background', 'transparent');
+                ;
+                span.css('border', '1px solid #ffd964');
+                span.css('color', '#4d4d4d');
+            };
         }
     ])
 
@@ -205,8 +206,11 @@ angular.module('pcApp.metrics.controllers.metric', [
         '$http',
         'ApplyMetricHelper',
         '$location',
-        function ($scope, $routeParams, API_CONF, $http, ApplyMetricHelper, $location) {
+        'Auth',
+        'dialogs',
+        function ($scope, $routeParams, API_CONF, $http, ApplyMetricHelper, $location, Auth, dialogs) {
 
+            $scope.user = Auth;
             $scope.apply_metric_helper = ApplyMetricHelper;
             $scope.apply_metric_helper.init($routeParams.metricId);
 
@@ -225,6 +229,16 @@ angular.module('pcApp.metrics.controllers.metric', [
                 });
             };
 
+            $scope.goToLogin = function () {
+                $location.path("/login");
+            }
+
+            $scope.abort = function () {
+                var dialog = dialogs.confirm("Are you sure?", "Do you want not to save this metric application?");
+                dialog.result.then(function () {
+                    $location.path("/metrics/" + $routeParams.metricId + "/apply-1");
+                });
+            }
         }
     ])
 

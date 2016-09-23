@@ -40,8 +40,10 @@
                     <toggle-switch html="true" ng-model="is_draft" on-label="Draft" off-label="Public" class="switch-danger" ></toggle-switch>
                     &nbsp;
                 </div>
-                <a class="btn btn-save" ng-click="submitData(false);" ng-class="{'disabled' : !metadataForm.$valid }">Save</a>
-                <a class="btn btn-dataset" ng-click="submitData(true);" ng-class="{'disabled' : !metadataForm.$valid }">Save and Apply to Data sets</a>
+                <a href class="btn btn-default btn-save" ng-if="!user.state.loggedIn" ng-class="{'disabled' : !metadataForm.$valid }" ng-click="goToLogin()">Login to Save</a>
+                <a href class="btn btn-save" ng-if="user.state.loggedIn" ng-class="{'disabled' : !metadataForm.$valid }" ng-click="submitData(false);">Save</a>
+                <a href class="btn btn-default btn-danger btn-clear" ng-click="abort()">Cancel</a>
+                <a href class="btn btn-dataset" ng-class="{'disabled' : !metadataForm.$valid }" ng-click="submitData(true);">Save and Apply to Data sets</a>
             </div>
         </div>
     </div>
