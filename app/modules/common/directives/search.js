@@ -374,19 +374,42 @@ angular.module('pcApp.common.directives.search', [])
                         var sort = ["title.lower_case_sort"];
                         //var sort =     [{"id" : {"order" : "desc"}},"_score"];
 
-                        //Build query
-                        if ($scope.searchtext) {
-                            var query = {
-                                match: {
-                                    _all: $scope.searchtext
-                                }
-                            };
-                        } else {
-                            var query = {
-                                match_all: {}
-                            }
-                        }
-console.log("ddddddddddd");
+                        //Build query                       
+						if ($scope.searchtext) {
+							var query = {
+								"filtered": {
+									"query": {
+										"bool": {
+											"should": [
+												{
+													"multi_match": {
+														"fields": ["title", "description"],
+														"fuzziness": "1",
+														"query": $scope.searchtext
+    												}
+												},
+												{
+													"prefix": {
+														"title": $scope.searchtext
+													}
+												},
+												{
+													"prefix": {
+														"description": $scope.searchtext
+													}
+												}
+											]
+										}
+									}
+								}
+							};
+						} else {
+							var query = {
+								match_all: {}
+							};
+						}
+
+
                         //Perform search through client and get a search Promise
                         searchclient.search({
                             index: API_CONF.ELASTIC_INDEX_NAME,

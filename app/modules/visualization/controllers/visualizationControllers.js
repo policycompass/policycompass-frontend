@@ -5428,6 +5428,7 @@ angular.module('pcApp.visualization').filter('pagination', function () {
 
                 if ($scope.filterEvents) {
                     query = {};
+                    /*
                     query = {
                         "filtered": {
                             "query": {
@@ -5438,6 +5439,35 @@ angular.module('pcApp.visualization').filter('pagination', function () {
                             }
                         }
                     };
+                    */
+					var query = {
+						"filtered": {
+							"query": {
+								"bool": {
+									"should": [
+										{
+											"multi_match": {
+												"fields": ["title", "description"],
+												"fuzziness": "1",
+												"query": $scope.filterEvents
+											}
+										},
+										{
+											"prefix": {
+												"title": $scope.filterEvents
+											}
+										},
+										{
+											"prefix": {
+												"description": $scope.filterEvents
+											}
+										}
+									]
+								}
+							}
+						}
+					};
+                    
                 }
 
                 if (startDateToSearch || endDateToSearch) {
