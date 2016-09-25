@@ -120,6 +120,31 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                 return true;
             }
 
+            //Open help menu
+            $scope.openHelpModel = function (event, helpModelId) {
+                $scope[helpModelId] = !$scope[helpModelId];
+
+                var thisControl = $(event.target);
+                var posX = (event.pageX), posY = (event.pageY + 10);
+
+                var model = $('div[ng-class="{active: ' + helpModelId + '}"]');
+                model.css('left', posX + 'px');
+                model.css('top', posY + 'px');
+            };
+
+            $scope.deleteStory = function (story) {
+                // Open a confirmation dialog
+                var dlg = dialogs.confirm("Are you sure?", "Do you want to delete this story permanently?");
+                dlg.result.then(function () {
+                    // Delete the story via the API
+                    $http.delete(API_CONF.STORY_MANAGER_URL + '/stories/' + story.id).then(function(response){
+                        if(response){
+                            $location.path('/stories');
+                        }
+                    });
+                });
+            }
+
             $scope.init();
 
         }
@@ -282,6 +307,31 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                 })
             }
 
+            //Open help menu
+            $scope.openHelpModel = function (event, helpModelId) {
+                $scope[helpModelId] = !$scope[helpModelId];
+
+                var thisControl = $(event.target);
+                var posX = (event.pageX), posY = (event.pageY + 10);
+
+                var model = $('div[ng-class="{active: ' + helpModelId + '}"]');
+                model.css('left', posX + 'px');
+                model.css('top', posY + 'px');
+            }
+
+            $scope.deleteStory = function (story) {
+                // Open a confirmation dialog
+                var dlg = dialogs.confirm("Are you sure?", "Do you want to delete the story " + $scope.storyTitle + " permanently?");
+                dlg.result.then(function () {
+                    // Delete the story via the API
+                    $http.delete(API_CONF.STORY_MANAGER_URL + '/stories/' + story.id).then(function(response){
+                        if(response){
+                            $location.path('/stories');
+                        }
+                    });
+                });
+            }
+
             $scope.init();
         }
     ])
@@ -373,19 +423,6 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                 $location.hash('anchor-chapter'+number);
                 $anchorScroll();
                 $location.hash(old);
-            }
-
-            $scope.deleteStory = function (story) {
-                // Open a confirmation dialog
-                var dlg = dialogs.confirm("Are you sure?", "Do you want to delete the Story " + story.title + " permanently?");
-                dlg.result.then(function () {
-                    // Delete the story via the API
-                    $http.delete(API_CONF.STORY_MANAGER_URL + '/stories/' + story.id).then(function(response){
-                        if(response){
-                            $location.path('/stories');
-                        }
-                    });
-                });
             }
 
             $scope.init();
