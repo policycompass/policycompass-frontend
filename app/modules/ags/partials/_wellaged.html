@@ -11,6 +11,9 @@
                 <a style="cursor: pointer;" class="btn btn-default" ng-click="addIssue()">Add Issue</a>
                 <a style="cursor: pointer;" class="btn btn-default" ng-click="addArgument()">Add Argument</a>
             </div>
+            <div class="" ng-if="mode === 'view'">
+                <a style="cursor: pointer;" class="btn btn-default" ng-click="runCarneades()">Evaluate Argument Graph</a>
+            </div>
         </div>
         <div class="row" style="margin-top: 1em">
             <div ng-class="(mode === 'edit' && selectedNode) ? 'col-md-8' : 'col-md-12'" style="overflow: scroll; border: 1px solid black; background: white; height: 500px;">
