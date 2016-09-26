@@ -19,7 +19,8 @@ events.config(function ($routeProvider) {
         })
         .when('/events/search', {
             controller: 'EventSearchController',
-            templateUrl: 'modules/events/partials/search.html'
+            templateUrl: 'modules/events/partials/search.html',
+            reloadOnSearch: false
         })
         .when('/events/config', {
             controller: 'EventConfigController',
