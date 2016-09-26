@@ -1,0 +1,31 @@
+<script type="text/ng-template" id="wikipedia">
+    <div class="container-wikipedia" id="container-wikipedia">
+
+        <div class="content-header">
+            <h3>Select an article</h3>
+        </div>
+
+        <div class="input-group">
+            <input type="text" class="browse-input form-control" ng-keyup="$event.keyCode == 13 && wikipedia_searchForWikiTitles(wiki_search_title)" id="title" name="title"placeholder="Title" ng-model="wiki_search_title" ng-minlength="3" ng-required="true" required>
+            <span class="input-group-btn">
+                <button class="btn" type="button" ng-click="wikipedia_searchForWikiTitles(wiki_search_title)">Go!</button>
+            </span>
+        </div>
+
+        <div class="row">
+            <div class="container-wikipedia-entries">
+                <div ng-repeat="result in wikipedia_title_results">
+                    <div class="well col-md-10 col-xs-3 wikipedia-search">
+                        <div class="attributes">
+                            <h5>
+                                <a href ng-click="apply(result)">{{result}}</a>
+                            </h5>
+
+                            <a href="https://en.wikipedia.org/wiki/{{ result }}" target="_blank">https://en.wikipedia.org/wiki/{{ result | limitTo:50 }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
