@@ -70,7 +70,7 @@
             <tabset id="chaptersDiv">
                 <tab ng-repeat="chapter in chapters">
                     <tab-heading>
-                        <button type="button" class="close" ng-click='removeChapter(chapter.number)'>&times;</button>
+                        <button ng-if="!$first" type="button" class="close" ng-click='removeChapter(chapter.number)'>&times;</button>
                         <span ng-if="chapter.title" title="{{ chapter.title }}">{{ chapter.title | limitTo:20 }}{{ chapter.title.length > 20 ? '...' : '' }}</span>
                         <span ng-if="!chapter.title">Untitled chapter</span>
                         &nbsp;
