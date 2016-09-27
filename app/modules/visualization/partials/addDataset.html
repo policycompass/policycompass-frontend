@@ -33,7 +33,7 @@
                     <div ng-show="ListMetricsFilterModal.length==0">No dataset linked</div>
                     
                     <div class="designer-metrics active" class="designer-metrics" id="designer-metrics-num-{{metric.id}}" ng-repeat="metric in ListMetricsFilterModal track by $index">
-                        <h4 ng-show="metric.title" >{{metric.title}} -- {{metric.issued | date:'longDate' }}</h4>
+                        <h4 ng-show="metric.title" >{{metric.title}} - {{metric.date_created | date:'longDate' }}</h4>
                         <h4 ng-show="!metric.title" >Deleted dataset {{metric.id}}</h4>
 
                         <input type="hidden" ng-model="MetricSelectediId_[metric.id]" id="MetricSelectediId_{{metric.id}}" name="MetricSelectedId[]" value="">

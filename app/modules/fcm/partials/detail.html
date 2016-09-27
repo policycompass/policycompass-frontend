@@ -1,10 +1,11 @@
+
 <div class="container">
     <div class="content-header">
-        <h1><span class="glyphicon glyphicon-list-alt"></span>{{ models.model.title }}</h1>
+        <h1 class="fonticon fonticon-fuzzymapIcon">{{ models.model.title }}</h1>
 
         <div class="pc-visualization-formcontrols">
             <a href="#" ng-if="models.model.is_draft" ng-disabled="models.model.is_draft" class="btn btn-default btn-danger ng-scope" disabled="disabled">Draft</a>
-            <a type="button" class="btn btn-primary" data-ng-click="updateModel()" href="#!/models/{{ models.model.id }}/edit/true">Run Simulation</a>
+            <a type="button" class="btn btn-primary" href="#!/models/{{ models.model.id }}/edit/true">Run Simulation</a>
 
             <div class="button-group">
                 <a type="button" class="btn btn-primary  btn-create" href="#!/models/{{ models.model.id }}/edit">Edit</a>
@@ -51,13 +52,13 @@
                                     <username userpath="{{models.model.userPath}}"></username>
                                 </div>
                             </div>
-                            <div class="form-item" ng-if="models.model.dateAddedtoPC">
+                            <div class="form-item" ng-if="models.model.date_created">
                                 <div class="field-label">Added</div>
-                                <div class="field-content">{{ models.model.dateAddedtoPC | date:'longDate' }}</div>
+                                <div class="field-content">{{ models.model.date_created | date:'longDate' }}</div>
                             </div>
-                            <div class="form-item" ng-if="models.model.dateModified">
+                            <div class="form-item" ng-if="models.model.date_modified">
                                 <div class="field-label">Modified</div>
-                                <div class="field-content">{{ models.model.dateModified | date:'longDate' }}</div>
+                                <div class="field-content">{{ models.model.date_modified | date:'longDate' }}</div>
                             </div>
                         </div>
 
@@ -167,6 +168,11 @@
     <div class="row">
         <div class="col-lg-12">
             <show-discussion ng-if="models.model.id" data-key="fuzzymap_{{ models.model.id }}"></show-discussion>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 ags-add-button">
+            <a type="button" class="btn btn-primary btn-ags pull-right" href="#!/ags/create?discussion=fuzzymap_{{ models.model.id }}">Create Argument Graph</a>
         </div>
     </div>
 </div>

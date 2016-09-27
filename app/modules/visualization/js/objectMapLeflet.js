@@ -52,6 +52,17 @@ policycompass.viz.mapLeaflet = function (options) {
         if (windowWidth > maxWidth) {
             windowWidth = maxWidth;
         }
+		
+		self.parentSelect = self.parentSelect.replace("undefined", "");
+
+        var selection = d3.select(self.parentSelect);
+        if (selection[0][0]) {
+        	var clientwidth = selection[0][0].clientWidth;
+        	if ((clientwidth<windowWidth) && (clientwidth>100)) {
+        		windowWidth = clientwidth;	
+        	}
+        	
+        }
 
         self.windowWidth = windowWidth;
 

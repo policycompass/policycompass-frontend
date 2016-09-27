@@ -68,6 +68,7 @@ angular.module('pcApp.events.services.event', [
         var isSet = false;
 
         var searchResults = [];
+        var wikiSearchResults = [];
 
         var addEvent = function (newObj) {
             eventList.push(newObj);
@@ -87,8 +88,16 @@ angular.module('pcApp.events.services.event', [
             searchResults = results;
         }
 
+        var setWikiSearchResults = function(results){
+            wikiSearchResults = results;
+        }
+
         var getSearchResults = function(){
-            return searchResults;
+            return wikiSearchResults;
+        }
+
+        var getWikiSearchResults = function(){
+            return wikiSearchResults;
         }
 
         return {
@@ -96,7 +105,9 @@ angular.module('pcApp.events.services.event', [
             removeEvent: removeEvent,
             getEvent: getEvent,
             setSearchResults: setSearchResults,
-            getSearchResults: getSearchResults
+            getSearchResults: getSearchResults,
+            setWikiSearchResults: setWikiSearchResults,
+            getWikiSearchResults: getWikiSearchResults
         };
 
     })

@@ -11,6 +11,9 @@
                 <a style="cursor: pointer;" class="btn btn-default" ng-click="addIssue()">Add Issue</a>
                 <a style="cursor: pointer;" class="btn btn-default" ng-click="addArgument()">Add Argument</a>
             </div>
+            <div class="" ng-if="mode === 'view'">
+                <a style="cursor: pointer;" class="btn btn-default" ng-click="runCarneades()">Evaluate Argument Graph</a>
+            </div>
         </div>
         <div class="row" style="margin-top: 1em">
             <div ng-class="(mode === 'edit' && selectedNode) ? 'col-md-8' : 'col-md-12'" style="overflow: scroll; border: 1px solid black; background: white; height: 500px;">
@@ -29,13 +32,25 @@
                         <textarea class="form-control" rows="5" id="description" name="description" ng-model="selectedNode.model.attributes.description" ng-change="selectedNode.model.trigger('change:description')" "required></textarea>
                     </div>
 
-                    <div class="form-group" ng-if="undefined !== selectedNode.model.attributes.assumed" ng-class="{ 'has-error': agForm.title.$dirty && agForm.title.$invalid}">
+                    <div ng-show='selectedNode.model.get("type") == "wellaged.Statement"' class="form-group"ng-class="{ 'has-error': agForm.title.$dirty && agForm.title.$invalid}">
                         <label for="assumed">Assumed </label>
                         <input type="checkbox" class="form-control" id="assumed" name="assumed"
                             ng-model="selectedNode.model.attributes.assumed"
                             ng-change="selectedNode.model.trigger( 'change:assumed')"
                             required>
                     </div>
+
+                    <div ng-show='selectedNode.model.get("type") == "wellaged.Argument"' class="form-group"ng-class="{ 'has-error': agForm.title.$dirty && agForm.title.$invalid}">
+                        <label for="assumed">Scheme </label>
+                        <div ng-repeat="element in editor.graph.getElements()">
+                            <div ng-show="selectedNode.model.get('id') == element.get('id')" ng-repeat="s in element.get('schemes')">
+                                <input ng-model="s.checked" ng-click="updateSelectedScheme($index, element)" type="checkbox" />
+                                    {{ s.name }}
+                            </div>
+                        </div>
+                    </div>
+
+
                     <div class="" ng-if="mode==='edit' ">
                         <a style="cursor: pointer;" ng-click="deleteNode()" class="btn btn-warning ">Delete node</a>
                     </div>

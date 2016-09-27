@@ -26,13 +26,13 @@
 
 
             <div class="form-group form-group-modified">
-                <div class="form-item " ng-show="indicator.issued">
-                    <div class="field-label">Issued</div>
-                    <div class="field-content">{{ indicator.issued | date:'longDate' }}</div>
+                <div class="form-item " ng-show="indicator.date_created">
+                    <div class="field-label">Added</div>
+                    <div class="field-content">{{ indicator.date_created | date:'longDate' }}</div>
                 </div>
-                <div class="form-item" ng-show="indicator.modified">
-                    <div class="field-label">Last Modified</div>
-                    <div class="field-content">{{ indicator.modified | date:'longDate' }}</div>
+                <div class="form-item" ng-show="indicator.date_modified">
+                    <div class="field-label">Modified</div>
+                    <div class="field-content">{{ indicator.date_modified | date:'longDate' }}</div>
                 </div>
             </div>
 

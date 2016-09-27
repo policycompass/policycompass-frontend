@@ -118,7 +118,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
         };
     })
 
-    .controller('CytoscapeCtrl', function (API_CONF, $scope, $rootScope, $window, $routeParams, $location, $translate, Fcm, FcmModel, FcmWekaOutput, searchclient, FcmSimulation, FcmActivator, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, SimulationConceptsDetail, AssociationsDetail, SimulationAssociationsDetail, EditConcept, EditAssociation, FCMActivatorDetail, Dataset, FcmIndicator, Auth, $q) {
+    .controller('CytoscapeCtrl', function (API_CONF, $scope, $rootScope, $window, $routeParams, $location, $translate, Fcm, FcmModel, FcmWekaOutput, searchclient, FcmSimulation, FcmActivator, FcmSearchUpdate, dialogs, FCMModelsDetail, ConceptsDetail, SimulationConceptsDetail, AssociationsDetail, SimulationAssociationsDetail, EditConcept, EditAssociation, FCMActivatorDetail, Dataset, FcmIndicator, Auth, $q, $timeout) {
         // container objects
         $scope.user = Auth;
         $scope.Models = [];
@@ -182,6 +182,12 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             // Mode is editing
             $scope.mode = "edit";
             $scope.model.derivedId = $routeParams.fcmId;
+
+            if ($routeParams.simulation) {
+                $rootScope.simulation = true;
+                $location.path('/models/' + $routeParams.fcmId + '/edit');
+                return;
+            }
 
             $scope.modeldetail = FcmModel.get({ id: $routeParams.fcmId }, function (fcmList) {
                 //show message if model not found in database
@@ -352,14 +358,17 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 $rootScope.$broadcast('appChanged');
 
                 // check is run simulation request
-                if ($routeParams.simulation) {
-                    $scope.isRunSimulation = true;
-                    $scope.runSimulation();
-                }
+                //if ($routeParams.simulation) {
+                //    $scope.isRunSimulation = true;
+                //    $scope.runSimulation();
+                //}
             }, function (error) {
                 throw { message: JSON.stringify(error.data) };
             });
 
+            //check is run simulation button clicked
+            if ($rootScope.simulation)
+                $timeout(function () { $scope.makeActiveSimulation(); }, 200);
         } else {
             // Mode is creation
             $scope.mode = "create";
@@ -372,6 +381,15 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                 }
             };
         }
+
+        $scope.makeActiveSimulation = function () {//check for simulation tab and make it active
+            if ($('[active="isRunSimulation"] a').length > 0) {
+                $('[active="isRunSimulation"] a').click();
+                $('html,body').animate({ scrollTop: $('[active="isRunSimulation"]').parent().offset().top }, 'slow');
+            }
+            else
+                $timeout(function () { $scope.makeActiveSimulation(); }, 200);
+        };
 
         $scope.showHelp = function (helpId) {
             if (helpId == 1) {
