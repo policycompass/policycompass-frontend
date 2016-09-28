@@ -4,7 +4,11 @@
         <h1 class="fonticon fonticon-story">{{ storyTitle }}</h1>
         <span>
             Story by
-            <a class="fonticon fonticon-user normal"><span>username</span></a>, last modified <a><span>2 days ago</span></a>
+            <a class="fonticon fonticon-user normal">
+                <span>
+                    <username ng-if="story.creator_path" userpath="{{ story.creator_path }}"></username>
+                </span>
+            </a>, added <a>{{ story.issued | date:'longDate' }}</a>, last modified <a>{{ story.modified | date:'longDate' }}</a>
         </span>
     </div>
 
