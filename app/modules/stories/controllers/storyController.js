@@ -406,8 +406,9 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                         $scope.storyTitle = $scope.story.title;
                         $scope.storyChapters = $scope.story.chapters;
                     }
-                    if($scope.story == 500){
+                    if($scope.story.result == 500){
                         $location.path('/stories');
+                        dialogs.notify("Not found", "This story does not exist.");
                     }
                 });
             }
