@@ -240,6 +240,8 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                                 }
                             }
                             $scope.canDraft =  $scope.story.is_draft;
+                        }else{
+                            $location.path('/stories/create');
                         }
 
                     }
