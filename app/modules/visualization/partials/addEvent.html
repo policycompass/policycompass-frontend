@@ -173,12 +173,12 @@
                             <div><br/></div>
                             <div ng-if="event.color"><label for="">Colour:</label>
 
-                                <spectrum name="colorHE[]" ng-model="colorHE[$index+1]" ng-model-onblur ng-change="updatecolorEvent($index);rePlotGraph()" options="{
+                                <spectrum-colorpicker name="colorHE[]" ng-model="colorHE[$index+1]" ng-model-onblur ng-change="updatecolorEvent($index);rePlotGraph()" options="{
 										showInput: true,
 										showAlpha: false,
 										allowEmpty: false,
 										preferredFormat: 'hex'
-									}"></spectrum>
+									}"></spectrum-colorpicker>
 
                             </div>
                             <div ng-if="event.startDate">
@@ -236,12 +236,12 @@
 
                     <div class="field-content">
 
-                        <spectrum ng-model="historicalevent_color_palete" options="{
+                        <spectrum-colorpicker ng-model="historicalevent_color_palete" options="{
 	  								showInput: true,
 	  								showAlpha: false,
 	  								allowEmpty: false,
 	  								preferredFormat: 'hex'
-	  							}"></spectrum>
+	  							}"></spectrum-colorpicker>
 
                         <input type="hidden" id="historicalevent_color" name="historicalevent_color" class="form-control" ng-required="false" value="{{historicalevent_color_palete}}"/>
 
