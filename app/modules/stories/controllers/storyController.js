@@ -227,18 +227,21 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                 $http.get(API_CONF.STORY_MANAGER_URL + '/stories', {params: {id:$routeParams.storyId, getList:false}}).then(function(response){
                     if(response){
                         $scope.story = response.data;
-                        $scope.storyTitle = $scope.story.title;
-                        $scope.story_title = $scope.storyTitle;
-                        $scope.storyChapters = $scope.story.chapters;
-                        $scope.chapters = $scope.storyChapters;
-                        $scope.chapterCount = $scope.chapters.length;
-                        $scope.oldContents = [];
-                        for(var i=0; i<$scope.storyChapters.length;i++){
-                            for(var j=0; j<$scope.storyChapters[i].contents.length;j++){
-                                $scope.oldContents.push($scope.storyChapters[i].contents[j]);
+                        if($scope.userState.userPath == $scope.story.creator_path || $scope.userState.isAdmin){
+                            $scope.storyTitle = $scope.story.title;
+                            $scope.story_title = $scope.storyTitle;
+                            $scope.storyChapters = $scope.story.chapters;
+                            $scope.chapters = $scope.storyChapters;
+                            $scope.chapterCount = $scope.chapters.length;
+                            $scope.oldContents = [];
+                            for(var i=0; i<$scope.storyChapters.length;i++){
+                                for(var j=0; j<$scope.storyChapters[i].contents.length;j++){
+                                    $scope.oldContents.push($scope.storyChapters[i].contents[j]);
+                                }
                             }
+                            $scope.canDraft =  $scope.story.is_draft;
                         }
-                        $scope.canDraft =  $scope.story.is_draft;
+
                     }
                 });
             }
