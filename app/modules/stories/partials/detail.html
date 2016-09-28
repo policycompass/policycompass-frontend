@@ -47,6 +47,8 @@
 
                                 <pc-metric ng-switch-when="metric" metric-id="{{content.index}}"></pc-metric>
 
+                                <pc-fcm ng-switch-when="fuzzymap" fcm-id="content.index"></pc-fcm>
+
                                 <div ng-switch-default>
                                     <div class="alert alert-danger" style="margin-bottom: 0">Sorry, there is currently no renderer available for this {{ content.type }}.</div>
                                 </div>
