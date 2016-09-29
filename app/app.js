@@ -21,7 +21,7 @@ var pcAppDependencies = [
     'pcApp.references.directives.resolve',
     'dialogs.main',
     'dialogs.default-translations',
-    'ngSpectrum',
+    'angularSpectrumColorpicker',
     'skrollrDirectives',
     'ngProgress',
     'isteven-multi-select',

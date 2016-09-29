@@ -346,12 +346,12 @@
 	                                <div id="div_showscaleColor" ng-show="isSelectedParent(1)" class="">
 	                                    <div class="col-xs-6 configureoptionchartlabel">Scale Colour</div>
 										<div class="col-xs-6 configureoptionchartfield">
-	                                        <spectrum name='color' ng-model="scaleColor" ng-model-onblur ng-change="rePlotGraph()" options="{
+	                                        <spectrum-colorpicker name='color' ng-model="scaleColor" on-change="rePlotGraph()" options="{
 													showInput: true,
 													showAlpha: false,
 													allowEmpty: false,
 													preferredFormat: 'hex'
-												}"></spectrum>
+												}"></spectrum-colorpicker>
 	                                    </div>
 	                                </div>
 	
@@ -394,12 +394,12 @@
                                                 
                         				<div class="col-xs-8 configureoptionchartlabel">{{$index+1}}.-{{event.title}}</div>
                     					<div class="col-xs-2 configureoptionchartfield">
-											<spectrum name="colorHE[]" ng-model="colorHE[$index+1]" ng-model-onblur ng-change="event.color=colorHE[$index+1];rePlotGraph()" options="{                        
+											<spectrum-colorpicker name="colorHE[]" ng-model="colorHE[$index+1]" ng-model-onblur ng-change="event.color=colorHE[$index+1];rePlotGraph()" options="{                        
 	  											showInput: true,
 	  											showAlpha: false,
 	  											allowEmpty: false,
 	  											preferredFormat: 'hex'
-	  										}"></spectrum>
+	  										}"></spectrum-colorpicker>
 	  									</div>
 	  									<div class="col-xs-2 configureoptionchartfield">
 	  										<button title="Unlink event from the list of related events" type="button" class="btn btn-danger btn-clear" ng-click="deleteContainerHistoricalEvent('row_config_',$index+1, event.title, event.id)">
