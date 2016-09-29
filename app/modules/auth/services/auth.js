@@ -8,8 +8,9 @@ angular.module('pcApp.auth.services.auth', [
         '$rootScope',
         '$http',
         '$localStorage',
-        function (AdhocracyClient, AdhocracyCrossWindowChannel, $rootScope, $http, $localStorage) {
-
+        'API_CONF',
+        function (AdhocracyClient, AdhocracyCrossWindowChannel, $rootScope,
+                  $http, $localStorage, API_CONF) {
             var last = undefined;
 
             $rootScope.$on("$locationChangeSuccess",
