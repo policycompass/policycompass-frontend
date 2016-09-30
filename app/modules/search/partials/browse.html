@@ -237,10 +237,16 @@
             <div ng-repeat="facetCategory in facetCategories | orderBy: 'order'" ng-if="facetCategory.results>0" class="browse-filters-block">
                 <h4>{{facetCategory.label}}</h4>
                 <ul>
-                    <li ng-repeat="bucket in facetCategory.buckets">
+                    <input ng-model="filterText" type="text" class="form-control" placeholder="Type to filter" style="margin-bottom: 8px">
+                    <li ng-repeat="bucket in facetCategory.buckets | toArray | filter:filterText">
                         <input type="checkbox" ng-model="bucket.selected" ng-change="facetChanged()" id="{{facetCategory.name}}_{{bucket.value}}">
-                        <label for="{{facetCategory.name}}_{{bucket.value}}" tooltip-placement="right" tooltip="{{ bucket.label }}" tooltip-append-to-body="true"><span class="pull-right">({{bucket.results}})</span><span class="ellipsis">{{ bucket.label}}</span></label>
+
+                        <label for="{{facetCategory.name}}_{{bucket.value}}" tooltip-placement="right" tooltip="{{ bucket.label }}" tooltip-append-to-body="true">
+                            <span class="pull-right">({{bucket.results}})</span>
+                            <span class="ellipsis">{{ bucket.label}}</span>
+                        </label>
                     </li>
+                    <li ng-if="(facetCategory.buckets|toArray|filter:filterText).length < 1">No results found</li>
                 </ul>
             </div>
         </div>

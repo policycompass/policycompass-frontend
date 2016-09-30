@@ -227,7 +227,7 @@ $ancho: $unidad * 2;
         max-height: 450px;
     }
 
-    label, input {
+    label, input[checkbox] {
         cursor: pointer;
     }
     label {
