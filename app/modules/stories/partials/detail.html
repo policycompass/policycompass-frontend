@@ -16,7 +16,6 @@
         <div class="btn-group">
             <a type="button" class="btn btn-primary  btn-create" ng-if="userState.loggedIn && (userState.userPath == story.creator_path || userState.isAdmin)"  href="#!/stories/{{ story.id }}/edit">Edit</a>
             <a href="" id="downloadButton" class="btn btn-default fa-file-text-o" ng-click="downloadStory()">Download</a>
-            <a href="" id="deleteButton" class="btn btn-danger fa-trash-o" ng-if="userState.loggedIn && (userState.userPath == story.creator_path || userState.isAdmin)" ng-click="deleteStory(story)">Delete</a>
         </div>
 
         <a href="#" ng-if="story.is_draft" ng-disabled="story.is_draft" class="btn btn-default btn-danger">Draft</a>

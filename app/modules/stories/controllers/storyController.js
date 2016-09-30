@@ -132,7 +132,7 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                 model.css('top', posY + 'px');
             };
 
-            $scope.deleteStory = function (story) {
+            $scope.deleteStory = function () {
                 // Open a confirmation dialog
                 var dlg = dialogs.confirm("Are you sure?", "Do you want to delete this story permanently?");
                 dlg.result.then(function () {
@@ -319,12 +319,12 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                 model.css('top', posY + 'px');
             }
 
-            $scope.deleteStory = function (story) {
+            $scope.deleteStory = function () {
                 // Open a confirmation dialog
                 var dlg = dialogs.confirm("Are you sure?", "Do you want to delete the story " + $scope.storyTitle + " permanently?");
                 dlg.result.then(function () {
                     // Delete the story via the API
-                    $http.delete(API_CONF.STORY_MANAGER_URL + '/stories/' + story.id).then(function(response){
+                    $http.delete(API_CONF.STORY_MANAGER_URL + '/stories/' + $scope.story.id).then(function(response){
                         if(response){
                             $location.path('/stories');
                         }
