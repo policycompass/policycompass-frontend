@@ -161,10 +161,12 @@ $ancho: $unidad * 2;
 
     }
 
-}
+    .browse-page {
+        .attributes {
+            margin-left: 0em;
 
-.result-wrapper {
-
+        }
+    }
 }
 
 .searchItemIcon a {

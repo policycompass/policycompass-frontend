@@ -40,181 +40,177 @@
                 <div ng-repeat="searchResult in searchResults" class="result-wrapper result-wrapper-{{searchResult['_type']}}">
                     <div class="result-block searchItemIcon {{searchResult['_type']}}Icon" ng-cloak>
 
-                        <div ng-if="searchResult['_type']=='metric'" class="search-result">
-                            <h5>
-                                <a href="#!/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}">{{
-                                    searchResult['_source']['title']}}</a>
-                            </h5>
+                        <div ng-if="searchResult['_type']=='metric'" class="search-result browse-page">
+                            <a href="#!/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}">
+                                <h5>{{searchResult['_source']['title']}}</h5>
 
-                            <div class="attributes">
+                                <div class="attributes">
 
-                                <p>{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
+                                    <p>{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
 
-                                <div class="key-field">
-                                    <label class="key-field-title">Publisher: </label>
-                                    {{ searchResult['_source']['publisher'] }}
+                                    <div class="key-field">
+                                        <label class="key-field-title">Publisher: </label>
+                                        {{ searchResult['_source']['publisher'] }}
+                                    </div>
+                                    <div class="key-field">
+                                        <label class="key-field-title">Comments: </label>
+                                        {{ searchResult['_source']['commentsCount']}}
+                                    </div>
+                                    <div class="key-field">
+                                        <label class="key-field-title">Rating: </label>
+                                        <pc-rating rating-id="{{searchResult['_type']}}_{{searchResult['_source']['id']}}" readonly="true"></pc-rating>
+                                    </div>
                                 </div>
-                                <div class="key-field">
-                                    <label class="key-field-title">Comments: </label>
-                                    {{ searchResult['_source']['commentsCount']}}
-                                </div>
-                                <div class="key-field">
-                                    <label class="key-field-title">Rating: </label>
-                                    <pc-rating rating-id="{{searchResult['_type']}}_{{searchResult['_source']['id']}}" readonly="true"></pc-rating>
-                                </div>
-                            </div>
+                            </a>
                         </div>
 
-                        <div ng-if="searchResult['_type']=='dataset'" class="search-result">
-                            <h5>
-                                <a href="#!/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}">{{
-                                    searchResult['_source']['title']}}</a>
-                            </h5>
+                        <div ng-if="searchResult['_type']=='dataset'" class="search-result browse-page">
+                            <a href="#!/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}">
+                                <h5>{{searchResult['_source']['title']}}</h5>
 
-                            <div class="attributes">
+                                <div class="attributes">
 
-                                <p>{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
+                                    <p>{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
 
-                                <div class="key-field">
-                                    <label class="key-field-title">Comments: </label>
-                                    {{ searchResult['_source']['commentsCount']}}
+                                    <div class="key-field">
+                                        <label class="key-field-title">Comments: </label>
+                                        {{ searchResult['_source']['commentsCount']}}
+                                    </div>
+                                    <div class="key-field">
+                                        <label class="key-field-title">Rating: </label>
+                                        <pc-rating rating-id="{{searchResult['_type']}}_{{searchResult['_source']['id']}}" readonly="true"></pc-rating>
+                                    </div>
                                 </div>
-                                <div class="key-field">
-                                    <label class="key-field-title">Rating: </label>
-                                    <pc-rating rating-id="{{searchResult['_type']}}_{{searchResult['_source']['id']}}" readonly="true"></pc-rating>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div ng-if="searchResult['_type']=='indicator'" class="search-result">
-                            <h5>
-                                <a href="#!/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}">{{ searchResult['_source']['name']}}</a>
-                            </h5>
-
-                            <div class="attributes">
-                                <p>{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
-
-                                <div class="key-field">
-                                    <label class="key-field-title">Comments: </label>
-                                    {{ searchResult['_source']['commentsCount']}}
-                                </div>
-                                <div class="key-field">
-                                    <label class="key-field-title">Rating: </label>
-                                    <pc-rating rating-id="{{searchResult['_type']}}_{{searchResult['_source']['id']}}" readonly="true"></pc-rating>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div ng-if="searchResult['_type']=='ag'" class="search-result">
-                            <h5>
-                                <a href="#!/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}">{{ searchResult['_source']['name']}}</a>
-                            </h5>
-
-                            <div class="attributes">
-                                <p>{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
-
-                                <div class="key-field">
-                                    <label class="key-field-title">Comments: </label>
-                                    {{ searchResult['_source']['commentsCount']}}
-                                </div>
-                                <div class="key-field">
-                                    <label class="key-field-title">Rating: </label>
-                                    <pc-rating rating-id="{{searchResult['_type']}}_{{searchResult['_source']['id']}}" readonly="true"></pc-rating>
-                                </div>
-                            </div>
+                            </a>
                         </div>
 
 
-                        <div ng-if="searchResult['_type']=='event'" class="search-result">
-                            <h5><a href="#!/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}">
-                                {{ searchResult['_source']['title']}}</a>
+                        <div ng-if="searchResult['_type']=='indicator'" class="search-result browse-page">
 
-                            </h5>
+                            <a href="#!/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}">
+                                <h5>{{ searchResult['_source']['name']}}</h5>
 
-                            <div class="attributes">
+                                <div class="attributes">
+                                    <p>{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
 
-                                <p>{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
-
-                                <div class="key-field">
-                                    <label class="key-field-title">Start of Event: </label>
-                                    {{ searchResult['_source']['startEventDate']|date:'d-M-yy'}}
+                                    <div class="key-field">
+                                        <label class="key-field-title">Comments: </label>
+                                        {{ searchResult['_source']['commentsCount']}}
+                                    </div>
+                                    <div class="key-field">
+                                        <label class="key-field-title">Rating: </label>
+                                        <pc-rating rating-id="{{searchResult['_type']}}_{{searchResult['_source']['id']}}" readonly="true"></pc-rating>
+                                    </div>
                                 </div>
-                                <div class="key-field">
-                                    <label class="key-field-title">Comments: </label>
-                                    {{ searchResult['_source']['commentsCount']}}
-                                </div>
-                                <div class="key-field">
-                                    <label class="key-field-title">Rating: </label>
-                                    <pc-rating rating-id="{{searchResult['_type']}}_{{searchResult['_source']['id']}}" readonly="true"></pc-rating>
-                                </div>
-                            </div>
-                        </div>
-                        <div ng-if="searchResult['_type']=='visualization'" class="search-result">
-                            <h5>
-                                <a href="#!/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}">{{
-                                    searchResult['_source']['title']}}</a>
-                            </h5>
-
-                            <div class="attributes">
-
-                                <p>{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
-
-                                <div class="key-field">
-                                    <label class="key-field-title">Created on: </label>
-                                    {{ searchResult['_source']['date_created']|date:'d-M-yy'}}
-                                </div>
-                                <div class="key-field">
-                                    <label class="key-field-title">Comments: </label>
-                                    {{ searchResult['_source']['commentsCount']}}
-                                </div>
-                                <div class="key-field">
-                                    <label class="key-field-title">Rating: </label>
-                                    <pc-rating rating-id="{{searchResult['_type']}}_{{searchResult['_source']['id']}}" readonly="true"></pc-rating>
-                                </div>
-                            </div>
-                        </div>
-                        <div ng-if="searchResult['_type']=='fuzzymap'" class="search-result">
-                            <h5>
-                                <a href="#!/models/{{ searchResult['_source']['id'] }}">{{
-                                    searchResult['_source']['title']}}</a>
-                            </h5>
-
-                            <div class="attributes">
-
-                                <p>{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
-
-                                <div class="key-field">
-                                    <label class="key-field-title">Keywords: </label>
-                                    {{ searchResult['_source']['keywords']|date:'d-M-yy'}}
-                                </div>
-                                <div class="key-field">
-                                    <label class="key-field-title">Comments: </label>
-                                    {{ searchResult['_source']['commentsCount']}}
-                                </div>
-                                <div class="key-field">
-                                    <label class="key-field-title">Rating: </label>
-                                    <pc-rating rating-id="{{searchResult['_type']}}_{{searchResult['_source']['id']}}" readonly="true"></pc-rating>
-                                </div>
-                            </div>
+                            </a>
                         </div>
 
-                        <div ng-if="searchResult['_type']=='story'" class="search-result">
-                            <h5><a href="#!/stories/{{ searchResult['_source']['id'] }}">
-                                {{ searchResult['_source']['title']}}</a>
-                            </h5>
+                        <div ng-if="searchResult['_type']=='ag'" class="search-result browse-page">
+                            <a href="#!/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}">
+                                <h5>{{ searchResult['_source']['name']}}</h5>
 
-                            <div class="attributes">
-                                <div class="key-field">
-                                    <label class="key-field-title">Comments: </label>
-                                    {{ searchResult['_source']['commentsCount']}}
-                                </div>
+                                <div class="attributes">
+                                    <p>{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
 
-                                <div class="key-field">
-                                    <label class="key-field-title">Rating: </label>
-                                    <pc-rating rating-id="{{searchResult['_type']}}_{{searchResult['_source']['id']}}" readonly="true"></pc-rating>
+                                    <div class="key-field">
+                                        <label class="key-field-title">Comments: </label>
+                                        {{ searchResult['_source']['commentsCount']}}
+                                    </div>
+                                    <div class="key-field">
+                                        <label class="key-field-title">Rating: </label>
+                                        <pc-rating rating-id="{{searchResult['_type']}}_{{searchResult['_source']['id']}}" readonly="true"></pc-rating>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
+                        </div>
+
+
+                        <div ng-if="searchResult['_type']=='event'" class="search-result browse-page">
+                            <a href="#!/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}">
+                                <h5>{{ searchResult['_source']['title']}}</h5>
+
+                                <div class="attributes">
+
+                                    <p>{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
+
+                                    <div class="key-field">
+                                        <label class="key-field-title">Start of Event: </label>
+                                        {{ searchResult['_source']['startEventDate']|date:'d-M-yy'}}
+                                    </div>
+                                    <div class="key-field">
+                                        <label class="key-field-title">Comments: </label>
+                                        {{ searchResult['_source']['commentsCount']}}
+                                    </div>
+                                    <div class="key-field">
+                                        <label class="key-field-title">Rating: </label>
+                                        <pc-rating rating-id="{{searchResult['_type']}}_{{searchResult['_source']['id']}}" readonly="true"></pc-rating>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div ng-if="searchResult['_type']=='visualization'" class="search-result browse-page">
+                            <a href="#!/{{ searchResult['_type']}}s/{{ searchResult['_source']['id'] }}">
+                                <h5>{{searchResult['_source']['title']}}</h5>
+
+                                <div class="attributes">
+
+                                    <p>{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
+
+                                    <div class="key-field">
+                                        <label class="key-field-title">Created on: </label>
+                                        {{ searchResult['_source']['date_created']|date:'d-M-yy'}}
+                                    </div>
+                                    <div class="key-field">
+                                        <label class="key-field-title">Comments: </label>
+                                        {{ searchResult['_source']['commentsCount']}}
+                                    </div>
+                                    <div class="key-field">
+                                        <label class="key-field-title">Rating: </label>
+                                        <pc-rating rating-id="{{searchResult['_type']}}_{{searchResult['_source']['id']}}" readonly="true"></pc-rating>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div ng-if="searchResult['_type']=='fuzzymap'" class="search-result browse-page">
+                            <a href="#!/models/{{ searchResult['_source']['id'] }}">
+                                <h5>{{searchResult['_source']['title']}}</h5>
+
+                                <div class="attributes">
+
+                                    <p>{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
+
+                                    <div class="key-field">
+                                        <label class="key-field-title">Keywords: </label>
+                                        {{ searchResult['_source']['keywords']|date:'d-M-yy'}}
+                                    </div>
+                                    <div class="key-field">
+                                        <label class="key-field-title">Comments: </label>
+                                        {{ searchResult['_source']['commentsCount']}}
+                                    </div>
+                                    <div class="key-field">
+                                        <label class="key-field-title">Rating: </label>
+                                        <pc-rating rating-id="{{searchResult['_type']}}_{{searchResult['_source']['id']}}" readonly="true"></pc-rating>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div ng-if="searchResult['_type']=='story'" class="search-result browse-page">
+                            <a href="#!/stories/{{ searchResult['_source']['id'] }}">
+                                <h5>{{ searchResult['_source']['title']}}</h5>
+
+                                <div class="attributes">
+                                    <div class="key-field">
+                                        <label class="key-field-title">Comments: </label>
+                                        {{ searchResult['_source']['commentsCount']}}
+                                    </div>
+
+                                    <div class="key-field">
+                                        <label class="key-field-title">Rating: </label>
+                                        <pc-rating rating-id="{{searchResult['_type']}}_{{searchResult['_source']['id']}}" readonly="true"></pc-rating>
+                                    </div>
+                                </div>
+                            </a>
                         </div>
 
                         <div class="texticon texticon-{{searchResult['_type']}}"></div>
