@@ -65,21 +65,15 @@
                     </div>
                 </div>
 
-                <div class="form-item" ngshow="event.dateAddedToPC">
+                <div class="form-item" ng-show="event.date_created">
                     <div class="field-label">Added</div>
-                    <div class="field-content">{{ event.dateAddedToPC | date:'longDate' }}</div>
+                    <div class="field-content">{{ event.date_created | date:'longDate' }}</div>
                 </div>
 
 
-                <div class="form-item" ng-show="event.dateIssuedByExternalResource">
-                    <div class="field-label">Issued</div>
-                    <div class="field-content">{{ event.dateIssuedByExternalResource | date:'longDate' }}</div>
-                </div>
-
-
-                <div class="form-item" ng-show="event.dateModified">
+                <div class="form-item" ng-show="event.date_modified">
                     <div class="field-label">Modified</div>
-                    <div class="field-content">{{ event.dateModified | date:'longDate' }}</div>
+                    <div class="field-content">{{ event.date_modified | date:'longDate' }}</div>
                 </div>
             </div>
 

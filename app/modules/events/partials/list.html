@@ -12,7 +12,7 @@
                         <h3 class="panel-title">{{ event.title | limitTo: 25}}</h3>
                     </div>
                     <div class="panel-body">
-                        {{ event.issued | date:'longDate' }}
+                        {{ event.date_created | date:'longDate' }}
                         <br/><br/>
                         <a href="#/events/{{ event.id }}" type="button" class="btn btn-primary">Details</a>
                     </div>

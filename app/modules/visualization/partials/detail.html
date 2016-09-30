@@ -78,13 +78,13 @@
                             <username userpath="{{visualization.creator_path}}"></username>
                         </div>
                     </div>
-                    <div class="form-item" ng-if="visualization.created_at">
+                    <div class="form-item" ng-if="visualization.date_created">
                         <div class="field-label">Added</div>
-                        <div class="field-content">{{ visualization.created_at | date:'longDate' }}</div>
+                        <div class="field-content">{{ visualization.date_created | date:'longDate' }}</div>
                     </div>
-                    <div class="form-item" ng-if="visualization.updated_at">
+                    <div class="form-item" ng-if="visualization.date_modified">
                         <div class="field-label">Modified</div>
-                        <div class="field-content">{{ visualization.updated_at | date:'longDate' }}</div>
+                        <div class="field-content">{{ visualization.date_modified | date:'longDate' }}</div>
                     </div>
                 </div>
 
@@ -194,5 +194,12 @@
                 <show-discussion ng-if="visualization.id" data-key="visualization_{{ visualization.id }}"></show-discussion>
             </div>
         </div>
+        <div class="row">
+            <div class="col-lg-12 ags-add-button">
+                <a type="button" class="btn btn-primary btn-ags pull-right" href="#!/ags/create?discussion=visualization_{{ visualization.id }}">Create Argument Graph</a>
+            </div>
+        </div>
     </div>
+
+
 </div>

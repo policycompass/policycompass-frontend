@@ -54,18 +54,18 @@
 
     <center>
         <div ng-show="isSelectedSon('graph_pie')">
-            <div class="pcPieChart" dataset="dataset" chartid="visualization.id" show-Legend="showLegend" small="list" mode="mode" show-Labels="showLabels"></div>
+            <div class="pcPieChart" dataset="dataset" chartid="randomID" show-Legend="showLegend" small="list" mode="mode" show-Labels="showLabels"></div>
         </div>
 
         <div ng-show="isSelectedSon('graph_bars')">
-            <div class="pcBarsChart" dataset="datasetToSend" events="eventsToPlot" chartid="visualization.id" small="list" mode="mode" show-Legend="showLegend" show-Labels="showLabels" show-Grid="showGrid" show-Together="showYAxes" show-Percentatge="showAsPercentatge" resolution="resolution.value" groupedby="groupedby.value" labelyaxe="labelYAxe"></div>
+           	<div class="pcBarsChart" dataset="datasetToSend" events="eventsToPlot" chartid="randomID" small="list" mode="mode" show-Legend="showLegend" show-Labels="showLabels" show-Grid="showGrid" show-Together="showYAxes" show-Percentatge="showAsPercentatge" resolution="resolution.value" groupedby="groupedby.value" labelyaxe="labelYAxe"></div>
         </div>
         <div ng-show="isSelectedSon('graph_line')">
-            <div class="pcLinesChart" dataset="numbers1" events="eventsToPlot" labels="labelYAxe" small="list" mode="mode" chartid="visualization.id" show-Legend="showLegend" show-Labels="showLabels" show-Lines="showLines" show-Areas="showAreas" show-Points="showPoints" show-Grid="showGrid" show-Together="showYAxes" show-Percentatge="showAsPercentatge" show-Astoplines="showAstoplines" resolution="resolution.value" plotdatain="plotDataIn" tickposition="plotxaxislegend" xaxeformat=""></div>
+           	<div class="pcLinesChart" dataset="numbers1" events="eventsToPlot" labels="labelYAxe" small="list" mode="mode" chartid="randomID" show-Legend="showLegend" show-Labels="showLabels" show-Lines="showLines" show-Areas="showAreas" show-Points="showPoints" show-Grid="showGrid" show-Together="showYAxes" show-Percentatge="showAsPercentatge" show-Astoplines="showAstoplines" resolution="resolution.value" plotdatain="plotDataIn" tickposition="plotxaxislegend" xaxeformat=""></div>
         </div>
 
         <div ng-hide="!isSelectedParent(1)">
-            <div class="pcMapsChart" chartid="visualization.id" dataset="datasetToSendMap" small="list" mode="mode" show-Legend="showLegend" show-Zoom="showZoom" show-Bubbles="showBubbles" projection="typeToPlot" fromcountry="translateCountryValue(rangeDatesSliderMin)" tocountry="translateCountryValue(rangeDatesSliderMax)" scale-Color="scaleColor"></div>
+           	<div class="pcMapsChart" chartid="randomID" dataset="datasetToSendMap" small="list" mode="mode" show-Legend="showLegend" show-Zoom="showZoom" show-Bubbles="showBubbles" projection="typeToPlot" fromcountry="translateCountryValue(rangeDatesSliderMin)" tocountry="translateCountryValue(rangeDatesSliderMax)" scale-Color="scaleColor"></div>
         </div>
     </center>
 

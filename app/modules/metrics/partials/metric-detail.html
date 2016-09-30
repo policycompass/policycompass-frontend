@@ -3,10 +3,10 @@
         <h1 class="fonticon fonticon-metric">{{ data.title }}</h1>
 
         <div class="pc-visualization-formcontrols">
-            <div class="button-group">
-                <a type="button" class="btn btn-primary btn-create" data-ng-if="allowEdit(data.creator_path)" href="#!/metrics/{{ data.id }}/edit">Edit</a>
+          <div class="button-group">
+                <a type="button" class="btn btn-primary btn-create" href="#!/metrics/{{ data.id }}/edit">Edit</a>
                 <a type="button" class="btn" href="#!/metrics/{{data.id}}/apply-1">Apply</a>
-                <a type="button" data-ng-if="allowEdit(data.creator_path)" class="btn btn-danger" ng-click="deleteMetric(data)">Delete</a>
+                <a type="button" ng-if="user.isAdmin || user.isCreator(data)" class="btn btn-danger" ng-click="deleteMetric(data)">Delete</a>
             </div>
 
             <a href="#" ng-if="data.is_draft" ng-disabled="data.is_draft" class="btn btn-default btn-danger">Draft</a>
@@ -71,6 +71,10 @@
                     <div class="form-item" ng-if="data.date_created">
                         <div class="field-label">Added</div>
                         <div class="field-content">{{ data.date_created | date:'longDate' }}</div>
+                    </div>
+                    <div class="form-item" ng-if="data.date_modified">
+                        <div class="field-label">Modified</div>
+                        <div class="field-content">{{ data.date_modified | date:'longDate' }}</div>
                     </div>
                 </div>
             </div>

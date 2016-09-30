@@ -5,12 +5,14 @@
         <div class="pc-visualization-formcontrols">
             <div class="button-group">
                 <a type="button" class="btn btn-primary  btn-create" ng-if="userState.loggedIn && (userState.userPath == ag.creator_path || userState.isAdmin)" href="#!/ags/{{ ag.id }}/edit">Edit</a>
-                <a type="button" class="btn btn-danger  btn-clear" ng-if="userState.loggedIn && (userState.userPath == ag.creator_path || userState.isAdmin)" ng-click="deleteAg(ag)" ng-disabled="true">Delete</a>
+                <a type="button" class="btn btn-danger  btn-clear" ng-if="userState.loggedIn && (userState.userPath == ag.creator_path || userState.isAdmin)" ng-click="deleteAg(ag)">Delete</a>
             </div>
+
+            <a href="#" ng-if="ag.is_draft" ng-disabled="ag.is_draft" class="btn btn-default btn-danger">Draft</a>
         </div>
     </div>
     <div class="row">
-        <div class="metadata metadata-ag metadata-ag-description">
+        <div class="metadata metadata-event metadata-event-description">
             <div class="form-group form-group-description" ngshow="ag.description">
                 <div class="field-label">Description</div>
                 <div class="field-content">{{ag.description}}</div>
@@ -27,17 +29,22 @@
     <div class="row">
         <h3 class="legend-primary">Details</h3>
         <!-- FIELDS START -->
-        <div class="metadata metadata-ag">
+        <div class="metadata metadata-event">
 
             <div class="form-group form-group-modified">
-                <div class="form-item" ngshow="ag.issued">
-                    <div class="field-label">Added</div>
-                    <div class="field-content">{{ ag.issued | date:'longDate' }}</div>
+                <div class="form-item" ng-if="ag.creator_path">
+                    <div class="field-label">Added by</div>
+                    <div class="field-content">
+                        <username userpath="{{ ag.creator_path }}"></username>
+                    </div>
                 </div>
-
-                <div class="form-item" ng-show="ag.modified">
+                <div class="form-item" ng-if="ag.date_created">
+                    <div class="field-label">Added</div>
+                    <div class="field-content">{{ ag.date_created | date:'longDate' }}</div>
+                </div>
+                <div class="form-item" ng-if="ag.date_modified">
                     <div class="field-label">Modified</div>
-                    <div class="field-content">{{ ag.modified | date:'longDate' }}</div>
+                    <div class="field-content">{{ ag.date_modified | date:'longDate' }}</div>
                 </div>
             </div>
 

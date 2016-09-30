@@ -33,7 +33,7 @@
                     <div ng-show="ListMetricsFilterModal.length==0">No dataset linked</div>
                     
                     <div class="designer-metrics active" class="designer-metrics" id="designer-metrics-num-{{metric.id}}" ng-repeat="metric in ListMetricsFilterModal track by $index">
-                        <h4 ng-show="metric.title" >{{metric.title}} -- {{metric.issued | date:'longDate' }}</h4>
+                        <h4 ng-show="metric.title" >{{metric.title}} - {{metric.date_created | date:'longDate' }}</h4>
                         <h4 ng-show="!metric.title" >Deleted dataset {{metric.id}}</h4>
 
                         <input type="hidden" ng-model="MetricSelectediId_[metric.id]" id="MetricSelectediId_{{metric.id}}" name="MetricSelectedId[]" value="">
@@ -137,14 +137,16 @@
 											<ul class="datasets-list metrics-list ">
 												<li ng-class="{'metrics-list dataset-list active':ModalIndividualDatasetCheckboxes_[metric.id].indexOf(option.id) >= 0}" name="designer-dataset-num-{{dataset.id}}" ng-repeat="option in individualCombo_value_[metric.id] | orderBy: 'title' | pagination: (curPageDataset-1) * pageSizeDataset | limitTo: pageSizeDataset " >
 													<a ng-hide="isSelectedSon('mercator') && !option.iscountry" href="" x-ng-click="clickIndividual(metric.id, option.id);"  title="{{ ModalIndividualDatasetCheckboxes_[metric.id].indexOf(option.id) == -1 && 'Add ' || 'Remove ' }} '{{option.title}}'">					
-														<spectrum 
+
+														<spectrum-colorpicker
 															ng-show="isSelectedSon('graph_line') || isSelectedSon('graph_pie') || isSelectedSon('graph_bars')"
 															ng-init=" dataset_color_palete_[metric.id][option.id] = dataset_color_palete_[metric.id][option.id] == null ? colorScale(option.title) : dataset_color_palete_[metric.id][option.id] " ng-model="dataset_color_palete_[metric.id][option.id]" ng-model-onblur ng-change="changeColourIndividual()" options="{
 																						showInput: true,
 																						showAlpha: false,
-																						allowEmpty: false,
+																						allowEmpty: false,																						
 																						preferredFormat: 'hex'
-																					}"></spectrum>
+																					}"></spectrum-colorpicker>
+
 															{{option.title}} &nbsp;
 													</a>
 													<span ng-show="isSelectedSon('mercator') && !option.iscountry">{{option.title}} &nbsp; (Is not a country)</span>

@@ -29,8 +29,10 @@
 
         <div class="pc-visualization-formcontrols">
             <div class="button-group">
-                <a class="btn btn-save" ng-click="submit(false);" ng-class="{'disabled' : !datasetForm.$valid }">Save and go to Dataset</a>
-                <a class="btn btn-dataset" ng-click="submit(true);" ng-class="{'disabled' : !datasetForm.$valid }">Save and apply metric again</a>
+                <a class="btn btn-default btn-save" ng-if="!user.state.loggedIn" ng-click="goToLogin()" ng-class="{'disabled' : !datasetForm.$valid }">Login to Apply</a>
+                <a class="btn btn-dataset" ng-if="user.state.loggedIn" ng-click="submit(true);" ng-class="{'disabled' : !datasetForm.$valid }">Save and apply metric again</a>
+                <a class="btn btn-save" ng-if="user.state.loggedIn" ng-click="submit(false);" ng-class="{'disabled' : !datasetForm.$valid }">Save and go to Dataset</a>
+                <a class="btn btn-danger btn-clear" ng-click="abort();">Cancel</a>
             </div>
         </div>
     </div>

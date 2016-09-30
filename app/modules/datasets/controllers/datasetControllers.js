@@ -619,7 +619,18 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 */
                 $scope.inputTable.settings.contextMenu = false;
                 $scope.inputTable.settings.afterSelectionEnd = getSelection;
-                $scope.inputTable.settings.readOnly = true;
+                $scope.inputTable.settings.readOnly = false;
+
+                $scope.inputTable.settings.afterChange = function(changes, source){
+                    if(changes !== null){
+                        for(var i=0; i<$scope.individualSelection.length; i++){
+                            if($scope.individualSelection[i].name == changes[0][2] && $scope.individualSelection[i].name != changes[0][3]){
+                                $scope.individualSelection.splice(i,1);
+                            }
+                        }
+                        $scope.$apply();
+                    }
+                }
 
 
                 if (creationService.data.individualSelection) {
@@ -758,6 +769,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 $scope.inputTable.settings.afterInit = function () {
                     $scope.inputInstance = this;
                 };
+                $scope.inputTable.settings.readOnly = true;
 
                 $scope.timeResolution = {
                     input: [
@@ -1060,7 +1072,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 }
             }
 
-            
+
                 $scope.addIndicator = function () {
                 var modelInstance = $modal.open({
                     templateUrl: 'modules/datasets/partials/indicator-form.html',

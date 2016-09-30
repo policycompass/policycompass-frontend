@@ -16,10 +16,10 @@ angular.module('pcApp.fcm.controllers.fcm', [
     .controller('FcmController', [
         '$scope', 'Fcm', '$log', '$routeParams', function ($scope, Fcm, $log, $routeParams) {
 
-            $scope.models = Fcm.query({page: $routeParams.page}, function (fcmList) {
+            $scope.models = Fcm.query({ page: $routeParams.page }, function (fcmList) {
 
             }, function (err) {
-                throw {message: JSON.stringify(err.data)};
+                throw { message: JSON.stringify(err.data) };
             });
         }
     ])
@@ -248,6 +248,8 @@ angular.module('pcApp.fcm.controllers.fcm', [
                 $scope.md = jsonModel;
                 FcmModel.update({ id: $routeParams.fcmId }, $scope.fcmModelUpdate, function (value) {
                     FcmSearchUpdate.update({ id: $routeParams.fcmId }, function () {
+                        if ($routeParams.simulation)//If run simulation is clicked
+                            $rootScope.simulation = true;
                         $location.path('/models/' + $routeParams.fcmId + '/edit');
                     });
                 });

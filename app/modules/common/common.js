@@ -54,6 +54,9 @@ commonmanager.config(function ($routeProvider) {
         .when('/terms-of-use', {
             templateUrl: 'modules/common/partials/termsOfUse.html'
         })
+        .when('/glossary', {
+            templateUrl: 'modules/common/partials/glossary.html'
+        })
         .when('/login', {
             templateUrl: 'modules/common/partials/login.html'
         })

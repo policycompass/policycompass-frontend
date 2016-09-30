@@ -2,6 +2,10 @@
 
     <div class="content-header">
         <h3><span class="fonticon fonticon-story"></span> {{ storyTitle }}</h3>
+        <span>
+            Story by
+            <a class="fonticon fonticon-user normal"><span>username</span></a>, last modified <a><span>2 days ago</span></a>
+        </span>
     </div>
 
     <div class="pc-visualization-formcontrols">
@@ -27,15 +31,17 @@
 
                     <h2>{{ chapter.title }}</h2>
 
-                    <div ng-bind-html="chapter.text"></div>
+                    <div ta-bind ng-model="chapter.text"></div>
 
                     <div ng-repeat="content in chapter.contents">
-                        <div>
+                        <div style="padding: 10px 0;">
 
                             <div ng-switch on="content.type">
                                 <pc-visualization ng-switch-when="visualization" visualization-id="{{content.index}}"></pc-visualization>
 
                                 <pc-dataset ng-switch-when="dataset" dataset-id="{{content.index}}"></pc-dataset>
+
+                                <pc-metric ng-switch-when="metric" metric-id="{{content.index}}"></pc-metric>
 
                                 <div ng-switch-default>
                                     <div class="alert alert-danger" style="margin-bottom: 0">Sorry, there is currently no renderer available for this {{ content.type }}.</div>
