@@ -47,7 +47,7 @@ $ancho: $unidad * 2;
 @media (min-width: $device) {
     .result-wrapper {
         width: 49.5%;
-        @include paddings();
+        padding-left: 10px;
         &:nth-child(2n) {
             // background:$gris_80;
             margin-left: 0.5%;
@@ -80,16 +80,12 @@ $ancho: $unidad * 2;
         font-size: 10px;
         padding-top: 5.5em;
         color: $claro;
-        opacity: .3;
         width: 4em;
         height: 15em;
         text-align: center;
         // background:red;
         white-space: nowrap;
         overflow: hidden;
-        &:hover {
-            opacity: 1;
-        }
 
     }
 
@@ -121,16 +117,8 @@ $ancho: $unidad * 2;
     .texticon-story:before {
         content: "Story";
     }
-    .rating-stars {
-        opacity: 0.4;
-    }
     &:hover {
-        background: $gris_99;
-
-        .rating-stars {
-            opacity: 1;
-        }
-
+        background-color: #eee;
     }
 
 }
