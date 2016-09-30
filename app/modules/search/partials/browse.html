@@ -19,7 +19,7 @@
                     <span class="text-show">Sort By</span>
                     <select class="btn btn-show btn-sm dropdown-toggle" ng-model="selectedSortItem" ng-change="sortItemsChanged()" ng-init="selectedSortItem = selectedSortItem || sortOptions[0]" ng-options="sortOptionItem.name for sortOptionItem in sortOptions">
                     </select>
-                    <span class="text-show">Show</span>
+                    <span class="text-show" style="padding-left: 20px">Show</span>
                     <select class="btn btn-show btn-sm dropdown-toggle" ng-model="selectedItemPerPage" ng-change="itemsPerPageChanged()" ng-init="selectedItemPerPage = selectedItemPerPage || itemsPerPageChoices[0]" ng-options="itemIPP as itemIPP.name for itemIPP in itemsPerPageChoices">
                     </select>
                 </div>

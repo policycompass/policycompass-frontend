@@ -256,13 +256,13 @@ $ancho: $unidad * 2;
         border-bottom: 1px solid $gris_80;
         line-height: 1.6em;
         font-size: 16px;
-        padding: 0 10px;
+        padding: 2px 10px;
     }
     & + .browse-filters-block {
         margin: 1em 0;
     }
-    h3, ul {
-        padding: 5px;
+    ul {
+        padding: 10px;
     }
 
 }
