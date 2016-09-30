@@ -14,7 +14,9 @@
 
     <div class="pc-visualization-formcontrols">
         <div class="btn-group">
-            <a type="button" class="btn btn-primary  btn-create" ng-if="userState.loggedIn && (userState.userPath == story.creator_path || userState.isAdmin)"  href="#!/stories/{{ story.id }}/edit">Edit</a>
+            <a type="button" class="btn btn-primary btn-create"  href="#!/stories/{{ story.id }}/edit">
+                {{userState.loggedIn && (userState.userPath == story.creator_path || userState.isAdmin) ? 'Edit' : 'Edit a copy'}}
+            </a>
             <a href="" id="downloadButton" class="btn btn-default fa-file-text-o" ng-click="downloadStory()">Download</a>
         </div>
 

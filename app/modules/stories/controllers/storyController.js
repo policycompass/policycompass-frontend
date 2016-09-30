@@ -251,17 +251,32 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
 
             $scope.saveStory = function(){
                 if ($scope.checkIfStoryIsValid()) {
-                    $http.put(API_CONF.STORY_MANAGER_URL + '/stories/' + $scope.story.id, {
-                        id: $scope.story.id,
-                        title: $scope.story_title,
-                        chapters: $scope.chapters,
-                        oldContents: $scope.oldContents,
-                        is_draft: $scope.story.is_draft
-                    }).then(function (response) {
-                        if (response) {
-                            $location.path('/stories/' + response.data.result.id);
-                        }
-                    });
+                    // if current user is not owner of story, then create a new copy of this story
+                    if ($scope.userState.userPath != $scope.story.creator_path) {
+                        console.log($scope.userState)
+                        $http.post(API_CONF.STORY_MANAGER_URL + '/stories', {
+                            title: 'Copy of ' + $scope.story_title,
+                            chapters: $scope.chapters,
+                            is_draft: true,
+                        }).then(function (response) {
+                            if (response) {
+                                $location.path('/stories/' + response.data.result.id);
+                            }
+                        });
+                    }
+                    else { // else update existing story
+                        $http.put(API_CONF.STORY_MANAGER_URL + '/stories/' + $scope.story.id, {
+                            id: $scope.story.id,
+                            title: $scope.story_title,
+                            chapters: $scope.chapters,
+                            oldContents: $scope.oldContents,
+                            is_draft: $scope.story.is_draft
+                        }).then(function (response) {
+                            if (response) {
+                                $location.path('/stories/' + response.data.result.id);
+                            }
+                        });
+                    }
                 }else{
                     dialogs.notify("Error", "Please provide text for all chapters");
                 }
