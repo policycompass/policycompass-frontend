@@ -134,7 +134,7 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
 
             $scope.deleteStory = function () {
                 // Open a confirmation dialog
-                var dlg = dialogs.confirm("Are you sure?", "Do you want to delete this story permanently?");
+                var dlg = dialogs.confirm("Delete unsaved story", "Do you want to delete this unsaved story permanently?");
                 dlg.result.then(function () {
                     $location.path('/stories');
                 });
@@ -261,6 +261,8 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                         }).then(function (response) {
                             if (response) {
                                 $location.path('/stories/' + response.data.result.id);
+                            } else {
+                                dialogs.notify('Error', 'Error occured while saving story, please try again')
                             }
                         });
                     }
@@ -274,6 +276,8 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                         }).then(function (response) {
                             if (response) {
                                 $location.path('/stories/' + response.data.result.id);
+                            } else {
+                                dialogs.notify('Error', 'Error occured while saving story, please try again')
                             }
                         });
                     }
@@ -337,6 +341,9 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                     $http.delete(API_CONF.STORY_MANAGER_URL + '/stories/' + $scope.story.id).then(function(response){
                         if(response){
                             $location.path('/stories');
+                            dialogs.notify('Success', 'Story has been deleted successfully')
+                        } else {
+                            dialogs.notify('Error', 'Error deleting story, please try again')
                         }
                     });
                 });
