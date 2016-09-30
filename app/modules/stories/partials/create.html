@@ -59,7 +59,7 @@
             <a href="#!/login" ng-if="!userState.loggedIn" class="btn btn-default btn-save" target="_blank">Login to  {{userState.userPath == story.creator_path || userState.isAdmin ? 'save' : 'save a copy'}}</a>
             <a href="" id="saveButton" data-ng-disabled="storyForm.$invalid" ng-if="userState.loggedIn" class="btn btn-default btn-save" ng-click="saveStory()">{{(mode == 'create') || (userState.userPath == story.creator_path || userState.isAdmin) ? 'Save' : 'Save a copy'}}</a>
             <a href="" id="addChapterButton" class="btn btn-default btn-add" ng-click="addChapter()">Add chapter</a>
-            <a href="" type="button" ng-if="userState.userPath == story.creator_path || userState.isAdmin" class="btn btn-danger fa-trash-o" ng-click="deleteStory()">Delete story</a>
+            <a href="" type="button" ng-if="mode == 'create' || (userState.userPath == story.creator_path || userState.isAdmin)" class="btn btn-danger fa-trash-o" ng-click="deleteStory()">Delete story</a>
         </div>
     </div>
 
