@@ -7,7 +7,7 @@
         <!--sources </p>-->
     </div>
     <div class="row">
-        <div class="search-content">
+        <div class="col-md-9 col-md-push-3">
             <div class="input-group">
                 <input type="search" ng-keyup="$event.keyCode == 13 && searchString(searchQuery)" class="browse-input form-control" required="" placeholder="{{searchItemTypeInfo}}" ng-model="searchQuery" />
                 <span class="input-group-btn">
@@ -237,7 +237,7 @@
         </div>
         <!-- /.search content  -->
 
-        <div class="browse-filters">
+        <div class="col-md-3 col-md-pull-9">
             <div ng-repeat="facetCategory in facetCategories | orderBy: 'order'" ng-if="facetCategory.results>0" class="browse-filters-block">
                 <h4>{{facetCategory.label}}</h4>
                 <ul>
