@@ -4,6 +4,12 @@ $ancho: $unidad * 2;
     @include paddings();
 }
 
+.browse-input {
+    height: inherit;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
 @media (max-width: $device - 1) {
     .browse-filters {
         clear: both;
