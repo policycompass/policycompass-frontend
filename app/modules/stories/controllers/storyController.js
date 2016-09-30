@@ -136,12 +136,7 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                 // Open a confirmation dialog
                 var dlg = dialogs.confirm("Are you sure?", "Do you want to delete this story permanently?");
                 dlg.result.then(function () {
-                    // Delete the story via the API
-                    $http.delete(API_CONF.STORY_MANAGER_URL + '/stories/' + story.id).then(function(response){
-                        if(response){
-                            $location.path('/stories');
-                        }
-                    });
+                    $location.path('/stories');
                 });
             }
 
