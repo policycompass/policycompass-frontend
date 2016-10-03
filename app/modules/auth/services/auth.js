@@ -61,7 +61,7 @@ angular.module('pcApp.auth.services.auth', [
 
                 // setup auth state
                 Auth.state.loggedIn = true;
-                Auth.state.usetPath = userPath;
+                Auth.state.userPath = userPath;
 
                 // store session and user data to local store
                 if (!doNotStore) {
@@ -91,7 +91,7 @@ angular.module('pcApp.auth.services.auth', [
                 delete $http.defaults.headers.common[AdhocracyClient.headerNames.userPath];
 
                 Auth.state.loggedIn = false
-                Auth.state.usetPath = undefined
+                Auth.state.userPath = undefined
                 Auth.state.userData = undefined
                 Auth.state.isAdmin = undefined
 
