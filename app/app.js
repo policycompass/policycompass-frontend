@@ -4,6 +4,7 @@
  */
 var pcAppDependencies = [
     'ngRoute',
+    'ngStorage',
     'ui.bootstrap',
     'pcApp.metrics',
     'pcApp.visualization',
@@ -46,6 +47,10 @@ var pcApp = angular.module('pcApp', pcAppDependencies)
     .run(function ($rootScope, $location) {
         $rootScope.location = $location;
     })
+
+    .run(['Auth', function(Auth) {
+        Auth.recoverSession();
+    }])
 
 /**
  * Very simple central error handling

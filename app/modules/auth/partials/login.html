@@ -1,0 +1,36 @@
+<div class="container">
+    <div class="container-header">
+        <h3>Login</h3>
+        <div class="subtitle-help">
+            <h4>
+                <div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div>
+                <span class="ng-scope">Enter your credentials</span>
+            </h4>
+            <div ng-class="{active: help}" class="help-text">
+                <div class="fonticon fonticon-close" ng-click="help=!help"></div>
+                <p>Indicator herlp.</p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4 col-sm-offset-4">
+            <form ng-controller="LoginController" name="loginForm" novalidate>
+                <div ng-show="serverErrors.$other">{{ serverErrors.$other }}</div>
+                <div class="form-group">
+                    <label for="nameOrEmail">Name or Email</label>
+                    <input class="form-control" type="text" ng-model="nameOrEmail" id="nameOrEmail" name="nameOrEmail" ng-required="true" />
+                    <span ng-show="(loginForm.nameOrEmail.$dirty || $submitted) && loginForm.nameOrEmail.$error.required">The value is required!</span>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input class="form-control" type="password" ng-model="password" id="password" name="nameOrEmail" ng-required="true" />
+                    <span ng-show="(loginForm.password.$dirty || $submitted) && loginForm.password.$error.required">The value is required!</span>
+                    <span ng-show="serverErrors.password">{{ serverErrors.password }}</span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" name="submit" class="btn btn-primary" ng-disabled="!loginForm.$valid" ng-click="login()" value="Login" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

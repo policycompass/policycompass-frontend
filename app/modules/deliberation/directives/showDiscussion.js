@@ -3,7 +3,7 @@ angular.module('pcApp.deliberation.directives.showDiscussion', [
 ])
 
     .directive('showDiscussion', [
-        'API_CONF', 'Adhocracy', function (API_CONF, Adhocracy) {
+        'API_CONF', 'AdhocracySdk', function (API_CONF, AdhocracySdk) {
             return {
                 restrict: 'E',
                 scope: {
@@ -15,7 +15,7 @@ angular.module('pcApp.deliberation.directives.showDiscussion', [
                     if(scope.autoResize == false) {
                         autoResize = false;
                     }
-                    Adhocracy.then(function (adh) {
+                    AdhocracySdk.then(function (adh) {
                         element.append(adh.getIframe('create-or-show-comment-listing', {
                             "pool-path": API_CONF.ADHOCRACY_BACKEND_URL + '/adhocracy/',
                             key: scope.key,

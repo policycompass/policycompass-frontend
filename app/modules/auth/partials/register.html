@@ -1,0 +1,59 @@
+<div class="container">
+    <div class="container-header">
+        <h3>Signup</h3>
+        <div class="subtitle-help">
+            <h4>
+                <div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div>
+                <span class="ng-scope">Create a new user</span>
+            </h4>
+            <div ng-class="{active: help}" class="help-text">
+                <div class="fonticon fonticon-close" ng-click="help=!help"></div>
+                <p>Indicator herlp.</p>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-controller="RegisterController">
+        <div class="col-sm-4 col-sm-offset-4" >
+            <form ng-hide="completed" name="registerForm" novalidate>
+                <div ng-show="serverErrors.$other">{{ serverErrors.$other }}</div>
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input class="form-control" type="text" ng-model="name" id="name" name="name" ng-required="true"/>
+                    <span ng-show="(registerForm.name.$dirty || $submitted) && registerForm.name.$error.required">The value is required!</span>
+                    <span ng-show="serverErrors.name">{{ serverErrors.name }}</span>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input class="form-control" type="email" ng-model="email" id="email" name="email" ng-required="true" />
+                    <span ng-show="(registerForm.email.$dirty || $submitted) && registerForm.email.$error.required">The value is required!</span>
+                    <span ng-show="registerForm.email.$error.email"> Not valid email!</span>
+                    <span ng-show="serverErrors.email">{{ serverErrors.email }}</span>
+                </div>
+                <div class="form-group">
+                    <label for="password" >Password</label>
+                    <input class="form-control" type="password" id="password" name="password"
+                           ng-model="password" ng-required="true"/>
+                    <span ng-show="(registerForm.password.$dirty || $submitted) && registerForm.password.$error.required">The value is required!</span>
+                    <span ng-show="(registerForm.password.$dirty || $submitted) && registerForm.password.$error.minlength">The password is to short!</span>
+                    <span ng-show="serverErrors.password">{{ serverErrors.password }}</span>
+                </div>
+                <div class="form-group">
+                    <label for="passwordConfirm">Password (again)</label>
+                    <input class="form-control" id="passwordConfirm" type="password" ng-model="passwordConfirm" name="passwordConfirm" ng-required="true" data-password-verify="password"/>
+                    <span ng-show="(registerForm.passwordConfirm.$dirty || $submitted) && registerForm.passwordConfirm.$error.required">The value is required!</span>
+                    <span ng-show="registerForm.passwordConfirm.$error.passwordVerify">Fields are not equal!</span>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" ng-model="acceptTerms" ng-required="true" /> I accept the <a target="_blank" href="#!/terms-of-use">terms and conditions<a>
+                    <span ng-show="$submitted && registerForm.acceptTerms.$error.required">The value is required!</span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" name="submit" class="btn btn-primary" ng-disabled="!registerForm.$valid" ng-click="register()" value="Register" />
+                </div>
+            </form>
+        </div>
+        <div ng-show="completed" class="alert alert-success col-sm-6 col-sm-offset-2" role="alert">
+            <strong>Registration completed.</strong>Check your email for the activation link and proceed to <a href ng-click="goToLogin()">login</a>.
+        </div>
+    </div>
+</div>
