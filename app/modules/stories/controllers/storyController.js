@@ -132,16 +132,11 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                 model.css('top', posY + 'px');
             };
 
-            $scope.deleteStory = function (story) {
+            $scope.deleteStory = function () {
                 // Open a confirmation dialog
-                var dlg = dialogs.confirm("Are you sure?", "Do you want to delete this story permanently?");
+                var dlg = dialogs.confirm("Delete unsaved story", "Do you want to delete this unsaved story permanently?");
                 dlg.result.then(function () {
-                    // Delete the story via the API
-                    $http.delete(API_CONF.STORY_MANAGER_URL + '/stories/' + story.id).then(function(response){
-                        if(response){
-                            $location.path('/stories');
-                        }
-                    });
+                    $location.path('/stories');
                 });
             }
 
@@ -256,17 +251,36 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
 
             $scope.saveStory = function(){
                 if ($scope.checkIfStoryIsValid()) {
-                    $http.put(API_CONF.STORY_MANAGER_URL + '/stories/' + $scope.story.id, {
-                        id: $scope.story.id,
-                        title: $scope.story_title,
-                        chapters: $scope.chapters,
-                        oldContents: $scope.oldContents,
-                        is_draft: $scope.story.is_draft
-                    }).then(function (response) {
-                        if (response) {
-                            $location.path('/stories/' + response.data.result.id);
-                        }
-                    });
+                    // if current user is not owner of story, then create a new copy of this story
+                    if ($scope.userState.userPath != $scope.story.creator_path) {
+                        console.log($scope.userState)
+                        $http.post(API_CONF.STORY_MANAGER_URL + '/stories', {
+                            title: 'Copy of ' + $scope.story_title,
+                            chapters: $scope.chapters,
+                            is_draft: true,
+                        }).then(function (response) {
+                            if (response) {
+                                $location.path('/stories/' + response.data.result.id);
+                            } else {
+                                dialogs.notify('Error', 'Error occured while saving story, please try again')
+                            }
+                        });
+                    }
+                    else { // else update existing story
+                        $http.put(API_CONF.STORY_MANAGER_URL + '/stories/' + $scope.story.id, {
+                            id: $scope.story.id,
+                            title: $scope.story_title,
+                            chapters: $scope.chapters,
+                            oldContents: $scope.oldContents,
+                            is_draft: $scope.story.is_draft
+                        }).then(function (response) {
+                            if (response) {
+                                $location.path('/stories/' + response.data.result.id);
+                            } else {
+                                dialogs.notify('Error', 'Error occured while saving story, please try again')
+                            }
+                        });
+                    }
                 }else{
                     dialogs.notify("Error", "Please provide text for all chapters");
                 }
@@ -319,14 +333,17 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                 model.css('top', posY + 'px');
             }
 
-            $scope.deleteStory = function (story) {
+            $scope.deleteStory = function () {
                 // Open a confirmation dialog
                 var dlg = dialogs.confirm("Are you sure?", "Do you want to delete the story " + $scope.storyTitle + " permanently?");
                 dlg.result.then(function () {
                     // Delete the story via the API
-                    $http.delete(API_CONF.STORY_MANAGER_URL + '/stories/' + story.id).then(function(response){
+                    $http.delete(API_CONF.STORY_MANAGER_URL + '/stories/' + $scope.story.id).then(function(response){
                         if(response){
                             $location.path('/stories');
+                            dialogs.notify('Success', 'Story has been deleted successfully')
+                        } else {
+                            dialogs.notify('Error', 'Error deleting story, please try again')
                         }
                     });
                 });
@@ -406,8 +423,9 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                         $scope.storyTitle = $scope.story.title;
                         $scope.storyChapters = $scope.story.chapters;
                     }
-                    if($scope.story == 500){
+                    if($scope.story.result == 500){
                         $location.path('/stories');
+                        dialogs.notify("Not found", "This story does not exist.");
                     }
                 });
             }

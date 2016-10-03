@@ -1,18 +1,23 @@
 <div class="container container-create-visualisation">
 
     <div class="content-header">
-        <h3><span class="fonticon fonticon-story"></span> {{ storyTitle }}</h3>
+        <h1 class="fonticon fonticon-story">{{ storyTitle }}</h1>
         <span>
             Story by
-            <a class="fonticon fonticon-user normal"><span>username</span></a>, last modified <a><span>2 days ago</span></a>
+            <a class="fonticon fonticon-user normal">
+                <span>
+                    <username ng-if="story.creator_path" userpath="{{ story.creator_path }}"></username>
+                </span>
+            </a>, added <a>{{ story.issued | date:'longDate' }}</a>, last modified <a>{{ story.modified | date:'longDate' }}</a>
         </span>
     </div>
 
     <div class="pc-visualization-formcontrols">
         <div class="btn-group">
-            <a type="button" class="btn btn-primary  btn-create" ng-if="userState.loggedIn && (userState.userPath == story.creator_path || userState.isAdmin)"  href="#!/stories/{{ story.id }}/edit">Edit</a>
+            <a type="button" class="btn btn-primary btn-create"  href="#!/stories/{{ story.id }}/edit">
+                {{userState.loggedIn && (userState.userPath == story.creator_path || userState.isAdmin) ? 'Edit' : 'Edit a copy'}}
+            </a>
             <a href="" id="downloadButton" class="btn btn-default fa-file-text-o" ng-click="downloadStory()">Download</a>
-            <a href="" id="deleteButton" class="btn btn-danger fa-trash-o" ng-if="userState.loggedIn && (userState.userPath == story.creator_path || userState.isAdmin)" ng-click="deleteStory(story)">Delete</a>
         </div>
 
         <a href="#" ng-if="story.is_draft" ng-disabled="story.is_draft" class="btn btn-default btn-danger">Draft</a>
@@ -42,6 +47,8 @@
                                 <pc-dataset ng-switch-when="dataset" dataset-id="{{content.index}}"></pc-dataset>
 
                                 <pc-metric ng-switch-when="metric" metric-id="{{content.index}}"></pc-metric>
+
+                                <pc-fcm ng-switch-when="fuzzymap" fcm-id="content.index"></pc-fcm>
 
                                 <div ng-switch-default>
                                     <div class="alert alert-danger" style="margin-bottom: 0">Sorry, there is currently no renderer available for this {{ content.type }}.</div>
