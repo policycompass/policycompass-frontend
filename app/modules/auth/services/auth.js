@@ -48,12 +48,12 @@ angular.module('pcApp.auth.services.auth', [
                         userPath = userPath.replace(/\/$/, '');
                         return userPath === object.creator_path;
                     }
-                },
+                }
             };
 
             var setupSession = function(session, userData, doNotStore) {
-                token = session.token
-                userPath = session.userPath
+                token = session.token;
+                userPath = session.userPath;
 
                 // setup headers for backend communication
                 $http.defaults.headers.common[AdhocracyClient.headerNames.token] = token;
@@ -72,10 +72,10 @@ angular.module('pcApp.auth.services.auth', [
                 // setup a3 session
                 AdhocracyCrossWindowChannel.then(function (channel) {
                     channel.setToken(token, userPath)
-                })
+                });
 
                 setupUserData(userData, doNotStore);
-            }
+            };
 
             var setupUserData = function (userData, doNotStore) {
                 if (!doNotStore) {
@@ -83,26 +83,26 @@ angular.module('pcApp.auth.services.auth', [
                 }
                 Auth.state.userData = userData;
                 Auth.state.isAdmin = userData.roles.indexOf('god') !== -1;
-            }
+            };
 
             var teardownSession = function() {
                 // the opposite of setup session
                 delete $http.defaults.headers.common[AdhocracyClient.headerNames.token];
                 delete $http.defaults.headers.common[AdhocracyClient.headerNames.userPath];
 
-                Auth.state.loggedIn = false
-                Auth.state.userPath = undefined
-                Auth.state.userData = undefined
-                Auth.state.isAdmin = undefined
+                Auth.state.loggedIn = false;
+                Auth.state.userPath = undefined;
+                Auth.state.userData = undefined;
+                Auth.state.isAdmin = undefined;
 
                 AdhocracyCrossWindowChannel.then(function (channel) {
                     channel.deleteToken();
-                })
+                });
 
-                delete $localStorage.token
-                delete $localStorage.userPath
-                delete $localStorage.userData
-            }
+                delete $localStorage.token;
+                delete $localStorage.userPath;
+                delete $localStorage.userData;
+            };
 
             var loadLocalSession = function() {
                 if (!$localStorage.token || !$localStorage.userPath) {
@@ -114,16 +114,16 @@ angular.module('pcApp.auth.services.auth', [
                     username: 'unkown user',
                     roles: [],
                     email: 'unkown email'
-                }
+                };
 
                 return {
                     session: {
                         token: $localStorage.token,
-                        userPath: $localStorage.userPath,
+                        userPath: $localStorage.userPath
                     },
                     userData: $localStorage.userData || fallbackUserData
                 }
-            }
+            };
 
             /** Wrapper to make A3 auth features pluggable. Calls directly A3
              *  specific login code and A3 specific code to fetch user data.
@@ -133,7 +133,7 @@ angular.module('pcApp.auth.services.auth', [
                     .then(function (session) {
                         return AdhocracyClient.validate_session(session)
                             .then(function (userData) {
-                                setupSession(session, userData)
+                                setupSession(session, userData);
                                 beforeLogin = last || '/';
                                 last = undefined;
                                 return beforeLogin;
@@ -173,10 +173,10 @@ angular.module('pcApp.auth.services.auth', [
                     .then(function (userData) {
                         setupUserData(userData);
                     }, function (response) {
-                        console.log("Session couldn't be validated", response)
+                        console.log("Session couldn't be validated", response);
                         teardownSession();
                     })
-            }
+            };
 
             return Auth;
         }
