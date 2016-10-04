@@ -113,6 +113,11 @@ angular.module('pcApp.metrics.services.metric', [
         helper.addIndicator = function (indicator) {
             var i = "__" + this.variableIndex + "__";
             var cursorPosition = this.cursorPosition;
+
+            if (angular.isUndefined(this.formula)) {
+                this.formula = '';
+            }
+
             if (angular.isUndefined(cursorPosition)) {
                 this.formula = this.formula + i;
             } else {
