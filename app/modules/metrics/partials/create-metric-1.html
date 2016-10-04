@@ -96,7 +96,7 @@
                     </div>
 
                     <ul class="list-group formula-list-group">
-                        <li ng-repeat="indicator in metrics_controller_helper.indicators | filter:searchText | orderBy:selectedSortItem.sort" class="list-group-item">
+                        <li ng-repeat="indicator in metricsHelper.indicators | filter:searchText | orderBy:selectedSortItem.sort" class="list-group-item">
                             <div class="row">
                                 <div class="col-md-10">
                                     {{ indicator.name }}</br>

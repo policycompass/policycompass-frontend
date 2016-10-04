@@ -43,7 +43,7 @@
                 <label for="title" class="field-label">Title</label>
 
                 <div class="field-content">
-                    <input ng-model="apply_metric_helper.data.title" type="text" name="title" class="form-control" required>
+                    <input ng-model="applyHelper.data.title" type="text" name="title" class="form-control" required>
 
                     <p ng-show="datasetForm.title.$error.required && !datasetForm.title.$pristine" class="help-block">This field is required</p>
 
@@ -56,7 +56,7 @@
                 <label for="unit_id" class="field-label">Unit</label>
 
                 <div class="field-content">
-                    <select class="form-control unit-options" ng-model="apply_metric_helper.data.unit_id" data-category="apply_metric_helper.unit_category_id" id="unit_id" required>
+                    <select class="form-control unit-options" ng-model="applyHelper.data.unit_id" data-category="applyHelper.unit_category_id" id="unit_id" required>
                     </select>
 
                     <p ng-hide="servererror.unit_id || (datasetForm.unit_id.$error.required && !datasetForm.unit_id.$pristine)" class="help-block">Please select the unit for the new dataset</p>

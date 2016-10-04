@@ -21,9 +21,9 @@ angular.module('pcApp.metrics.controllers.metric', [
         function ($scope, API_CONF, $http, MetricsControllerHelper, FormulaHelper, $location, Auth) {
             $scope.sortOptions = [{"name": "Title", "sort": "name"}, {"name": "Date updated", "sort": "-date"}]
 
-            $scope.metrics_controller_helper = MetricsControllerHelper;
-            $scope.metrics_controller_helper.init();
-            $scope.formulaHelper = $scope.metrics_controller_helper.getFormulaHelper();
+            $scope.metricsHelper = MetricsControllerHelper;
+            $scope.metricsHelper.init();
+            $scope.formulaHelper = $scope.metricsHelper.getFormulaHelper();
             $scope.showFunctions = false;
 
             $scope.toggleFunctions = function () {
@@ -36,16 +36,16 @@ angular.module('pcApp.metrics.controllers.metric', [
 
             $scope.submitFormula = function () {
                 var url = API_CONF.FORMULA_VALIDATION_URL;
-                $scope.metrics_controller_helper.metricsdata.formula = $scope.formulaHelper.formula;
-                $scope.metrics_controller_helper.metricsdata.variables = $scope.formulaHelper.variables;
+                $scope.metricsHelper.metricsdata.formula = $scope.formulaHelper.formula;
+                $scope.metricsHelper.metricsdata.variables = $scope.formulaHelper.variables;
 
                 if ($scope.formulaForm.$valid) {
                     $http({
                         url: url,
                         method: 'get',
                         params: {
-                            formula: $scope.metrics_controller_helper.metricsdata.formula,
-                            variables: $scope.metrics_controller_helper.metricsdata.variables
+                            formula: $scope.metricsHelper.metricsdata.formula,
+                            variables: $scope.metricsHelper.metricsdata.variables
                         }
                     }).then(function (response) {
                         $location.path("/metrics/create-2")
@@ -69,21 +69,21 @@ angular.module('pcApp.metrics.controllers.metric', [
         function (Auth, $scope, $http, API_CONF, MetricsControllerHelper, $location, dialogs) {
 
             $scope.user = Auth;
-            $scope.metrics_controller_helper = MetricsControllerHelper;
+            $scope.metricsHelper = MetricsControllerHelper;
 
             $scope.is_draft = true;
 
             $scope.submitData = function (applyAfterwards) {
-                $scope.metrics_controller_helper.metricsdata.is_draft = $scope.is_draft;
+                $scope.metricsHelper.metricsdata.is_draft = $scope.is_draft;
                 var url = API_CONF.METRICS_MANAGER_URL + "/metrics";
 
                 if ($scope.metadataForm.$valid) {
-                    $http.post(url, $scope.metrics_controller_helper.metricsdata).then(function (response) {
+                    $http.post(url, $scope.metricsHelper.metricsdata).then(function (response) {
                         if (applyAfterwards) {
-                            $scope.metrics_controller_helper.clear()
+                            $scope.metricsHelper.clear()
                             $location.path("/metrics/" + response.data.id + "/apply-1");
                         } else {
-                            $scope.metrics_controller_helper.clear()
+                            $scope.metricsHelper.clear()
                             $location.path("/metrics/" + response.data.id);
                         }
                     }, function (response) {
@@ -125,18 +125,18 @@ angular.module('pcApp.metrics.controllers.metric', [
 
             $scope.user = Auth;
 
-            $scope.apply_metric_helper = ApplyMetricHelper;
-            $scope.apply_metric_helper.init($routeParams.metricId);
+            $scope.applyHelper = ApplyMetricHelper;
+            $scope.applyHelper.init($routeParams.metricId);
             $scope.error = true;
 
             $scope.submit = function () {
-                _.each($scope.apply_metric_helper.data.datasets, function (value, key) {
+                _.each($scope.applyHelper.data.datasets, function (value, key) {
                     delete value['indicator'];
                 });
                 $location.path("/metrics/" + $routeParams.metricId + "/apply-2")
             };
 
-            $scope.$watch('apply_metric_helper.data.datasets', function (newvalue, oldvalue) {
+            $scope.$watch('applyHelper.data.datasets', function (newvalue, oldvalue) {
                 var notValid = true;
                 _.each(newvalue, function (value, key) {
                     notValid = !(value.dataset > 0);
@@ -185,17 +185,17 @@ angular.module('pcApp.metrics.controllers.metric', [
         function ($scope, $routeParams, API_CONF, $http, ApplyMetricHelper, $location, Auth, dialogs) {
 
             $scope.user = Auth;
-            $scope.apply_metric_helper = ApplyMetricHelper;
-            $scope.apply_metric_helper.init($routeParams.metricId);
+            $scope.applyHelper = ApplyMetricHelper;
+            $scope.applyHelper.init($routeParams.metricId);
 
             $scope.submit = function (applyAgain) {
                 var url = API_CONF.METRICS_MANAGER_URL + "/metrics/" + $routeParams.metricId + '/operationalize';
-                $http.post(url, $scope.apply_metric_helper.data).then(function (response) {
+                $http.post(url, $scope.applyHelper.data).then(function (response) {
                     if (applyAgain) {
                         $location.path("/metrics/" + $routeParams.metricId + "/apply-1");
                     } else {
-                        $scope.apply_metric_helper.clear();
-                        $scope.apply_metric_helper.getDatasets($routeParams.metricId);
+                        $scope.applyHelper.clear();
+                        $scope.applyHelper.getDatasets($routeParams.metricId);
                         $location.path("/datasets/" + response.data.dataset.id);
                     }
                 }, function (response) {
