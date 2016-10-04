@@ -77,10 +77,22 @@ angular.module('pcApp.metrics.services.metric', [
  * Factory to get create formula
  *
  */
-    .factory('FormulaHelper', [function () {
-        var helper = {};
+    .factory('FormulaHelper', ['$http', 'API_CONF', function ($http, API_CONF) {
+        var helper = {
+            formula: "",
+            variableIndex: 1,
+            variables: {},
+            cursorPosition: undefined,
+        };
 
-        helper.getCursorPosition = function (event) {
+        helper.reset = function(formula, variables) {
+            this.formula = formula || "";
+            this.variables = variables || {};
+            this.variableIndex = variables ? Object.keys(variables).length + 1 : 1;
+            this.cursorPosition = undefined;
+        };
+
+        helper.updateCursor = function (event) {
             var oField = event.target;
             var iCaretPos = 0;
 
@@ -95,20 +107,65 @@ angular.module('pcApp.metrics.services.metric', [
             else if (oField.selectionStart || oField.selectionStart == '0') {
                 iCaretPos = oField.selectionStart;
             }
-            return iCaretPos;
+            this.cursorPosition = iCaretPos;
         };
 
+        helper.addIndicator = function (indicator) {
+            var i = "__" + this.variableIndex + "__";
+            var cursorPosition = this.cursorPosition;
+
+            if (angular.isUndefined(this.formula)) {
+                this.formula = '';
+            }
+
+            if (angular.isUndefined(cursorPosition)) {
+                this.formula = this.formula + i;
+            } else {
+                this.formula = [
+                    this.formula.slice(0, cursorPosition),
+                    i,
+                    this.formula.slice(cursorPosition)
+                ].join('');
+            }
+            this.variableIndex += 1;
+            this.variables[i] = {
+                "type": "indicator",
+                "id": indicator.id,
+            };
+        };
+
+        helper.validate = function() {
+            var url = API_CONF.FORMULA_VALIDATION_URL;
+            return $http({
+                url: url,
+                method: 'get',
+                params: {
+                    formula: this.formula,
+                    variables: this.variables
+                }
+            });
+        }
+
         return helper;
-    }
-    ])
+    }])
 
 /**
  * Factory to create Metric using a wizard
  */
     .factory('MetricsControllerHelper', [
-        'IndicatorService', 'NormalizerService', function (IndicatorService, NormalizerService) {
+        'IndicatorService', 'NormalizerService', 'FormulaHelper',
+        function (IndicatorService, NormalizerService, FormulaHelper) {
 
-            var helper = {};
+            var helper = {
+                metricsdata: {
+                    title: "",
+                    formula: "",
+                    description: "",
+                    keywords: "",
+                    variableIndex: 1,
+                    variables: {}
+                }
+            };
 
             helper.clear = function () {
                 helper.metricsdata = {
@@ -116,6 +173,7 @@ angular.module('pcApp.metrics.services.metric', [
                     formula: "",
                     description: "",
                     keywords: "",
+                    variableIndex: 1,
                     variables: {}
                 };
             }
@@ -142,6 +200,12 @@ angular.module('pcApp.metrics.services.metric', [
                 }, function (err) {
                     throw {message: JSON.stringify(err.data)};
                 });
+            }
+
+            helper.getFormulaHelper = function() {
+                var formulaHelper = FormulaHelper;
+                formulaHelper.reset(this.metricsdata.formula, this.metricsdata.variables);
+                return formulaHelper;
             }
 
             return helper;

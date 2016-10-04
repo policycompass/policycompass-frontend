@@ -50,7 +50,7 @@
 
     <div class="content-body">
         <label>Formula from Step 1</label>
-        <formula ng-if="metrics_controller_helper.metricsdata.formula && metrics_controller_helper.metricsdata.variables" data-formula="metrics_controller_helper.metricsdata.formula" data-variables="metrics_controller_helper.metricsdata.variables"></formula>
+        <formula ng-if="metricsHelper.metricsdata.formula && metricsHelper.metricsdata.variables" data-formula="metricsHelper.metricsdata.formula" data-variables="metricsHelper.metricsdata.variables"></formula>
     </div>
 
     <div class="metadata metadata-formula">
@@ -60,7 +60,7 @@
                 <label for="title" class="field-label">Title</label>
 
                 <div class="field-content">
-                    <input ng-model="metrics_controller_helper.metricsdata.title" type="text" name="title" class="form-control" required>
+                    <input ng-model="metricsHelper.metricsdata.title" type="text" name="title" class="form-control" required>
 
                     <p ng-show="metadataForm.title.$error.required && !metadataForm.title.$pristine" class="help-block">This field is required</p>
 
@@ -74,7 +74,7 @@
                 <label for="indicator_id" class="field-label">Indicator</label>
 
                 <div class="field-content">
-                    <select name="indicator_id" class="form-control" ng-options="i.id as i.name for i in metrics_controller_helper.indicators" ng-model="metrics_controller_helper.metricsdata.indicator_id" required>
+                    <select name="indicator_id" class="form-control" ng-options="i.id as i.name for i in metricsHelper.indicators" ng-model="metricsHelper.metricsdata.indicator_id" required>
                         <option value="" selected>Choose Indicator</option>
                     </select>
 
@@ -88,7 +88,7 @@
                 <label for="Description" class="field-label">Description</label>
 
                 <div class="field-content">
-                    <textarea ng-model="metrics_controller_helper.metricsdata.description" name="description" class="form-control" rows="10"></textarea>
+                    <textarea ng-model="metricsHelper.metricsdata.description" name="description" class="form-control" rows="10"></textarea>
 
                     <p ng-show="servererror.description" class="help-block">{{ servererror.description[0] }}</p>
 
@@ -100,7 +100,7 @@
                 <label for="Keywords" class="field-label">Keywords</label>
 
                 <div class="field-content">
-                    <input ng-model="metrics_controller_helper.metricsdata.keywords" type="text" name="keywords" class="form-control">
+                    <input ng-model="metricsHelper.metricsdata.keywords" type="text" name="keywords" class="form-control">
 
                     <p ng-show="servererror.keywords" class="help-block">{{ servererror.keywords[0] }}</p>
 
