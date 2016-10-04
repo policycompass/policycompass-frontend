@@ -35,19 +35,11 @@ angular.module('pcApp.metrics.controllers.metric', [
             }
 
             $scope.submitFormula = function () {
-                var url = API_CONF.FORMULA_VALIDATION_URL;
                 $scope.metricsHelper.metricsdata.formula = $scope.formulaHelper.formula;
                 $scope.metricsHelper.metricsdata.variables = $scope.formulaHelper.variables;
 
                 if ($scope.formulaForm.$valid) {
-                    $http({
-                        url: url,
-                        method: 'get',
-                        params: {
-                            formula: $scope.metricsHelper.metricsdata.formula,
-                            variables: $scope.metricsHelper.metricsdata.variables
-                        }
-                    }).then(function (response) {
+                    $scope.formulaHelper.validate().then(function (response) {
                         $location.path("/metrics/create-2")
                     }, function (response) {
                         $scope.servererror = response.data;

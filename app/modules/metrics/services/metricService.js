@@ -77,7 +77,7 @@ angular.module('pcApp.metrics.services.metric', [
  * Factory to get create formula
  *
  */
-    .factory('FormulaHelper', [ '$http', function ($http) {
+    .factory('FormulaHelper', ['$http', 'API_CONF', function ($http, API_CONF) {
         var helper = {
             formula: "",
             variableIndex: 1,
@@ -128,6 +128,18 @@ angular.module('pcApp.metrics.services.metric', [
                 "id": indicator.id,
             };
         };
+
+        helper.validate = function() {
+            var url = API_CONF.FORMULA_VALIDATION_URL;
+            return $http({
+                url: url,
+                method: 'get',
+                params: {
+                    formula: this.formula,
+                    variables: this.variables
+                }
+            });
+        }
 
         return helper;
     }])
