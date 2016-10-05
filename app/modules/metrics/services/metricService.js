@@ -198,6 +198,20 @@ angular.module('pcApp.metrics.services.metric', [
                 };
             }
 
+            helper.transformVariables = function () {
+                newVariables = {};
+                _.each(helper.metricsdata.variables, function(variable, key){
+                    var datasetIndex = _.findIndex(helper.datasets, {'id': variable.id});
+                    var dataset = helper.datasets[datasetIndex];
+                    var indicatorId = dataset.indicator_id;
+                    newVariables[key] = {
+                        type: 'indicator',
+                        id: indicatorId
+                    }
+                })
+                helper.metricsdata.variables = newVariables;
+            }
+
             helper.init = function () {
                 if (!helper.metricsdata) {
                     helper.clear();

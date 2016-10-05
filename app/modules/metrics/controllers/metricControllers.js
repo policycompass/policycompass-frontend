@@ -70,6 +70,7 @@ angular.module('pcApp.metrics.controllers.metric', [
                 var url = API_CONF.METRICS_MANAGER_URL + "/metrics";
 
                 if ($scope.metadataForm.$valid) {
+                    $scope.metricsHelper.transformVariables();
                     $http.post(url, $scope.metricsHelper.metricsdata).then(function (response) {
                         if (applyAfterwards) {
                             $scope.metricsHelper.clear()
