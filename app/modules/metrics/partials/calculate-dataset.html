@@ -1,0 +1,83 @@
+<div class="container container-create-formula" id="container-create-formula">
+
+    <div class="content-header">
+        <h3 class="fonticon fonticon-formula">Metric Builder</h3>
+
+        <div class="subtitle-help">
+            <h4>
+                <div class="fonticon fonticon-help help-switch" ng-click="help=!help"></div>
+                Step 2 - Enter Metadata for your Dataset
+            </h4>
+            <div ng-class="{active: help}" class="help-text">
+                <div class="fonticon fonticon-close" ng-click="help=!help"></div>
+                <p>You can create a dataset using this wizard.</p>
+
+                <p>
+                    To create a formular you need to:</br>
+                In step 1:
+                <ul>
+                    <li>Type in the formula in the textfield using the datasets from the table on the right habd side</li>
+                    <li>You can normalize your data by choosing a function from the normalisation functions. In the simplest cases normalisation functions are used to adjust values measured on different scales to a notionally common scale, often prior to averaging.</li>
+                </ul>
+                <b>In step 2:</b>
+                <ul>
+                    <li>Add some metadata to your dataset</li>
+                    <li>save dataset</li>
+                </ul>
+                </p>
+            </div>
+        </div>
+
+        <ul class="navigation-steps">
+            <li><a href="" class="btn btn-prev" ng-click="prevStep();">Previous Step</a></li>
+            <li>
+                <a href="#" class="btn btn-next disabled">Next Step</a>
+            </li>
+        </ul>
+        <div class="pc-visualization-formcontrols">
+            <div class="button-group">
+                <div style="float:left">
+                    <toggle-switch html="true" ng-model="is_draft" on-label="Draft" off-label="Public" class="switch-danger" ></toggle-switch>
+                    &nbsp;
+                </div>
+                <a href class="btn btn-default btn-save" ng-if="!user.state.loggedIn" ng-class="{'disabled' : !metadataForm.$valid }" ng-click="goToLogin()">Login to Save</a>
+                <a href class="btn btn-save" ng-if="user.state.loggedIn" ng-class="{'disabled' : !metadataForm.$valid }" ng-click="submitData();">Save</a>
+                <a href class="btn btn-default btn-danger btn-clear" ng-click="abort()">Cancel</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-body">
+        <label>Formula from Step 1</label>
+        <formula ng-if="metricsHelper.metricsdata.formula && metricsHelper.metricsdata.variables" data-formula="metricsHelper.metricsdata.formula" data-variables="metricsHelper.metricsdata.variables"></formula>
+    </div>
+
+    <div class="metadata metadata-formula">
+        <form name="datasetForm" class="simple-form" novalidate>
+            <div class="form-group" ng-class="{ 'has-error': (datasetForm.title.$invalid && !datasetForm.title.$pristine) || servererror.title }">
+                <label for="title" class="field-label">Title</label>
+
+                <div class="field-content">
+                    <input ng-model="applyHelper.data.title" type="text" name="title" class="form-control" required>
+
+                    <p ng-show="datasetForm.title.$error.required && !datasetForm.title.$pristine" class="help-block">This field is required</p>
+
+                    <p ng-show="servererror.title" class="help-block">{{ servererror.title[0] }}</p>
+
+                    <p ng-hide="servererror.title || (datasetForm.title.$error.required && !datasetForm.title.$pristine)" class="help-block">Please add a title for the new dataset</p>
+                </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': datasetForm.unit_id.$dirty && datasetForm.unit_id.$invalid}">
+                <label for="unit_id" class="field-label">Unit</label>
+
+                <div class="field-content">
+                    <select class="form-control unit-options" ng-model="applyHelper.data.unit_id" data-category="applyHelper.unit_category_id" id="unit_id" required>
+                    </select>
+
+                    <p ng-hide="servererror.unit_id || (datasetForm.unit_id.$error.required && !datasetForm.unit_id.$pristine)" class="help-block">Please select the unit for the new dataset</p>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>

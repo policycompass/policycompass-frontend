@@ -29,7 +29,10 @@
         <ul class="navigation-steps">
             <li><a href="#" class="btn btn-prev disabled">Previous Step</a></li>
             <li>
-                <a href="" class="btn btn-next" ng-click="submitFormula();" ng-class="{'disabled' : !formulaForm.$valid || servererror.formula }">Next Step</a>
+                <a href="" class="btn btn-next" ng-click="submitFormula('/metrics/calculate-dataset');" ng-class="{'disabled' : !formulaForm.$valid || servererror.formula }">Calculate Dataset</a>
+            </li>
+            <li>
+                <a href="" class="btn btn-next" ng-click="submitFormula('/metrics/create-2');" ng-class="{'disabled' : !formulaForm.$valid || servererror.formula }">Create Metric</a>
             </li>
         </ul>
         <div class="pc-visualization-formcontrols">
