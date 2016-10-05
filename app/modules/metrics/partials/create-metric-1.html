@@ -29,10 +29,10 @@
         <ul class="navigation-steps">
             <li><a href="#" class="btn btn-prev disabled">Previous Step</a></li>
             <li>
-                <a href="" class="btn btn-next" ng-click="submitFormula('/metrics/calculate-dataset');" ng-class="{'disabled' : !formula || servererror.formula }">Calculate Dataset</a>
+                <a href="" class="btn btn-next" ng-click="submitFormula('/metrics/calculate-dataset');" ng-disabled="!metricsHelper.metricsdata.formula || (metricsHelper.metricsdata.formula && !metricsHelper.metricsdata.formula.trim()) || servererror.formula">Calculate Dataset</a>
             </li>
             <li>
-                <a href="" class="btn btn-next" ng-click="submitFormula('/metrics/create-2');" ng-class="{'disabled' : !formula || servererror.formula }">Create Metric</a>
+                <a href="" class="btn btn-next" ng-click="submitFormula('/metrics/create-2');" ng-disabled="!metricsHelper.metricsdata.formula || (metricsHelper.metricsdata.formula && !metricsHelper.metricsdata.formula.trim()) || servererror.formula">Create Metric</a>
             </li>
         </ul>
         <div class="pc-visualization-formcontrols">
@@ -53,9 +53,10 @@
         <div class="row">
             <div class="col-md-8">
                 <label>Formula</label>
-                <div pc-formula-editor data-formula="formula" data-variables="variables" style="min-height: 77px;" class="calculation-formula calculation-formula-2" data-formula="formulaHelper.formula" data-variables="formulaHelper.variables"></div>
-                <p ng-show="servererror.formula" class="help-block">{{ servererror.formula }}</p>
-                <p ng-hide="servererror.formula" class="help-block">Type in formula here. Add indicators from the list on the right. To use one of the predefined normalizers, use the acronym.</p>
+                <div pc-formula-editor data-formula="metricsHelper.metricsdata.formula" data-variables="metricsHelper.metricsdata.variables" style="min-height: 77px;" class="calculation-formula calculation-formula-2"></div>
+                <p ng-show="servererror.formula" class="help-block">{{ servererror.formula.join(', ') }}</p>
+                <p ng-show="servererror.variables" class="help-block">{{ servererror.variables.join(', ') }}</p>
+                <p ng-hide="servererror.formula || servererror.variables" class="help-block">Type in formula here. Add datasets from the list on the right. To use one of the predefined normalizers, use the acronym.</p>
             </div>
 
             <div class="col-md-4">
@@ -87,7 +88,7 @@
                                     {{ dataset.name }}</br>
                                 </div>
                                 <div class="col-md-2">
-                                    <a href="" ng-click="addIndicator(dataset)"><span class="label label-primary formula-span">add</span></a>
+                                    <a href="" ng-click="addDataset(dataset)"><span class="label label-primary formula-span">add</span></a>
                                 </div>
                             </div>
                         </li>

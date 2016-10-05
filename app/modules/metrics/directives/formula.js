@@ -15,14 +15,13 @@ var childNodesToFormula = function(childNodes) {
 
 /** Translate a fromula string into a list of text and <span> nodes. */
 var formulaToChildNodes = function (formula, variables) {
-    var parts = formula.split(/__\d+__/g);
+    var parts = formula.split(/(__\d+__)/g);
     var result = [];
     angular.forEach(parts, function (variableOrText) {
-        var match = variableOrText.match(/^__(\d+)__$/);
-        if (match) {
+        var isVariable = variableOrText.match(/^__\d+__$/);
+        if (isVariable) {
             var variable = variableOrText;
-            var index = parseInt(match[1]);
-            var node = createSpanNode(index, variables[variable]);
+            var node = createSpanNode(variable, variables[variable]);
         } else {
             var text = variableOrText;
             var node = document.createTextNode(text);
@@ -34,13 +33,18 @@ var formulaToChildNodes = function (formula, variables) {
 
 
 /** Create a sepcially crafted span element from a variable definition */
-var createSpanNode = function(variable, value) {
+var createSpanNode = function(variableName, variableValue) {
     var span = document.createElement('span');
-    span.appendChild(document.createTextNode(value.data.name));
+    if (variableValue.type === 'dataset') {
+        var label = variableValue.dataset.name;
+    } else if (variableValue.type === 'indicator') {
+        var label = variableValue.indicator.name;
+    }
+    span.appendChild(document.createTextNode(label))
     span.className = 'indicator-formula indicator-formula-selected';
     span.contentEditable = false;
     span.data = {
-        variable: variable,
+        variable: variableName,
     };
 
     return span;
@@ -78,7 +82,7 @@ angular.module('pcApp.metrics.directives.formula', ['pcApp.indicators.services.i
                     element[0]
                 );
 
-                var addIndicatorAtCursor = function(element, indicator) {
+                var addVariableAtCursor = function(element, variable) {
                     var editableDiv = element[0];
                     var offset = $scope.cursorNodeOffset;
 
@@ -99,14 +103,10 @@ angular.module('pcApp.metrics.directives.formula', ['pcApp.indicators.services.i
                     }
 
                     var index = Object.keys($scope.variables).length + 1;
-                    var variable = '__' + index + '__';
-                    $scope.variables[variable] = {
-                        type: 'indicator',
-                        id: indicator.id,
-                        data: indicator,
-                    };
+                    var variableName = '__' + index + '__';
+                    $scope.variables[variableName] = variable;
 
-                    var span = createSpanNode(variable, $scope.variables[variable]);
+                    var span = createSpanNode(variableName, variable);
                     editableDiv.insertBefore(span, postfixNode);
 
                     // set cursor after inserted div
@@ -118,8 +118,8 @@ angular.module('pcApp.metrics.directives.formula', ['pcApp.indicators.services.i
                     selection.addRange(range);
                 };
 
-                $scope.$on('AddIndicator', function(event, indicator) {
-                    addIndicatorAtCursor(element, indicator);
+                $scope.$on('AddVariable', function(event, variable) {
+                    addVariableAtCursor(element, variable);
                     $scope.formula = childNodesToFormula(element[0].childNodes);
                 });
             }

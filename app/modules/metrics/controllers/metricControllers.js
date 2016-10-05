@@ -18,29 +18,22 @@ angular.module('pcApp.metrics.controllers.metric', [
         'FormulaHelper',
         '$location',
         'Auth',
-        function ($scope, API_CONF, $http, MetricsControllerHelper, FormulaHelper, $location, Auth) {
+        function ($scope, API_CONF, $http, MetricsControllerHelper, formulaHelper, $location, Auth) {
             $scope.sortOptions = [{"name": "Title", "sort": "name"}, {"name": "Date updated", "sort": "-date"}]
 
             $scope.metricsHelper = MetricsControllerHelper;
             $scope.metricsHelper.init();
-            $scope.formulaHelper = $scope.metricsHelper.getFormulaHelper();
             $scope.showFunctions = false;
 
             $scope.toggleFunctions = function () {
                 $scope.showFunctions = !$scope.showFunctions;
             }
 
-            $scope.clearErrors = function () {
-                $scope.servererror = undefined;
-            }
-
             $scope.submitFormula = function (path) {
-                $scope.formulaHelper.formula = $scope.formula;
-                $scope.formulaHelper.variables = $scope.variables;
-                $scope.metricsHelper.metricsdata.formula = $scope.formulaHelper.formula;
-                $scope.metricsHelper.metricsdata.variables = $scope.formulaHelper.variables;
+                var formula = $scope.metricsHelper.metricsdata.formula
+                var variables = $scope.metricsHelper.metricsdata.variables
 
-                $scope.formulaHelper.validate().then(function (response) {
+                formulaHelper.validate(formula, variables).then(function (response) {
                     $location.path(path)
                 }, function (response) {
                     $scope.servererror = response.data;
@@ -48,8 +41,16 @@ angular.module('pcApp.metrics.controllers.metric', [
             };
 
             $scope.addIndicator = function(indicator) {
-                $scope.$broadcast('AddIndicator', indicator);
+                $scope.$broadcast('AddVariable', { type: 'indicator', id: indicator.id, indicator: indicator });
             };
+
+            $scope.addDataset = function(dataset) {
+                $scope.$broadcast('AddVariable', { 'type': 'dataset', id: dataset.id, dataset: dataset});
+            };
+
+            $scope.$watch('metricsHelper.metricsdata.formula', function () {
+                $scope.servererror = undefined;
+            });
         }
     ])
 
