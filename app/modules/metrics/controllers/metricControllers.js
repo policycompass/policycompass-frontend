@@ -34,17 +34,21 @@ angular.module('pcApp.metrics.controllers.metric', [
                 $scope.servererror = undefined;
             }
 
-            $scope.submitFormula = function (url) {
+            $scope.submitFormula = function (path) {
+                $scope.formulaHelper.formula = $scope.formula;
+                $scope.formulaHelper.variables = $scope.variables;
                 $scope.metricsHelper.metricsdata.formula = $scope.formulaHelper.formula;
                 $scope.metricsHelper.metricsdata.variables = $scope.formulaHelper.variables;
 
-                if ($scope.formulaForm.$valid) {
-                    $scope.formulaHelper.validate().then(function (response) {
-                        $location.path(url)
-                    }, function (response) {
-                        $scope.servererror = response.data;
-                    });
-                }
+                $scope.formulaHelper.validate().then(function (response) {
+                    $location.path(path)
+                }, function (response) {
+                    $scope.servererror = response.data;
+                });
+            };
+
+            $scope.addIndicator = function(indicator) {
+                $scope.$broadcast('AddIndicator', indicator);
             };
         }
     ])
@@ -435,4 +439,4 @@ angular.module('pcApp.metrics.controllers.metric', [
             });
 
         }
-    ]);
+    ])
