@@ -130,7 +130,7 @@ angular.module('pcApp.metrics.services.metric', [
             this.cursorPosition = iCaretPos;
         };
 
-        helper.addIndicator = function (indicator) {
+        helper.addIndicator = function (dataset) {
             var i = "__" + this.variableIndex + "__";
             var cursorPosition = this.cursorPosition;
 
@@ -149,8 +149,8 @@ angular.module('pcApp.metrics.services.metric', [
             }
             this.variableIndex += 1;
             this.variables[i] = {
-                "type": "indicator",
-                "id": indicator.id,
+                "type": "dataset",
+                "id": dataset.id,
             };
         };
 
