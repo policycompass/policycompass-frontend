@@ -120,16 +120,42 @@ angular.module('pcApp.metrics.controllers.metric', [
             $scope.user = Auth;
             $scope.metricsHelper = MetricsControllerHelper;
 
-            $scope.is_draft = true;
+            $scope.data = {
+                title: '',
+                formula: $scope.metricsHelper.metricsdata.formula,
+                datasets: _.map($scope.metricsHelper.metricsdata.variables, function(value, key){
+                    return {
+                        'variable': key,
+                        'dataset': value.id
+                    }
+                }),
+                indicator_id: '',
+                unit_id: ''
+            }
 
-            $scope.submitData = function (applyAfterwards) {
+            $scope.clear = function() {
+                $scope.data = {
+                    title: '',
+                    formula: $scope.metricsHelper.metricsdata.formula,
+                    datasets: _.map($scope.metricsHelper.metricsdata.variables, function(value, key){
+                        return {
+                            'variable': key,
+                            'dataset': value.id
+                        }
+                    }),
+                    indicator_id: '',
+                    unit_id: ''
+                }
+            }
+
+            $scope.submitData = function () {
                 $scope.metricsHelper.metricsdata.is_draft = $scope.is_draft;
-                var url = API_CONF.DATASET_MANAGER_URL + "/calculate";
+                var url = API_CONF.METRICS_MANAGER_URL + "/calculate";
 
-                if ($scope.metadataForm.$valid) {
-                    $http.post(url, $scope.metricsHelper.metricsdata).then(function (response) {
-                        $scope.metricsHelper.clear()
-                        $location.path("/datasets/" + response.data.id);
+                if ($scope.datasetForm.$valid) {
+                    $http.post(url, $scope.data).then(function (response) {
+                        $scope.metricsHelper.clear();
+                        $location.path("/datasets/" + response.data.dataset.id);
                     }, function (response) {
                         $scope.servererror = response.data;
                     });
@@ -149,9 +175,10 @@ angular.module('pcApp.metrics.controllers.metric', [
             }
 
             $scope.abort = function () {
-                var dialog = dialogs.confirm("Are you sure?", "Do you want to revert your changes in this metric?");
+                var dialog = dialogs.confirm("Are you sure?", "Do you want to revert your changes in this dataset?");
                 dialog.result.then(function () {
                     MetricsControllerHelper.clear();
+                    $scope.clear();
                     $location.path("/metrics/create-1");
                 });
             }

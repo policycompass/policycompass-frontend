@@ -1,7 +1,7 @@
 <div class="container container-create-formula" id="container-create-formula">
 
     <div class="content-header">
-        <h3 class="fonticon fonticon-formula">Metric Builder</h3>
+        <h3 class="fonticon fonticon-formula">Dataset Builder</h3>
 
         <div class="subtitle-help">
             <h4>
@@ -36,12 +36,12 @@
         </ul>
         <div class="pc-visualization-formcontrols">
             <div class="button-group">
-                <div style="float:left">
+                <!--<div style="float:left">
                     <toggle-switch html="true" ng-model="is_draft" on-label="Draft" off-label="Public" class="switch-danger" ></toggle-switch>
                     &nbsp;
-                </div>
-                <a href class="btn btn-default btn-save" ng-if="!user.state.loggedIn" ng-class="{'disabled' : !metadataForm.$valid }" ng-click="goToLogin()">Login to Save</a>
-                <a href class="btn btn-save" ng-if="user.state.loggedIn" ng-class="{'disabled' : !metadataForm.$valid }" ng-click="submitData();">Save</a>
+                </div>-->
+                <a href class="btn btn-default btn-save" ng-if="!user.state.loggedIn" ng-class="{'disabled' : !datasetForm.$valid }" ng-click="goToLogin()">Login to Save</a>
+                <a href class="btn btn-save" ng-if="user.state.loggedIn" ng-class="{'disabled' : !datasetForm.$valid }" ng-click="submitData();">Save</a>
                 <a href class="btn btn-default btn-danger btn-clear" ng-click="abort()">Cancel</a>
             </div>
         </div>
@@ -56,25 +56,29 @@
         <form name="datasetForm" class="simple-form" novalidate>
             <div class="form-group" ng-class="{ 'has-error': (datasetForm.title.$invalid && !datasetForm.title.$pristine) || servererror.title }">
                 <label for="title" class="field-label">Title</label>
-
                 <div class="field-content">
-                    <input ng-model="applyHelper.data.title" type="text" name="title" class="form-control" required>
-
+                    <input ng-model="data.title" type="text" name="title" class="form-control" required>
                     <p ng-show="datasetForm.title.$error.required && !datasetForm.title.$pristine" class="help-block">This field is required</p>
-
                     <p ng-show="servererror.title" class="help-block">{{ servererror.title[0] }}</p>
-
                     <p ng-hide="servererror.title || (datasetForm.title.$error.required && !datasetForm.title.$pristine)" class="help-block">Please add a title for the new dataset</p>
                 </div>
             </div>
             <div class="form-group" ng-class="{'has-error': datasetForm.unit_id.$dirty && datasetForm.unit_id.$invalid}">
                 <label for="unit_id" class="field-label">Unit</label>
-
                 <div class="field-content">
-                    <select class="form-control unit-options" ng-model="applyHelper.data.unit_id" data-category="applyHelper.unit_category_id" id="unit_id" required>
+                    <select class="form-control unit-options" ng-model="data.unit_id" id="unit_id" required>
                     </select>
-
                     <p ng-hide="servererror.unit_id || (datasetForm.unit_id.$error.required && !datasetForm.unit_id.$pristine)" class="help-block">Please select the unit for the new dataset</p>
+                </div>
+            </div>
+            <div class="form-group" ng-class="{ 'has-error': (datasetForm.indicator_id.$invalid && !datasetForm.indicator_id.$pristine) || servererror.indicator_id }">
+                <label for="indicator_id" class="field-label">Indicator</label>
+                <div class="field-content">
+                    <select name="indicator_id" class="form-control" ng-options="i.id as i.name for i in metricsHelper.indicators" ng-model="data.indicator_id" required>
+                        <option value="" selected>Choose Indicator</option>
+                    </select>
+                    <p ng-show="datasetForm.indicator_id.$error.required && !datasetForm.indicator_id.$pristine" class="help-block">This field is required</p>
+                    <p ng-show="servererror.indicator_id" class="help-block">{{ servererror.indicator_id[0] }}</p>
                 </div>
             </div>
         </form>
