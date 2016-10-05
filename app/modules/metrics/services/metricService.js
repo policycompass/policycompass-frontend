@@ -173,8 +173,8 @@ angular.module('pcApp.metrics.services.metric', [
  * Factory to create Metric using a wizard
  */
     .factory('MetricsControllerHelper', [
-        'IndicatorService', 'NormalizerService', 'FormulaHelper',
-        function (IndicatorService, NormalizerService, FormulaHelper) {
+        'IndicatorService', 'DatasetService', 'NormalizerService', 'FormulaHelper',
+        function (IndicatorService, DatasetService, NormalizerService, FormulaHelper) {
 
             var helper = {
                 metricsdata: {
@@ -216,6 +216,19 @@ angular.module('pcApp.metrics.services.metric', [
                     throw {message: JSON.stringify(err.data)};
                 });
 
+                var datasets = DatasetService.query(function () {
+                    helper.datasets = _.map(datasets.results, function (dataset) {
+                        return {
+                            name: dataset.title,
+                            unit: dataset.unit_id,
+                            id: dataset.id,
+                            date: dataset.date_modified,
+                            indicator_id: dataset.indicator_id
+                        };
+                    });
+                }, function (err) {
+                    throw {message: JSON.stringify(err.data)};
+                });
                 helper.normalizers = NormalizerService.query(function () {
                 }, function (err) {
                     throw {message: JSON.stringify(err.data)};
