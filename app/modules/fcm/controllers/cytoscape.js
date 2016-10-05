@@ -436,8 +436,7 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
                     throw { message: JSON.stringify(err.data) };
                 });
                 $scope.md = value;
-                $location.path('/models/' + value.model.id + '/edit');
-
+                $location.path('/models/' + value.model.id); //AFTER SAVE IT SHOULD GO TO view mode.
                 //Remove indicator parameter if exists on url
                 if ($routeParams.indicator != null)
                     $location.url($location.path());
