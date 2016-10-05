@@ -56,6 +56,26 @@ angular.module('pcApp.metrics.services.metric', [
     ])
 
 /**
+ * Factory for getting an Dataset, which connects to the Indicator endpoint
+ */
+    .factory('DatasetService', [
+        '$resource', 'API_CONF', function ($resource, API_CONF) {
+            var url = API_CONF.DATASETS_MANAGER_URL + "/datasets/:id";
+            var Dataset = $resource(url, {
+                id: "@id",
+                page_size: LARGE_NUMBER
+            }, {
+                'update': {method: 'PUT'},
+                'query': {
+                    method: 'GET',
+                    isArray: false
+                }
+            });
+            return Dataset;
+        }
+    ])
+
+/**
  * Factory to get Normalizers
  *
  */
