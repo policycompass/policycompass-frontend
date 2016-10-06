@@ -5,8 +5,8 @@ var childNodesToFormula = function(childNodes) {
     angular.forEach(childNodes, function (node) {
         if (node.wholeText){
             this.push(node.wholeText)
-        } else if(node.data) {
-            this.push(node.data.variable)
+        } else if(node.dataset) {
+            this.push(node.dataset.variable)
         }
     }, result);
     return result.join(' ')
@@ -28,6 +28,7 @@ var formulaToChildNodes = function (formula, variables) {
         }
         this.push(node);
     }, result)
+    result.push(document.createTextNode(' '));
     return result;
 }
 
@@ -40,13 +41,10 @@ var createSpanNode = function(variableName, variableValue) {
     } else if (variableValue.type === 'indicator') {
         var label = variableValue.indicator.name;
     }
-    span.appendChild(document.createTextNode(label))
     span.className = 'indicator-formula indicator-formula-selected';
     span.contentEditable = false;
-    span.data = {
-        variable: variableName,
-    };
-
+    span.dataset.variable = variableName;
+    span.dataset.label = label;
     return span;
 }
 

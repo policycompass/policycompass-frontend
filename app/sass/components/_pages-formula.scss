@@ -27,6 +27,10 @@ $text-color: lighten($bk_3_2, 20);
 
 }
 
+.indicator-formula::before {
+    content: attr(data-label);
+}
+
 .indicator-formula,
 .metrics-formula {
     // display:inline-block;
@@ -136,4 +140,3 @@ $text-color: lighten($bk_3_2, 20);
         margin-top: 40px;
     }
 }
-
