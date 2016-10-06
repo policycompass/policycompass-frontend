@@ -51,7 +51,7 @@ angular.module('pcApp.metrics.controllers.metric', [
             $scope.$watch('metricsHelper.metricsdata.formula', function () {
                 $scope.servererror = undefined;
             });
-        }
+          }
     ])
 
 
@@ -332,10 +332,10 @@ angular.module('pcApp.metrics.controllers.metric', [
         'API_CONF',
         'MetricService',
         'IndicatorService',
-        'FormulaHelper',
         'Auth',
         'dialogs',
-        function ($scope, $routeParams, $location, $http, API_CONF, MetricService, IndicatorService, FormulaHelper, Auth, dialogs) {
+        '$q',
+        function ($scope, $routeParams, $location, $http, API_CONF, MetricService, IndicatorService, Auth, dialogs, $q) {
 
             $scope.user = Auth.state
 
@@ -350,21 +350,40 @@ angular.module('pcApp.metrics.controllers.metric', [
                 return Math.max.apply( Math, numberlist );
             };
 
-            $scope.formulaHelper = FormulaHelper;
             $scope.showFunctions = false;
             $scope.toggleFunctions = function() {
                 $scope.showFunctions = !$scope.showFunctions;
             };
 
+            $scope.addIndicator = function(indicator) {
+                $scope.$broadcast('AddVariable', { type: 'indicator', id: indicator.id, indicator: indicator });
+            };
+
+            $scope.$watch('data.formula', function () {
+                $scope.servererror = undefined;
+            });
 
             MetricService.get(
                 {id: $routeParams.metricId},
                 function (metric){
-                    $scope.data = metric;
-                    $scope.formulaHelper.reset(metric.formula, metric.variables);
-                    $scope.canDraft = $scope.data.is_draft;
+                    $scope.canDraft = metric.is_draft;
                     $scope.variableIndex = getIndex(metric.variables) + 1;
                     var indicator_id = metric.indicator_id;
+
+                    var promises = _.mapObject(metric.variables, function(variable) {
+                        return IndicatorService.get({id: variable.id}).$promise;
+                    });
+
+                    $q.all(promises).then(function(indicators) {
+                        var variables = _.mapObject(metric.variables, function(variable, key) {
+                            variable.indicator = indicators[key];
+                            return variable;
+                        });
+
+                        metric.variables = variables;
+                        $scope.data = metric;
+                    });
+
                     IndicatorService.get(
                         {id: indicator_id},
                         function (indicator){
@@ -388,11 +407,8 @@ angular.module('pcApp.metrics.controllers.metric', [
                 }
             );
 
-
             $scope.submit = function() {
                 var canEdit = Auth.state.isAdmin || Auth.state.isCreator($scope.data);
-                $scope.data.formula = $scope.formulaHelper.formula;
-                $scope.data.variables = $scope.formulaHelper.variables;
 
                 if (canEdit) {
                     var url = API_CONF.METRICS_MANAGER_URL + "/metrics/" + $routeParams.metricId;
