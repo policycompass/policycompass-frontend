@@ -1,6 +1,6 @@
 <div class="container container-create-formula" id="container-create-formula">
     <div class="content-header">
-        <h3 class="fonticon fonticon-formula">Metric Builder</h3>
+        <h3 class="fonticon fonticon-formula">Dataset Calculator</h3>
 
         <div class="subtitle-help">
             <h4>
@@ -15,7 +15,7 @@
                     To create a formular you need to:</br>
                 <b>In step 1:</b>
                 <ul>
-                    <li>Type in the formula in the textfield using the indicators from the table on the right habd side</li>
+                    <li>Type in the formula in the textfield using the datasets from the table on the right habd side</li>
                     <li>You can normalize your data by choosing a function from the normalisation functions. In the simplest cases normalisation functions are used to adjust values measured on different scales to a notionally common scale, often prior to averaging.</li>
                 </ul>
                 In step 2:
@@ -29,7 +29,10 @@
         <ul class="navigation-steps">
             <li><a href="#" class="btn btn-prev disabled">Previous Step</a></li>
             <li>
-                <a href="" class="btn btn-next" ng-click="submitFormula();" ng-class="{'disabled' : !formulaForm.$valid || servererror.formula }">Next Step</a>
+                <a href="" class="btn btn-next" ng-click="submitFormula('/metrics/calculate-dataset');" ng-class="{'disabled' : !formulaForm.$valid || servererror.formula }">Calculate Dataset</a>
+            </li>
+            <li>
+                <a href="" class="btn btn-next" ng-click="submitFormula('/metrics/create-2');" ng-class="{'disabled' : !formulaForm.$valid || servererror.formula }">Create Metric</a>
             </li>
         </ul>
         <div class="pc-visualization-formcontrols">
@@ -67,14 +70,14 @@
 
                         <p ng-show="servererror.formula" class="help-block">{{ servererror.formula }}</p>
 
-                        <p ng-hide="servererror.formula || (formulaForm.formula.$error.required && !formulaForm.formula.$pristine)" class="help-block">Type in formula here. Add indicators from the list on the right. To use one of the predefined normalizers, use the acronym.</p>
+                        <p ng-hide="servererror.formula || (formulaForm.formula.$error.required && !formulaForm.formula.$pristine)" class="help-block">Type in formula here. Add datasets from the list on the right. To use one of the predefined normalizers, use the acronym.</p>
                     </div>
                 </form>
             </div>
 
 
             <div class="col-md-4">
-                <label>Add indicator to formula</label>
+                <label>Add dataset to formula</label>
 
                 <div class="panel panel-default">
                     <div class="panel-heading formula-grey-panel-heading">
@@ -82,7 +85,7 @@
                             <div class="col-md-6">
                                 <div class="input-group formula-input-group-padding">
                                     <label>Search</label>
-                                    <input type="text" class="form-control" placeholder="Search for indicator ..." ng-model="searchText">
+                                    <input type="text" class="form-control" placeholder="Search for dataset ..." ng-model="searchText">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -96,13 +99,13 @@
                     </div>
 
                     <ul class="list-group formula-list-group">
-                        <li ng-repeat="indicator in metricsHelper.indicators | filter:searchText | orderBy:selectedSortItem.sort" class="list-group-item">
+                        <li ng-repeat="dataset in metricsHelper.datasets | filter:searchText | orderBy:selectedSortItem.sort" class="list-group-item">
                             <div class="row">
                                 <div class="col-md-10">
-                                    {{ indicator.name }}</br>
+                                    {{ dataset.name }}</br>
                                 </div>
                                 <div class="col-md-2">
-                                    <a href="" ng-click="formulaHelper.addIndicator(indicator)"><span class="label label-primary formula-span">add</span></a>
+                                    <a href="" ng-click="formulaHelper.addIndicator(dataset)"><span class="label label-primary formula-span">add</span></a>
                                 </div>
                             </div>
                         </li>

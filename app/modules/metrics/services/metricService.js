@@ -56,6 +56,26 @@ angular.module('pcApp.metrics.services.metric', [
     ])
 
 /**
+ * Factory for getting an Dataset, which connects to the Indicator endpoint
+ */
+    .factory('DatasetService', [
+        '$resource', 'API_CONF', function ($resource, API_CONF) {
+            var url = API_CONF.DATASETS_MANAGER_URL + "/datasets/:id";
+            var Dataset = $resource(url, {
+                id: "@id",
+                page_size: LARGE_NUMBER
+            }, {
+                'update': {method: 'PUT'},
+                'query': {
+                    method: 'GET',
+                    isArray: false
+                }
+            });
+            return Dataset;
+        }
+    ])
+
+/**
  * Factory to get Normalizers
  *
  */
@@ -110,7 +130,7 @@ angular.module('pcApp.metrics.services.metric', [
             this.cursorPosition = iCaretPos;
         };
 
-        helper.addIndicator = function (indicator) {
+        helper.addIndicator = function (dataset) {
             var i = "__" + this.variableIndex + "__";
             var cursorPosition = this.cursorPosition;
 
@@ -129,8 +149,8 @@ angular.module('pcApp.metrics.services.metric', [
             }
             this.variableIndex += 1;
             this.variables[i] = {
-                "type": "indicator",
-                "id": indicator.id,
+                "type": "dataset",
+                "id": dataset.id,
             };
         };
 
@@ -153,8 +173,8 @@ angular.module('pcApp.metrics.services.metric', [
  * Factory to create Metric using a wizard
  */
     .factory('MetricsControllerHelper', [
-        'IndicatorService', 'NormalizerService', 'FormulaHelper',
-        function (IndicatorService, NormalizerService, FormulaHelper) {
+        'IndicatorService', 'DatasetService', 'NormalizerService', 'FormulaHelper',
+        function (IndicatorService, DatasetService, NormalizerService, FormulaHelper) {
 
             var helper = {
                 metricsdata: {
@@ -178,6 +198,20 @@ angular.module('pcApp.metrics.services.metric', [
                 };
             }
 
+            helper.transformVariables = function () {
+                newVariables = {};
+                _.each(helper.metricsdata.variables, function(variable, key){
+                    var datasetIndex = _.findIndex(helper.datasets, {'id': variable.id});
+                    var dataset = helper.datasets[datasetIndex];
+                    var indicatorId = dataset.indicator_id;
+                    newVariables[key] = {
+                        type: 'indicator',
+                        id: indicatorId
+                    }
+                })
+                helper.metricsdata.variables = newVariables;
+            }
+
             helper.init = function () {
                 if (!helper.metricsdata) {
                     helper.clear();
@@ -196,6 +230,19 @@ angular.module('pcApp.metrics.services.metric', [
                     throw {message: JSON.stringify(err.data)};
                 });
 
+                var datasets = DatasetService.query(function () {
+                    helper.datasets = _.map(datasets.results, function (dataset) {
+                        return {
+                            name: dataset.title,
+                            unit: dataset.unit_id,
+                            id: dataset.id,
+                            date: dataset.date_modified,
+                            indicator_id: dataset.indicator_id
+                        };
+                    });
+                }, function (err) {
+                    throw {message: JSON.stringify(err.data)};
+                });
                 helper.normalizers = NormalizerService.query(function () {
                 }, function (err) {
                     throw {message: JSON.stringify(err.data)};

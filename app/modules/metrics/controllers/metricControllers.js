@@ -34,13 +34,13 @@ angular.module('pcApp.metrics.controllers.metric', [
                 $scope.servererror = undefined;
             }
 
-            $scope.submitFormula = function () {
+            $scope.submitFormula = function (url) {
                 $scope.metricsHelper.metricsdata.formula = $scope.formulaHelper.formula;
                 $scope.metricsHelper.metricsdata.variables = $scope.formulaHelper.variables;
 
                 if ($scope.formulaForm.$valid) {
                     $scope.formulaHelper.validate().then(function (response) {
-                        $location.path("/metrics/create-2")
+                        $location.path(url)
                     }, function (response) {
                         $scope.servererror = response.data;
                     });
@@ -70,6 +70,7 @@ angular.module('pcApp.metrics.controllers.metric', [
                 var url = API_CONF.METRICS_MANAGER_URL + "/metrics";
 
                 if ($scope.metadataForm.$valid) {
+                    $scope.metricsHelper.transformVariables();
                     $http.post(url, $scope.metricsHelper.metricsdata).then(function (response) {
                         if (applyAfterwards) {
                             $scope.metricsHelper.clear()
@@ -100,6 +101,84 @@ angular.module('pcApp.metrics.controllers.metric', [
                 var dialog = dialogs.confirm("Are you sure?", "Do you want to revert your changes in this metric?");
                 dialog.result.then(function () {
                     MetricsControllerHelper.clear();
+                    $location.path("/metrics/create-1");
+                });
+            }
+        }
+    ])
+
+    .controller('CalculateDatasetController', [
+        'Auth',
+        '$scope',
+        '$http',
+        'API_CONF',
+        'MetricsControllerHelper',
+        '$location',
+        'dialogs',
+        function (Auth, $scope, $http, API_CONF, MetricsControllerHelper, $location, dialogs) {
+
+            $scope.user = Auth;
+            $scope.metricsHelper = MetricsControllerHelper;
+
+            $scope.data = {
+                title: '',
+                formula: $scope.metricsHelper.metricsdata.formula,
+                datasets: _.map($scope.metricsHelper.metricsdata.variables, function(value, key){
+                    return {
+                        'variable': key,
+                        'dataset': value.id
+                    }
+                }),
+                indicator_id: '',
+                unit_id: ''
+            }
+
+            $scope.clear = function() {
+                $scope.data = {
+                    title: '',
+                    formula: $scope.metricsHelper.metricsdata.formula,
+                    datasets: _.map($scope.metricsHelper.metricsdata.variables, function(value, key){
+                        return {
+                            'variable': key,
+                            'dataset': value.id
+                        }
+                    }),
+                    indicator_id: '',
+                    unit_id: ''
+                }
+            }
+
+            $scope.submitData = function () {
+                $scope.metricsHelper.metricsdata.is_draft = $scope.is_draft;
+                var url = API_CONF.METRICS_MANAGER_URL + "/calculate";
+
+                if ($scope.datasetForm.$valid) {
+                    $http.post(url, $scope.data).then(function (response) {
+                        $scope.metricsHelper.clear();
+                        $location.path("/datasets/" + response.data.dataset.id);
+                    }, function (response) {
+                        $scope.servererror = response.data;
+                    });
+                }
+            };
+
+            $scope.clearErrors = function () {
+                $scope.servererror = undefined;
+            }
+
+            $scope.prevStep = function () {
+                $location.path("/metrics/create-1");
+            }
+
+            $scope.goToLogin = function () {
+                $location.path("/login");
+            }
+
+            $scope.abort = function () {
+                var dialog = dialogs.confirm("Are you sure?", "Do you want to revert your changes in this dataset?");
+                dialog.result.then(function () {
+                    MetricsControllerHelper.clear();
+                    $scope.clear();
                     $location.path("/metrics/create-1");
                 });
             }

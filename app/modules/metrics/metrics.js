@@ -36,6 +36,10 @@ metrics.config(function ($routeProvider) {
             controller: 'CreateMetric2Controller',
             templateUrl: 'modules/metrics/partials/create-metric-2.html'
         })
+        .when('/metrics/calculate-dataset', {
+            controller: 'CalculateDatasetController',
+            templateUrl: 'modules/metrics/partials/calculate-dataset.html'
+        })
         .when('/metrics/:metricId', {
             controller: 'MetricsmanagerDetailController',
             templateUrl: 'modules/metrics/partials/metric-detail.html'

@@ -28,7 +28,7 @@ angular.module('pcApp.metrics.directives.formula', [])
                             angular.forEach(variables, function (value, key, obj) {
                                 var index = scope.formula.indexOf(key.replace(' ', ''));
                                 if (index > -1) {
-                                    var url = API_CONF.INDICATOR_SERVICE_URL + "/indicators/" + value.id;
+                                    var url = API_CONF.DATASETS_MANAGER_URL + "/datasets/" + value.id;
                                     urlCalls.push($http({
                                         url: url,
                                         method: "GET"
@@ -46,7 +46,7 @@ angular.module('pcApp.metrics.directives.formula', [])
                                 angular.forEach(results, function (value, key, obj) {
                                     var variable = value.key.trim();
                                     var replaceable = "%" + value.response.data.id + "%";
-                                    var span = '<span id="variable' + variable + '" class="indicator-formula indicator-formula-selected">' + value.response.data.name + '</span>';
+                                    var span = '<span id="variable' + variable + '" class="indicator-formula indicator-formula-selected">' + value.response.data.title + '</span>';
                                     parsedFormula = parsedFormula.replace(replaceable, span);
                                 });
                                 element.empty();
