@@ -219,7 +219,7 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                 }
                 */
 
-                $http.get(API_CONF.STORY_MANAGER_URL + '/stories', {params: {id:$routeParams.storyId, getList:false}}).then(function(response){
+                $http.get(API_CONF.STORY_MANAGER_URL + '/stories/' + $routeParams.storyId).then(function(response){
                     if(response){
                         $scope.story = response.data;
                         $scope.storyTitle = $scope.story.title;
@@ -417,7 +417,7 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                 $scope.storyChapters = $scope.story.chapters;
                 */
 
-                $http.get(API_CONF.STORY_MANAGER_URL + '/stories', {params: {id:$routeParams.storyId, getList:false}}).then(function(response){
+                $http.get(API_CONF.STORY_MANAGER_URL + '/stories/' + $routeParams.storyId).then(function(response){
                     if(response){
                         $scope.story = response.data;
                         $scope.storyTitle = $scope.story.title;
