@@ -27,8 +27,17 @@ $text-color: lighten($bk_3_2, 20);
 
 }
 
-.indicator-formula::before {
-    content: attr(data-label);
+.text-formula {
+    display: inline-block;
+    min-width: 0.5em;
+
+    &:last-child {
+        width: 4em;
+    }
+
+    &:only-child {
+        width: 100%;
+    }
 }
 
 .indicator-formula,
