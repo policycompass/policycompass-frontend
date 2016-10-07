@@ -136,7 +136,15 @@ angular.module('pcApp.metrics.directives.formula', ['pcApp.indicators.services.i
 
                     });
 
-                    span.bind('keyup focus', function(event) {
+                    span.bind('focus', function (event) {
+                        span.parent().addClass('focused');
+                    });
+
+                    span.bind('blur', function(event){
+                        span.parent().removeClass('focused');
+                    });
+
+                    span.bind('keyup focus blur', function(event) {
                         var editableDiv = element[0];
                         var selection = window.getSelection();
 
