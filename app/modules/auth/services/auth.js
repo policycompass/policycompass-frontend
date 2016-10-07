@@ -82,7 +82,7 @@ angular.module('pcApp.auth.services.auth', [
                     $localStorage.userData = userData;
                 }
                 Auth.state.userData = userData;
-                Auth.state.isAdmin = userData.roles.indexOf('god') !== -1;
+                Auth.state.isAdmin = userData.roles.indexOf('admin') !== -1;
             };
 
             var teardownSession = function() {
