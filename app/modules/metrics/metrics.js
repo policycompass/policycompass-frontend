@@ -8,7 +8,6 @@ var metrics = angular.module('pcApp.metrics', [
     'pcApp.metrics.directives.ngDropzone',
     'pcApp.metrics.directives.forms',
     'pcApp.references.directives.forms',
-    'pcApp.metrics.directives.contenteditable',
     'pcApp.metrics.directives.formula',
     'pcApp.metrics.directives.indicator',
     'pcApp.metrics.directives.datasetSelect',
