@@ -108,7 +108,7 @@ angular.module('pcApp.metrics.directives.formula', ['pcApp.indicators.services.i
                                 }
                             }
                         } else if (event.keyCode ===  8 && selection.anchorOffset === 0) {
-                            // pressed backspace at firs position
+                            // pressed backspace at first position
                             deleteNode = span.prev();
 
                             if (deleteNode && deleteNode.data('variable')) {
@@ -118,16 +118,24 @@ angular.module('pcApp.metrics.directives.formula', ['pcApp.indicators.services.i
                                 var prevTextNode = span.prev();
                                 if (prevTextNode) {
                                     text = prevTextNode.text();
+                                    var spanText = span.text();
                                     prevTextNode.remove();
                                     span.prepend(text);
+
+                                    if (!spanText) {
+                                        // only if span was empty, the cursor needs to be placed again
+                                        setCursor(span, true);
+                                    }
                                 }
                             }
                         } else if(event.keyCode === 39 && selection.anchorOffset === span.text().length) {
+                            // pressed right arrow at last position
                             if (span.next()) {
                                 setCursor(span.next().next());
                                 event.preventDefault();
                             }
                         } else if(event.keyCode === 37 && selection.anchorOffset === 0) {
+                            // pressed left error at first position
                             if (span.prev()) {
                                 setCursor(span.prev().prev(), true);
                                 event.preventDefault();
