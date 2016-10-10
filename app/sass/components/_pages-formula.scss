@@ -34,6 +34,7 @@ $text-color: lighten($bk_3_2, 20);
 .text-formula {
     display: inline-block;
     min-width: 0.5em;
+    min-height: 1em;
 
     &:last-child {
         width: 4em;
