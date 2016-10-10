@@ -257,14 +257,20 @@ angular.module('pcApp.metrics.directives.formula', ['pcApp.indicators.services.i
                             angular.forEach(variables, function (value, key, obj) {
                                 var index = scope.formula.indexOf(key.replace(' ', ''));
                                 if (index > -1) {
-                                    var url = API_CONF.DATASETS_MANAGER_URL + "/datasets/" + value.id;
+                                    var url;
+                                    if (value.type === 'indicator') {
+                                         url = API_CONF.INDICATOR_SERVICE_URL + "/indicators/" + value.id;
+                                    } else {
+                                         url = API_CONF.DATASETS_MANAGER_URL + "/datasets/" + value.id;
+                                    }
                                     urlCalls.push($http({
                                         url: url,
                                         method: "GET"
                                     }).then(function (response) {
                                         return {
                                             response: response,
-                                            key: key
+                                            key: key,
+                                            type: value.type
                                         };
                                     }));
                                     parsedFormula = parsedFormula.replace(key.replace(' ', ''), " %" + value.id + "% ");
@@ -275,7 +281,14 @@ angular.module('pcApp.metrics.directives.formula', ['pcApp.indicators.services.i
                                 angular.forEach(results, function (value, key, obj) {
                                     var variable = value.key.trim();
                                     var replaceable = "%" + value.response.data.id + "%";
-                                    var span = '<span id="variable' + variable + '" class="indicator-formula indicator-formula-selected">' + value.response.data.title + '</span>';
+                                    var label;
+                                    if (value.type === 'indicator') {
+                                        label = value.response.data.name;
+                                    } else {
+                                        label = value.respinse.data.title;
+                                    }
+
+                                    var span = '<span id="variable' + variable + '" class="indicator-formula indicator-formula-selected">' +  label + '</span>';
                                     parsedFormula = parsedFormula.replace(replaceable, span);
                                 });
                                 element.empty();
