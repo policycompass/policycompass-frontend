@@ -45,6 +45,15 @@ angular.module('pcApp.events.controllers.event', [
                 event.spatials.forEach(function(i){
                     individuals.push(Individual.getById(i))
                 });
+
+                if(typeof event.derived_from_id !== 'undefined'){
+                    $scope.originalEvent = Event.get({id: event.derived_from_id}, function (originalEvent) {
+
+                    }, function (error) {
+
+                    });
+                }
+
             }, function (error) {
                 $location.path('/browse');
             });
@@ -119,16 +128,31 @@ angular.module('pcApp.events.controllers.event', [
 
 
             $scope.createEvent = function () {
+                var canEdit = Auth.state.isAdmin || $scope.userState.userPath == $scope.event.creator_path;
+
                 $scope.event.userID = 1;
                 $scope.event.viewsCount = 1;
 
-                $scope.event.spatials = $scope.spatials.output;
+                if(canEdit){
+                    $scope.event.spatials = $scope.spatials.output;
 
-                Event.update($scope.event, function (value, responseHeaders) {
-                    $location.path('/events/' + value.id);
-                }, function (err) {
-                    throw {message: JSON.stringify(err.data)};
-                });
+                    Event.update($scope.event, function (value, responseHeaders) {
+                        $location.path('/events/' + value.id);
+                    }, function (err) {
+                        throw {message: JSON.stringify(err.data)};
+                    });
+                }else{
+                    $scope.event.derived_from_id = $scope.event.id;
+                    $scope.event.title = 'Copy of ' + $scope.event.title;
+                    $scope.event.id = null;
+
+                    Event.save($scope.event, function (value, responseHeaders) {
+                        $location.path('/events/' + value.id);
+                    }, function (err) {
+                        throw {message: JSON.stringify(err.data)};
+                    });
+                }
+
             };
 
         }

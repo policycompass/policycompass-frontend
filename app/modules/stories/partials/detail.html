@@ -9,7 +9,14 @@
                     <username ng-if="story.creator_path" userpath="{{ story.creator_path }}"></username>
                 </span>
             </a>, added <a>{{ story.issued | date:'longDate' }}</a>, last modified <a>{{ story.modified | date:'longDate' }}</a>
+
+            <div ng-if="story.derived_from_id">
+                derived from <a ng-if="originalStory.id" href="#!/stories/{{story.derived_from_id}}">{{originalStory.title}}</a>
+                added by <username ng-if="originalStory.creator_path" userpath="{{originalStory.creator_path}}"></username>
+            </div>
         </span>
+
+
     </div>
 
     <div class="pc-visualization-formcontrols">
