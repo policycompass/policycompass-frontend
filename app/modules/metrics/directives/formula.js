@@ -108,7 +108,7 @@ angular.module('pcApp.metrics.directives.formula', ['pcApp.indicators.services.i
                                 }
                             }
                         } else if (event.keyCode ===  8 && selection.anchorOffset === 0) {
-                            // pressed backspace at firs position
+                            // pressed backspace at first position
                             deleteNode = span.prev();
 
                             if (deleteNode && deleteNode.data('variable')) {
@@ -118,16 +118,24 @@ angular.module('pcApp.metrics.directives.formula', ['pcApp.indicators.services.i
                                 var prevTextNode = span.prev();
                                 if (prevTextNode) {
                                     text = prevTextNode.text();
+                                    var spanText = span.text();
                                     prevTextNode.remove();
                                     span.prepend(text);
+
+                                    if (!spanText) {
+                                        // only if span was empty, the cursor needs to be placed again
+                                        setCursor(span, true);
+                                    }
                                 }
                             }
                         } else if(event.keyCode === 39 && selection.anchorOffset === span.text().length) {
+                            // pressed right arrow at last position
                             if (span.next()) {
                                 setCursor(span.next().next());
                                 event.preventDefault();
                             }
                         } else if(event.keyCode === 37 && selection.anchorOffset === 0) {
+                            // pressed left error at first position
                             if (span.prev()) {
                                 setCursor(span.prev().prev(), true);
                                 event.preventDefault();
@@ -249,14 +257,20 @@ angular.module('pcApp.metrics.directives.formula', ['pcApp.indicators.services.i
                             angular.forEach(variables, function (value, key, obj) {
                                 var index = scope.formula.indexOf(key.replace(' ', ''));
                                 if (index > -1) {
-                                    var url = API_CONF.DATASETS_MANAGER_URL + "/datasets/" + value.id;
+                                    var url;
+                                    if (value.type === 'indicator') {
+                                         url = API_CONF.INDICATOR_SERVICE_URL + "/indicators/" + value.id;
+                                    } else {
+                                         url = API_CONF.DATASETS_MANAGER_URL + "/datasets/" + value.id;
+                                    }
                                     urlCalls.push($http({
                                         url: url,
                                         method: "GET"
                                     }).then(function (response) {
                                         return {
                                             response: response,
-                                            key: key
+                                            key: key,
+                                            type: value.type
                                         };
                                     }));
                                     parsedFormula = parsedFormula.replace(key.replace(' ', ''), " %" + value.id + "% ");
@@ -267,7 +281,14 @@ angular.module('pcApp.metrics.directives.formula', ['pcApp.indicators.services.i
                                 angular.forEach(results, function (value, key, obj) {
                                     var variable = value.key.trim();
                                     var replaceable = "%" + value.response.data.id + "%";
-                                    var span = '<span id="variable' + variable + '" class="indicator-formula indicator-formula-selected">' + value.response.data.title + '</span>';
+                                    var label;
+                                    if (value.type === 'indicator') {
+                                        label = value.response.data.name;
+                                    } else {
+                                        label = value.respinse.data.title;
+                                    }
+
+                                    var span = '<span id="variable' + variable + '" class="indicator-formula indicator-formula-selected">' +  label + '</span>';
                                     parsedFormula = parsedFormula.replace(replaceable, span);
                                 });
                                 element.empty();
