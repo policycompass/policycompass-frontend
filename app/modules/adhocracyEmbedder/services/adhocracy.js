@@ -99,7 +99,7 @@ angular.module('pcApp.adhocracyEmbedder.services.adhocracy', [])
                     for (errorIndex in serverErrors) {
                         if (serverErrors.hasOwnProperty(errorIndex)) {
                             var error = serverErrors[errorIndex];
-                            if (error.location = 'body') {
+                            if (error.location === 'body') {
                                 simpleName = error.name.split('.').pop();
                                 processedErrors[simpleName] = error.description;
                                 }
