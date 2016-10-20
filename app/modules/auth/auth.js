@@ -11,5 +11,8 @@ auth.config(function ($routeProvider) {
         })
         .when('/register', {
             template: '<register></register>'
+        })
+        .when('/password_reset',{
+            template: '<password-reset></password-reset>'
         });
 });

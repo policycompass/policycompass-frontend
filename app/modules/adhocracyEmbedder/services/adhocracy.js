@@ -195,7 +195,18 @@ angular.module('pcApp.adhocracyEmbedder.services.adhocracy', [])
                     },
                     transformResponse: withResponseErrorTransformer()
                 })
-            }
+            };
+
+            client.resetPassword = function(email) {
+                return $http({
+                    method: 'POST',
+                    url: url('/create_password_reset/'),
+                    data: {
+                        email: email
+                    },
+                    transformResponse: withResponseErrorTransformer()
+                });
+            };
 
             return client;
         }

@@ -42,8 +42,8 @@ angular.module('pcApp.auth.controllers.authControllers', [
     ])
     .controller('LoginController', [
         '$scope', '$location',  'Auth', function ($scope, $location, Auth) {
-            $scope.goToRegister = function ( path ) {
-                $location.path('/register');
+            $scope.goToPasswordReset = function ( path ) {
+                $location.path('/password_reset');
             };
 
             $scope.$submitted = false;
@@ -68,7 +68,36 @@ angular.module('pcApp.auth.controllers.authControllers', [
                         $scope.serverErrors.$other = 'Unknown error.';
                         throw e;
                     }
-                })
+                });
             };
         }
-    ]);
+    ])
+    .controller('ResetPasswordController', [
+        '$scope', 'Auth', function ($scope, Auth) {
+            $scope.$submitted = false;
+            $scope.serverErrors = {}
+            $scope.completed = false;
+
+            $scope.resetPassword = function () {
+                $scope.$submitted = true;
+
+                if (!$scope.resetPasswordForm.$valid) {
+                    return false
+                }
+
+                Auth.resetPassword($scope.email)
+                    .then(function () {
+                        $scope.completed = true;
+                    }).catch(function (response) {
+                        try {
+                            $scope.serverErrors = response.data.errorDict;
+                        } catch (e) {
+                            $scope.serverErrors.$other = 'Unknown error.';
+                            throw e;
+                        }
+                    });
+
+                return true;
+            };
+        }
+    ])
