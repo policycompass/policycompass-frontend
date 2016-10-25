@@ -1032,7 +1032,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 }
 
 
-                $scope.resultTable.items.length * 23 + 50;
+                $scope.resultTable.height = $scope.resultTable.items.length * 23 + 50;
 
             };
 
