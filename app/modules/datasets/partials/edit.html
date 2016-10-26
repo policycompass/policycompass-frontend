@@ -13,7 +13,7 @@
         <div class="button-group">
             <a href="#!/login" ng-if="!userState.loggedIn" class="btn btn-default btn-save" target="_blank">Login to Save</a>
             <a href="" id="saveButton" ng-disabled="datasetForm.$invalid" ng-if="userState.loggedIn && (userState.userPath == dataset.creator_path || userState.isAdmin)" class="btn btn-default btn-save" ng-click="save()">Save</a>
-            <a href="" id="saveButton" ng-disabled="datasetForm.$invalid" ng-if="userState.loggedIn && (userState.userPath != dataset.creator_path || userState.isAdmin)" class="btn btn-default btn-save" ng-click="save()">Save a Copy</a>
+            <a href="" id="saveButton" ng-disabled="datasetForm.$invalid" ng-if="userState.loggedIn && (userState.userPath != dataset.creator_path)" class="btn btn-default btn-save" ng-click="save()">Save a Copy</a>
             <a type="button" class="btn btn-danger" href="#!/datasets/{{ dataset.id }}">Cancel</a>
         </div>
     </div>
