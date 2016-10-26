@@ -927,18 +927,27 @@ angular.module('pcApp.datasets.controllers.dataset', [
             }
 
             $scope.autofillTable = function(){
-                resetInputTable();
                 createTableTriples();
                 $scope.resultTableValues = [];
+
+                var foundMatchingItems = false;
 
                 for(var i=1; i<$scope.resultTableHeaders.length; i++){
                     for(var j=0; j<$scope.resultTable.items.length; j++){
                         for(var k=0; k<$scope.tripleArray.length; k++){
                             if(($scope.resultTableHeaders[i] == $scope.tripleArray[k][0] || $scope.resultTableHeaders[i] == $scope.tripleArray[k][1]) && ($scope.resultTable.items[j][0] == $scope.tripleArray[k][0] || $scope.resultTable.items[j][0] == $scope.tripleArray[k][1])){
+                                if(!foundMatchingItems){
+                                    resetInputTable();
+                                }
+                                foundMatchingItems = true;
                                 $scope.resultTable.items[j].push($scope.tripleArray[k][2]);
                             }
                         }
                     }
+                }
+
+                if(!foundMatchingItems){
+                    dialogs.notify('Error', 'Could not fill table automatically');
                 }
             }
 
