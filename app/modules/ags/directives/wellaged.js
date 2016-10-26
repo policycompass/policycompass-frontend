@@ -3,8 +3,8 @@ SVGElement.prototype.getTransformToElement = SVGElement.prototype.getTransformTo
 };
 
 angular.module('pcApp.ags.directives.wellaged', [])
-    .directive('wellaged', [
-        function() {
+    .directive('wellaged', ['dialogs',
+        function(dialogs) {
             return {
                 restrict: 'AEC',
                 scope: {
@@ -26,7 +26,12 @@ angular.module('pcApp.ags.directives.wellaged', [])
 
                     $scope.$watch('graph', function(newGraph, oldGraph) {
                         if ($scope.editor && newGraph) {
-                            $scope.editor.graphFromYAML(newGraph);
+                            try{
+                              $scope.editor.graphFromYAML(newGraph);
+                            }
+                            catch(e){
+                                dialogs.notify('Selected argumentation graph cannot be displayed', 'Please choose another one.');
+                            }
                         }
                     });
 
