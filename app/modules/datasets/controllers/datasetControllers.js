@@ -273,11 +273,25 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
             $scope.save = function () {
                 preSave();
-                Dataset.update($scope.dataset, function (value, responseHeaders) {
-                    $location.path('/datasets/' + value.id);
-                }, function (err) {
-                    throw {message: JSON.stringify(err.data)};
-                });
+
+                var canEdit = Auth.state.isAdmin || $scope.userState.userPath == $scope.dataset.creator_path;
+
+                if(canEdit){
+                    Dataset.update($scope.dataset, function (value, responseHeaders) {
+                       $location.path('/datasets/' + value.id);
+                    }, function (err) {
+                       throw {message: JSON.stringify(err.data)};
+                    });
+                }else{
+                    $scope.dataset.derived_from_id = $scope.dataset.id;
+                    $scope.dataset.title = 'Copy of ' + $scope.dataset.title;
+                    $scope.dataset.id = null;
+                    Dataset.save($scope.dataset, function (value, responseHeaders) {
+                        $location.path('/datasets/' + value.id);
+                    }, function (err) {
+                       throw {message: JSON.stringify(err.data)};
+                   });
+                }
             };
 
         }
@@ -1448,6 +1462,14 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
                     $scope.indicator = Indicator.get({id: dataset.indicator_id});
                 });
+
+                if(typeof dataset.derived_from_id !== 'undefined'){
+                    $scope.originalDataset = Dataset.get({id: dataset.derived_from_id}, function (originalDataset) {
+
+                    }, function (error) {
+
+                    });
+                }
 
             };
 
