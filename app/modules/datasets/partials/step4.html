@@ -6,6 +6,7 @@
         <strong ng-show="mode=='row'">({{ selectionStep }}/{{ individualSelection.length }}) Data for {{ individualSelection[selectionStep-1] }}</strong>
         <button class="btn btn-create pc-dataset-button-mode" ng-show="mode=='all'" ng-click="toggleMode()">Single Row Mode</button>
         <button class="btn btn-create pc-dataset-button-mode" ng-show="mode=='row'" ng-click="toggleMode()">Table Mode</button>
+        <button class="btn btn-automatic pc-dataset-button-mode" ng-click="autofillTable()">Autofill Table</button>
         <div class="button-group" ng-show="mode=='row'">
             <a class="btn btn-prev" ng-disabled="selectionStep==1" ng-click="prev()">Prev</a>
             <a class="btn btn-next" ng-disabled="selectionStep==lastStep" ng-click="next()">Next</a>
