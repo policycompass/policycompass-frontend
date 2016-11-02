@@ -502,7 +502,13 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             var posX = (event.pageX), posY = (event.pageY + 10);
 
             var model = $('div[ng-class="{active: ' + helpModelId + '}"]');
-            model.css('left', posX + 'px');
+
+            if(posX > 700){
+                model.css('left', posX-model.outerWidth() + 'px');
+            }else{
+                model.css('left', posX + 'px');
+            }
+
             model.css('top', posY + 'px');
         };
 
