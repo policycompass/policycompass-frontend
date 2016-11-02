@@ -85,6 +85,44 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                         else if (eLabel < 0)
                             edgecolor = 'red';
 
+                        edge_weight = eLabel
+                        edge_weight = Math.abs(edge_weight);
+
+                        switch(edge_weight){
+                            case 0.25: {
+                                if(eLabel < 0){
+                                   eLabel = "Very Weak -"
+                                }else{
+                                    eLabel = "Very Weak +"
+                                }
+                            }
+                                break;
+                            case 0.5: {
+                                if(eLabel < 0){
+                                   eLabel = "Weak -"
+                                }else{
+                                    eLabel = "Weak +"
+                                }
+                            }
+                                break;
+                            case 0.75: {
+                                if(eLabel < 0){
+                                   eLabel = "Strong -"
+                                }else{
+                                    eLabel = "Strong +"
+                                }
+                            }
+                                break;
+                            case 1.0: {
+                                if(eLabel < 0){
+                                   eLabel = "Very Strong -"
+                                }else{
+                                    eLabel = "Very Strong +"
+                                }
+                            }
+                                break;
+                        }
+
                         // build the edge object
                         var edgeObj = {
                             data: {
@@ -96,6 +134,7 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
 
                             }
                         };
+
                         // adding the edge object to the edges array
                         scope.elements.edges.push(edgeObj);
                     }
@@ -352,6 +391,44 @@ angular.module('pcApp.fcm.directives.cytoscapes', [])
                                 edgecolor = 'green';
                             else if (eLabel < 0)
                                 edgecolor = 'red';
+
+                            edge_weight = eLabel
+                            edge_weight = Math.abs(edge_weight);
+
+                            switch(edge_weight){
+                                case 0.25: {
+                                    if(eLabel < 0){
+                                       eLabel = "Very Weak -"
+                                    }else{
+                                        eLabel = "Very Weak +"
+                                    }
+                                }
+                                    break;
+                                case 0.5: {
+                                    if(eLabel < 0){
+                                       eLabel = "Weak -"
+                                    }else{
+                                        eLabel = "Weak +"
+                                    }
+                                }
+                                    break;
+                                case 0.75: {
+                                    if(eLabel < 0){
+                                       eLabel = "Strong -"
+                                    }else{
+                                        eLabel = "Strong +"
+                                    }
+                                }
+                                    break;
+                                case 1.0: {
+                                    if(eLabel < 0){
+                                       eLabel = "Very Strong -"
+                                    }else{
+                                        eLabel = "Very Strong +"
+                                    }
+                                }
+                                    break;
+                            }
 
                             // build the edge object
                             var edgeObj = {
