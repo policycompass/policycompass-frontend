@@ -318,6 +318,12 @@
             //goSearch();
         };
 
+        $scope.showInListFormat = function(newValue){
+            $scope.preventReload = true;
+            $scope.showResultsInListFormat = newValue;
+            $location.search('showResultsInListFormat', $scope.showResultsInListFormat || null);
+        }
+
         //Define function that fires search when Items Per Page selection box changes
         $scope.itemsPerPageChanged = function() {
             $scope.itemsperPage = $scope.selectedItemPerPage.id;
@@ -605,6 +611,8 @@
                 }
             });
 
+            $scope.showResultsInListFormat = !!$routeParams.showResultsInListFormat;
+
             facetsSelected = {};
             angular.forEach(aggregations, function (aggregation, name) {
                 var queryParam = "_"+name;
@@ -636,7 +644,11 @@
             $scope.search($scope.searchQuery);
         };
         $scope.$on('$routeUpdate', function(){
-            $scope.init();
+            if(!$scope.preventReload) {
+                $scope.init();
+            }else {
+                delete $scope.preventReload;
+            }
         });
         // runs once per controller instantiation
         $scope.init();
