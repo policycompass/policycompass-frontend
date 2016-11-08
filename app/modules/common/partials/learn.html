@@ -1,0 +1,28 @@
+<div class="container">
+
+    <div class="content-header">
+        <h3 class="fonticon fonticon-learn">Learn</h3>
+    </div>
+
+    <a name="maintop"></a>
+
+    <div class="content-body">
+        <div class="row">
+            <div class="text-list col-xs-4 col-md-2">
+                <div ng-repeat="text in learningTexts" id="text_list" name="text_list" class="story-chapters-list-entry">
+                    <a href="#maintop" du-smooth-scroll du-scrollspy ng-if="text" ng-click="selectText($index)">{{ text.title }}</a>
+                </div>
+                <br>
+                <div class="story-chapters-list-entry">
+                    <a href="#maintop" du-smooth-scroll du-scrollspy ng-click="selectText(-1)">Learning Material</a>
+                </div>
+            </div>
+
+            <div id="text_content" class="col-xs-8 col-md-10 well">
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
