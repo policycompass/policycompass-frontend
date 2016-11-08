@@ -6,11 +6,7 @@
         <h1 class="fonticon fonticon-story">{{ storyTitle }}</h1>
         <span>
             Story by
-            <a class="fonticon fonticon-user normal">
-                <span>
-                    <username ng-if="story.creator_path" userpath="{{ story.creator_path }}"></username>
-                </span>
-            </a>, added <a>{{ story.issued | date:'longDate' }}</a>, last modified <a>{{ story.modified | date:'longDate' }}</a>
+            <a class="fonticon fonticon-user normal"><username ng-if="story.creator_path" userpath="{{ story.creator_path }}"></username></a>, added <a>{{ story.issued | date:'longDate' }}</a>, last modified <a>{{ story.modified | date:'longDate' }}</a>
 
             <div ng-if="story.derived_from_id">
                 derived from <a ng-if="originalStory.id" href="#!/stories/{{story.derived_from_id}}">{{originalStory.title}}</a>
