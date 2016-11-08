@@ -1,3 +1,7 @@
+<update-meta ng-if="mode == 'create'" property="og:description" content="Create an Argument Graph"></update-meta>
+<update-meta ng-if="mode == 'edit'" property="og:title" content="{{ ag.name }}"></update-meta>
+<update-meta ng-if="mode == 'edit'" property="og:description" content="Edit Argument Graph"></update-meta>
+
 <div class="container container-create-visualisation" id="container-create-visualisation">
     <div class="content-header">
         <h3 ng-if="mode == 'create'" class="fonticon fonticon-ag">Create an Argument Graph</h3>
