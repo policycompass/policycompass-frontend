@@ -349,6 +349,13 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                 });
             }
 
+            $scope.returnWithoutSaving = function () {
+                var dlg = dialogs.confirm("Return without saving", "Do you want to leave edit mode? Unsaved changes will be stashed.");
+                dlg.result.then(function () {
+                    $location.path('/stories/' + $scope.story.id);
+                });
+            }
+
             $scope.init();
         }
     ])

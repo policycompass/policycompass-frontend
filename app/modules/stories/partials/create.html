@@ -55,6 +55,7 @@
             &nbsp;
         </div>
         <div class="form-group pull-left btn-group">
+            <a href="" ng-click="returnWithoutSaving()" ng-if="userState.loggedIn && mode === 'edit'" class="btn btn-default btn-clear">Return to story</a>
             <a href="#!/login" ng-if="!userState.loggedIn" class="btn btn-default btn-save" target="_blank">Login to  {{userState.userPath == story.creator_path || userState.isAdmin ? 'save' : 'save a copy'}}</a>
             <a href="" id="saveButton" data-ng-disabled="storyForm.$invalid" ng-if="userState.loggedIn" class="btn btn-default btn-save" ng-click="saveStory()">{{(mode == 'create') || (userState.userPath == story.creator_path || userState.isAdmin) ? 'Save' : 'Save a copy'}}</a>
             <a href="" id="addChapterButton" class="btn btn-default btn-add" ng-click="addChapter()">Add chapter</a>
