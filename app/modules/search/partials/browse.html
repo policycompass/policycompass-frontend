@@ -28,15 +28,19 @@
                         <span><ng-pluralize count="searchResultsCount" when="{'0': 'No results found',
                                    '1': '1 result found',
                                    'other': '{} results found'}"></ng-pluralize></span>
-                        <div class="pull-right" ng-if="auth.state.loggedIn">
-                            <input type="checkbox" id="own_content" ng-checked="isOwnContentEnabled()" ng-click="ownContentChanged($event)">
-                            <label for="own_content">Show only my content</label>
+                        <div class="pull-right">
+                            <a href="javascript:void(0);" ng-show="showResultsInListFormat" ng-click="showInListFormat(false)" class="btn">
+                                <i class="fa fa-th-large"></i> Show as grid
+                            </a>
+                            <a href="javascript:void(0);" ng-show="!showResultsInListFormat" ng-click="showInListFormat(true)" class="btn">
+                                <i class="fa fa-th-list"></i> Show as list
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="search-results row-flex">
+            <div class="search-results row-flex" ng-class="{'listFormat': showResultsInListFormat}" >
                 <div ng-repeat="searchResult in searchResults" class="result-wrapper result-wrapper-{{searchResult['_type']}}">
                     <div class="result-block searchItemIcon {{searchResult['_type']}}Icon" ng-cloak>
 
@@ -227,13 +231,24 @@
             <!-- /.col-lg-12 result-wrapper -->
 
             <div class="clearfix"></div>
-            <div style="text-align: center">
+            <div style="text-align: center;height: 60px;">
                 <pagination total-items="totalItems" ng-change="pageChanged()" items-per-page="itemsperPage" ng-model="currentPage" max-size="paginationSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
             </div>
         </div>
         <!-- /.search content  -->
 
         <div class="col-md-3 col-md-pull-9">
+            <div ng-if="auth.state.loggedIn" class="browse-filters-block">
+                <h4>Search options</h4>
+                <ul>
+                    <li>
+                        <input type="checkbox" id="own_content" ng-checked="isOwnContentEnabled()" ng-click="ownContentChanged($event)">
+                        <label for="own_content" tooltip-placement="right" tooltip="Show only my content" tooltip-append-to-body="true">
+                             <span class="ellipsis">My own content</span>
+                        </label>
+                    </li>
+                </ul>
+            </div>
             <div ng-repeat="facetCategory in facetCategories | orderBy: 'order'" ng-if="facetCategory.results>0" class="browse-filters-block">
                 <h4>{{facetCategory.label}}</h4>
                 <ul>
