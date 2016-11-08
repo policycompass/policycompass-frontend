@@ -32,7 +32,7 @@
         <div class="row">
             <div class="story-chapters-list">
                 <div ng-repeat="chapter in storyChapters" id="chapters_list" name="chapters_list" class="story-chapters-list-entry">
-                    <a ng-if="chapter" href="#anchor-chapter{{ chapter.number }}" du-smooth-scroll du-scrollspy >{{ chapter.title | limitTo:20 }}{{ chapter.title.length > 20 ? '...' : '' }}</a>
+                    <a ng-if="chapter" href="#anchor-chapter{{ chapter.number }}" du-smooth-scroll du-scrollspy title="{{ chapter.title }}">{{ chapter.title | limitTo:20 }}{{ chapter.title.length > 20 ? '...' : '' }}</a>
                 </div>
             </div>
             <div class="col-xs-9 col-xs-offset-2 story-chapters-detail">
