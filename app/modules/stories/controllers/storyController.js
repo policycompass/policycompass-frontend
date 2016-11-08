@@ -219,7 +219,7 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                 }
                 */
 
-                $http.get(API_CONF.STORY_MANAGER_URL + '/stories', {params: {id:$routeParams.storyId, getList:false}}).then(function(response){
+                $http.get(API_CONF.STORY_MANAGER_URL + '/stories/' + $routeParams.storyId).then(function(response){
                     if(response){
                         $scope.story = response.data;
                         $scope.storyTitle = $scope.story.title;
@@ -253,11 +253,11 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                 if ($scope.checkIfStoryIsValid()) {
                     // if current user is not owner of story, then create a new copy of this story
                     if ($scope.userState.userPath != $scope.story.creator_path) {
-                        console.log($scope.userState)
                         $http.post(API_CONF.STORY_MANAGER_URL + '/stories', {
                             title: 'Copy of ' + $scope.story_title,
                             chapters: $scope.chapters,
                             is_draft: true,
+                            derived_from_id: $scope.story.id
                         }).then(function (response) {
                             if (response) {
                                 $location.path('/stories/' + response.data.result.id);
@@ -417,11 +417,20 @@ angular.module('pcApp.stories.controllers.storyController', ['textAngular'])
                 $scope.storyChapters = $scope.story.chapters;
                 */
 
-                $http.get(API_CONF.STORY_MANAGER_URL + '/stories', {params: {id:$routeParams.storyId, getList:false}}).then(function(response){
+                $http.get(API_CONF.STORY_MANAGER_URL + '/stories/' + $routeParams.storyId).then(function(response){
                     if(response){
                         $scope.story = response.data;
                         $scope.storyTitle = $scope.story.title;
                         $scope.storyChapters = $scope.story.chapters;
+
+                        if(typeof $scope.story.derived_from_id !== 'undefined'){
+                            $http.get(API_CONF.STORY_MANAGER_URL + '/stories/' + $scope.story.derived_from_id).then(function(response){
+                                if(response){
+                                    $scope.originalStory = response.data;
+                                    console.log("origina " + angular.toJson($scope.originalStory));
+                                }
+                            });
+                        }
                     }
                     if($scope.story.result == 500){
                         $location.path('/stories');

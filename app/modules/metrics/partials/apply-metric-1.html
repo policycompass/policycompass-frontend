@@ -35,7 +35,7 @@
     <div class="row">
         <div class="col-md-12">
             <label>Formula</label>
-            <formula ng-if="apply_metric_helper.metric.formula && apply_metric_helper.metric.variables" data-formula="apply_metric_helper.metric.formula" data-variables="apply_metric_helper.metric.variables"></formula>
+            <formula ng-if="applyHelper.metric.formula && applyHelper.metric.variables" data-formula="applyHelper.metric.formula" data-variables="applyHelper.metric.variables"></formula>
         </div>
     </div>
 
@@ -49,7 +49,7 @@
                     <tr>
                 </thead>
                 <tbody>
-                    <tr id="row{{indicator.variable}}" ng-mouseenter="highlightIndicator(indicator.variable, $event);" ng-mouseleave="unhighlightIndicator(indicator.variable, $event);" indicator-to-dataset data-datarow="indicator" ng-repeat="indicator in apply_metric_helper.data.datasets"></tr>
+                    <tr id="row{{indicator.variable}}" ng-mouseenter="highlightIndicator(indicator.variable, $event);" ng-mouseleave="unhighlightIndicator(indicator.variable, $event);" indicator-to-dataset data-datarow="indicator" ng-repeat="indicator in applyHelper.data.datasets"></tr>
                 </tbody>
             </table>
         </div>

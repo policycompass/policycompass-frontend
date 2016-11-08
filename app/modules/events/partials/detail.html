@@ -1,10 +1,12 @@
+<update-meta property="og:title" content="{{ event.title }}"></update-meta>
+<update-meta property="og:description" content="{{ event.description }}"></update-meta>
 <div class="container">
     <div class="content-header">
         <h1 class="fonticon fonticon-event">{{ event.title }}</h1>
 
         <div class="pc-visualization-formcontrols">
-            <div class="button-group">
-                <a type="button" class="btn btn-primary  btn-create" ng-if="userState.loggedIn && (userState.userPath == event.creator_path || userState.isAdmin)"  href="#!/events/{{ event.id }}/edit">Edit</a>
+            <div class="btn-group">
+                <a type="button" class="btn btn-primary  btn-create" href="#!/events/{{ event.id }}/edit">Edit</a>
                 <a type="button" class="btn btn-danger  btn-clear"  ng-if="userState.loggedIn && (userState.userPath == event.creator_path || userState.isAdmin)"  ng-click="deleteEvent(event)">Delete</a>
             </div>
 
@@ -74,6 +76,21 @@
                 <div class="form-item" ng-show="event.date_modified">
                     <div class="field-label">Modified</div>
                     <div class="field-content">{{ event.date_modified | date:'longDate' }}</div>
+                </div>
+            </div>
+
+            <div ng-if="event.derived_from_id" class="form-group form-group-link">
+                <div class="form-item">
+                    <div class="field-label">Derived from</div>
+                    <div class="field-content">
+                        <a ng-if="originalEvent.id" href="#!/events/{{event.derived_from_id}}">{{originalEvent.title}}</a>
+                    </div>
+                </div>
+                <div class="form-item" ng-if="originalEvent.creator_path">
+                    <div class="field-label">Added by</div>
+                    <div class="field-content">
+                        <username userpath="{{originalEvent.creator_path}}"></username>
+                    </div>
                 </div>
             </div>
 

@@ -83,12 +83,34 @@ commonmanager.run([
     'ngProgress', '$rootScope', function (ngProgress, $rootScope) {
         ngProgress.color('#f6921e');
 
+        // Retrieve default meta tag values to switch to on change start
+        // update-meta module will update the new values on the views that require them to change
+        var defaultMetaTags = {
+            elements:{
+                title : document.querySelector('meta[property="og:title"]'),
+                descr: document.querySelector('meta[property="og:description"]'),
+                img: document.querySelector('meta[property="og:image"]'),
+                url: document.querySelector('meta[property="og:url"]')
+            },
+            title: '',
+            descr:'',
+            img: ''
+        };
+        defaultMetaTags.title = defaultMetaTags.elements.title.getAttribute('content');
+        defaultMetaTags.descr = defaultMetaTags.elements.descr.getAttribute('content');
+        defaultMetaTags.img = defaultMetaTags.elements.img.getAttribute('content');
+
         $rootScope.$on('$locationChangeStart', function () {
             ngProgress.start();
+            defaultMetaTags.elements.title.setAttribute('content',defaultMetaTags.title);
+            defaultMetaTags.elements.descr.setAttribute('content',defaultMetaTags.descr);
+            defaultMetaTags.elements.img.setAttribute('content',defaultMetaTags.img);
+            defaultMetaTags.elements.url.setAttribute('content',window.location);
         });
 
         $rootScope.$on('$locationChangeSuccess', function () {
             ngProgress.complete();
+            defaultMetaTags.elements.url.setAttribute('content',window.location);
         });
     }
 ])

@@ -431,12 +431,13 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
 
             Fcm.save($scope.fcmModel, function (value) {
                 FcmSearchUpdate.create({ id: value.model.id }, function () {
-                    var dlg = dialogs.notify("Causal Model", "'" + $scope.modeldetail.model.title + "' Casual Model has been saved!");
+                    //var dlg = dialogs.notify("Causal Model", "'" + $scope.modeldetail.model.title + "' Casual Model has been saved!");
                 }, function (err) {
                     throw { message: JSON.stringify(err.data) };
                 });
                 $scope.md = value;
-                $location.path('/models/' + value.model.id + '/edit');
+                $location.path('/models/' + value.model.id); //AFTER SAVE IT SHOULD GO TO view mode.
+                $('html,body').animate({ scrollTop: 0 }, 'slow');
 
                 //Remove indicator parameter if exists on url
                 if ($routeParams.indicator != null)
@@ -479,8 +480,10 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             $scope.fcmModelUpdate.data = jsonModel;
             FcmModel.update({ id: $routeParams.fcmId }, $scope.fcmModelUpdate, function (value) {
                 FcmSearchUpdate.update({ id: $routeParams.fcmId }, function () {
-                    var dlg = dialogs.notify("Causal Model", "'" + value.model.title + "' Casual Model has been saved!");
+                    //var dlg = dialogs.notify("Causal Model", "'" + value.model.title + "' Casual Model has been saved!"); //
                     $scope.checkAndUpdateDraftStatus(value.model);
+                    $location.path('/models/' + $routeParams.fcmId); //AFTER SAVE IT SHOULD GO TO view mode.
+                    $('html,body').animate({ scrollTop: 0 }, 'slow');
                 }, function (err) {
                     throw { message: err.statusText + "<br/><br/>" + (err.data == "" ? "" : JSON.stringify(err.data)) };
                 });
@@ -499,7 +502,13 @@ angular.module('pcApp.fcm.controllers.cytoscapes', [])
             var posX = (event.pageX), posY = (event.pageY + 10);
 
             var model = $('div[ng-class="{active: ' + helpModelId + '}"]');
-            model.css('left', posX + 'px');
+
+            if(posX > 700){
+                model.css('left', posX-model.outerWidth() + 'px');
+            }else{
+                model.css('left', posX + 'px');
+            }
+
             model.css('top', posY + 'px');
         };
 

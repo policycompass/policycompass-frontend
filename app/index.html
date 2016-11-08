@@ -37,6 +37,12 @@
     <link href="css/font-awesome.css" rel="stylesheet" media="screen"/>
 
     <link rel="icon" type="image/ico" href="img/favicon.png"/>
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@PolicyCompassEU">
+    <meta property="og:title" content="Policy Compass" />
+    <meta property="og:description" content="Opening Policy Horizons. Open Data Driven analysis and impact evaluation." />
+    <meta property="og:image" content="https://project.policycompass.eu/wp-content/uploads/2014/03/POLICY-COMPASS-LOGO-1200x630.png" />
+    <meta property="og:url" content="" />
 </head>
 <body class="page" scroll ng-class="{fix:CreateMenu}">
 
@@ -102,7 +108,7 @@
     <script type="text/javascript" src="../bower_components/d3/d3.min.js"></script>
     <script type="text/javascript" src="../bower_components/underscore/underscore-min.js"></script>
     <script type="text/javascript" src="../bower_components/spectrum/spectrum.js"></script>
-    <script type="text/javascript" src="../bower_components/angular-spectrum/dist/angular-spectrum.min.js"></script>
+    <script type="text/javascript" src="../bower_components/angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker.js"></script>
     <script type="text/javascript" src="../bower_components/elasticsearch/elasticsearch.angular.min.js"></script>
     <script type="text/javascript" src="../bower_components/topojson/topojson.js"></script>
     <script type="text/javascript" src="../bower_components/chardin.js/chardinjs.min.js"></script>
@@ -147,7 +153,6 @@
     <script type="text/javascript" src="modules/metrics/directives/formula.js"></script>
     <script type="text/javascript" src="modules/metrics/directives/indicator.js"></script>
     <script type="text/javascript" src="modules/metrics/directives/datasetSelect.js"></script>
-    <script type="text/javascript" src="modules/metrics/directives/contenteditable.js"></script>
     <script type="text/javascript" src="modules/metrics/directives/indicatorToDataset.js"></script>
     <script type="text/javascript" src="modules/metrics/directives/functionsTable.js"></script>
     <script type="text/javascript" src="modules/metrics/directives/embedDirective.js"></script>
@@ -157,10 +162,11 @@
     <script type="text/javascript" src="modules/indicators/directives/forms.js"></script>
     <script type="text/javascript" src="modules/adhocracyEmbedder/adhocracyEmbedder.js"></script>
     <script type="text/javascript" src="modules/adhocracyEmbedder/services/adhocracy.js"></script>
+    <script type="text/javascript" src="modules/adhocracyEmbedder/directives/adhocracy.js"></script>
     <script type="text/javascript" src="modules/auth/auth.js"></script>
     <script type="text/javascript" src="modules/auth/services/auth.js"></script>
     <script type="text/javascript" src="modules/auth/controllers/authControllers.js"></script>
-    <script type="text/javascript" src="modules/auth/directives/login.js"></script>
+    <script type="text/javascript" src="modules/auth/directives/loginRegister.js"></script>
     <script type="text/javascript" src="modules/deliberation/deliberation.js"></script>
     <script type="text/javascript" src="modules/deliberation/directives/showDiscussion.js"></script>
     <script type="text/javascript" src="modules/deliberation/directives/requestService.js"></script>
@@ -218,6 +224,8 @@
     <script src='/bower_components/textAngular/dist/textAngular-rangy.min.js'></script>
     <script src='/bower_components/textAngular/dist/textAngular-sanitize.min.js'></script>
     <script src='/bower_components/textAngular/dist/textAngular.min.js'></script>
+
+    <script src='/bower_components/angular-update-meta/dist/update-meta.min.js'></script>
 
     <!--<![endif]-->
 </body>

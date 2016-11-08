@@ -3,14 +3,14 @@ angular.module('pcApp.deliberation.directives.requestService', [
 ])
 
     .directive('requestService', [
-        'API_CONF', 'Adhocracy', function (API_CONF, Adhocracy) {
+        'API_CONF', 'AdhocracySdk', function (API_CONF, AdhocracySdk) {
             return {
                 restrict: 'E',
                 scope: {
                     key: '@'
                 },
                 link: function (scope, element, attrs) {
-                    Adhocracy.then(function (adh) {
+                    AdhocracySdk.then(function (adh) {
                         element.append(adh.getIframe('pcompass', {
                             "initialUrl": '/r/organisation/pcompass/',
                             autoresize: false,
@@ -23,4 +23,3 @@ angular.module('pcApp.deliberation.directives.requestService', [
             };
         }
     ]);
-

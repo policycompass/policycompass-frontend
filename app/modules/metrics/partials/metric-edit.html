@@ -1,3 +1,6 @@
+<update-meta property="og:title" content="{{ data.title }}"></update-meta>
+<update-meta property="og:description" content="Edit Metric"></update-meta>
+
 <div class="container">
 	<div class="content-header">
         <h3 class="fonticon fonticon-formula">Edit Metric</h3>
@@ -30,23 +33,16 @@
                     <functions-table></functions-table>
                 </div>
             </div>
-            <div class="row">
-                <div style="padding-bottom: 1.5em; padding-top: 1.5em;" class="col-md-12">
-                    <formula ng-if="data.formula && data.variables" data-formula="data.formula" data-variables="data.variables"></formula>
-                </div>
-            </div>
             <div class="metadata metadata-formula">
 
             <!-- Formula -->
                 <div class="row">
                     <div class="col-lg-8">
                         <label>Formula</label>
-                        <div class="form-group" ng-class="{ 'has-error': (metricsForm.formula.$invalid && !metricsForm.formula.$pristine) || servererror.formula }">
-                            <input ng-model="data.formula" name="formula" class="form-control" ng-keyup="getCursorPosition($event)" ng-click="getCursorPosition($event)" ng-change="clearErrors();" required>
-                            <p ng-show="metricsForm.formula.$error.required && !metricsForm.formula.$pristine" class="help-block">This field is required</p>
-                            <p ng-show="servererror.formula" class="help-block">{{ servererror.formula }}</p>
-                            <p ng-hide="servererror.formula || (metricsForm.formula.$error.required && !metricsForm.formula.$pristine)" class="help-block">Type in formula here. Add indicators from the list on the right. To use one of the predefined formulas, use the acronym.</p>
-                        </div>
+                        <div pc-formula-editor ng-if="data" data-formula="data.formula" data-variables="data.variables" style="min-height: 77px;" class="calculation-formula calculation-formula-2"></div>
+                        <p ng-show="servererror.formula" class="help-block">{{ servererror.formula.join(', ') }}</p>
+                        <p ng-show="servererror.variables" class="help-block">{{ servererror.variables.join(', ') }}</p>
+                        <p ng-hide="servererror.formula || servererror.variables" class="help-block">Type in formula here. Add datasets from the list on the right. To use one of the predefined normalizers, use the acronym.</p>
                     </div>
 
                     <div class="col-md-4">

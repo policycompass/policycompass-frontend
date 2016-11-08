@@ -1,3 +1,5 @@
+<update-meta property="og:title" content="{{ dataset.title }}"></update-meta>
+<update-meta property="og:description" content="{{ dataset.description }}"></update-meta>
 <div class="container">
     <div class="content-header">
         <h1 class="fonticon fonticon-dataset ng-binding">{{ dataset.title }}</h1>
@@ -5,7 +7,7 @@
         <div class="pc-visualization-formcontrols">
             <div class="button-group">
 
-                <a type="button" class="btn btn-primary btn-create" ng-if="userState.loggedIn && (userState.userPath == dataset.creator_path || userState.isAdmin)" href="#!/datasets/{{ dataset.id }}/edit">Edit</a>
+                <a type="button" class="btn btn-primary btn-create"  href="#!/datasets/{{ dataset.id }}/edit">Edit</a>
                 <a type="button" class="btn btn-line" href="#!/visualizations/create/?datasets={{dataset.id}}">Visualise</a>
                 <a type="button" class="btn btn-tree" href="https://carneades-dev.policycompass.eu/carneades/#/projects/compass" target="_blank" ng-disabled="true">Create
                     Argument Map</a>
@@ -126,6 +128,21 @@
                     <div class="form-item" ng-if="dataset.date_modified">
                         <div class="field-label">Modified</div>
                         <div class="field-content">{{ dataset.date_modified | date:'longDate' }}</div>
+                    </div>
+                </div>
+
+                <div ng-if="dataset.derived_from_id" class="form-group form-group-link">
+                    <div class="form-item">
+                        <div class="field-label">Derived from</div>
+                        <div class="field-content">
+                            <a ng-if="originalDataset.id" href="#!/datasets/{{dataset.derived_from_id}}">{{originalDataset.title}}</a>
+                        </div>
+                    </div>
+                    <div class="form-item" ng-if="originalDataset.creator_path">
+                        <div class="field-label">Added by</div>
+                        <div class="field-content">
+                            <username userpath="{{originalDataset.creator_path}}"></username>
+                        </div>
                     </div>
                 </div>
 

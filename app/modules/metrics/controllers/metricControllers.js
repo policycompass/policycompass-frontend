@@ -18,69 +18,40 @@ angular.module('pcApp.metrics.controllers.metric', [
         'FormulaHelper',
         '$location',
         'Auth',
-        function ($scope, API_CONF, $http, MetricsControllerHelper, FormulaHelper, $location, Auth) {
-            $scope.FormulaHelper = FormulaHelper;
+        function ($scope, API_CONF, $http, MetricsControllerHelper, formulaHelper, $location, Auth) {
             $scope.sortOptions = [{"name": "Title", "sort": "name"}, {"name": "Date updated", "sort": "-date"}]
 
-            $scope.metrics_controller_helper = MetricsControllerHelper;
-            $scope.metrics_controller_helper.init();
-
-            $scope.variableIndex = 1;
+            $scope.metricsHelper = MetricsControllerHelper;
+            $scope.metricsHelper.init();
             $scope.showFunctions = false;
 
             $scope.toggleFunctions = function () {
                 $scope.showFunctions = !$scope.showFunctions;
             }
 
-            // FIXME: MOVE TO SERVICE
-            $scope.addIndicator = function (indicator) {
-                var i = "__" + $scope.variableIndex + "__";
-                if (angular.isUndefined($scope.cursorPosVal) || angular.isUndefined($scope.metrics_controller_helper.metricsdata.formula)) {
-                    if (angular.isUndefined($scope.metrics_controller_helper.metricsdata.formula)) {
-                        $scope.metrics_controller_helper.metricsdata.formula = "";
-                    }
-                    $scope.metrics_controller_helper.metricsdata.formula = $scope.metrics_controller_helper.metricsdata.formula + i;
-                } else {
-                    $scope.metrics_controller_helper.metricsdata.formula = [
-                        $scope.metrics_controller_helper.metricsdata.formula.slice(0, $scope.cursorPosVal),
-                        i,
-                        $scope.metrics_controller_helper.metricsdata.formula.slice($scope.cursorPosVal)
-                    ].join('');
-                    $scope.cursorPosVal = undefined;
-                }
-                $scope.variableIndex += 1;
-                $scope.metrics_controller_helper.metricsdata.variables[i] = {
-                    "type": "indicator",
-                    "id": indicator.id
-                }
+            $scope.submitFormula = function (path) {
+                var formula = $scope.metricsHelper.metricsdata.formula
+                var variables = $scope.metricsHelper.metricsdata.variables
+
+                formulaHelper.validate(formula, variables).then(function (response) {
+                    $location.path(path)
+                }, function (response) {
+                    $scope.servererror = response.data;
+                });
             };
 
-            $scope.getCursorPosition = function (event) {
-                $scope.cursorPosVal = $scope.FormulaHelper.getCursorPosition(event);
+            $scope.addIndicator = function(indicator) {
+                $scope.$broadcast('AddVariable', { type: 'indicator', id: indicator.id, indicator: indicator });
             };
 
-            $scope.clearErrors = function () {
+            $scope.addDataset = function(dataset) {
+                $scope.$broadcast('AddVariable', { 'type': 'dataset', id: dataset.id, dataset: dataset});
+            };
+
+            $scope.$watch('metricsHelper.metricsdata.formula', function () {
                 $scope.servererror = undefined;
-            }
-
-            $scope.submitFormula = function () {
-                var url = API_CONF.FORMULA_VALIDATION_URL;
-                if ($scope.formulaForm.$valid) {
-                    $http({
-                        url: url,
-                        method: 'get',
-                        params: {
-                            formula: $scope.metrics_controller_helper.metricsdata.formula,
-                            variables: $scope.metrics_controller_helper.metricsdata.variables
-                        }
-                    }).then(function (response) {
-                        $location.path("/metrics/create-2")
-                    }, function (response) {
-                        $scope.servererror = response.data;
-                    });
-                }
-            };
-        }
+            });
+          }
     ])
 
 
@@ -95,21 +66,22 @@ angular.module('pcApp.metrics.controllers.metric', [
         function (Auth, $scope, $http, API_CONF, MetricsControllerHelper, $location, dialogs) {
 
             $scope.user = Auth;
-            $scope.metrics_controller_helper = MetricsControllerHelper;
+            $scope.metricsHelper = MetricsControllerHelper;
 
             $scope.is_draft = true;
 
             $scope.submitData = function (applyAfterwards) {
-                $scope.metrics_controller_helper.metricsdata.is_draft = $scope.is_draft;
+                $scope.metricsHelper.metricsdata.is_draft = $scope.is_draft;
                 var url = API_CONF.METRICS_MANAGER_URL + "/metrics";
 
                 if ($scope.metadataForm.$valid) {
-                    $http.post(url, $scope.metrics_controller_helper.metricsdata).then(function (response) {
+                    $scope.metricsHelper.transformVariables();
+                    $http.post(url, $scope.metricsHelper.metricsdata).then(function (response) {
                         if (applyAfterwards) {
-                            $scope.metrics_controller_helper.clear()
+                            $scope.metricsHelper.clear()
                             $location.path("/metrics/" + response.data.id + "/apply-1");
                         } else {
-                            $scope.metrics_controller_helper.clear()
+                            $scope.metricsHelper.clear()
                             $location.path("/metrics/" + response.data.id);
                         }
                     }, function (response) {
@@ -140,6 +112,84 @@ angular.module('pcApp.metrics.controllers.metric', [
         }
     ])
 
+    .controller('CalculateDatasetController', [
+        'Auth',
+        '$scope',
+        '$http',
+        'API_CONF',
+        'MetricsControllerHelper',
+        '$location',
+        'dialogs',
+        function (Auth, $scope, $http, API_CONF, MetricsControllerHelper, $location, dialogs) {
+
+            $scope.user = Auth;
+            $scope.metricsHelper = MetricsControllerHelper;
+
+            $scope.data = {
+                title: '',
+                formula: $scope.metricsHelper.metricsdata.formula,
+                datasets: _.map($scope.metricsHelper.metricsdata.variables, function(value, key){
+                    return {
+                        'variable': key,
+                        'dataset': value.id
+                    }
+                }),
+                indicator_id: '',
+                unit_id: ''
+            }
+
+            $scope.clear = function() {
+                $scope.data = {
+                    title: '',
+                    formula: $scope.metricsHelper.metricsdata.formula,
+                    datasets: _.map($scope.metricsHelper.metricsdata.variables, function(value, key){
+                        return {
+                            'variable': key,
+                            'dataset': value.id
+                        }
+                    }),
+                    indicator_id: '',
+                    unit_id: ''
+                }
+            }
+
+            $scope.submitData = function () {
+                $scope.metricsHelper.metricsdata.is_draft = $scope.is_draft;
+                var url = API_CONF.METRICS_MANAGER_URL + "/calculate";
+
+                if ($scope.datasetForm.$valid) {
+                    $http.post(url, $scope.data).then(function (response) {
+                        $scope.metricsHelper.clear();
+                        $location.path("/datasets/" + response.data.dataset.id);
+                    }, function (response) {
+                        $scope.servererror = response.data;
+                    });
+                }
+            };
+
+            $scope.clearErrors = function () {
+                $scope.servererror = undefined;
+            }
+
+            $scope.prevStep = function () {
+                $location.path("/metrics/create-1");
+            }
+
+            $scope.goToLogin = function () {
+                $location.path("/login");
+            }
+
+            $scope.abort = function () {
+                var dialog = dialogs.confirm("Are you sure?", "Do you want to revert your changes in this dataset?");
+                dialog.result.then(function () {
+                    MetricsControllerHelper.clear();
+                    $scope.clear();
+                    $location.path("/metrics/create-1");
+                });
+            }
+        }
+    ])
+
 
     .controller('ApplyMetric1Controller', [
         '$scope',
@@ -151,18 +201,18 @@ angular.module('pcApp.metrics.controllers.metric', [
 
             $scope.user = Auth;
 
-            $scope.apply_metric_helper = ApplyMetricHelper;
-            $scope.apply_metric_helper.init($routeParams.metricId);
+            $scope.applyHelper = ApplyMetricHelper;
+            $scope.applyHelper.init($routeParams.metricId);
             $scope.error = true;
 
             $scope.submit = function () {
-                _.each($scope.apply_metric_helper.data.datasets, function (value, key) {
+                _.each($scope.applyHelper.data.datasets, function (value, key) {
                     delete value['indicator'];
                 });
                 $location.path("/metrics/" + $routeParams.metricId + "/apply-2")
             };
 
-            $scope.$watch('apply_metric_helper.data.datasets', function (newvalue, oldvalue) {
+            $scope.$watch('applyHelper.data.datasets', function (newvalue, oldvalue) {
                 var notValid = true;
                 _.each(newvalue, function (value, key) {
                     notValid = !(value.dataset > 0);
@@ -211,17 +261,17 @@ angular.module('pcApp.metrics.controllers.metric', [
         function ($scope, $routeParams, API_CONF, $http, ApplyMetricHelper, $location, Auth, dialogs) {
 
             $scope.user = Auth;
-            $scope.apply_metric_helper = ApplyMetricHelper;
-            $scope.apply_metric_helper.init($routeParams.metricId);
+            $scope.applyHelper = ApplyMetricHelper;
+            $scope.applyHelper.init($routeParams.metricId);
 
             $scope.submit = function (applyAgain) {
                 var url = API_CONF.METRICS_MANAGER_URL + "/metrics/" + $routeParams.metricId + '/operationalize';
-                $http.post(url, $scope.apply_metric_helper.data).then(function (response) {
+                $http.post(url, $scope.applyHelper.data).then(function (response) {
                     if (applyAgain) {
                         $location.path("/metrics/" + $routeParams.metricId + "/apply-1");
                     } else {
-                        $scope.apply_metric_helper.clear();
-                        $scope.apply_metric_helper.getDatasets($routeParams.metricId);
+                        $scope.applyHelper.clear();
+                        $scope.applyHelper.getDatasets($routeParams.metricId);
                         $location.path("/datasets/" + response.data.dataset.id);
                     }
                 }, function (response) {
@@ -282,10 +332,10 @@ angular.module('pcApp.metrics.controllers.metric', [
         'API_CONF',
         'MetricService',
         'IndicatorService',
-        'FormulaHelper',
         'Auth',
         'dialogs',
-        function ($scope, $routeParams, $location, $http, API_CONF, MetricService, IndicatorService, FormulaHelper, Auth, dialogs) {
+        '$q',
+        function ($scope, $routeParams, $location, $http, API_CONF, MetricService, IndicatorService, Auth, dialogs, $q) {
 
             $scope.user = Auth.state
 
@@ -300,20 +350,40 @@ angular.module('pcApp.metrics.controllers.metric', [
                 return Math.max.apply( Math, numberlist );
             };
 
-            $scope.FormulaHelper = FormulaHelper;
             $scope.showFunctions = false;
             $scope.toggleFunctions = function() {
                 $scope.showFunctions = !$scope.showFunctions;
             };
 
+            $scope.addIndicator = function(indicator) {
+                $scope.$broadcast('AddVariable', { type: 'indicator', id: indicator.id, indicator: indicator });
+            };
+
+            $scope.$watch('data.formula', function () {
+                $scope.servererror = undefined;
+            });
 
             MetricService.get(
                 {id: $routeParams.metricId},
                 function (metric){
-                    $scope.data = metric;
-                    $scope.canDraft = $scope.data.is_draft;
+                    $scope.canDraft = metric.is_draft;
                     $scope.variableIndex = getIndex(metric.variables) + 1;
                     var indicator_id = metric.indicator_id;
+
+                    var promises = _.mapObject(metric.variables, function(variable) {
+                        return IndicatorService.get({id: variable.id}).$promise;
+                    });
+
+                    $q.all(promises).then(function(indicators) {
+                        var variables = _.mapObject(metric.variables, function(variable, key) {
+                            variable.indicator = indicators[key];
+                            return variable;
+                        });
+
+                        metric.variables = variables;
+                        $scope.data = metric;
+                    });
+
                     IndicatorService.get(
                         {id: indicator_id},
                         function (indicator){
@@ -337,9 +407,9 @@ angular.module('pcApp.metrics.controllers.metric', [
                 }
             );
 
-
             $scope.submit = function() {
                 var canEdit = Auth.state.isAdmin || Auth.state.isCreator($scope.data);
+
                 if (canEdit) {
                     var url = API_CONF.METRICS_MANAGER_URL + "/metrics/" + $routeParams.metricId;
                     $http.put(url, $scope.data).then(function (response) {
@@ -357,34 +427,6 @@ angular.module('pcApp.metrics.controllers.metric', [
                         $scope.servererror = response.data;
                     });
                 }
-            };
-
-            // FIXME: MOVE TO SERVICE
-            $scope.addIndicator = function (indicator) {
-                    var i = "__" + $scope.variableIndex + "__";
-                    if (angular.isUndefined($scope.cursorPosVal) || angular.isUndefined($scope.data.formula)) {
-                        if (angular.isUndefined($scope.data.formula)) {
-                            $scope.data.formula = "";
-                        }
-                        $scope.data.formula = $scope.data.formula + i;
-                    } else {
-                        $scope.data.formula = [
-                            $scope.data.formula.slice(0, $scope.cursorPosVal),
-                            i,
-                            $scope.data.formula.slice($scope.cursorPosVal)
-                        ].join('');
-                        $scope.cursorPosVal = undefined;
-                    }
-                    $scope.variableIndex += 1;
-                    $scope.data.variables[i] = {
-                        "type": "indicator",
-                        "id": indicator.id
-                    }
-                };
-
-
-            $scope.getCursorPosition = function (event) {
-                $scope.cursorPosVal = $scope.FormulaHelper.getCursorPosition(event);
             };
 
             $scope.goToLogin = function () {
@@ -414,4 +456,4 @@ angular.module('pcApp.metrics.controllers.metric', [
             });
 
         }
-    ]);
+    ])

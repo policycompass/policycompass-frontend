@@ -273,11 +273,25 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
             $scope.save = function () {
                 preSave();
-                Dataset.update($scope.dataset, function (value, responseHeaders) {
-                    $location.path('/datasets/' + value.id);
-                }, function (err) {
-                    throw {message: JSON.stringify(err.data)};
-                });
+
+                var canEdit = Auth.state.isAdmin || $scope.userState.userPath == $scope.dataset.creator_path;
+
+                if(canEdit){
+                    Dataset.update($scope.dataset, function (value, responseHeaders) {
+                       $location.path('/datasets/' + value.id);
+                    }, function (err) {
+                       throw {message: JSON.stringify(err.data)};
+                    });
+                }else{
+                    $scope.dataset.derived_from_id = $scope.dataset.id;
+                    $scope.dataset.title = 'Copy of ' + $scope.dataset.title;
+                    $scope.dataset.id = null;
+                    Dataset.save($scope.dataset, function (value, responseHeaders) {
+                        $location.path('/datasets/' + value.id);
+                    }, function (err) {
+                       throw {message: JSON.stringify(err.data)};
+                   });
+                }
             };
 
         }
@@ -500,6 +514,8 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
             }
 
+
+
             $scope.updateSelectedSuggestion = function(suggestionIndex, individual){
                 angular.forEach(individual.suggestions, function(suggestion, index){
                     var resetSelected = false;
@@ -598,6 +614,7 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 creationService.data.individualSelectionBackup = individualsBackup;
             }
 
+
             var init = function () {
                 $scope.inputTable = creationService.data.inputTable;
                 $scope.inputTable.items = creationService.data.inputTable.items;
@@ -638,6 +655,8 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 } else {
                     $scope.individualSelection = [];
                 }
+
+
                 if (creationService.data.extraMetadata) {
                     $scope.extraMetadata = [];
                     angular.forEach(creationService.data.extraMetadata, function (em) {
@@ -915,11 +934,82 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
             };
 
+            var resetInputTable = function(){
+                for(var i=0; i<$scope.resultTable.items.length; i++){
+                    $scope.resultTable.items[i].splice(1, $scope.resultTable.items[i].length-1);
+                }
+            }
+
+            $scope.autofillTable = function(){
+                createTableTriples();
+                $scope.resultTableValues = [];
+
+                var foundMatchingItems = false;
+
+                for(var i=1; i<$scope.resultTableHeaders.length; i++){
+                    for(var j=0; j<$scope.resultTable.items.length; j++){
+                        for(var k=0; k<$scope.tripleArray.length; k++){
+                            if(($scope.resultTableHeaders[i] == $scope.tripleArray[k][0] || $scope.resultTableHeaders[i] == $scope.tripleArray[k][1]) && ($scope.resultTable.items[j][0] == $scope.tripleArray[k][0] || $scope.resultTable.items[j][0] == $scope.tripleArray[k][1])){
+                                if(!foundMatchingItems){
+                                    resetInputTable();
+                                }
+                                foundMatchingItems = true;
+                                $scope.resultTable.items[j].push($scope.tripleArray[k][2]);
+                            }
+                        }
+                    }
+                }
+
+                if(!foundMatchingItems){
+                    dialogs.notify('Error', 'Could not fill table automatically');
+                }
+            }
+
+            var createTableTriples = function(){
+                createTableArrays();
+                $scope.tripleArray = [];
+
+                for(var i=0; i<$scope.tableItems.length; i++){
+                    for(var j=0; j<$scope.tableHeaders.length; j++){
+                        $scope.tripleArray.push([$scope.tableItems[i][0], $scope.tableHeaders[j], $scope.tableItems[i][j+1]]);
+                    }
+                }
+            }
+
+            var createTableArrays = function(){
+                $scope.resultTableHeaders = [];
+                $scope.tableHeaders = [];
+                $scope.tableItems = [];
+
+                for(var i=0; i<$scope.resultTable.settings.colHeaders.length; i++){
+                    if($scope.resultTable.settings.colHeaders[i] !== null){
+                        $scope.resultTableHeaders.push($scope.resultTable.settings.colHeaders[i]);
+                    }
+                }
+
+                for(var i=1; i<$scope.inputTable.items[0].length; i++){
+                    if($scope.inputTable.items[0][i] !== null){
+                        $scope.tableHeaders.push($scope.inputTable.items[0][i]);
+                    }
+                }
+
+                for(var i=1; i<$scope.inputTable.items.length; i++){
+                    if($scope.inputTable.items[i][0] !== null){
+                        $scope.tableItems[i-1] = [];
+                        for(var j=0; j<$scope.inputTable.items[i].length;j++){
+                            if($scope.inputTable.items[i][j] !== null)
+                            $scope.tableItems[i-1].push($scope.inputTable.items[i][j]);
+                        }
+                    }
+                }
+            }
+
             var init = function () {
                 $scope.individualSelection = [];
                 for(var i=0; i<creationService.data.individualSelection.length; i++){
                     $scope.individualSelection.push(creationService.data.individualSelection[i].selected);
                 }
+
 
                 $scope.mode = 'row';
                 $scope.timeSeries = DatasetsControllerHelper.generateTimeSeries(creationService.data.timeResolution, creationService.data.time.start, creationService.data.time.end);
@@ -930,6 +1020,8 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
                 $scope.inputTable = creationService.data.inputTable;
                 $scope.resultTable = creationService.data.resultTable;
+
+
                 $scope.resultTable.settings.afterInit = function () {
                     $scope.resultInstance = this;
                     $scope.resultInstance.selectCell(0, 0, 0, 0);
@@ -954,12 +1046,14 @@ angular.module('pcApp.datasets.controllers.dataset', [
                 }
 
 
+
                 if ($scope.resultTable.items.length > ($scope.timeSeries.length + 1)) {
                     $scope.resultTable.items = [];
                     angular.forEach(creationService.data.individualSelection, function (i) {
                         $scope.resultTable.items.push([i.selected]);
                     });
                 }
+
 
                 $scope.resultTable.height = $scope.resultTable.items.length * 23 + 50;
 
@@ -1448,6 +1542,14 @@ angular.module('pcApp.datasets.controllers.dataset', [
 
                     $scope.indicator = Indicator.get({id: dataset.indicator_id});
                 });
+
+                if(typeof dataset.derived_from_id !== 'undefined'){
+                    $scope.originalDataset = Dataset.get({id: dataset.derived_from_id}, function (originalDataset) {
+
+                    }, function (error) {
+
+                    });
+                }
 
             };
 

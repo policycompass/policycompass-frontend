@@ -56,6 +56,26 @@ angular.module('pcApp.metrics.services.metric', [
     ])
 
 /**
+ * Factory for getting an Dataset, which connects to the Indicator endpoint
+ */
+    .factory('DatasetService', [
+        '$resource', 'API_CONF', function ($resource, API_CONF) {
+            var url = API_CONF.DATASETS_MANAGER_URL + "/datasets/:id";
+            var Dataset = $resource(url, {
+                id: "@id",
+                page_size: LARGE_NUMBER
+            }, {
+                'update': {method: 'PUT'},
+                'query': {
+                    method: 'GET',
+                    isArray: false
+                }
+            });
+            return Dataset;
+        }
+    ])
+
+/**
  * Factory to get Normalizers
  *
  */
@@ -77,38 +97,41 @@ angular.module('pcApp.metrics.services.metric', [
  * Factory to get create formula
  *
  */
-    .factory('FormulaHelper', [function () {
+    .factory('FormulaHelper', ['$http', 'API_CONF', function ($http, API_CONF) {
         var helper = {};
 
-        helper.getCursorPosition = function (event) {
-            var oField = event.target;
-            var iCaretPos = 0;
-
-            // IE Support
-            if (document.selection) {
-                oField.focus();
-                var oSel = document.selection.createRange();
-                oSel.moveStart('character', -oField.value.length);
-                iCaretPos = oSel.text.length;
-            }
-
-            else if (oField.selectionStart || oField.selectionStart == '0') {
-                iCaretPos = oField.selectionStart;
-            }
-            return iCaretPos;
-        };
+        helper.validate = function(formula, variables) {
+            var url = API_CONF.FORMULA_VALIDATION_URL;
+            return $http({
+                url: url,
+                method: 'get',
+                params: {
+                    formula: formula,
+                    variables: variables
+                }
+            });
+        }
 
         return helper;
-    }
-    ])
+    }])
 
 /**
  * Factory to create Metric using a wizard
  */
     .factory('MetricsControllerHelper', [
-        'IndicatorService', 'NormalizerService', function (IndicatorService, NormalizerService) {
+        'IndicatorService', 'DatasetService', 'NormalizerService',
+        function (IndicatorService, DatasetService, NormalizerService) {
 
-            var helper = {};
+            var helper = {
+                metricsdata: {
+                    title: "",
+                    formula: "",
+                    description: "",
+                    keywords: "",
+                    variableIndex: 1,
+                    variables: {}
+                }
+            };
 
             helper.clear = function () {
                 helper.metricsdata = {
@@ -116,8 +139,23 @@ angular.module('pcApp.metrics.services.metric', [
                     formula: "",
                     description: "",
                     keywords: "",
+                    variableIndex: 1,
                     variables: {}
                 };
+            }
+
+            helper.transformVariables = function () {
+                newVariables = {};
+                _.each(helper.metricsdata.variables, function(variable, key){
+                    var datasetIndex = _.findIndex(helper.datasets, {'id': variable.id});
+                    var dataset = helper.datasets[datasetIndex];
+                    var indicatorId = dataset.indicator_id;
+                    newVariables[key] = {
+                        type: 'indicator',
+                        id: indicatorId
+                    }
+                })
+                helper.metricsdata.variables = newVariables;
             }
 
             helper.init = function () {
@@ -138,6 +176,19 @@ angular.module('pcApp.metrics.services.metric', [
                     throw {message: JSON.stringify(err.data)};
                 });
 
+                var datasets = DatasetService.query(function () {
+                    helper.datasets = _.map(datasets.results, function (dataset) {
+                        return {
+                            name: dataset.title,
+                            unit: dataset.unit_id,
+                            id: dataset.id,
+                            date: dataset.date_modified,
+                            indicator_id: dataset.indicator_id
+                        };
+                    });
+                }, function (err) {
+                    throw {message: JSON.stringify(err.data)};
+                });
                 helper.normalizers = NormalizerService.query(function () {
                 }, function (err) {
                     throw {message: JSON.stringify(err.data)};

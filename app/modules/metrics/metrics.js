@@ -8,7 +8,6 @@ var metrics = angular.module('pcApp.metrics', [
     'pcApp.metrics.directives.ngDropzone',
     'pcApp.metrics.directives.forms',
     'pcApp.references.directives.forms',
-    'pcApp.metrics.directives.contenteditable',
     'pcApp.metrics.directives.formula',
     'pcApp.metrics.directives.indicator',
     'pcApp.metrics.directives.datasetSelect',
@@ -35,6 +34,10 @@ metrics.config(function ($routeProvider) {
         .when('/metrics/create-2', {
             controller: 'CreateMetric2Controller',
             templateUrl: 'modules/metrics/partials/create-metric-2.html'
+        })
+        .when('/metrics/calculate-dataset', {
+            controller: 'CalculateDatasetController',
+            templateUrl: 'modules/metrics/partials/calculate-dataset.html'
         })
         .when('/metrics/:metricId', {
             controller: 'MetricsmanagerDetailController',

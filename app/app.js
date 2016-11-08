@@ -4,6 +4,7 @@
  */
 var pcAppDependencies = [
     'ngRoute',
+    'ngStorage',
     'ui.bootstrap',
     'pcApp.metrics',
     'pcApp.visualization',
@@ -21,7 +22,7 @@ var pcAppDependencies = [
     'pcApp.references.directives.resolve',
     'dialogs.main',
     'dialogs.default-translations',
-    'ngSpectrum',
+    'angularSpectrumColorpicker',
     'skrollrDirectives',
     'ngProgress',
     'isteven-multi-select',
@@ -30,7 +31,8 @@ var pcAppDependencies = [
     'duScroll',
     'angulartics',
     'angulartics.piwik',
-    'toggle-switch'
+    'toggle-switch',
+    'updateMeta'
 ];
 
 if (policyCompassConfig.ENABLE_ADHOCRACY) {
@@ -46,6 +48,10 @@ var pcApp = angular.module('pcApp', pcAppDependencies)
     .run(function ($rootScope, $location) {
         $rootScope.location = $location;
     })
+
+    .run(['Auth', function(Auth) {
+        Auth.recoverSession();
+    }])
 
 /**
  * Very simple central error handling
