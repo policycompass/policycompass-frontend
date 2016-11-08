@@ -183,7 +183,10 @@ angular.module('pcApp.metrics.services.metric', [
                             unit: dataset.unit_id,
                             id: dataset.id,
                             date: dataset.date_modified,
-                            indicator_id: dataset.indicator_id
+                            indicator_id: dataset.indicator_id,
+                            getIndicator: function () {
+                                return _.find(helper.indicators, { id: this.indicator_id})
+                            }
                         };
                     });
                 }, function (err) {
