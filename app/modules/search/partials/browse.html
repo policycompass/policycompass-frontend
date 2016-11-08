@@ -53,9 +53,10 @@
                                     <p>{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
 
                                     <div class="key-field">
-                                        <label class="key-field-title">Publisher: </label>
-                                        {{ searchResult['_source']['publisher'] }}
+                                        <label class="key-field-title">Added: </label>
+                                        {{ searchResult['_source']['date_created']|date:'dd-MM-yyyy'}}
                                     </div>
+
                                     <div class="key-field">
                                         <label class="key-field-title">Comments: </label>
                                         {{ searchResult['_source']['commentsCount']}}
@@ -75,6 +76,11 @@
                                 <div class="attributes">
 
                                     <p>{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
+
+                                    <div class="key-field">
+                                        <label class="key-field-title">Added: </label>
+                                        {{ searchResult['_source']['date_created']|date:'dd-MM-yyyy'}}
+                                    </div>
 
                                     <div class="key-field">
                                         <label class="key-field-title">Comments: </label>
@@ -98,6 +104,11 @@
                                     <p>{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
 
                                     <div class="key-field">
+                                        <label class="key-field-title">Added: </label>
+                                        {{ searchResult['_source']['date_created']|date:'dd-MM-yyyy'}}
+                                    </div>
+
+                                    <div class="key-field">
                                         <label class="key-field-title">Comments: </label>
                                         {{ searchResult['_source']['commentsCount']}}
                                     </div>
@@ -115,6 +126,11 @@
 
                                 <div class="attributes">
                                     <p>{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
+
+                                     <div class="key-field">
+                                        <label class="key-field-title">Added: </label>
+                                        {{ searchResult['_source']['date_created']|date:'dd-MM-yyyy'}}
+                                    </div>
 
                                     <div class="key-field">
                                         <label class="key-field-title">Comments: </label>
@@ -139,7 +155,7 @@
 
                                     <div class="key-field">
                                         <label class="key-field-title">Start of Event: </label>
-                                        {{ searchResult['_source']['startEventDate']|date:'d-M-yy'}}
+                                        {{ searchResult['_source']['startEventDate']|date:'dd-MM-yyyy'}}
                                     </div>
                                     <div class="key-field">
                                         <label class="key-field-title">Comments: </label>
@@ -161,8 +177,8 @@
                                     <p>{{ searchResult['_source']['description'] | limitTo:200 }}...</p>
 
                                     <div class="key-field">
-                                        <label class="key-field-title">Created on: </label>
-                                        {{ searchResult['_source']['date_created']|date:'d-M-yy'}}
+                                        <label class="key-field-title">Added: </label>
+                                        {{ searchResult['_source']['date_created']|date:'dd-MM-yyyy'}}
                                     </div>
                                     <div class="key-field">
                                         <label class="key-field-title">Comments: </label>
@@ -185,7 +201,7 @@
 
                                     <div class="key-field">
                                         <label class="key-field-title">Keywords: </label>
-                                        {{ searchResult['_source']['keywords']|date:'d-M-yy'}}
+                                        {{ searchResult['_source']['keywords']|date:'dd-MM-yyyy'}}
                                     </div>
                                     <div class="key-field">
                                         <label class="key-field-title">Comments: </label>
@@ -204,6 +220,14 @@
                                 <h5>{{ searchResult['_source']['title']}}</h5>
 
                                 <div class="attributes">
+                                    <div class="key-field">
+                                        <label class="key-field-title">Author: </label>
+                                        <username ng-if="searchResult['_source']['creator_path']" userpath="{{ searchResult['_source']['creator_path'] }}"></username>
+                                    </div>
+                                    <div class="key-field">
+                                        <label class="key-field-title">Added: </label>
+                                        {{ searchResult['_source']['issued']|date:'dd-MM-yyyy'}}
+                                    </div>
                                     <div class="key-field">
                                         <label class="key-field-title">Comments: </label>
                                         {{ searchResult['_source']['commentsCount']}}
