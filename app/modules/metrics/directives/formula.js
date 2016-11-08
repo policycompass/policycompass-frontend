@@ -285,7 +285,7 @@ angular.module('pcApp.metrics.directives.formula', ['pcApp.indicators.services.i
                                     if (value.type === 'indicator') {
                                         label = value.response.data.name;
                                     } else {
-                                        label = value.respinse.data.title;
+                                        label = value.response.data.title;
                                     }
 
                                     var span = '<span id="variable' + variable + '" class="indicator-formula indicator-formula-selected">' +  label + '</span>';
