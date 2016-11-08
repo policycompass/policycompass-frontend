@@ -1,3 +1,7 @@
+<update-meta ng-if="mode == 'create'" property="og:description" content="Define a New Indicator"></update-meta>
+<update-meta ng-if="mode == 'edit'" property="og:title" content="{{ indicator.name }}"></update-meta>
+<update-meta ng-if="mode == 'edit'" property="og:description" content="Edit Indicator"></update-meta>
+
 <div class="container container-create-visualisation" id="container-create-visualisation">
     <div class="content-header">
         <h3 ng-if="mode == 'create'" class="fonticon fonticon-indicator">Define a New Indicator</h3>

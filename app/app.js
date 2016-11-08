@@ -31,7 +31,8 @@ var pcAppDependencies = [
     'duScroll',
     'angulartics',
     'angulartics.piwik',
-    'toggle-switch'
+    'toggle-switch',
+    'updateMeta'
 ];
 
 if (policyCompassConfig.ENABLE_ADHOCRACY) {

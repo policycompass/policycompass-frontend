@@ -1,3 +1,7 @@
+<update-meta ng-if="mode == 'create'" property="og:description" content="Create a New Event"></update-meta>
+<update-meta ng-if="mode == 'edit'" property="og:title" content="{{ event.title }}"></update-meta>
+<update-meta ng-if="mode == 'edit'" property="og:description" content="Edit Event"></update-meta>
+
 <div class="container container-create-visualisation" id="container-create-visualisation">
     <div class="content-header">
         <h3 ng-if="mode == 'create'" class="fonticon fonticon-event">Create a New Event</h3>

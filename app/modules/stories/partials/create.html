@@ -1,3 +1,6 @@
+<update-meta ng-if="mode == 'create'" property="og:description" content="Create a New Story"></update-meta>
+<update-meta ng-if="mode == 'edit'" property="og:title" content="{{ story_title }}"></update-meta>
+<update-meta ng-if="mode == 'edit'" property="og:description" content="Edit Story"></update-meta>
 <div class="container container-create-visualization">
 
     <div class="content-header">
