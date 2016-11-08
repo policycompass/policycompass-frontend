@@ -10,7 +10,8 @@ var commonmanager = angular.module('pcApp.common', [
     'pcApp.common.directives.wizard',
     'pcApp.common.directives.helpbutton',
     'pcApp.common.directives.loadpcimage',
-    'pcApp.common.directives.cookieLaw'
+    'pcApp.common.directives.cookieLaw',
+    'pcApp.common.directives.learn'
 ])
 
 commonmanager.config(function ($routeProvider) {
@@ -75,6 +76,10 @@ commonmanager.config(function ($routeProvider) {
         .when('/support', {
             controller: 'StaticController',
             templateUrl: 'modules/common/partials/support.html'
+        })
+        .when('/learn', {
+            controller: 'LearnController',
+            templateUrl: 'modules/common/partials/learn.html'
         })
         .otherwise({redirectTo: '/'});
 })

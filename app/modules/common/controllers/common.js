@@ -72,10 +72,10 @@ angular.module('pcApp.common.controllers', [])
         '$scope', '$document', function ($scope, $document) {
 
             $scope.toTheTop = function() {
-                $document.scrollTopAnimated(0, 2000).then(function() {        		
+                $document.scrollTopAnimated(0, 2000).then(function() {
                 });
             }
-    		
+
             $scope.toSection = function(sectionId) {
                 var sectionToScroll = angular.element(document.getElementById(sectionId));
                 $document.scrollToElementAnimated(sectionToScroll, 0, 2000);
@@ -83,7 +83,7 @@ angular.module('pcApp.common.controllers', [])
 
         }
     ])
-    
+
     .controller('wanttoController', [
         '$scope', '$rootScope', '$modal', function ($scope, $rootScope, $modal) {
             $rootScope.wizard_help = false;
@@ -174,6 +174,42 @@ angular.module('pcApp.common.controllers', [])
                 $event.stopPropagation();
                 $scope.opened = true;
             };
+
+        }
+    ])
+
+
+    .controller('LearnController', [
+        '$scope', '$compile', function ($scope, $compile) {
+
+            $scope.selectedTextIndex = 0;
+            $scope.learningTexts = [{title:"Registration", directive:"learn-1"},
+                {title:"Importing Datasets", directive:"learn-2"},
+                {title:"Events", directive:"learn-3"},
+                {title:"Causal Models", directive:"learn-4"},
+                {title:"Argumentation Graphs", directive:"learn-5"},
+                {title:"Browsing", directive:"learn-6"},
+                {title:"Promotional Video", directive:"learn-8"},
+            ];
+
+            $scope.selectText = function(index){
+                $scope.selectedTextIndex = index;
+                $scope.insertText();
+            }
+
+            $scope.insertText = function(){
+
+                if($scope.selectedTextIndex >= 0){
+                    directive_name = $scope.learningTexts[$scope.selectedTextIndex].directive;
+                }else{
+                    directive_name = "learn-7";
+                }
+                angular.element(document.getElementById('directive_div')).remove();
+                angular.element(document.getElementById('text_content')).append($compile
+                ("<div " + directive_name + " id='directive_div'></div>")($scope));
+            }
+
+            $scope.insertText();
 
         }
     ]);
