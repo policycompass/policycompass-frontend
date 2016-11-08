@@ -8,11 +8,7 @@
         <h1 ng-if="mode == 'edit'" class="fonticon fonticon-story">Edit Story</h1>
         <span ng-if="mode != 'create'">
             Story by
-            <a class="fonticon fonticon-user normal">
-                <span>
-                    <username ng-if="story.creator_path" userpath="{{ story.creator_path }}"></username>
-                </span>
-            </a>, added <a>{{ story.issued | date:'longDate' }}</a>, last modified <a>{{ story.modified | date:'longDate' }}</a>
+            <a class="fonticon fonticon-user normal"><username ng-if="story.creator_path" userpath="{{ story.creator_path }}"></username></a>, added <a>{{ story.issued | date:'longDate' }}</a>, last modified <a>{{ story.modified | date:'longDate' }}</a>
         </span>
     </div>
 
