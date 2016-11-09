@@ -183,12 +183,13 @@ angular.module('pcApp.common.controllers', [])
         '$scope', '$compile', function ($scope, $compile) {
 
             $scope.selectedTextIndex = 0;
-            $scope.learningTexts = [{title:"Registration", directive:"learn-1"},
+            $scope.learningTexts = [
+                {title:"Browsing", directive:"learn-6"},
+                {title:"Registration", directive:"learn-1"},
                 {title:"Importing Datasets", directive:"learn-2"},
                 {title:"Events", directive:"learn-3"},
                 {title:"Causal Models", directive:"learn-4"},
                 {title:"Argumentation Graphs", directive:"learn-5"},
-                {title:"Browsing", directive:"learn-6"},
                 {title:"Promotional Video", directive:"learn-8"},
             ];
 
