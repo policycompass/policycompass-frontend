@@ -29,8 +29,11 @@
             id: 'Title',
             name: 'Title'
         }, {
-            id: 'Date',
-            name: 'Date Created'
+            id: 'DateDesc',
+            name: 'Date Added Desc.'
+        }, {
+            id: 'DateAsc',
+            name: 'Date Added Asc.'
         }, {
             id: 'CommentsDesc',
             name: 'Comments Desc.'
@@ -457,6 +460,18 @@
                 var sort = ["_score"];
             } else if ($scope.sortByItem == 'Title') {
                 var sort = ["title.lower_case_sort"];
+            } else if ($scope.sortByItem == 'DateDesc') {
+                var sort = [{
+                    "date_created": {
+                        "order": "desc"
+                    }
+                }];
+            } else if ($scope.sortByItem == 'DateAsc') {
+                var sort = [{
+                    "date_created": {
+                        "order": "asc"
+                    }
+                }];
             } else if ($scope.sortByItem == 'CommentsDesc') {
                 var sort = [{
                     "commentsCount": {

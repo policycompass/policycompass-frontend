@@ -159,6 +159,10 @@
                                         {{ searchResult['_source']['startEventDate']|date:'dd-MM-yyyy'}}
                                     </div>
                                     <div class="key-field">
+                                        <label class="key-field-title">Added: </label>
+                                        {{ searchResult['_source']['date_created']|date:'dd-MM-yyyy'}}
+                                    </div>
+                                    <div class="key-field">
                                         <label class="key-field-title">Comments: </label>
                                         {{ searchResult['_source']['commentsCount']}}
                                     </div>
@@ -202,7 +206,11 @@
 
                                     <div class="key-field">
                                         <label class="key-field-title">Keywords: </label>
-                                        {{ searchResult['_source']['keywords']|date:'dd-MM-yyyy'}}
+                                        {{ searchResult['_source']['keywords']}}
+                                    </div>
+                                    <div class="key-field">
+                                        <label class="key-field-title">Added: </label>
+                                        {{ searchResult['_source']['date_created']|date:'dd-MM-yyyy'}}
                                     </div>
                                     <div class="key-field">
                                         <label class="key-field-title">Comments: </label>
@@ -227,7 +235,7 @@
                                     </div>
                                     <div class="key-field">
                                         <label class="key-field-title">Added: </label>
-                                        {{ searchResult['_source']['issued']|date:'dd-MM-yyyy'}}
+                                        {{ searchResult['_source']['date_created']|date:'dd-MM-yyyy'}}
                                     </div>
                                     <div class="key-field">
                                         <label class="key-field-title">Comments: </label>
