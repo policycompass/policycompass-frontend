@@ -29,8 +29,11 @@
             id: 'Title',
             name: 'Title'
         }, {
-            id: 'Date',
-            name: 'Date Created'
+            id: 'DateDesc',
+            name: 'Date Added Desc.'
+        }, {
+            id: 'DateAsc',
+            name: 'Date Added Asc.'
         }, {
             id: 'CommentsDesc',
             name: 'Comments Desc.'
@@ -133,6 +136,11 @@
                 label: 'User',
                 field: ["creator_path", "userPath"],
                 size: 200,
+                disable: true
+            },
+            draft: {
+                label: 'Draft',
+                field: ["is_draft"],
                 disable: true
             }
         };
@@ -457,6 +465,18 @@
                 var sort = ["_score"];
             } else if ($scope.sortByItem == 'Title') {
                 var sort = ["title.lower_case_sort"];
+            } else if ($scope.sortByItem == 'DateDesc') {
+                var sort = [{
+                    "date_created": {
+                        "order": "desc"
+                    }
+                }];
+            } else if ($scope.sortByItem == 'DateAsc') {
+                var sort = [{
+                    "date_created": {
+                        "order": "asc"
+                    }
+                }];
             } else if ($scope.sortByItem == 'CommentsDesc') {
                 var sort = [{
                     "commentsCount": {
@@ -562,6 +582,19 @@
 
         $scope.isOwnContentEnabled = function () {
             return userId === ("0000000"+getUserId()).slice(-7);
+        };
+
+        $scope.isDraftOnlyEnabled = function() {
+            return facetsSelected['draft'] && facetsSelected['draft'].indexOf("T") !== -1;
+        };
+
+        $scope.ownDraftOnlyChanged = function ($event) {
+            if (!isloggedIn()) return;
+            var checkbox = $event.target;
+            var checked = checkbox.checked;
+            facetSet("draft", "T", checked);
+            $location.search("_draft", facetsSelected["draft"]);
+            goToPage();
         };
 
         $scope.init = function() {

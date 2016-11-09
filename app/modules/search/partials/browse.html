@@ -159,6 +159,10 @@
                                         {{ searchResult['_source']['startEventDate']|date:'dd-MM-yyyy'}}
                                     </div>
                                     <div class="key-field">
+                                        <label class="key-field-title">Added: </label>
+                                        {{ searchResult['_source']['date_created']|date:'dd-MM-yyyy'}}
+                                    </div>
+                                    <div class="key-field">
                                         <label class="key-field-title">Comments: </label>
                                         {{ searchResult['_source']['commentsCount']}}
                                     </div>
@@ -202,7 +206,11 @@
 
                                     <div class="key-field">
                                         <label class="key-field-title">Keywords: </label>
-                                        {{ searchResult['_source']['keywords']|date:'dd-MM-yyyy'}}
+                                        {{ searchResult['_source']['keywords']}}
+                                    </div>
+                                    <div class="key-field">
+                                        <label class="key-field-title">Added: </label>
+                                        {{ searchResult['_source']['date_created']|date:'dd-MM-yyyy'}}
                                     </div>
                                     <div class="key-field">
                                         <label class="key-field-title">Comments: </label>
@@ -227,7 +235,7 @@
                                     </div>
                                     <div class="key-field">
                                         <label class="key-field-title">Added: </label>
-                                        {{ searchResult['_source']['issued']|date:'dd-MM-yyyy'}}
+                                        {{ searchResult['_source']['date_created']|date:'dd-MM-yyyy'}}
                                     </div>
                                     <div class="key-field">
                                         <label class="key-field-title">Comments: </label>
@@ -270,6 +278,12 @@
                         <input type="checkbox" id="own_content" ng-checked="isOwnContentEnabled()" ng-click="ownContentChanged($event)">
                         <label for="own_content" tooltip-placement="right" tooltip="Show only my content" tooltip-append-to-body="true">
                              <span class="ellipsis">My own content</span>
+                        </label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="draft_only" ng-checked="isDraftOnlyEnabled()" ng-click="ownDraftOnlyChanged($event)">
+                        <label for="draft_only" tooltip-placement="right" tooltip="Show only my draft content" tooltip-append-to-body="true">
+                             <span class="ellipsis">My draft content</span>
                         </label>
                     </li>
                 </ul>
