@@ -1,7 +1,7 @@
 <div class="container container-create-formula" id="container-create-formula">
 
     <div class="content-header">
-        <h3 class="fonticon fonticon-formula">Dataset Calculator</h3>
+        <h3 class="fonticon fonticon-formula">Create Metric</h3>
 
         <div class="subtitle-help">
             <h4>
@@ -52,7 +52,7 @@
 
     <div class="content-body">
         <label>Formula from Step 1</label>
-        <formula ng-if="metricsHelper.metricsdata.formula && metricsHelper.metricsdata.variables" data-formula="metricsHelper.metricsdata.formula" data-variables="metricsHelper.metricsdata.variables"></formula>
+        <formula ng-if="metricsHelper.metricsdata.formula && metricsHelper.metricsdata.variables" data-formula="metricsHelper.metricsdata.formula" data-variables="metricsHelper.metricsdata.variables" data-use-indicators="true"></formula>
     </div>
 
     <div class="metadata metadata-formula">

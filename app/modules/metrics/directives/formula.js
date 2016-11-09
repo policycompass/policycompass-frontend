@@ -237,7 +237,8 @@ angular.module('pcApp.metrics.directives.formula', ['pcApp.indicators.services.i
                 replace: true,
                 scope: {
                     formula: '=formula',
-                    variables: '=variables'
+                    variables: '=variables',
+                    useIndicators: '=useIndicators'
                 },
                 template: function (scope) {
                     return '<div style="min-height: 77px;" class="calculation-formula calculation-formula-2"></div>';
@@ -255,6 +256,12 @@ angular.module('pcApp.metrics.directives.formula', ['pcApp.indicators.services.i
                             }
                             var urlCalls = [];
                             angular.forEach(variables, function (value, key, obj) {
+
+                                if (scope.useIndicators && value.type === 'dataset' ) {
+                                    value = value.dataset.getIndicator();
+                                    value.type = 'indicator'
+                                }
+
                                 var index = scope.formula.indexOf(key.replace(' ', ''));
                                 if (index > -1) {
                                     var url;
