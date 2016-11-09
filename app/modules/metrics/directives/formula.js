@@ -34,7 +34,7 @@ angular.module('pcApp.metrics.directives.formula', ['pcApp.indicators.services.i
                     }
 
                     var target = element[0];
-                    // if target as an elment and has a text child select that one instead
+                    // if target as an element and has a text child select that one instead
                     if (target.hasChildNodes() && target.childNodes[0].nodeType === 3) {
                         target = target.childNodes[0];
                     }
@@ -65,10 +65,6 @@ angular.module('pcApp.metrics.directives.formula', ['pcApp.indicators.services.i
                     var result = [];
                     angular.forEach(parts, function (variableOrText) {
                         var node;
-                        if  (!variableOrText) {
-                            return;
-                        }
-
                         var isVariable = variableOrText.match(/^__\d+__$/);
                         if (isVariable) {
                             var variable = variableOrText;
@@ -79,7 +75,7 @@ angular.module('pcApp.metrics.directives.formula', ['pcApp.indicators.services.i
                         }
                         this.push(node);
                     }, result);
-                    result.push(createTextNode());
+
                     return result;
                 };
 
