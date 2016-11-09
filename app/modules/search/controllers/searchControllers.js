@@ -137,6 +137,11 @@
                 field: ["creator_path", "userPath"],
                 size: 200,
                 disable: true
+            },
+            draft: {
+                label: 'Draft',
+                field: ["is_draft"],
+                disable: true
             }
         };
 
@@ -577,6 +582,19 @@
 
         $scope.isOwnContentEnabled = function () {
             return userId === ("0000000"+getUserId()).slice(-7);
+        };
+
+        $scope.isDraftOnlyEnabled = function() {
+            return facetsSelected['draft'] && facetsSelected['draft'].indexOf("T") !== -1;
+        };
+
+        $scope.ownDraftOnlyChanged = function ($event) {
+            if (!isloggedIn()) return;
+            var checkbox = $event.target;
+            var checked = checkbox.checked;
+            facetSet("draft", "T", checked);
+            $location.search("_draft", facetsSelected["draft"]);
+            goToPage();
         };
 
         $scope.init = function() {

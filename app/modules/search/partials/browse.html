@@ -280,6 +280,12 @@
                              <span class="ellipsis">My own content</span>
                         </label>
                     </li>
+                    <li>
+                        <input type="checkbox" id="draft_only" ng-checked="isDraftOnlyEnabled()" ng-click="ownDraftOnlyChanged($event)">
+                        <label for="draft_only" tooltip-placement="right" tooltip="Show only my draft content" tooltip-append-to-body="true">
+                             <span class="ellipsis">My draft content</span>
+                        </label>
+                    </li>
                 </ul>
             </div>
             <div ng-repeat="facetCategory in facetCategories | orderBy: 'order'" ng-if="facetCategory.results>0" class="browse-filters-block">
