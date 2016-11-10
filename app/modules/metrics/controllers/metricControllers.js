@@ -286,7 +286,7 @@ angular.module('pcApp.metrics.controllers.metric', [
             $scope.abort = function () {
                 var dialog = dialogs.confirm("Are you sure?", "Do you want not to save this metric application?");
                 dialog.result.then(function () {
-                    $location.path("/metrics/" + $routeParams.metricId + "/apply-1");
+                    $location.path("/metrics/" + $routeParams.metricId);
                 });
             }
         }
