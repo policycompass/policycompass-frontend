@@ -39,6 +39,11 @@
 
     <div class="metadata metadata-formula">
         <form name="datasetForm" class="simple-form" novalidate>
+
+            <div ng-if="servererror.datasets" class="form-group" ng-class="{ 'has-error': servererror.datasets }">
+                <p class="help-block" ng-repeat="error in servererror.datasets">{{ error[0] }}</li>
+            </div>
+
             <div class="form-group" ng-class="{ 'has-error': (datasetForm.title.$invalid && !datasetForm.title.$pristine) || servererror.title }">
                 <label for="title" class="field-label">Title</label>
 
