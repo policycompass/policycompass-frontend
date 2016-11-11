@@ -3,8 +3,8 @@ angular.module('pcApp.export.directives.exportDirective', [
 ])
 
     .directive('pcExport',
-    ['ngProgress',
-        function (ngProgress) {
+    ['ngProgress', 'dialogs',
+        function (ngProgress, dialogs) {
             var controller = function ($scope) {
 
                 $scope.isDisabled = function() {
@@ -80,6 +80,7 @@ angular.module('pcApp.export.directives.exportDirective', [
                         }
                     } catch (e){
                         ngProgress.complete();
+                        dialogs.error('Error downloading image', 'Your browser doesn\'t support this feature. Please <a href="http://www.whatbrowser.org/intl/en/" target="_blank">try using a modern browser</a>.');
                     }
                 };
 
@@ -95,7 +96,14 @@ angular.module('pcApp.export.directives.exportDirective', [
 
                         context.drawImage(image, 0, 0);
 
-                        if (cb) cb(canvas.toDataURL('image/png'));
+                        if (cb) {
+                            try {
+                                cb(canvas.toDataURL('image/png'));
+                            } catch(e) {
+                                ngProgress.complete();
+                                dialogs.error('Error downloading image', 'Your browser doesn\'t support this feature. Please <a href="http://www.whatbrowser.org/intl/en/" target="_blank">try using a modern browser</a>.');
+                            }
+                        }
                     }
                 }
                 function imageUri2Canvas(uri, cb) {
