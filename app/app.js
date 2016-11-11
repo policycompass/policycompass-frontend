@@ -14,6 +14,7 @@ var pcAppDependencies = [
     'pcApp.developer',
     'pcApp.search',
     'pcApp.ratings',
+    'pcApp.export',
     'pcApp.indicators',
     'pcApp.datasets',
     'pcApp.feedbacks',

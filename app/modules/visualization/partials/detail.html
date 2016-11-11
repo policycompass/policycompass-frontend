@@ -12,6 +12,7 @@
             <a href="#" ng-if="visualization.is_draft" ng-disabled="visualization.is_draft" class="btn btn-default btn-danger">Draft</a>
             <a type="button" class="btn btn-primary btn-addCausalModel" href="#!/models/create?{{urlListIndicators}}">Create Causal Model</a>
             <a type="button" class="btn btn-share" ng-click="share=!share" ng-class="{active: share}" ng-if="!1">Share</a>
+            <pc-export ng-if="visualization.id" type="visualizations" export-id="visualizations_{{visualization.id}}"></pc-export>
 
         </div>
         <div ng-class="{active: share}" class="share-window" id="share-window" ng-init="e=1">
