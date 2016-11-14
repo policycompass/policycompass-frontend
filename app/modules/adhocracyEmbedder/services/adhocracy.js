@@ -99,7 +99,7 @@ angular.module('pcApp.adhocracyEmbedder.services.adhocracy', [])
                     for (errorIndex in serverErrors) {
                         if (serverErrors.hasOwnProperty(errorIndex)) {
                             var error = serverErrors[errorIndex];
-                            if (error.location = 'body') {
+                            if (error.location === 'body') {
                                 simpleName = error.name.split('.').pop();
                                 processedErrors[simpleName] = error.description;
                                 }
@@ -195,7 +195,18 @@ angular.module('pcApp.adhocracyEmbedder.services.adhocracy', [])
                     },
                     transformResponse: withResponseErrorTransformer()
                 })
-            }
+            };
+
+            client.resetPassword = function(email) {
+                return $http({
+                    method: 'POST',
+                    url: url('/create_password_reset/'),
+                    data: {
+                        email: email
+                    },
+                    transformResponse: withResponseErrorTransformer()
+                });
+            };
 
             return client;
         }

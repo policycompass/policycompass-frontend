@@ -5,13 +5,19 @@ angular.module('pcApp.auth.directives.loginRegister', [
     .directive('login', function () {
         return {
             restrict: 'E',
-            templateUrl: 'modules/auth/partials/login.html',
+            templateUrl: 'modules/auth/partials/login.html'
         };
     })
     .directive('register', function () {
         return {
             restrict: 'E',
-            templateUrl: 'modules/auth/partials/register.html',
+            templateUrl: 'modules/auth/partials/register.html'
+        };
+    })
+    .directive('passwordReset', function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'modules/auth/partials/passwordReset.html'
         };
     })
     .directive("passwordVerify", function() {

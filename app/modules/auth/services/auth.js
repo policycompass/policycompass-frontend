@@ -148,6 +148,13 @@ angular.module('pcApp.auth.services.auth', [
                 return AdhocracyClient.register(name, email, password)
             };
 
+            /** Wrapper to make A3 auth features pluggable. Calls directly A3
+             *  specific password reset code.
+             */
+            Auth.resetPassword = function (email) {
+                return AdhocracyClient.resetPassword(email);
+            };
+
             Auth.logout = function () {
                 teardownSession();
             };
